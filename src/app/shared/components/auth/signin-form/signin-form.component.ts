@@ -5,7 +5,6 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { PermissionService, ServiceAccessGrant } from '../../../../core/services/permission.service';
 import { Router } from '@angular/router';
 import { InputFieldComponent } from '../../form/input/input-field.component';
-import { CheckboxComponent } from '../../form/input/checkbox.component';
 import { ButtonComponent } from '../../ui/button/button.component';
 
 @Component({
@@ -14,7 +13,6 @@ import { ButtonComponent } from '../../ui/button/button.component';
     RouterModule,
     FormsModule,
     InputFieldComponent,
-    CheckboxComponent,
     ButtonComponent
   ],
   templateUrl: './signin-form.component.html',

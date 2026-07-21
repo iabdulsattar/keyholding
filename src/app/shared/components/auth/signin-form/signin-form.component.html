@@ -1,243 +1,233 @@
-   
-  <div class="flex flex-col justify-between flex-1 w-full max-w-lg mx-auto">
-    <div>
-      <!-- Language selector -->
-      <div class="flex justify-end mb-6">
-        <button class="flex items-center gap-2 text-sm text-slate-600 border border-slate-200 rounded-full px-4 py-2 hover:bg-slate-50 transition">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M12 3a15 15 0 010 18 15 15 0 010-18z"/>
-            <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          English
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Error Message -->
-      @if (errorMessage) {
-      <div class="mb-5 p-4 rounded-lg bg-error-50 border border-error-200">
-        <p class="text-sm text-error-700">{{ errorMessage }}</p>
-      </div>
-      }
-
-      @if (successMessage) {
-      <div class="mb-5 p-4 rounded-lg bg-success-50 border border-success-200">
-        <p class="text-sm text-success-700">{{ successMessage }}</p>
-      </div>
-      }
-
-      <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
-        <svg class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 21V7a1 1 0 011-1h4V4a1 1 0 011-1h6a1 1 0 011 1v2h4a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4M8 9h1m3 0h1m3 0h1M8 13h1m3 0h1m3 0h1"/>
+    <!-- Language selector -->
+    <div class="flex justify-end px-8 sm:px-16 pt-8">
+      <button class="flex items-center gap-2 text-sm text-slate-600 border border-slate-200 rounded-full px-4 py-2 hover:bg-slate-50 transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M12 3a15 15 0 010 18 15 15 0 010-18z"/>
+          <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-      </div>
+        English
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+    </div>
 
-      <h2 class="text-3xl font-extrabold text-slate-900">Company Login</h2>
-      <p class="mt-2 text-slate-500 text-sm">Sign in to access your KeyVault Pro account</p>
+    <!-- Form container -->
+    <div class="flex-1 flex items-center justify-center px-8 sm:px-16 py-6">
+      <div class="w-full max-w-md">
 
-      <div class="mt-6 flex gap-3 rounded-xl bg-blue-50 border border-blue-100 p-4">
-        <div class="w-6 h-6 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
-          i
+        <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+          <svg class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21V7a1 1 0 011-1h4V4a1 1 0 011-1h6a1 1 0 011 1v2h4a1 1 0 011 1v14M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4M8 9h1m3 0h1m3 0h1M8 13h1m3 0h1m3 0h1"/>
+          </svg>
         </div>
-        <div>
-          <p class="text-sm font-semibold text-slate-900">Authorized access only</p>
-          <p class="text-sm text-slate-600 mt-1 leading-relaxed">This platform is for authorized users of key holding companies. Please use your company credentials to continue.</p>
-        </div>
-      </div>
 
-      <!-- OTP (2FA) verification step -->
-      @if (requiresOtp) {
-      <div class="mt-6 mb-5 sm:mb-8">
-        <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-          Two-Factor Verification
-        </h1>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          We've sent a 6-digit verification code to
-          <span class="text-brand-500 dark:text-brand-400">{{ otpSentTo }}</span>.
-          Please check your inbox and enter the code to continue.
-        </p>
-      </div>
+        <h2 class="text-3xl font-extrabold text-slate-900">Company Login</h2>
+        <p class="mt-2 text-slate-500 text-sm">Sign in to access your KeyVault Pro account</p>
 
-      <form (ngSubmit)="onVerifyOtp()" class="space-y-6">
-        <div class="flex">
-          <div class="w-1/6 mr-2">
-            <app-input-field type="text" placeholder="" name="d1" class="form-input" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" className="text-center h-14 font-medium text-[16px]" required />
+        <div class="mt-6 flex gap-3 rounded-xl bg-blue-50 border border-blue-100 p-4">
+          <div class="w-6 h-6 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
+            i
           </div>
-          <div class="w-1/6 mr-2">
-            <app-input-field type="text" placeholder="" name="d2" class="form-input" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" className="text-center h-14 font-medium text-[16px]" required />
-          </div>
-          <div class="w-1/6 mr-2">
-            <app-input-field type="text" placeholder="" name="d3" class="form-input" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" className="text-center h-14 font-medium text-[16px]" required />
-          </div>
-          <div class="w-1/6 mr-2">
-            <app-input-field type="text" placeholder="" name="d4" class="form-input" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" className="text-center h-14 font-medium text-[16px]" required />
-          </div>
-          <div class="w-1/6 mr-2">
-            <app-input-field type="text" placeholder="" name="d5" class="form-input" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" className="text-center h-14 font-medium text-[16px]" required />
-          </div>
-          <div class="w-1/6">
-            <app-input-field type="text" placeholder="" name="d6" class="form-input" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" className="text-center h-14 font-medium text-[16px]" required />
+          <div>
+            <p class="text-sm font-semibold text-slate-900">Authorized access only</p>
+            <p class="text-sm text-slate-600 mt-1 leading-relaxed">This platform is for authorized users of key holding companies. Please use your company credentials to continue.</p>
           </div>
         </div>
 
-        <div class="mt-2 mb-2">
-          <p class="text-sm font-normal text-center text-gray-700 dark:text-gray-400">
-            Didn't receive the code?
-            <a (click)="resendOtp()" class="text-brand-500 hover:text-brand-600 dark:text-brand-400 cursor-pointer">
-              Resend Code
-            </a>
+        <!-- Error Message -->
+        @if (errorMessage) {
+        <div class="mt-4 p-4 rounded-lg bg-error-50 border border-error-200">
+          <p class="text-sm text-error-700">{{ errorMessage }}</p>
+        </div>
+        }
+
+        @if (successMessage) {
+        <div class="mt-4 p-4 rounded-lg bg-success-50 border border-success-200">
+          <p class="text-sm text-success-700">{{ successMessage }}</p>
+        </div>
+        }
+
+        <!-- OTP (2FA) verification step -->
+        @if (requiresOtp) {
+        <div class="mt-4 sm:mt-6 mb-4 sm:mb-8">
+          <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
+            Two-Factor Verification
+          </h1>
+          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+            We've sent a 6-digit verification code to
+            <span class="text-brand-500 dark:text-brand-400">{{ otpSentTo }}</span>.
+            Please check your inbox and enter the code to continue.
           </p>
         </div>
 
-        <app-button className="w-full mb-5" size="sm" variant="outline" [disabled]="isLoading" (btnClick)="onVerifyOtp()">
-          @if (isLoading) {
-          <span class="flex items-center gap-2">
-            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Verifying...
-          </span>
-          } @else {
-          Verify Code
-          }
-        </app-button>
-
-        <app-button className="w-full" size="sm" variant="outline" (btnClick)="backToSignIn()">
-          Back to Sign In
-        </app-button>
-      </form>
-      }
-
-      <!-- Email / Password form -->
-      <form (ngSubmit)="onSignIn()" class="mt-6 space-y-5" [class.hidden]="requiresOtp">
-        <div>
-          <label class="block text-sm font-semibold text-slate-800 mb-2">Email Address</label>
-          <div class="relative">
-            <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-            <app-input-field
-              type="email"
-              placeholder="Enter your email address"
-              [(value)]="email"
-              name="email"
-              class="form-input pl-11"
-              required
-            />
+        <form (ngSubmit)="onVerifyOtp()" class="space-y-6">
+          <div class="flex gap-2 sm:gap-3 justify-center">
+            <app-input-field type="text" placeholder="" name="d1" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" required />
+            <app-input-field type="text" placeholder="" name="d2" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" required />
+            <app-input-field type="text" placeholder="" name="d3" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" required />
+            <app-input-field type="text" placeholder="" name="d4" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" required />
+            <app-input-field type="text" placeholder="" name="d5" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" required />
+            <app-input-field type="text" placeholder="" name="d6" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" required />
           </div>
-          @if (emailError) {
-          <p class="mt-1 text-xs text-error-500">{{ emailError }}</p>
-          }
-        </div>
-        
-        <div>
-          <label class="block text-sm font-semibold text-slate-800 mb-2">Password</label>
-          <div class="relative">
-            <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-           
-            <app-input-field
-              [type]="showPassword ? 'text' : 'password'"
-              placeholder="Enter your password"
-              [(value)]="password"
-              name="password"
-              class="form-input pl-11 pr-11"
-              required
-            />
+
+          <div class="mt-2 mb-2 sm:mb-3">
+            <p class="text-xs sm:text-sm font-normal text-center text-gray-700 dark:text-gray-400">
+              Didn't receive the code?
+              <a (click)="resendOtp()" class="text-brand-500 hover:text-brand-600 dark:text-brand-400 cursor-pointer">
+                Resend Code
+              </a>
+            </p>
+          </div>
+
+          <app-button className="w-full mb-4 sm:mb-5" size="sm" variant="outline" [disabled]="isLoading" (btnClick)="onVerifyOtp()">
+            @if (isLoading) {
+            <span class="flex items-center gap-2">
+              <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Verifying...
+            </span>
+            } @else {
+            Verify Code
+            }
+          </app-button>
+
+          <app-button className="w-full" size="sm" variant="outline" (btnClick)="backToSignIn()">
+            Back to Sign In
+          </app-button>
+        </form>
+        }
+
+        <!-- Email / Password form -->
+        <form (ngSubmit)="onSignIn()" class="mt-6 space-y-4 sm:space-y-5" [class.hidden]="requiresOtp">
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Email Address</label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email address"
+                class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" required />
+            </div>
+            @if (emailError) {
+            <p class="mt-1 text-xs text-error-500">{{ emailError }}</p>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Password</label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Enter your password"
+                class="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" required />
+              <button type="button" (click)="togglePasswordVisibility()"
+                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                @if (showPassword) {
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                } @else {
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 11-4.243-4.243m4.242 4.242L9.88 9.88"/>
+                </svg>
+                }
+              </button>
+            </div>
             @if (passwordError) {
             <p class="mt-1 text-xs text-error-500">{{ passwordError }}</p>
             }
-            <span
-              (click)="togglePasswordVisibility()"
-              class="absolute z-30 -translate-y-1/2 cursor-pointer right-3.5 top-1/2 text-slate-400 hover:text-slate-600"
-            >
-              @if (showPassword) {
-              <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-gray-500 dark:fill-gray-400 size-5"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0002 13.8619C7.23361 13.8619 4.86803 12.1372 3.92328 9.70241C4.86804 7.26761 7.23361 5.54297 10.0002 5.54297C12.7667 5.54297 15.1323 7.26762 16.0771 9.70243C15.1323 12.1372 12.7667 13.8619 10.0002 13.8619ZM10.0002 4.04297C6.48191 4.04297 3.49489 6.30917 2.4155 9.4593C2.3615 9.61687 2.3615 9.78794 2.41549 9.94552C3.49488 13.0957 6.48191 15.3619 10.0002 15.3619C13.5184 15.3619 16.5055 13.0957 17.5849 9.94555C17.6389 9.78797 17.6389 9.6169 17.5849 9.45932C16.5055 6.30919 13.5184 4.04297 10.0002 4.04297ZM9.99151 7.84413C8.96527 7.84413 8.13333 8.67606 8.13333 9.70231C8.13333 10.7286 8.96527 11.5605 9.99151 11.5605H10.0064C11.0326 11.5605 11.8646 10.7286 11.8646 9.70231C11.8646 8.67606 11.0326 7.84413 10.0064 7.84413H9.99151Z"></path></svg>
-              } @else {
-              <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-gray-500 dark:fill-gray-400 size-5"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.63803 3.57709C4.34513 3.2842 3.87026 3.2842 3.57737 3.57709C3.28447 3.86999 3.28447 4.34486 3.57737 4.63775L4.85323 5.91362C3.74609 6.84199 2.89363 8.06395 2.4155 9.45936C2.3615 9.61694 2.3615 9.78801 2.41549 9.94558C3.49488 13.0957 6.48191 15.3619 10.0002 15.3619C11.255 15.3619 12.4422 15.0737 13.4994 14.5598L15.3625 16.4229C15.6554 16.7158 16.1302 16.7158 16.4231 16.4229C16.716 16.13 16.716 15.6551 16.4231 15.3622L4.63803 3.57709ZM12.3608 13.4212L10.4475 11.5079C10.3061 11.5423 10.1584 11.5606 10.0064 11.5606H9.99151C8.96527 11.5606 8.13333 10.7286 8.13333 9.70237C8.13333 9.5461 8.15262 9.39434 8.18895 9.24933L5.91885 6.97923C5.03505 7.69015 4.34057 8.62704 3.92328 9.70247C4.86803 12.1373 7.23361 13.8619 10.0002 13.8619C10.8326 13.8619 11.6287 13.7058 12.3608 13.4212ZM16.0771 9.70249C15.7843 10.4569 15.3552 11.1432 14.8199 11.7311L15.8813 12.7925C16.6329 11.9813 17.2187 11.0143 17.5849 9.94561C17.6389 9.78803 17.6389 9.61696 17.5849 9.45938C16.5055 6.30925 13.5184 4.04303 10.0002 4.04303C9.13525 4.04303 8.30244 4.17999 7.52218 4.43338L8.75139 5.66259C9.1556 5.58413 9.57311 5.54303 10.0002 5.54303C12.7667 5.54303 15.1323 7.26768 16.0771 9.70249Z"></path></svg>
-              }
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer select-none">
+              <input type="checkbox" [(ngModel)]="isChecked" name="remember" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+              Remember me on this device
+            </label>
+            <a routerLink="/forgot-password" class="text-sm font-medium text-blue-600 hover:text-blue-700">Forgot password?</a>
+          </div>
+
+          <button type="submit"
+            class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm shadow-blue-600/20"
+            [disabled]="isLoading"
+          >
+            @if (isLoading) {
+            <span class="flex items-center gap-2">
+              <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Signing in...
             </span>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <app-checkbox
-              [(checked)]="isChecked"
-              label="Remember me "
-            />
-          </div>
-          <a
-            class="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-            routerLink="/forgot-password"
-          >
-            Forgot password?
-          </a>
-        </div>
-
-        <button type="submit"
-          class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm shadow-blue-600/20"
-          [disabled]="isLoading"
-        >
-          @if (isLoading) {
-          <span class="flex items-center gap-2">
-            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            } @else {
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/>
             </svg>
-            Signing in...
-          </span>
-          } @else {
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/>
+            Sign In
+            }
+          </button>
+        </form>
+
+        <div class="mt-6 flex items-center gap-3">
+          <div class="h-px flex-1 bg-slate-200"></div>
+          <span class="text-sm text-slate-400">Don't have an account?</span>
+          <div class="h-px flex-1 bg-slate-200"></div>
+        </div>
+
+        <button routerLink="/signup" class="mt-4 w-full flex items-center justify-center gap-2 border border-blue-600 text-blue-600 font-semibold py-3.5 rounded-xl hover:bg-blue-50 transition">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12.5 7a4 4 0 11-8 0 4 4 0 018 0zM20 8v6M23 11h-6"/>
           </svg>
-          Sign In
-          }
+          Sign Up
         </button>
-      </form>
 
-      <div class="mt-6 flex items-center gap-3">
-        <div class="h-px flex-1 bg-slate-200"></div>
-        <span class="text-sm text-slate-400">Don't have an account?</span>
-        <div class="h-px flex-1 bg-slate-200"></div>
-      </div>
-
-      <app-button
-        className="mt-4 w-full"
-        size="sm"
-        variant="outline"
-        routerLink="/signup"
-      >
-        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12.5 7a4 4 0 11-8 0 4 4 0 018 0zM20 8v6M23 11h-6"/>
-        </svg>
-        Sign Up
-      </app-button>
-
-      <div class="mt-6">
-        <p class="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-          By signing in, you agree to our
-          <a
-            class="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-          >
-            Terms of Service
-          </a>
-          and
-          <a
-            class="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-          >
-            Privacy Policy
-          </a>.
-        </p>
       </div>
     </div>
 
     <!-- Footer strip -->
-    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 border-t border-slate-100 pt-6">
-      <p>&copy; 2026 KeyVault Pro. All rights reserved.</p>
+    <div class="border-t border-slate-100 px-8 sm:px-16 py-8">
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
+            <svg class="w-5 h-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-semibold text-slate-900 text-sm">End-to-end Security</h4>
+            <p class="text-sm text-slate-500 mt-1">Your data is encrypted and protected with enterprise-grade security.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
+            <svg class="w-5 h-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 17h6M9 13h6M9 9h1M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2zM16 3v4"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-semibold text-slate-900 text-sm">Audit Ready</h4>
+            <p class="text-sm text-slate-500 mt-1">All key activities are logged and available for compliance.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
+            <svg class="w-5 h-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-semibold text-slate-900 text-sm">Real-time Alerts</h4>
+            <p class="text-sm text-slate-500 mt-1">Get notified instantly about key events and incidents.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 border-t border-slate-100 pt-6">
+        <p>&copy; 2026 KeyVault Pro. All rights reserved.</p>
+        <p>By signing in, you agree to our <a href="#" class="text-blue-600 font-medium hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 font-medium hover:underline">Privacy Policy</a>.</p>
+      </div>
     </div>
-  </div>

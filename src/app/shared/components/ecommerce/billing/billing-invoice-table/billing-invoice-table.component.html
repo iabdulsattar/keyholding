@@ -1,72 +1,72 @@
  <div class="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-<div class="px-6">
-  <div class="flex flex-col justify-between gap-5 py-4 sm:flex-row sm:items-center">
+<div class="px-4 sm:px-6">
+  <div class="flex flex-col justify-between gap-4 sm:gap-5 py-3 sm:py-4 sm:flex-row sm:items-center">
     <div>
-      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+      <h3 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-white/90">
         Invoices
       </h3>
-      <p class="text-sm text-gray-500 dark:text-gray-400">
+      <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
         Access all your previous invoices.
       </p>
     </div>
-    <div>
-      <button (click)="onDownloadAll()" type="button" class="shadow-theme-xs flex w-full justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+    <div class="w-full sm:w-auto">
+      <button (click)="onDownloadAll()" type="button" class="shadow-theme-xs flex w-full sm:w-auto justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none"><path d="M17.1661 13.333V15.4163C17.1661 16.1067 16.6064 16.6663 15.9161 16.6663H5.08203C4.39168 16.6663 3.83203 16.1067 3.83203 15.4163V13.333M10.5004 13.333L10.5005 3.33301M6.64456 9.47918L10.4986 13.3308L14.3529 9.47918" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
         Download All
       </button>
     </div>
   </div>
 </div>
-<div>
-  <div class="custom-scrollbar overflow-x-auto px-6">
-    <table class="min-w-full">
-      <thead>
-        <tr class="border-y border-gray-200 dark:border-gray-800">
-          <th
-            class="px-6 py-3 text-left text-sm font-normal text-gray-500 first:pl-0 dark:text-gray-400"
-          >
-            Name
-          </th>
-          <th
-            class="px-6 py-3 text-left text-sm font-normal text-gray-500 dark:text-gray-400"
-          >
-            Date
-          </th>
-          <th
-            class="px-6 py-3 text-left text-sm font-normal text-gray-500 dark:text-gray-400"
-          >
-            Price
-          </th>
-          <th
-            class="px-6 py-3 text-left text-sm font-normal text-gray-500 dark:text-gray-400"
-          >
-            Plan
-          </th>
-          <th
-            class="px-6 py-3 text-left text-sm font-normal text-gray-500 dark:text-gray-400"
-          >
-            Status
-          </th>
-          <th
-            class="px-6 py-3 text-right text-sm font-normal text-gray-500 dark:text-gray-400"
-          >
-            Action
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
-        @for (invoice of paginatedInvoices; track invoice.id) {
-        <tr>
-          <td class="px-6 py-3 text-left whitespace-nowrap first:pl-0">
-            <div class="flex gap-3 pl-2">
-              <svg
-                class="h-8 w-7"
-                xmlns="http://www.w3.org/2000/svg"
-                width="21"
-                height="24"
-                viewBox="0 0 21 24"
-                fill="none"
-              >
+  <div>
+    <div class="custom-scrollbar overflow-x-auto px-4 sm:px-6">
+      <table class="min-w-full">
+        <thead>
+          <tr class="border-y border-gray-200 dark:border-gray-800">
+            <th
+              class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-normal text-gray-500 first:pl-0 dark:text-gray-400"
+            >
+              Name
+            </th>
+            <th
+              class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400 hidden sm:table-cell"
+            >
+              Date
+            </th>
+            <th
+              class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400 hidden sm:table-cell"
+            >
+              Price
+            </th>
+            <th
+              class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400 hidden sm:table-cell"
+            >
+              Plan
+            </th>
+            <th
+              class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400"
+            >
+              Status
+            </th>
+            <th
+              class="px-4 sm:px-6 py-2 sm:py-3 text-right text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400"
+            >
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+          @for (invoice of paginatedInvoices; track invoice.id) {
+          <tr>
+            <td class="px-4 sm:px-6 py-2.5 sm:py-3 text-left whitespace-nowrap first:pl-0">
+              <div class="flex gap-2 sm:gap-3 pl-1 sm:pl-2">
+                <svg
+                  class="h-6 w-5 sm:h-8 sm:w-7"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="21"
+                  height="24"
+                  viewBox="0 0 21 24"
+                  fill="none"
+                >
                 <path
                   d="M4.8125 0.625C4.03047 0.625 3.39062 1.26484 3.39062 2.04688V21.9531C3.39062 22.7352 4.03047 23.375 4.8125 23.375H19.0312C19.8133 23.375 20.4531 22.7352 20.4531 21.9531V6.3125L14.7656 0.625H4.8125Z"
                   fill="#E2E5E7"
@@ -105,21 +105,21 @@
               </p>
             </div>
           </td>
-          <td
-            class="px-6 py-3 text-sm font-normal whitespace-nowrap text-gray-700 dark:text-gray-400"
-          >
-            {{ invoice.date }}
-          </td>
-          <td
-            class="px-6 py-3 text-sm font-normal whitespace-nowrap text-gray-700 dark:text-gray-400"
-          >
-            {{ invoice.price }}
-          </td>
-          <td
-            class="px-6 py-3 text-sm font-normal whitespace-nowrap text-gray-700 dark:text-gray-400"
-          >
-            {{ invoice.plan }}
-          </td>
+            <td
+              class="px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-normal whitespace-nowrap text-gray-700 dark:text-gray-400 hidden sm:table-cell"
+            >
+              {{ invoice.date }}
+            </td>
+            <td
+              class="px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-normal whitespace-nowrap text-gray-700 dark:text-gray-400 hidden sm:table-cell"
+            >
+              {{ invoice.price }}
+            </td>
+            <td
+              class="px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-normal whitespace-nowrap text-gray-700 dark:text-gray-400 hidden sm:table-cell"
+            >
+              {{ invoice.plan }}
+            </td>
           <td class="px-6 py-3">
             <span
               class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-medium"
@@ -148,10 +148,10 @@
       </tbody>
     </table>
   </div>
-  <div class="rounded-b-xl border-t border-gray-200 px-6 py-4 dark:border-gray-800">
-    <div class="flex justify-center">
+  <div class="rounded-b-xl border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 dark:border-gray-800">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
       <div
-        class="block pb-4 text-sm text-gray-700 sm:hidden dark:text-gray-400"
+        class="block pb-2 sm:pb-4 text-xs sm:text-sm text-gray-700 sm:hidden dark:text-gray-400"
       >
         Showing <span>{{ startItem }}</span> to
         <span>{{ endItem }}</span> of <span>{{ totalInvoices }}</span>
@@ -159,10 +159,10 @@
       </div>
     </div>
     <div
-      class="flex items-center justify-between gap-8 bg-gray-50 dark:bg-white/[0.03] p-4 rounded-lg sm:p-0 dark:sm:bg-transparent sm:bg-transparent"
+      class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-50 dark:bg-white/[0.03] p-3 sm:p-4 rounded-lg sm:p-0 dark:sm:bg-transparent sm:bg-transparent"
     >
       <button
-        class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 sm:px-3.5 sm:py-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+        class="shadow-theme-xs flex items-center gap-1.5 sm:gap-2 rounded-lg border border-gray-300 bg-white px-2 sm:px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
         [ngClass]="{
           'opacity-50 cursor-not-allowed': currentPage === 1,
           'hover:bg-gray-50 hover:text-gray-800 dark:hover:bg-white/[0.03] dark:hover:text-gray-200':
@@ -171,44 +171,44 @@
         [disabled]="currentPage === 1"
         (btnClick)="previousPage()"
       >
-      <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"> <path fill-rule="evenodd" clip-rule="evenodd" d="M2.58203 9.99868C2.58174 10.1909 2.6549 10.3833 2.80152 10.53L7.79818 15.5301C8.09097 15.8231 8.56584 15.8233 8.85883 15.5305C9.15183 15.2377 9.152 14.7629 8.85921 14.4699L5.13911 10.7472L16.6665 10.7472C17.0807 10.7472 17.4165 10.4114 17.4165 9.99715C17.4165 9.58294 17.0807 9.24715 16.6665 9.24715L5.14456 9.24715L8.85919 5.53016C9.15199 5.23717 9.15184 4.7623 8.85885 4.4695C8.56587 4.1767 8.09099 4.17685 7.79819 4.46984L2.84069 9.43049C2.68224 9.568 2.58203 9.77087 2.58203 9.99715C2.58203 9.99766 2.58203 9.99817 2.58203 9.99868Z"/> </svg>
-        <span class="hidden sm:inline">Previous</span>
-      </button>
-      <span
-        class="block text-sm font-medium text-gray-700 sm:hidden dark:text-gray-400"
-      >
-        Page {{ currentPage }} of {{ totalPages }}
-      </span>
-      <ul class="hidden items-center gap-0.5 sm:flex">
-        @for (page of visiblePages(); track page) {
-        <li>
-          <button
-            class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium"
-            [ngClass]="{
-              'bg-brand-500 text-white hover:bg-brand-500 hover:text-white':
-                currentPage === page,
-              'text-gray-700 hover:bg-brand-500 hover:text-white dark:text-gray-400 dark:hover:text-white':
-                currentPage !== page
-            }"
-            (click)="goToPage(page)"
-          >
-            {{ page }}
-          </button>
-        </li>
-        }
-      </ul>
-      <button
-        class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 sm:px-3.5 sm:py-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-        [ngClass]="{
-          'opacity-50 cursor-not-allowed': currentPage === totalPages,
-          'hover:bg-gray-50 hover:text-gray-800 dark:hover:bg-white/[0.03] dark:hover:text-gray-200':
-            currentPage !== totalPages
-        }"
-        [disabled]="currentPage === totalPages"
-        (btnClick)="nextPage()"
-      >
-        <span class="hidden sm:inline">Next</span>
-        <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <svg class="fill-current" width="18" height="18" viewBox="0 0 20 20" fill="none"> <path fill-rule="evenodd" clip-rule="evenodd" d="M2.58203 9.99868C2.58174 10.1909 2.6549 10.3833 2.80152 10.53L7.79818 15.5301C8.09097 15.8231 8.56584 15.8233 8.85883 15.5305C9.15183 15.2377 9.152 14.7629 8.85921 14.4699L5.13911 10.7472L16.6665 10.7472C17.0807 10.7472 17.4165 10.4114 17.4165 9.99715C17.4165 9.58294 17.0807 9.24715 16.6665 9.24715L5.14456 9.24715L8.85919 5.53016C9.15199 5.23717 9.15184 4.7623 8.85885 4.4695C8.56587 4.1767 8.09099 4.17685 7.79819 4.46984L2.84069 9.43049C2.68224 9.568 2.58203 9.77087 2.58203 9.99715C2.58203 9.99766 2.58203 9.99817 2.58203 9.99868Z"/> </svg>
+      <span class="hidden sm:inline">Previous</span>
+    </button>
+    <span
+      class="block text-xs sm:text-sm font-medium text-gray-700 sm:hidden dark:text-gray-400"
+    >
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <ul class="hidden items-center gap-0.5 sm:flex">
+      @for (page of visiblePages(); track page) {
+      <li>
+        <button
+          class="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg text-xs sm:text-sm font-medium"
+          [ngClass]="{
+            'bg-brand-500 text-white hover:bg-brand-500 hover:text-white':
+              currentPage === page,
+            'text-gray-700 hover:bg-brand-500 hover:text-white dark:text-gray-400 dark:hover:text-white':
+              currentPage !== page
+          }"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </li>
+      }
+    </ul>
+    <button
+      class="shadow-theme-xs flex items-center gap-1.5 sm:gap-2 rounded-lg border border-gray-300 bg-white px-2 sm:px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+      [ngClass]="{
+        'opacity-50 cursor-not-allowed': currentPage === totalPages,
+        'hover:bg-gray-50 hover:text-gray-800 dark:hover:bg-white/[0.03] dark:hover:text-gray-200':
+          currentPage !== totalPages
+      }"
+      [disabled]="currentPage === totalPages"
+      (btnClick)="nextPage()"
+    >
+      <span class="hidden sm:inline">Next</span>
+      <svg class="fill-current" width="18" height="18" viewBox="0 0 20 20" fill="none">
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"

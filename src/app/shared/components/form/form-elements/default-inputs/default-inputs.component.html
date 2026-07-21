@@ -1,36 +1,39 @@
 <app-component-card title="Default Inputs">
-  <div class="space-y-6">
-    <div>
-      <app-label for="input">Input</app-label>
-      <app-input-field type="text" id="input" />
+  <div class="space-y-6 max-w-full overflow-x-hidden">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+      <div>
+        <app-label for="input">Input</app-label>
+        <app-input-field type="text" id="input" />
+      </div>
+      <div>
+        <app-label for="inputTwo">Input with Placeholder</app-label>
+        <app-input-field type="text" id="inputTwo" placeholder="info@gmail.com" />
+      </div>
     </div>
-    <div>
-      <app-label for="inputTwo">Input with Placeholder</app-label>
-      <app-input-field type="text" id="inputTwo" placeholder="info@gmail.com" />
-    </div>
-    <div>
-      <app-label>Select Input</app-label>
-      <app-select
-        [options]="options"
-        placeholder="Select an option"
-        [value]="selectedOption"
-        (valueChange)="handleSelectChange($event)"
-        className="dark:bg-dark-900"
-      ></app-select>
-    </div>
-    <div>
-      <app-label>Password Input</app-label>
-      <div class="relative">
-        <app-input-field
-          id="password"
-          [type]="showPassword ? 'text' : 'password'"
-          placeholder="Enter your password"
-        />
-        <button
-          type="button"
-          (click)="showPassword = !showPassword"
-          class="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-        >
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+      <div>
+        <app-label>Select Input</app-label>
+        <app-select
+          [options]="options"
+          placeholder="Select an option"
+          [value]="selectedOption"
+          (valueChange)="handleSelectChange($event)"
+          className="dark:bg-dark-900"
+        ></app-select>
+      </div>
+      <div>
+        <app-label>Password Input</app-label>
+        <div class="relative">
+          <app-input-field
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter your password"
+          />
+          <button
+            type="button"
+            (click)="showPassword = !showPassword"
+            class="absolute z-30 -translate-y-1/2 cursor-pointer right-2 sm:right-4 top-1/2"
+          >
           @if (showPassword) {
           <svg
             width="1em"
@@ -63,23 +66,26 @@
           </svg>
           }
         </button>
+        </div>
       </div>
     </div>
-    <div>
-      <app-date-picker
-        id="date-picker"
-        label="Date Picker Input"
-        placeholder="Select a date"
-        (dateChange)="handleDateChange($event)"
-      />
-    </div>
-    <div>
-      <app-time-picker
-        id="time-picker"  
-        label="Time Select Input"
-        placeholder="Select time"
-        (timeChange)="onTimeSelected($event)"
-      />
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+      <div>
+        <app-date-picker
+          id="date-picker"
+          label="Date Picker Input"
+          placeholder="Select a date"
+          (dateChange)="handleDateChange($event)"
+        />
+      </div>
+      <div>
+        <app-time-picker
+          id="time-picker"  
+          label="Time Select Input"
+          placeholder="Select time"
+          (timeChange)="onTimeSelected($event)"
+        />
+      </div>
     </div>
     <div>
       <app-label for="card">Input with Payment</app-label>
@@ -88,7 +94,7 @@
           id="card-number"
           type="text"
           placeholder="Card number"
-          className="pl-[62px]"
+          className="pl-[46px] sm:pl-[62px]"
         />
         <span
           class="absolute left-0 top-1/2 flex h-11 w-[46px] -translate-y-1/2 items-center justify-center border-r border-gray-200 dark:border-gray-800"

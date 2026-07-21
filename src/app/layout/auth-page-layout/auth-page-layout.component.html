@@ -1,11 +1,15 @@
-<div class="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
+<div class="relative bg-white z-1 dark:bg-gray-900 sm:p-0">
   <div
     class="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0"
   >
     <div
-      class="items-center w-full h-full lg:w-1/2 g-brand-950 dark:bg-white/5 lg:grid relative bg-[#0a1128]"
+      class="hidden lg:block items-center w-full h-full lg:w-1/2 g-brand-950 dark:bg-white/5 lg:grid relative bg-[#0a1128] overflow-hidden"
     >
-      <div class="flex flex-col flex-1 px-8 sm:px-12 pt-10 overflow-hidden">
+      <!-- watermark shield -->
+      <svg class="absolute -right-10 top-10 w-72 h-72 opacity-[0.04] pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2 2 6v6c0 5.5 3.8 10.7 10 12 6.2-1.3 10-6.5 10-12V6l-10-4z"/>
+      </svg>
+      <div class="flex flex-col px-6 sm:px-8 pt-8 sm:pt-10 overflow-hidden lg:flex-1">
         <!-- Logo -->
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-xl border-2 border-blue-400/60 bg-blue-500/10 flex items-center justify-center">
@@ -108,10 +112,6 @@
     </div>
 
     <ng-content></ng-content>
-    
-    <div class="fixed z-50 hidden bottom-6 right-6 sm:block">
-      <app-theme-toggle-two />
-    </div>
-    
+
   </div>
 </div>

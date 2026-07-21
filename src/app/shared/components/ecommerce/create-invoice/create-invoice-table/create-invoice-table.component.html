@@ -41,9 +41,9 @@
   </div>
 
   <!-- Add Product Form -->
-  <div class="mt-5 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-6 dark:border-gray-800 dark:bg-gray-900">
+  <div class="mt-4 sm:mt-5 rounded-xl border border-gray-100 bg-gray-50 p-3 sm:p-4 lg:p-6 dark:border-gray-800 dark:bg-gray-900">
     <form (ngSubmit)="handleSubmit($event)">
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-12">
+      <div class="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-12">
         <div class="w-full lg:col-span-3">
           <app-label>Product Name</app-label>
           <app-input-field
@@ -64,7 +64,7 @@
         </div>
         <div class="w-full lg:col-span-2">
           <app-label>Quantity</app-label>
-          <div class="flex h-11 divide-x divide-gray-300 overflow-hidden rounded-lg border border-gray-300 dark:divide-gray-800 dark:border-gray-700">
+          <div class="flex h-10 sm:h-11 divide-x divide-gray-300 overflow-hidden rounded-lg border border-gray-300 dark:divide-gray-800 dark:border-gray-700">
             <button
               type="button"
               (click)="handleQuantityChange(-1)"
@@ -151,15 +151,15 @@
           </div>
         </div>
         <div class="flex w-full items-end lg:col-span-2">
-          <button class="inline-flex items-center justify-center gap-2 rounded-lg transition w-full h-11 px-5 py-3.5 text-sm bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:bg-brand-300 ">Save Product</button>
+          <button class="inline-flex items-center justify-center gap-2 rounded-lg transition w-full h-10 sm:h-11 px-4 sm:px-5 py-2.5 sm:py-3.5 text-xs sm:text-sm bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:bg-brand-300">Save Product</button>
         </div>
       </div>
     </form>
     
-    <div class="mt-5 flex max-w-2xl items-center gap-2">
-      <svg class="text-gray-500 dark:text-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 7.22485H10.0007" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.0004 9.34575V12.8661M17.7087 10.0001C17.7087 14.2573 14.2575 17.7084 10.0003 17.7084C5.74313 17.7084 2.29199 14.2573 2.29199 10.0001C2.29199 5.74289 5.74313 2.29175 10.0003 2.29175C14.2575 2.29175 17.7087 5.74289 17.7087 10.0001Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div class="mt-4 sm:mt-5 flex max-w-2xl items-center gap-2">
+      <svg class="text-gray-500 dark:text-gray-400" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 7.22485H10.0007" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.0004 9.34575V12.8661M17.7087 10.0001C17.7087 14.2573 14.2575 17.7084 10.0003 17.7084C5.74313 17.7084 2.29199 14.2573 2.29199 10.0001C2.29199 5.74289 5.74313 2.29175 10.0003 2.29175C14.2575 2.29175 17.7087 5.74289 17.7087 10.0001Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 
-      <p class="text-sm text-gray-500 dark:text-gray-400">After filling in the product details, press Enter/Return or click 'Save Product' to add it to the list.</p>
+      <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">After filling in the product details, press Enter/Return or click 'Save Product' to add it to the list.</p>
     </div>
   </div>
 

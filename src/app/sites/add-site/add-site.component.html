@@ -4,7 +4,7 @@
     <div class="flex-grow overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:p-8 space-y-6">
       
       <!-- BREADCRUMBS & TOP BAR HEADER -->
-      <div class="bg-white px-8 pt-5 pb-4 border-b border-slate-200 shrink-0 flex items-center justify-between">
+      <div class="bg-white px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-4 border-b border-slate-200 shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-1.5 text-xs font-medium text-blue-600 mb-2">
             <a routerLink="/clients" class="hover:underline">Client Management</a>
@@ -24,8 +24,8 @@
           <h2 class="text-2xl font-bold text-slate-900">Add New Site</h2>
         </div>
         <div class="flex items-center gap-2">
-          <button type="button" (click)="resetSiteForm()" class="bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-2 border border-slate-200 rounded-xl transition">Cancel</button>
-          <button type="button" (click)="submitSiteForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-xl shadow-sm flex items-center gap-2 transition">
+          <button type="button" (click)="resetSiteForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-2 border border-slate-200 rounded-xl transition">Cancel</button>
+          <button type="button" (click)="submitSiteForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-xl shadow-sm flex items-center justify-center gap-2 transition">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
             Save Site
           </button>
@@ -33,14 +33,14 @@
       </div>
 
       <!-- DASHBOARD WORKSPACE LAYOUT -->
-      <div class="p-8 grid grid-cols-1 xl:grid-cols-4 gap-6 items-start flex-1">
+      <div class="p-4 sm:p-6 lg:p-8 grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6 items-start flex-1">
         
         <!-- LEFT FORM COMPONENT INTERACTION STRATEGY -->
         <form id="siteForm" class="xl:col-span-3 space-y-6">
           
           <!-- CARD SECTION 1: Site Information Options -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Information</h3>
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Information</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Site Name *</label>
@@ -102,7 +102,7 @@
           </div>
 
           <!-- CARD SECTION 2: Site Contact Information Mapping -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Contact</h3>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div class="space-y-1.5 md:col-span-1">
@@ -231,7 +231,7 @@
           </div>
 
           <!-- CARD SECTION 4: Mapping Document Blueprint Attachments -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Map / Location (Optional)</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
               <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">

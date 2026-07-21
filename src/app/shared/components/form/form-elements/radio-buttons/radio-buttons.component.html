@@ -1,5 +1,5 @@
 <app-component-card title="Radio Buttons">
-  <div class="flex flex-wrap items-center gap-8">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
     <app-radio [id]="'option1'" [name]="'group1'" [value]="'option1'" [checked]="selectedValue === 'option1'"
       [label]="'Default'" [disabled]="false" (valueChange)="selectedValue = $event"/>
     <app-radio [id]="'option2'" [name]="'group1'" [value]="'option2'" [checked]="selectedValue === 'option2'"

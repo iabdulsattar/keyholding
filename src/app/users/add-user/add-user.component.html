@@ -1,7 +1,7 @@
 <main class="flex-1 ">
 
   <!-- Header -->
-  <div class="flex items-start justify-between mb-6">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
     <div>
       <h1 class="text-2xl font-bold text-slate-900">{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
       <div class="flex items-center gap-1.5 text-sm mt-1">
@@ -10,15 +10,15 @@
         <span class="text-slate-500">{{ isEditMode ? 'Edit User' : 'Add User' }}</span>
       </div>
     </div>
-    <div class="flex items-center gap-4">
-      <a routerLink="/user-management" class="flex items-center gap-2 border border-indigo-200 text-indigo-700 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-indigo-50">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <a routerLink="/user-management" class="flex items-center justify-center gap-2 border border-indigo-200 text-indigo-700 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-indigo-50 w-full sm:w-auto">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back to Users
       </a>
     </div>
   </div>
 
   <!-- Body -->
-  <div class="flex gap-6">
+  <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
 
     <!-- Form card -->
     <div class="flex-1 bg-white rounded-xl border border-slate-200 p-8">
@@ -190,8 +190,8 @@
     </div>
 
     <!-- Sidebar info card -->
-    <aside class="w-80 shrink-0">
-      <div class="bg-indigo-50 rounded-xl border border-indigo-100 p-6">
+    <div class="w-full lg:w-80 shrink-0">
+      <div class="bg-indigo-50 rounded-xl border border-indigo-100 p-4 sm:p-6">
         <div class="flex items-start gap-3 mb-4">
           <div class="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
@@ -236,7 +236,7 @@
           </div>
         </div>
       </div>
-    </aside>
+    </div>
 
   </div>
 

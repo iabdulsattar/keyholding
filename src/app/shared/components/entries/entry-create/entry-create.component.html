@@ -1,16 +1,16 @@
-<div class="mb-4 border-b border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-white/[0.03]">
-  <div class="flex items-center justify-between">
+<div class="p-3 sm:p-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
     <div>
-      <p class="font-semibold text-gray-800 text-lg dark:text-white/90">All Entries</p>
-      <span class="block text-gray-500 text-theme-xs dark:text-gray-400">
+      <p class="font-semibold text-gray-800 text-base sm:text-lg dark:text-white/90">All Entries</p>
+      <span class="block text-gray-500 text-xs sm:text-theme-xs dark:text-gray-400">
         View, search, filter, and manage all occurrence records.
       </span>
     </div>
 
     @if (canCreate) {
-    <div>
+    <div class="w-full sm:w-auto">
       <app-button
-        className="w-full !py-2 text-theme-xs"
+        className="w-full sm:w-auto !py-2 text-theme-xs"
         size="sm"
         variant="primary"
         (btnClick)="onCreate()"

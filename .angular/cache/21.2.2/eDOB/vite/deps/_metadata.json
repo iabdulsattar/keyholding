@@ -1,103 +1,103 @@
 {
-  "hash": "e06cd808",
-  "configHash": "aa048b41",
+  "hash": "b8e59a07",
+  "configHash": "27e85a92",
   "lockfileHash": "56a26cef",
-  "browserHash": "4da1dbcd",
+  "browserHash": "6730890b",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "839d67b5",
+      "fileHash": "7a3920c8",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "61f30f81",
+      "fileHash": "69f87fc5",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "43e96238",
+      "fileHash": "3e2e3a28",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "31390671",
+      "fileHash": "6c436b97",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "6f2fc1d6",
+      "fileHash": "877ef76a",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "a6ad1705",
+      "fileHash": "08fd37c0",
       "needsInterop": false
     },
     "@fullcalendar/angular": {
       "src": "../../../../../../node_modules/@fullcalendar/angular/fesm2020/fullcalendar-angular.mjs",
       "file": "@fullcalendar_angular.js",
-      "fileHash": "f0781652",
+      "fileHash": "6245cef9",
       "needsInterop": false
     },
     "@fullcalendar/daygrid": {
       "src": "../../../../../../node_modules/@fullcalendar/daygrid/index.js",
       "file": "@fullcalendar_daygrid.js",
-      "fileHash": "abeded35",
+      "fileHash": "5e9e73d5",
       "needsInterop": false
     },
     "@fullcalendar/interaction": {
       "src": "../../../../../../node_modules/@fullcalendar/interaction/index.js",
       "file": "@fullcalendar_interaction.js",
-      "fileHash": "6ae57b00",
+      "fileHash": "281a10e3",
       "needsInterop": false
     },
     "@fullcalendar/timegrid": {
       "src": "../../../../../../node_modules/@fullcalendar/timegrid/index.js",
       "file": "@fullcalendar_timegrid.js",
-      "fileHash": "79b7626c",
+      "fileHash": "59552c42",
       "needsInterop": false
     },
     "@popperjs/core": {
       "src": "../../../../../../node_modules/@popperjs/core/lib/index.js",
       "file": "@popperjs_core.js",
-      "fileHash": "47dee441",
+      "fileHash": "29b8f546",
       "needsInterop": false
     },
     "flatpickr": {
       "src": "../../../../../../node_modules/flatpickr/dist/esm/index.js",
       "file": "flatpickr.js",
-      "fileHash": "e79e8280",
+      "fileHash": "d2191eff",
       "needsInterop": false
     },
     "ng-apexcharts": {
       "src": "../../../../../../node_modules/ng-apexcharts/fesm2022/ng-apexcharts.mjs",
       "file": "ng-apexcharts.js",
-      "fileHash": "461619e3",
+      "fileHash": "f5459f25",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "177088af",
+      "fileHash": "878c8464",
       "needsInterop": false
     },
     "rxjs/operators": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
       "file": "rxjs_operators.js",
-      "fileHash": "193ac82a",
+      "fileHash": "6a3c3ccc",
       "needsInterop": false
     },
     "swiper/element/bundle": {
       "src": "../../../../../../node_modules/swiper/swiper-element-bundle.mjs",
       "file": "swiper_element_bundle.js",
-      "fileHash": "1c4c95f3",
+      "fileHash": "9f7cbad2",
       "needsInterop": false
     }
   },
@@ -111,17 +111,17 @@
     "chunk-LW3THO4T": {
       "file": "chunk-LW3THO4T.js"
     },
-    "chunk-PYGEZ3HY": {
-      "file": "chunk-PYGEZ3HY.js"
+    "chunk-RUZIFH4N": {
+      "file": "chunk-RUZIFH4N.js"
     },
-    "chunk-DXNOKCW5": {
-      "file": "chunk-DXNOKCW5.js"
+    "chunk-ABTODGQW": {
+      "file": "chunk-ABTODGQW.js"
     },
-    "chunk-U7GJWW3G": {
-      "file": "chunk-U7GJWW3G.js"
+    "chunk-AQMFUUNO": {
+      "file": "chunk-AQMFUUNO.js"
     },
-    "chunk-YOJO4VCT": {
-      "file": "chunk-YOJO4VCT.js"
+    "chunk-E7D6FEFB": {
+      "file": "chunk-E7D6FEFB.js"
     },
     "chunk-JR5AF6SN": {
       "file": "chunk-JR5AF6SN.js"

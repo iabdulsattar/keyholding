@@ -20,7 +20,7 @@
         </header>
 
         <!-- Entry type tabs -->
-        <div class="grid grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
           @for (tab of tabs; track tab.id; let i = $index) {
             <button
               (click)="setActiveTab(i)"
@@ -64,7 +64,7 @@
 
           @if (activeTab === 0) {
             <!-- Basic: Title / Category / Priority -->
-            <div class="grid grid-cols-3 gap-4 mt-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Title <span class="text-red-500">*</span></label>
                 <input
@@ -111,7 +111,7 @@
              </div>
            } @else if (activeTab === 1) {
              <!-- Incident: Title / Type / Priority -->
-            <div class="grid grid-cols-3 gap-4 mt-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Incident Title <span class="text-red-500">*</span></label>
                 <input
@@ -160,7 +160,7 @@
 
           @if (activeTab === 1) {
             <!-- Incident details row -->
-            <div class="grid grid-cols-4 gap-4 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Incident Date &amp; Time <span class="text-red-500">*</span></label>
                 <div class="mt-1.5">
@@ -216,7 +216,7 @@
         @if (activeTab === 2) {
           <section>
             <h2 class="text-[15px] font-bold flex items-center gap-2"><span class="text-gray-400 font-semibold">1.</span> Entry Information</h2>
-            <div class="grid grid-cols-3 gap-4 mt-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Handover Title <span class="text-red-500">*</span></label>
                 <input
@@ -259,7 +259,7 @@
                 }
               </div>
             </div>
-            <div class="grid grid-cols-3 gap-4 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Handover From <span class="text-red-500">*</span></label>
                 <div class="mt-1.5">
@@ -303,7 +303,7 @@
                 </div>
               </div>
             </div>
-            <div class="grid grid-cols-3 gap-4 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
                 <div class="relative mt-1.5">
@@ -347,7 +347,7 @@
           </section>
         } @else if (activeTab === 3) {
           <!-- Follow-Up: Title / Category / Priority / Parent -->
-          <div class="grid grid-cols-3 gap-4 mt-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Title <span class="text-red-500">*</span></label>
               <input
@@ -436,7 +436,7 @@
           </section>
 
           <!-- 3-5. Outstanding Issues / Actions / Important Information -->
-          <div class="grid grid-cols-3 gap-4 mt-6">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <section>
               <h2 class="text-[15px] font-bold flex items-center gap-2"><span class="text-gray-400 font-semibold">3.</span> Outstanding Issues</h2>
               <div class="mt-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-white/[0.03] p-4">
@@ -542,7 +542,7 @@
             Attachments <span class="text-gray-400 font-medium">(Optional)</span>
           </h2>
           <div class="mt-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-white/[0.03] p-4">
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <!-- Documents -->
               <div class="flex flex-col">
                 <div class="flex items-center justify-between mb-3">

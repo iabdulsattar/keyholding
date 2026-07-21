@@ -1,9 +1,9 @@
 <app-component-card title="Dropzone">
   <div
-    class="transition border border-gray-300 border-dashed cursor-pointer dark:hover:border-brand-500 dark:border-gray-700 rounded-xl hover:border-brand-500"
+    class="transition border border-gray-300 border-dashed cursor-pointer dark:hover:border-brand-500 dark:border-gray-700 rounded-xl hover:border-brand-500 max-w-full overflow-x-hidden"
   >
     <form
-      class="dropzone rounded-xl border-dashed border-gray-300 p-7 lg:p-10"
+      class="dropzone rounded-xl border-dashed border-gray-300 p-5 sm:p-7 lg:p-10"
       id="demo-upload"
       [ngClass]="isDragActive
         ? 'border-brand-500 bg-gray-100 dark:bg-gray-800'
@@ -26,12 +26,10 @@
 
       <div class="dz-message flex flex-col items-center m-0!">
         <!-- Icon Container -->
-        <div class="mb-[22px] flex justify-center">
-          <div class="flex h-[68px] w-[68px] items-center justify-center rounded-full bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-400">
+        <div class="mb-4 sm:mb-[22px] flex justify-center">
+          <div class="flex h-14 w-14 sm:h-[68px] sm:w-[68px] items-center justify-center rounded-full bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-400">
             <svg
-              class="fill-current"
-              width="29"
-              height="28"
+              class="fill-current w-6 h-6 sm:w-[29px] sm:h-[28px]"
               viewBox="0 0 29 28"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -45,11 +43,11 @@
         </div>
 
         <!-- Text Content -->
-        <h4 class="mb-3 font-semibold text-gray-800 text-theme-xl dark:text-white/90">
+        <h4 class="mb-2 sm:mb-3 font-semibold text-gray-800 text-theme-xl dark:text-white/90">
           {{ isDragActive ? 'Drop Files Here' : 'Drag & Drop Files Here' }}
         </h4>
 
-        <span class="text-center mb-5 block w-full max-w-[290px] text-sm text-gray-700 dark:text-gray-400">
+        <span class="text-center mb-3 sm:mb-5 block w-full max-w-[290px] text-sm text-gray-700 dark:text-gray-400">
           Drag and drop your PNG, JPG, WebP, SVG images here or browse
         </span>
 

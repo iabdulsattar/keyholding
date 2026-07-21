@@ -9,6 +9,7 @@ import { TimePickerComponent } from '../../time-picker/time-picker.component';
 
 @Component({
   selector: 'app-default-inputs',
+  standalone: true,
   imports: [
     ComponentCardComponent,
     LabelComponent,

@@ -1,16 +1,16 @@
 <div
-  class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-  <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+  class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
+  <div class="flex flex-col gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between">
     <div>
-      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+      <h3 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-white/90">
         Recent Orders
       </h3>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
       <button
-        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-        <svg class="stroke-current fill-white dark:fill-gray-800" width="20" height="20" viewBox="0 0 20 20" fill="none"
+        class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+        <svg class="stroke-current fill-white dark:fill-gray-800" width="18" height="18" viewBox="0 0 20 20" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path d="M2.29004 5.90393H17.7067" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           <path d="M17.7075 14.0961H2.29085" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -24,7 +24,7 @@
         Filter
       </button>
       <button
-        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+        class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
         See all
       </button>
     </div>
@@ -34,37 +34,37 @@
     <table class="w-full text-left">
       <thead class="border-y border-gray-100 dark:border-gray-800">
         <tr>
-          <th class="py-3 font-medium text-gray-500 text-theme-xs dark:text-gray-400">Products</th>
-          <th class="py-3 font-medium text-gray-500 text-theme-xs dark:text-gray-400">Category</th>
-          <th class="py-3 font-medium text-gray-500 text-theme-xs dark:text-gray-400">Price</th>
-          <th class="py-3 font-medium text-gray-500 text-theme-xs dark:text-gray-400">Status</th>
+          <th class="py-2 sm:py-3 font-medium text-gray-500 text-[10px] sm:text-theme-xs dark:text-gray-400">Products</th>
+          <th class="py-2 sm:py-3 font-medium text-gray-500 text-[10px] sm:text-theme-xs dark:text-gray-400 hidden sm:table-cell">Category</th>
+          <th class="py-2 sm:py-3 font-medium text-gray-500 text-[10px] sm:text-theme-xs dark:text-gray-400 hidden sm:table-cell">Price</th>
+          <th class="py-2 sm:py-3 font-medium text-gray-500 text-[10px] sm:text-theme-xs dark:text-gray-400">Status</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
         @for (product of tableData; track $index) {
         <tr>
-          <td class="py-3">
-            <div class="flex items-center gap-3">
-              <div class="h-[50px] w-[50px] overflow-hidden rounded-md">
-                <img [src]="product.image" [alt]="product.name" class="h-[50px] w-[50px]" />
+          <td class="py-2 sm:py-3">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div class="h-8 w-8 sm:h-[50px] sm:w-[50px] overflow-hidden rounded-md">
+                <img [src]="product.image" [alt]="product.name" class="h-8 w-8 sm:h-[50px] sm:w-[50px]" />
               </div>
               <div>
-                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                <p class="font-medium text-gray-800 text-xs sm:text-theme-sm dark:text-white/90">
                   {{ product.name }}
                 </p>
-                <span class="text-gray-500 text-theme-xs dark:text-gray-400">
+                <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
                   {{ product.variants }}
                 </span>
               </div>
             </div>
           </td>
-          <td class="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+          <td class="py-2 sm:py-3 text-[10px] sm:text-theme-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
             {{ product.category }}
           </td>
-          <td class="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+          <td class="py-2 sm:py-3 text-[10px] sm:text-theme-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
             {{ product.price }}
           </td>
-          <td class="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+          <td class="py-2 sm:py-3 text-[10px] sm:text-theme-sm text-gray-500 dark:text-gray-400">
             <app-badge size="sm" [color]="getBadgeColor(product.status)">
               {{ product.status }}
             </app-badge>

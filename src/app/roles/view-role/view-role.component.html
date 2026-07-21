@@ -2,7 +2,7 @@
   <div class="max-w-[1600px] mx-auto pb-16">
 
     <!-- Top Row -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <button (click)="goBack()" class="flex items-center gap-2 text-[#4f46e5] font-semibold text-sm hover:underline">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
         Back to Roles
@@ -26,9 +26,9 @@
     </div>
 
     <!-- Page Title -->
-    <div class="flex items-start justify-between mt-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mt-8">
       <div>
-        <h1 class="text-[26px] font-extrabold text-[#111827]">View Role</h1>
+        <h1 class="text-xl sm:text-[26px] font-extrabold text-[#111827]">View Role</h1>
         <p class="text-[14.5px] text-[#6b7280] mt-1">View role details and permissions.</p>
       </div>
       <!-- <button class="flex items-center gap-2 bg-white border border-[#e5e7eb] text-[#374151] px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer hover:bg-gray-50">
@@ -45,7 +45,7 @@
     } @else if (role) {
 
     <!-- Role Information Card -->
-    <div class="bg-white border border-[#eef0f3] rounded-xl mt-6 p-6 sm:p-7">
+    <div class="bg-white border border-[#eef0f3] rounded-xl mt-6 p-4 sm:p-6 lg:p-7">
       <div class="text-sm font-bold text-[#111827] mb-5">Role Information</div>
       <div class="flex flex-col lg:flex-row">
         <div class="w-full lg:w-[42%] lg:pr-7 lg:border-r lg:border-[#eef0f3]">
@@ -113,7 +113,7 @@
     </div>
 
     <!-- Stat Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mt-6">
       <div class="bg-white border border-[#eef0f3] rounded-xl p-5">
         <div class="flex items-center gap-4">
           <div class="w-11 h-11 rounded-lg bg-[#eef0ff] text-[#4f46e5] flex items-center justify-center flex-shrink-0">
@@ -168,7 +168,7 @@
     </div>
 
     <!-- Bottom Grid -->
-    <div class="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6 mt-8 items-start">
+    <div class="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-4 sm:gap-6 mt-8 items-start">
 
       <!-- Permissions Overview -->
       <div>
