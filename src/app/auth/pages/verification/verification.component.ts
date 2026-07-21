@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { AuthPageLayoutComponent } from '../../../layout/auth-page-layout/auth-page-layout.component';
 
 @Component({
   selector: 'app-verification',
   imports: [
     RouterModule,
     FormsModule,
+    AuthPageLayoutComponent,
   ],
   templateUrl: './verification.component.html',
   styles: ''

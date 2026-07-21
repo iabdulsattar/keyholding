@@ -7,6 +7,7 @@ import { PermissionService } from '../../core/services/permission.service';
 import { ProfileResponse } from '../../core/models/auth.models';
 import { DashboardData, OrgUser } from '../../core/models/edob.models';
 import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
+import { SidebarService } from '../../shared/services/sidebar.service';
 
 @Component({
   selector: 'app-dashboard-shell',
@@ -92,6 +93,7 @@ export class DashboardShellComponent implements OnInit {
     private authService: AuthService,
     private edobService: EdobService,
     private permissionService: PermissionService,
+    public sidebarService: SidebarService,
   ) {}
 
   ngOnInit(): void {

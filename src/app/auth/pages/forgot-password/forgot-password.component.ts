@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { InputFieldComponent } from '../../../shared/components/form/input/input-field.component';
+import { LabelComponent } from '../../../shared/components/form/label/label.component';
+import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
+import { AuthPageLayoutComponent } from '../../../layout/auth-page-layout/auth-page-layout.component';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -9,7 +12,10 @@ import { AuthService } from '../../../core/services/auth.service';
   imports: [
     RouterModule,
     FormsModule,
-    InputFieldComponent
+    InputFieldComponent,
+    LabelComponent,
+    ButtonComponent,
+    AuthPageLayoutComponent
   ],
   templateUrl: './forgot-password.component.html',
   styles: ''
