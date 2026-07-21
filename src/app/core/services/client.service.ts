@@ -74,6 +74,11 @@ export class ClientService {
     return of(this.clients.find(c => c.code === code));
   }
 
+  createClient(client: Client): Observable<Client> {
+    this.clients = [client, ...this.clients];
+    return of(client);
+  }
+
   private keys: KeyRecord[] = [
     { id: 'KEY-000156', name: 'Master Key', type: 'Master Key', typeColor: 'blue', site: 'Head Office', status: 'In Storage', statusColor: 'emerald', storageLocation: 'Head Office Safe', storageDetail: 'Cabinet A - Hook 12', assignedTo: '—', lastMovement: '15 May 2024', lastMovementTime: '10:30 AM' },
     { id: 'KEY-000155', name: 'Front Door Key', type: 'Door Key', typeColor: 'emerald', site: 'Head Office', status: 'Issued', statusColor: 'amber', storageLocation: '—', storageDetail: '', assignedTo: 'James Walker', lastMovement: '15 May 2024', lastMovementTime: '09:15 AM' },
