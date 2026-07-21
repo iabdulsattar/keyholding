@@ -1,0 +1,129 @@
+<div>
+
+  <!-- Page header -->
+  <div class="flex items-start justify-between gap-4 mb-6 flex-wrap">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900">Add Role</h1>
+      <div class="flex items-center gap-1.5 text-sm mt-1">
+        <a routerLink="/user-management" class="text-brand-600 font-medium hover:underline">Roles</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <span class="text-slate-500">Add Role</span>
+      </div>
+    </div>
+    <a routerLink="/user-management" class="flex items-center gap-2 border border-brand-200 text-brand-700 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-brand-50">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Roles
+    </a>
+  </div>
+
+  <!-- Content grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-6 items-start">
+
+    <!-- Role Information -->
+    <section class="bg-white rounded-2xl border border-slate-200 p-6">
+      <h2 class="text-base font-bold text-slate-900">Role Information</h2>
+
+      <div class="mt-5">
+        <label class="text-sm font-semibold text-slate-700">Role Name <span class="text-red-500">*</span></label>
+        <input
+          type="text"
+          [maxlength]="maxNameLength"
+          [(ngModel)]="roleName"
+          placeholder="Enter role name"
+          class="mt-2 w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500" />
+        <p class="text-xs text-slate-400 text-right mt-1">{{ roleName.length }} / {{ maxNameLength }}</p>
+      </div>
+
+      <div class="mt-1">
+        <label class="text-sm font-semibold text-slate-700">Description <span class="text-red-500">*</span></label>
+        <textarea
+          [maxlength]="maxDescLength"
+          rows="4"
+          [(ngModel)]="roleDesc"
+          placeholder="Enter role description"
+          class="mt-2 w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm placeholder-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500"></textarea>
+        <p class="text-xs text-slate-400 text-right mt-1">{{ roleDesc.length }} / {{ maxDescLength }}</p>
+      </div>
+
+      <div class="mt-4">
+        <p class="text-sm font-semibold text-slate-700 mb-3">Status <span class="text-red-500">*</span></p>
+
+        <label class="flex items-start gap-3 mb-4 cursor-pointer">
+          <input type="radio" name="status" value="active" [(ngModel)]="status" class="mt-1 w-4 h-4 accent-brand-500" />
+          <span>
+            <span class="block text-sm font-semibold text-slate-900">Active</span>
+            <span class="block text-xs text-slate-400">Role can be assigned to users and has access to the system.</span>
+          </span>
+        </label>
+
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="radio" name="status" value="inactive" [(ngModel)]="status" class="mt-1 w-4 h-4 accent-brand-500" />
+          <span>
+            <span class="block text-sm font-semibold text-slate-900">Inactive</span>
+            <span class="block text-xs text-slate-400">Role is disabled and cannot be assigned to users.</span>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Permissions -->
+    <section class="bg-white rounded-2xl border border-slate-200 flex flex-col max-h-[760px]">
+      <div class="p-6 pb-4">
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">Permissions</h2>
+            <p class="text-sm text-slate-400 mt-1">Select the permissions this role will have.</p>
+          </div>
+          <div class="relative w-72 max-w-full">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4-4"/></svg>
+            <input
+              type="text"
+              [(ngModel)]="search"
+              placeholder="Search permission..."
+              class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500" />
+          </div>
+        </div>
+        @if (permissionsError) {
+          <p class="mt-2 text-xs text-red-500">{{ permissionsError }}</p>
+        }
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-6 pb-6">
+
+        @for (group of groups; track group.title) {
+          <div class="mt-2 first:mt-0" [hidden]="!groupVisible(group)">
+            <p class="sticky top-0 bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-500 px-3 py-2 rounded-md">{{ group.title }}</p>
+
+            <div class="divide-y divide-slate-100">
+              @for (perm of group.permissions; track perm['key']) {
+                <label class="flex flex-wrap items-start gap-3 py-3.5 px-1 cursor-pointer" [hidden]="!matches(perm)">
+                  <input type="checkbox" [(ngModel)]="perm['checked']" [name]="perm['key']" class="mt-1 h-[18px] w-[18px] rounded accent-brand-500" />
+                  <span class="flex-1">
+                    <span class="block text-sm font-semibold text-slate-900">{{ perm['name'] }}</span>
+                    <span class="block text-xs text-slate-400">{{ perm['description'] }}</span>
+                  </span>
+                  <button type="button" (click)="toggleExpand(perm, $event)" class="mt-1 text-slate-400 hover:text-slate-600">
+                    <svg class="w-4 h-4 transition-transform" [class.rotate-90]="perm['expanded']" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                  @if (perm['expanded']) {
+                    <div class="basis-full pl-7 pt-1 text-xs text-slate-400">Applies across all modules where this action is available.</div>
+                  }
+                </label>
+              }
+            </div>
+          </div>
+        }
+
+        @if (!hasResults) {
+          <p class="text-sm text-slate-400 text-center py-10">No permissions match your search.</p>
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer actions -->
+  <div class="mt-6 border-t border-slate-200 bg-white -mx-6 md:-mx-8 px-6 md:px-8 py-4 flex justify-end gap-3">
+    <button type="button" (click)="cancel()" class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
+    <button type="button" (click)="saveRole()" [disabled]="!canSaveRole" class="px-5 py-2.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold shadow-sm shadow-brand-500/30 disabled:opacity-70">Save Role</button>
+  </div>
+</div>

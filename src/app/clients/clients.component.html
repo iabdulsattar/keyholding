@@ -1,0 +1,211 @@
+<div class="min-h-[calc(100vh-120px)] bg-slate-50/50 text-gray-900 dark:bg-gray-950 dark:text-white">
+  <div class="mx-auto w-full max-w-full space-y-6">
+    <!-- Title & Actions -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Clients</h2>
+        <nav class="flex items-center space-x-1.5 text-xs text-slate-400 font-medium mt-1">
+          <span class="text-blue-500 hover:underline cursor-pointer">Client Management</span>
+          <svg class="w-3 h-3 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <span class="text-slate-500">Clients</span>
+        </nav>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button class="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl text-xs shadow-sm shadow-blue-500/10 transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add New Client</span>
+        </button>
+        <button class="inline-flex items-center space-x-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold py-2 px-4 rounded-xl text-xs shadow-sm transition">
+          <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Export</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- KEY STATUS METRIC HERO CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div (click)="setFilter('all')" class="bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center space-x-4 shadow-sm hover:border-blue-400 transition duration-200 cursor-pointer group">
+        <div class="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-105 transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Total Clients</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-0.5">{{ totalClients }}</h3>
+          <span class="text-[10px] text-slate-400 font-medium mt-0.5 block">All regions</span>
+        </div>
+      </div>
+
+      <div (click)="setFilter('Active')" class="bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center space-x-4 shadow-sm hover:border-emerald-400 transition duration-200 cursor-pointer group">
+        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl group-hover:scale-105 transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Active Clients</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-0.5">{{ activeClients }}</h3>
+          <span class="text-[10px] text-emerald-600 font-semibold mt-0.5 block">{{ totalClients ? ((activeClients / totalClients) * 100).toFixed(1) : 0 }}% <span class="text-slate-400 font-normal">of total</span></span>
+        </div>
+      </div>
+
+      <div (click)="setFilter('Inactive')" class="bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center space-x-4 shadow-sm hover:border-amber-400 transition duration-200 cursor-pointer group">
+        <div class="p-3 bg-amber-50 text-amber-600 rounded-xl group-hover:scale-105 transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="10" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="10" y2="16"/></svg>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Inactive Clients</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-0.5">{{ inactiveClients }}</h3>
+          <span class="text-[10px] text-amber-600 font-semibold mt-0.5 block">{{ totalClients ? ((inactiveClients / totalClients) * 100).toFixed(1) : 0 }}% <span class="text-slate-400 font-normal">of total</span></span>
+        </div>
+      </div>
+
+      <div (click)="setFilter('Pending')" class="bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center space-x-4 shadow-sm hover:border-rose-400 transition duration-200 cursor-pointer group">
+        <div class="p-3 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-105 transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Pending Clients</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-0.5">{{ pendingClients }}</h3>
+          <span class="text-[10px] text-purple-600 font-semibold mt-0.5 block">{{ totalClients ? ((pendingClients / totalClients) * 100).toFixed(1) : 0 }}% <span class="text-slate-400 font-normal">of total</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CORE DATA FILTER AND DATAGRID CANVAS -->
+    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+      <!-- Filter & Search Controls -->
+      <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div class="relative w-full sm:max-w-md">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search clients by name, code, email..."
+            class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+        </div>
+        <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+          <button class="inline-flex items-center space-x-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 transition shadow-sm">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+            <span>Filters</span>
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Responsive Scrollable Data Grid -->
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse min-w-[1000px]">
+          <thead>
+            <tr class="bg-slate-50/70 border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              <th class="py-3 px-4 w-10">
+                <input type="checkbox" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white">
+              </th>
+              <th class="py-3 px-4">
+                <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-800">
+                  <span>Client Code</span>
+                  <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+                </div>
+              </th>
+              <th class="py-3 px-4">
+                <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-800">
+                  <span>Client Name</span>
+                  <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+                </div>
+              </th>
+              <th class="py-3 px-4">Email</th>
+              <th class="py-3 px-4">
+                <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-800">
+                  <span>Region</span>
+                  <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+                </div>
+              </th>
+              <th class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center space-x-1 cursor-pointer hover:text-slate-800">
+                  <span>Status</span>
+                  <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+                </div>
+              </th>
+              <th class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center space-x-1 cursor-pointer hover:text-slate-800">
+                  <span>Sites</span>
+                  <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+                </div>
+              </th>
+              <th class="py-3 px-4 text-center">Users</th>
+              <th class="py-3 px-4">
+                <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-800">
+                  <span>Created On</span>
+                  <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+                </div>
+              </th>
+              <th class="py-3 px-4 text-center w-24">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs text-slate-600 font-medium">
+            @for (client of filteredClients; track client.code) {
+            <tr class="hover:bg-slate-50/50 transition">
+              <td class="py-3 px-4"><input type="checkbox" class="row-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white"></td>
+              <td class="py-3 px-4 font-semibold text-blue-600 tracking-wide">{{ client.code }}</td>
+              <td class="py-3 px-4 text-slate-900 font-bold">{{ client.name }}</td>
+              <td class="py-3 px-4 text-slate-500 font-normal">{{ client.email }}</td>
+              <td class="py-3 px-4 text-slate-600">{{ client.region }}</td>
+              <td class="py-3 px-4 text-center" [innerHTML]="statusBadge(client.status)"></td>
+              <td class="py-3 px-4 text-center text-slate-800 font-bold">{{ client.sites }}</td>
+              <td class="py-3 px-4 text-center">{{ client.users }}</td>
+              <td class="py-3 px-4 text-slate-500 font-normal">{{ client.created }}</td>
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center space-x-2 text-slate-400">
+                  <button (click)="viewClient(client.code)" class="hover:text-blue-600 p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="hover:text-slate-700 p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="py-8 text-center text-slate-400 font-normal">No matching client records found.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Footer -->
+      <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between text-xs text-slate-500 font-medium bg-slate-50/30">
+        <div>
+          Showing <span class="text-slate-800 font-semibold">1-{{ filteredClients.length }}</span> of <span class="text-slate-800 font-semibold">{{ filteredClients.length }}</span> clients
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-1">
+            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:bg-slate-50 transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center shadow-sm">1</button>
+            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">2</button>
+            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">3</button>
+            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">4</button>
+            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">5</button>
+            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:bg-slate-50 transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <select class="bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700">
+              <option>10 / page</option>
+              <option>25 / page</option>
+              <option>50 / page</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full bg-white border-t border-slate-200/60 px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 font-medium space-y-2 sm:space-y-0">
+      <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
+      <div class="flex items-center space-x-4">
+        <a href="#" class="hover:text-slate-600 transition">Privacy Policy</a>
+        <span class="text-slate-200">|</span>
+        <a href="#" class="hover:text-slate-600 transition">Terms of Service</a>
+        <span class="text-slate-200">|</span>
+        <a href="#" class="hover:text-slate-600 transition">Support</a>
+      </div>
+    </footer>
+  </div>
+</div>

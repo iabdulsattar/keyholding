@@ -1,0 +1,85 @@
+<div class="relative" #containerRef>
+  <button
+    type="button"
+    (click)="toggle()"
+    [disabled]="disabled"
+    class="flex h-11 w-full items-center gap-2 rounded-lg border bg-white px-3.5 text-sm transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:bg-gray-900 dark:text-gray-300"
+    [ngClass]="isOpen ? 'border-brand-500 ring-1 ring-brand-500/20' : 'border-gray-300 dark:border-gray-700'"
+  >
+    @if (selectedOption?.iconSvg) {
+      <span [innerHTML]="html(selectedOption?.iconSvg || '')"></span>
+    }
+    <span
+      class="flex-1 text-left font-medium"
+      [ngClass]="value ? 'text-gray-700 dark:text-gray-200' : 'text-gray-400'"
+    >
+      {{ selectedOption?.label || placeholder }}
+    </span>
+    <svg class="w-4 h-4 text-gray-400 transition-transform" [ngClass]="{ 'rotate-180': isOpen }" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+
+  @if (isOpen) {
+    <div
+      class="absolute left-0 top-full z-40 mt-2 rounded-xl border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+      [ngClass]="panelWidth === 'wide' ? 'w-80 max-w-[90vw]' : 'w-full'"
+      (click)="$event.stopPropagation()"
+    >
+      @if (showSearch) {
+        <div class="mb-2 flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-700">
+          <svg class="w-4 h-4 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input
+            #searchInput
+            type="text"
+            [ngModel]="searchTerm"
+            (ngModelChange)="onSearch($event)"
+            placeholder="Search..."
+            class="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+          />
+        </div>
+      }
+
+      <div class="flex max-h-80 flex-col gap-1 overflow-y-auto">
+        @for (opt of filteredOptions; track opt.value) {
+          <button
+            type="button"
+            (click)="select(opt)"
+            class="flex w-full items-start gap-3 rounded-lg px-2 py-2 text-left hover:bg-gray-50 dark:hover:bg-white/[0.03]"
+            [ngClass]="opt.value === value ? 'bg-gray-50 dark:bg-white/[0.03]' : ''"
+          >
+            @if (opt.iconBg) {
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full" [style.background]="opt.iconBg" [innerHTML]="html(opt.iconSvg || '')"></span>
+            } @else if (opt.iconSvg) {
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center" [innerHTML]="html(opt.iconSvg)"></span>
+            }
+            <span class="min-w-0 flex-1">
+              <span class="block text-sm font-semibold text-gray-900 dark:text-white/90">{{ opt.label }}</span>
+              @if (opt.description) {
+                <span class="mt-0.5 block text-xs leading-relaxed text-gray-500 dark:text-gray-400">{{ opt.description }}</span>
+              }
+            </span>
+            <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            @if (opt.value === value) {
+              <span class="mt-1 text-brand-600 dark:text-brand-400" [innerHTML]="html(checkSvg)"></span>
+            }
+          </button>
+        }
+        @if (filteredOptions.length === 0) {
+          <p class="px-2 py-3 text-center text-xs text-gray-400">No options found.</p>
+        }
+      </div>
+
+      @if (allowAddNew) {
+        <div class="mt-1 border-t border-gray-100 pt-2 dark:border-gray-800">
+          <button
+            type="button"
+            (click)="onAddNew()"
+            class="flex w-full items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold text-brand-600 hover:bg-gray-50 dark:text-brand-400 dark:hover:bg-white/[0.03]"
+          >
+            <svg class="w-4 h-4 text-brand-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            {{ addNewLabel }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

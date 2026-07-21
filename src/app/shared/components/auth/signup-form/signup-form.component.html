@@ -1,0 +1,307 @@
+   
+  <div class="flex flex-col justify-between flex-1 w-full max-w-xl mx-auto">
+    <div>
+      <!-- Language selector -->
+      <div class="flex justify-end mb-6">
+        <button class="flex items-center gap-2 text-sm text-slate-600 border border-slate-200 rounded-full px-4 py-2 hover:bg-slate-50 transition">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M12 3a15 15 0 010 18 15 15 0 010-18z"/>
+            <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          English
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage) {
+      <div class="mb-5 p-4 rounded-lg bg-error-50 border border-error-200">
+        <p class="text-sm text-error-700">{{ errorMessage }}</p>
+      </div>
+      }
+
+      @if (successMessage) {
+      <div class="mb-5 p-4 rounded-lg bg-success-50 border border-success-200">
+        <p class="text-sm text-success-700">{{ successMessage }}</p>
+      </div>
+      }
+
+      <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 relative">
+        <svg class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="8.5" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </div>
+      </div>
+
+      <h2 class="text-3xl font-extrabold text-slate-900">Create Your Account</h2>
+      <p class="mt-2 text-slate-500 text-sm">Start your eDOB free trial and begin managing digital occurrence records today.</p>
+
+      <form (ngSubmit)="onSignUp()" class="mt-6 space-y-5">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">First Name <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <app-input-field
+                type="text"
+                placeholder="Enter your first name"
+                [(value)]="fname"
+                name="fname"
+                class="form-input pl-11"
+                [error]="!!errors.fname"
+              />
+            </div>
+            @if (errors.fname) {
+            <p class="mt-1 text-xs text-error-500">{{ errors.fname }}</p>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Last Name <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <app-input-field
+                type="text"
+                placeholder="Enter your last name"
+                [(value)]="lname"
+                name="lname"
+                class="form-input pl-11"
+                [error]="!!errors.lname"
+              />
+            </div>
+            @if (errors.lname) {
+            <p class="mt-1 text-xs text-error-500">{{ errors.lname }}</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-800 mb-2">Business Email Address <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <app-input-field
+              type="email"
+              placeholder="Enter your business email address"
+              [(value)]="email"
+              name="email"
+              class="form-input pl-11"
+              [error]="!!errors.email"
+            />
+          </div>
+          @if (errors.email) {
+          <p class="mt-1 text-xs text-error-500">{{ errors.email }}</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-800 mb-2">Phone Number <span class="text-red-500">*</span></label>
+          <div class="flex gap-3">
+            <button type="button" class="flex items-center gap-2 px-3.5 py-3 rounded-xl border border-slate-200 text-sm text-slate-700 hover:bg-slate-50 transition shrink-0">
+              <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h2.28a1 1 0 01.98.804l.87 4.35a1 1 0 01-.55 1.117l-1.6.8a12.04 12.04 0 006.6 6.6l.8-1.6a1 1 0 011.117-.55l4.35.87a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/>
+              </svg>
+              <span class="text-base leading-none">🇬🇧</span>
+              +44
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <app-input-field
+              type="tel"
+              placeholder="Enter your phone number"
+              [(value)]="pnumber"
+              name="pnumber"
+              class="form-input"
+              [error]="!!errors.pnumber"
+            />
+          </div>
+          @if (errors.pnumber) {
+          <p class="mt-1 text-xs text-error-500">{{ errors.pnumber }}</p>
+          }
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Password <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              <app-input-field
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="Create a strong password"
+                [(value)]="password"
+                name="password"
+                class="form-input pl-11 pr-11"
+                [error]="!!errors.password"
+              />
+              @if (errors.password) {
+              <p class="mt-1 text-xs text-error-500">{{ errors.password }}</p>
+              }
+              <span
+                (click)="togglePasswordVisibility()"
+                class="absolute z-30 -translate-y-1/2 cursor-pointer right-3.5 top-1/2 text-slate-400 hover:text-slate-600"
+              >
+                @if (showPassword) {
+                <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-gray-500 dark:fill-gray-400 size-5"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0002 13.8619C7.23361 13.8619 4.86803 12.1372 3.92328 9.70241C4.86804 7.26761 7.23361 5.54297 10.0002 5.54297C12.7667 5.54297 15.1323 7.26762 16.0771 9.70243C15.1323 12.1372 12.7667 13.8619 10.0002 13.8619ZM10.0002 4.04297C6.48191 4.04297 3.49489 6.30917 2.4155 9.4593C2.3615 9.61687 2.3615 9.78794 2.41549 9.94552C3.49488 13.0957 6.48191 15.3619 10.0002 15.3619C13.5184 15.3619 16.5055 13.0957 17.5849 9.94555C17.6389 9.78797 17.6389 9.6169 17.5849 9.45932C16.5055 6.30919 13.5184 4.04297 10.0002 4.04297ZM9.99151 7.84413C8.96527 7.84413 8.13333 8.67606 8.13333 9.70231C8.13333 10.7286 8.96527 11.5605 9.99151 11.5605H10.0064C11.0326 11.5605 11.8646 10.7286 11.8646 9.70231C11.8646 8.67606 11.0326 7.84413 10.0064 7.84413H9.99151Z"></path></svg>
+                } @else {
+                <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-gray-500 dark:fill-gray-400 size-5"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.63803 3.57709C4.34513 3.2842 3.87026 3.2842 3.57737 3.57709C3.28447 3.86999 3.28447 4.34486 3.57737 4.63775L4.85323 5.91362C3.74609 6.84199 2.89363 8.06395 2.4155 9.45936C2.3615 9.61694 2.3615 9.78801 2.41549 9.94558C3.49488 13.0957 6.48191 15.3619 10.0002 15.3619C11.255 15.3619 12.4422 15.0737 13.4994 14.5598L15.3625 16.4229C15.6554 16.7158 16.1302 16.7158 16.4231 16.4229C16.716 16.13 16.716 15.6551 16.4231 15.3622L4.63803 3.57709ZM12.3608 13.4212L10.4475 11.5079C10.3061 11.5423 10.1584 11.5606 10.0064 11.5606H9.99151C8.96527 11.5606 8.13333 10.7286 8.13333 9.70237C8.13333 9.5461 8.15262 9.39434 8.18895 9.24933L5.91885 6.97923C5.03505 7.69015 4.34057 8.62704 3.92328 9.70247C4.86803 12.1373 7.23361 13.8619 10.0002 13.8619C10.8326 13.8619 11.6287 13.7058 12.3608 13.4212ZM16.0771 9.70249C15.7843 10.4569 15.3552 11.1432 14.8199 11.7311L15.8813 12.7925C16.6329 11.9813 17.2187 11.0143 17.5849 9.94561C17.6389 9.78803 17.6389 9.61696 17.5849 9.45938C16.5055 6.30925 13.5184 4.04303 10.0002 4.04303C9.13525 4.04303 8.30244 4.17999 7.52218 4.43338L8.75139 5.66259C9.1556 5.58413 9.57311 5.54303 10.0002 5.54303C12.7667 5.54303 15.1323 7.26768 16.0771 9.70249Z"></path></svg>
+                }
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Confirm Password <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              <app-input-field
+                [type]="confirmPassword ? 'text' : 'password'"
+                placeholder="Confirm your password"
+                [(value)]="confirmpassword"
+                name="confirmpassword"
+                class="form-input pl-11 pr-11"
+                [error]="!!errors.confirmpassword"
+              />
+              @if (errors.confirmpassword) {
+              <p class="mt-1 text-xs text-error-500">{{ errors.confirmpassword }}</p>
+              }
+              <span
+                (click)="togglePasswordVisibilityOne()"
+                class="absolute z-30 -translate-y-1/2 cursor-pointer right-3.5 top-1/2 text-slate-400 hover:text-slate-600"
+              >
+                @if (confirmPassword) {
+                <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-gray-500 dark:fill-gray-400 size-5"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0002 13.8619C7.23361 13.8619 4.86803 12.1372 3.92328 9.70241C4.86804 7.26761 7.23361 5.54297 10.0002 5.54297C12.7667 5.54297 15.1323 7.26762 16.0771 9.70243C15.1323 12.1372 12.7667 13.8619 10.0002 13.8619ZM10.0002 4.04297C6.48191 4.04297 3.49489 6.30917 2.4155 9.4593C2.3615 9.61687 2.3615 9.78794 2.41549 9.94552C3.49488 13.0957 6.48191 15.3619 10.0002 15.3619C13.5184 15.3619 16.5055 13.0957 17.5849 9.94555C17.6389 9.78797 17.6389 9.6169 17.5849 9.45932C16.5055 6.30919 13.5184 4.04297 10.0002 4.04297ZM9.99151 7.84413C8.96527 7.84413 8.13333 8.67606 8.13333 9.70231C8.13333 10.7286 8.96527 11.5605 9.99151 11.5605H10.0064C11.0326 11.5605 11.8646 10.7286 11.8646 9.70231C11.8646 8.67606 11.0326 7.84413 10.0064 7.84413H9.99151Z"></path></svg>
+                } @else {
+                <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-gray-500 dark:fill-gray-400 size-5"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.63803 3.57709C4.34513 3.2842 3.87026 3.2842 3.57737 3.57709C3.28447 3.86999 3.28447 4.34486 3.57737 4.63775L4.85323 5.91362C3.74609 6.84199 2.89363 8.06395 2.4155 9.45936C2.3615 9.61694 2.3615 9.78801 2.41549 9.94558C3.49488 13.0957 6.48191 15.3619 10.0002 15.3619C11.255 15.3619 12.4422 15.0737 13.4994 14.5598L15.3625 16.4229C15.6554 16.7158 16.1302 16.7158 16.4231 16.4229C16.716 16.13 16.716 15.6551 16.4231 15.3622L4.63803 3.57709ZM12.3608 13.4212L10.4475 11.5079C10.3061 11.5423 10.1584 11.5606 10.0064 11.5606H9.99151C8.96527 11.5606 8.13333 10.7286 8.13333 9.70237C8.13333 9.5461 8.15262 9.39434 8.18895 9.24933L5.91885 6.97923C5.03505 7.69015 4.34057 8.62704 3.92328 9.70247C4.86803 12.1373 7.23361 13.8619 10.0002 13.8619C10.8326 13.8619 11.6287 13.7058 12.3608 13.4212ZM16.0771 9.70249C15.7843 10.4569 15.3552 11.1432 14.8199 11.7311L15.8813 12.7925C16.6329 11.9813 17.2187 11.0143 17.5849 9.94561C17.6389 9.78803 17.6389 9.61696 17.5849 9.45938C16.5055 6.30925 13.5184 4.04303 10.0002 4.04303C9.13525 4.04303 8.30244 4.17999 7.52218 4.43338L8.75139 5.66259C9.1556 5.58413 9.57311 5.54303 10.0002 5.54303C12.7667 5.54303 15.1323 7.26768 16.0771 9.70249Z"></path></svg>
+                }
+              </span>
+            </div>
+          </div>
+        </div>
+        <p class="-mt-3 text-xs text-slate-400">Minimum 8 characters with uppercase, lowercase, number and symbol</p>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Job Title <span class="text-slate-400 font-normal">(Optional)</span></label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m-4 6v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2H6a2 2 0 00-2 2z"/>
+              </svg>
+              <app-input-field
+                type="text"
+                placeholder="Enter your job title"
+                [(value)]="jtitle"
+                name="jtitle"
+                class="form-input pl-11"
+                [error]="!!errors.jtitle"
+              />
+            </div>
+            @if (errors.jtitle) {
+            <p class="mt-1 text-xs text-error-500">{{ errors.jtitle }}</p>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-800 mb-2">Company Name <span class="text-slate-400 font-normal">(Optional)</span></label>
+            <div class="relative">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4M9 9h.01M9 12h.01M9 15h.01"/>
+              </svg>
+              <app-input-field
+                type="text"
+                placeholder="Enter your company name"
+                [(value)]="cname"
+                name="cname"
+                class="form-input pl-11"
+                [error]="!!errors.cname"
+              />
+            </div>
+            @if (errors.cname) {
+            <p class="mt-1 text-xs text-error-500">{{ errors.cname }}</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-800 mb-2">Number of Employees <span class="text-slate-400 font-normal">(Optional)</span></label>
+          <div class="relative">
+            <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-.01-8.01A4 4 0 0017 11z"/>
+            </svg>
+            <app-select
+              [options]="options"
+              placeholder="Select number of employees"
+              [value]="selectedValue"
+              (valueChange)="handleSelectChange($event)"
+              class="dark:bg-dark-900 pl-11"
+            ></app-select>
+          </div>
+        </div>
+
+        <div class="space-y-3 pt-1">
+          <label class="flex items-start gap-2.5 text-sm text-slate-600 cursor-pointer select-none">
+            <app-checkbox [(checked)]="isCheckedOne" />
+            <span>Receive product updates and announcements from eDOB. (Optional)</span>
+          </label>
+          <label class="flex items-start gap-2.5 text-sm text-slate-600 cursor-pointer select-none">
+            <app-checkbox [(checked)]="isChecked" />
+            <span>I agree to the <a href="#" class="text-blue-600 font-medium hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 font-medium hover:underline">Privacy Policy</a>.</span>
+          </label>
+        </div>
+
+        <button type="submit"
+          class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm shadow-blue-600/20"
+          [disabled]="isLoading"
+        >
+          @if (isLoading) {
+          <span class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Creating Account...
+          </span>
+          } @else {
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12.5 7a4 4 0 11-8 0 4 4 0 018 0zM20 8v6M23 11h-6"/>
+          </svg>
+          Create Free Trial
+          }
+        </button>
+      </form>
+
+      <p class="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-400">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        Please complete all required fields to start your free trial.
+      </p>
+
+      <p class="mt-3 text-center text-sm text-slate-500">
+        Already have an account? <a routerLink="/signin" class="text-blue-600 font-semibold hover:underline">Sign In</a>
+      </p>
+    </div>
+
+    <!-- Footer strip -->
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 border-t border-slate-100 pt-6">
+      <p>&copy; 2026 KeyVault Pro. All rights reserved.</p>
+    </div>
+  </div>

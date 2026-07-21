@@ -1,0 +1,47 @@
+<app-modal [isOpen]="isOpen()" [showCloseButton]="false" (close)="cancel()" className="max-w-md">
+  <div class="p-6 sm:p-8 relative">
+
+    <div class="flex items-start justify-between mb-5">
+      <h2 class="text-xl font-bold text-slate-900">Deactivate Role</h2>
+      <button (click)="cancel()" class="text-slate-400 hover:text-slate-600">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-3 mb-6">
+      <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-orange-400 shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      </div>
+      <p class="text-[15px] font-semibold text-slate-900">
+        Are you sure you want to deactivate <span class="text-indigo-600">{{ role()?.name }}</span>?
+      </p>
+    </div>
+
+    <p class="text-sm font-semibold text-slate-800 mb-3">Deactivating this role will:</p>
+    <ul class="space-y-3 mb-6">
+      <li class="flex items-start gap-2.5 text-sm text-slate-600">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+        Prevent the role from being assigned to new users.
+      </li>
+      <li class="flex items-start gap-2.5 text-sm text-slate-600">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Preserve all existing role assignments and permissions.
+      </li>
+      <li class="flex items-start gap-2.5 text-sm text-slate-600">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><path d="M20 6L9 17l-5-5"></path></svg>
+        The role can be reactivated later by an administrator.
+      </li>
+    </ul>
+
+    <div class="flex justify-end gap-3">
+      <button (click)="cancel()" class="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50">
+        Cancel
+      </button>
+      <button (click)="onConfirm()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-red-500 text-white font-semibold text-sm hover:bg-red-600 disabled:opacity-70">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
+        Deactivate Role
+      </button>
+    </div>
+
+  </div>
+</app-modal>

@@ -1,0 +1,47 @@
+import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { InputFieldComponent } from '../../../shared/components/form/input/input-field.component';
+import { AuthService } from '../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-forgot-password',
+  imports: [
+    RouterModule,
+    FormsModule,
+    InputFieldComponent
+  ],
+  templateUrl: './forgot-password.component.html',
+  styles: ''
+})
+export class ForgotPasswordComponent {
+  email = '';
+
+  isLoading = false;
+  errorMessage = '';
+  successMessage = '';
+
+  constructor(private authService: AuthService, public router: Router) {}
+
+  goToSignIn() {
+    this.router.navigate(['/signin']);
+  }
+
+  onReset() {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    this.authService.requestPasswordReset({ email: this.email }).subscribe({
+      next: () => {
+        this.successMessage = 'If the account exists, a reset link has been sent.';
+        this.isLoading = false;
+        this.router.navigate(['/forgot-passwordcheck']);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err?.error?.detail || 'Failed to send reset link. Please try again.';
+      }
+    });
+  }
+}

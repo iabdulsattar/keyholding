@@ -1,0 +1,121 @@
+<app-auth-page-layout>
+  <div class="w-full max-w-4xl mx-auto pt-10">
+    <div class="text-center mb-10">
+      <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
+        Choose Your Plan
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Select the plan that best fits your organization's needs
+      </p>
+    </div>
+
+    @if (errorMessage) {
+    <div class="mb-6 p-4 rounded-lg bg-error-50 border border-error-200">
+      <p class="text-sm text-error-700">{{ errorMessage }}</p>
+    </div>
+    }
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <!-- FREE -->
+      <div
+        class="cursor-pointer rounded-2xl border border-gray-200 bg-white p-6 transition hover:shadow-lg dark:border-gray-800 dark:bg-white/[0.03]"
+        [class.border-brand-500]="selectedPlanId === 'FREE'"
+        [class.dark:border-brand-500]="selectedPlanId === 'FREE'"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Free</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">$0<span class="text-xs">/month</span></p>
+        <ul class="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Basic features
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Up to 3 users
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            1 GB storage
+          </li>
+        </ul>
+        <div class="mt-6">
+          <app-button variant="outline" className="w-full" (btnClick)="selectPlan('FREE')" [disabled]="isLoading">
+            {{ selectedPlanId === 'FREE' ? 'Selected' : 'Select Free' }}
+          </app-button>
+        </div>
+      </div>
+
+      <!-- PRO -->
+      <div
+        class="cursor-pointer rounded-2xl border border-gray-200 bg-white p-6 transition hover:shadow-lg dark:border-gray-800 dark:bg-white/[0.03]"
+        [class.border-brand-500]="selectedPlanId === 'PRO'"
+        [class.dark:border-brand-500]="selectedPlanId === 'PRO'"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Professional</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">$29<span class="text-xs">/month</span></p>
+        <ul class="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Advanced features
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Up to 20 users
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            50 GB storage
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Priority support
+          </li>
+        </ul>
+        <div class="mt-6">
+          <app-button variant="primary" className="w-full" (btnClick)="selectPlan('PRO')" [disabled]="isLoading">
+            {{ selectedPlanId === 'PRO' ? 'Selected' : 'Select Pro' }}
+          </app-button>
+        </div>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div
+        class="cursor-pointer rounded-2xl border border-gray-200 bg-white p-6 transition hover:shadow-lg dark:border-gray-800 dark:bg-white/[0.03]"
+        [class.border-brand-500]="selectedPlanId === 'ENTERPRISE'"
+        [class.dark:border-brand-500]="selectedPlanId === 'ENTERPRISE'"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Enterprise</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Custom pricing</p>
+        <ul class="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Unlimited users
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Unlimited storage
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Dedicated support
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="text-success-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.5 4.86133L6.2221 11.1392L3.5 8.41713" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Custom integrations
+          </li>
+        </ul>
+        <div class="mt-6">
+          <app-button variant="outline" className="w-full" (btnClick)="selectPlan('ENTERPRISE')" [disabled]="isLoading">
+            {{ selectedPlanId === 'ENTERPRISE' ? 'Selected' : 'Select Enterprise' }}
+          </app-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-400">
+        Already have an account? <a routerLink="/signin" class="text-brand-500 hover:text-brand-600">Sign in</a>
+      </p>
+    </div>
+  </div>
+</app-auth-page-layout>

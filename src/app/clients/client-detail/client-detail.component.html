@@ -1,0 +1,699 @@
+<div class="min-h-[calc(100vh-120px)] bg-[#f8fafc] text-gray-900">
+  <div class="flex-grow flex flex-col h-full overflow-hidden">
+    <!-- INNER CONTAINER SCROLL FRAME -->
+    <div class="flex-grow overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:p-8 space-y-6">
+      
+      <!-- CONTROLLER HEADLINE & ACTIONS -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
+        <div>
+          <!-- Breadcrumbs Layout -->
+          <div class="flex items-center space-x-2 text-xs font-medium text-slate-400">
+            @for (crumb of headerConfig.breadcrumbs; track crumb.label; let last = $last) {
+              @if (crumb.link) {
+                <a [routerLink]="crumb.link" class="text-blue-600 hover:underline">{{ crumb.label }}</a>
+              } @else {
+                <span class="text-slate-500">{{ crumb.label }}</span>
+              }
+              @if (!last) {
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              }
+            }
+          </div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900 mt-1.5">{{ headerConfig.title }}</h2>
+        </div>
+        <!-- Top Actions Row -->
+        @if (headerConfig.showActions) {
+        <div class="flex items-center space-x-2 self-end sm:self-auto">
+          @for (action of headerConfig.actions; track action.label) {
+          <button (click)="triggerAction(action.label)" class="inline-flex items-center space-x-1.5 {{ action.class }} rounded-xl px-4 py-2.5 text-xs font-semibold shadow-sm transition">
+            @if (action.icon === 'plus') {
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            } @else if (action.icon === 'upload') {
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            } @else if (action.icon === 'download') {
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            }
+            <span>{{ action.label }}</span>
+          </button>
+          }
+        </div>
+        } @else {
+        <div class="flex items-center space-x-2 self-end sm:self-auto">
+          <button class="inline-flex items-center space-x-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-600 shadow-sm transition">
+            <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <span>Edit Client</span>
+          </button>
+          <button (click)="toggleActivationState()" class="inline-flex items-center space-x-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-600 shadow-sm transition">
+            <svg class="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+            <span>{{ isClientActive ? 'Deactivate' : 'Activate' }}</span>
+          </button>
+          <div class="relative">
+            <button (click)="toggleDropdown('moreDropdown')" class="inline-flex items-center space-x-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-600 shadow-sm transition">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+              <span>More</span>
+              <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <!-- More actions dropdown list -->
+            <div id="moreDropdown" class="hidden absolute right-0 mt-1 w-44 bg-white border border-slate-200 rounded-xl shadow-xl z-30 py-1 text-xs">
+              <div (click)="showToast('Export data process initiated.')" class="px-3.5 py-2 hover:bg-slate-50 text-slate-700 cursor-pointer flex items-center space-x-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span>Export Client Data</span></div>
+              <div (click)="showToast('Re-indexing entity relationships.')" class="px-3.5 py-2 hover:bg-slate-50 text-slate-700 cursor-pointer flex items-center space-x-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg> <span>Refresh Links</span></div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- HERO PROFILE CARD & METRIC CHIPS -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Branding Profile Data Section -->
+        <div class="lg:col-span-5 flex items-start space-x-4 border-b lg:border-b-0 lg:border-r border-slate-100 pb-4 lg:pb-0 lg:pr-6">
+          <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl text-blue-600 flex-shrink-0">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+          </div>
+          <div class="space-y-1.5 truncate">
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-lg font-bold text-slate-900 tracking-tight truncate">{{ client?.name || 'Client Details' }}</h3>
+              <span [class]="isClientActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide' : 'bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide'">{{ isClientActive ? 'Active' : 'Inactive' }}</span>
+            </div>
+            <div class="text-xs font-semibold text-blue-600 tracking-wider">{{ client?.code || '' }}</div>
+            <div class="space-y-1 text-xs text-slate-500 font-medium">
+              <p class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg> <span class="truncate">{{ client?.email || '' }}</span></p>
+              <p class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <span>{{ client?.phone || '' }}</span></p>
+              <p class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span>{{ client?.region || '' }}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Metrics Segment Panels -->
+        <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
+            <span class="block text-2xl font-bold text-slate-900 tracking-tight">{{ client?.sites || 0 }}</span>
+            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-0.5">Sites</span>
+            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Sites</span>
+          </div>
+          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
+            <span class="block text-2xl font-bold text-slate-900 tracking-tight">{{ client?.users || 0 }}</span>
+            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-0.5">Users</span>
+            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Users</span>
+          </div>
+          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
+            <span class="block text-2xl font-bold text-slate-900 tracking-tight">156</span>
+            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-0.5">Keys</span>
+            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Keys</span>
+          </div>
+          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
+            <span class="block text-2xl font-bold text-slate-900 tracking-tight">342</span>
+            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-0.5">Jobs</span>
+            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Jobs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW CONTEXT NAVIGATION TABS BAR -->
+      <div class="border-b border-slate-200">
+        <nav class="flex flex-wrap -mb-px gap-x-6 gap-y-2 text-xs font-semibold text-slate-500">
+          <button (click)="switchTab('overview')" [class]="activeTab === 'overview' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Overview</button>
+          <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Keys (156)</button>
+          <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Sites (12)</button>
+          <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Jobs (342)</button>
+          <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Activity Log</button>
+          <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Documents</button>
+          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Contact</button>
+          <button (click)="switchTab('emergency')" [class]="activeTab === 'emergency' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Emergency Contact</button>
+        </nav>
+      </div>
+
+      <!-- TABS CONTENT SLOTS INTERFACE -->
+      @if (activeTab === 'overview') {
+      <div class="tab-content-panel active space-y-6">
+        <!-- GRID ROW: SYSTEM DATA BREAKDOWNS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          <!-- CLIENT DETAILS BLOCK PANEL -->
+          <div class="lg:col-span-4 h-full bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">Client Information</h4>
+              <button class="p-1.5 text-slate-400 hover:text-blue-600 border border-slate-100 hover:border-blue-100 rounded-lg bg-slate-50/50 hover:bg-blue-50/50 transition">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+            </div>
+            <div class="space-y-3 text-xs">
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Client Code</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.code || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Client Name</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.name || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Email</span><span class="col-span-2 text-blue-600 font-medium break-all select-all">{{ client?.email || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Phone</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.phone || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Website</span><span class="col-span-2 text-blue-600 font-medium break-all"><a href="{{ client?.website || '#' }}" target="_blank" class="hover:underline">{{ client?.website || '' }}</a></span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Region</span><span class="col-span-2 text-slate-800 font-medium">{{ client?.region || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Address</span><span class="col-span-2 text-slate-700 font-medium leading-relaxed">{{ client?.address || '' }}</span></div>
+            </div>
+          </div>
+
+                    <!-- ADDITIONAL INFORMATION METADATA FIELD MATRIX -->
+          <div class="lg:col-span-4 h-full bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">Additional Details</h4>
+              <button class="p-1.5 text-slate-400 hover:text-blue-600 border border-slate-100 hover:border-blue-100 rounded-lg bg-slate-50/50 hover:bg-blue-50/50 transition">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+            </div>
+            <div class="space-y-3 text-xs">
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Industry</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.industry || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">VAT / Tax Number</span><span class="col-span-2 text-slate-800 font-medium">{{ client?.vatNumber || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Registration Number</span><span class="col-span-2 text-slate-800 font-medium">{{ client?.registrationNumber || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Contact Person</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.contactPerson || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Designation</span><span class="col-span-2 text-slate-700 font-medium">{{ client?.designation || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Contact Email</span><span class="col-span-2 text-blue-600 font-medium break-all select-all">{{ client?.contactEmail || '' }}</span></div>
+              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Notes</span><span class="col-span-2 text-slate-600 font-medium leading-relaxed">{{ client?.notes || '' }}</span></div>
+            </div>
+          </div>
+
+                    <!-- RUNTIME LIFE STATUS & RECORD TIMELINE TRACKER -->
+          <div class="lg:col-span-4 h-full bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Status & Timeline</h4>
+            <div class="relative border-l border-slate-200 pl-4 space-y-5 ml-1.5">
+              <!-- Active Step Event Row -->
+              <div class="relative">
+                <span class="absolute -left-[21px] top-0.5 bg-emerald-500 w-2.5 h-2.5 rounded-full ring-4 ring-white"></span>
+                <div class="text-xs space-y-0.5">
+                  <h5 class="font-bold text-slate-900">Active</h5>
+                  <p class="text-[11px] font-medium text-slate-500">{{ client?.created || '' }}</p>
+                  <p class="text-[10px] font-medium text-slate-400">by Faiza Ahmed</p>
+                </div>
+              </div>
+              <!-- Created Step Event Row -->
+              <div class="relative">
+                <span class="absolute -left-[21px] top-0.5 bg-blue-600 w-2.5 h-2.5 rounded-full ring-4 ring-white"></span>
+                <div class="text-xs space-y-0.5">
+                  <h5 class="font-bold text-slate-900">Created</h5>
+                  <p class="text-[11px] font-medium text-slate-500">{{ client?.created || '' }}</p>
+                  <p class="text-[10px] font-medium text-slate-400">by Faiza Ahmed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM ROW: WORKSPACE ACTIONABLES -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          <!-- RECENT ACTIVITY AUDIT INDEX LOG (8 Columns) -->
+          <div class="lg:col-span-8 h-full bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">Recent Activity</h4>
+              <a href="#" class="text-xs font-semibold text-blue-600 hover:underline flex items-center space-x-1"><span>View all activity logs</span> <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+            </div>
+            <div class="overflow-x-auto custom-scrollbar flex-1">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase font-bold tracking-wider text-[10px]">
+                    <th class="py-3 px-5">Date &amp; Time</th>
+                    <th class="py-3 px-5">Action</th>
+                    <th class="py-3 px-5">Performed By</th>
+                    <th class="py-3 px-5">Details</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                  <tr class="hover:bg-slate-50/50 transition">
+                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">15 May 2024, 11:20 AM</td>
+                    <td class="py-3.5 px-5 font-semibold text-slate-900">Client information updated</td>
+                    <td class="py-3.5 px-5">Faiza Ahmed</td>
+                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Updated contact email and phone number</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition">
+                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">15 May 2024, 10:45 AM</td>
+                    <td class="py-3.5 px-5 font-semibold text-slate-900">Job created</td>
+                    <td class="py-3.5 px-5">Faiza Ahmed</td>
+                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Added job: Key Collection - HQ</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition">
+                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">14 May 2024, 04:10 PM</td>
+                    <td class="py-3.5 px-5 font-semibold text-slate-900">Site added</td>
+                    <td class="py-3.5 px-5">Faiza Ahmed</td>
+                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Added site: Head Office</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition">
+                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">12 May 2024, 03:22 PM</td>
+                    <td class="py-3.5 px-5 font-semibold text-slate-900">Key assigned</td>
+                    <td class="py-3.5 px-5">Faiza Ahmed</td>
+                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Assigned 5 keys to site: Head Office</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- RELEVANT ITEMS & QUICK ACTIONS SHORTCUT PANEL (4 Columns) -->
+          <div class="lg:col-span-4 space-y-4">
+            
+            <!-- Related Items List Mapping Components -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Related Items</h4>
+              <div class="space-y-1">
+                <a href="#" class="flex items-center justify-between p-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition group">
+                  <div class="flex items-center space-x-3 text-slate-600 group-hover:text-blue-600"><svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span>Sites</span></div>
+                  <div class="flex items-center space-x-1.5"><span class="font-bold text-slate-900">12</span> <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+                </a>
+                <a href="#" class="flex items-center justify-between p-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition group">
+                  <div class="flex items-center space-x-3 text-slate-600 group-hover:text-blue-600"><svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> <span>Keys</span></div>
+                  <div class="flex items-center space-x-1.5"><span class="font-bold text-slate-900">156</span> <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+                </a>
+                <a href="#" class="flex items-center justify-between p-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition group">
+                  <div class="flex items-center space-x-3 text-slate-600 group-hover:text-blue-600"><svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> <span>Jobs</span></div>
+                  <div class="flex items-center space-x-1.5"><span class="font-bold text-slate-900">342</span> <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+                </a>
+              </div>
+            </div>
+
+            <!-- System Workflow Trigger Action Shortcuts -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Quick Actions</h4>
+              <div class="grid grid-cols-1 gap-2 text-xs font-semibold">
+                <button (click)="showToast('Loading Site Creation Wizard...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
+                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Add New Site</span>
+                </button>
+                <button (click)="showToast('Opening Key Assignment Panel...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
+                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                  <span>Assign Keys</span>
+                </button>
+                <button (click)="showToast('Redirecting to Logs context view...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
+                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span>View Activity Log</span>
+                </button>
+                <button (click)="showToast('Compiling Client Ledger Report PDF...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
+                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Export Client Report</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      } @else if (activeTab === 'keys') {
+      <!-- GRID AREA CONTENT SPLIT PANELS (Table Grid Inventory vs Widget Columns) -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+        
+        <!-- INVENTORY TABLE CONTEXT (Col Span 9) -->
+        <div class="xl:col-span-9 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse whitespace-nowrap">
+              <thead>
+                <tr class="bg-slate-50/75 border-b border-slate-200 text-[10px] font-bold text-slate-400 uppercase tracking-wider select-none">
+                  <th class="py-3.5 pl-5 pr-3 w-10">
+                    <input type="checkbox" id="selectAllRows" (change)="toggleSelectAllRows($event.target)" class="accent-blue-600 rounded cursor-pointer">
+                  </th>
+                  <th class="py-3.5 px-3">Key ID</th>
+                  <th class="py-3.5 px-3">Key Name</th>
+                  <th class="py-3.5 px-3">Key Type</th>
+                  <th class="py-3.5 px-3">Site</th>
+                  <th class="py-3.5 px-3">Status</th>
+                  <th class="py-3.5 px-3">Storage Location</th>
+                  <th class="py-3.5 px-3">Assigned To</th>
+                  <th class="py-3.5 px-3">Last Movement</th>
+                  <th class="py-3.5 pr-5 pl-3 text-center w-24">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-xs font-medium text-slate-700">
+                @for (key of keys; track key.id) {
+                <tr class="hover:bg-slate-50/50 transition">
+                  <td class="py-3.5 pl-5 pr-3"><input type="checkbox" class="row-checkbox accent-blue-600 rounded cursor-pointer" (change)="onRowCheckboxChange($event)"></td>
+                  <td class="py-3.5 px-3 font-semibold text-blue-600 hover:underline cursor-pointer">{{ key.id }}</td>
+                  <td class="py-3.5 px-3 inline-flex items-center space-x-2">
+                    <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span class="font-bold text-slate-900">{{ key.name }}</span>
+                  </td>
+                  <td class="py-3.5 px-3">
+                    <span [class]="'bg-' + key.typeColor + '-50 text-' + key.typeColor + '-700 px-2 py-0.5 rounded text-[10px] font-bold'">{{ key.type }}</span>
+                  </td>
+                  <td class="py-3.5 px-3 text-slate-600">{{ key.site }}</td>
+                  <td class="py-3.5 px-3">
+                    <span [class]="'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700' + (key.status !== 'In Use' && key.status !== 'Overdue' && key.status !== 'Lost' ? ' border border-' + key.statusColor + '-100' : '') + ' px-2 py-0.5 rounded-full text-[10px] font-bold'">● {{ key.status }}</span>
+                  </td>
+                  <td class="py-3.5 px-3 text-slate-500 font-normal">
+                    @if (key.storageLocation !== '—') {
+                      {{ key.storageLocation }}<br>
+                      @if (key.storageDetail) {
+                        <span class="text-[10px] text-slate-400 font-medium">{{ key.storageDetail }}</span>
+                      }
+                    } @else {
+                      <span class="text-slate-400">—</span>
+                    }
+                  </td>
+                  <td class="py-3.5 px-3 text-slate-400">{{ key.assignedTo }}</td>
+                  <td class="py-3.5 px-3 text-slate-500 font-normal">{{ key.lastMovement }}<br><span class="text-[10px] text-slate-400 font-medium">{{ key.lastMovementTime }}</span></td>
+                  <td class="py-3.5 pr-5 pl-3 text-center space-x-1">
+                    <button (click)="triggerRowAction('View', key.id)" class="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100/80 transition" title="View">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button (click)="triggerRowAction('Edit', key.id)" class="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100/80 transition" title="Edit">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button (click)="triggerRowAction('More Options', key.id)" class="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100/80 transition" title="More">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </button>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINATION SUMMARY FOOTER GRID TOOLBAR -->
+          <div class="bg-white border-t border-slate-200 px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
+            <p class="text-xs font-semibold text-slate-500 order-2 sm:order-1">Showing <span class="text-slate-800">1</span> to <span class="text-slate-800">{{ keys.length }}</span> of <span class="text-slate-800">156</span> keys</p>
+            
+            <!-- Page control buttons -->
+            <div class="flex items-center space-x-1.5 order-1 sm:order-2">
+              <button (click)="triggerAction('Previous Page')" class="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition" disabled>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 font-bold text-xs">1</button>
+              <button (click)="triggerAction('Page 2')" class="w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold text-xs transition">2</button>
+              <button (click)="triggerAction('Page 3')" class="w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold text-xs transition">3</button>
+              <span class="text-slate-400 text-xs px-1">...</span>
+              <button (click)="triggerAction('Page 20')" class="w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold text-xs transition">20</button>
+              <button (click)="triggerAction('Next Page')" class="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+              
+              <!-- Rows count selector -->
+              <div class="relative ml-2">
+                <select (change)="triggerAction('Changed page capacity to ' + $any($event.target).value)" class="bg-white border border-slate-200 text-slate-600 font-semibold rounded-lg pl-2.5 pr-7 py-1.5 text-xs appearance-none focus:outline-none cursor-pointer transition hover:border-slate-300">
+                  <option value="10">10 / page</option>
+                  <option value="25">25 / page</option>
+                  <option value="50">50 / page</option>
+                </select>
+                <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR METRIC & ACTIONS CARDS (Col Span 3) -->
+        <div class="xl:col-span-3 space-y-6 w-full">
+          
+          <!-- PIE CHART METRIC BOX OVERVIEW -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Status Overview</h4>
+            
+            <!-- Custom Concentric Ring Donut Mock Graphic -->
+            <div class="flex items-center justify-center py-2">
+              <div class="relative w-36 h-36 flex items-center justify-center rounded-full border-8 border-emerald-500" style="border-right-color: #f59e0b; border-bottom-color: #3b82f6; border-left-color: #ef4444;">
+                <div class="absolute inset-0 m-2 rounded-full bg-white flex flex-col items-center justify-center shadow-inner">
+                  <span class="text-2xl font-black text-slate-900 tracking-tight">156</span>
+                  <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Total Keys</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legend Metric Distribution Links -->
+            <div class="text-[11px] font-semibold text-slate-600 space-y-2 pt-1">
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>In Storage</span></div><span class="text-slate-400 font-medium">128 (82.1%)</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>Issued</span></div><span class="text-slate-400 font-medium">14 (9.0%)</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>In Use</span></div><span class="text-slate-400 font-medium">4 (2.6%)</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span>Overdue</span></div><span class="text-slate-400 font-medium">8 (5.1%)</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span><span>Lost / Damaged</span></div><span class="text-slate-400 font-medium">6 (3.8%)</span></div>
+            </div>
+          </div>
+
+          <!-- QUICK OPERATIONS UTILITY NAVIGATION LINKS -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3.5">
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Quick Actions</h4>
+            <div class="flex flex-col text-xs font-semibold text-slate-600 space-y-0.5">
+              <button (click)="triggerAction('Add New Key')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Add New Key</span>
+              </button>
+              <button (click)="triggerAction('Import Keys')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Import Keys</span>
+              </button>
+              <button (click)="triggerAction('Assign Keys')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                <span>Assign Keys</span>
+              </button>
+              <button (click)="triggerAction('Transfer Key')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                <span>Transfer Key</span>
+              </button>
+              <button (click)="triggerAction('Run Key Audit')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Run Key Audit</span>
+              </button>
+              <button (click)="triggerAction('Export Key Report')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Export Key Report</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KEY BREAKDOWN SEGMENTATION INDEX LIST -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Type Breakdown</h4>
+            <div class="text-xs font-semibold text-slate-700 space-y-3">
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span>Master Key</span></div><span class="text-slate-400">18</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>Door Key</span></div><span class="text-slate-400">52</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-purple-500"></span><span>Alarm Key</span></div><span class="text-slate-400">16</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span><span>Gate Key</span></div><span class="text-slate-400">14</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-slate-400"></span><span>Office Key</span></div><span class="text-slate-400">20</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-cyan-500"></span><span>Utility Key</span></div><span class="text-slate-400">12</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-indigo-500"></span><span>IT Key</span></div><span class="text-slate-400">8</span></div>
+              <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-slate-300"></span><span>Others</span></div><span class="text-slate-400">16</span></div>
+            </div>
+            <a routerLink="#" (click)="triggerAction('View all key types'); $event.preventDefault()" class="block text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline pt-1 transition">View all key types &rarr;</a>
+          </div>
+
+         </div>
+
+      </div>
+      } @else if (activeTab === 'sites') {
+      <!-- GRID ROW: SPLIT DATA TABLE & RIGHT WIDGETS -->
+      <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
+        
+        <!-- LEFT CONTENT - DATA TABLE WORKSPACE -->
+        <div class="xl:col-span-3 space-y-4">
+          
+          <!-- SEARCH AND FILTERING TOOLBAR -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4 flex flex-wrap gap-3 items-center justify-between">
+            <div class="relative w-80">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" [(ngModel)]="sitesSearch" (ngModelChange)="onSitesSearch()" placeholder="Search by site name, site code, address..." class="w-full bg-slate-50 border border-slate-200 text-sm pl-10 pr-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2">
+                <label class="text-xs text-slate-400 font-medium uppercase tracking-wider">Status</label>
+                <select [(ngModel)]="sitesStatus" (ngModelChange)="onSitesStatusChange()" class="bg-white border border-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+                  <option value="All">All Statuses</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="text-xs text-slate-400 font-medium uppercase tracking-wider">Site Type</label>
+                <select [(ngModel)]="sitesType" (ngModelChange)="onSitesTypeChange()" class="bg-white border border-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+                  <option value="All">All Types</option>
+                  <option value="Office">Office</option>
+                  <option value="Warehouse">Warehouse</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Distribution">Distribution Center</option>
+                  <option value="Data Centre">Data Centre</option>
+                  <option value="Storage">Storage</option>
+                  <option value="Construction">Construction</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE SITES TABLE -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="overflow-x-auto custom-scrollbar">
+              <table class="w-full text-left border-collapse whitespace-nowrap">
+                <thead>
+                  <tr class="bg-slate-50/70 border-b border-slate-200 text-xs font-bold uppercase text-slate-400 tracking-wider">
+                    <th class="py-3 px-4 w-4"><input type="checkbox" class="rounded text-blue-600"></th>
+                    <th class="py-3 px-4">Site Code</th>
+                    <th class="py-3 px-4">Site Name</th>
+                    <th class="py-3 px-4">Site Type</th>
+                    <th class="py-3 px-4">Address</th>
+                    <th class="py-3 px-4">Primary Contact</th>
+                    <th class="py-3 px-4">Status</th>
+                    <th class="py-3 px-4 text-center">Keys</th>
+                    <th class="py-3 px-4 text-center">Jobs</th>
+                    <th class="py-3 px-4 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                  @for (site of sitesPaginated; track site.code) {
+                  <tr class="hover:bg-slate-50/70 transition duration-150">
+                    <td class="py-3.5 px-4"><input type="checkbox" class="rounded text-blue-600"></td>
+                    <td class="py-3.5 px-4 font-mono text-xs text-slate-500">{{ site.code }}</td>
+                    <td class="py-3.5 px-4 font-semibold text-blue-600 hover:underline cursor-pointer">{{ site.name }}</td>
+                    <td class="py-3.5 px-4">
+                      <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + site.typeColor + '-50 text-' + site.typeColor + '-700 border border-' + site.typeColor + '-100'">{{ site.type }}</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-xs max-w-xs truncate text-slate-500" [title]="site.address">{{ site.address }}</td>
+                    <td class="py-3.5 px-4 text-slate-600 font-medium">{{ site.contact }}</td>
+                    <td class="py-3.5 px-4">
+                      <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (site.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600')">● {{ site.status }}</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.keys }}</td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.jobs }}</td>
+                    <td class="py-3.5 px-4 text-center">
+                      <div class="flex items-center justify-center gap-2 text-slate-400">
+                        <button (click)="triggerRowAction('View', site.code)" class="hover:text-blue-600 p-1 transition">
+                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                        <button (click)="triggerAction('More Options')" class="hover:text-slate-600 p-1 transition">
+                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  } @empty {
+                  <tr>
+                    <td colspan="10" class="py-8 text-center text-slate-400 font-medium">No site assets found matching criteria.</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION FOOTER -->
+            <div class="bg-white border-t border-slate-200 px-6 py-4 flex items-center justify-between">
+              <p class="text-xs text-slate-500">Showing {{ sitesShowingStart }} to {{ sitesShowingEnd }} of {{ filteredSites.length }} sites</p>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1">
+                  <button (click)="sitesPreviousPage()" [disabled]="sitesPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === 1 ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  @for (page of [].constructor(sitesTotalPages); track $index) {
+                  <button (click)="sitesGoToPage($index + 1)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="$index + 1 === sitesPage ? 'bg-blue-50 border-blue-300 text-blue-600' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ $index + 1 }}</button>
+                  }
+                  <button (click)="sitesNextPage()" [disabled]="sitesPage === sitesTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === sitesTotalPages ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                </div>
+                <select (change)="onRowsPerPageChange($event)" class="bg-white border border-slate-200 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none">
+                  <option value="8">8 / page</option>
+                  <option value="12">12 / page</option>
+                  <option value="25">25 / page</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT CONTENT - METRIC CARDS & ACTIONS -->
+        <div class="xl:col-span-1 space-y-6">
+          
+          <!-- Widget: Site Status Chart -->
+          <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
+            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Site Status Overview</h4>
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-28 h-28 relative flex items-center justify-center shrink-0">
+                <div class="donut-chart"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1">
+                  <span class="text-xl font-extrabold text-slate-900 leading-none">12</span>
+                  <span class="text-[9px] font-medium tracking-wider text-slate-400 uppercase">Total Sites</span>
+                </div>
+              </div>
+              <div class="flex-1 space-y-1.5 text-xs pl-2">
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active</span> <span class="font-medium text-slate-500">10 <span class="text-[10px] text-slate-400">(83.3%)</span></span></div>
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Inactive</span> <span class="font-medium text-slate-500">2 <span class="text-[10px] text-slate-400">(16.7%)</span></span></div>
+                <div class="flex items-center justify-between text-slate-400"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Maintenance</span> <span class="font-medium">0 <span class="text-[10px]">(0%)</span></span></div>
+                <div class="flex items-center justify-between text-slate-400"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span> Planned</span> <span class="font-medium">0 <span class="text-[10px]">(0%)</span></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Quick Actions -->
+          <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3">
+            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Quick Actions</h4>
+            <div class="space-y-1">
+              <button (click)="triggerAction('Add New Site')" class="w-full text-left text-sm font-medium text-blue-600 hover:bg-blue-50/50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add New Site
+              </button>
+              <button (click)="triggerAction('Import Sites')" class="w-full text-left text-sm font-medium text-slate-700 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Import Sites
+              </button>
+              <button (click)="triggerAction('Assign Keys')" class="w-full text-left text-sm font-medium text-slate-700 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                Assign Keys
+              </button>
+              <button (click)="triggerAction('View Site Map')" class="w-full text-left text-sm font-medium text-slate-700 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                View Site Map
+              </button>
+              <button (click)="triggerAction('Export Site Report')" class="w-full text-left text-sm font-medium text-slate-700 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export Site Report
+              </button>
+            </div>
+          </div>
+
+          <!-- Widget: Site Type Breakdown -->
+          <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
+            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Site Type Breakdown</h4>
+            <div class="space-y-3 text-xs">
+              <div class="space-y-1">
+                <div class="flex justify-between font-medium"><span><svg class="w-2 h-2 rounded-full bg-blue-500 mr-2 inline-block" viewBox="0 0 24 24" fill="currentColor"></svg> Office</span> <span class="text-slate-600 font-bold">4</span></div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-500" style="width: 33.3%"></div></div>
+              </div>
+              <div class="space-y-1">
+                <div class="flex justify-between font-medium"><span><svg class="w-2 h-2 rounded-full bg-purple-500 mr-2 inline-block" viewBox="0 0 24 24" fill="currentColor"></svg> Warehouse</span> <span class="text-slate-600 font-bold">2</span></div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-purple-500" style="width: 16.6%"></div></div>
+              </div>
+              <div class="space-y-1">
+                <div class="flex justify-between font-medium"><span><svg class="w-2 h-2 rounded-full bg-amber-500 mr-2 inline-block" viewBox="0 0 24 24" fill="currentColor"></svg> Retail</span> <span class="text-slate-600 font-bold">2</span></div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-amber-500" style="width: 16.6%"></div></div>
+              </div>
+              <div class="space-y-1">
+                <div class="flex justify-between font-medium"><span><svg class="w-2 h-2 rounded-full bg-orange-400 mr-2 inline-block" viewBox="0 0 24 24" fill="currentColor"></svg> Distribution</span> <span class="text-slate-600 font-bold">1</span></div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-orange-400" style="width: 8.3%"></div></div>
+              </div>
+              <div class="space-y-1">
+                <div class="flex justify-between font-medium"><span><svg class="w-2 h-2 rounded-full bg-cyan-500 mr-2 inline-block" viewBox="0 0 24 24" fill="currentColor"></svg> Data Centre</span> <span class="text-slate-600 font-bold">1</span></div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-cyan-500" style="width: 8.3%"></div></div>
+              </div>
+            </div>
+            <a routerLink="#" (click)="triggerAction('View all site types'); $event.preventDefault()" class="block text-center text-xs font-semibold text-blue-600 hover:text-blue-700 pt-2 border-t border-slate-100 transition">View all site types &rarr;</a>
+          </div>
+
+        </div>
+
+      </div>
+      } @else {
+      <!-- TAB PLACEHOLDER DISPLAY GRID PANEL -->
+      <div class="tab-content-panel active bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm max-w-full">
+        <div class="max-w-xs mx-auto space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 border border-slate-100 flex items-center justify-center mx-auto shadow-sm">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h4 class="text-sm font-bold text-slate-900">Context Workspace Section</h4>
+          <p class="text-xs text-slate-400 font-medium leading-relaxed">This workspace view is ready for contextual entity rendering processes.</p>
+        </div>
+      </div>
+      }
+
+      <!-- Footer -->
+      <footer class="w-full bg-white border-t border-slate-200/60 px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 font-medium space-y-2 sm:space-y-0">
+        <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
+        <div class="flex items-center space-x-4">
+          <a href="#" class="hover:text-slate-600 transition">Privacy Policy</a>
+          <span class="text-slate-200">|</span>
+          <a href="#" class="hover:text-slate-600 transition">Terms of Service</a>
+          <span class="text-slate-200">|</span>
+          <a href="#" class="hover:text-slate-600 transition">Support</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- RUNTIME TOAST MESSAGING POPUP NOTIFIER -->
+  <div id="toastNotification" class="fixed top-5 right-5 z-50 bg-slate-900 text-white rounded-xl shadow-2xl px-4 py-3 text-xs font-semibold tracking-wide flex items-center space-x-2.5 translate-x-[150%] transition-transform duration-300">
+    <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <span id="toastMessage">Action Completed Successfully!</span>
+  </div>
+</div>
