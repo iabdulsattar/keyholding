@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -13,27 +13,10 @@ import { Router } from '@angular/router';
   templateUrl: './signup-form.component.html',
   styles: ''
 })
-export class SignupFormComponent implements OnInit {
+export class SignupFormComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.country = this.detectCountry();
-  }
-
-  private detectCountry(): string {
-    try {
-      const locale = (navigator.language || (navigator as any).userLanguage || '') as string;
-      const parts = locale.split(/[-_]/);
-      if (parts.length >= 2 && parts[1].length === 2) {
-        return parts[1].toUpperCase();
-      }
-    } catch {
-      // ignore
-    }
-    return '';
-  }
-  
   showPassword = false;
   confirmPassword = false;
   isCheckedOne = false;  
@@ -206,13 +189,11 @@ export class SignupFormComponent implements OnInit {
     );
   }
   
-  // onSignIn() {
   // onSignUp() {
   //   console.log('First Name:', this.fname);
   //   console.log('Last Name:', this.lname);
   //   console.log('Job Title:', this.jtitle);
   //   console.log('Company Name:', this.cname);
-  //   console.log('Country:', this.country);    
   //   console.log('Phone Number:', this.pnumber);
   //   console.log('Number of Employees:', this.selectedValue);
     
@@ -230,7 +211,6 @@ export class SignupFormComponent implements OnInit {
     }
 
     const payload: any = {
-      country: this.country,
       email: this.email,
       password: this.password,
       firstName: this.fname,
