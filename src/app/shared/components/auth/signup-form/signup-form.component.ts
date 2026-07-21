@@ -3,18 +3,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { InputFieldComponent } from '../../form/input/input-field.component';
-import { CheckboxComponent } from '../../form/input/checkbox.component';
-import { SelectComponent } from '../../form/select/select.component';
 
 @Component({
   selector: 'app-signup-form',
   imports: [
     RouterModule,
     FormsModule,
-    InputFieldComponent,
-    CheckboxComponent,
-    SelectComponent
   ],
   templateUrl: './signup-form.component.html',
   styles: ''
@@ -50,12 +44,10 @@ export class SignupFormComponent implements OnInit {
   jtitle = '';
   cname = '';
   pnumber = '';
-  selectedValue = '';  
+  selectedValue = '';
   email = '';
   password = '';
   confirmpassword = '';
-
-  country = '';
 
   isLoading = false;
   successMessage = '';
@@ -72,19 +64,6 @@ export class SignupFormComponent implements OnInit {
     confirmpassword: ''
   };
 
-  options = [
-    { value: '1-50', label: '1–50' },
-    { value: '51-100', label: '51–100' },
-    { value: '101-500', label: '101–500' },
-    { value: '500+', label: '500+' },
-  ];
-
-
-  handleSelectChange(value: string) {
-    this.selectedValue = value;
-    console.log('Selected value:', value);
-  }
-  
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
@@ -111,7 +90,7 @@ export class SignupFormComponent implements OnInit {
     };
 
     const nameAlphaRegex = /^[A-Za-z]+$/;
-    const employeeAllowed = new Set(['1-50', '51-100', '101-500', '500+']);
+    const employeeAllowed = new Set(['1-10', '11-50', '51-200', '201-500', '500+']);
 
 
     if (!this.fname.trim()) {
