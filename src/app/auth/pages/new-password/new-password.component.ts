@@ -3,9 +3,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { InputFieldComponent } from '../../../shared/components/form/input/input-field.component';
-import { LabelComponent } from '../../../shared/components/form/label/label.component';
-import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
 import { AuthPageLayoutComponent } from '../../../layout/auth-page-layout/auth-page-layout.component';
 
 @Component({
@@ -13,9 +10,6 @@ import { AuthPageLayoutComponent } from '../../../layout/auth-page-layout/auth-p
   imports: [
     RouterModule,
     FormsModule,
-    InputFieldComponent,
-    LabelComponent,
-    ButtonComponent,
     AuthPageLayoutComponent,
   ],
   templateUrl: './new-password.component.html',
@@ -29,6 +23,8 @@ export class NewPasswordComponent {
   token = '';
   newPassword = '';
   confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +37,14 @@ export class NewPasswordComponent {
       this.route.snapshot.queryParamMap.get('reset_token') ||
       this.route.snapshot.queryParamMap.get('reset-password-token') ||
       '';
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   onSubmit() {
