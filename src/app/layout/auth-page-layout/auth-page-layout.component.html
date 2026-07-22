@@ -1,5 +1,5 @@
 <div class="relative bg-white z-1 dark:bg-gray-900 sm:p-0">
-  <div class="grid w-full lg:grid-cols-2 dark:bg-gray-900 min-h-screen">
+  <div class="grid w-full lg:grid-cols-[2fr_3fr] dark:bg-gray-900 min-h-screen">
     
     <!-- LEFT PANEL: Fixed/Sticky to screen height -->
     <div class="hidden lg:block h-screen sticky top-0  bg-[#0a1128]">
@@ -8,9 +8,9 @@
         <path d="M12 2 2 6v6c0 5.5 3.8 10.7 10 12 6.2-1.3 10-6.5 10-12V6l-10-4z"/>
       </svg>
 
-      <div class="flex flex-col px-8 sm:px-12 pt-10 pb-12">
+      <div class="flex flex-col px-8 sm:px-12 pt-10 pb-10 items-center justify-center h-full">
         <!-- Logo -->
-        <div class="flex items-center gap-3">
+        <!-- <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-xl border-2 border-blue-400/60 bg-blue-500/10 flex items-center justify-center">
             <svg class="w-6 h-6 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4z"/>
@@ -20,23 +20,24 @@
             <h1 class="text-xl font-extrabold leading-none text-white">KeyVault <span class="text-blue-400">Pro</span></h1>
             <p class="text-xs text-slate-400 mt-1">Enterprise Key Management</p>
           </div>
-        </div>
+        </div> -->
 
+        <div>
         <!-- Eyebrow -->
-        <p class="mt-10 text-xs font-bold tracking-wider text-blue-400">BUILT FOR KEY HOLDING COMPANIES</p>
+        <p class="text-xs font-bold tracking-wider text-blue-400">BUILT FOR KEY HOLDING COMPANIES</p>
 
         <!-- Headline -->
-        <h2 class="mt-3 text-4xl sm:text-[2.65rem] font-extrabold leading-tight text-white">
+        <h2 class="mt-2 text-4xl font-bold leading-tight text-white">
           Manage every <span class="text-blue-400">key,</span><br />
           Protect every <span class="text-blue-400">trust.</span>
         </h2>
 
-        <p class="mt-4 text-slate-300 text-sm leading-relaxed max-w-md">
+        <p class="mt-2 text-slate-300 text-sm leading-relaxed max-w-md">
           KeyVault Pro helps key holding companies secure, track and manage keys and incidents with complete accountability and real-time visibility across your operations.
         </p>
 
         <!-- Feature list -->
-        <div class="mt-8 space-y-5">
+        <div class="mt-7 space-y-5">
           <div class="flex items-start gap-4">
             <div class="w-11 h-11 shrink-0 rounded-full bg-blue-500/10 border border-blue-400/30 flex items-center justify-center">
               <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -44,8 +45,17 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-white">Complete Accountability</h3>
-              <p class="text-sm text-slate-400 mt-0.5">Track every key movement and access with detailed audit trail.</p>
+              <!-- <h3 class="font-semibold text-white">Complete Accountability</h3> -->
+              <p class="font-medium text-white text-theme-sm ">
+                Complete Accountability              
+              </p>
+                 
+              <!-- <p class="text-sm text-slate-400 mt-0.5">Track every key movement and access with detailed audit trail.</p> -->
+              <p class="text-slate-300 text-theme-xs dark:text-gray-400 mt-0.5">
+                Track every key movement and access with detailed audit trail.
+            
+              </p>
+                 
             </div>
           </div>
 
@@ -55,10 +65,17 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
               </svg>
             </div>
-            <div>
-              <h3 class="font-semibold text-white">Secure by Design</h3>
-              <p class="text-sm text-slate-400 mt-0.5">Enterprise-grade security built specifically for key operations.</p>
-            </div>
+              <div>
+                <p class="font-medium text-white text-theme-sm ">
+                  Secure by Design
+              
+                </p>
+                <p class="text-slate-300 text-theme-xs dark:text-gray-400 mt-0.5">
+                  Enterprise-grade security built specifically for key operations.
+              
+                </p>
+              </div>
+              
           </div>
 
           <div class="flex items-start gap-4">
@@ -68,9 +85,16 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-white">Real-time Visibility</h3>
-              <p class="text-sm text-slate-400 mt-0.5">Instant insights into key activity, incidents and compliance.</p>
-            </div>
+                <p class="font-medium text-white text-theme-sm ">
+                  Real-time Visibility
+              
+                </p>
+                <p class="text-slate-300 text-theme-xs dark:text-gray-400 mt-0.5">
+                  Instant insights into key activity, incidents and compliance.
+              
+                </p>
+              </div>
+              
           </div>
 
           <div class="flex items-start gap-4">
@@ -80,9 +104,16 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-white">Built for Key Holding Companies</h3>
-              <p class="text-sm text-slate-400 mt-0.5">Designed to meet the unique needs of your business and compliance.</p>
-            </div>
+                <p class="font-medium text-white text-theme-sm ">
+                  Built for Key Holding Companies
+
+                </p>
+                <p class="text-slate-300 text-theme-xs dark:text-gray-400 mt-0.5">
+                  Designed to meet the unique needs of your business and compliance.
+              
+                </p>
+              </div>
+              
           </div>
 
           <div class="flex items-start gap-4">
@@ -92,11 +123,17 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-white">Trusted by leading key holding companies</h3>
-              <p class="text-sm text-slate-400 mt-0.5">to protect what matters most.</p>
+              <p class="font-medium text-white text-theme-sm ">                
+                Trusted by leading key holding companies
+              </p>
+              <p class="text-slate-300 text-theme-xs dark:text-gray-400 mt-0.5">
+                to protect what matters most.
+              </p>
             </div>
           </div>
         </div>
+        </div>
+
       </div>
     </div>
 
