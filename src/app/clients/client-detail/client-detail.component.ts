@@ -114,6 +114,21 @@ export class ClientDetailComponent implements OnInit {
     return this.sites.reduce((sum, site) => sum + (site.jobs || 0), 0);
   }
 
+  hexForType(type: string): string {
+    const map: Record<string, string> = {
+      Office: '#3b82f6',
+      Warehouse: '#a855f7',
+      Retail: '#f59e0b',
+      'Distribution Centre': '#fb923c',
+      'Data Centre': '#06b6d4',
+      Storage: '#94a3b8',
+      'Construction Site': '#f97316',
+      'Remote Office': '#14b8a6',
+      Other: '#64748b',
+    };
+    return map[type] || '#94a3b8';
+  }
+
   onSitesSearch(): void {
     this.sitesPage = 1;
     this.applySitesFilter();
