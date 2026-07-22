@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ClientService, Client } from '../../core/services/client.service';
 import { InputFieldComponent } from '../../shared/components/form/input/input-field.component';
 import { LabelComponent } from '../../shared/components/form/label/label.component';
@@ -49,19 +50,55 @@ export class AddClientComponent implements OnInit {
   industries = ['Security Services', 'Commercial Property', 'Logistics & Fleet', 'Corporate Offices', 'Retail Banking'];
 
   loading = false;
+  editMode = false;
+  editingClientId: string | null = null;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private clientService: ClientService,
     private toast: ToastService
   ) {}
 
   ngOnInit(): void {
-    this.generateClientCode();
+    this.route.queryParams.subscribe(params => {
+      if (params['editId']) {
+        this.editMode = true;
+        this.editingClientId = params['editId'];
+        this.loadClient(this.editingClientId as string);
+      } else {
+        this.editMode = false;
+        this.editingClientId = null;
+        this.generateClientCode();
+      }
+    });
   }
 
   private generateClientCode(): void {
     this.clientCode = `CLT-${String(Math.floor(1000 + Math.random() * 9000)).padStart(4, '0')}`;
+  }
+
+  private loadClient(clientId: string): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.clientService.getClientById(orgId, clientId).subscribe((client: Client | undefined) => {
+      if (!client) return;
+      this.clientCode = client.code;
+      this.clientName = client.name;
+      this.email = client.email;
+      this.phone = client.phone || '';
+      this.website = client.website || '';
+      this.region = client.region;
+      this.address = client.address || '';
+      this.industry = client.industry || '';
+      this.vatNumber = client.vatNumber || '';
+      this.registrationNumber = client.registrationNumber || '';
+      this.contactPerson = client.contactPerson || '';
+      this.designation = client.designation || '';
+      this.contactEmail = client.contactEmail || '';
+      this.notes = client.notes || '';
+      this.status = client.status === 'Active' ? 'active' : 'inactive';
+    });
   }
 
   copyClientCode(): void {
@@ -121,8 +158,8 @@ export class AddClientComponent implements OnInit {
 
     this.loading = true;
 
-    const newClient: Client = {
-      id: this.clientCode,
+    const clientData: Client = {
+      id: this.editMode ? (this.editingClientId || '') : this.clientCode,
       code: this.clientCode,
       name: this.clientName,
       email: this.email,
@@ -143,17 +180,31 @@ export class AddClientComponent implements OnInit {
       notes: this.notes || undefined,
     };
 
-    this.clientService.createClient(newClient).subscribe({
-      next: () => {
-        this.loading = false;
-        this.toast.success('Client saved successfully!');
-        setTimeout(() => this.router.navigate(['/clients']), 800);
-      },
-      error: () => {
-        this.loading = false;
-        this.toast.error('Failed to save client. Please try again.');
-      }
-    });
+    if (this.editMode && this.editingClientId) {
+      this.clientService.updateClient(this.editingClientId, clientData).subscribe({
+        next: () => {
+          this.loading = false;
+          this.toast.success('Client updated successfully!');
+          setTimeout(() => this.router.navigate(['/clients']), 800);
+        },
+        error: () => {
+          this.loading = false;
+          this.toast.error('Failed to update client. Please try again.');
+        }
+      });
+    } else {
+      this.clientService.createClient(clientData).subscribe({
+        next: () => {
+          this.loading = false;
+          this.toast.success('Client saved successfully!');
+          setTimeout(() => this.router.navigate(['/clients']), 800);
+        },
+        error: () => {
+          this.loading = false;
+          this.toast.error('Failed to save client. Please try again.');
+        }
+      });
+    }
   }
 
   cancel(): void {
