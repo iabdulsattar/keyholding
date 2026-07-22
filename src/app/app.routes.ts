@@ -13,12 +13,12 @@ export const routes: Routes = [
             loadComponent: () => import('./dashboard/dashboard-shell/dashboard-shell.component').then(m => m.DashboardShellComponent),
             pathMatch: 'full',
             title:
-              'Dashboard | eDOB',
+              'Dashboard | KeyVault Pro',
           },
           {
             path: 'dashboard',
             loadComponent: () => import('./dashboard/dashboard-shell/dashboard-shell.component').then(m => m.DashboardShellComponent),
-            title: 'Dashboard | eDOB'
+            title: 'Dashboard | KeyVault Pro'
           },
           {
             path: 'dob-feed',
@@ -29,19 +29,19 @@ export const routes: Routes = [
             path: 'entries',
             loadComponent: () => import('./dob-feed/entries.component').then(m => m.EntriesComponent),
             canActivate: [authGuard, permissionGuard('entry.view')],
-            title: 'Entries | eDOB'
+            title: 'Entries | KeyVault Pro'
           },
           {
             path: 'entries/:id',
             loadComponent: () => import('./dob-feed/entry-detail/entry-detail.component').then(m => m.EntryDetailComponent),
             canActivate: [authGuard, permissionGuard('entry.view')],
-            title: 'Entry Detail | eDOB'
+            title: 'Entry Detail | KeyVault Pro'
           },
           {
             path: 'create-entry',
             loadComponent: () => import('./dob-feed/create-entry/create-entry.component').then(m => m.CreateEntryComponent),
             canActivate: [authGuard, permissionGuard('entry.create')],
-            title: 'Create Entry | eDOB'
+            title: 'Create Entry | KeyVault Pro'
           },
           {
             path:'calendar',
@@ -112,43 +112,43 @@ export const routes: Routes = [
             path: 'user-management',
             loadComponent: () => import('./user-management/user-management.component').then(m => m.UserManagementComponent),
             canActivate: [authGuard, permissionGuard('admin.users.manage')],
-            title: 'User Management | eDOB'
+            title: 'User Management | KeyVault Pro'
           },
           {
             path: 'users/add-user',
             loadComponent: () => import('./users/add-user/add-user.component').then(m => m.AddUserComponent),
             canActivate: [authGuard, permissionGuard('admin.users.manage')],
-            title: 'Add User | eDOB'
+            title: 'Add User | KeyVault Pro'
           },
           {
             path: 'roles/add-role',
             loadComponent: () => import('./roles/add-role/add-role.component').then(m => m.AddRoleComponent),
             canActivate: [authGuard, permissionGuard('admin.roles.manage')],
-            title: 'Add Role | eDOB'
+            title: 'Add Role | KeyVault Pro'
           },
           {
             path: 'roles/view-role',
             loadComponent: () => import('./roles/view-role/view-role.component').then(m => m.ViewRoleComponent),
             canActivate: [authGuard, permissionGuard('role.view')],
-            title: 'View Role | eDOB'
+            title: 'View Role | KeyVault Pro'
           },
           {
             path: 'roles/deactivate-role',
             loadComponent: () => import('./roles/deactivate-role/deactivate-role.component').then(m => m.DeactivateRoleComponent),
             canActivate: [authGuard, permissionGuard('role.deactivate')],
-            title: 'Deactivate Role | eDOB'
+            title: 'Deactivate Role | KeyVault Pro'
           },
           {
             path: 'roles/reactivate-role',
             loadComponent: () => import('./roles/reactivate-role/reactivate-role.component').then(m => m.ReactivateRoleComponent),
             canActivate: [authGuard, permissionGuard('role.reactivate')],
-            title: 'Reactivate Role | eDOB'
+            title: 'Reactivate Role | KeyVault Pro'
           },
           {
             path: 'roles/delete-role',
             loadComponent: () => import('./roles/delete-role/delete-role.component').then(m => m.DeleteRoleComponent),
             canActivate: [authGuard, permissionGuard('role.delete')],
-            title: 'Delete Role | eDOB'
+            title: 'Delete Role | KeyVault Pro'
           },
           {
             path:'line-chart',
@@ -196,52 +196,52 @@ export const routes: Routes = [
   {
     path:'signin',
     loadComponent: () => import('./auth/pages/sign-in/sign-in.component').then(m => m.SignInComponent),
-    title:'Sign In | eDOB'
+    title:'Sign In | KeyVault Pro'
   },
   {
     path:'login',
     loadComponent: () => import('./auth/pages/sign-in/sign-in.component').then(m => m.SignInComponent),
-    title:'Sign In | eDOB'
+    title:'Sign In | KeyVault Pro'
   },
   {
     path:'activate-account',
     loadComponent: () => import('./auth/pages/activate-account/activate-account.component').then(m => m.ActivateAccountComponent),
-    title:'Activate Your Account | eDOB'
+    title:'Activate Your Account | KeyVault Pro'
   },
   {
     path:'forgot-password',
     loadComponent: () => import('./auth/pages/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
-    title:'Forgot Password | eDOB'
+    title:'Forgot Password | KeyVault Pro'
   },
   {
     path:'forgot-passwordcheck',
     loadComponent: () => import('./auth/pages/forgot-passwordcheck/forgot-passwordcheck.component').then(m => m.ForgotPasswordcheckComponent),
-    title:'Forgot Password | eDOB'
+    title:'Forgot Password | KeyVault Pro'
   },
   {
     path:'confirm-password',
     loadComponent: () => import('./auth/pages/confirm-password/confirm-password.component').then(m => m.ConfirmPasswordComponent),
-    title:'Confirm Password | eDOB'
+    title:'Confirm Password | KeyVault Pro'
   },
   {
     path:'reset-password',
     loadComponent: () => import('./auth/pages/new-password/new-password.component').then(m => m.NewPasswordComponent),
-    title:'Reset Password | eDOB'
+    title:'Reset Password | KeyVault Pro'
   },
   {
     path:'verification',
     loadComponent: () => import('./auth/pages/verification/verification.component').then(m => m.VerificationComponent),
-    title:'Verification | eDOB'
+    title:'Verification | KeyVault Pro'
   },
   {
     path:'subscription-plan',
     loadComponent: () => import('./auth/pages/subscription-plan/subscription-plan.component').then(m => m.SubscriptionPlanComponent),
-    title:'Choose Plan | eDOB'
+    title:'Choose Plan | KeyVault Pro'
   },
   {
     path:'signup',
     loadComponent: () => import('./auth/pages/sign-up/sign-up.component').then(m => m.SignUpComponent),
-    title:'Sign Up | eDOB'
+    title:'Sign Up | KeyVault Pro'
   },
   // error pages
   {

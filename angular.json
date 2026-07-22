@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eDOB": {
+    "KeyVaultPro": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/eDOB",
+            "outputPath": "dist/KeyVaultPro",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -75,10 +75,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "eDOB:build:production"
+              "buildTarget": "KeyVaultPro:build:production"
             },
             "development": {
-              "buildTarget": "eDOB:build:development"
+              "buildTarget": "KeyVaultPro:build:development"
             }
           },
           "defaultConfiguration": "development"
