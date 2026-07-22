@@ -122,6 +122,7 @@ export class AddClientComponent implements OnInit {
     this.loading = true;
 
     const newClient: Client = {
+      id: this.clientCode,
       code: this.clientCode,
       name: this.clientName,
       email: this.email,

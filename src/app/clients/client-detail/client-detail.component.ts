@@ -21,7 +21,7 @@ import { ClientService, Client, KeyRecord, SiteRecord } from '../../core/service
 export class ClientDetailComponent implements OnInit {
   isClientActive = true;
   activeTab = 'overview';
-  clientCode = '';
+  clientId = '';
   client: Client | null = null;
   keys: KeyRecord[] = [];
   sites: SiteRecord[] = [];
@@ -36,7 +36,7 @@ export class ClientDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
   ngOnInit(): void {
-    this.clientCode = this.route.snapshot.paramMap.get('id') || '';
+    this.clientId = this.route.snapshot.paramMap.get('id') || '';
     this.loadClient();
     this.loadKeys();
     this.loadSites();
@@ -44,7 +44,13 @@ export class ClientDetailComponent implements OnInit {
 
   private loadClient(): void {
     this.loading = true;
-    this.clientService.getClientByCode(this.clientCode).subscribe((data: Client | undefined) => {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId || !this.clientId) {
+      this.client = null;
+      this.loading = false;
+      return;
+    }
+    this.clientService.getClientById(orgId, this.clientId).subscribe((data: Client | undefined) => {
       this.client = data || null;
       if (this.client) {
         this.isClientActive = this.client.status === 'Active';
@@ -54,13 +60,13 @@ export class ClientDetailComponent implements OnInit {
   }
 
   private loadKeys(): void {
-    this.clientService.getKeysByClient(this.clientCode).subscribe((data: KeyRecord[]) => {
+    this.clientService.getKeysByClient(this.clientId).subscribe((data: KeyRecord[]) => {
       this.keys = data;
     });
   }
 
   private loadSites(): void {
-    this.clientService.getSitesByClient(this.clientCode).subscribe((data: SiteRecord[]) => {
+    this.clientService.getSitesByClient(this.clientId).subscribe((data: SiteRecord[]) => {
       this.sites = data;
       this.filteredSites = [...this.sites];
     });
@@ -218,11 +224,11 @@ export class ClientDetailComponent implements OnInit {
 
   triggerAction(actionName: string): void {
     if (actionName === 'Add New Key') {
-      this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientCode } });
+      this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId } });
       return;
     }
     if (actionName === 'Add New Site') {
-      this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientCode } });
+      this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientId } });
       return;
     }
     const toast = document.getElementById('toastNotification');

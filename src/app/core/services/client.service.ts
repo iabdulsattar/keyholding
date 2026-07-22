@@ -89,10 +89,19 @@ export class ClientService {
   getClientByCode(code: string): Observable<Client | undefined> {
     const orgId = this.getOrgId();
     if (!orgId) return of(undefined);
-    return this.keyVault.getClientStats(orgId).pipe(
+    return this.keyVault.getClient(orgId, code).pipe(
       map((res: any) => {
-        const clients = res?.data?.clients ?? res?.clients ?? [];
-        return clients.find((c: any) => c.code === code) as Client | undefined;
+        const item = res?.data ?? res;
+        return item ? this.mapClient(item) : undefined;
+      })
+    );
+  }
+
+  getClientById(orgId: string, clientId: string): Observable<Client | undefined> {
+    return this.keyVault.getClient(orgId, clientId).pipe(
+      map((res: any) => {
+        const item = res?.data ?? res;
+        return item ? this.mapClient(item) : undefined;
       })
     );
   }
@@ -135,7 +144,7 @@ export class ClientService {
   private mapClient(item: any): Client {
     return {
       id: item.id ?? '',
-      code: item.code ?? '',
+      code: item.code ?? item.clientCode ?? '',
       name: item.name ?? '',
       email: item.email ?? '',
       region: item.region ?? '',

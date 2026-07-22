@@ -139,7 +139,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 text-xs text-slate-600 font-medium">
-            @for (client of clients; track client.code) {
+            @for (client of clients; track client.id) {
             <tr class="hover:bg-slate-50/50 transition">
               <td class="py-3 px-4"><input type="checkbox" class="row-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white"></td>
               <td class="py-3 px-4 font-semibold text-blue-600 tracking-wide">{{ client.code }}</td>
@@ -152,7 +152,7 @@
               <td class="py-3 px-4 text-slate-500 font-normal">{{ client.created }}</td>
               <td class="py-3 px-4 text-center">
                 <div class="flex items-center justify-center space-x-2 text-slate-400">
-                  <button (click)="viewClient(client.code)" class="hover:text-blue-600 p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button (click)="viewClient(client.id)" class="hover:text-blue-600 p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
                   <button class="hover:text-slate-700 p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
                 </div>
               </td>
