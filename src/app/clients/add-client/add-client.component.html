@@ -12,10 +12,10 @@
             <svg class="w-3 h-3 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <a routerLink="/clients" class="text-blue-600 hover:underline">Clients</a>
             <svg class="w-3 h-3 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <span class="text-slate-500">Add New Client</span>
+            <span class="text-slate-500">{{ editMode ? 'Edit Client' : 'Add New Client' }}</span>
           </div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900 mt-1.5">Add New Client</h2>
-          <p class="text-xs text-slate-500 font-medium mt-0.5">Enter client details and configuration settings.</p>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900 mt-1.5">{{ editMode ? 'Edit Client' : 'Add New Client' }}</h2>
+          <p class="text-xs text-slate-500 font-medium mt-0.5">{{ editMode ? 'Update client details and configuration settings.' : 'Enter client details and configuration settings.' }}</p>
         </div>
         <!-- Action Controls Block -->
         <div class="flex items-center gap-3 self-end sm:self-auto">
@@ -25,7 +25,7 @@
           </button>
           <button type="button" (click)="onSubmit()" [disabled]="loading" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-2.5 text-xs font-semibold shadow-sm transition disabled:opacity-50">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
-            <span>{{ loading ? 'Saving...' : 'Save Client' }}</span>
+            <span>{{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Update Client' : 'Save Client') }}</span>
           </button>
         </div>
       </div>

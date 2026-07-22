@@ -104,7 +104,7 @@ export const routes: Routes = [
             title: 'Add New Site | KeyVault Pro'
           },
           {
-            path: 'sites/view-site',
+            path: 'sites/view-site/:id',
             loadComponent: () => import('./sites/view-site/view-site.component').then(m => m.ViewSiteComponent),
             title: 'Site Details | KeyVault Pro'
           },

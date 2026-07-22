@@ -27,6 +27,7 @@ export interface KeyRecord {
 }
 
 export interface SiteRecord {
+  id: string;
   code: string;
   name: string;
   type: string;
@@ -68,6 +69,13 @@ export class ClientService {
 
   private getOrgId(): string | null {
     return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+  }
+
+  private formatDate(value: any): string {
+    if (!value) return '';
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   listClients(params?: { q?: string; status?: string; region?: string; page?: number; size?: number }): Observable<PaginatedResult<Client>> {
@@ -119,6 +127,43 @@ export class ClientService {
     );
   }
 
+  updateClient(clientId: string, client: Partial<Client>): Observable<Client> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(client as Client);
+    const payload: any = {
+      ...client,
+      status: client.status === 'Active' ? 'ACTIVE' : client.status === 'Inactive' ? 'INACTIVE' : 'PENDING',
+      vatTaxNumber: client.vatNumber,
+    };
+    return this.keyVault.updateClient(orgId, clientId, payload).pipe(
+      map((res: any) => this.mapClient(res?.data ?? res))
+    );
+  }
+
+  deactivateClient(clientId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.deactivateClient(orgId, clientId);
+  }
+
+  reactivateClient(clientId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.reactivateClient(orgId, clientId);
+  }
+
+  getClientStats(): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.getClientStats(orgId);
+  }
+
+  getSiteStats(clientId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.getSiteStats(orgId, clientId);
+  }
+
   getKeysByClient(clientCode: string): Observable<KeyRecord[]> {
     const orgId = this.getOrgId();
     if (!orgId) return of([]);
@@ -141,6 +186,30 @@ export class ClientService {
     );
   }
 
+  getSiteById(orgId: string, siteId: string): Observable<any> {
+    return this.keyVault.getSite(orgId, siteId);
+  }
+
+  updateSite(orgId: string, siteId: string, site: Partial<any>): Observable<any> {
+    return this.keyVault.updateSite(orgId, siteId, site);
+  }
+
+  deactivateSite(orgId: string, siteId: string): Observable<any> {
+    return this.keyVault.deactivateSite(orgId, siteId);
+  }
+
+  reactivateSite(orgId: string, siteId: string): Observable<any> {
+    return this.keyVault.reactivateSite(orgId, siteId);
+  }
+
+  deleteSite(orgId: string, siteId: string): Observable<any> {
+    return this.keyVault.deleteSite(orgId, siteId);
+  }
+
+  createSite(orgId: string, clientId: string, site: any): Observable<any> {
+    return this.keyVault.createSite(orgId, clientId, site);
+  }
+
   private mapClient(item: any): Client {
     return {
       id: item.id ?? '',
@@ -151,7 +220,7 @@ export class ClientService {
       status: item.status === 'INACTIVE' ? 'Inactive' : item.status === 'PENDING' ? 'Pending' : 'Active',
       sites: item.sites ?? 0,
       users: item.users ?? 0,
-      created: item.createdAt ?? item.created ?? '',
+      created: this.formatDate(item.createdAt ?? item.created),
       phone: item.phone ?? item.phoneNumber,
       website: item.website,
       address: item.address,
@@ -166,12 +235,24 @@ export class ClientService {
   }
 
   private mapSite(item: any): SiteRecord {
+    const typeColorMap: Record<string, string> = {
+      Office: 'blue',
+      Warehouse: 'amber',
+      Retail: 'emerald',
+      'Distribution Centre': 'purple',
+      'Data Centre': 'violet',
+      Storage: 'slate',
+      'Construction Site': 'orange',
+      'Remote Office': 'cyan',
+      Other: 'gray',
+    };
     return {
-      code: item.code ?? '',
+      id: item.id ?? '',
+      code: item.siteCode ?? item.code ?? '',
       name: item.name ?? '',
       type: item.siteType ?? item.type ?? '',
-      typeColor: 'blue',
-      address: [item.addressLine1, item.addressLine2, item.city, item.postcode, item.country].filter(Boolean).join(', '),
+      typeColor: typeColorMap[item.siteType ?? item.type ?? ''] || 'blue',
+      address: item.address ?? [item.addressLine1, item.addressLine2, item.city, item.postcode, item.country].filter(Boolean).join(', '),
       contact: item.primaryContactName ?? '',
       status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
       keys: 0,

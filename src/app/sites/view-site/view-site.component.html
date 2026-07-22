@@ -8,31 +8,36 @@
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <a routerLink="/clients" class="hover:underline">Clients</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <a routerLink="/clients" class="hover:underline">Metro Security Services</a>
+            <a routerLink="/clients" class="hover:underline">{{ site?.clientName || 'Client' }}</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <a routerLink="/clients" class="hover:underline">Sites</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <span class="text-slate-500 font-normal">SITE-00012</span>
+            <span class="text-slate-500 font-normal">{{ site?.siteCode || siteId }}</span>
           </div>
           <a routerLink="/clients" class="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1.5 mb-1">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l6-6-6-6"/></svg>
             Back to Sites
           </a>
           <div class="flex items-center gap-3 mt-1">
             <h2 class="text-2xl font-bold text-slate-900">Site Details</h2>
-            <span class="bg-blue-50 text-blue-700 text-xs font-mono px-2.5 py-0.5 rounded-md border border-blue-100 font-semibold">SITE-00012</span>
-            <span class="bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-emerald-100"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active</span>
+            <span class="bg-blue-50 text-blue-700 text-xs font-mono px-2.5 py-0.5 rounded-md border border-blue-100 font-semibold">{{ site?.siteCode || siteId }}</span>
+            <span [class]="isSiteActive ? 'bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-emerald-100' : 'bg-rose-50 text-rose-700 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-rose-100'"><span [class]="isSiteActive ? 'w-1.5 h-1.5 rounded-full bg-emerald-500' : 'w-1.5 h-1.5 rounded-full bg-rose-500'"></span> {{ isSiteActive ? 'Active' : 'Inactive' }}</span>
           </div>
         </div>
-<div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <div class="relative inline-block text-left w-full sm:w-auto">
             <button type="button" (click)="toggleDropdown()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-4 py-2 border border-slate-200 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">Actions <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
             <div id="actionsDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1 font-medium text-sm text-slate-700">
               <a href="#" class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50"><svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> View Audit History</a>
-              <a href="#" class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-rose-600"><svg class="w-4 h-4 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Deactivate Site</a>
+              @if (isSiteActive) {
+                <a (click)="onDeactivateSite(); toggleDropdown()" class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-rose-600 cursor-pointer"><svg class="w-4 h-4 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Deactivate Site</a>
+              } @else {
+                <a (click)="onReactivateSite(); toggleDropdown()" class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-emerald-600 cursor-pointer"><svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg> Activate Site</a>
+              }
+              <a (click)="onDeleteSite(); toggleDropdown()" class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-rose-600 cursor-pointer"><svg class="w-4 h-4 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Delete Site</a>
             </div>
           </div>
-<button type="button" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-4 py-2 border border-slate-200 rounded-xl transition flex items-center justify-center gap-2 shadow-sm"><svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Site</button>
+          <button type="button" (click)="onEditSite()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-4 py-2 border border-slate-200 rounded-xl transition flex items-center justify-center gap-2 shadow-sm"><svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Site</button>
           <button type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-4 py-2 rounded-xl shadow-sm flex items-center justify-center gap-2 transition"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export</button>
         </div>
       </div>
@@ -46,11 +51,11 @@
             <div class="flex items-start gap-6 flex-wrap md:flex-nowrap">
               <div class="w-16 h-16 bg-blue-50 text-blue-600 border border-blue-100 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-building"></i></div>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 w-full text-sm">
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Site Name</span><p class="font-bold text-slate-900">Head Office</p></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Site Code</span><p class="font-mono font-semibold text-slate-800">SITE-00012</p></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Site Type</span><p class="font-semibold text-slate-800">Office</p></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Status</span><p class="font-medium text-emerald-600 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active</p></div>
-                <div class="col-span-2 sm:col-span-4 space-y-1 pt-1 border-t border-slate-50"><span class="text-slate-400 text-xs font-medium">Client</span><p><a routerLink="/clients" class="text-blue-600 hover:underline font-semibold flex items-center gap-1.5">Metro Security Services <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Site Name</span><p class="font-bold text-slate-900">{{ site?.name || '--' }}</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Site Code</span><p class="font-mono font-semibold text-slate-800">{{ site?.siteCode || siteId }}</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Site Type</span><p class="font-semibold text-slate-800">{{ site?.siteType || '--' }}</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Status</span><p class="font-medium flex items-center gap-1.5" [class.text-emerald-600]="isSiteActive" [class.text-rose-600]="!isSiteActive"><span [class]="isSiteActive ? 'w-2 h-2 rounded-full bg-emerald-500' : 'w-2 h-2 rounded-full bg-rose-500'"></span> {{ isSiteActive ? 'Active' : 'Inactive' }}</p></div>
+                <div class="col-span-2 sm:col-span-4 space-y-1 pt-1 border-t border-slate-50"><span class="text-slate-400 text-xs font-medium">Client</span><p><a routerLink="/clients" class="text-blue-600 hover:underline font-semibold flex items-center gap-1.5">{{ site?.clientName || '--' }} <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></p></div>
               </div>
             </div>
           </div>
@@ -59,17 +64,10 @@
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Location</h3>
             <div class="flex items-center justify-between gap-6 flex-wrap md:flex-nowrap">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 w-full text-sm">
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Address</span><p class="font-medium text-slate-800 leading-relaxed">25 Fenchurch Street, Suite 5,<br>London, EC3M 3AY, UK</p></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Storage Location</span><p class="font-medium text-slate-800">Head Office Safe</p><p class="text-xs text-slate-400 font-medium">Cabinet A - Hook 12</p></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Region</span><p class="font-medium text-slate-800">London</p></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Coordinates</span><p class="font-mono text-xs font-semibold text-slate-700">51.5144° N, 0.0889° W</p></div>
-              </div>
-              <div class="w-full md:w-44 h-28 bg-slate-100 rounded-xl border border-slate-200 relative overflow-hidden shrink-0 shadow-inner group cursor-pointer">
-                <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div class="absolute top-1/2 left-1/3 w-full h-0.5 bg-slate-300 transform -rotate-12"></div>
-                <div class="absolute top-1/4 left-0 w-full h-0.5 bg-slate-300 transform rotate-45"></div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-blue-600 drop-shadow animate-bounce"><i class="fa-solid fa-location-dot text-2xl"></i></div>
-                <div class="absolute bottom-0 inset-x-0 bg-slate-900/60 backdrop-blur-[1px] text-[10px] text-white py-1 px-2 font-medium flex items-center justify-between group-hover:bg-slate-900 transition"><span>View Map</span><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Address</span><p class="font-medium text-slate-800 leading-relaxed">{{ site?.address || '--' }}</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">City</span><p class="font-medium text-slate-800">{{ site?.city || '--' }}</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Region</span><p class="font-medium text-slate-800">{{ site?.region || '--' }}</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Country</span><p class="font-medium text-slate-800">{{ site?.country || '--' }}</p></div>
               </div>
             </div>
           </div>
@@ -77,11 +75,11 @@
           <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Site Details</h3>
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 text-sm">
-              <div class="sm:col-span-2 space-y-1"><span class="text-slate-400 text-xs font-medium">Access Instructions</span><p class="font-medium text-slate-700 leading-relaxed">Use main entrance. Reception on the ground floor. Sign in at reception.</p></div>
-              <div class="space-y-1.5"><span class="text-slate-400 text-xs font-medium">Access Schedule</span><div><span class="bg-purple-50 text-purple-700 text-xs font-semibold px-2.5 py-0.5 border border-purple-100 rounded-md">By Appointment Only</span></div><a href="#" class="text-xs text-blue-600 hover:underline font-semibold block pt-0.5">View Details</a></div>
+              <div class="sm:col-span-2 space-y-1"><span class="text-slate-400 text-xs font-medium">Access Instructions</span><p class="font-medium text-slate-700 leading-relaxed">{{ site?.accessInstructions || '--' }}</p></div>
+              <div class="space-y-1.5"><span class="text-slate-400 text-xs font-medium">Access Schedule</span><div><span class="bg-purple-50 text-purple-700 text-xs font-semibold px-2.5 py-0.5 border border-purple-100 rounded-md">{{ site?.accessSchedule || '--' }}</span></div></div>
               <div class="grid grid-cols-2 sm:grid-cols-1 gap-4">
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Security Level</span><div><span class="bg-rose-50 text-rose-600 text-xs font-semibold px-2.5 py-0.5 border border-rose-100 rounded-md">High</span></div></div>
-                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Alarm System</span><p class="font-semibold text-slate-800">Intruder & CCTV</p></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Security Level</span><div><span class="bg-rose-50 text-rose-600 text-xs font-semibold px-2.5 py-0.5 border border-rose-100 rounded-md">{{ site?.securityLevel || '--' }}</span></div></div>
+                <div class="space-y-1"><span class="text-slate-400 text-xs font-medium">Alarm System</span><p class="font-semibold text-slate-800">{{ site?.alarmSystem || '--' }}</p></div>
               </div>
             </div>
           </div>
@@ -93,11 +91,15 @@
               <div class="flex items-start gap-3 bg-slate-50/50 border border-slate-100 rounded-xl p-4 max-w-md">
                 <div class="w-10 h-10 rounded-full bg-slate-200/70 text-slate-600 flex items-center justify-center text-sm shrink-0"><i class="fa-solid fa-user"></i></div>
                 <div class="space-y-1">
-                  <h5 class="font-bold text-slate-900 leading-tight">James Walker</h5>
-                  <p class="text-xs text-slate-500 font-medium">Operations Manager</p>
+                  <h5 class="font-bold text-slate-900 leading-tight">{{ site?.primaryContactName || '--' }}</h5>
+                  <p class="text-xs text-slate-500 font-medium">{{ site?.designation || '--' }}</p>
                   <div class="space-y-1 pt-2 text-xs text-slate-600 font-medium">
-                    <p class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition cursor-pointer"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +44 020 7946 0958</p>
-                    <p class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition cursor-pointer"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> james.walker@metrosecurity.co.uk</p>
+                    @if (site?.phone) {
+                      <p class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition cursor-pointer"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> {{ site.phone }}</p>
+                    }
+                    @if (site?.email) {
+                      <p class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition cursor-pointer"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> {{ site.email }}</p>
+                    }
                   </div>
                 </div>
               </div>
@@ -106,42 +108,9 @@
 
           <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">Attachments <span class="bg-slate-100 text-slate-600 text-[10px] px-1.5 py-0.5 rounded-full font-bold">3</span></h3>
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">Attachments <span class="bg-slate-100 text-slate-600 text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span></h3>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-              <div class="border border-slate-200 rounded-xl overflow-hidden bg-white hover:border-blue-400 transition group flex flex-col justify-between shadow-sm">
-                <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-center h-28 relative overflow-hidden shrink-0">
-                  <div class="absolute inset-0 bg-slate-200 flex items-center justify-center text-slate-400"><i class="fa-regular fa-image text-3xl"></i></div>
-                  <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[0.5px]"><button type="button" class="bg-white text-slate-800 p-2 rounded-xl text-xs shadow-md font-semibold flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition duration-300"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> View</button></div>
-                </div>
-                <div class="p-3 text-xs flex items-center justify-between gap-2 min-w-0">
-                  <div class="min-w-0"><p class="font-semibold text-slate-800 truncate">site_photo.jpg</p><p class="text-[10px] text-slate-400 font-medium">2.4 MB</p></div>
-                  <button type="button" class="text-slate-400 hover:text-blue-600 transition shrink-0 p-1"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                </div>
-              </div>
-
-              <div class="border border-slate-200 rounded-xl overflow-hidden bg-white hover:border-blue-400 transition group flex flex-col justify-between shadow-sm">
-                <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-center h-28 relative shrink-0">
-                  <div class="text-center"><i class="fa-regular fa-file-pdf text-rose-500 text-3xl mb-1 block"></i><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Blueprint</span></div>
-                  <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[0.5px]"><button type="button" class="bg-white text-slate-800 p-2 rounded-xl text-xs shadow-md font-semibold flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition duration-300"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> View</button></div>
-                </div>
-                <div class="p-3 text-xs flex items-center justify-between gap-2 min-w-0">
-                  <div class="min-w-0"><p class="font-semibold text-slate-800 truncate">floor_plan.pdf</p><p class="text-[10px] text-slate-400 font-medium">1.8 MB</p></div>
-                  <button type="button" class="text-slate-400 hover:text-blue-600 transition shrink-0 p-1"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                </div>
-              </div>
-
-              <div class="border border-slate-200 rounded-xl overflow-hidden bg-white hover:border-blue-400 transition group flex flex-col justify-between shadow-sm">
-                <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-center h-28 relative shrink-0">
-                  <div class="text-center"><i class="fa-regular fa-file-pdf text-rose-500 text-3xl mb-1 block"></i><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Plan Doc</span></div>
-                  <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[0.5px]"><button type="button" class="bg-white text-slate-800 p-2 rounded-xl text-xs shadow-md font-semibold flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition duration-300"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> View</button></div>
-                </div>
-                <div class="p-3 text-xs flex items-center justify-between gap-2 min-w-0">
-                  <div class="min-w-0"><p class="font-semibold text-slate-800 truncate">fire_safety_plan.pdf</p><p class="text-[10px] text-slate-400 font-medium">1.2 MB</p></div>
-                  <button type="button" class="text-slate-400 hover:text-blue-600 transition shrink-0 p-1"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                </div>
-              </div>
-
               <div class="border-2 border-dashed border-slate-200 hover:border-blue-400 bg-slate-50/50 rounded-xl p-4 flex flex-col items-center justify-center text-center group cursor-pointer transition relative min-h-[156px]">
                 <input type="file" (change)="handleFileUpload($event)" class="absolute inset-0 opacity-0 cursor-pointer">
                 <div class="w-9 h-9 bg-white border border-slate-100 rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-2 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
@@ -156,40 +125,30 @@
           <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-3">Site Summary</h4>
             <div class="space-y-3 text-xs font-medium text-slate-700">
-              <div class="flex items-center justify-between"><span class="text-slate-400">Total Keys</span> <span class="font-bold text-slate-900 text-sm">48</span></div>
-              <div class="flex items-center justify-between"><span class="text-slate-400">Total Jobs</span> <span class="font-bold text-slate-900 text-sm">86</span></div>
-              <div class="flex items-center justify-between"><span class="text-slate-400">Active Jobs</span> <span class="font-bold text-blue-600 text-sm bg-blue-50 px-2 py-0.5 rounded-md">12</span></div>
-              <div class="h-px bg-slate-100 my-1"></div>
-              <div class="space-y-0.5"><span class="text-slate-400 block text-[11px]">Last Job Completed</span><p class="font-semibold text-slate-800">15 May 2024, 11:20 AM</p></div>
-              <div class="space-y-0.5"><span class="text-slate-400 block text-[11px]">Next Scheduled Job</span><p class="font-semibold text-slate-800 flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 16 May 2024, 09:00 AM</p></div>
+              <div class="flex items-center justify-between"><span class="text-slate-400">Total Keys</span> <span class="font-bold text-slate-900 text-sm">--</span></div>
+              <div class="flex items-center justify-between"><span class="text-slate-400">Total Jobs</span> <span class="font-bold text-slate-900 text-sm">--</span></div>
+              <div class="flex items-center justify-between"><span class="text-slate-400">Active Jobs</span> <span class="font-bold text-blue-600 text-sm bg-blue-50 px-2 py-0.5 rounded-md">--</span></div>
             </div>
           </div>
 
           <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
               <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Access Schedule</h4>
-              <span class="bg-purple-50 text-purple-700 text-[10px] font-bold px-2 py-0.5 border border-purple-100 rounded">By Appointment Only</span>
+              <span class="bg-purple-50 text-purple-700 text-[10px] font-bold px-2 py-0.5 border border-purple-100 rounded">{{ site?.accessSchedule || '--' }}</span>
             </div>
             <div class="space-y-3.5 text-xs font-medium text-slate-700">
               <div class="flex items-start gap-3">
                 <div class="w-6 h-6 rounded bg-slate-50 text-slate-400 flex items-center justify-center text-xs shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                <div class="w-full"><span class="text-slate-400 text-[11px] block">Appointment Required</span><p class="text-slate-800 font-semibold mt-0.5">Yes</p></div>
+                <div class="w-full"><span class="text-slate-400 text-[11px] block">Appointment Required</span><p class="text-slate-800 font-semibold mt-0.5">{{ site?.appointment?.approvalRequiredName ? 'Yes' : 'No' }}</p></div>
               </div>
               <div class="flex items-start gap-3">
                 <div class="w-6 h-6 rounded bg-slate-50 text-slate-400 flex items-center justify-center text-xs shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-                <div class="w-full"><span class="text-slate-400 text-[11px] block">Minimum Notice Required</span><p class="text-slate-800 font-semibold mt-0.5">4 Hours</p></div>
+                <div class="w-full"><span class="text-slate-400 text-[11px] block">Minimum Notice Required</span><p class="text-slate-800 font-semibold mt-0.5">{{ site?.appointment?.minimumNoticeRequired || '--' }}</p></div>
               </div>
               <div class="flex items-start gap-3">
                 <div class="w-6 h-6 rounded bg-slate-50 text-slate-400 flex items-center justify-center text-xs shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-                <div class="w-full"><span class="text-slate-400 text-[11px] block">Approval Required From</span><p class="text-slate-800 font-semibold mt-0.5">James Walker</p></div>
+                <div class="w-full"><span class="text-slate-400 text-[11px] block">Approval Required From</span><p class="text-slate-800 font-semibold mt-0.5">{{ site?.appointment?.approvalRequiredName || '--' }}</p></div>
               </div>
-              <div class="flex items-start gap-3">
-                <div class="w-6 h-6 rounded bg-slate-50 text-slate-400 flex items-center justify-center text-xs shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-                <div class="w-full"><span class="text-slate-400 text-[11px] block">Out of Hours Access</span><p class="text-slate-800 font-semibold mt-0.5 leading-normal">Only with prior approval from the contact</p></div>
-              </div>
-            </div>
-            <div class="pt-2 border-t border-slate-100">
-              <button type="button" class="w-full text-center bg-slate-50 hover:bg-slate-100 text-blue-600 font-bold text-xs py-2.5 rounded-xl border border-slate-200 transition flex items-center justify-center gap-1.5">View Full Schedule & Rules <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
             </div>
           </div>
 
@@ -198,19 +157,8 @@
             <div class="relative pl-5 space-y-5 border-l-2 border-slate-100 ml-2 text-xs">
               <div class="relative">
                 <span class="absolute -left-[27px] top-0.5 bg-white border-2 border-emerald-500 w-3.5 h-3.5 rounded-full flex items-center justify-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span></span>
-                <div class="space-y-0.5"><h5 class="font-bold text-slate-900">Site updated</h5><p class="text-slate-600 font-medium">Address and access instructions updated</p><p class="text-[10px] text-slate-400 font-semibold pt-0.5">14 May 2024, 02:15 PM by <span class="text-slate-500">Faiza Ahmed</span></p></div>
+                <div class="space-y-0.5"><h5 class="font-bold text-slate-900">Site updated</h5><p class="text-slate-600 font-medium">Details updated</p><p class="text-[10px] text-slate-400 font-semibold pt-0.5">--</p></div>
               </div>
-              <div class="relative">
-                <span class="absolute -left-[27px] top-0.5 bg-white border-2 border-blue-500 w-3.5 h-3.5 rounded-full flex items-center justify-center"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span></span>
-                <div class="space-y-0.5"><h5 class="font-bold text-slate-900">Site created</h5><p class="text-slate-600 font-medium">Site was created</p><p class="text-[10px] text-slate-400 font-semibold pt-0.5">10 May 2024, 09:05 AM by <span class="text-slate-500">Faiza Ahmed</span></p></div>
-              </div>
-              <div class="relative">
-                <span class="absolute -left-[27px] top-0.5 bg-white border-2 border-purple-500 w-3.5 h-3.5 rounded-full flex items-center justify-center"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span></span>
-                <div class="space-y-0.5"><h5 class="font-bold text-slate-900">Access rules configured</h5><p class="text-slate-600 font-medium">Access schedule set to <span class="font-bold text-purple-700 bg-purple-50 px-1 py-0.2 rounded">By Appointment Only</span></p><p class="text-[10px] text-slate-400 font-semibold pt-0.5">10 May 2024, 09:10 AM by <span class="text-slate-500">Faiza Ahmed</span></p></div>
-              </div>
-            </div>
-            <div class="pt-2 border-t border-slate-100">
-              <button type="button" class="w-full text-center bg-slate-50 hover:bg-slate-100 text-blue-600 font-bold text-xs py-2.5 rounded-xl border border-slate-200 transition flex items-center justify-center gap-1.5">View Full Audit Log <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
             </div>
           </div>
         </div>

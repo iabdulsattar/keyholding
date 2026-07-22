@@ -32,6 +32,8 @@ export class ClientDetailComponent implements OnInit {
   sitesStatus = 'All';
   sitesType = 'All';
   loading = false;
+  clientStats: any = null;
+  siteStats: any = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
@@ -40,6 +42,21 @@ export class ClientDetailComponent implements OnInit {
     this.loadClient();
     this.loadKeys();
     this.loadSites();
+    this.loadClientStats();
+    this.loadSiteStats();
+  }
+
+  private loadClientStats(): void {
+    this.clientService.getClientStats().subscribe((stats: any) => {
+      this.clientStats = stats?.data ?? stats ?? null;
+    });
+  }
+
+  private loadSiteStats(): void {
+    if (!this.clientId) return;
+    this.clientService.getSiteStats(this.clientId).subscribe((stats: any) => {
+      this.siteStats = stats?.data ?? stats ?? null;
+    });
   }
 
   private loadClient(): void {
@@ -87,6 +104,14 @@ export class ClientDetailComponent implements OnInit {
 
   get sitesShowingEnd(): number {
     return Math.min(this.sitesPage * this.sitesRowsPerPage, this.filteredSites.length);
+  }
+
+  get totalKeys(): number {
+    return this.keys.length;
+  }
+
+  get totalJobs(): number {
+    return this.sites.reduce((sum, site) => sum + (site.jobs || 0), 0);
   }
 
   onSitesSearch(): void {
@@ -200,7 +225,28 @@ export class ClientDetailComponent implements OnInit {
   }
 
   toggleActivationState(): void {
-    this.isClientActive = !this.isClientActive;
+    if (!this.client || !this.clientId) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    if (this.isClientActive) {
+      this.clientService.deactivateClient(this.clientId).subscribe({
+        next: () => {
+          this.isClientActive = false;
+          this.loadClient();
+          this.showToast('Client deactivated successfully');
+        },
+        error: () => this.showToast('Failed to deactivate client')
+      });
+    } else {
+      this.clientService.reactivateClient(this.clientId).subscribe({
+        next: () => {
+          this.isClientActive = true;
+          this.loadClient();
+          this.showToast('Client activated successfully');
+        },
+        error: () => this.showToast('Failed to activate client')
+      });
+    }
   }
 
   showToast(message: string): void {
@@ -231,24 +277,44 @@ export class ClientDetailComponent implements OnInit {
       this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientId } });
       return;
     }
-    const toast = document.getElementById('toastNotification');
-    const toastMessage = document.getElementById('toastMessage');
-    if (toast && toastMessage) {
-      toastMessage.textContent = `Triggering operational event stream: "${actionName}"`;
-      toast.classList.remove('translate-x-[150%]');
-      setTimeout(() => {
-        toast.classList.add('translate-x-[150%]');
-      }, 3500);
+    if (actionName === 'Edit Client') {
+      this.router.navigate(['/clients/add-client'], { queryParams: { editId: this.clientId } });
+      return;
     }
+    if (actionName === 'Export Client Data') {
+      this.exportClientData();
+      return;
+    }
+    if (actionName === 'Refresh Links') {
+      this.loadClient();
+      this.loadKeys();
+      this.loadSites();
+      this.showToast('Data refreshed successfully');
+      return;
+    }
+    this.showToast(`Action "${actionName}" triggered`);
+  }
+
+  private exportClientData(): void {
+    if (!this.client) return;
+    const headers = new Headers();
+    headers.append('Content-Type', 'text/csv');
+    const rows = [
+      ['Code', 'Name', 'Email', 'Region', 'Status', 'Sites', 'Users', 'Created On'],
+      [this.client.code, this.client.name, this.client.email, this.client.region, this.client.status, String(this.client.sites), String(this.client.users), this.client.created]
+    ];
+    const csvContent = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${this.client.code || 'client'}-${this.client.name || 'data'}.csv`;
+    link.click();
+    this.showToast('Client data exported');
   }
 
   triggerRowAction(action: string, rowId: string): void {
     if (action === 'View') {
-      if (rowId.startsWith('SITE-')) {
-        this.router.navigate(['/sites/view-site']);
-      } else {
-        this.router.navigate(['/keys/view-key']);
-      }
+      this.router.navigate(['/keys/view-key']);
       return;
     }
     const toast = document.getElementById('toastNotification');
@@ -260,6 +326,11 @@ export class ClientDetailComponent implements OnInit {
         toast.classList.add('translate-x-[150%]');
       }, 3500);
     }
+  }
+
+  viewSite(siteId: string): void {
+    console.log(`Navigating to view site with ID: ${siteId}`);
+    this.router.navigate(['/sites/view-site', siteId]);
   }
 
   toggleSelectAllRows(masterCheckbox: HTMLInputElement): void {
