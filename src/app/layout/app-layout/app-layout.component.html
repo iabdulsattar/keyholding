@@ -4,7 +4,7 @@
     <app-backdrop></app-backdrop>
   </div>
   <div [class]="containerClasses$ | async" class="flex flex-col h-screen overflow-hidden">
-    <div class="flex-1 overflow-y-auto bg-white p-4 sm:p-6 max-w-full md:p-8 dark:bg-gray-950">
+    <div class="flex-1 overflow-y-auto bg-white pt-6 sm:px-6 max-w-full dark:bg-gray-950">
       <router-outlet></router-outlet>
     </div>
     <app-toast></app-toast>
