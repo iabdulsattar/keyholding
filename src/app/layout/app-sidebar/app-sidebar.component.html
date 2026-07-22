@@ -17,7 +17,7 @@
 >
   <div class="flex-grow overflow-y-auto custom-scrollbar px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
     <!-- Brand Identity -->
-    <div class="flex items-center justify-between gap-3 px-2">
+    <!-- <div class="flex items-center justify-between gap-3 px-2">
       <div class="flex items-center gap-3">
         <div class="bg-blue-600 p-2 rounded-xl text-white flex-shrink-0">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -30,6 +30,16 @@
       <button (click)="sidebarService.toggleExpanded()" class="flex-shrink-0 p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800/60 transition lg:flex hidden" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async)">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
+    </div> -->
+
+    <div>
+      <img
+        class="dark:hidden h-8 px-2"
+        src="/images/logo/logo1.png"
+        alt="Logo"
+        width=""
+        height=""
+      />
     </div>
 
     <!-- Current Company Dropdown -->
@@ -42,10 +52,10 @@
           </div>
           <div class="truncate max-w-[130px]">
             <p class="text-xs font-semibold text-white truncate">Alpha Security Ltd.</p>
-            <p class="text-[10px] text-slate-400 truncate">Key Holding & Security</p>
+            <!-- <p class="text-[10px] text-slate-400 truncate">Key Holding & Security</p> -->
           </div>
         </div>
-        <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg>
+        <!-- <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8m-8 4h8m-8-8h8"/></svg> -->
       </div>
     </div>
 
