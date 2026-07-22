@@ -85,8 +85,8 @@ export class ClientsComponent implements OnInit {
     }
   }
 
-  viewClient(code: string): void {
-    this.router.navigate(['/clients', code]);
+  viewClient(id: string): void {
+    this.router.navigate(['/clients', id]);
   }
 
   goToPage(p: number | string): void {
