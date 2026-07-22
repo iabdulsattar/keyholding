@@ -139,7 +139,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 text-xs text-slate-600 font-medium">
-            @for (client of filteredClients; track client.code) {
+            @for (client of clients; track client.code) {
             <tr class="hover:bg-slate-50/50 transition">
               <td class="py-3 px-4"><input type="checkbox" class="row-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white"></td>
               <td class="py-3 px-4 font-semibold text-blue-600 tracking-wide">{{ client.code }}</td>
@@ -169,27 +169,31 @@
       <!-- Pagination Footer -->
       <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between text-xs text-slate-500 font-medium bg-slate-50/30">
         <div>
-          Showing <span class="text-slate-800 font-semibold">1-{{ filteredClients.length }}</span> of <span class="text-slate-800 font-semibold">{{ filteredClients.length }}</span> clients
+          Showing <span class="text-slate-800 font-semibold">{{ showingStart }}-{{ showingEnd }}</span> of <span class="text-slate-800 font-semibold">{{ totalItems }}</span> clients
         </div>
         <div class="flex items-center space-x-4">
           <div class="flex items-center space-x-1">
-            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:bg-slate-50 transition">
+            <button (click)="prevPage()" [disabled]="page === 0" class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <button class="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center shadow-sm">1</button>
-            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">2</button>
-            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">3</button>
-            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">4</button>
-            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-700 transition">5</button>
-            <button class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:bg-slate-50 transition">
+            @for (p of getPageNumbers(); track p) {
+              @if (p === '...') {
+                <span class="w-8 h-8 flex items-center justify-center text-slate-400">...</span>
+              } @else {
+                <button (click)="goToPage(p)" [class.bg-blue-600]="page === p" [class.text-white]="page === p" [class.bg-white]="page !== p" [class.text-slate-700]="page !== p" [class.border]="page !== p" [class.border-slate-200]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-slate-50 transition">
+                  {{ pageLabel(p) }}
+                </button>
+              }
+            }
+            <button (click)="nextPage()" [disabled]="page >= totalPages - 1" class="w-8 h-8 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
           </div>
           <div class="flex items-center space-x-1.5">
-            <select class="bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700">
-              <option>10 / page</option>
-              <option>25 / page</option>
-              <option>50 / page</option>
+            <select (change)="onPageSizeChange($event)" class="bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700">
+              <option [value]="10" [selected]="pageSize === 10">10 / page</option>
+              <option [value]="25" [selected]="pageSize === 25">25 / page</option>
+              <option [value]="50" [selected]="pageSize === 50">50 / page</option>
             </select>
           </div>
         </div>

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { KeyVaultService } from '../../core/services/keyvault.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-add-site',
@@ -42,9 +45,15 @@ export class AddSiteComponent implements OnInit {
   apptEmail = 'james.walker@metrosecurity.co.uk';
   apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
 
-  constructor() {}
+  private clientId = '';
 
-  ngOnInit(): void {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private toast: ToastService) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.clientId = params['clientId'] || '';
+    });
+  }
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -93,12 +102,62 @@ export class AddSiteComponent implements OnInit {
   }
 
   submitSiteForm(): void {
-    if (this.siteName && this.siteCode && this.siteType && this.address1 && this.city && this.postcode && this.contactName && this.contactPhone && this.contactEmail && this.accessSchedule && this.securityLevel && this.alarmSystem) {
-      alert(`Success! Site "${this.siteName}" has been saved to the database payload structure.`);
-      this.resetSiteForm();
-    } else {
-      alert('Please fill in all required fields.');
+    const accessScheduleMap: Record<string, 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7'> = {
+      'Business Hours': 'BUSINESS_HOURS',
+      'By Appointment Only': 'BY_APPOINTMENT',
+      '24/7': '24_7',
+    };
+    const site: any = {
+      name: this.siteName,
+      siteType: this.siteType,
+      addressLine1: this.address1,
+      addressLine2: this.address2,
+      city: this.city,
+      postcode: this.postcode,
+      country: this.country,
+      primaryContactName: this.contactName,
+      designation: this.designation,
+      phone: this.contactPhone,
+      email: this.contactEmail,
+      altContactName: this.altContactName,
+      altPhone: this.altPhone,
+      accessInstructions: this.accessInstructions,
+      accessSchedule: accessScheduleMap[this.accessSchedule] || 'BUSINESS_HOURS',
+      securityLevel: this.securityLevel,
+      alarmSystem: this.alarmSystem,
+      status: 'ACTIVE',
+    };
+
+    if (site.accessSchedule === 'BY_APPOINTMENT') {
+      site.appointment = {
+        minimumNoticeRequired: this.minNotice,
+        approvalRequiredName: this.approvalContact,
+        approvalRequiredNumber: this.apptPhone,
+        approvalRequiredEmail: this.apptEmail,
+        notes: this.apptNotes,
+      };
     }
+
+    if (!this.clientId) {
+      alert('Missing client context. Please add this site from a client page.');
+      return;
+    }
+
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) {
+      alert('Missing organization context. Please sign in again.');
+      return;
+    }
+
+    this.keyVault.createSite(orgId, this.clientId, site).subscribe({
+      next: () => {
+        this.toast.success('Site saved successfully!');
+        setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+      },
+      error: () => {
+        this.toast.error('Failed to save site. Please try again.');
+      }
+    });
   }
 
   get showPreview(): boolean {

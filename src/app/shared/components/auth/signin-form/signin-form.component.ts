@@ -6,6 +6,7 @@ import { PermissionService, ServiceAccessGrant } from '../../../../core/services
 import { Router } from '@angular/router';
 import { InputFieldComponent } from '../../form/input/input-field.component';
 import { ButtonComponent } from '../../ui/button/button.component';
+import { KeyVaultService } from '../../../../core/services/keyvault.service';
 
 @Component({
   selector: 'app-signin-form',
@@ -24,6 +25,7 @@ export class SigninFormComponent {
     private authService: AuthService,
     private permissionService: PermissionService,
     private router: Router,
+    private keyVault: KeyVaultService,
   ) {}
 
   showPassword = false;
@@ -90,7 +92,7 @@ export class SigninFormComponent {
     }
     this.isLoading = true;
     this.errorMessage = '';
-    this.authService.login({ email: this.email, password: this.password }).subscribe({
+    this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
       next: (res: any) => {
         this.isLoading = false;
         if (res?.challengeToken) {
@@ -182,7 +184,7 @@ export class SigninFormComponent {
       return;
     }
 
-    this.authService.login({ email: this.email, password: this.password }).subscribe({
+    this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
       next: (res) => {
         const data = res as any;
 
@@ -263,13 +265,113 @@ export class SigninFormComponent {
       });
     }
 
+    this.authService.getSession(accessToken).subscribe({
+      next: (session: any) => {
+        const sessionOrgs = session?.organizations ?? [];
+        if (sessionOrgs?.length > 0) {
+          storeOrg(sessionOrgs[0].id, sessionOrgs[0].name);
+        }
+        if (sessionOrgs[0]?.subscription?.active === false) {
+          console.log('Subscription not active — frontend should route to plan-selection page');
+        }
+      },
+      error: () => {
+      }
+    });
+
     this.permissionService.setServiceAccess((data?.serviceAccess as ServiceAccessGrant[]) ?? data?.tokens?.serviceAccess);
 
     const orgRole = orgs?.length > 0 ? orgs[0].role : undefined;
     this.permissionService.setOrgRole(orgRole);
 
-    this.isLoading = false;
-    this.router.navigate(['/']);
+    const hasKeyVaultAccess = (this.permissionService.getServiceAccess() ?? []).some(
+      (g) => g.serviceCode === 'key-vault'
+    );
+
+    const finalizeAndNavigate = () => {
+      this.isLoading = false;
+      this.router.navigate(['/']);
+    };
+
+    if (!hasKeyVaultAccess) {
+      const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+      if (orgId) {
+        this.keyVault.enableService(orgId, 'key-vault', this.email, this.otpCode || '').subscribe({
+          next: () => {
+            this.permissionService.setServiceAccess([
+              ...(this.permissionService.getServiceAccess() ?? []),
+              { serviceCode: 'key-vault', wildcard: false, permissions: [], roles: [] }
+            ]);
+            this.fetchKeyVaultPermissions(accessToken, finalizeAndNavigate);
+          },
+          error: () => {
+            this.permissionService.setServiceAccess([
+              ...(this.permissionService.getServiceAccess() ?? []),
+              { serviceCode: 'key-vault', wildcard: false, permissions: [], roles: [] }
+            ]);
+            this.fetchKeyVaultPermissions(accessToken, finalizeAndNavigate);
+          }
+        });
+      } else {
+        finalizeAndNavigate();
+      }
+    } else {
+      this.fetchKeyVaultPermissions(accessToken, finalizeAndNavigate);
+    }
+  }
+
+  private fetchKeyVaultPermissions(accessToken: string, done: () => void): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) {
+      done();
+      return;
+    }
+
+    let authUserId: string | null = null;
+    try {
+      const payload = JSON.parse(atob(accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      authUserId = payload?.sub ?? payload?.user_id ?? payload?.id ?? null;
+    } catch {
+      authUserId = null;
+    }
+
+    if (!authUserId) {
+      this.authService.me(accessToken).subscribe({
+        next: (profile: any) => {
+          authUserId = profile?.id ?? profile?.userId ?? null;
+          this.loadKeyVaultPermissions(orgId, authUserId, done);
+        },
+        error: () => done()
+      });
+      return;
+    }
+
+    this.loadKeyVaultPermissions(orgId, authUserId, done);
+  }
+
+  private loadKeyVaultPermissions(orgId: string, authUserId: string | null, done: () => void): void {
+    if (!authUserId) {
+      done();
+      return;
+    }
+
+    this.keyVault.getInternalPermissions(authUserId, orgId).subscribe({
+      next: (res: any) => {
+        const permissions = res?.permissions ?? [];
+        const wildcard = !!res?.wildcard;
+        const roles = res?.roles ?? [];
+        this.permissionService.setServiceAccess([
+          {
+            serviceCode: 'key-vault',
+            wildcard,
+            permissions,
+            roles
+          }
+        ]);
+        done();
+      },
+      error: () => done()
+    });
   }
 }
 

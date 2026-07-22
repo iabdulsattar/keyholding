@@ -220,6 +220,7 @@ export class SignupFormComponent {
       acceptedTerms: this.isChecked,
       organizationSlug: this.generateSlug(this.cname),
       organizationName: this.cname.trim(),
+      serviceCode: 'key-vault',
     };
 
     if (this.jtitle.trim()) payload.jobTitle = this.jtitle.trim();

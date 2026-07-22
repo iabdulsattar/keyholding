@@ -26,7 +26,7 @@ export interface SignupRequest {
   employeeCount: string;
   receiveProductUpdates: boolean;
   acceptedTerms: boolean;
-  
+  serviceCode?: string;
 }
 
 export interface SignupResponse {
@@ -61,6 +61,7 @@ export interface SignupResponse {
 export interface LoginRequest {
   email: string;
   password: string;
+  serviceCode?: string;
 }
 
 export interface LoginResponse {

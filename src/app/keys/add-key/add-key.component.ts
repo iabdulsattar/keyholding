@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { KeyVaultService } from '../../core/services/keyvault.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-add-key',
@@ -31,9 +34,15 @@ export class AddKeyComponent implements OnInit {
   keyStatus = 'In Storage';
   fileName = '';
 
-  constructor() {}
+  private clientId = '';
 
-  ngOnInit(): void {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private toast: ToastService) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.clientId = params['clientId'] || '';
+    });
+  }
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -62,23 +71,50 @@ export class AddKeyComponent implements OnInit {
   }
 
   submitKeyForm(): void {
-    const keyObject = {
+    const statusMap: Record<string, string> = {
+      'In Storage': 'IN_STORAGE',
+      'Issued': 'ISSUED',
+      'In Use': 'IN_USE',
+      'Overdue': 'OVERDUE',
+      'Lost / Damaged': 'LOST',
+    };
+
+    const key: any = {
       name: this.keyName,
-      id: this.keyId,
+      code: this.keyId,
       type: this.keyType,
       category: this.keyCategory,
-      client: this.assignClient,
-      site: this.assignSite,
-      storage: this.storageLocation,
+      clientId: this.assignClient,
+      siteId: this.assignSite,
+      storageLocation: this.storageLocation,
       brand: this.keyBrand,
       model: this.keyModel,
       colour: this.keyColour,
       tag: this.keyTag,
-      status: this.keyStatus
+      status: statusMap[this.keyStatus] || 'IN_STORAGE',
+      notes: this.keyNotes,
     };
 
-    alert(`Success! Key "${keyObject.name}" (${keyObject.id}) has been recorded into the secure vault database logs.`);
-    this.resetForm();
+    if (!this.clientId) {
+      alert('Missing client context. Please add this key from a client page.');
+      return;
+    }
+
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) {
+      alert('Missing organization context. Please sign in again.');
+      return;
+    }
+
+    this.keyVault.createKey(orgId, key).subscribe({
+      next: () => {
+        this.toast.success('Key saved successfully!');
+        setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+      },
+      error: () => {
+        this.toast.error('Failed to save key. Please try again.');
+      }
+    });
   }
 
   get showPreview(): boolean {

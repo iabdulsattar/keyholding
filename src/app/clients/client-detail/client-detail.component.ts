@@ -218,11 +218,11 @@ export class ClientDetailComponent implements OnInit {
 
   triggerAction(actionName: string): void {
     if (actionName === 'Add New Key') {
-      this.router.navigate(['/keys/add-key']);
+      this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientCode } });
       return;
     }
     if (actionName === 'Add New Site') {
-      this.router.navigate(['/sites/add-site']);
+      this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientCode } });
       return;
     }
     const toast = document.getElementById('toastNotification');
