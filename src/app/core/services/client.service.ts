@@ -13,10 +13,12 @@ export interface PaginatedResult<T> {
 
 export interface KeyRecord {
   id: string;
+  keyCode: string;
   name: string;
   type: string;
   typeColor: string;
   site: string;
+  siteName: string;
   status: 'In Storage' | 'Issued' | 'In Use' | 'Overdue' | 'Lost';
   statusColor: string;
   storageLocation: string;
@@ -269,16 +271,18 @@ export class ClientService {
       'LOST': 'Lost',
     };
     return {
-      id: item.code ?? item.id ?? '',
+      id: item.id ?? '',
+      keyCode: item.keyCode ?? item.code ?? '',
       name: item.name ?? '',
-      type: item.type ?? '',
+      type: item.keyTypeName ?? item.type ?? '',
       typeColor: 'blue',
       site: item.siteId ?? '',
+      siteName: item.siteName ?? '',
       status: statusMap[item.status] ?? 'In Storage',
       statusColor: 'emerald',
-      storageLocation: item.storageLocation ?? '',
+      storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
       storageDetail: '',
-      assignedTo: '',
+      assignedTo: item.assignedToUserName ?? '',
       lastMovement: '',
       lastMovementTime: '',
     };

@@ -317,7 +317,7 @@
                 @for (key of keys; track key.id) {
                 <tr class="hover:bg-slate-50/50 transition">
                   <td class="py-3.5 pl-5 pr-3"><input type="checkbox" class="row-checkbox accent-blue-600 rounded cursor-pointer" (change)="onRowCheckboxChange($event)"></td>
-                  <td class="py-3.5 px-3 font-semibold text-blue-600 hover:underline cursor-pointer">{{ key.id }}</td>
+                  <td class="py-3.5 px-3 font-semibold text-blue-600 hover:underline cursor-pointer">{{ key.keyCode }}</td>
                   <td class="py-3.5 px-3 inline-flex items-center space-x-2">
                     <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span class="font-bold text-slate-900">{{ key.name }}</span>
@@ -325,7 +325,7 @@
                   <td class="py-3.5 px-3">
                     <span [class]="'bg-' + key.typeColor + '-50 text-' + key.typeColor + '-700 px-2 py-0.5 rounded text-[10px] font-bold'">{{ key.type }}</span>
                   </td>
-                  <td class="py-3.5 px-3 text-slate-600">{{ key.site }}</td>
+                  <td class="py-3.5 px-3 text-slate-600">{{ key.siteName }}</td>
                   <td class="py-3.5 px-3">
                     <span [class]="'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700' + (key.status !== 'In Use' && key.status !== 'Overdue' && key.status !== 'Lost' ? ' border border-' + key.statusColor + '-100' : '') + ' px-2 py-0.5 rounded-full text-[10px] font-bold'">● {{ key.status }}</span>
                   </td>

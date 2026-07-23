@@ -47,30 +47,68 @@
                 <label class="text-xs font-semibold text-slate-600">Key ID / Reference *</label>
                 <input type="text" [(ngModel)]="keyId" name="keyId" required placeholder="e.g. KEY-000157" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
-              <div class="space-y-1.5">
+                <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Type *</label>
-                <select [(ngModel)]="keyType" name="keyType" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select key type</option>
-                  <option *ngFor="let t of keyTypes" [value]="t.id">{{ t.name }}</option>
-                  <option value="__create__">+ Create new...</option>
-                </select>
-                <div *ngIf="creatingType" class="flex gap-2 mt-2">
-                  <input type="text" [(ngModel)]="newTypeName" name="newTypeName" placeholder="New type name" class="flex-1 bg-white border border-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <div class="search-wrap">
+                  <div class="ssr-trigger" [class.open]="openDropdown === 'type'" (click)="toggleDropdown('type')">
+                    <span [class.placeholder]="!getSelectedTypeName()">{{ getSelectedTypeName() || 'Select key type' }}</span>
+                    <span *ngIf="typeDropdownLoading" class="spinner" style="width:0.875rem;height:0.875rem;border-width:1.5px;"></span>
+                    <svg *ngIf="!typeDropdownLoading" class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'type'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <div class="dropdown-panel" *ngIf="openDropdown === 'type'">
+                    <div class="search-wrap">
+                      <input type="text" [(ngModel)]="typeSearch" placeholder="Search key types..." (input)="onTypeSearch($any($event.target).value)">
+                    </div>
+                    <div class="options-list">
+                      <div *ngIf="typeDropdownLoading" class="empty-state"><span class="spinner"></span> Loading...</div>
+                      <div *ngIf="!typeDropdownLoading" class="option-item" *ngFor="let t of filteredKeyTypes" [class.selected]="keyType === t.id" (click)="selectType(t)">
+                        <span class="option-icon type-icon" [style.background]="getTypeIconColor(t)">{{ getInitials(t.name) }}</span>
+                        <span>{{ t.name }}</span>
+                      </div>
+                      <div *ngIf="!typeDropdownLoading && !filteredKeyTypes.length" class="empty-state">No key types found</div>
+                      <div *ngIf="!typeDropdownLoading" class="create-item" (click)="creatingType = true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        {{ typeSearch ? 'Create "' + typeSearch + '"' : 'Create new key type...' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="creatingType" class="create-row">
+                  <input type="text" [(ngModel)]="newTypeName" name="newTypeName" placeholder="New type name">
                   <button type="button" (click)="createKeyType()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
                   <button type="button" (click)="creatingType = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
                 </div>
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-              <div class="space-y-1.5">
+                <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Category *</label>
-                <select [(ngModel)]="keyCategory" name="keyCategory" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select category</option>
-                  <option *ngFor="let c of keyCategories" [value]="c.id">{{ c.name }}</option>
-                  <option value="__create__">+ Create new...</option>
-                </select>
-                <div *ngIf="creatingCategory" class="flex gap-2 mt-2">
-                  <input type="text" [(ngModel)]="newCategoryName" name="newCategoryName" placeholder="New category name" class="flex-1 bg-white border border-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <div class="search-wrap">
+                  <div class="ssr-trigger" [class.open]="openDropdown === 'category'" (click)="toggleDropdown('category')">
+                    <span [class.placeholder]="!getSelectedCategoryName()">{{ getSelectedCategoryName() || 'Select category' }}</span>
+                    <span *ngIf="categoryDropdownLoading" class="spinner" style="width:0.875rem;height:0.875rem;border-width:1.5px;"></span>
+                    <svg *ngIf="!categoryDropdownLoading" class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'category'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <div class="dropdown-panel" *ngIf="openDropdown === 'category'">
+                    <div class="search-wrap">
+                      <input type="text" [(ngModel)]="categorySearch" placeholder="Search categories..." (input)="onCategorySearch($any($event.target).value)">
+                    </div>
+                    <div class="options-list">
+                      <div *ngIf="categoryDropdownLoading" class="empty-state"><span class="spinner"></span> Loading...</div>
+                      <div *ngIf="!categoryDropdownLoading" class="option-item" *ngFor="let c of filteredKeyCategories" [class.selected]="keyCategory === c.id" (click)="selectCategory(c)">
+                        <span class="option-icon" [style.background]="getCategoryIconColor(c)">{{ getInitials(c.name) }}</span>
+                        <span>{{ c.name }}</span>
+                      </div>
+                      <div *ngIf="!categoryDropdownLoading && !filteredKeyCategories.length" class="empty-state">No categories found</div>
+                      <div *ngIf="!categoryDropdownLoading" class="create-item" (click)="creatingCategory = true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        {{ categorySearch ? 'Create "' + categorySearch + '"' : 'Create new category...' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="creatingCategory" class="create-row">
+                  <input type="text" [(ngModel)]="newCategoryName" name="newCategoryName" placeholder="New category name">
                   <button type="button" (click)="createKeyCategory()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
                   <button type="button" (click)="creatingCategory = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
                 </div>
@@ -91,29 +129,56 @@
                   <option value="">Select client</option>
                   <option *ngFor="let c of clients" [value]="c.id">{{ c.name }}</option>
                 </select>
+                <div *ngIf="loadingClients" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading clients...</div>
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Site *</label>
-                <select [(ngModel)]="assignSite" name="assignSite" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select site</option>
-                  <option *ngFor="let s of sites" [value]="s.id">{{ s.name }}</option>
-                  <option value="__create__">+ Create new...</option>
-                </select>
-                <div *ngIf="creatingSite" class="flex gap-2 mt-2">
-                  <input type="text" [(ngModel)]="newSiteName" name="newSiteName" placeholder="New site name" class="flex-1 bg-white border border-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <button type="button" (click)="createSite()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
-                  <button type="button" (click)="creatingSite = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
+                <div class="search-wrap">
+                  <div class="ssr-trigger" [class.open]="openDropdown === 'site'" (click)="toggleDropdown('site')">
+                    <span [class.placeholder]="!getSelectedSiteName()">{{ getSelectedSiteName() || 'Select site' }}</span>
+                    <svg class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'site'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <div class="dropdown-panel" *ngIf="openDropdown === 'site'">
+                    <div class="search-wrap">
+                      <input type="text" [(ngModel)]="siteSearch" placeholder="Search sites..." (input)="onSiteSearch($any($event.target).value)">
+                    </div>
+                    <div class="options-list">
+                      <div class="option-item" *ngFor="let s of filteredSites" [class.selected]="assignSite === s.id" (click)="selectSite(s)">
+                        <span class="option-icon" [style.background]="s.typeColor || '#64748b'">{{ getInitials(s.name) }}</span>
+                        <span>{{ s.name }}</span>
+                      </div>
+                      <div class="empty-state" *ngIf="!filteredSites.length">No sites found</div>
+                    </div>
+                  </div>
                 </div>
+                <div *ngIf="loadingSites" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading sites...</div>
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Storage Location *</label>
-                <select [(ngModel)]="storageLocation" name="storageLocation" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select storage location</option>
-                  <option *ngFor="let loc of storageLocations" [value]="loc.id">{{ loc.name }}</option>
-                  <option value="__create__">+ Create new...</option>
-                </select>
-                <div *ngIf="creatingStorageLocation" class="flex gap-2 mt-2">
-                  <input type="text" [(ngModel)]="newStorageLocationName" name="newStorageLocationName" placeholder="New location name" class="flex-1 bg-white border border-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <div class="search-wrap">
+                  <div class="ssr-trigger" [class.open]="openDropdown === 'storage'" (click)="toggleDropdown('storage')">
+                    <span [class.placeholder]="!getSelectedStorageName()">{{ getSelectedStorageName() || 'Select storage location' }}</span>
+                    <svg class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'storage'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <div class="dropdown-panel" *ngIf="openDropdown === 'storage'">
+                    <div class="search-wrap">
+                      <input type="text" [(ngModel)]="storageLocationSearch" placeholder="Search locations..." (input)="onLocationSearch($any($event.target).value)">
+                    </div>
+                    <div class="options-list">
+                      <div class="option-item" *ngFor="let loc of filteredStorageLocations" [class.selected]="storageLocation === loc.id" (click)="selectStorageLocation(loc)">
+                        <span class="option-icon" style="background: #6366f1;">{{ getInitials(loc.name) }}</span>
+                        <span>{{ loc.name }}</span>
+                      </div>
+                      <div class="empty-state" *ngIf="!filteredStorageLocations.length">No locations found</div>
+                      <div class="create-item" (click)="creatingStorageLocation = true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        {{ storageLocationSearch ? 'Create "' + storageLocationSearch + '"' : 'Create new location...' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="creatingStorageLocation" class="create-row">
+                  <input type="text" [(ngModel)]="newStorageLocationName" name="newStorageLocationName" placeholder="New location name">
                   <button type="button" (click)="createStorageLocation()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
                   <button type="button" (click)="creatingStorageLocation = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
                 </div>
