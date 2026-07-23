@@ -250,8 +250,9 @@ export class UserManagementComponent implements OnInit {
     this.permissionLoading = true;
     this.errorMessage = '';
     this.keyVault.listPermissionsGrouped(orgId).subscribe({
-      next: (data: any) => {
-        const mapped = this.mapGroupedPermissions(data);
+      next: (res: any) => {
+        const payload = res?.data ?? res;
+        const mapped = this.mapGroupedPermissions(payload);
         this.permissionGroups = mapped;
         this.permissionLoading = false;
       },
@@ -367,6 +368,17 @@ export class UserManagementComponent implements OnInit {
         else if (parsed === 2) this.loadPermissions();
       }
     }
+    this.route.queryParams.subscribe(params => {
+      const tab = params['tab'];
+      if (tab !== null) {
+        const parsed = parseInt(tab, 10);
+        if (parsed === 1 || parsed === 2) {
+          this.activeTab = parsed;
+          if (parsed === 1) this.loadRoles();
+          else if (parsed === 2) this.loadPermissions();
+        }
+      }
+    });
     this.authService.getUserId().subscribe({
       next: (id) => (this.currentUserId = id),
       error: () => (this.currentUserId = null),

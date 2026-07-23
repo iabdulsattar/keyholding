@@ -13,7 +13,7 @@ type NavItem = {
   path?: string;
   new?: boolean;
   permissions?: string[];
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: { name: string; path: string; queryParams?: Record<string, any>; pro?: boolean; new?: boolean }[];
 };
 
 @Component({
@@ -42,8 +42,8 @@ export class AppSidebarComponent implements OnInit {
       permissions: ['admin.users.manage', 'admin.roles.manage'],
       subItems: [
         { name: "Users", path: "/user-management" },
-        { name: "Roles", path: "/user-management?tab=1" },
-        { name: "Permissions", path: "/user-management?tab=2" },
+        { name: "Roles", path: "/user-management", queryParams: { tab: 1 } },
+        { name: "Permissions", path: "/user-management", queryParams: { tab: 2 } },
       ],
     },
   ];
@@ -110,8 +110,18 @@ export class AppSidebarComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  isActive(path: string): boolean {
-    return this.router.url === path;
+  isActive(path: string, queryParams?: Record<string, any>): boolean {
+    const currentPath = this.router.url.split('?')[0];
+    if (currentPath !== path) return false;
+    
+    const currentQueryString = this.router.url.split('?')[1] || '';
+    const currentParams = new URLSearchParams(currentQueryString);
+    
+    if (!queryParams || Object.keys(queryParams).length === 0) {
+      return currentQueryString === '';
+    }
+    
+    return Object.entries(queryParams).every(([key, value]) => currentParams.get(key) === String(value));
   }
 
   isNavVisible(item: NavItem): boolean {

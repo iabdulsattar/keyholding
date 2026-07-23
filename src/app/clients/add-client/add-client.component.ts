@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ClientService, Client } from '../../core/services/client.service';
-import { InputFieldComponent } from '../../shared/components/form/input/input-field.component';
-import { LabelComponent } from '../../shared/components/form/label/label.component';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
@@ -16,8 +14,6 @@ import { ToastService } from '../../core/services/toast.service';
     CommonModule,
     RouterModule,
     FormsModule,
-    InputFieldComponent,
-    LabelComponent,
   ],
   templateUrl: './add-client.component.html',
   styles: [`
@@ -69,13 +65,8 @@ export class AddClientComponent implements OnInit {
       } else {
         this.editMode = false;
         this.editingClientId = null;
-        this.generateClientCode();
       }
     });
-  }
-
-  private generateClientCode(): void {
-    this.clientCode = `CLT-${String(Math.floor(1000 + Math.random() * 9000)).padStart(4, '0')}`;
   }
 
   private loadClient(clientId: string): void {
@@ -98,12 +89,6 @@ export class AddClientComponent implements OnInit {
       this.contactEmail = client.contactEmail || '';
       this.notes = client.notes || '';
       this.status = client.status === 'Active' ? 'active' : 'inactive';
-    });
-  }
-
-  copyClientCode(): void {
-    navigator.clipboard.writeText(this.clientCode).then(() => {
-      this.toast.success('Client code copied to clipboard!');
     });
   }
 
@@ -159,8 +144,8 @@ export class AddClientComponent implements OnInit {
     this.loading = true;
 
     const clientData: Client = {
-      id: this.editMode ? (this.editingClientId || '') : this.clientCode,
-      code: this.clientCode,
+      id: this.editMode ? (this.editingClientId || '') : '',
+      code: this.editMode ? (this.clientCode || '') : '',
       name: this.clientName,
       email: this.email,
       region: this.region,

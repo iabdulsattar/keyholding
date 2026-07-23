@@ -56,7 +56,7 @@ export class StatisticsChartComponent implements AfterViewInit {
   ];
 
   public chart: ApexChart = {
-    fontFamily: 'Outfit, sans-serif',
+    fontFamily: 'Inter, sans-serif',
     height: 310,
     type: 'area',
     toolbar: { show: false },

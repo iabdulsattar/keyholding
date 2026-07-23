@@ -24,6 +24,12 @@ export class ClientDetailComponent implements OnInit {
   clientId = '';
   client: Client | null = null;
   keys: KeyRecord[] = [];
+  filteredKeys: KeyRecord[] = [];
+  keysPage = 1;
+  keysRowsPerPage = 8;
+  keysSearch = '';
+  keysStatus = 'All';
+  keysType = 'All';
   sites: SiteRecord[] = [];
   filteredSites: SiteRecord[] = [];
   sitesPage = 1;
@@ -79,6 +85,7 @@ export class ClientDetailComponent implements OnInit {
   private loadKeys(): void {
     this.clientService.getKeysByClient(this.clientId).subscribe((data: KeyRecord[]) => {
       this.keys = data;
+      this.filteredKeys = [...this.keys];
     });
   }
 
@@ -108,6 +115,86 @@ export class ClientDetailComponent implements OnInit {
 
   get totalKeys(): number {
     return this.keys.length;
+  }
+
+  get keysPaginated(): KeyRecord[] {
+    const start = (this.keysPage - 1) * this.keysRowsPerPage;
+    return this.filteredKeys.slice(start, start + this.keysRowsPerPage);
+  }
+
+  get keysTotalPages(): number {
+    return Math.ceil(this.filteredKeys.length / this.keysRowsPerPage);
+  }
+
+  get keysShowingStart(): number {
+    return this.filteredKeys.length === 0 ? 0 : (this.keysPage - 1) * this.keysRowsPerPage + 1;
+  }
+
+  get keysShowingEnd(): number {
+    return Math.min(this.keysPage * this.keysRowsPerPage, this.filteredKeys.length);
+  }
+
+  get keyStatuses(): string[] {
+    const statuses = Array.from(new Set(this.keys.map(k => k.status)));
+    return ['All', ...statuses.sort()];
+  }
+
+  get keyTypes(): string[] {
+    const types = Array.from(new Set(this.keys.map(k => k.type)));
+    return ['All', ...types.sort()];
+  }
+
+  onKeysSearch(): void {
+    this.keysPage = 1;
+    this.applyKeysFilter();
+  }
+
+  onKeysStatusChange(): void {
+    this.keysPage = 1;
+    this.applyKeysFilter();
+  }
+
+  onKeysTypeChange(): void {
+    this.keysPage = 1;
+    this.applyKeysFilter();
+  }
+
+  private applyKeysFilter(): void {
+    const q = this.keysSearch.toLowerCase().trim();
+    this.filteredKeys = this.keys.filter(item => {
+      const matchesSearch = item.keyCode.toLowerCase().includes(q) ||
+                            item.name.toLowerCase().includes(q) ||
+                            item.siteName.toLowerCase().includes(q) ||
+                            item.assignedTo.toLowerCase().includes(q) ||
+                            item.storageLocation.toLowerCase().includes(q);
+      const matchesStatus = this.keysStatus === 'All' || item.status === this.keysStatus;
+      const matchesType = this.keysType === 'All' || item.type === this.keysType;
+      return matchesSearch && matchesStatus && matchesType;
+    });
+  }
+
+  keysPreviousPage(): void {
+    if (this.keysPage > 1) {
+      this.keysPage--;
+    }
+  }
+
+  keysNextPage(): void {
+    if (this.keysPage < this.keysTotalPages) {
+      this.keysPage++;
+    }
+  }
+
+  keysGoToPage(page: number): void {
+    if (page >= 1 && page <= this.keysTotalPages) {
+      this.keysPage = page;
+    }
+  }
+
+  onKeysRowsPerPageChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.keysRowsPerPage = parseInt(select.value);
+    this.keysPage = 1;
   }
 
   get totalJobs(): number {
@@ -329,7 +416,7 @@ export class ClientDetailComponent implements OnInit {
 
   triggerRowAction(action: string, rowId: string): void {
     if (action === 'View') {
-      this.router.navigate(['/keys/view-key']);
+      this.router.navigate(['/keys/view-key', rowId]);
       return;
     }
     const toast = document.getElementById('toastNotification');

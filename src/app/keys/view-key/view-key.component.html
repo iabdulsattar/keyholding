@@ -161,13 +161,27 @@
               </div>
             </div>
             <div *ngIf="isAttachmentsActive" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-              <h4 class="text-sm font-bold text-slate-900 mb-4">Files & Blueprints</h4>
-              <div class="grid grid-cols-3 gap-4">
-                <div class="border border-slate-200 rounded-xl p-3 flex items-center gap-3">
-                  <svg class="w-6 h-6 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  <div class="min-w-0 text-xs"><p class="font-bold truncate">Permit_SignOff.pdf</p><p class="text-slate-400">1.2 MB</p></div>
-                </div>
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="text-sm font-bold text-slate-900">Files & Blueprints</h4>
+                <label class="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg cursor-pointer border border-blue-100 hover:bg-blue-100 transition">
+                  Upload
+                  <input type="file" class="hidden" (change)="onAttachmentSelect($event)">
+                </label>
               </div>
+              <div *ngIf="attachmentError" class="text-xs text-rose-600 mb-3">{{ attachmentError }}</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="!attachmentsLoading">
+                <div class="border border-slate-200 rounded-xl p-3 flex items-center gap-3" *ngFor="let a of attachments">
+                  <img *ngIf="isImage(a.contentType)" [src]="a.storagePath" class="w-10 h-10 rounded-lg object-cover border border-slate-100">
+                  <svg *ngIf="!isImage(a.contentType)" class="w-6 h-6 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <div class="min-w-0 text-xs flex-1">
+                    <p class="font-bold truncate">{{ a.fileName }}</p>
+                    <p class="text-slate-400">{{ formatSize(a.sizeBytes) }}</p>
+                  </div>
+                  <button (click)="deleteAttachment(a.id || '')" class="text-[11px] text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-md hover:bg-rose-50 transition">Delete</button>
+                </div>
+                <div class="border border-dashed border-slate-200 rounded-xl p-3 flex items-center justify-center text-xs text-slate-400" *ngIf="!attachments.length">No attachments found</div>
+              </div>
+              <div class="text-xs text-slate-400" *ngIf="attachmentsLoading">Loading attachments...</div>
             </div>
             <div *ngIf="isNotesActive" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
               <h4 class="text-sm font-bold text-slate-900 mb-2">Internal Staff Notes</h4>
@@ -180,11 +194,12 @@
                 <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Image & Documents</h4>
               </div>
               <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-center h-32 relative group overflow-hidden shadow-inner">
-                <svg class="w-10 h-10 text-slate-300 group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                <span class="absolute right-2 bottom-2 bg-slate-900/60 backdrop-blur-xs text-white text-[9px] px-1.5 py-0.5 rounded font-mono">MASTER-IMG</span>
+                <img *ngIf="attachments.length && isImage(attachments[0].contentType)" [src]="attachments[0].storagePath" class="w-full h-full object-cover">
+                <svg *ngIf="!attachments.length || !isImage(attachments[0].contentType)" class="w-10 h-10 text-slate-300 group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                <span class="absolute right-2 bottom-2 bg-slate-900/60 backdrop-blur-xs text-white text-[9px] px-1.5 py-0.5 rounded font-mono">{{ attachmentSidebarLabel }}</span>
               </div>
               <div class="flex items-center justify-between text-xs font-medium pt-1">
-                <span class="text-slate-400 flex items-center gap-1"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 3 attachments</span>
+                <span class="text-slate-400 flex items-center gap-1"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> {{ attachments.length }} attachments</span>
                 <button (click)="switchTab('attachments')" class="text-blue-600 hover:underline font-bold">View All</button>
               </div>
             </div>

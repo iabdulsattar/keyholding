@@ -1,5 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
-layer(base);
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-700-normal.woff2') format('woff2');
+}
 
 @import "tailwindcss";
 @import "swiper/css/bundle";
@@ -9,7 +35,7 @@ layer(base);
 
 @theme {
   --font-*: initial;
-  --font-outfit: Outfit, sans-serif;
+  --font-outfit: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
@@ -178,9 +204,7 @@ layer(base);
 @layer base {
   *,
   ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
+  ::before {
     border-color: var(--color-gray-200, currentColor);
   }
   button:not(:disabled),
@@ -189,6 +213,9 @@ layer(base);
   }
   body {
     @apply relative font-normal font-outfit z-1 bg-gray-50;
+  }
+  input, select, textarea, button {
+    font-family: inherit;
   }
 }
 

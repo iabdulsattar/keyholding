@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { CommonModule } from '@angular/common';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
@@ -11,13 +11,8 @@ import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
-  imports: [
-    CommonModule,
-    RouterModule,
-    AppSidebarComponent,
-    BackdropComponent,
-    ToastComponent
-  ],
+  standalone: true,
+  imports: [CommonModule, RouterModule, AppSidebarComponent, BackdropComponent, ToastComponent],
   templateUrl: './app-layout.component.html',
   host: {
     class: 'h-full ',

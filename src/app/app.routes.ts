@@ -71,7 +71,7 @@ export const routes: Routes = [
             title: 'Add New Key | KeyVault Pro'
           },
           {
-            path: 'keys/view-key',
+            path: 'keys/view-key/:id',
             loadComponent: () => import('./keys/view-key/view-key.component').then(m => m.ViewKeyComponent),
             title: 'View Key Details | KeyVault Pro'
           },

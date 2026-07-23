@@ -97,7 +97,8 @@ export class AddRoleComponent implements OnInit {
     if (!orgId) return;
 
     this.keyVault.listPermissions(orgId).subscribe({
-      next: (perms) => {
+      next: (res: any) => {
+        const perms = res?.data ?? res;
         this.groups = this.groupPermissions(perms);
         this.loadRole(this.roleId!);
       },
@@ -113,7 +114,8 @@ export class AddRoleComponent implements OnInit {
     if (!orgId) return;
 
     this.keyVault.getRole(orgId, id).subscribe({
-      next: (role: any) => {
+      next: (res: any) => {
+        const role = res?.data ?? res;
         this.roleName = role.name || '';
         this.roleDesc = role.description || '';
         this.status = role.active ? 'active' : 'inactive';
@@ -138,7 +140,8 @@ export class AddRoleComponent implements OnInit {
     if (!orgId) return;
 
     this.keyVault.listPermissions(orgId).subscribe({
-      next: (perms) => {
+      next: (res: any) => {
+        const perms = res?.data ?? res;
         this.groups = this.groupPermissions(perms);
       },
       error: () => {

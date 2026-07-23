@@ -129,8 +129,8 @@ export class ViewRoleComponent implements OnInit {
     if (!this.orgId) return;
     this.loading = true;
     this.keyVault.getRole(this.orgId, id).subscribe({
-      next: (data: any) => {
-        this.role = data;
+      next: (res: any) => {
+        this.role = res?.data ?? res;
         this.loading = false;
         this.updateStats();
       },
@@ -151,7 +151,8 @@ export class ViewRoleComponent implements OnInit {
   private loadPermissions(): void {
     if (!this.orgId) return;
     this.keyVault.listPermissionsGrouped(this.orgId).subscribe({
-      next: (grouped: PermissionsGrouped) => {
+      next: (res: any) => {
+        const grouped = res?.data ?? res;
         this.permissionGroups = this.mapPermissionGroups(grouped);
         this.updateStats();
       },

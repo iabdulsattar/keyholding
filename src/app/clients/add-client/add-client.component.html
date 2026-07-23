@@ -42,108 +42,98 @@
             <h3 class="text-xs font-bold text-slate-900 tracking-wider uppercase border-slate-100 pb-0">1. Client Information</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Client Code (Readonly with Copy) -->
-              <div>
-                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Client Code (Auto Generated) <span class="text-red-500">*</span></label>
-                <div class="relative flex rounded-xl border border-slate-200 bg-slate-50">
-                  <input type="text" [value]="clientCode" readonly class="w-full h-11 bg-transparent px-3.5 py-2 text-xs font-semibold text-blue-600 tracking-wide focus:outline-none">
-                  <button type="button" (click)="copyClientCode()" class="px-3 border-l border-slate-200 hover:bg-slate-100/80 rounded-r-xl transition text-slate-400 hover:text-slate-600">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                  </button>
-                </div>
-              </div>
               <!-- Client Name -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Client Name <span class="text-red-500">*</span></app-label>
-                <app-input-field type="text" [(value)]="clientName" placeholder="Enter client name" className="w-full" required />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Client Name <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="clientName" name="clientName" required placeholder="Enter client name" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Email Input -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Email <span class="text-red-500">*</span></app-label>
-                <app-input-field type="email" [(value)]="email" placeholder="Enter email address" className="w-full" required />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Email <span class="text-red-500">*</span></label>
+                <input type="email" [(ngModel)]="email" name="email" required placeholder="Enter email address" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+              </div>
+              <!-- Phone -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Phone</label>
+                <input type="text" [(ngModel)]="phone" name="phone" placeholder="Enter phone number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Phone -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Phone</app-label>
-                <app-input-field type="text" [(value)]="phone" placeholder="Enter phone number" className="w-full" />
-              </div>
               <!-- Website -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Website</app-label>
-                <app-input-field type="url" [(value)]="website" placeholder="https://example.com" className="w-full" />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Website</label>
+                <input type="url" [(ngModel)]="website" name="website" placeholder="https://example.com" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Region Custom Dropdown -->
-              <div class="relative">
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Region <span class="text-red-500">*</span></app-label>
-                <div (click)="toggleRegionDropdown()" class="w-full h-11 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-medium bg-white flex items-center justify-between cursor-pointer select-none">
+              <div class="space-y-1.5 relative">
+                <label class="text-xs font-semibold text-slate-600">Region <span class="text-red-500">*</span></label>
+                <div (click)="toggleRegionDropdown()" class="w-full h-11 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-medium bg-white flex items-center justify-between cursor-pointer select-none">
                   <span [class.text-slate-400]="!region" [class.text-slate-900]="region">{{ region || 'Select region' }}</span>
-                  <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                  <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
-                <div *ngIf="showRegionDropdown" class="hidden absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-30 py-1 text-xs md:flex md:flex-col">
+                <div *ngIf="showRegionDropdown" class="absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-30 py-1 text-xs">
                   <div *ngFor="let r of regions" (click)="selectRegion(r)" class="px-3.5 py-2 hover:bg-slate-50 cursor-pointer">{{ r }}</div>
                 </div>
               </div>
             </div>
 
             <!-- Address Textarea -->
-            <div>
-              <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Address</app-label>
-              <textarea [(ngModel)]="address" rows="3" placeholder="Enter full address" class="w-full border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-medium placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition resize-none"></textarea>
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-600">Address</label>
+              <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Enter full address" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
             </div>
 
           <!-- MODULE 2: ADDITIONAL METADATA DETAILS MODULE -->
           <div class="bg-white border-t border-slate-200 pt-6 space-y-5">
             <h3 class="text-xs font-bold text-slate-900 tracking-wider uppercase border-slate-100 ">2. Additional Details</h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Industry Custom Select Dropdown -->
-              <div class="relative">
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Industry</app-label>
-                <div (click)="toggleIndustryDropdown()" class="w-full border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-medium bg-white flex items-center justify-between cursor-pointer select-none">
-                  <span [class.text-slate-400]="!industry" [class.text-slate-900]="industry">{{ industry || 'Select industry' }}</span>
-                  <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                </div>
-                <div *ngIf="showIndustryDropdown" class="hidden absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-30 py-1 text-xs md:flex md:flex-col">
-                  <div *ngFor="let ind of industries" (click)="selectIndustry(ind)" class="px-3.5 py-2 hover:bg-slate-50 cursor-pointer">{{ ind }}</div>
-                </div>
-              </div>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+               <!-- Industry Custom Select Dropdown -->
+               <div class="space-y-1.5 relative">
+                 <label class="text-xs font-semibold text-slate-600">Industry</label>
+                 <div (click)="toggleIndustryDropdown()" class="w-full h-11 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-medium bg-white flex items-center justify-between cursor-pointer select-none">
+                   <span [class.text-slate-400]="!industry" [class.text-slate-900]="industry">{{ industry || 'Select industry' }}</span>
+                   <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                 </div>
+                 <div *ngIf="showIndustryDropdown" class="absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-30 py-1 text-xs">
+                   <div *ngFor="let ind of industries" (click)="selectIndustry(ind)" class="px-3.5 py-2 hover:bg-slate-50 cursor-pointer">{{ ind }}</div>
+                 </div>
+               </div>
               <!-- VAT/Tax Number -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">VAT / Tax Number</app-label>
-                <app-input-field type="text" [(value)]="vatNumber" placeholder="Enter VAT or tax number" className="w-full" />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">VAT / Tax Number</label>
+                <input type="text" [(ngModel)]="vatNumber" name="vatNumber" placeholder="Enter VAT or tax number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Registration Number -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Registration Number</app-label>
-                <app-input-field type="text" [(value)]="registrationNumber" placeholder="Enter registration number" className="w-full" />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Registration Number</label>
+                <input type="text" [(ngModel)]="registrationNumber" name="registrationNumber" placeholder="Enter registration number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <!-- Contact Person -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Contact Person</app-label>
-                <app-input-field type="text" [(value)]="contactPerson" placeholder="Enter contact person name" className="w-full" />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Contact Person</label>
+                <input type="text" [(ngModel)]="contactPerson" name="contactPerson" placeholder="Enter contact person name" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Designation -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Designation</app-label>
-                <app-input-field type="text" [(value)]="designation" placeholder="Enter designation" className="w-full" />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Designation</label>
+                <input type="text" [(ngModel)]="designation" name="designation" placeholder="Enter designation" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Contact Email -->
-              <div>
-                <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Contact Email</app-label>
-                <app-input-field type="email" [(value)]="contactEmail" placeholder="Enter contact email" className="w-full" />
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Contact Email</label>
+                <input type="email" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Enter contact email" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
 
             <!-- Additional Optional Notes TextArea -->
-            <div>
-              <app-label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Notes</app-label>
-              <textarea [(ngModel)]="notes" rows="3" placeholder="Enter any additional notes (optional)" class="w-full border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-medium placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition resize-none"></textarea>
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-600">Notes</label>
+              <textarea [(ngModel)]="notes" name="notes" rows="3" placeholder="Enter any additional notes (optional)" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
             </div>
           </div>
   

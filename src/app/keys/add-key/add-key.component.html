@@ -48,72 +48,51 @@
                 <label class="text-xs font-semibold text-slate-600">Key ID / Reference *</label>
                 <input type="text" [(ngModel)]="keyId" name="keyId" required placeholder="e.g. KEY-000157" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
-                <div class="space-y-1.5">
+               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Type *</label>
-                <div class="search-wrap">
-                  <div class="ssr-trigger" [class.open]="openDropdown === 'type'" (click)="toggleDropdown('type')">
-                    <span [class.placeholder]="!getSelectedTypeName()">{{ getSelectedTypeName() || 'Select key type' }}</span>
-                    <span *ngIf="typeDropdownLoading" class="spinner" style="width:0.875rem;height:0.875rem;border-width:1.5px;"></span>
-                    <svg *ngIf="!typeDropdownLoading" class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'type'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                  </div>
-                  <div class="dropdown-panel" *ngIf="openDropdown === 'type'">
-                    <div class="search-wrap">
-                      <input type="text" [(ngModel)]="typeSearch" placeholder="Search key types..." (input)="onTypeSearch($any($event.target).value)">
-                    </div>
-                    <div class="options-list">
-                      <div *ngIf="typeDropdownLoading" class="empty-state"><span class="spinner"></span> Loading...</div>
-                      <!-- <div *ngIf="!typeDropdownLoading" class="option-item" *ngFor="let t of filteredKeyTypes" [class.selected]="keyType === t.id" (click)="selectType(t)">
-                        <span class="option-icon type-icon" [style.background]="getTypeIconColor(t)">{{ getInitials(t.name) }}</span>
-                        <span>{{ t.name }}</span>
-                      </div>
-                       -->
-                      <div *ngIf="!typeDropdownLoading && !filteredKeyTypes.length" class="empty-state">No key types found</div>
-                      <div *ngIf="!typeDropdownLoading" class="create-item" (click)="creatingType = true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        {{ typeSearch ? 'Create "' + typeSearch + '"' : 'Create new key type...' }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div *ngIf="creatingType" class="create-row">
-                  <input type="text" [(ngModel)]="newTypeName" name="newTypeName" placeholder="New type name">
-                  <button type="button" (click)="createKeyType()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
-                  <button type="button" (click)="creatingType = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
-                </div>
+                <select [(ngModel)]="keyType" name="keyType" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                  <option value="">Select key type</option>
+                  <option *ngFor="let t of keyTypes" [value]="t.id">{{ t.name }}</option>
+                </select>
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <div class="space-y-1.5">
+              <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Category *</label>
-                <div class="search-wrap">
-                  <div class="ssr-trigger" [class.open]="openDropdown === 'category'" (click)="toggleDropdown('category')">
-                    <span [class.placeholder]="!getSelectedCategoryName()">{{ getSelectedCategoryName() || 'Select category' }}</span>
-                    <span *ngIf="categoryDropdownLoading" class="spinner" style="width:0.875rem;height:0.875rem;border-width:1.5px;"></span>
-                    <svg *ngIf="!categoryDropdownLoading" class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'category'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                  </div>
-                  <div class="dropdown-panel" *ngIf="openDropdown === 'category'">
-                    <div class="search-wrap">
-                      <input type="text" [(ngModel)]="categorySearch" placeholder="Search categories..." (input)="onCategorySearch($any($event.target).value)">
-                    </div>
-                    <div class="options-list">
-                      <div *ngIf="categoryDropdownLoading" class="empty-state"><span class="spinner"></span> Loading...</div>
-                      <!-- <div *ngIf="!categoryDropdownLoading" class="option-item" *ngFor="let c of filteredKeyCategories" [class.selected]="keyCategory === c.id" (click)="selectCategory(c)">
-                        <span class="option-icon" [style.background]="getCategoryIconColor(c)">{{ getInitials(c.name) }}</span>
-                        <span>{{ c.name }}</span>
+                <div class="relative">
+                  <button type="button" (click)="toggleCategoryDropdown()" class="flex h-11 w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-gray-700 focus:outline-none focus:border-blue-500">
+                    <span [class.text-gray-400]="!keyCategory">{{ keyCategories.find(c=>c.id===keyCategory)?.name || 'Select category' }}</span>
+                    <svg class="stroke-current text-gray-400" [ngClass]="{ 'rotate-180': categoryOpen }" width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4.79175 7.39551L10.0001 12.6038L15.2084 7.39551" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </button>
+                  @if (categoryOpen) {
+                    <div class="absolute left-0 top-full z-50 mt-1 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg" (click)="$event.stopPropagation()">
+                      <div class="max-h-48 overflow-y-auto">
+                        @for (c of filteredCategories; track c.id) {
+                          <button type="button" (click)="selectCategory(c.id ?? '')" class="flex w-full items-center px-3 py-2 text-left text-sm" [ngClass]="keyCategory === c.id ? 'bg-blue-50 font-medium text-blue-700' : 'text-gray-700 hover:bg-gray-100'">
+                            {{ c.name }}
+                          </button>
+                        } @empty {
+                          <div class="px-3 py-2 text-sm text-gray-500">No categories found</div>
+                        }
                       </div>
-                       -->
-                      <div *ngIf="!categoryDropdownLoading && !filteredKeyCategories.length" class="empty-state">No categories found</div>
-                      <div *ngIf="!categoryDropdownLoading" class="create-item" (click)="creatingCategory = true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        {{ categorySearch ? 'Create "' + categorySearch + '"' : 'Create new category...' }}
+                      <div class="border-t border-gray-100">
+                        @if (creatingCategory) {
+                          <div class="px-3 py-2">
+                            <input type="text" [(ngModel)]="newCategoryName" placeholder="New category name" class="w-full text-sm border border-gray-200 rounded-md px-2 py-1.5 focus:outline-none focus:border-blue-500" (keyup.enter)="confirmCreateCategory()">
+                            <div class="flex gap-2 mt-2">
+                              <button type="button" (click)="confirmCreateCategory()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md">Add</button>
+                              <button type="button" (click)="creatingCategory=false; newCategoryName='';" class="bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1.5 rounded-md">Cancel</button>
+                            </div>
+                          </div>
+                        } @else {
+                          <button type="button" (click)="creatingCategory=true; newCategoryName='';" class="flex w-full items-center px-3 py-2 text-left text-sm text-blue-600 font-medium hover:bg-blue-50">
+                            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Create new category...
+                          </button>
+                        }
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div *ngIf="creatingCategory" class="create-row">
-                  <input type="text" [(ngModel)]="newCategoryName" name="newCategoryName" placeholder="New category name">
-                  <button type="button" (click)="createKeyCategory()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
-                  <button type="button" (click)="creatingCategory = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
+                  }
                 </div>
               </div>
               <div class="md:col-span-2 space-y-1.5">
@@ -136,55 +115,18 @@
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Site *</label>
-                <div class="search-wrap">
-                  <div class="ssr-trigger" [class.open]="openDropdown === 'site'" (click)="toggleDropdown('site')">
-                    <span [class.placeholder]="!getSelectedSiteName()">{{ getSelectedSiteName() || 'Select site' }}</span>
-                    <svg class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'site'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                  </div>
-                  <div class="dropdown-panel" *ngIf="openDropdown === 'site'">
-                    <div class="search-wrap">
-                      <input type="text" [(ngModel)]="siteSearch" placeholder="Search sites..." (input)="onSiteSearch($any($event.target).value)">
-                    </div>
-                    <div class="options-list">
-                      <div class="option-item" *ngFor="let s of filteredSites" [class.selected]="assignSite === s.id" (click)="selectSite(s)">
-                        <span class="option-icon" [style.background]="s.typeColor || '#64748b'">{{ getInitials(s.name) }}</span>
-                        <span>{{ s.name }}</span>
-                      </div>
-                      <div class="empty-state" *ngIf="!filteredSites.length">No sites found</div>
-                    </div>
-                  </div>
-                </div>
+                <select [(ngModel)]="assignSite" name="assignSite" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                  <option value="">Select site</option>
+                  <option *ngFor="let s of sites" [value]="s.id">{{ s.name }}</option>
+                </select>
                 <div *ngIf="loadingSites" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading sites...</div>
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Storage Location *</label>
-                <div class="search-wrap">
-                  <div class="ssr-trigger" [class.open]="openDropdown === 'storage'" (click)="toggleDropdown('storage')">
-                    <span [class.placeholder]="!getSelectedStorageName()">{{ getSelectedStorageName() || 'Select storage location' }}</span>
-                    <svg class="w-4 h-4 text-slate-400 transition-transform" [class.rotate-180]="openDropdown === 'storage'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                  </div>
-                  <div class="dropdown-panel" *ngIf="openDropdown === 'storage'">
-                    <div class="search-wrap">
-                      <input type="text" [(ngModel)]="storageLocationSearch" placeholder="Search locations..." (input)="onLocationSearch($any($event.target).value)">
-                    </div>
-                    <div class="options-list">
-                      <div class="option-item" *ngFor="let loc of filteredStorageLocations" [class.selected]="storageLocation === loc.id" (click)="selectStorageLocation(loc)">
-                        <span class="option-icon" style="background: #6366f1;">{{ getInitials(loc.name) }}</span>
-                        <span>{{ loc.name }}</span>
-                      </div>
-                      <div class="empty-state" *ngIf="!filteredStorageLocations.length">No locations found</div>
-                      <div class="create-item" (click)="creatingStorageLocation = true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        {{ storageLocationSearch ? 'Create "' + storageLocationSearch + '"' : 'Create new location...' }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div *ngIf="creatingStorageLocation" class="create-row">
-                  <input type="text" [(ngModel)]="newStorageLocationName" name="newStorageLocationName" placeholder="New location name">
-                  <button type="button" (click)="createStorageLocation()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl">Add</button>
-                  <button type="button" (click)="creatingStorageLocation = false" class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-2 rounded-xl">Cancel</button>
-                </div>
+                <select [(ngModel)]="storageLocation" name="storageLocation" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                  <option value="">Select storage location</option>
+                  <option *ngFor="let loc of storageLocations" [value]="loc.id">{{ loc.name }}</option>
+                </select>
               </div>
             </div>
           </div>
@@ -225,25 +167,35 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm mb-5">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Attachments</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
-                <input type="file" (change)="onFileSelect($event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-3 transition">
-                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </div>
-                <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
-                <p class="text-xs text-slate-400 mt-1" id="fileInfoLabel">{{ fileName || 'Supported files: JPG, PNG, PDF (Max 10MB)' }}</p>
-              </div>
-              <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
-                <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">Tips:</h4>
-                <p class="flex items-start gap-2"><span>•</span> Upload a clear photo of the key</p>
-                <p class="flex items-start gap-2"><span>•</span> Upload key tag / label if available</p>
-                <p class="flex items-start gap-2"><span>•</span> Upload any related documents</p>
-              </div>
-            </div>
-          </div>
+           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm mb-5">
+             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Attachments</h3>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+               <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
+                 <input type="file" (change)="onFileSelect($event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                 <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-3 transition">
+                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                 </div>
+                 <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
+                 <p class="text-xs text-slate-400 mt-1" id="fileInfoLabel">{{ fileName || 'Supported files: JPG, PNG, PDF (Max 10MB)' }}</p>
+               </div>
+               <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
+                 <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">Tips:</h4>
+                 <p class="flex items-start gap-2"><span>•</span> Upload a clear photo of the key</p>
+                 <p class="flex items-start gap-2"><span>•</span> Upload key tag / label if available</p>
+                 <p class="flex items-start gap-2"><span>•</span> Upload any related documents</p>
+               </div>
+             </div>
+             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" *ngIf="attachmentPreviews.length">
+               <div class="relative border border-slate-200 rounded-xl p-2 bg-white shadow-sm" *ngFor="let item of attachmentPreviews; let i = index">
+                 <img *ngIf="item.file.type.startsWith('image/')" [src]="item.url" class="w-full h-24 object-cover rounded-lg">
+                 <div *ngIf="!item.file.type.startsWith('image/')" class="w-full h-24 flex items-center justify-center text-slate-400 bg-slate-50 rounded-lg">
+                   <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                 </div>
+                 <button type="button" (click)="removeAttachment(i)" class="absolute -top-2 -right-2 bg-rose-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] leading-none shadow-sm">×</button>
+                 <p class="text-[10px] text-slate-500 mt-1 truncate font-medium">{{ item.file.name }}</p>
+               </div>
+             </div>
+           </div>
         </form>
 
         <div class="space-y-5">

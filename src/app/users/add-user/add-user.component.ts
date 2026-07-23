@@ -101,9 +101,14 @@ export class AddUserComponent implements OnInit {
     this.keyVault.listRoles(orgId).subscribe({
       next: (data: any) => {
         const payload = data?.data ?? data;
-        const roles: Role[] = Array.isArray(payload) ? payload : [];
+        let roles: Role[] = [];
+        if (Array.isArray(payload)) {
+          roles = payload;
+        } else if (payload && typeof payload === 'object') {
+          roles = payload.roles ?? payload.items ?? payload.content ?? [];
+        }
         this.roles = roles;
-        this.roleOptions = roles.filter(r => r.active).map(r => ({ value: r.id, text: r.name }));
+        this.roleOptions = roles.filter(r => r.active).map(r => ({ value: String(r.id), text: r.name }));
         this.loadingRoles = false;
       },
       error: () => {

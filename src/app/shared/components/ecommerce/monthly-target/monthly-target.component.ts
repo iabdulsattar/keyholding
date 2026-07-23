@@ -24,7 +24,7 @@ import { DropdownItemComponent } from '../../ui/dropdown/dropdown-item/dropdown-
 export class MonthlyTargetComponent {
   public series: ApexNonAxisChartSeries = [75.55];
   public chart: ApexChart = {
-    fontFamily: 'Outfit, sans-serif',
+    fontFamily: 'Inter, sans-serif',
     type: 'radialBar',
     height: 330,
     sparkline: { enabled: true },

@@ -79,16 +79,16 @@
               </div>
               @if (openSubmenu === 'main-' + $index) {
                 <div class="pl-6 sm:pl-8 space-y-0.5 border-l border-slate-800/80 ml-3 sm:ml-4">
-                  @for (sub of item.subItems; track sub.name) {
-                    <a [routerLink]="sub.path"
-                       class="flex items-center gap-2 px-2 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/40 transition rounded-md"
-                       [class.bg-blue-600/90]="isActive(sub.path)"
-                       [class.text-white]="isActive(sub.path)"
-                       (click)="onSubmenuClick()">
-                      <span class="w-1 h-1 rounded-full bg-slate-600 flex-shrink-0"></span>
-                      <span [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ sub.name }}</span>
-                    </a>
-                  }
+                   @for (sub of item.subItems; track sub.name) {
+                     <a [routerLink]="sub.path" [queryParams]="sub.queryParams || {}"
+                        class="flex items-center gap-2 px-2 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/40 transition rounded-md"
+                        [class.bg-blue-600/90]="isActive(sub.path, sub.queryParams)"
+                        [class.text-white]="isActive(sub.path, sub.queryParams)"
+                        (click)="onSubmenuClick()">
+                       <span class="w-1 h-1 rounded-full bg-slate-600 flex-shrink-0"></span>
+                       <span [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ sub.name }}</span>
+                     </a>
+                   }
                 </div>
               }
             </div>
