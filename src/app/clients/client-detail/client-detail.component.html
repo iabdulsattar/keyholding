@@ -297,10 +297,10 @@
       </div>
       } @else if (activeTab === 'keys') {
       <!-- GRID AREA CONTENT SPLIT PANELS (Table Grid Inventory vs Widget Columns) -->
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
         
         <!-- INVENTORY TABLE CONTEXT (Col Span 9) -->
-        <div class="xl:col-span-9 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+        <div class="xl:col-span-9 bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
           <div class="overflow-x-auto custom-scrollbar">
             <table class="w-full text-left border-collapse whitespace-nowrap">
               <thead>
@@ -396,10 +396,10 @@
         </div>
 
         <!-- RIGHT SIDEBAR METRIC & ACTIONS CARDS (Col Span 3) -->
-        <div class="xl:col-span-3 space-y-6 w-full">
+        <div class="xl:col-span-3 space-y-5 w-full">
           
           <!-- PIE CHART METRIC BOX OVERVIEW -->
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4">
             <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Status Overview</h4>
             
             <!-- Custom Concentric Ring Donut Mock Graphic -->
@@ -423,7 +423,7 @@
           </div>
 
           <!-- QUICK OPERATIONS UTILITY NAVIGATION LINKS -->
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3.5">
+          <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3.5">
             <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Quick Actions</h4>
             <div class="flex flex-col text-xs font-semibold text-slate-600 space-y-0.5">
               <button (click)="triggerAction('Add New Key')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
@@ -454,7 +454,7 @@
           </div>
 
           <!-- KEY BREAKDOWN SEGMENTATION INDEX LIST -->
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4">
             <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Type Breakdown</h4>
             <div class="text-xs font-semibold text-slate-700 space-y-3">
               <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span>Master Key</span></div><span class="text-slate-400">18</span></div>
