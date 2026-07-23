@@ -61,10 +61,11 @@
                     </div>
                     <div class="options-list">
                       <div *ngIf="typeDropdownLoading" class="empty-state"><span class="spinner"></span> Loading...</div>
-                      <div *ngIf="!typeDropdownLoading" class="option-item" *ngFor="let t of filteredKeyTypes" [class.selected]="keyType === t.id" (click)="selectType(t)">
+                      <!-- <div *ngIf="!typeDropdownLoading" class="option-item" *ngFor="let t of filteredKeyTypes" [class.selected]="keyType === t.id" (click)="selectType(t)">
                         <span class="option-icon type-icon" [style.background]="getTypeIconColor(t)">{{ getInitials(t.name) }}</span>
                         <span>{{ t.name }}</span>
                       </div>
+                       -->
                       <div *ngIf="!typeDropdownLoading && !filteredKeyTypes.length" class="empty-state">No key types found</div>
                       <div *ngIf="!typeDropdownLoading" class="create-item" (click)="creatingType = true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -95,10 +96,11 @@
                     </div>
                     <div class="options-list">
                       <div *ngIf="categoryDropdownLoading" class="empty-state"><span class="spinner"></span> Loading...</div>
-                      <div *ngIf="!categoryDropdownLoading" class="option-item" *ngFor="let c of filteredKeyCategories" [class.selected]="keyCategory === c.id" (click)="selectCategory(c)">
+                      <!-- <div *ngIf="!categoryDropdownLoading" class="option-item" *ngFor="let c of filteredKeyCategories" [class.selected]="keyCategory === c.id" (click)="selectCategory(c)">
                         <span class="option-icon" [style.background]="getCategoryIconColor(c)">{{ getInitials(c.name) }}</span>
                         <span>{{ c.name }}</span>
                       </div>
+                       -->
                       <div *ngIf="!categoryDropdownLoading && !filteredKeyCategories.length" class="empty-state">No categories found</div>
                       <div *ngIf="!categoryDropdownLoading" class="create-item" (click)="creatingCategory = true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
