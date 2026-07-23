@@ -21,29 +21,6 @@ export const routes: Routes = [
             title: 'Dashboard | KeyVault Pro'
           },
           {
-            path: 'dob-feed',
-            redirectTo: 'entries',
-            pathMatch: 'full'
-          },
-          {
-            path: 'entries',
-            loadComponent: () => import('./dob-feed/entries.component').then(m => m.EntriesComponent),
-            canActivate: [authGuard, permissionGuard('entry.view')],
-            title: 'Entries | KeyVault Pro'
-          },
-          {
-            path: 'entries/:id',
-            loadComponent: () => import('./dob-feed/entry-detail/entry-detail.component').then(m => m.EntryDetailComponent),
-            canActivate: [authGuard, permissionGuard('entry.view')],
-            title: 'Entry Detail | KeyVault Pro'
-          },
-          {
-            path: 'create-entry',
-            loadComponent: () => import('./dob-feed/create-entry/create-entry.component').then(m => m.CreateEntryComponent),
-            canActivate: [authGuard, permissionGuard('entry.create')],
-            title: 'Create Entry | KeyVault Pro'
-          },
-          {
             path:'calendar',
             loadComponent: () => import('./dashboard/pages/calender/calender.component').then(m => m.CalenderComponent),
             title:'Angular Calender | TailAdmin - Angular Admin Dashboard Template'

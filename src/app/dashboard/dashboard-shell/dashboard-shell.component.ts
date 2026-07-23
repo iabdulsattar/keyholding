@@ -159,8 +159,6 @@ export class DashboardShellComponent implements OnInit {
   }
 
   private applyDashboard(data: DashboardData): void {
-    const counters = data.entriesCounters ?? {};
-
     this.strategicMetrics = {
       totalClients: this.orgUsers.length || 124,
       totalSites: 356,
