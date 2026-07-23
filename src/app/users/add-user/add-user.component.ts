@@ -4,10 +4,29 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { AuthService } from '../../core/services/auth.service';
-import { EdobService } from '../../core/services/edob.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { ServiceUser, CreateUserRequest, UpdateUserRequest } from '../../core/models/user.models';
-import { AssignRolesRequest, Role } from '../../core/models/edob.models';
+
+interface Role {
+  id: string;
+  code: string;
+  name: string;
+  description?: string;
+  color?: string;
+  permissions: string[];
+  active: boolean;
+  source?: string;
+  permissionCount?: number;
+  userCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+interface AssignRolesRequest {
+  roleIds: string[];
+}
 import { MultiSelectComponent, Option as MultiOption } from '../../shared/components/form/multi-select/multi-select.component';
 
 @Component({
@@ -53,7 +72,7 @@ export class AddUserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private edobService: EdobService,
+    private keyVault: KeyVaultService,
     private router: Router,
     private route: ActivatedRoute,
     private permissionService: PermissionService
@@ -79,8 +98,10 @@ export class AddUserComponent implements OnInit {
     if (!orgId) return;
 
     this.loadingRoles = true;
-    this.edobService.listRoles(orgId).subscribe({
-      next: (roles: Role[]) => {
+    this.keyVault.listRoles(orgId).subscribe({
+      next: (data: any) => {
+        const payload = data?.data ?? data;
+        const roles: Role[] = Array.isArray(payload) ? payload : [];
         this.roles = roles;
         this.roleOptions = roles.filter(r => r.active).map(r => ({ value: r.id, text: r.name }));
         this.loadingRoles = false;
@@ -247,7 +268,7 @@ export class AddUserComponent implements OnInit {
           if (this.form.roleIds.length) {
             const userId = this.userId!;
             const rolesPayload: AssignRolesRequest = { roleIds: this.form.roleIds };
-            this.edobService.assignRolesToUser(orgId, userId, rolesPayload).subscribe({
+            this.keyVault.assignRolesToUser(orgId, userId, rolesPayload.roleIds).subscribe({
               next: () => {
                 this.saving = false;
                 this.successMessage = 'User updated successfully.';

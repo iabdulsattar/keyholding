@@ -68,12 +68,89 @@ export interface KeyVaultKey {
   clientId?: string;
   siteId?: string;
   storageLocation?: string;
+  storageLocationId?: string;
+  keyTypeId?: string;
+  keyCategoryId?: string;
   brand?: string;
   model?: string;
   colour?: string;
-  tag?: string;
-  status?: 'IN_STORAGE' | 'ISSUED' | 'IN_USE' | 'OVERDUE' | 'LOST';
+  tagLabel?: string;
+  reference?: string;
+  status?: 'IN_STORAGE' | 'ISSUED' | 'IN_USE' | 'OVERDUE' | 'LOST' | 'DAMAGED';
   notes?: string;
+  [key: string]: any;
+}
+
+export interface KeyType {
+  id?: string;
+  code?: string;
+  name: string;
+  color?: string;
+  sortOrder?: number;
+  active?: boolean;
+  [key: string]: any;
+}
+
+export interface KeyCategory {
+  id?: string;
+  code?: string;
+  name: string;
+  sortOrder?: number;
+  active?: boolean;
+  [key: string]: any;
+}
+
+export interface StorageLocation {
+  id?: string;
+  code?: string;
+  name: string;
+  sortOrder?: number;
+  active?: boolean;
+  [key: string]: any;
+}
+
+export interface KeyMovement {
+  id?: string;
+  keyId?: string;
+  action?: string;
+  fromStatus?: string;
+  toStatus?: string;
+  fromLocation?: string;
+  toLocation?: string;
+  userId?: string;
+  userName?: string;
+  note?: string;
+  createdAt?: string;
+  [key: string]: any;
+}
+
+export interface KeyAuditEntry {
+  id?: string;
+  keyId?: string;
+  action?: string;
+  userId?: string;
+  userName?: string;
+  details?: string;
+  createdAt?: string;
+  [key: string]: any;
+}
+
+export interface KeyAttachment {
+  id?: string;
+  keyId?: string;
+  fileName?: string;
+  contentType?: string;
+  sizeBytes?: number;
+  storagePath?: string;
+  createdAt?: string;
+  [key: string]: any;
+}
+
+export interface KeyNote {
+  id?: string;
+  keyId?: string;
+  body?: string;
+  createdAt?: string;
   [key: string]: any;
 }
 
@@ -245,6 +322,22 @@ export class KeyVaultService {
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}`, headers);
   }
 
+  deactivateRole(orgId: string, roleId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}/deactivate`, { roleIds: [roleId] }, headers);
+  }
+
+  reactivateRole(orgId: string, roleId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}/reactivate`, { roleIds: [roleId] }, headers);
+  }
+
   assignRolesToUser(orgId: string, userId: string, roleIds: string[]): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -300,6 +393,139 @@ export class KeyVaultService {
   deleteKey(orgId: string, keyId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}`, headers);
+  }
+
+  getKeyStats(orgId: string, clientId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/keys/stats`, headers);
+  }
+
+  getKeyMovements(orgId: string, keyId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/movements`, headers);
+  }
+
+  getKeyAuditLog(orgId: string, keyId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/audit`, headers);
+  }
+
+  listKeyAttachments(orgId: string, keyId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, headers);
+  }
+
+  addKeyAttachment(orgId: string, keyId: string, attachment: KeyAttachment): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, attachment, headers);
+  }
+
+  deleteKeyAttachment(orgId: string, keyId: string, attachmentId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments/${attachmentId}`, headers);
+  }
+
+  listKeyNotes(orgId: string, keyId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/notes`, headers);
+  }
+
+  addKeyNote(orgId: string, keyId: string, note: { body: string }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/notes`, note, headers);
+  }
+
+  deleteKeyNote(orgId: string, keyId: string, noteId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/notes/${noteId}`, headers);
+  }
+
+  // Key Catalog
+  listKeyTypes(orgId: string, includeInactive = false): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-types${q}`, headers);
+  }
+
+  createKeyType(orgId: string, keyType: KeyType): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-types`, keyType, headers);
+  }
+
+  updateKeyType(orgId: string, keyTypeId: string, keyType: Partial<KeyType>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-types/${keyTypeId}`, keyType, headers);
+  }
+
+  deleteKeyType(orgId: string, keyTypeId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-types/${keyTypeId}`, headers);
+  }
+
+  listKeyCategories(orgId: string, includeInactive = false): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories${q}`, headers);
+  }
+
+  createKeyCategory(orgId: string, keyCategory: KeyCategory): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories`, keyCategory, headers);
+  }
+
+  updateKeyCategory(orgId: string, keyCategoryId: string, keyCategory: Partial<KeyCategory>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories/${keyCategoryId}`, keyCategory, headers);
+  }
+
+  deleteKeyCategory(orgId: string, keyCategoryId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories/${keyCategoryId}`, headers);
+  }
+
+  listStorageLocations(orgId: string, includeInactive = false): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations${q}`, headers);
+  }
+
+  createStorageLocation(orgId: string, storageLocation: StorageLocation): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations`, storageLocation, headers);
+  }
+
+  updateStorageLocation(orgId: string, storageLocationId: string, storageLocation: Partial<StorageLocation>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, storageLocation, headers);
+  }
+
+  deleteStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, headers);
   }
 
   getInternalPermissions(authUserId: string, orgId: string): Observable<any> {

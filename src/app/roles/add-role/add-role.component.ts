@@ -2,9 +2,42 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { EdobService } from '../../core/services/edob.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
-import { Role, CreateRoleRequest, UpdateRoleRequest } from '../../core/models/edob.models';
+
+interface Role {
+  id: string;
+  code: string;
+  name: string;
+  description?: string;
+  color?: string;
+  permissions: string[];
+  active: boolean;
+  source?: string;
+  permissionCount?: number;
+  userCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+interface CreateRoleRequest {
+  code: string;
+  name: string;
+  description?: string;
+  color?: string;
+  permissions: string[];
+  active?: boolean;
+}
+
+interface UpdateRoleRequest {
+  code?: string;
+  name?: string;
+  description?: string;
+  color?: string;
+  permissions?: string[];
+  active?: boolean;
+}
 
 interface Permission {
   key: string;
@@ -42,7 +75,7 @@ export class AddRoleComponent implements OnInit {
 
   groups: PermissionGroup[] = [];
 
-  constructor(private edobService: EdobService, private router: Router, private route: ActivatedRoute, private permissionService: PermissionService) {}
+  constructor(private keyVault: KeyVaultService, private router: Router, private route: ActivatedRoute, private permissionService: PermissionService) {}
 
   get canSaveRole(): boolean {
     return this.permissionService.hasPermission('admin.roles.manage');
@@ -63,7 +96,7 @@ export class AddRoleComponent implements OnInit {
     const orgId = this.getOrgId();
     if (!orgId) return;
 
-    this.edobService.listPermissions(orgId).subscribe({
+    this.keyVault.listPermissions(orgId).subscribe({
       next: (perms) => {
         this.groups = this.groupPermissions(perms);
         this.loadRole(this.roleId!);
@@ -79,7 +112,7 @@ export class AddRoleComponent implements OnInit {
     const orgId = this.getOrgId();
     if (!orgId) return;
 
-    this.edobService.getRole(orgId, id).subscribe({
+    this.keyVault.getRole(orgId, id).subscribe({
       next: (role: any) => {
         this.roleName = role.name || '';
         this.roleDesc = role.description || '';
@@ -104,7 +137,7 @@ export class AddRoleComponent implements OnInit {
     const orgId = this.getOrgId();
     if (!orgId) return;
 
-    this.edobService.listPermissions(orgId).subscribe({
+    this.keyVault.listPermissions(orgId).subscribe({
       next: (perms) => {
         this.groups = this.groupPermissions(perms);
       },
@@ -133,28 +166,10 @@ export class AddRoleComponent implements OnInit {
   private defaultGroups(): PermissionGroup[] {
     return [
       {
-        title: 'Entry & Feed Management',
-        permissions: [
-          { key: 'entry.view', name: 'View Entries', description: 'View all entries and details.', checked: false, expanded: false },
-          { key: 'entry.create', name: 'Create Entries', description: 'Create new entries in the system.', checked: false, expanded: false },
-          { key: 'entry.edit', name: 'Edit Entries', description: 'Edit existing entries.', checked: false, expanded: false },
-          { key: 'entry.delete', name: 'Delete Entries', description: 'Delete entries from the system.', checked: false, expanded: false },
-          { key: 'entry.comment', name: 'Add Comments', description: 'Add comments to entries.', checked: false, expanded: false },
-          { key: 'entry.attachments.view', name: 'View Attachments', description: 'View and download attachments.', checked: false, expanded: false },
-        ],
-      },
-      {
-        title: 'Review & Approval',
-        permissions: [
-          { key: 'entry.review', name: 'Review Entries', description: 'Review and approve entries.', checked: false, expanded: false },
-          { key: 'entry.escalate', name: 'Escalate Entries', description: 'Escalate entries to other users.', checked: false, expanded: false },
-        ],
-      },
-      {
         title: 'Reports & Export',
         permissions: [
           { key: 'report.view', name: 'View Reports', description: 'View system reports.', checked: false, expanded: false },
-          { key: 'report.export', name: 'Export Data', description: 'Export entries and reports to file.', checked: false, expanded: false },
+          { key: 'report.export', name: 'Export Data', description: 'Export reports and data to file.', checked: false, expanded: false },
         ],
       },
     ];
@@ -228,7 +243,7 @@ export class AddRoleComponent implements OnInit {
 
     if (this.isEditMode && this.roleId) {
       const updatePayload: UpdateRoleRequest = { ...payload };
-      this.edobService.updateRole(orgId, this.roleId, updatePayload).subscribe({
+      this.keyVault.updateRole(orgId, this.roleId, updatePayload).subscribe({
         next: () => {
           this.saving = false;
           this.router.navigate(['/user-management']);
@@ -239,7 +254,7 @@ export class AddRoleComponent implements OnInit {
         }
       });
     } else {
-      this.edobService.createRole(orgId, payload).subscribe({
+      this.keyVault.createRole(orgId, payload).subscribe({
         next: () => {
           this.saving = false;
           this.router.navigate(['/user-management']);

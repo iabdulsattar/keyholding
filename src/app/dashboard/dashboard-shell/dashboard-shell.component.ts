@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { EdobService } from '../../core/services/edob.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { ProfileResponse } from '../../core/models/auth.models';
-import { DashboardData, OrgUser } from '../../core/models/edob.models';
 import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarService } from '../../shared/services/sidebar.service';
 
@@ -33,7 +31,7 @@ export class DashboardShellComponent implements OnInit {
   userName = '';
   loading = true;
   dashboardError = false;
-  orgUsers: OrgUser[] = [];
+  orgUsers: any[] = [];
 
   strategicMetrics = {
     totalClients: 0,
@@ -91,7 +89,6 @@ export class DashboardShellComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private edobService: EdobService,
     private permissionService: PermissionService,
     public sidebarService: SidebarService,
   ) {}
@@ -137,28 +134,10 @@ export class DashboardShellComponent implements OnInit {
       return;
     }
 
-    this.edobService.listOrgUsers(orgId).subscribe({
-      next: (users: OrgUser[]) => {
-        this.orgUsers = users;
-      },
-      error: () => {
-        this.orgUsers = [];
-      }
-    });
-
-    this.edobService.getDashboard(orgId).subscribe({
-      next: (data: DashboardData) => {
-        this.applyDashboard(data);
-        this.loading = false;
-      },
-      error: () => {
-        this.loading = false;
-        this.dashboardError = true;
-      }
-    });
+    this.loading = false;
   }
 
-  private applyDashboard(data: DashboardData): void {
+  private applyDashboard(data: any): void {
     this.strategicMetrics = {
       totalClients: this.orgUsers.length || 124,
       totalSites: 356,

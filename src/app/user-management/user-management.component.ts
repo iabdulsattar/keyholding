@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { UserService } from '../core/services/user.service';
-import { EdobService } from '../core/services/edob.service';
+import { KeyVaultService } from '../core/services/keyvault.service';
 import { PermissionService } from '../core/services/permission.service';
 import { AuthService } from '../core/services/auth.service';
 import { SendInviteModalComponent } from './send-invite-modal/send-invite-modal.component';
@@ -13,7 +13,22 @@ import { ReactivateUserModalComponent } from './reactivate-user-modal/reactivate
 import { ResendCredentialsModalComponent } from './resend-credentials-modal/resend-credentials-modal.component';
 import { UsersTableComponent, TableUser } from '../shared/components/users/users-table/users-table.component';
 import { RolesTableComponent } from '../shared/components/roles/roles-table/roles-table.component';
-import { Role } from '../core/models/edob.models';
+
+interface Role {
+  id: string;
+  code: string;
+  name: string;
+  description?: string;
+  color?: string;
+  permissions: string[];
+  active: boolean;
+  source?: string;
+  permissionCount?: number;
+  userCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
 
 interface User {
   id?: string;
@@ -127,34 +142,16 @@ export class UserManagementComponent implements OnInit {
   };
 
   readonly moduleStyles: Record<string, string> = {
-    'Entry & Feed':     'bg-brand-50 text-brand-600',
-    'Review & Approval': 'bg-blue-light-50 text-blue-light-600',
     'Reports & Export': 'bg-orange-50 text-orange-600',
     'User Management':  'bg-success-50 text-success-600',
     'Workflow':         'bg-warning-50 text-warning-600',
+    'Administration':   'bg-purple-50 text-purple-600',
+    'Client Management': 'bg-blue-50 text-blue-600',
+    'Key Management':   'bg-amber-50 text-amber-600',
+    'Site Management':  'bg-emerald-50 text-emerald-600',
   };
 
   seedPermissionGroups: PermissionGroup[] = [
-    {
-      name: 'Entry & Feed Management',
-      rows: [
-        { icon: 'eye',     name: 'View Entries',      module: 'Entry & Feed',      category: 'Entries',       type: 'System', status: 'Active', description: 'Allows users to view DOB entries and details.' },
-        { icon: 'plus',    name: 'Create Entry',      module: 'Entry & Feed',      category: 'Entries',       type: 'System', status: 'Active', description: 'Allows users to create new DOB entries.' },
-        { icon: 'pencil',  name: 'Edit Entry',        module: 'Entry & Feed',      category: 'Entries',       type: 'System', status: 'Active', description: 'Allows users to edit their own or assigned entries.' },
-        { icon: 'trash',   name: 'Delete Entry',      module: 'Entry & Feed',      category: 'Entries',       type: 'System', status: 'Active', description: 'Allows users to delete DOB entries.' },
-        { icon: 'chat',    name: 'Add Comment',       module: 'Review & Approval', category: 'Collaboration', type: 'System', status: 'Active', description: 'Allows users to add comments on entries.' },
-        { icon: 'clip',    name: 'View Attachments',  module: 'Entry & Feed',      category: 'Attachments',   type: 'System', status: 'Active', description: 'Allows users to view attachments.' },
-      ],
-    },
-    {
-      name: 'Review & Approval',
-      rows: [
-        { icon: 'review', name: 'Review Entry',   module: 'Review & Approval', category: 'Approval',   type: 'System', status: 'Active', description: 'Allows users to review and approve entries.' },
-        { icon: 'check',  name: 'Approve Entry',  module: 'Review & Approval', category: 'Approval',   type: 'System', status: 'Active', description: 'Allows users to approve entries.' },
-        { icon: 'up',     name: 'Escalate Entry', module: 'Review & Approval', category: 'Escalation', type: 'System', status: 'Active', description: 'Allows users to escalate entries.' },
-        { icon: 'refresh',name: 'Request Update', module: 'Review & Approval', category: 'Approval',   type: 'System', status: 'Active', description: 'Allows users to request updates on entries.' },
-      ],
-    },
     {
       name: 'Reports & Export',
       rows: [
@@ -252,14 +249,14 @@ export class UserManagementComponent implements OnInit {
 
     this.permissionLoading = true;
     this.errorMessage = '';
-    this.edobService.getPermissionsGrouped(orgId).subscribe({
+    this.keyVault.listPermissionsGrouped(orgId).subscribe({
       next: (data: any) => {
         const mapped = this.mapGroupedPermissions(data);
-        this.permissionGroups = mapped.length ? mapped : this.seedPermissionGroups;
+        this.permissionGroups = mapped;
         this.permissionLoading = false;
       },
       error: () => {
-        this.permissionGroups = this.seedPermissionGroups;
+        this.permissionGroups = [];
         this.permissionLoading = false;
       },
     });
@@ -309,17 +306,13 @@ export class UserManagementComponent implements OnInit {
 
   private deriveModule(group: string): string {
     const g = group.toLowerCase();
-    if (g.includes('entry')) return 'Entry & Feed';
-    if (g.includes('review') || g.includes('approval')) return 'Review & Approval';
     if (g.includes('report')) return 'Reports & Export';
     if (g.includes('user')) return 'User Management';
     return group;
   }
 
   private deriveCategory(haystack: string): string {
-    if (haystack.includes('attachment')) return 'Attachments';
     if (haystack.includes('comment') || haystack.includes('collaborat')) return 'Collaboration';
-    if (haystack.includes('entry')) return 'Entries';
     if (haystack.includes('approval') || haystack.includes('review') || haystack.includes('approve')) return 'Approval';
     if (haystack.includes('escalat')) return 'Escalation';
     if (haystack.includes('report')) return 'Reports';
@@ -347,7 +340,7 @@ export class UserManagementComponent implements OnInit {
     'Not Invited': { icon: 'ti-circle-minus', color: 'text-slate-400' },
   };
 
-  constructor(private userService: UserService, private edobService: EdobService, private router: Router, private sanitizer: DomSanitizer, private permissionService: PermissionService, private authService: AuthService, private route: ActivatedRoute) {}
+  constructor(private userService: UserService, private keyVault: KeyVaultService, private router: Router, private sanitizer: DomSanitizer, private permissionService: PermissionService, private authService: AuthService, private route: ActivatedRoute) {}
 
   get canAddUser(): boolean {
     return this.permissionService.hasPermission('admin.users.manage');
@@ -484,7 +477,7 @@ export class UserManagementComponent implements OnInit {
 
     this.rolesLoading = true;
     this.errorMessage = '';
-    this.edobService.listRoles(orgId).subscribe({
+    this.keyVault.listRoles(orgId).subscribe({
       next: (data: any) => {
         const payload = data?.data ?? data;
         this.roles = Array.isArray(payload) ? payload : [];
