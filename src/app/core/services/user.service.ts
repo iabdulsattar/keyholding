@@ -84,7 +84,7 @@ export class UserService {
     if (options.status) params = params.set('status', options.status);
     if (options.page != null) params = params.set('page', String(options.page));
     if (options.size != null) params = params.set('size', String(options.size));
-    params = params.set('serviceCode', 'edob');
+    params = params.set('serviceCode', 'key-vault');
 
     const query = params.toString();
     const path = `${this.base(orgId)}/users${query ? `?${query}` : ''}`;

@@ -2,10 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { EdobService } from '../../core/services/edob.service';
-import { Role, OrgUser } from '../../core/models/edob.models';
+import { UserService } from '../../core/services/user.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 import { DeleteRoleModalComponent } from '../delete-role-modal/delete-role-modal.component';
 import { ToastService } from '../../core/services/toast.service';
+
+interface Role {
+  id: string;
+  code: string;
+  name: string;
+  description?: string;
+  color?: string;
+  permissions: string[];
+  active: boolean;
+  source?: string;
+  permissionCount?: number;
+  userCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+interface OrgUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  enabled: boolean;
+  roles?: Role[];
+  [key: string]: any;
+}
 
 interface AssignedUser {
   id: string;
@@ -50,7 +76,8 @@ export class DeleteRoleComponent implements OnInit {
   ];
 
   constructor(
-    private edobService: EdobService,
+    private keyVault: KeyVaultService,
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastService,
@@ -75,8 +102,8 @@ export class DeleteRoleComponent implements OnInit {
 
   private loadRole(): void {
     if (!this.orgId || !this.roleId) return;
-    this.edobService.getRole(this.orgId, this.roleId).subscribe({
-      next: (data) => {
+    this.keyVault.getRole(this.orgId, this.roleId).subscribe({
+      next: (data: any) => {
         this.role = data;
         this.loading = false;
         if (!data) {
@@ -92,14 +119,14 @@ export class DeleteRoleComponent implements OnInit {
 
   private loadUsers(): void {
     if (!this.orgId || !this.roleId) return;
-    this.edobService.listOrgUsers(this.orgId).subscribe({
+    this.userService.listUsers(this.orgId, { page: 0, size: 100 }).subscribe({
       next: (data: any) => {
-        const orgUsers: OrgUser[] = data?.data ?? data ?? [];
-        const assigned = orgUsers.filter((u) =>
-          (u.roles || []).some((r) => r.id === this.roleId),
+        const users = data?.content ?? data ?? [];
+        const assigned = users.filter((u: any) =>
+          (u.roleIds || []).includes(this.roleId),
         );
         this.totalUsers = assigned.length;
-        this.users = assigned.map((u, i) => this.mapUser(u, i));
+        this.users = assigned.map((u: any, i: number) => this.mapUser(u, i));
       },
       error: () => {
         this.users = [];
@@ -199,7 +226,7 @@ export class DeleteRoleComponent implements OnInit {
   delete(): void {
     if (!this.orgId || !this.roleId || this.deleting || this.blocked) return;
     this.deleting = true;
-    this.edobService.deleteRole(this.orgId, this.roleId).subscribe({
+    this.keyVault.deleteRole(this.orgId, this.roleId).subscribe({
       next: () => {
         this.deleting = false;
         this.toastService.success('Role deleted successfully.');

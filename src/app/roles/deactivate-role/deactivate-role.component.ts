@@ -2,10 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { EdobService } from '../../core/services/edob.service';
-import { Role, OrgUser } from '../../core/models/edob.models';
+import { UserService } from '../../core/services/user.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 import { DeactivateRoleModalComponent } from '../deactivate-role-modal/deactivate-role-modal.component';
 import { ToastService } from '../../core/services/toast.service';
+
+interface Role {
+  id: string;
+  code: string;
+  name: string;
+  description?: string;
+  color?: string;
+  permissions: string[];
+  active: boolean;
+  source?: string;
+  permissionCount?: number;
+  userCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+interface OrgUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  enabled: boolean;
+  roles?: Role[];
+  [key: string]: any;
+}
 
 interface AssignedUser {
   id: string;
@@ -49,7 +75,8 @@ export class DeactivateRoleComponent implements OnInit {
   ];
 
   constructor(
-    private edobService: EdobService,
+    private keyVault: KeyVaultService,
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastService,
@@ -74,7 +101,7 @@ export class DeactivateRoleComponent implements OnInit {
 
   private loadRole(): void {
     if (!this.orgId || !this.roleId) return;
-    this.edobService.getRole(this.orgId, this.roleId).subscribe({
+    this.keyVault.getRole(this.orgId, this.roleId).subscribe({
       next: (data) => {
         this.role = data;
         this.loading = false;
@@ -91,14 +118,14 @@ export class DeactivateRoleComponent implements OnInit {
 
   private loadUsers(): void {
     if (!this.orgId || !this.roleId) return;
-    this.edobService.listOrgUsers(this.orgId).subscribe({
+    this.userService.listUsers(this.orgId, { page: 0, size: 100 }).subscribe({
       next: (data: any) => {
-        const orgUsers: OrgUser[] = data?.data ?? data ?? [];
-        const assigned = orgUsers.filter((u) =>
-          (u.roles || []).some((r) => r.id === this.roleId),
+        const users = data?.content ?? data ?? [];
+        const assigned = users.filter((u: any) =>
+          (u.roleIds || []).includes(this.roleId),
         );
         this.totalUsers = assigned.length;
-        this.users = assigned.map((u, i) => this.mapUser(u, i));
+        this.users = assigned.map((u: any, i: number) => this.mapUser(u, i));
       },
       error: () => {
         this.users = [];
@@ -107,14 +134,14 @@ export class DeactivateRoleComponent implements OnInit {
     });
   }
 
-  private mapUser(u: OrgUser, index: number): AssignedUser {
+  private mapUser(u: any, index: number): AssignedUser {
     const name = `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email || 'User';
     const initials = name
       .split(/\s+/)
-      .map((part) => part.charAt(0).toUpperCase())
+      .map((part: string) => part.charAt(0).toUpperCase())
       .slice(0, 2)
       .join('');
-    const extra = u as any;
+    const extra = u;
     return {
       id: u.id,
       name,
@@ -191,7 +218,7 @@ export class DeactivateRoleComponent implements OnInit {
   deactivate(): void {
     if (!this.orgId || !this.roleId || this.deactivating) return;
     this.deactivating = true;
-    this.edobService.deactivateRole(this.orgId, this.roleId).subscribe({
+    this.keyVault.deactivateRole(this.orgId, this.roleId).subscribe({
       next: () => {
         this.deactivating = false;
         this.toastService.success('Role deactivated successfully.');

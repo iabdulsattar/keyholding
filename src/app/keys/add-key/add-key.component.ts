@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { KeyVaultService } from '../../core/services/keyvault.service';
+import { KeyVaultService, KeyType, KeyCategory, StorageLocation } from '../../core/services/keyvault.service';
+import { ClientService, SiteRecord, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class AddKeyComponent implements OnInit {
   keyType = '';
   keyCategory = '';
   keyNotes = '';
-  assignClient = 'Metro Security Services';
+  assignClientId = '';
+  assignClient = '';
   assignSite = '';
   storageLocation = '';
   keyBrand = '';
@@ -34,14 +36,97 @@ export class AddKeyComponent implements OnInit {
   keyStatus = 'In Storage';
   fileName = '';
 
+  keyTypes: KeyType[] = [];
+  keyCategories: KeyCategory[] = [];
+  storageLocations: StorageLocation[] = [];
+  sites: SiteRecord[] = [];
+  clients: Client[] = [];
+
+  creatingType = false;
+  creatingCategory = false;
+  creatingStorageLocation = false;
+  creatingSite = false;
+
+  newTypeName = '';
+  newCategoryName = '';
+  newStorageLocationName = '';
+  newSiteName = '';
+
   private clientId = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private toast: ToastService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.clientId = params['clientId'] || '';
     });
+    this.loadCatalog();
+    this.loadClients();
+  }
+
+  loadCatalog(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+
+    this.keyVault.listKeyTypes(orgId, false).subscribe((res: any) => {
+      const data = res?.data ?? res ?? {};
+      this.keyTypes = data.items ?? data.data ?? data ?? [];
+    });
+
+    this.keyVault.listKeyCategories(orgId, false).subscribe((res: any) => {
+      const data = res?.data ?? res ?? {};
+      this.keyCategories = data.items ?? data.data ?? data ?? [];
+    });
+
+    this.keyVault.listStorageLocations(orgId, false).subscribe((res: any) => {
+      const data = res?.data ?? res ?? {};
+      this.storageLocations = data.items ?? data.data ?? data ?? [];
+    });
+  }
+
+  loadClients(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.clientService.listClients({ page: 0, size: 100 }).subscribe((result: any) => {
+      this.clients = result?.items ?? result?.data ?? [];
+      if (this.clients.length > 0 && !this.assignClientId) {
+        this.assignClient = this.clients[0].name;
+        this.assignClientId = this.clients[0].id;
+        this.loadSites();
+      }
+    });
+  }
+
+  loadSites(): void {
+    if (!this.assignClientId) {
+      this.sites = [];
+      return;
+    }
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.keyVault.listSites(orgId, this.assignClientId, { size: 100 }).subscribe((res: any) => {
+      const data = res?.data ?? res ?? {};
+      const items = data.items ?? data.data ?? data ?? [];
+      this.sites = items.map((item: any) => ({
+        id: item.id ?? '',
+        code: item.siteCode ?? item.code ?? '',
+        name: item.name ?? '',
+        type: item.siteType ?? item.type ?? '',
+        typeColor: 'blue',
+        address: item.address ?? '',
+        contact: item.primaryContactName ?? '',
+        status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+        keys: 0,
+        jobs: 0,
+      }));
+    });
+  }
+
+  onClientChange(): void {
+    this.assignSite = '';
+    const client = this.clients.find(c => c.id === this.assignClientId);
+    this.assignClient = client?.name ?? '';
+    this.loadSites();
   }
 
   onFileSelect(event: Event): void {
@@ -58,7 +143,8 @@ export class AddKeyComponent implements OnInit {
       this.keyType = '';
       this.keyCategory = '';
       this.keyNotes = '';
-      this.assignClient = 'Metro Security Services';
+      this.assignClient = this.clients.length > 0 ? this.clients[0].name : '';
+      this.assignClientId = this.clients.length > 0 ? this.clients[0].id : '';
       this.assignSite = '';
       this.storageLocation = '';
       this.keyBrand = '';
@@ -67,6 +153,14 @@ export class AddKeyComponent implements OnInit {
       this.keyTag = '';
       this.keyStatus = 'In Storage';
       this.fileName = '';
+      this.creatingType = false;
+      this.creatingCategory = false;
+      this.creatingStorageLocation = false;
+      this.creatingSite = false;
+      this.newTypeName = '';
+      this.newCategoryName = '';
+      this.newStorageLocationName = '';
+      this.newSiteName = '';
     }
   }
 
@@ -81,18 +175,18 @@ export class AddKeyComponent implements OnInit {
 
     const key: any = {
       name: this.keyName,
-      code: this.keyId,
-      type: this.keyType,
-      category: this.keyCategory,
-      clientId: this.assignClient,
+      reference: this.keyId,
+      keyTypeId: this.keyType,
+      keyCategoryId: this.keyCategory,
+      clientId: this.assignClientId,
       siteId: this.assignSite,
-      storageLocation: this.storageLocation,
-      brand: this.keyBrand,
+      storageLocationId: this.storageLocation,
+      makeBrand: this.keyBrand,
       model: this.keyModel,
       colour: this.keyColour,
-      tag: this.keyTag,
+      tagLabel: this.keyTag,
       status: statusMap[this.keyStatus] || 'IN_STORAGE',
-      notes: this.keyNotes,
+      description: this.keyNotes,
     };
 
     if (!this.clientId) {
@@ -114,6 +208,69 @@ export class AddKeyComponent implements OnInit {
       error: () => {
         this.toast.error('Failed to save key. Please try again.');
       }
+    });
+  }
+
+  createKeyType(): void {
+    if (!this.newTypeName.trim()) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+
+    this.keyVault.createKeyType(orgId, { name: this.newTypeName.trim(), active: true }).subscribe((res: any) => {
+      const newType = res?.data ?? res;
+      this.keyTypes = [...this.keyTypes, newType];
+      this.keyType = newType.id;
+      this.creatingType = false;
+      this.newTypeName = '';
+      this.toast.success('Key type created');
+    });
+  }
+
+  createKeyCategory(): void {
+    if (!this.newCategoryName.trim()) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+
+    this.keyVault.createKeyCategory(orgId, { name: this.newCategoryName.trim(), active: true }).subscribe((res: any) => {
+      const newCategory = res?.data ?? res;
+      this.keyCategories = [...this.keyCategories, newCategory];
+      this.keyCategory = newCategory.id;
+      this.creatingCategory = false;
+      this.newCategoryName = '';
+      this.toast.success('Key category created');
+    });
+  }
+
+  createStorageLocation(): void {
+    if (!this.newStorageLocationName.trim()) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+
+    this.keyVault.createStorageLocation(orgId, { name: this.newStorageLocationName.trim(), active: true }).subscribe((res: any) => {
+      const newLocation = res?.data ?? res;
+      this.storageLocations = [...this.storageLocations, newLocation];
+      this.storageLocation = newLocation.id;
+      this.creatingStorageLocation = false;
+      this.newStorageLocationName = '';
+      this.toast.success('Storage location created');
+    });
+  }
+
+  createSite(): void {
+    if (!this.newSiteName.trim() || !this.assignClientId) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+
+    const payload = { name: this.newSiteName.trim(), status: 'ACTIVE' };
+
+    this.clientService.createSite(orgId, this.assignClientId, payload).subscribe((res: any) => {
+      const newSite = res?.data ?? res;
+      this.sites = [...this.sites, newSite];
+      this.assignSite = newSite.id;
+      this.creatingSite = false;
+      this.newSiteName = '';
+      this.toast.success('Site created');
+      this.loadSites();
     });
   }
 
