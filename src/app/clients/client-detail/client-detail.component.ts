@@ -201,6 +201,51 @@ export class ClientDetailComponent implements OnInit {
     return this.sites.reduce((sum, site) => sum + (site.jobs || 0), 0);
   }
 
+  get keyStatusStats(): { status: string; count: number; color: string; pct: number }[] {
+    const total = this.filteredKeys.length || 1;
+    const counts = new Map<string, { count: number; color: string }>();
+    this.filteredKeys.forEach(k => {
+      const color = this.statusColorFor(k.status, k.statusColor);
+      const existing = counts.get(k.status) || { count: 0, color };
+      counts.set(k.status, { count: existing.count + 1, color });
+    });
+    return Array.from(counts.entries()).map(([status, data]) => ({
+      status,
+      count: data.count,
+      color: data.color,
+      pct: Math.round((data.count / total) * 100)
+    }));
+  }
+
+  get keyTypeStats(): { type: string; count: number; color: string; pct: number }[] {
+    const total = this.filteredKeys.length || 1;
+    const counts = new Map<string, { count: number; color: string }>();
+    this.filteredKeys.forEach(k => {
+      const color = k.typeColor || 'bg-slate-400';
+      const existing = counts.get(k.type) || { count: 0, color };
+      counts.set(k.type, { count: existing.count + 1, color });
+    });
+    return Array.from(counts.entries()).map(([type, data]) => ({
+      type,
+      count: data.count,
+      color: data.color,
+      pct: Math.round((data.count / total) * 100)
+    }));
+  }
+
+  private statusColorFor(status: string, fallback?: string): string {
+    if (fallback) return fallback;
+    const map: Record<string, string> = {
+      'In Storage': 'bg-emerald-500',
+      'In Use': 'bg-blue-500',
+      'Issued': 'bg-amber-500',
+      'Overdue': 'bg-purple-500',
+      'Lost': 'bg-rose-500',
+      'Lost / Damaged': 'bg-rose-500',
+    };
+    return map[status] || 'bg-slate-400';
+  }
+
   hexForType(type: string): string {
     const map: Record<string, string> = {
       Office: '#3b82f6',

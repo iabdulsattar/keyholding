@@ -43,6 +43,7 @@ export class AddUserComponent implements OnInit {
   successMessage = '';
   isEditMode = false;
   userId: string | null = null;
+  userKeycloakId: string | null = null;
 
   form = {
     firstName: '',
@@ -152,8 +153,9 @@ export class AddUserComponent implements OnInit {
         this.form.location = user.location || '';
         this.form.canAccessWeb = user.canAccessWeb ?? true;
         this.form.canAccessMobile = user.canAccessMobile ?? true;
-        this.form.roleIds = user.roleIds || (user.serviceAccess || []).find(s => s.serviceCode === 'edob')?.roleIds || [];
+        this.form.roleIds = (user.roleIds || (user.serviceAccess || []).find(s => s.serviceCode === 'edob')?.roleIds || []).map(String);
         this.profileImage = (user as any).profileImage || null;
+        this.userKeycloakId = (user as any).keycloakId || null;
         this.loading = false;
       },
       error: () => {
@@ -271,7 +273,7 @@ export class AddUserComponent implements OnInit {
       this.userService.updateUser(orgId, this.userId, payload, this.avatarFile).subscribe({
         next: () => {
           if (this.form.roleIds.length) {
-            const userId = this.userId!;
+            const userId = this.userKeycloakId || this.userId || '';
             const rolesPayload: AssignRolesRequest = { roleIds: this.form.roleIds };
             this.keyVault.assignRolesToUser(orgId, userId, rolesPayload.roleIds).subscribe({
               next: () => {

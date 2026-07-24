@@ -145,9 +145,9 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <!-- Active Card Selection Control -->
-              <div (click)="setStatus('active')" [class.border-blue-600]="status === 'active'" [class.border-slate-200]="status !== 'active'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
+              <div (click)="setStatus('active')" [class.border-emerald-600]="status === 'active'" [class.border-slate-200]="status !== 'active'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
                 <div class="mt-0.5">
-                  <div [class.border-blue-600]="status === 'active'" [class.border-slate-300]="status !== 'active'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
+                  <div [class.border-emerald-600]="status === 'active'" [class.border-slate-300]="status !== 'active'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
                 </div>
                 <div>
                   <h4 class="text-xs font-bold text-slate-900">Active</h4>
@@ -156,9 +156,9 @@
               </div>
 
               <!-- Inactive Card Selection Control -->
-              <div (click)="setStatus('inactive')" [class.border-blue-600]="status === 'inactive'" [class.border-slate-200]="status !== 'inactive'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
+              <div (click)="setStatus('inactive')" [class.border-rose-600]="status === 'inactive'" [class.border-slate-200]="status !== 'inactive'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
                 <div class="mt-0.5">
-                  <div [class.border-blue-600]="status === 'inactive'" [class.border-slate-300]="status !== 'inactive'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
+                  <div [class.border-rose-600]="status === 'inactive'" [class.border-slate-300]="status !== 'inactive'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
                 </div>
                 <div>
                   <h4 class="text-xs font-bold text-slate-900">Inactive</h4>

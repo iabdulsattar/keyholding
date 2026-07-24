@@ -62,6 +62,7 @@ export class AppSidebarComponent implements OnInit {
   userRole = '';
   loading = true;
   isDropdownOpen = false;
+  companyName = '';
 
   readonly isExpanded$;
   readonly isMobileOpen$;
@@ -84,6 +85,7 @@ export class AppSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.loadUser();
+    this.companyName = this.authService.getOrgName() || '';
 
     this.subscription.add(
       this.router.events.subscribe(event => {
