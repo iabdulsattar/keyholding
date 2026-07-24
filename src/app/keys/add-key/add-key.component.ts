@@ -271,7 +271,7 @@ export class AddKeyComponent implements OnInit {
           fileName: file.name,
           contentType: file.type || 'application/octet-stream',
           sizeBytes: file.size,
-          storagePath: reader.result as string,
+          storagePath: '',
         }).subscribe({
           next: () => {
             pending--;
