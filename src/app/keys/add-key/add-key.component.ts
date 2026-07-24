@@ -1,16 +1,19 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { KeyVaultService, KeyType, KeyCategory, StorageLocation } from '../../core/services/keyvault.service';
 import { ClientService, SiteRecord, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
+import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-key',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-key.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -46,18 +49,15 @@ export class AddKeyComponent implements OnInit {
   sites: SiteRecord[] = [];
   clients: Client[] = [];
 
-  typeOpen = false;
-  categoryOpen = false;
-  filteredTypes: KeyType[] = [];
-  filteredCategories: KeyCategory[] = [];
-  creatingType = false;
-  creatingCategory = false;
-  newTypeName = '';
-  newCategoryName = '';
-
   loadingSites = false;
   loadingClients = false;
-  catalogLoaded = false;
+  loadingCatalog = false;
+
+  keyTypeOptions: RichSelectOption[] = [];
+  keyCategoryOptions: RichSelectOption[] = [];
+  storageLocationOptions: RichSelectOption[] = [];
+  clientOptions: RichSelectOption[] = [];
+  siteOptions: RichSelectOption[] = [];
 
   private clientId = '';
   private catalogCache: { types: KeyType[]; categories: KeyCategory[]; locations: StorageLocation[] } | null = null;
@@ -68,67 +68,49 @@ export class AddKeyComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.clientId = params['clientId'] || '';
     });
-    this.loadCatalog();
-    this.loadClients();
+    this.loadAll();
   }
 
-  loadCatalog(): void {
-    if (this.catalogCache) {
-      this.keyTypes = this.catalogCache.types;
-      this.keyCategories = this.catalogCache.categories;
-      this.storageLocations = this.catalogCache.locations;
-      this.catalogLoaded = true;
-      return;
-    }
+  private toRichOptions(items: any[], labelKey = 'name', valueKey = 'id', descKey = 'code'): RichSelectOption[] {
+    return items.map((item: any) => ({
+      value: item[valueKey] || '',
+      label: item[labelKey] || '',
+      description: item[descKey] || ''
+    }));
+  }
 
+  loadAll(): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     if (!orgId) return;
 
-    this.keyVault.listKeyTypes(orgId, false).subscribe({
-      next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        this.keyTypes = data.items ?? data.data ?? data ?? [];
-        this.filteredTypes = [...this.keyTypes];
-      },
-      complete: () => { this.checkCatalogDone(); }
-    });
-
-    this.keyVault.listKeyCategories(orgId, false).subscribe({
-      next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        this.keyCategories = data.items ?? data.data ?? data ?? [];
-        this.filteredCategories = [...this.keyCategories];
-      },
-      complete: () => { this.checkCatalogDone(); }
-    });
-
-    this.keyVault.listStorageLocations(orgId, false).subscribe({
-      next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        this.storageLocations = data.items ?? data.data ?? data ?? [];
-      },
-      complete: () => { this.checkCatalogDone(); }
-    });
-  }
-
-  private checkCatalogDone(): void {
-    if (this.keyTypes.length > 0 && this.keyCategories.length > 0 && this.storageLocations.length > 0) {
-      this.catalogCache = {
-        types: [...this.keyTypes],
-        categories: [...this.keyCategories],
-        locations: [...this.storageLocations]
-      };
-      this.catalogLoaded = true;
-    }
-  }
-
-  loadClients(): void {
+    this.loadingCatalog = true;
     this.loadingClients = true;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
+
+    forkJoin({
+      types: this.keyVault.listKeyTypes(orgId, false),
+      categories: this.keyVault.listKeyCategories(orgId, false),
+      locations: this.keyVault.listStorageLocations(orgId, false),
+    }).subscribe({
+      next: ({ types, categories, locations }) => {
+        this.keyTypes = types;
+        this.keyCategories = categories;
+        this.storageLocations = locations;
+        this.keyTypeOptions = this.toRichOptions(types);
+        this.keyCategoryOptions = this.toRichOptions(categories);
+        this.storageLocationOptions = this.toRichOptions(locations);
+        this.catalogCache = { types: [...this.keyTypes], categories: [...this.keyCategories], locations: [...this.storageLocations] };
+        this.loadingCatalog = false;
+      },
+      error: () => {
+        this.loadingCatalog = false;
+        this.toast.error('Failed to load catalog data. Please refresh.');
+      }
+    });
+
     this.clientService.listClients({ page: 0, size: 100 }).subscribe({
       next: (result: any) => {
         this.clients = result?.items ?? result?.data ?? [];
+        this.clientOptions = this.toRichOptions(this.clients);
         if (this.clients.length > 0 && !this.assignClientId) {
           this.assignClient = this.clients[0].name;
           this.assignClientId = this.clients[0].id;
@@ -140,10 +122,9 @@ export class AddKeyComponent implements OnInit {
   }
 
   loadSites(): void {
-    if (!this.assignClientId) {
-      this.sites = [];
-      return;
-    }
+    this.siteOptions = [];
+    this.sites = [];
+    if (!this.assignClientId) return;
     this.loadingSites = true;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     if (!orgId) return;
@@ -163,6 +144,7 @@ export class AddKeyComponent implements OnInit {
           keys: 0,
           jobs: 0,
         }));
+        this.siteOptions = this.toRichOptions(this.sites);
       },
       complete: () => { this.loadingSites = false; }
     });
@@ -173,83 +155,6 @@ export class AddKeyComponent implements OnInit {
     const client = this.clients.find(c => c.id === this.assignClientId);
     this.assignClient = client?.name ?? '';
     this.loadSites();
-  }
-
-  toggleTypeDropdown(): void {
-    this.typeOpen = !this.typeOpen;
-    if (this.typeOpen) {
-      this.categoryOpen = false;
-      this.filteredTypes = [...this.keyTypes];
-      this.creatingType = false;
-      this.newTypeName = '';
-    }
-  }
-
-  toggleCategoryDropdown(): void {
-    this.categoryOpen = !this.categoryOpen;
-    if (this.categoryOpen) {
-      this.typeOpen = false;
-      this.filteredCategories = [...this.keyCategories];
-      this.creatingCategory = false;
-      this.newCategoryName = '';
-    }
-  }
-
-  selectType(id: string): void {
-    this.keyType = id;
-    this.typeOpen = false;
-    this.creatingType = false;
-  }
-
-  selectCategory(id: string): void {
-    this.keyCategory = id;
-    this.categoryOpen = false;
-    this.creatingCategory = false;
-  }
-
-  confirmCreateType(): void {
-    if (!this.newTypeName.trim()) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-
-    this.keyVault.createKeyType(orgId, { name: this.newTypeName.trim(), active: true }).subscribe((res: any) => {
-      const newType = res?.data ?? res;
-      this.keyTypes = [...this.keyTypes, newType];
-      this.filteredTypes = [...this.keyTypes];
-      this.keyType = newType.id ?? '';
-      this.creatingType = false;
-      this.newTypeName = '';
-      this.catalogCache = null;
-      this.toast.success('Key type created');
-    });
-  }
-
-  confirmCreateCategory(): void {
-    if (!this.newCategoryName.trim()) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-
-    this.keyVault.createKeyCategory(orgId, { name: this.newCategoryName.trim(), active: true }).subscribe((res: any) => {
-      const newCategory = res?.data ?? res;
-      this.keyCategories = [...this.keyCategories, newCategory];
-      this.filteredCategories = [...this.keyCategories];
-      this.keyCategory = newCategory.id ?? '';
-      this.creatingCategory = false;
-      this.newCategoryName = '';
-      this.catalogCache = null;
-      this.toast.success('Key category created');
-    });
-  }
-
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.shadow-lg')) {
-      this.typeOpen = false;
-      this.categoryOpen = false;
-      this.creatingType = false;
-      this.creatingCategory = false;
-    }
   }
 
   onFileSelect(event: Event): void {
@@ -293,12 +198,6 @@ export class AddKeyComponent implements OnInit {
       this.selectedFiles = [];
       this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
       this.attachmentPreviews = [];
-      this.typeOpen = false;
-      this.categoryOpen = false;
-      this.creatingType = false;
-      this.creatingCategory = false;
-      this.newTypeName = '';
-      this.newCategoryName = '';
     }
   }
 

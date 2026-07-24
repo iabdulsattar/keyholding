@@ -169,6 +169,24 @@ export interface KeyVaultRole {
   providedIn: 'root'
 })
 export class KeyVaultService {
+  private catalogCache = new Map<string, any[]>();
+
+  private getCatalogCacheKey(catalog: string, orgId: string, includeInactive: boolean): string {
+    return `${catalog}:${orgId}:${includeInactive}`;
+  }
+
+  private setCatalogCache(key: string, items: any[]): void {
+    this.catalogCache.set(key, items);
+  }
+
+  private getCachedCatalog(key: string): any[] | undefined {
+    return this.catalogCache.get(key);
+  }
+
+  private parseCatalogResponse(res: any): any[] {
+    const data = res?.data ?? res ?? {};
+    return data.items ?? data.data ?? data ?? [];
+  }
   private getAuthHeaders() {
     const token = this.auth.getAccessToken();
     return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
@@ -450,7 +468,18 @@ export class KeyVaultService {
   listKeyTypes(orgId: string, includeInactive = false): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-types${q}`, headers);
+    const cacheKey = this.getCatalogCacheKey('keyTypes', orgId, includeInactive);
+    const cached = this.getCachedCatalog(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-types${q}`, headers).pipe(
+      map((res: any) => {
+        const items = this.parseCatalogResponse(res);
+        this.setCatalogCache(cacheKey, items);
+        return items;
+      })
+    );
   }
 
   createKeyType(orgId: string, keyType: KeyType): Observable<any> {
@@ -477,7 +506,18 @@ export class KeyVaultService {
   listKeyCategories(orgId: string, includeInactive = false): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories${q}`, headers);
+    const cacheKey = this.getCatalogCacheKey('keyCategories', orgId, includeInactive);
+    const cached = this.getCachedCatalog(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories${q}`, headers).pipe(
+      map((res: any) => {
+        const items = this.parseCatalogResponse(res);
+        this.setCatalogCache(cacheKey, items);
+        return items;
+      })
+    );
   }
 
   createKeyCategory(orgId: string, keyCategory: KeyCategory): Observable<any> {
@@ -504,7 +544,18 @@ export class KeyVaultService {
   listStorageLocations(orgId: string, includeInactive = false): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations${q}`, headers);
+    const cacheKey = this.getCatalogCacheKey('storageLocations', orgId, includeInactive);
+    const cached = this.getCachedCatalog(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations${q}`, headers).pipe(
+      map((res: any) => {
+        const items = this.parseCatalogResponse(res);
+        this.setCatalogCache(cacheKey, items);
+        return items;
+      })
+    );
   }
 
   createStorageLocation(orgId: string, storageLocation: StorageLocation): Observable<any> {

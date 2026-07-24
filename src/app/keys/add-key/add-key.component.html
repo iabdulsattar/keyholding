@@ -49,52 +49,31 @@
                 <input type="text" [(ngModel)]="keyId" name="keyId" required placeholder="e.g. KEY-000157" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
                <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Type *</label>
-                <select [(ngModel)]="keyType" name="keyType" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select key type</option>
-                  <option *ngFor="let t of keyTypes" [value]="t.id">{{ t.name }}</option>
-                </select>
-              </div>
+                 <label class="text-xs font-semibold text-slate-600">Key Type *</label>
+                 <app-rich-select
+                   [options]="keyTypeOptions"
+                   [(value)]="keyType"
+                   placeholder="Select key type"
+                   [showSearch]="true"
+                   panelWidth="wide"
+                   class="w-full"
+                 ></app-rich-select>
+                 <div *ngIf="loadingCatalog" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading catalog...</div>
+               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Category *</label>
-                <div class="relative">
-                  <button type="button" (click)="toggleCategoryDropdown()" class="flex h-11 w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-gray-700 focus:outline-none focus:border-blue-500">
-                    <span [class.text-gray-400]="!keyCategory">{{ keyCategories.find(c=>c.id===keyCategory)?.name || 'Select category' }}</span>
-                    <svg class="stroke-current text-gray-400" [ngClass]="{ 'rotate-180': categoryOpen }" width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4.79175 7.39551L10.0001 12.6038L15.2084 7.39551" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                  </button>
-                  @if (categoryOpen) {
-                    <div class="absolute left-0 top-full z-50 mt-1 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg" (click)="$event.stopPropagation()">
-                      <div class="max-h-48 overflow-y-auto">
-                        @for (c of filteredCategories; track c.id) {
-                          <button type="button" (click)="selectCategory(c.id ?? '')" class="flex w-full items-center px-3 py-2 text-left text-sm" [ngClass]="keyCategory === c.id ? 'bg-blue-50 font-medium text-blue-700' : 'text-gray-700 hover:bg-gray-100'">
-                            {{ c.name }}
-                          </button>
-                        } @empty {
-                          <div class="px-3 py-2 text-sm text-gray-500">No categories found</div>
-                        }
-                      </div>
-                      <div class="border-t border-gray-100">
-                        @if (creatingCategory) {
-                          <div class="px-3 py-2">
-                            <input type="text" [(ngModel)]="newCategoryName" placeholder="New category name" class="w-full text-sm border border-gray-200 rounded-md px-2 py-1.5 focus:outline-none focus:border-blue-500" (keyup.enter)="confirmCreateCategory()">
-                            <div class="flex gap-2 mt-2">
-                              <button type="button" (click)="confirmCreateCategory()" class="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md">Add</button>
-                              <button type="button" (click)="creatingCategory=false; newCategoryName='';" class="bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1.5 rounded-md">Cancel</button>
-                            </div>
-                          </div>
-                        } @else {
-                          <button type="button" (click)="creatingCategory=true; newCategoryName='';" class="flex w-full items-center px-3 py-2 text-left text-sm text-blue-600 font-medium hover:bg-blue-50">
-                            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            Create new category...
-                          </button>
-                        }
-                      </div>
-                    </div>
-                  }
-                </div>
-              </div>
+               <div class="space-y-1.5">
+                 <label class="text-xs font-semibold text-slate-600">Key Category *</label>
+                 <app-rich-select
+                   [options]="keyCategoryOptions"
+                   [(value)]="keyCategory"
+                   placeholder="Select category"
+                   [showSearch]="true"
+                   panelWidth="wide"
+                   class="w-full"
+                 ></app-rich-select>
+                 <div *ngIf="loadingCatalog" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading catalog...</div>
+               </div>
               <div class="md:col-span-2 space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Description / Notes</label>
                 <textarea [(ngModel)]="keyNotes" name="keyNotes" rows="2" placeholder="Optional notes about this key" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
@@ -105,29 +84,42 @@
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Assign To</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Client *</label>
-                <select [(ngModel)]="assignClientId" name="assignClientId" required (change)="onClientChange()" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select client</option>
-                  <option *ngFor="let c of clients" [value]="c.id">{{ c.name }}</option>
-                </select>
-                <div *ngIf="loadingClients" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading clients...</div>
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Site *</label>
-                <select [(ngModel)]="assignSite" name="assignSite" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select site</option>
-                  <option *ngFor="let s of sites" [value]="s.id">{{ s.name }}</option>
-                </select>
-                <div *ngIf="loadingSites" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading sites...</div>
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Storage Location *</label>
-                <select [(ngModel)]="storageLocation" name="storageLocation" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                  <option value="">Select storage location</option>
-                  <option *ngFor="let loc of storageLocations" [value]="loc.id">{{ loc.name }}</option>
-                </select>
-              </div>
+               <div class="space-y-1.5">
+                 <label class="text-xs font-semibold text-slate-600">Client *</label>
+                 <app-rich-select
+                   [options]="clientOptions"
+                   [(value)]="assignClientId"
+                   placeholder="Select client"
+                   [showSearch]="true"
+                   panelWidth="wide"
+                   class="w-full"
+                   (valueChange)="onClientChange()"
+                 ></app-rich-select>
+                 <div *ngIf="loadingClients" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading clients...</div>
+               </div>
+               <div class="space-y-1.5">
+                 <label class="text-xs font-semibold text-slate-600">Site *</label>
+                 <app-rich-select
+                   [options]="siteOptions"
+                   [(value)]="assignSite"
+                   placeholder="Select site"
+                   [showSearch]="true"
+                   panelWidth="wide"
+                   class="w-full"
+                 ></app-rich-select>
+                 <div *ngIf="loadingSites" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading sites...</div>
+               </div>
+               <div class="space-y-1.5">
+                 <label class="text-xs font-semibold text-slate-600">Storage Location *</label>
+                 <app-rich-select
+                   [options]="storageLocationOptions"
+                   [(value)]="storageLocation"
+                   placeholder="Select storage location"
+                   [showSearch]="true"
+                   panelWidth="wide"
+                   class="w-full"
+                 ></app-rich-select>
+               </div>
             </div>
           </div>
 

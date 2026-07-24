@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ClientService, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
+import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-client',
@@ -14,6 +16,7 @@ import { ToastService } from '../../core/services/toast.service';
     CommonModule,
     RouterModule,
     FormsModule,
+    RichSelectComponent,
   ],
   templateUrl: './add-client.component.html',
   styles: [`
@@ -39,11 +42,21 @@ export class AddClientComponent implements OnInit {
   notes = '';
   status: 'active' | 'inactive' = 'active';
 
-  showRegionDropdown = false;
-  showIndustryDropdown = false;
+  regions: RichSelectOption[] = [
+    { value: 'North Region', label: 'North Region' },
+    { value: 'Central Region', label: 'Central Region' },
+    { value: 'West Region', label: 'West Region' },
+    { value: 'East Region', label: 'East Region' },
+    { value: 'South Region', label: 'South Region' },
+  ];
 
-  regions = ['North Region', 'Central Region', 'West Region', 'East Region', 'South Region'];
-  industries = ['Security Services', 'Commercial Property', 'Logistics & Fleet', 'Corporate Offices', 'Retail Banking'];
+  industries: RichSelectOption[] = [
+    { value: 'Security Services', label: 'Security Services' },
+    { value: 'Commercial Property', label: 'Commercial Property' },
+    { value: 'Logistics & Fleet', label: 'Logistics & Fleet' },
+    { value: 'Corporate Offices', label: 'Corporate Offices' },
+    { value: 'Retail Banking', label: 'Retail Banking' },
+  ];
 
   loading = false;
   editMode = false;
@@ -90,31 +103,6 @@ export class AddClientComponent implements OnInit {
       this.notes = client.notes || '';
       this.status = client.status === 'Active' ? 'active' : 'inactive';
     });
-  }
-
-  toggleRegionDropdown(): void {
-    this.showRegionDropdown = !this.showRegionDropdown;
-    this.showIndustryDropdown = false;
-  }
-
-  toggleIndustryDropdown(): void {
-    this.showIndustryDropdown = !this.showIndustryDropdown;
-    this.showRegionDropdown = false;
-  }
-
-  selectRegion(value: string): void {
-    this.region = value;
-    this.showRegionDropdown = false;
-  }
-
-  selectIndustry(value: string): void {
-    this.industry = value;
-    this.showIndustryDropdown = false;
-  }
-
-  closeDropdowns(): void {
-    this.showRegionDropdown = false;
-    this.showIndustryDropdown = false;
   }
 
   setStatus(status: 'active' | 'inactive'): void {
