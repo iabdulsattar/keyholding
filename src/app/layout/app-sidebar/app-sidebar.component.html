@@ -78,7 +78,7 @@
                 </svg>
               </div>
               @if (openSubmenu === 'main-' + $index) {
-                <div class="pl-6 sm:pl-8 space-y-0.5 border-l border-slate-800/80 ml-3 sm:ml-4">
+                <div class="pl-5 space-y-0.5 border-slate-800/80 ml-3 sm:ml-4">
                    @for (sub of item.subItems; track sub.name) {
                      <a [routerLink]="sub.path" [queryParams]="sub.queryParams || {}"
                         class="flex items-center gap-2 px-2 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/40 transition rounded-md"
