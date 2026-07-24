@@ -38,7 +38,7 @@ export class AddKeyComponent implements OnInit {
   keyModel = '';
   keyColour = '';
   keyTag = '';
-  keyStatus = 'In Storage';
+  keyStatus: 'active' | 'inactive' = 'active';
   fileName = '';
   selectedFiles: File[] = [];
   attachmentPreviews: { file: File; url: string }[] = [];
@@ -157,6 +157,10 @@ export class AddKeyComponent implements OnInit {
     this.loadSites();
   }
 
+  setStatus(status: 'active' | 'inactive'): void {
+    this.keyStatus = status;
+  }
+
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
@@ -193,7 +197,7 @@ export class AddKeyComponent implements OnInit {
       this.keyModel = '';
       this.keyColour = '';
       this.keyTag = '';
-      this.keyStatus = 'In Storage';
+      this.keyStatus = 'active';
       this.fileName = '';
       this.selectedFiles = [];
       this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
@@ -203,11 +207,8 @@ export class AddKeyComponent implements OnInit {
 
   submitKeyForm(): void {
     const statusMap: Record<string, string> = {
-      'In Storage': 'IN_STORAGE',
-      'Issued': 'ISSUED',
-      'In Use': 'IN_USE',
-      'Overdue': 'OVERDUE',
-      'Lost / Damaged': 'LOST',
+      'active': 'IN_STORAGE',
+      'inactive': 'INACTIVE',
     };
 
     const key: any = {
@@ -215,15 +216,16 @@ export class AddKeyComponent implements OnInit {
       reference: this.keyId,
       keyTypeId: this.keyType,
       keyCategoryId: this.keyCategory,
+      description: this.keyNotes,
       clientId: this.assignClientId,
       siteId: this.assignSite,
       storageLocationId: this.storageLocation,
+      assignedToUserId: null,
       makeBrand: this.keyBrand,
       model: this.keyModel,
       colour: this.keyColour,
       tagLabel: this.keyTag,
       status: statusMap[this.keyStatus] || 'IN_STORAGE',
-      description: this.keyNotes,
     };
 
     if (!this.clientId) {
@@ -297,11 +299,8 @@ export class AddKeyComponent implements OnInit {
 
   get statusClass(): string {
     const map: Record<string, string> = {
-      'In Storage': 'bg-emerald-50 text-emerald-600',
-      'Issued': 'bg-amber-50 text-amber-600',
-      'In Use': 'bg-blue-50 text-blue-600',
-      'Overdue': 'bg-purple-50 text-purple-600',
-      'Lost / Damaged': 'bg-rose-50 text-rose-600'
+      'active': 'bg-emerald-50 text-emerald-600',
+      'inactive': 'bg-rose-50 text-rose-600',
     };
     return map[this.keyStatus] || 'bg-slate-100 text-slate-600';
   }

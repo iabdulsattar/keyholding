@@ -6,6 +6,7 @@ import { PermissionService } from '../../core/services/permission.service';
 import { ProfileResponse } from '../../core/models/auth.models';
 import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarService } from '../../shared/services/sidebar.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 
 @Component({
   selector: 'app-dashboard-shell',
@@ -91,6 +92,7 @@ export class DashboardShellComponent implements OnInit {
     private authService: AuthService,
     private permissionService: PermissionService,
     public sidebarService: SidebarService,
+    private keyVaultService: KeyVaultService,
   ) {}
 
   ngOnInit(): void {
@@ -134,16 +136,31 @@ export class DashboardShellComponent implements OnInit {
       return;
     }
 
-    this.loading = false;
+    this.keyVaultService.getDashboardStats(orgId).subscribe({
+      next: (data: any) => {
+        this.applyDashboard(data);
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.dashboardError = true;
+      }
+    });
   }
 
   private applyDashboard(data: any): void {
+    const payload = data?.data ?? data ?? {};
+    const totalClients = (payload.totalClients ?? this.orgUsers.length) || 124;
+    const totalSites = payload.totalSites ?? 356;
+    const totalKeys = payload.totalKeys ?? 1248;
+    const keysInStorage = payload.keysInStorage ?? 842;
+    const keysIssued = payload.keysIssued ?? 312;
     this.strategicMetrics = {
-      totalClients: this.orgUsers.length || 124,
-      totalSites: 356,
-      totalKeys: 1248,
-      keysInStorage: 842,
-      keysIssued: 312,
+      totalClients,
+      totalSites,
+      totalKeys,
+      keysInStorage,
+      keysIssued,
       totalClientsChange: '5%',
       totalSitesChange: '8%',
       totalKeysChange: '6%',
@@ -152,11 +169,11 @@ export class DashboardShellComponent implements OnInit {
     };
 
     this.alertMetrics = {
-      overdueKeys: 24,
-      lostKeys: 3,
-      damagedKeys: 7,
-      jobsToday: 48,
-      failedJobs: 2,
+      overdueKeys: payload.overdueKeys ?? 0,
+      lostKeys: payload.lostKeys ?? 0,
+      damagedKeys: payload.damagedKeys ?? 0,
+      jobsToday: payload.jobsToday ?? 0,
+      failedJobs: payload.failedJobs ?? 0,
       overdueKeysChange: '12%',
       lostKeysChange: '0%',
       damagedKeysChange: '13%',
@@ -164,10 +181,10 @@ export class DashboardShellComponent implements OnInit {
       failedJobsChange: '33%',
     };
 
-    const totalJobs = 48;
+    const totalJobs = this.alertMetrics.jobsToday || 48;
     const completed = 79;
     const inProgress = 13;
-    const failed = 4;
+    const failed = this.alertMetrics.failedJobs || 4;
     const cancelled = 4;
     this.jobsOverview = {
       completed,
@@ -186,28 +203,28 @@ export class DashboardShellComponent implements OnInit {
         title: 'Overdue Keys',
         iconWrap: 'bg-amber-50 text-amber-600',
         icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-        value: '24',
+        value: String(this.alertMetrics.overdueKeys),
         badgeClass: 'bg-amber-100 text-amber-800',
       },
       {
         title: 'Lost Keys',
         iconWrap: 'bg-red-50 text-red-600',
         icon: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-        value: '3',
+        value: String(this.alertMetrics.lostKeys),
         badgeClass: 'bg-red-100 text-red-800',
       },
       {
         title: 'Damaged Keys',
         iconWrap: 'bg-purple-50 text-purple-600',
         icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
-        value: '7',
+        value: String(this.alertMetrics.damagedKeys),
         badgeClass: 'bg-purple-100 text-purple-800',
       },
       {
         title: 'Failed Jobs',
         iconWrap: 'bg-rose-50 text-rose-600',
         icon: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
-        value: '2',
+        value: String(this.alertMetrics.failedJobs),
         badgeClass: 'bg-rose-100 text-rose-800',
       },
       {
@@ -219,7 +236,7 @@ export class DashboardShellComponent implements OnInit {
       },
     ];
 
-    const allOfficers = [
+    const allOfficers: any[] = [
       ...this.orgUsers,
       { id: 'o1', firstName: 'James', lastName: 'Carter', email: '' },
       { id: 'o2', firstName: 'Sarah', lastName: 'Johnson', email: '' },
@@ -234,15 +251,15 @@ export class DashboardShellComponent implements OnInit {
       { id: 'o3', firstName: 'Michael', lastName: 'Brown', email: '' },
       { id: 'o4', firstName: 'David', lastName: 'Wilson', email: '' },
       { id: 'o5', firstName: 'Emma', lastName: 'Davis', email: '' },
-    ]).map(u => {
+    ]).map((u: any) => {
       const fullName = `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown';
       const parts = fullName.split(' ').filter(Boolean);
       const initials = parts.length >= 2 ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() : fullName.slice(0, 2).toUpperCase();
       return {
         id: u.id,
         name: fullName,
-        role: 'Keyholder',
-        region: 'North Region',
+        role: u.role || 'Keyholder',
+        region: u.region || 'North Region',
         initials,
       };
     });

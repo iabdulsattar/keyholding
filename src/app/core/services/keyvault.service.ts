@@ -212,6 +212,11 @@ export class KeyVaultService {
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/stats`, headers);
   }
 
+  getDashboardStats(orgId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/dashboard`, headers);
+  }
+
   getClient(orgId: string, clientId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}`, headers);

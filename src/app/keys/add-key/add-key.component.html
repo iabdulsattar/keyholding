@@ -108,18 +108,7 @@
                    class="w-full"
                  ></app-rich-select>
                  <div *ngIf="loadingSites" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading sites...</div>
-               </div>
-               <div class="space-y-1.5">
-                 <label class="text-xs font-semibold text-slate-600">Storage Location *</label>
-                 <app-rich-select
-                   [options]="storageLocationOptions"
-                   [(value)]="storageLocation"
-                   placeholder="Select storage location"
-                   [showSearch]="true"
-                   panelWidth="wide"
-                   class="w-full"
-                 ></app-rich-select>
-               </div>
+                </div>
             </div>
           </div>
 
@@ -147,15 +136,26 @@
 
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Status & Settings</h3>
-            <div class="w-full md:w-1/3 space-y-1.5">
-              <label class="text-xs font-semibold text-slate-600">Status *</label>
-              <select [(ngModel)]="keyStatus" name="keyStatus" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                <option value="In Storage">In Storage</option>
-                <option value="Issued">Issued</option>
-                <option value="In Use">In Use</option>
-                <option value="Overdue">Overdue</option>
-                <option value="Lost / Damaged">Lost / Damaged</option>
-              </select>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div (click)="setStatus('active')" [class.border-emerald-600]="keyStatus === 'active'" [class.border-slate-200]="keyStatus !== 'active'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
+                <div class="mt-0.5">
+                  <div [class.border-emerald-600]="keyStatus === 'active'" [class.border-slate-300]="keyStatus !== 'active'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">Active</h4>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Key is in storage and available for assignment.</p>
+                </div>
+              </div>
+
+              <div (click)="setStatus('inactive')" [class.border-rose-600]="keyStatus === 'inactive'" [class.border-slate-200]="keyStatus !== 'inactive'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
+                <div class="mt-0.5">
+                  <div [class.border-rose-600]="keyStatus === 'inactive'" [class.border-slate-300]="keyStatus !== 'inactive'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">Inactive</h4>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Key is inactive and cannot be assigned.</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -218,8 +218,7 @@
                 <div class="flex justify-between"><span class="text-slate-400">Type</span> <span class="font-semibold text-slate-700">{{ keyType ? (keyTypes.find(t => t.id === keyType)?.name || keyType) : '-' }}</span></div>
                 <div class="flex justify-between"><span class="text-slate-400">Category</span> <span class="font-semibold text-slate-700">{{ keyCategory ? (keyCategories.find(c => c.id === keyCategory)?.name || keyCategory) : '-' }}</span></div>
                 <div class="flex justify-between"><span class="text-slate-400">Site Location</span> <span class="font-semibold text-slate-700">{{ assignSite ? (sites.find(s => s.id === assignSite)?.name || assignSite) : '-' }}</span></div>
-                <div class="flex justify-between"><span class="text-slate-400">Storage Unit</span> <span class="font-semibold text-slate-700">{{ storageLocation ? (storageLocations.find(l => l.id === storageLocation)?.name || storageLocation) : '-' }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-slate-400">Status</span> <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ statusClass }}">{{ keyStatus }}</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Status</span> <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ statusClass }}">{{ keyStatus }}</span></div>
               </div>
             </div>
           </div>
