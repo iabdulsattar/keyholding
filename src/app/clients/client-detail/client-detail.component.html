@@ -65,59 +65,79 @@
         }
       </div>
 
-      <!-- HERO PROFILE CARD & METRIC CHIPS -->
-      <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Branding Profile Data Section -->
-        <div class="lg:col-span-5 flex items-start space-x-4 border-b lg:border-b-0 lg:border-r border-slate-100 pb-4 lg:pb-0 lg:pr-6">
-          <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl text-blue-600 flex-shrink-0">
-            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
-          </div>
-          <div class="space-y-1.5 truncate">
-            <div class="flex flex-wrap items-center gap-2">
-              <h3 class="text-lg font-bold text-slate-900 tracking-tight truncate">{{ client?.name || 'Client Details' }}</h3>
-              <span [class]="isClientActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide' : 'bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide'">{{ isClientActive ? 'Active' : 'Inactive' }}</span>
+      <!-- Profile summary card -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-card p-6">
+        <div class="flex flex-col xl:flex-row xl:items-stretch divide-y xl:divide-y-0 xl:divide-x divide-slate-100 justify-between">
+          <div class="flex items-start gap-4 min-w-0 pb-5 xl:pb-0 xl:pr-8">
+            <div class="h-16 w-16 shrink-0 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7M9 9v.01M9 12v.01M9 15v.01"/></svg>
             </div>
-            <div class="text-xs font-semibold text-blue-600 tracking-wider">{{ client?.code || '' }}</div>
-            <div class="space-y-1 text-xs text-slate-500 font-medium">
-              <p class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg> <span class="truncate">{{ client?.email || '' }}</span></p>
-              <p class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <span>{{ client?.phone || '' }}</span></p>
-              <p class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span>{{ client?.region || '' }}</span></p>
+            <div class="min-w-0">
+              <h2 class="text-xl font-bold text-slate-900">{{ client?.name || 'Client Details' }}</h2>
+              <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                <span class="inline-flex items-center rounded-full bg-blue-50 text-blue-600 text-xs font-medium px-2.5 py-1">{{ client?.code || '' }}</span>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+                </span>
+              </div>
+              <div class="mt-3 space-y-1.5 text-sm text-slate-600">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  <span class="truncate">{{ client?.email || '' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 011 .76l1.12 4.5a1 1 0 01-.54 1.14l-2.1 1a11.05 11.05 0 005.5 5.5l1-2.1a1 1 0 011.14-.54l4.5 1.12a1 1 0 01.76 1V19a2 2 0 01-2 2h-1C9.72 21 3 14.28 3 6V5z"/></svg>
+                  <span>{{ client?.phone || '' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span>{{ client?.region || '' }}</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Live Metrics Segment Panels -->
-        <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
-            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Sites</span>
-            
-            <span class="block text-2xl font-bold text-slate-900 tracking-tight">{{ sites.length }}</span>
-            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Sites</span>
+          <div class="grid grid-cols-3 divide-x divide-slate-100 items-center py-5 xl:py-0 xl:px-8">
+            <div class="px-4 first:pl-0 last:pr-0 text-center">
+              <div class="text-sm text-slate-500">Sites</div>
+              <span class="block text-2xl font-bold text-slate-900 mt-1">{{ sites.length }}</span>
+              <div class="text-xs text-slate-400 mt-0.5">Total Sites</div>
+            </div>
+            <div class="px-4 first:pl-0 last:pr-0 text-center">
+              <div class="text-sm text-slate-500">Keys</div>
+              <span class="block text-2xl font-bold text-slate-900 mt-1">{{ keys.length }}</span>
+              <div class="text-xs text-slate-400 mt-0.5">Total Keys</div>
+            </div>
+            <div class="px-4 first:pl-0 last:pr-0 text-center">
+              <div class="text-sm text-slate-500">Jobs</div>
+              <span class="block text-2xl font-bold text-slate-900 mt-1">{{ totalJobs }}</span>
+              <div class="text-xs text-slate-400 mt-0.5">Total Jobs</div>
+            </div>
           </div>
-          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
-            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Users</span>
-            
-            <span class="block text-2xl font-bold text-slate-900 tracking-tight">{{ client?.users ?? 0 }}</span>
-            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Users</span>
-          </div>
-          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
-            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Keys</span>
-            
-            <span class="block text-2xl font-bold text-slate-900 tracking-tight">{{ keys.length }}</span>
-            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Keys</span>
-          </div>
-          <div class="p-2.5 hover:bg-slate-50/50 rounded-xl transition">
-            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Jobs</span>
-            
-            <span class="block text-2xl font-bold text-slate-900 tracking-tight">{{ totalJobs }}</span>
-            <span class="block text-[11px] text-slate-400 font-medium mt-0.5">Total Jobs</span>
+
+          <div class="flex flex-col justify-center py-5 xl:py-0 xl:pl-8 space-y-3 shrink-0">
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <div>
+                <div class="text-xs text-slate-500">Client Since</div>
+                <div class="text-sm font-medium text-slate-900">{{ client?.created || '--' }}</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <div>
+                <div class="text-xs text-slate-500">Last Updated</div>
+                <div class="text-sm font-medium text-slate-900">{{ client?.lastUpdated || '--' }}</div>
+                <div class="text-xs text-slate-400">by User</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- VIEW CONTEXT NAVIGATION TABS BAR -->
       <div class="border-b border-slate-200">
-        <nav class="flex flex-wrap -mb-px gap-x-6 gap-y-2 text-xs font-semibold text-slate-500">
+        <nav class="flex flex-wrap -mb-px gap-x-8 gap-y-4 text-xs font-semibold text-slate-500">
           <button (click)="switchTab('overview')" [class]="activeTab === 'overview' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Overview</button>
           <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Keys ({{ totalKeys }})</button>
           <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Sites ({{ sites.length }})</button>
@@ -131,171 +151,234 @@
 
       <!-- TABS CONTENT SLOTS INTERFACE -->
       @if (activeTab === 'overview') {
-      <div class="tab-content-panel active space-y-5">
-        <!-- GRID ROW: SYSTEM DATA BREAKDOWNS -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-          
-          <!-- CLIENT DETAILS BLOCK PANEL -->
-          <div class="lg:col-span-4 h-full bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">Client Information</h4>
-              <button class="p-1.5 text-slate-400 hover:text-blue-600 border border-slate-100 hover:border-blue-100 rounded-lg bg-slate-50/50 hover:bg-blue-50/50 transition">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-            <div class="space-y-3 text-xs">
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Client Code</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.code || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Client Name</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.name || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Email</span><span class="col-span-2 text-blue-600 font-medium break-all select-all">{{ client?.email || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Phone</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.phone || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Website</span><span class="col-span-2 text-blue-600 font-medium break-all"><a href="{{ client?.website || '#' }}" target="_blank" class="hover:underline">{{ client?.website || '' }}</a></span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Region</span><span class="col-span-2 text-slate-800 font-medium">{{ client?.region || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Address</span><span class="col-span-2 text-slate-700 font-medium leading-relaxed">{{ client?.address || '' }}</span></div>
-            </div>
-          </div>
+      <!-- Content grid: 2/3 + 1/3 layout (matching reference design) -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-                    <!-- ADDITIONAL INFORMATION METADATA FIELD MATRIX -->
-          <div class="lg:col-span-4 h-full bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">Additional Details</h4>
-              <button class="p-1.5 text-slate-400 hover:text-blue-600 border border-slate-100 hover:border-blue-100 rounded-lg bg-slate-50/50 hover:bg-blue-50/50 transition">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-            <div class="space-y-3 text-xs">
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Industry</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.industry || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">VAT / Tax Number</span><span class="col-span-2 text-slate-800 font-medium">{{ client?.vatNumber || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Registration Number</span><span class="col-span-2 text-slate-800 font-medium">{{ client?.registrationNumber || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Contact Person</span><span class="col-span-2 text-slate-800 font-semibold">{{ client?.contactPerson || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Designation</span><span class="col-span-2 text-slate-700 font-medium">{{ client?.designation || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Contact Email</span><span class="col-span-2 text-blue-600 font-medium break-all select-all">{{ client?.contactEmail || '' }}</span></div>
-              <div class="grid grid-cols-3"><span class="text-slate-400 font-medium">Notes</span><span class="col-span-2 text-slate-600 font-medium leading-relaxed">{{ client?.notes || '' }}</span></div>
-            </div>
-          </div>
+        <!-- Left column (2/3) -->
+        <div class="xl:col-span-2 space-y-6">
 
-                    <!-- RUNTIME LIFE STATUS & RECORD TIMELINE TRACKER -->
-          <div class="lg:col-span-4 h-full bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-5">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Status & Timeline</h4>
-            <div class="relative border-l border-slate-200 pl-4 space-y-5 ml-1.5">
-              <!-- Active Step Event Row -->
-              <div class="relative">
-                <span class="absolute -left-[21px] top-0.5 bg-emerald-500 w-2.5 h-2.5 rounded-full ring-4 ring-white"></span>
-                <div class="text-xs space-y-0.5">
-                  <h5 class="font-bold text-slate-900">Active</h5>
-                  <p class="text-[11px] font-medium text-slate-500">{{ client?.created || '' }}</p>
-                  <p class="text-[10px] font-medium text-slate-400">by Faiza Ahmed</p>
-                </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Client Information -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-card p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-slate-900">Client Information</h3>
+                <button class="h-8 w-8 flex items-center justify-center rounded-lg border border-slate-200 text-blue-600 hover:bg-slate-50">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
               </div>
-              <!-- Created Step Event Row -->
-              <div class="relative">
-                <span class="absolute -left-[21px] top-0.5 bg-blue-600 w-2.5 h-2.5 rounded-full ring-4 ring-white"></span>
-                <div class="text-xs space-y-0.5">
-                  <h5 class="font-bold text-slate-900">Created</h5>
-                  <p class="text-[11px] font-medium text-slate-500">{{ client?.created || '' }}</p>
-                  <p class="text-[10px] font-medium text-slate-400">by Faiza Ahmed</p>
+              <dl class="space-y-3.5 text-sm">
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Client Code</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.code || '' }}</dd>
                 </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Client Name</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.name || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Email</dt>
+                  <dd class="text-slate-900 font-medium text-right break-all">{{ client?.email || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Phone</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.phone || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Website</dt>
+                  <dd class="text-right"><a href="{{ client?.website || '#' }}" target="_blank" class="text-blue-600 font-medium hover:text-blue-700 break-all">{{ client?.website || '' }}</a></dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Region</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.region || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Address</dt>
+                  <dd class="text-slate-900 font-medium text-right leading-relaxed">{{ client?.address || '' }}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-card p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-slate-900">Additional Details</h3>
+                <button class="h-8 w-8 flex items-center justify-center rounded-lg border border-slate-200 text-blue-600 hover:bg-slate-50">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
               </div>
+              <dl class="space-y-3.5 text-sm">
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Industry</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.industry || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">VAT / Tax Number</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.vatNumber || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Registration Number</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.registrationNumber || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Contact Person</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.contactPerson || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Designation</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.designation || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Contact Email</dt>
+                  <dd class="text-slate-900 font-medium text-right break-all">{{ client?.contactEmail || '' }}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt class="text-slate-500">Notes</dt>
+                  <dd class="text-slate-900 font-medium text-right">{{ client?.notes || '' }}</dd>
+                </div>
+              </dl>
             </div>
           </div>
-        </div>
 
-        <!-- BOTTOM ROW: WORKSPACE ACTIONABLES -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-          
-          <!-- RECENT ACTIVITY AUDIT INDEX LOG (8 Columns) -->
-          <div class="lg:col-span-8 h-full bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
-            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">Recent Activity</h4>
-              <a href="#" class="text-xs font-semibold text-blue-600 hover:underline flex items-center space-x-1"><span>View all activity logs</span> <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+          <!-- Recent Activity -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-5">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-slate-900">Recent Activity</h3>
+              <a href="#" class="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700">
+                View all activity logs
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
             </div>
-            <div class="overflow-x-auto custom-scrollbar flex-1">
-              <table class="w-full text-left border-collapse text-xs">
+            <div class="overflow-x-auto scrollbar-none">
+              <table class="w-full text-sm min-w-[620px]">
                 <thead>
-                  <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase font-bold tracking-wider text-[10px]">
-                    <th class="py-3 px-5">Date &amp; Time</th>
-                    <th class="py-3 px-5">Action</th>
-                    <th class="py-3 px-5">Performed By</th>
-                    <th class="py-3 px-5">Details</th>
+                  <tr class="border-b border-slate-200 text-left text-slate-500">
+                    <th class="py-2.5 pr-4 font-medium whitespace-nowrap">Date &amp; Time</th>
+                    <th class="py-2.5 pr-4 font-medium whitespace-nowrap">Action</th>
+                    <th class="py-2.5 pr-4 font-medium whitespace-nowrap">Performed By</th>
+                    <th class="py-2.5 font-medium whitespace-nowrap">Details</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-                  <tr class="hover:bg-slate-50/50 transition">
-                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">15 May 2024, 11:20 AM</td>
-                    <td class="py-3.5 px-5 font-semibold text-slate-900">Client information updated</td>
-                    <td class="py-3.5 px-5">Faiza Ahmed</td>
-                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Updated contact email and phone number</td>
+                <tbody class="divide-y divide-slate-100">
+                  <tr>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">15 May 2024, 11:20 AM</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-900 font-medium">Client information updated</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">Faisa Ahmed</td>
+                    <td class="py-3 text-slate-600">Updated contact email and phone number</td>
                   </tr>
-                  <tr class="hover:bg-slate-50/50 transition">
-                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">15 May 2024, 10:45 AM</td>
-                    <td class="py-3.5 px-5 font-semibold text-slate-900">Job created</td>
-                    <td class="py-3.5 px-5">Faiza Ahmed</td>
-                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Added job: Key Collection - HQ</td>
+                  <tr>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">15 May 2024, 10:45 AM</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-900 font-medium">Job created</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">Faisa Ahmed</td>
+                    <td class="py-3 text-slate-600">Added job: Key Collection – HQ</td>
                   </tr>
-                  <tr class="hover:bg-slate-50/50 transition">
-                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">14 May 2024, 04:10 PM</td>
-                    <td class="py-3.5 px-5 font-semibold text-slate-900">Site added</td>
-                    <td class="py-3.5 px-5">Faiza Ahmed</td>
-                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Added site: Head Office</td>
+                  <tr>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">14 May 2024, 04:10 PM</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-900 font-medium">Site added</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">Faisa Ahmed</td>
+                    <td class="py-3 text-slate-600">Added site: Head Office</td>
                   </tr>
-                  <tr class="hover:bg-slate-50/50 transition">
-                    <td class="py-3.5 px-5 whitespace-nowrap text-slate-500">12 May 2024, 03:22 PM</td>
-                    <td class="py-3.5 px-5 font-semibold text-slate-900">Key assigned</td>
-                    <td class="py-3.5 px-5">Faiza Ahmed</td>
-                    <td class="py-3.5 px-5 text-slate-500 max-w-xs truncate">Assigned 5 keys to site: Head Office</td>
+                  <tr>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">12 May 2024, 03:22 PM</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-900 font-medium">Key assigned</td>
+                    <td class="py-3 pr-4 whitespace-nowrap text-slate-600">Faisa Ahmed</td>
+                    <td class="py-3 text-slate-600">Assigned 5 keys to site: Head Office</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+        </div>
 
-          <!-- RELEVANT ITEMS & QUICK ACTIONS SHORTCUT PANEL (4 Columns) -->
-          <div class="lg:col-span-4 space-y-4">
-            
-            <!-- Related Items List Mapping Components -->
-            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3.5">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Related Items</h4>
-              <div class="space-y-1">
-                 <a href="#" class="flex items-center justify-between p-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition group">
-                   <div class="flex items-center space-x-3 text-slate-600 group-hover:text-blue-600"><svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span>Sites</span></div>
-                   <div class="flex items-center space-x-1.5"><span class="font-bold text-slate-900">{{ sites.length }}</span> <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                 </a>
-                 <a href="#" class="flex items-center justify-between p-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition group">
-                   <div class="flex items-center space-x-3 text-slate-600 group-hover:text-blue-600"><svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> <span>Keys</span></div>
-                   <div class="flex items-center space-x-1.5"><span class="font-bold text-slate-900">{{ keys.length }}</span> <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                 </a>
-                 <a href="#" class="flex items-center justify-between p-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition group">
-                   <div class="flex items-center space-x-3 text-slate-600 group-hover:text-blue-600"><svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> <span>Jobs</span></div>
-                   <div class="flex items-center space-x-1.5"><span class="font-bold text-slate-900">{{ totalJobs }}</span> <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-                 </a>
-              </div>
-            </div>
+        <!-- Right column (1/3) -->
+        <div class="space-y-6">
 
-            <!-- System Workflow Trigger Action Shortcuts -->
-            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3.5">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Quick Actions</h4>
-              <div class="grid grid-cols-1 gap-2 text-xs font-semibold">
-                <button (click)="showToast('Loading Site Creation Wizard...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
-                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                  <span>Add New Site</span>
-                </button>
-                <button (click)="showToast('Opening Key Assignment Panel...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
-                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                  <span>Assign Keys</span>
-                </button>
-                <button (click)="showToast('Redirecting to Logs context view...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
-                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  <span>View Activity Log</span>
-                </button>
-                <button (click)="showToast('Compiling Client Ledger Report PDF...')" class="w-full inline-flex items-center space-x-2.5 text-left text-slate-700 hover:text-blue-600 hover:bg-slate-50 p-2 rounded-xl transition">
-                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Export Client Report</span>
-                </button>
-              </div>
+          <!-- Status & Timeline -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-5">
+            <h3 class="font-semibold text-slate-900 mb-4">Status &amp; Timeline</h3>
+            <div class="max-h-64 overflow-y-auto thin-scroll pr-2">
+              <ol class="relative border-l-2 border-slate-100 ml-1.5 space-y-6">
+                <li class="pl-5 relative">
+                  <span class="absolute -left-[9px] top-0.5 h-4 w-4 rounded-full bg-emerald-500 ring-4 ring-white"></span>
+                  <div class="text-sm font-semibold text-slate-900">Active</div>
+                  <div class="text-xs text-slate-500 mt-0.5">{{ client?.created || '' }}</div>
+                  <div class="text-xs text-slate-400">by Faisa Ahmed</div>
+                </li>
+                <li class="pl-5 relative">
+                  <span class="absolute -left-[9px] top-0.5 h-4 w-4 rounded-full bg-blue-600 ring-4 ring-white"></span>
+                  <div class="text-sm font-semibold text-slate-900">Created</div>
+                  <div class="text-xs text-slate-500 mt-0.5">{{ client?.created || '' }}</div>
+                  <div class="text-xs text-slate-400">by Faisa Ahmed</div>
+                </li>
+              </ol>
             </div>
           </div>
+
+          <!-- Related Items -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-5">
+            <h3 class="font-semibold text-slate-900 mb-4">Related Items</h3>
+            <div class="space-y-1">
+              <a href="#" class="flex items-center justify-between rounded-lg px-2 py-2.5 hover:bg-slate-50">
+                <span class="flex items-center gap-3 text-sm text-slate-700">
+                  <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7M9 9v.01M9 12v.01M9 15v.01"/></svg>
+                  </span>
+                  Sites
+                </span>
+                <span class="flex items-center gap-2">
+                  <span class="text-sm font-medium text-slate-900">{{ sites.length }}</span>
+                  <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                </span>
+              </a>
+              <a href="#" class="flex items-center justify-between rounded-lg px-2 py-2.5 hover:bg-slate-50">
+                <span class="flex items-center gap-3 text-sm text-slate-700">
+                  <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7a2 2 0 11-4 0 2 2 0 014 0zm-2 2v3m0 0l-3 7m3-7l3 7"/></svg>
+                  </span>
+                  Keys
+                </span>
+                <span class="flex items-center gap-2">
+                  <span class="text-sm font-medium text-slate-900">{{ keys.length }}</span>
+                  <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                </span>
+              </a>
+              <a href="#" class="flex items-center justify-between rounded-lg px-2 py-2.5 hover:bg-slate-50">
+                <span class="flex items-center gap-3 text-sm text-slate-700">
+                  <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                  </span>
+                  Jobs
+                </span>
+                <span class="flex items-center gap-2">
+                  <span class="text-sm font-medium text-slate-900">{{ totalJobs }}</span>
+                  <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-5">
+            <h3 class="font-semibold text-slate-900 mb-4">Quick Actions</h3>
+            <div class="space-y-3">
+              <a href="#" class="flex items-center gap-2.5 text-sm font-medium text-blue-600 hover:text-blue-700">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add New Site
+              </a>
+              <a href="#" class="flex items-center gap-2.5 text-sm font-medium text-blue-600 hover:text-blue-700">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7a2 2 0 11-4 0 2 2 0 014 0zm-2 2v3m0 0l-3 7m3-7l3 7"/></svg>
+                Assign Keys
+              </a>
+              <a href="#" class="flex items-center gap-2.5 text-sm font-medium text-blue-600 hover:text-blue-700">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                View Activity Log
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
-      } @else if (activeTab === 'keys') {
+      }
+      @else if (activeTab === 'keys') {
       <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
         <div class="xl:col-span-8 bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
           <div class="bg-white border-b border-slate-200 p-4 flex flex-wrap gap-3 items-center justify-between">
@@ -671,11 +754,447 @@
                 }
               </div>
               <button type="button" (click)="triggerAction('View all site types')" class="block w-full text-center text-xs font-semibold text-blue-600 hover:text-blue-700 pt-2 border-t border-slate-100 transition">View all site types &rarr;</button>
+             </div>
+
+          </div>
+        </div>
+        } @else if (activeTab === 'jobs') {
+        <div class="space-y-6">
+          
+          <!-- Jobs section header -->
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Jobs</h2>
+              <p class="text-sm text-slate-500">View and manage all jobs for this client.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+              <div class="relative">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
+                <input type="text" placeholder="Search jobs by job ID, site, officer..." class="w-full sm:w-72 pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+              </div>
+              <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 10h12M10 16h4"/></svg>
+                Filters
+              </button>
+              <button class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+                Create Job
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stat pills -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">{{ totalJobs }}</div>
+                <div class="text-xs text-slate-500">Total Jobs</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">156</div>
+                <div class="text-xs text-slate-500">Scheduled</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">28</div>
+                <div class="text-xs text-slate-500">In Progress</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">132</div>
+                <div class="text-xs text-slate-500">Completed</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">18</div>
+                <div class="text-xs text-slate-500">Overdue</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 9l6 6M15 9l-6 6"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">8</div>
+                <div class="text-xs text-slate-500">Cancelled</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jobs table -->
+          <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm min-w-[880px]">
+                <thead>
+                  <tr class="border-b border-slate-200 text-left text-slate-500">
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job ID <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Site <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job Type <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Officer <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Scheduled Date &amp; Time <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Status <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Priority <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000342</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Head Office</div><div class="text-xs text-slate-400">25 Fenchurch Street, London</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-6 6"/></svg>Key Collection</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">James Walker</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">16 May 2024, 09:00 AM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-purple-50 text-purple-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Scheduled</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Medium</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000341</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Warehouse - North</div><div class="text-xs text-slate-400">Unit 4, North Industrial Estate</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Lock Service</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Sarah Miller</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">16 May 2024, 08:00 AM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">In Progress</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-md">High</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000340</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Retail Store - Central</div><div class="text-xs text-slate-400">45 Oxford Street, London</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Unlock Service</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">David Johnson</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 04:30 PM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Completed</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md">Low</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000339</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Data Center</div><div class="text-xs text-slate-400">1 Tech Park, London</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-6 6"/></svg>Key Drop Off</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Michael Brown</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 03:00 PM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Completed</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Medium</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000338</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Head Office</div><div class="text-xs text-slate-400">25 Fenchurch Street, London</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Lock Service</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">James Walker</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 11:00 AM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Overdue</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-md">High</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000337</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Branch Office - South</div><div class="text-xs text-slate-400">78 High Street, London</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Unlock Service</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Sarah Miller</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">14 May 2024, 02:00 PM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-slate-100 text-slate-500 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Cancelled</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md">Low</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000336</td>
+                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Warehouse - West</div><div class="text-xs text-slate-400">Unit 12, West Industrial Estate</div></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-6 6"/></svg>Key Collection</span></td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">David Johnson</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">14 May 2024, 09:00 AM</td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-purple-50 text-purple-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Scheduled</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Medium</span></td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-         </div>
-       </div>
-       } @else {
+            <!-- Pagination -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
+              <div class="text-sm text-slate-500">Showing 1 to 5 of {{ totalJobs }} jobs</div>
+              <div class="flex items-center gap-1">
+                <button class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50" aria-label="Previous page">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md bg-blue-600 text-white text-sm font-medium">1</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
+                <span class="px-1 text-slate-400 text-sm">&#8230;</span>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">35</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50" aria-label="Next page">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+           </section>
+
+        </div>
+        } @else if (activeTab === 'documents') {
+        <div class="space-y-6">
+          
+          <!-- Documents section header -->
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Documents</h2>
+              <p class="text-sm text-slate-500">View and manage all documents related to this client.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+              <div class="relative">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
+                <input type="text" placeholder="Search documents..." class="w-full sm:w-64 pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+              </div>
+              <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 10h12M10 16h4"/></svg>
+                Filters
+              </button>
+              <button class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v13M12 5l-4 4M12 5l4 4M5 19h14"/></svg>
+                Upload Document
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stat pills -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h1m6 13H7a2 2 0 01-2-2V5a2 2 0 012-2h6.5L18 7.5V19a2 2 0 01-2 2z"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">24</div>
+                <div class="text-xs text-slate-500">Total Documents</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">12</div>
+                <div class="text-xs text-slate-500">PDF Files</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">12</div>
+                <div class="text-xs text-slate-500">Other Files</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l4 2"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">152.4 MB</div>
+                <div class="text-xs text-slate-500">Total Storage</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </div>
+              <div>
+                <div class="text-lg font-bold text-slate-900 leading-tight">15 May 2024</div>
+                <div class="text-xs text-slate-500">Last Uploaded</div>
+                <div class="text-[11px] text-slate-400">by Faiza Ahmed</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documents table -->
+          <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm min-w-[880px]">
+                <thead>
+                  <tr class="border-b border-slate-200 text-left text-slate-500">
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Document Name <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Category <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">File Type <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Size <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded By <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded On <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-2 font-medium text-slate-800"><svg class="w-4 h-4 text-red-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>Service Agreement.pdf</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">Legal</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>PDF</span></td>
+                    <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">1.2 MB</td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Faiza Ahmed</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 10:30 AM</td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-2 font-medium text-slate-800"><svg class="w-4 h-4 text-red-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>Insurance Certificate.pdf</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-indigo-50 text-indigo-600 text-xs font-semibold px-2.5 py-1 rounded-md">Insurance</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>PDF</span></td>
+                    <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">820 KB</td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Sarah Miller</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">14 May 2024, 04:45 PM</td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-2 font-medium text-slate-800"><svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>Company Information.docx</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-md">General</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>DOCX</span></td>
+                    <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">240 KB</td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Faiza Ahmed</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">12 May 2024, 11:10 AM</td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-2 font-medium text-slate-800"><svg class="w-4 h-4 text-green-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>Service Pricing 2024.xlsx</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Finance</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>XLSX</span></td>
+                    <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">96 KB</td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Faiza Ahmed</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">09 May 2024, 09:00 AM</td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-2 font-medium text-slate-800"><svg class="w-4 h-4 text-red-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>Health &amp; Safety Policy.pdf</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md">Compliance</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>PDF</span></td>
+                    <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">1.8 MB</td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Michael Brown</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">10 May 2024, 03:20 PM</td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-2 font-medium text-slate-800"><svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>Site Access Guidelines.docx</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-block bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-md">General</span></td>
+                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>DOCX</span></td>
+                    <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">320 KB</td>
+                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Faiza Ahmed</td>
+                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">07 May 2024, 01:25 PM</td>
+                    <td class="px-5 py-3.5 text-right">
+                      <div class="flex items-center justify-end gap-3 text-slate-400">
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
+              <div class="text-sm text-slate-500">Showing 1 to 10 of 24 documents</div>
+              <div class="flex items-center gap-1">
+                <button class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50" aria-label="Previous page">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md bg-blue-600 text-white text-sm font-medium">1</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
+                <span class="px-1 text-slate-400 text-sm">&#8230;</span>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">5</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50" aria-label="Next page">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </section>
+
+        </div>
+        } @else {
       <!-- TAB PLACEHOLDER DISPLAY GRID PANEL -->
       <div class="tab-content-panel active bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm max-w-full">
         <div class="max-w-xs mx-auto space-y-3">
@@ -702,11 +1221,9 @@
         </div>
       </footer>
       
-  </div>
 
   <!-- RUNTIME TOAST MESSAGING POPUP NOTIFIER -->
   <div id="toastNotification" class="fixed top-5 right-5 z-50 bg-slate-900 text-white rounded-xl shadow-2xl px-4 py-3 text-xs font-semibold tracking-wide flex items-center space-x-2.5 translate-x-[150%] transition-transform duration-300">
     <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
     <span id="toastMessage">Action Completed Successfully!</span>
   </div>
-</div>

@@ -81,6 +81,15 @@ export class ClientService {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
+  private formatDateTime(value: any): string {
+    if (!value) return '';
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return `${datePart}, ${timePart}`;
+  }
+
   listClients(params?: { q?: string; status?: string; region?: string; page?: number; size?: number }): Observable<PaginatedResult<Client>> {
     const orgId = this.getOrgId();
     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
@@ -224,7 +233,7 @@ export class ClientService {
       sites: item.sites ?? 0,
       users: item.users ?? 0,
       created: this.formatDate(item.createdAt ?? item.created),
-      lastUpdated: this.formatDate(item.updatedAt ?? item.lastUpdated ?? item.modifiedAt),
+      lastUpdated: this.formatDateTime(item.updatedAt ?? item.lastUpdated ?? item.modifiedAt),
       phone: item.phone ?? item.phoneNumber,
       website: item.website,
       address: item.address,
