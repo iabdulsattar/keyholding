@@ -2,7 +2,7 @@
   <div class="p-6 sm:p-8 relative">
 
     <div class="flex items-start justify-between mb-6">
-      <h2 class="text-xl font-bold text-slate-900">Reactivate Key</h2>
+      <h2 class="text-xl font-bold text-slate-900">Activate Client</h2>
       <button (click)="cancel()" class="text-slate-400 hover:text-slate-600">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
@@ -13,23 +13,23 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
       </div>
       <p class="text-lg font-bold text-slate-900">
-        Reactivate <span class="text-indigo-600">{{ key()?.name || key()?.code || 'this key' }}</span>?
+        Reactivate <span class="text-indigo-600">{{ client()?.name }}</span>?
       </p>
     </div>
 
-    <p class="text-sm font-semibold text-slate-800 mb-3">Reactivating this key will:</p>
+    <p class="text-sm font-semibold text-slate-800 mb-3">Activating this client will:</p>
     <ul class="space-y-3 mb-6">
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        Allow the key to be issued and assigned again.
+        Allow creation of new keys and sites.
       </li>
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        Restore normal movement tracking.
+        Restore full access to client management.
       </li>
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        All previous movements will remain in the audit log.
+        All historical data will remain unchanged.
       </li>
     </ul>
 
@@ -63,8 +63,8 @@
       </button>
       <button (click)="confirm()" [disabled]="submitting" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm hover:opacity-90 disabled:opacity-70">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-        <span *ngIf="!submitting">Reactivate Key</span>
-        <span *ngIf="submitting">Reactivating...</span>
+        <span *ngIf="!submitting">Activate Client</span>
+        <span *ngIf="submitting">Activating...</span>
       </button>
     </div>
 

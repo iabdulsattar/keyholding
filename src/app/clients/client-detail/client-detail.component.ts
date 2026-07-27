@@ -4,11 +4,13 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, Client, KeyRecord, SiteRecord } from '../../core/services/client.service';
+import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
+import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -40,6 +42,8 @@ export class ClientDetailComponent implements OnInit {
   loading = false;
   clientStats: any = null;
   siteStats: any = null;
+  showDeactivateClientModal = false;
+  showActivateClientModal = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
@@ -371,29 +375,30 @@ export class ClientDetailComponent implements OnInit {
     }
   }
 
+  getOrgId(): string {
+    return localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+  }
+
   toggleActivationState(): void {
-    if (!this.client || !this.clientId) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
     if (this.isClientActive) {
-      this.clientService.deactivateClient(this.clientId).subscribe({
-        next: () => {
-          this.isClientActive = false;
-          this.loadClient();
-          this.showToast('Client deactivated successfully');
-        },
-        error: () => this.showToast('Failed to deactivate client')
-      });
+      this.showDeactivateClientModal = true;
     } else {
-      this.clientService.reactivateClient(this.clientId).subscribe({
-        next: () => {
-          this.isClientActive = true;
-          this.loadClient();
-          this.showToast('Client activated successfully');
-        },
-        error: () => this.showToast('Failed to activate client')
-      });
+      this.showActivateClientModal = true;
     }
+  }
+
+  onClientDeactivated(): void {
+    this.showDeactivateClientModal = false;
+    this.isClientActive = false;
+    this.loadClient();
+    this.showToast('Client deactivated successfully');
+  }
+
+  onClientActivated(): void {
+    this.showActivateClientModal = false;
+    this.isClientActive = true;
+    this.loadClient();
+    this.showToast('Client activated successfully');
   }
 
   showToast(message: string): void {
