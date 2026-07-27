@@ -56,7 +56,9 @@ export class AuthService {
   // POST /api/v1/auth/signup/verify-otp
   verifySignupOtp(payload: VerifySignupOtpRequest): Observable<VerifySignupOtpResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.api.post('/api/v1/auth/signup/verify-otp', payload, headers);
+    return this.api.post<ApiWrapper<VerifySignupOtpResponse>>('/api/v1/auth/signup/verify-otp', payload, headers).pipe(
+      map((res) => res.data)
+    );
   }
 
   // POST /api/v1/auth/login
@@ -70,7 +72,9 @@ export class AuthService {
   // POST /api/v1/auth/login/verify-2fa
   verify2fa(payload: Verify2faRequest): Observable<Verify2faResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.api.post('/api/v1/auth/login/verify-2fa', payload, headers);
+    return this.api.post<ApiWrapper<Verify2faResponse>>('/api/v1/auth/login/verify-2fa', payload, headers).pipe(
+      map((res) => res.data)
+    );
   }
 
   me(token?: string): Observable<ProfileResponse> {

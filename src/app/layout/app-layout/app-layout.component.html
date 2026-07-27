@@ -3,8 +3,8 @@
     <app-sidebar></app-sidebar>
     <app-backdrop></app-backdrop>
   </div>
-  <div [class]="containerClasses$ | async" class="flex flex-col h-screen overflow-hidden">
-    <div class="flex-1 overflow-y-auto bg-white p-6 max-w-full dark:bg-gray-950">
+    <div [class]="containerClasses$ | async" class="flex flex-col h-screen overflow-hidden">
+      <div class="flex-1 overflow-y-auto bg-[#fafbfc] p-6 max-w-full dark:bg-gray-950">
       <router-outlet></router-outlet>
     </div>
     <app-toast></app-toast>

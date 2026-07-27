@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { AuthPageLayoutComponent } from '../../../layout/auth-page-layout/auth-page-layout.component';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-verification',
@@ -33,15 +34,12 @@ export class VerificationComponent implements OnInit {
   }
 
   isLoading = false;
-  errorMessage = '';
-  successMessage = '';
   digitError = false;
-  isSigningInAfterVerification = false;
 
   resendDisabled = true;
   resendSeconds = 45;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toast: ToastService) {}
 
   get resendTimerDisplay(): string {
     const m = String(Math.floor(this.resendSeconds / 60)).padStart(2, '0');
@@ -104,8 +102,6 @@ export class VerificationComponent implements OnInit {
 
   onVerify() {
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
     this.digitError = false;
 
     const otp = (this.code ?? '').replace(/\s+/g, '').trim();
@@ -113,107 +109,40 @@ export class VerificationComponent implements OnInit {
 
     if (!email) {
       this.isLoading = false;
-      this.errorMessage = 'Email is missing. Please go back and try again.';
+      this.toast.error('Email is missing. Please go back and try again.');
       return;
     }
 
     if (!this.isEmailValid(email)) {
       this.isLoading = false;
-      this.errorMessage = 'Please enter a valid email address.';
+      this.toast.error('Please enter a valid email address.');
       return;
     }
 
     if (!otp) {
       this.isLoading = false;
       this.digitError = true;
-      this.errorMessage = 'Enter the 6-digit verification code.';
+      this.toast.error('Enter the 6-digit verification code.');
       return;
     }
 
     if (!/^\d{6}$/.test(otp)) {
       this.isLoading = false;
       this.digitError = true;
-      this.errorMessage = 'Invalid code. Please enter exactly 6 digits.';
+      this.toast.error('Invalid code. Please enter exactly 6 digits.');
       return;
     }
 
-    this.authService.verifySignupOtp({ email, code: otp }).subscribe({
+     this.authService.verifySignupOtp({ email, code: otp }).subscribe({
       next: (res: any) => {
-        this.isSigningInAfterVerification = true;
-        this.successMessage = res?.message || 'Email verified successfully.';
-
-        const tempPassword = sessionStorage.getItem('verification_password');
-        if (!tempPassword) {
-          this.isSigningInAfterVerification = false;
-          this.isLoading = false;
-          const orgId = localStorage.getItem('org_id');
-          setTimeout(() => {
-            if (orgId) {
-              this.router.navigate(['/subscription-plan']);
-            } else {
-              this.router.navigate(['/signin']);
-            }
-          }, 600);
-          return;
-        }
-
-        this.authService.login({ email, password: tempPassword }).subscribe({
-          next: (loginRes: any) => {
-            const accessToken = loginRes?.tokens?.access_token ?? loginRes?.access_token;
-            const refreshToken = loginRes?.tokens?.refresh_token ?? loginRes?.refresh_token;
-
-            if (!accessToken) {
-              this.isSigningInAfterVerification = false;
-              this.isLoading = false;
-              this.errorMessage = 'Verification succeeded but automatic sign-in failed. Please sign in manually.';
-              this.router.navigate(['/signin']);
-              return;
-            }
-
-            const exp = this.decodeExp(accessToken);
-            const expiresAt = String(exp ?? Date.now() + 24 * 60 * 60 * 1000);
-
-            localStorage.setItem('access_token_saas', accessToken);
-            localStorage.setItem('refresh_token', refreshToken ?? '');
-
-            localStorage.removeItem('remember_device');
-            localStorage.removeItem('session_expires_at');
-            sessionStorage.setItem('access_token_saas', accessToken);
-            sessionStorage.setItem('refresh_token', refreshToken ?? '');
-            sessionStorage.setItem('session_expires_at', expiresAt);
-
-            const orgs = loginRes?.tokens?.organizations ?? loginRes?.organizations ?? [];
-            if (orgs?.length > 0) {
-              localStorage.setItem('org_id', orgs[0].id);
-              localStorage.setItem('organizationId', orgs[0].id);
-            }
-
-            sessionStorage.removeItem('verification_password');
-
-            this.isSigningInAfterVerification = false;
-            this.isLoading = false;
-            this.router.navigate(['/']);
-          },
-          error: (loginErr: any) => {
-            console.error('Auto-login after verification error:', loginErr);
-            sessionStorage.removeItem('verification_password');
-            this.isSigningInAfterVerification = false;
-            this.isLoading = false;
-            const orgId = localStorage.getItem('org_id');
-            setTimeout(() => {
-              if (orgId) {
-                this.router.navigate(['/subscription-plan']);
-              } else {
-                this.router.navigate(['/signin']);
-              }
-            }, 600);
-          }
-        });
+        this.toast.success(res?.message || 'Email verified successfully. Please sign in.');
+        this.isLoading = false;
+        this.router.navigate(['/signin']);
       },
       error: (err: any) => {
         this.isLoading = false;
         const detail = err?.error?.detail;
-        this.errorMessage = detail ? `Verification failed: ${detail}` : 'Verification failed. Please try again.';
+        this.toast.error(detail ? `Verification failed: ${detail}` : 'Verification failed. Please try again.');
       },
     });
   }
@@ -223,23 +152,21 @@ export class VerificationComponent implements OnInit {
 
     const email = this.email?.trim() ?? '';
     if (!email) {
-      this.errorMessage = 'Email is missing. Please go back and try again.';
+      this.toast.error('Email is missing. Please go back and try again.');
       return;
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
     this.authService.resendSignupOtp({ email }).subscribe({
       next: () => {
         this.isLoading = false;
-        this.successMessage = 'Verification code resent. Please check your inbox.';
+        this.toast.success('Verification code resent. Please check your inbox.');
         this.startResendTimer();
       },
       error: (err: any) => {
         this.isLoading = false;
         const detail = err?.error?.detail;
-        this.errorMessage = detail ? `Resend failed: ${detail}` : 'Failed to resend code. Please try again.';
+        this.toast.error(detail ? `Resend failed: ${detail}` : 'Failed to resend code. Please try again.');
       },
     });
   }

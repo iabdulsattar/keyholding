@@ -1,9 +1,7 @@
 <div class="min-h-[calc(100vh-48px)] text-gray-900">
   <div class="flex-grow flex flex-col h-full overflow-hidden">
-    <!-- INNER SCROLLABLE CONTENT BODY -->
     <div class="flex-grow overflow-y-auto custom-scrollbar space-y-5">
-      
-      <!-- BREADCRUMBS & TOP BAR HEADER -->
+
       <div class="bg-white pb-4 border-b border-slate-200 shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <a routerLink="/clients" class="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1.5 mb-1">
@@ -11,7 +9,7 @@
             Back to Sites
           </a>
           <h2 class="text-2xl font-bold text-slate-900 mb-1.5">{{ editMode ? 'Edit Site' : 'Add New Site' }}</h2>
-          <div class="flex items-center gap-1.5 text-xs font-medium text-blue-600 ">
+          <div class="flex items-center gap-1.5 text-xs font-medium text-blue-600">
             <a routerLink="/clients" class="hover:underline">Client Management</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <a routerLink="/clients" class="hover:underline">Clients</a>
@@ -22,7 +20,6 @@
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <span class="text-slate-500 font-normal">{{ editMode ? 'Edit Site' : 'Add New Site' }}</span>
           </div>
-          
         </div>
         <div class="flex items-center gap-2">
           <button type="button" (click)="resetSiteForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-2 border border-slate-200 rounded-xl transition">Cancel</button>
@@ -33,27 +30,20 @@
         </div>
       </div>
 
-      <!-- DASHBOARD WORKSPACE LAYOUT -->
-      <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 items-start flex-1">
-        
-        <!-- LEFT FORM COMPONENT INTERACTION STRATEGY -->
+      <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 items-start">
         <form id="siteForm" class="xl:col-span-3 space-y-5">
-          
-          <!-- CARD SECTION 1: Site Information Options -->
+
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Information</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Site Name *</label>
-                <input type="text" [(ngModel)]="siteName" name="siteName" required placeholder="e.g. Head Office" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Site Name <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="siteName" name="siteName" (blur)="markTouched('siteName')" placeholder="e.g. Head Office" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('siteName'))" [class.border-rose-500]="informationInvalid && touched.has('siteName')">
+                @if (informationInvalid && touched.has('siteName')) { <p class="text-xs text-rose-600 mt-1">Site Name is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Site Code *</label>
-                <input type="text" [(ngModel)]="siteCode" name="siteCode" required placeholder="e.g. SITE-00012" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Site Type *</label>
-                <select [(ngModel)]="siteType" name="siteType" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Site Type <span class="text-red-500">*</span></label>
+                <select [(ngModel)]="siteType" name="siteType" (blur)="markTouched('siteType')" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('siteType'))" [class.border-rose-500]="informationInvalid && touched.has('siteType')">
                   <option value="">Select site type</option>
                   <option value="Office">Office</option>
                   <option value="Warehouse">Warehouse</option>
@@ -65,32 +55,34 @@
                   <option value="Remote Office">Remote Office</option>
                   <option value="Other">Other</option>
                 </select>
+                @if (informationInvalid && touched.has('siteType')) { <p class="text-xs text-rose-600 mt-1">Site Type is required</p> }
               </div>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Address Line 1 *</label>
-                <input type="text" [(ngModel)]="address1" name="address1" required placeholder="e.g. 25 Fenchurch Street" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Address Line 1 <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="address1" name="address1" (blur)="markTouched('address1')" placeholder="e.g. 25 Fenchurch Street" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('address1'))" [class.border-rose-500]="informationInvalid && touched.has('address1')">
+                @if (informationInvalid && touched.has('address1')) { <p class="text-xs text-rose-600 mt-1">Address Line 1 is required</p> }
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Address Line 2</label>
                 <input type="text" [(ngModel)]="address2" name="address2" placeholder="e.g. Suite 5, Floor 2" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">City *</label>
-                <input type="text" [(ngModel)]="city" name="city" required placeholder="e.g. London" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">City <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="city" name="city" (blur)="markTouched('city')" placeholder="e.g. London" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('city'))" [class.border-rose-500]="informationInvalid && touched.has('city')">
+                @if (informationInvalid && touched.has('city')) { <p class="text-xs text-rose-600 mt-1">City is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Postcode *</label>
-                <input type="text" [(ngModel)]="postcode" name="postcode" required placeholder="e.g. EC3M 3AY" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Postcode <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="postcode" name="postcode" (blur)="markTouched('postcode')" placeholder="e.g. EC3M 3AY" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('postcode'))" [class.border-rose-500]="informationInvalid && touched.has('postcode')">
+                @if (informationInvalid && touched.has('postcode')) { <p class="text-xs text-rose-600 mt-1">Postcode is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Country *</label>
-                <select [(ngModel)]="country" name="country" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Country <span class="text-red-500">*</span></label>
+                <select [(ngModel)]="country" name="country" (blur)="markTouched('country')" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('country'))" [class.border-rose-500]="informationInvalid && touched.has('country')">
                   <option value="United Kingdom">United Kingdom</option>
                   <option value="United States">United States</option>
                   <option value="Canada">Canada</option>
@@ -98,32 +90,34 @@
                   <option value="Germany">Germany</option>
                   <option value="France">France</option>
                 </select>
+                @if (informationInvalid && touched.has('country')) { <p class="text-xs text-rose-600 mt-1">Country is required</p> }
               </div>
             </div>
           </div>
 
-          <!-- CARD SECTION 2: Site Contact Information Mapping -->
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Contact</h3>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div class="space-y-1.5 md:col-span-1">
-                <label class="text-xs font-semibold text-slate-600">Primary Contact Name *</label>
-                <input type="text" [(ngModel)]="contactName" name="contactName" required placeholder="e.g. James Walker" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Primary Contact Name <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="contactName" name="contactName" (blur)="markTouched('contactName')" placeholder="e.g. James Walker" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(contactInvalid && touched.has('contactName'))" [class.border-rose-500]="contactInvalid && touched.has('contactName')">
+                @if (contactInvalid && touched.has('contactName')) { <p class="text-xs text-rose-600 mt-1">Primary Contact Name is required</p> }
               </div>
               <div class="space-y-1.5 md:col-span-1">
                 <label class="text-xs font-semibold text-slate-600">Designation</label>
                 <input type="text" [(ngModel)]="designation" name="designation" placeholder="e.g. Operations Manager" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <div class="space-y-1.5 md:col-span-1">
-                <label class="text-xs font-semibold text-slate-600">Phone *</label>
-                <input type="tel" [(ngModel)]="contactPhone" name="contactPhone" required placeholder="e.g. +44 020 7946 0958" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Phone <span class="text-red-500">*</span></label>
+                <input type="tel" [(ngModel)]="contactPhone" name="contactPhone" (blur)="markTouched('contactPhone')" placeholder="e.g. +44 020 7946 0958" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(contactInvalid && touched.has('contactPhone'))" [class.border-rose-500]="contactInvalid && touched.has('contactPhone')">
+                @if (contactInvalid && touched.has('contactPhone')) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
               </div>
               <div class="space-y-1.5 md:col-span-1">
-                <label class="text-xs font-semibold text-slate-600">Email *</label>
-                <input type="email" [(ngModel)]="contactEmail" name="contactEmail" required placeholder="e.g. james.walker@metrosecurity.ca" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Email <span class="text-red-500">*</span></label>
+                <input type="email" [(ngModel)]="contactEmail" name="contactEmail" (blur)="markTouched('contactEmail')" placeholder="e.g. james.walker@metrosecurity.ca" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(contactInvalid && touched.has('contactEmail'))" [class.border-rose-500]="contactInvalid && touched.has('contactEmail')">
+                @if (contactInvalid && touched.has('contactEmail')) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
               </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Alternative Contact Name</label>
@@ -136,19 +130,23 @@
             </div>
           </div>
 
-          <!-- CARD SECTION 3: Site Details & Access Schedule -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6 space-y-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Details</h3>
-            
+            @if (detailsInvalid) {
+              <div class="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700 space-y-1">
+                <p class="font-bold">Please resolve the following:</p>
+                <ul class="list-disc list-inside">
+                    @for (msg of sectionErrors['details']; track msg) { <li>{{ msg }}</li> }
+                </ul>
+              </div>
+            }
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="space-y-1.5 md:col-span-1">
                 <label class="text-xs font-semibold text-slate-600">Access Instructions</label>
                 <textarea [(ngModel)]="accessInstructions" name="accessInstructions" class="w-full bg-white border border-slate-200 text-sm px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none h-20" placeholder="e.g. Instructions...">Use main entrance. Reception on the ground floor.</textarea>
               </div>
-
-              <!-- Access Schedule Radio Options -->
               <div class="space-y-2 md:col-span-1">
-                <label class="text-xs font-semibold text-slate-600">Access Schedule *</label>
+                <label class="text-xs font-semibold text-slate-600">Access Schedule <span class="text-red-500">*</span></label>
                 <div class="space-y-2 text-sm text-slate-700 mt-1">
                   <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="24/7 Access" class="w-4 h-4 text-blue-600"> 24/7 Access</label>
                   <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="Business Hours" class="w-4 h-4 text-blue-600"> Business Hours <span class="text-xs text-slate-400">(Mon-Fri, 09:00-17:00)</span></label>
@@ -156,167 +154,71 @@
                   <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="By Appointment Only" class="w-4 h-4 text-blue-600" checked> By Appointment Only</label>
                 </div>
               </div>
-
               <div class="space-y-4 md:col-span-1">
                 <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Security Level *</label>
-                  <select [(ngModel)]="securityLevel" name="securityLevel" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                  <label class="text-xs font-semibold text-slate-600">Security Level <span class="text-red-500">*</span></label>
+                  <select [(ngModel)]="securityLevel" name="securityLevel" (blur)="markTouched('securityLevel')" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(detailsInvalid && touched.has('securityLevel'))" [class.border-rose-500]="detailsInvalid && touched.has('securityLevel')">
+                    <option value="">Select level</option>
                     <option value="Low">Low</option>
                     <option value="Standard">Standard</option>
-                    <option value="High" selected>High</option>
+                    <option value="High">High</option>
                     <option value="Very High">Very High</option>
                   </select>
+                  @if (detailsInvalid && touched.has('securityLevel')) { <p class="text-xs text-rose-600 mt-1">Security Level is required</p> }
                 </div>
                 <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Alarm System *</label>
-                  <select [(ngModel)]="alarmSystem" name="alarmSystem" required class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                  <label class="text-xs font-semibold text-slate-600">Alarm System <span class="text-red-500">*</span></label>
+                  <select [(ngModel)]="alarmSystem" name="alarmSystem" (blur)="markTouched('alarmSystem')" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(detailsInvalid && touched.has('alarmSystem'))" [class.border-rose-500]="detailsInvalid && touched.has('alarmSystem')">
+                    <option value="">Select system</option>
                     <option value="None">None</option>
                     <option value="Intruder Alarm">Intruder Alarm</option>
                     <option value="CCTV">CCTV</option>
-                    <option value="Intruder & CCTV" selected>Intruder & CCTV</option>
+                    <option value="Intruder & CCTV">Intruder & CCTV</option>
                   </select>
+                  @if (detailsInvalid && touched.has('alarmSystem')) { <p class="text-xs text-rose-600 mt-1">Alarm System is required</p> }
                 </div>
-              </div>
-            </div>
-
-            <!-- APPOINTMENT CRITERIA SPECIFICATION SUBFORM CARD -->
-            <div *ngIf="accessSchedule === 'By Appointment Only'" class="bg-blue-50/30 border border-blue-100 rounded-lg p-5 space-y-4">
-              <div class="flex items-center gap-2 text-xs font-bold text-slate-800 uppercase tracking-wide">
-                <span>By Appointment Settings</span>
-                <i class="fa-solid fa-circle-info text-blue-500 cursor-pointer" title="Configures rules specific to appointment-only workflows"></i>
-              </div>
-              
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div class="space-y-2 bg-white border border-slate-100 p-3 rounded-xl flex items-center justify-between">
-                  <div>
-                    <span class="font-bold text-slate-700 block">Appointment Required</span>
-                    <span class="text-[10px] text-slate-400 block mt-0.5">All visits must be pre-approved.</span>
-                  </div>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" [(ngModel)]="apptRequired" name="apptRequired" checked class="sr-only peer">
-                    <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
-                  </label>
-                </div>
-
-                <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Minimum Notice Required *</label>
-                  <select [(ngModel)]="minNotice" name="minNotice" class="w-full bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                    <option value="2 Hours">2 Hours</option>
-                    <option value="4 Hours" selected>4 Hours</option>
-                    <option value="24 Hours">24 Hours</option>
-                  </select>
-                </div>
-
-                <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Approval Required From *</label>
-                  <select [(ngModel)]="approvalContact" name="approvalContact" (change)="updateContactInfo()" class="w-full bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                    <option value="James Walker" selected>James Walker</option>
-                    <option value="Sarah Miller">Sarah Miller</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Secondary Info Readouts Mapping Parameters inside Card -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium pt-2 text-slate-600">
-                <div class="space-y-1 bg-white/70 border border-slate-100 rounded-xl p-3">
-                  <span class="text-slate-400 text-[10px] block font-semibold uppercase tracking-wider">Appointment Contact</span>
-                  <p class="flex items-center gap-2 font-semibold text-slate-800 mt-1"><i class="fa-solid fa-phone text-slate-400 text-[10px]"></i> <span id="apptPhoneText">{{ apptPhone }}</span></p>
-                  <p class="flex items-center gap-2 font-semibold text-slate-800 mt-1"><i class="fa-solid fa-envelope text-slate-400 text-[10px]"></i> <span id="apptEmailText">{{ apptEmail }}</span></p>
-                </div>
-                <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Appointment Notes (Optional)</label>
-                  <input type="text" [(ngModel)]="apptNotes" name="apptNotes" class="w-full bg-white border border-slate-200 text-xs px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                </div>
-               </div>
-             </div>
-
-             <!-- RESTRICTED HOURS CONDITIONAL GRID -->
-             <div *ngIf="accessSchedule === 'Restricted Hours'" class="grid grid-cols-1 lg:grid-cols-5 gap-6 pt-2">
-               <!-- Operating Time Slots Entry Form -->
-               <div class="lg:col-span-3 bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto">
-                 <div class="flex items-center gap-2 text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">
-                   <span>Restricted Access Schedule</span>
-                   <i class="fa-solid fa-circle-info text-blue-500 cursor-pointer"></i>
-                 </div>
-                 <table class="w-full text-xs text-left text-slate-600 min-w-[340px]">
-                   <thead>
-                     <tr class="text-slate-400 font-medium border-b border-slate-200">
-                       <th class="pb-2 w-20">Day</th>
-                       <th class="pb-2 pl-2">Allowed From</th>
-                       <th class="pb-2 pl-2">Allowed Until</th>
-                       <th class="pb-2 text-center w-16">Action</th>
-                     </tr>
-                   </thead>
-                   <tbody class="divide-y divide-slate-100 font-medium">
-                     @for (day of ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']; track day) {
-                     <tr class="h-10">
-                       <td>{{ day }}</td>
-                       <td>
-                         <input type="text" [(ngModel)]="restrictedHours[day].from" [disabled]="restrictedHours[day].closed" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center">
-                       </td>
-                       <td>
-                         <input type="text" [(ngModel)]="restrictedHours[day].to" [disabled]="restrictedHours[day].closed" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center">
-                       </td>
-                       <td class="text-center text-slate-400 space-x-2">
-                         <i class="fa-solid fa-circle-plus text-blue-500 cursor-pointer" (click)="restrictedHours[day].closed = !restrictedHours[day].closed"></i>
-                         <i class="fa-solid fa-trash cursor-pointer" (click)="restrictedHours[day] = { from: 'Closed', to: 'Closed', closed: true }"></i>
-                       </td>
-                     </tr>
-                     }
-                   </tbody>
-                 </table>
-               </div>
-
-               <!-- Rule Warnings & Checkboxes Panel -->
-               <div class="lg:col-span-2 bg-amber-50/60 border border-amber-200/70 rounded-lg p-5 space-y-4">
-                 <div class="flex gap-2.5 text-amber-800">
-                   <i class="fa-solid fa-triangle-exclamation text-base mt-0.5 shrink-0"></i>
-                   <div>
-                     <h4 class="text-xs font-bold uppercase tracking-wide">Restricted Access</h4>
-                     <p class="text-xs text-amber-700/90 mt-1 leading-relaxed">This site may only be accessed during the configured hours. Any job scheduled outside these hours will trigger a warning.</p>
-                   </div>
-                 </div>
-                 
-                 <div class="space-y-2.5 pt-2 border-t border-amber-200/40 text-xs font-medium text-slate-700">
-                   <h5 class="font-bold text-slate-500 uppercase tracking-wider text-[10px] mb-1.5">Additional Access Rules</h5>
-                   <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" [(ngModel)]="restrictedBankHolidays" name="restrictedBankHolidays" class="mt-0.5 text-blue-600 rounded"> Access prohibited on Bank Holidays</label>
-                   <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" [(ngModel)]="restrictedOutOfHoursApproval" name="restrictedOutOfHoursApproval" class="mt-0.5 text-blue-600 rounded"> Out-of-hours access requires client approval</label>
-                   <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" [(ngModel)]="restrictedCallBeforeEntry" name="restrictedCallBeforeEntry" class="mt-0.5 text-blue-600 rounded"> Officer must call before entry</label>
-                   <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" [(ngModel)]="restrictedSecurityEscort" name="restrictedSecurityEscort" class="mt-0.5 text-blue-600 rounded"> Security escort required</label>
-                 </div>
-               </div>
-             </div>
-           </div>
-
-           <!-- CARD SECTION 4: Mapping Document Blueprint Attachments -->
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm mb-5">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Site Map / Location (Optional)</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
-                <input type="file" (change)="onFileSelect($event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-2 transition">
-                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </div>
-                <p class="text-sm text-slate-600 font-medium">Drag and drop files here or <span class="text-blue-600 hover:underline">Browse Files</span></p>
-                <p class="text-xs text-slate-400 mt-1" id="fileLabelInfo">{{ fileName || 'Supported files: JPG, PNG, PDF (Max 10MB)' }}</p>
-              </div>
-              <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
-                <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">Tips:</h4>
-                <p class="flex items-start gap-2"><span>•</span> Upload a clear site map or floor plan</p>
-                <p class="flex items-start gap-2"><span>•</span> Highlight key areas and access points</p>
-                <p class="flex items-start gap-2"><span>•</span> Accepted formats: JPG, PNG, PDF</p>
               </div>
             </div>
           </div>
+
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Attachments</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+              <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
+                <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" (change)="onFileSelect($event)">
+                <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-3 transition">
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
+                <p class="text-xs text-slate-400 mt-1">Supported files: JPG, PNG, PDF (Max 10MB)</p>
+              </div>
+              <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
+                <h4 class="text-[14px] font-normal text-slate-400 tracking-wider mb-1">Tips:</h4>
+                <p class="flex items-start gap-2"><span>•</span> Upload site photos or floor plans</p>
+                <p class="flex items-start gap-2"><span>•</span> Upload any relevant documents</p>
+                <p class="flex items-start gap-2"><span>•</span> You can upload multiple files</p>
+              </div>
+            </div>
+            @if (attachmentPreviews.length) {
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="border border-slate-200 rounded-xl p-3 flex items-center gap-3" *ngFor="let item of attachmentPreviews; trackBy: trackByIndex">
+                  <img *ngIf="isImage(item.file.type)" [src]="item.url" class="w-10 h-10 rounded-lg object-cover border border-slate-100">
+                  <svg *ngIf="!isImage(item.file.type)" class="w-6 h-6 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <div class="min-w-0 text-xs flex-1">
+                    <p class="font-bold truncate">{{ item.file.name }}</p>
+                    <p class="text-slate-400">{{ (item.file.size / 1024 >= 1024 ? (item.file.size / (1024 * 1024)).toFixed(1) + ' MB' : (item.file.size / 1024).toFixed(0) + ' KB') || '-' }}</p>
+                  </div>
+                  <button type="button" (click)="removeAttachment(attachmentPreviews.indexOf(item))" class="text-[11px] text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-md hover:bg-rose-50 transition">Remove</button>
+                </div>
+              </div>
+            }
+          </div>
+
         </form>
 
-        <!-- RIGHT COLUMN VIEW PREVIEWS & INTERACTION MANUAL -->
         <div class="space-y-5">
-          
-          <!-- Card: Realtime Render Summary Preview Widget -->
           <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm space-y-6">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-3">Site Summary (Preview)</h4>
-            
+            <h4 class="text-[14px] font-normal text-slate-400 tracking-wider border-b border-slate-100 pb-3">Site Summary (Preview)</h4>
             <div class="flex flex-col items-center justify-center text-center p-4" *ngIf="!showPreview">
               <div class="w-20 h-20 border border-slate-100 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 mb-4 shadow-inner">
                 <i class="fa-solid fa-building text-3xl"></i>
@@ -324,33 +226,28 @@
               <h5 class="text-sm font-bold text-slate-800">Site details will appear here</h5>
               <p class="text-xs text-slate-400 mt-1 max-w-[200px]">Fill in the information to see a summary of the site</p>
             </div>
-
-              <div class="space-y-4" *ngIf="showPreview">
-                <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                  <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg shadow-sm shrink-0">
-                    <i class="fa-solid fa-building"></i>
-                  </div>
-                  <div class="min-w-0">
-                    <h4 class="text-sm font-bold text-slate-900 truncate">{{ siteName || 'Untitled Site' }}</h4>
-                    <p class="text-xs text-slate-400 font-mono">{{ siteCode || 'NO REFERENCE' }}</p>
-                  </div>
+            <div class="space-y-4" *ngIf="showPreview">
+              <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg shadow-sm shrink-0">
+                  <i class="fa-solid fa-building"></i>
                 </div>
-
-                <div class="space-y-2.5 text-xs border-t border-slate-100 pt-4">
-                  <div class="flex justify-between"><span class="text-slate-400">Type</span> <span class="font-semibold text-slate-700">{{ siteType || '-' }}</span></div>
-                  <div class="flex justify-between"><span class="text-slate-400">Location</span> <span class="font-semibold text-slate-700 truncate max-w-[150px]">{{ city || '-' }}</span></div>
-                  <div class="flex justify-between"><span class="text-slate-400">Contact</span> <span class="font-semibold text-slate-700">{{ contactName || '-' }}</span></div>
-                  <div class="flex justify-between"><span class="text-slate-400">Access Schedule</span> <span class="font-semibold text-slate-700">{{ accessSchedule || '-' }}</span></div>
-                  <div class="flex justify-between items-center">
-                    <span class="text-slate-400">Security Level</span> 
-                    <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ securityClass }}">{{ securityLevel || 'Not Set' }}</span>
+                <div class="min-w-0">
+                  <h4 class="text-sm font-bold text-slate-900 truncate">{{ siteName || 'Untitled Site' }}</h4>
                 </div>
               </div>
-
+              <div class="space-y-2.5 text-xs border-t border-slate-100 pt-4">
+                <div class="flex justify-between"><span class="text-slate-400">Type</span> <span class="font-semibold text-slate-700">{{ siteType || '-' }}</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Location</span> <span class="font-semibold text-slate-700 truncate max-w-[150px]">{{ city || '-' }}</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Contact</span> <span class="font-semibold text-slate-700">{{ contactName || '-' }}</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Access Schedule</span> <span class="font-semibold text-slate-700">{{ accessSchedule || '-' }}</span></div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Security Level</span>
+                  <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ securityClass }}">{{ securityLevel || 'Not Set' }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Card: Static Context Help Quick Guide -->
           <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
             <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Quick Guide</h4>
             <div class="space-y-4 text-xs text-slate-600">

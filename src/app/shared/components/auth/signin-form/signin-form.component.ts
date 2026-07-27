@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { InputFieldComponent } from '../../form/input/input-field.component';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { KeyVaultService } from '../../../../core/services/keyvault.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-signin-form',
@@ -26,6 +27,7 @@ export class SigninFormComponent {
     private permissionService: PermissionService,
     private router: Router,
     private keyVault: KeyVaultService,
+    private toast: ToastService,
   ) {}
 
   showPassword = false;
@@ -35,8 +37,6 @@ export class SigninFormComponent {
   password = '';
 
   isLoading = false;
-  errorMessage = '';
-  successMessage = '';
   emailError = '';
   passwordError = '';
 
@@ -81,17 +81,15 @@ export class SigninFormComponent {
   backToSignIn() {
     this.requiresOtp = false;
     this.challengeToken = '';
-    this.errorMessage = '';
     this.resetOtpStep();
   }
 
   resendOtp() {
     if (!this.email.trim()) {
-      this.errorMessage = 'Email is missing. Please go back and try again.';
+      this.toast.error('Email is missing. Please go back and try again.');
       return;
     }
     this.isLoading = true;
-    this.errorMessage = '';
     this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
       next: (res: any) => {
         this.isLoading = false;
@@ -99,26 +97,24 @@ export class SigninFormComponent {
           this.challengeToken = res.challengeToken;
         }
         this.resetOtpStep();
-        this.successMessage = 'A new verification code has been sent to your email.';
+        this.toast.success('A new verification code has been sent to your email.');
       },
       error: () => {
         this.isLoading = false;
-        this.errorMessage = 'Failed to resend the code. Please try again.';
+        this.toast.error('Failed to resend the code. Please try again.');
       }
     });
   }
 
   onVerifyOtp() {
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
     this.digitError = false;
 
     const code = this.otpCode.replace(/\s+/g, '').trim();
     if (!/^\d{6}$/.test(code)) {
       this.isLoading = false;
       this.digitError = true;
-      this.errorMessage = 'Enter the 6-digit verification code.';
+      this.toast.error('Enter the 6-digit verification code.');
       return;
     }
 
@@ -126,17 +122,25 @@ export class SigninFormComponent {
       next: (res: any) => {
         const accessToken = res?.access_token ?? res?.tokens?.access_token;
         const refreshToken = res?.refresh_token ?? res?.tokens?.refresh_token;
-        if (!accessToken) {
-          this.isLoading = false;
-          this.errorMessage = 'Verification succeeded but no access token was returned. Please contact support.';
-          return;
+        if (accessToken) {
+          this.finalizeLogin({ tokens: { access_token: accessToken, refresh_token: refreshToken } });
+        } else {
+          this.toast.success('Verification successful. Completing sign-in...');
+          this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
+            next: (loginRes: any) => {
+              this.finalizeLogin(loginRes);
+            },
+            error: () => {
+              this.isLoading = false;
+              this.toast.error('Verification succeeded but automatic sign-in failed. Please sign in manually.');
+            }
+          });
         }
-        this.finalizeLogin({ tokens: { access_token: accessToken, refresh_token: refreshToken } });
       },
       error: (err: any) => {
         this.isLoading = false;
         const detail = err?.error?.detail || err?.error?.message;
-        this.errorMessage = detail ? `Verification failed: ${detail}` : 'Invalid or expired code. Please try again.';
+        this.toast.error(detail ? `Verification failed: ${detail}` : 'Invalid or expired code. Please try again.');
       }
     });
   }
@@ -174,8 +178,6 @@ export class SigninFormComponent {
 
   onSignIn() {
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
     this.emailError = '';
     this.passwordError = '';
 
@@ -204,11 +206,11 @@ export class SigninFormComponent {
         this.isLoading = false;
 
         if (err.status === 401) {
-          this.errorMessage = 'Invalid email or password. Please try again.';
+          this.toast.error('Invalid email or password. Please try again.');
         } else if (err.status === 400) {
-          this.errorMessage = err.error?.detail || 'Please check your input and try again.';
+          this.toast.error(err.error?.detail || 'Please check your input and try again.');
         } else {
-          this.errorMessage = 'An error occurred. Please try again later.';
+          this.toast.error('An error occurred. Please try again later.');
         }
       }
     });
@@ -220,7 +222,7 @@ export class SigninFormComponent {
 
     if (!accessToken) {
       this.isLoading = false;
-      this.errorMessage = 'Login succeeded but no access token was returned. Please contact support.';
+      this.toast.error('Login succeeded but no access token was returned. Please contact support.');
       return;
     }
 
@@ -290,7 +292,8 @@ export class SigninFormComponent {
 
     const finalizeAndNavigate = () => {
       this.isLoading = false;
-      this.router.navigate(['/']);
+      this.toast.success('Login successful! Redirecting...');
+      setTimeout(() => this.router.navigate(['/']), 600);
     };
 
     if (!hasKeyVaultAccess) {

@@ -76,7 +76,7 @@ export interface KeyVaultKey {
   colour?: string;
   tagLabel?: string;
   reference?: string;
-  status?: 'IN_STORAGE' | 'ISSUED' | 'IN_USE' | 'OVERDUE' | 'LOST' | 'DAMAGED';
+  status?: 'IN_STORAGE' | 'ISSUED' | 'IN_USE' | 'OVERDUE' | 'LOST' | 'DAMAGED' | 'INACTIVE';
   notes?: string;
   [key: string]: any;
 }
@@ -438,17 +438,49 @@ export class KeyVaultService {
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, headers);
   }
 
-  addKeyAttachment(orgId: string, keyId: string, attachment: KeyAttachment): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
-    });
-    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, attachment, headers);
+  listSiteAttachments(orgId: string, siteId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments`, headers);
+  }
+
+  addKeyAttachment(orgId: string, keyId: string, file: File, fileName?: string, contentType?: string, sizeBytes?: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('fileName', fileName || file.name);
+    fd.append('contentType', contentType || file.type || 'application/octet-stream');
+    fd.append('sizeBytes', String(sizeBytes || file.size));
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, fd, headers);
+  }
+
+  addSiteAttachment(orgId: string, siteId: string, file: File, fileName?: string, contentType?: string, sizeBytes?: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('fileName', fileName || file.name);
+    fd.append('contentType', contentType || file.type || 'application/octet-stream');
+    fd.append('sizeBytes', String(sizeBytes || file.size));
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments`, fd, headers);
+  }
+
+  deleteSiteAttachment(orgId: string, siteId: string, attachmentId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments/${attachmentId}`, headers);
   }
 
   deleteKeyAttachment(orgId: string, keyId: string, attachmentId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments/${attachmentId}`, headers);
+  }
+
+  downloadKeyAttachmentBlob(orgId: string, keyId: string, attachmentId: string): Observable<Blob> {
+    const headers = this.getAuthHeaders();
+    return this.api.getBlob(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments/${attachmentId}/download`, headers);
+  }
+
+  downloadSiteAttachmentBlob(orgId: string, siteId: string, attachmentId: string): Observable<Blob> {
+    const headers = this.getAuthHeaders();
+    return this.api.getBlob(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments/${attachmentId}/download`, headers);
   }
 
   listKeyNotes(orgId: string, keyId: string): Observable<any> {

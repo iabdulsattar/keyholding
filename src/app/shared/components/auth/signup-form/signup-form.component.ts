@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ToastService } from '../../../../core/services/toast.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class SignupFormComponent {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toast: ToastService) {}
 
   showPassword = false;
   confirmPassword = false;
@@ -33,8 +34,6 @@ export class SignupFormComponent {
   confirmpassword = '';
 
   isLoading = false;
-  successMessage = '';
-  errorMessage = '';
 
   errors = {
     fname: '',
@@ -44,7 +43,8 @@ export class SignupFormComponent {
     pnumber: '',
     email: '',
     password: '',
-    confirmpassword: ''
+    confirmpassword: '',
+    selectedValue: ''
   };
 
   togglePasswordVisibility() {
@@ -69,7 +69,8 @@ export class SignupFormComponent {
       pnumber: '',
       email: '',
       password: '',
-      confirmpassword: ''
+      confirmpassword: '',
+      selectedValue: ''
     };
 
     const nameAlphaRegex = /^[A-Za-z]+$/;
@@ -159,6 +160,7 @@ export class SignupFormComponent {
 
     // Number of Employees (optional): if selected, must be one of allowed values
     if (this.selectedValue && !employeeAllowed.has(this.selectedValue)) {
+      this.errors.selectedValue = 'Please select a valid employee count';
       this.isLoading = false;
       isValid = false;
     }
@@ -227,8 +229,6 @@ export class SignupFormComponent {
     if (this.selectedValue) payload.employeeCount = this.selectedValue;
 
     this.isLoading = true;
-    this.successMessage = '';
-    this.errorMessage = '';
 
     this.authService.signup(payload).subscribe({
       next: (res) => {
@@ -248,7 +248,11 @@ export class SignupFormComponent {
         } else {
           console.warn('Organization ID not found in signup response. Available keys:', Object.keys(res || {}));
         }
-        this.successMessage = 'Account created successfully! Please verify your email.';
+
+        this.toast.success('Account created successfully! Redirecting...');
+        setTimeout(() => {
+          this.router.navigate(['/verification']);
+        }, 800);
 
         try {
           localStorage.setItem('verification_email', userEmail);
@@ -256,7 +260,6 @@ export class SignupFormComponent {
         } catch {
         }
         this.isLoading = false;
-        this.router.navigate(['/verification']);
       },
       error: (err) => {
         console.error('Signup error:', err);
@@ -266,7 +269,9 @@ export class SignupFormComponent {
         console.error('Payload being sent:', JSON.stringify(payload, null, 2));
 
         if (err.status === 409) {
-          this.errorMessage = err.error?.detail || 'Email or company name already registered. Please use a different email or sign in.';
+          this.toast.error(err.error?.detail || 'Email or company name already registered. Please use a different email or sign in.');
+        } else {
+          this.toast.error(err.error?.detail || 'Signup failed. Please try again.');
         }
 
         this.isLoading = false;

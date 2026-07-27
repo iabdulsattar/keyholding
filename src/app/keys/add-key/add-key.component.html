@@ -10,7 +10,7 @@
               Back to Keys
             </a>
           </div>
-          <h2 class="text-xl font-bold text-slate-900 mt-1">Add New Key</h2>
+          <h2 class="text-xl font-bold text-slate-900 mt-1">{{ pageTitle }}</h2>
           <div class="flex items-center gap-2 text-xs text-slate-400 mt-1.5">
             <a routerLink="/clients" class="hover:text-blue-600">Client Management</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -20,60 +20,46 @@
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <a routerLink="/clients" class="hover:text-blue-600">Keys</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <span class="text-slate-600 font-medium">Add New Key</span>
+            <span class="text-slate-600 font-medium">{{ pageTitle }}</span>
           </div>
-          
         </div>
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <button type="button" (click)="resetForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-2 border border-slate-200 rounded-xl transition">Cancel</button>
           <button type="button" (click)="submitKeyForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-xl shadow-sm flex items-center justify-center gap-2 transition">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
-            Save Key
+            {{ editing ? 'Update Key' : 'Save Key' }}
           </button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 items-start">
-
         <form id="keyForm" class="xl:col-span-3 space-y-5" (ngSubmit)="submitKeyForm()">
 
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Key Information</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Name *</label>
-                <input type="text" [(ngModel)]="keyName" name="keyName" required placeholder="e.g. Front Door Key" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Key Name <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="keyName" name="keyName" (blur)="markTouched('keyName')" placeholder="e.g. Front Door Key" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(infoInvalid && touched.has('keyName'))" [class.border-rose-500]="infoInvalid && touched.has('keyName')">
+                @if (infoInvalid && touched.has('keyName')) { <p class="text-xs text-rose-600 mt-1">Key Name is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key ID / Reference *</label>
-                <input type="text" [(ngModel)]="keyId" name="keyId" required placeholder="e.g. KEY-000157" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-600">Key Type <span class="text-red-500">*</span></label>
+                <app-rich-select [options]="keyTypeOptions" [(value)]="keyType" placeholder="Select key type" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('keyType')"></app-rich-select>
+                @if (infoInvalid && touched.has('keyType')) { <p class="text-xs text-rose-600 mt-1">Key Type is required</p> }
               </div>
-               <div class="space-y-1.5">
-                 <label class="text-xs font-semibold text-slate-600">Key Type *</label>
-                 <app-rich-select
-                   [options]="keyTypeOptions"
-                   [(value)]="keyType"
-                   placeholder="Select key type"
-                   [showSearch]="true"
-                   panelWidth="wide"
-                   class="w-full"
-                 ></app-rich-select>
-                 <div *ngIf="loadingCatalog" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading catalog...</div>
-               </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Key Category <span class="text-red-500">*</span></label>
+                <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
+                @if (infoInvalid && touched.has('keyCategory')) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
+              </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-               <div class="space-y-1.5">
-                 <label class="text-xs font-semibold text-slate-600">Key Category *</label>
-                 <app-rich-select
-                   [options]="keyCategoryOptions"
-                   [(value)]="keyCategory"
-                   placeholder="Select category"
-                   [showSearch]="true"
-                   panelWidth="wide"
-                   class="w-full"
-                 ></app-rich-select>
-                 <div *ngIf="loadingCatalog" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading catalog...</div>
-               </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Key Category <span class="text-red-500">*</span></label>
+                <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
+                @if (infoInvalid && touched.has('keyCategory')) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
+              </div>
               <div class="md:col-span-2 space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Description / Notes</label>
                 <textarea [(ngModel)]="keyNotes" name="keyNotes" rows="2" placeholder="Optional notes about this key" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
@@ -83,32 +69,17 @@
 
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Assign To</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-               <div class="space-y-1.5">
-                 <label class="text-xs font-semibold text-slate-600">Client *</label>
-                 <app-rich-select
-                   [options]="clientOptions"
-                   [(value)]="assignClientId"
-                   placeholder="Select client"
-                   [showSearch]="true"
-                   panelWidth="wide"
-                   class="w-full"
-                   (valueChange)="onClientChange()"
-                 ></app-rich-select>
-                 <div *ngIf="loadingClients" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading clients...</div>
-               </div>
-               <div class="space-y-1.5">
-                 <label class="text-xs font-semibold text-slate-600">Site *</label>
-                 <app-rich-select
-                   [options]="siteOptions"
-                   [(value)]="assignSite"
-                   placeholder="Select site"
-                   [showSearch]="true"
-                   panelWidth="wide"
-                   class="w-full"
-                 ></app-rich-select>
-                 <div *ngIf="loadingSites" class="text-xs text-slate-400 flex items-center gap-1"><span class="spinner"></span> Loading sites...</div>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Client <span class="text-red-500">*</span></label>
+                <app-rich-select [options]="clientOptions" [(value)]="assignClientId" placeholder="Select client" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="onClientChange()"></app-rich-select>
+                @if (assignInvalid && touched.has('assignClientId')) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Site <span class="text-red-500">*</span></label>
+                <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
+                @if (assignInvalid && touched.has('assignSite')) { <p class="text-xs text-rose-600 mt-1">Site is required</p> }
+              </div>
             </div>
           </div>
 
@@ -159,42 +130,44 @@
             </div>
           </div>
 
-           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm mb-5">
-             <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Attachments</h3>
-             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-               <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
-                 <input type="file" (change)="onFileSelect($event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                 <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-3 transition">
-                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                 </div>
-                 <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
-                 <p class="text-xs text-slate-400 mt-1" id="fileInfoLabel">{{ fileName || 'Supported files: JPG, PNG, PDF (Max 10MB)' }}</p>
-               </div>
-               <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
-                 <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">Tips:</h4>
-                 <p class="flex items-start gap-2"><span>•</span> Upload a clear photo of the key</p>
-                 <p class="flex items-start gap-2"><span>•</span> Upload key tag / label if available</p>
-                 <p class="flex items-start gap-2"><span>•</span> Upload any related documents</p>
-               </div>
-             </div>
-             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" *ngIf="attachmentPreviews.length">
-               <div class="relative border border-slate-200 rounded-xl p-2 bg-white shadow-sm" *ngFor="let item of attachmentPreviews; let i = index">
-                 <img *ngIf="item.file.type.startsWith('image/')" [src]="item.url" class="w-full h-24 object-cover rounded-lg">
-                 <div *ngIf="!item.file.type.startsWith('image/')" class="w-full h-24 flex items-center justify-center text-slate-400 bg-slate-50 rounded-lg">
-                   <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                 </div>
-                 <button type="button" (click)="removeAttachment(i)" class="absolute -top-2 -right-2 bg-rose-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] leading-none shadow-sm">×</button>
-                 <p class="text-[10px] text-slate-500 mt-1 truncate font-medium">{{ item.file.name }}</p>
-               </div>
-             </div>
-           </div>
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Attachments</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+              <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
+                <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" (change)="onFileSelect($event)">
+                <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-3 transition">
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
+                <p class="text-xs text-slate-400 mt-1">Supported files: JPG, PNG, PDF (Max 10MB)</p>
+              </div>
+              <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
+                <h4 class="text-[14px] font-normal text-slate-400 tracking-wider mb-1">Tips:</h4>
+                <p class="flex items-start gap-2"><span>•</span> Upload a clear photo of the key</p>
+                <p class="flex items-start gap-2"><span>•</span> Upload key tag / label if available</p>
+                <p class="flex items-start gap-2"><span>•</span> Upload any related documents</p>
+              </div>
+            </div>
+            @if (attachmentPreviews.length) {
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="border border-slate-200 rounded-xl p-3 flex items-center gap-3" *ngFor="let item of attachmentPreviews; trackBy: trackByIndex">
+                  <img *ngIf="isImage(item.file.type)" [src]="item.url" class="w-10 h-10 rounded-lg object-cover border border-slate-100">
+                  <svg *ngIf="!isImage(item.file.type)" class="w-6 h-6 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <div class="min-w-0 text-xs flex-1">
+                    <p class="font-bold truncate">{{ item.file.name }}</p>
+                    <p class="text-slate-400">{{ (item.file.size / 1024 >= 1024 ? (item.file.size / (1024 * 1024)).toFixed(1) + ' MB' : (item.file.size / 1024).toFixed(0) + ' KB') || '-' }}</p>
+                  </div>
+                  <button type="button" (click)="removeAttachment(attachmentPreviews.indexOf(item))" class="text-[11px] text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-md hover:bg-rose-50 transition">Remove</button>
+                </div>
+              </div>
+            }
+          </div>
+
         </form>
 
         <div class="space-y-5">
-
           <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm space-y-6">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-3">Key Summary (Preview)</h4>
-
+            <h4 class="text-[14px] font-normal text-slate-400 tracking-wider border-b border-slate-100 pb-3">Key Summary (Preview)</h4>
             <div class="flex flex-col items-center justify-center text-center p-4" *ngIf="!showPreview">
               <div class="w-20 h-20 border-2 border-dashed border-slate-200 rounded-full flex items-center justify-center text-slate-300 mb-4">
                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
@@ -202,7 +175,6 @@
               <h5 class="text-sm font-bold text-slate-800">Key details will appear here</h5>
               <p class="text-xs text-slate-400 mt-1 max-w-[200px]">Fill in the information to see a summary of the key</p>
             </div>
-
             <div class="space-y-4" *ngIf="showPreview">
               <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
                 <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg shadow-sm shrink-0">
@@ -213,17 +185,16 @@
                   <p class="text-xs text-slate-400 font-mono">{{ keyId || 'NO REFERENCE' }}</p>
                 </div>
               </div>
-
               <div class="space-y-2.5 text-xs border-t border-slate-100 pt-4">
                 <div class="flex justify-between"><span class="text-slate-400">Type</span> <span class="font-semibold text-slate-700">{{ keyType ? (keyTypes.find(t => t.id === keyType)?.name || keyType) : '-' }}</span></div>
                 <div class="flex justify-between"><span class="text-slate-400">Category</span> <span class="font-semibold text-slate-700">{{ keyCategory ? (keyCategories.find(c => c.id === keyCategory)?.name || keyCategory) : '-' }}</span></div>
                 <div class="flex justify-between"><span class="text-slate-400">Site Location</span> <span class="font-semibold text-slate-700">{{ assignSite ? (sites.find(s => s.id === assignSite)?.name || assignSite) : '-' }}</span></div>
-                <div class="flex justify-between"><span class="text-slate-400">Status</span> <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ statusClass }}">{{ keyStatus }}</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400">Status</span> <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ statusClass }}">{{ keyStatusDisplay }}</span></div>
               </div>
             </div>
           </div>
 
-          <!-- <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
             <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">About Key Status</h4>
             <div class="space-y-3 text-xs">
               <div class="flex gap-3">
@@ -247,7 +218,7 @@
                 <div><h5 class="font-bold text-slate-800">Lost / Damaged</h5><p class="text-slate-400">Key is lost or damaged</p></div>
               </div>
             </div>
-          </div> -->
+          </div>
 
           <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-3">
             <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Important Notes</h4>

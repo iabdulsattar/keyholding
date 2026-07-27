@@ -26,30 +26,17 @@
         <h2 class="text-title-sm font-extrabold text-slate-900">Company Login</h2>
         <p class="mt-2 text-slate-500 text-sm">Sign in to access your KeyVault Pro account</p>
 
-        <div class="mt-6 flex gap-3 rounded-xl bg-blue-50 border border-blue-100 p-4">
-          <div class="w-6 h-6 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
-            i
-          </div>
-          <div>
-            <p class="text-sm font-semibold text-slate-900">Authorized access only</p>
-            <p class="text-sm text-slate-600 mt-1 leading-relaxed">This platform is for authorized users of key holding companies. Please use your company credentials to continue.</p>
-          </div>
-        </div>
+         <div class="mt-6 flex gap-3 rounded-xl bg-blue-50 border border-blue-100 p-4">
+           <div class="w-6 h-6 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
+             i
+           </div>
+           <div>
+             <p class="text-sm font-semibold text-slate-900">Authorized access only</p>
+             <p class="text-sm text-slate-600 mt-1 leading-relaxed">This platform is for authorized users of key holding companies. Please use your company credentials to continue.</p>
+           </div>
+         </div>
 
-        <!-- Error Message -->
-        @if (errorMessage) {
-        <div class="mt-4 p-4 rounded-lg bg-error-50 border border-error-200">
-          <p class="text-sm text-error-700">{{ errorMessage }}</p>
-        </div>
-        }
-
-        @if (successMessage) {
-        <div class="mt-4 p-4 rounded-lg bg-success-50 border border-success-200">
-          <p class="text-sm text-success-700">{{ successMessage }}</p>
-        </div>
-        }
-
-        <!-- OTP (2FA) verification step -->
+         <!-- OTP (2FA) verification step -->
         @if (requiresOtp) {
         <div class="mt-4 sm:mt-6 mb-4 sm:mb-8">
           <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">

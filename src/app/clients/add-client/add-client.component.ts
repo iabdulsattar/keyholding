@@ -61,6 +61,7 @@ export class AddClientComponent implements OnInit {
   loading = false;
   editMode = false;
   editingClientId: string | null = null;
+  submitted = false;
 
   constructor(
     private router: Router,
@@ -105,25 +106,54 @@ export class AddClientComponent implements OnInit {
     });
   }
 
+  sectionErrors: { information: string[]; details: string[]; status: string[] } = {
+    information: [],
+    details: [],
+    status: []
+  };
+  touched = new Set<string>();
+
+  isSectionValid(section: keyof AddClientComponent['sectionErrors']): boolean {
+    return (this.sectionErrors[section] || []).length === 0;
+  }
+
+  markTouched(field: string) {
+    this.touched.add(field);
+  }
+
   setStatus(status: 'active' | 'inactive'): void {
     this.status = status;
   }
 
   validate(): boolean {
-    const requiredFields = [
-      { field: this.clientName, name: 'Client Name' },
-      { field: this.email, name: 'Email' },
-      { field: this.region, name: 'Region' },
-    ];
+    const errors: { information: string[]; details: string[]; status: string[] } = {
+      information: [],
+      details: [],
+      status: []
+    };
 
-    const missing = requiredFields.filter(f => !f.field || f.field.toString().trim() === '');
+    this.submitted = true;
 
-    if (missing.length > 0) {
-      this.toast.error(`Missing required fields: ${missing.map(m => m.name).join(', ')}`);
-      return false;
-    }
+    this.touched.add('clientName');
+    this.touched.add('email');
+    this.touched.add('region');
 
-    return true;
+    if (!this.clientName.trim()) errors.information.push('Client Name is required');
+    if (!this.email.trim()) errors.information.push('Email is required');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) errors.information.push('Enter a valid email address');
+    if (!this.region) errors.information.push('Region is required');
+    this.sectionErrors = errors;
+    return errors.information.length === 0 && errors.details.length === 0 && errors.status.length === 0;
+  }
+
+  get informationInvalid(): boolean {
+    return !this.isSectionValid('information');
+  }
+  get detailsInvalid(): boolean {
+    return !this.isSectionValid('details');
+  }
+  get statusInvalid(): boolean {
+    return !this.isSectionValid('status');
   }
 
   onSubmit(): void {

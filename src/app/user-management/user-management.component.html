@@ -46,7 +46,7 @@
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 mb-3 group-hover:scale-105 transition">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Total Users</p>
+            <p class="text-[14px] font-normal text-slate-400 tracking-wider block">Total Users</p>
             <p class="mt-0.5 text-xl font-bold text-slate-900">{{ stats?.totalUsers ?? stats?.total ?? '-' }}</p>
             <p class="mt-2 text-[10px] text-slate-400 font-medium block">All users</p>
           </div>
@@ -54,7 +54,7 @@
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 mb-3 group-hover:scale-105 transition">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00a63e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Active Users</p>
+            <p class="text-[14px] font-normal text-slate-400 tracking-wider block">Active Users</p>
             <p class="mt-0.5 text-xl font-bold text-slate-900">{{ stats?.activeUsers ?? stats?.active ?? '-' }}</p>
             <p class="mt-2 text-[10px] text-emerald-600 font-semibold block">{{ stats?.activeUsers ? ((stats.activeUsers / stats.totalUsers) * 100).toFixed(1) : 0 }}% <span class="text-slate-400 font-normal">of total</span></p>
           </div>
@@ -62,7 +62,7 @@
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-50 mb-3 group-hover:scale-105 transition">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc6803" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Inactive Users</p>
+            <p class="text-[14px] font-normal text-slate-400 tracking-wider block">Inactive Users</p>
             <p class="mt-0.5 text-xl font-bold text-slate-900">{{ stats?.inactiveUsers ?? stats?.inactive ?? '-' }}</p>
             <p class="mt-2 text-[10px] text-amber-600 font-semibold block">{{ stats?.inactiveUsers ? ((stats.inactiveUsers / stats.totalUsers) * 100).toFixed(1) : 0 }}% <span class="text-slate-400 font-normal">of total</span></p>
           </div>
@@ -211,7 +211,7 @@
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 mb-3 group-hover:scale-105 transition">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Total Roles</p>
+            <p class="text-[14px] font-normal text-slate-400 tracking-wider block">Total Roles</p>
             <p class="mt-0.5 text-xl font-bold text-slate-900">{{ roles.length }}</p>
             <p class="mt-2 text-[10px] text-slate-400 font-medium block">{{ roles.length ? 'Configured roles' : 'No roles' }}</p>
           </div>
@@ -219,7 +219,7 @@
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 mb-3 group-hover:scale-105 transition">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00a63e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Active Roles</p>
+            <p class="text-[14px] font-normal text-slate-400 tracking-wider block">Active Roles</p>
             <p class="mt-0.5 text-xl font-bold text-slate-900">{{ roles.filter(r => r.active).length }}</p>
             <p class="mt-2 text-[10px] text-emerald-600 font-semibold block">Available for assignment</p>
           </div>
@@ -227,7 +227,7 @@
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-50 mb-3 group-hover:scale-105 transition">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc6803" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Users with Roles</p>
+            <p class="text-[14px] font-normal text-slate-400 tracking-wider block">Users with Roles</p>
             <p class="mt-0.5 text-xl font-bold text-slate-900">{{ roles.reduce((sum, r) => sum + (r.userCount || 0), 0) }}</p>
             <p class="mt-2 text-[10px] text-slate-400 font-medium block">Across all roles</p>
           </div>

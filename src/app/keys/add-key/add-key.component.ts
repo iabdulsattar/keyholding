@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { KeyVaultService, KeyType, KeyCategory, StorageLocation } from '../../core/services/keyvault.service';
+import { KeyVaultService, KeyType, KeyCategory } from '../../core/services/keyvault.service';
 import { ClientService, SiteRecord, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
@@ -33,7 +33,6 @@ export class AddKeyComponent implements OnInit {
   assignClientId = '';
   assignClient = '';
   assignSite = '';
-  storageLocation = '';
   keyBrand = '';
   keyModel = '';
   keyColour = '';
@@ -45,30 +44,62 @@ export class AddKeyComponent implements OnInit {
 
   keyTypes: KeyType[] = [];
   keyCategories: KeyCategory[] = [];
-  storageLocations: StorageLocation[] = [];
   sites: SiteRecord[] = [];
   clients: Client[] = [];
 
   loadingSites = false;
   loadingClients = false;
   loadingCatalog = false;
+  editing = false;
+  pageTitle = 'Add New Key';
+
+  submitted = false;
+
+  activeSection = 'information';
+  touched = new Set<string>();
+  sectionErrors: { information: string[]; assign: string[]; details: string[]; status: string[] } = {
+    information: [],
+    assign: [],
+    details: [],
+    status: []
+  };
 
   keyTypeOptions: RichSelectOption[] = [];
   keyCategoryOptions: RichSelectOption[] = [];
-  storageLocationOptions: RichSelectOption[] = [];
   clientOptions: RichSelectOption[] = [];
   siteOptions: RichSelectOption[] = [];
 
   private clientId = '';
-  private catalogCache: { types: KeyType[]; categories: KeyCategory[]; locations: StorageLocation[] } | null = null;
+  private editKeyId = '';
+  private catalogCache: { types: KeyType[]; categories: KeyCategory[] } | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.clientId = params['clientId'] || '';
+      this.editKeyId = params['editId'] || '';
+      this.editing = !!this.editKeyId;
+      this.pageTitle = this.editing ? 'Edit Key' : 'Add New Key';
     });
     this.loadAll();
+    if (this.editing && this.editKeyId) {
+      this.loadKey(this.editKeyId);
+    } else {
+      this.generateKeyCode();
+    }
+  }
+
+  private generateKeyCode(): void {
+    const random = Math.floor(100000 + Math.random() * 900000);
+    this.keyId = `KEY-${random}`;
+  }
+
+  copyClientCode(): void {
+    if (!this.keyId) return;
+    navigator.clipboard.writeText(this.keyId).then(() => {
+      this.toast.success('Key code copied to clipboard');
+    });
   }
 
   private toRichOptions(items: any[], labelKey = 'name', valueKey = 'id', descKey = 'code'): RichSelectOption[] {
@@ -89,16 +120,13 @@ export class AddKeyComponent implements OnInit {
     forkJoin({
       types: this.keyVault.listKeyTypes(orgId, false),
       categories: this.keyVault.listKeyCategories(orgId, false),
-      locations: this.keyVault.listStorageLocations(orgId, false),
     }).subscribe({
-      next: ({ types, categories, locations }) => {
+      next: ({ types, categories }) => {
         this.keyTypes = types;
         this.keyCategories = categories;
-        this.storageLocations = locations;
         this.keyTypeOptions = this.toRichOptions(types);
         this.keyCategoryOptions = this.toRichOptions(categories);
-        this.storageLocationOptions = this.toRichOptions(locations);
-        this.catalogCache = { types: [...this.keyTypes], categories: [...this.keyCategories], locations: [...this.storageLocations] };
+        this.catalogCache = { types: [...this.keyTypes], categories: [...this.keyCategories] };
         this.loadingCatalog = false;
       },
       error: () => {
@@ -157,6 +185,34 @@ export class AddKeyComponent implements OnInit {
     this.loadSites();
   }
 
+  private loadKey(keyId: string): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.keyVault.getKey(orgId, keyId).subscribe({
+      next: (res: any) => {
+        const item = res?.data ?? res;
+        if (!item) return;
+        this.keyName = item.name || '';
+        this.keyId = item.reference || item.keyCode || '';
+        this.keyType = item.keyTypeId || '';
+        this.keyCategory = item.keyCategoryId || '';
+        this.keyNotes = item.description || '';
+        this.assignClientId = item.clientId || '';
+        this.assignSite = item.siteId || '';
+        this.keyBrand = item.makeBrand || '';
+        this.keyModel = item.model || '';
+        this.keyColour = item.colour || '';
+        this.keyTag = item.tagLabel || '';
+        const status = item.status || 'IN_STORAGE';
+        this.keyStatus = status === 'INACTIVE' ? 'inactive' : 'active';
+        const client = this.clients.find(c => c.id === this.assignClientId);
+        this.assignClient = client?.name ?? '';
+        if (this.assignClientId) this.loadSites();
+      },
+      error: () => this.toast.error('Failed to load key details.')
+    });
+  }
+
   setStatus(status: 'active' | 'inactive'): void {
     this.keyStatus = status;
   }
@@ -192,7 +248,6 @@ export class AddKeyComponent implements OnInit {
       this.assignClient = this.clients.length > 0 ? this.clients[0].name : '';
       this.assignClientId = this.clients.length > 0 ? this.clients[0].id : '';
       this.assignSite = '';
-      this.storageLocation = '';
       this.keyBrand = '';
       this.keyModel = '';
       this.keyColour = '';
@@ -206,6 +261,10 @@ export class AddKeyComponent implements OnInit {
   }
 
   submitKeyForm(): void {
+    if (!this.validate()) {
+      return;
+    }
+
     const statusMap: Record<string, string> = {
       'active': 'IN_STORAGE',
       'inactive': 'INACTIVE',
@@ -219,7 +278,6 @@ export class AddKeyComponent implements OnInit {
       description: this.keyNotes,
       clientId: this.assignClientId,
       siteId: this.assignSite,
-      storageLocationId: this.storageLocation,
       assignedToUserId: null,
       makeBrand: this.keyBrand,
       model: this.keyModel,
@@ -239,19 +297,22 @@ export class AddKeyComponent implements OnInit {
       return;
     }
 
-    this.keyVault.createKey(orgId, key).subscribe({
+    const request$ = this.editing
+      ? this.keyVault.updateKey(orgId, this.editKeyId, key)
+      : this.keyVault.createKey(orgId, key);
+
+    request$.subscribe({
       next: (res: any) => {
-        const createdKey = res?.data ?? res;
-        const keyId = createdKey?.id;
-        if (keyId && this.selectedFiles.length) {
-          this.uploadAttachments(orgId, keyId);
+        const savedKey = res?.data ?? res;
+        const savedKeyId = savedKey?.id || this.editKeyId;
+        if (savedKeyId && this.selectedFiles.length) {
+          this.uploadAttachments(orgId, savedKeyId);
         } else {
-          this.toast.success('Key saved successfully!');
-          setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+          this.finishKeySubmit();
         }
       },
       error: () => {
-        this.toast.error('Failed to save key. Please try again.');
+        this.toast.error(this.editing ? 'Failed to update key. Please try again.' : 'Failed to save key. Please try again.');
       }
     });
   }
@@ -259,42 +320,80 @@ export class AddKeyComponent implements OnInit {
   private uploadAttachments(orgId: string, keyId: string): void {
     let pending = this.selectedFiles.length;
     if (!pending) {
-      this.toast.success('Key saved successfully!');
-      setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+      this.finishKeySubmit();
       return;
     }
 
     this.selectedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.keyVault.addKeyAttachment(orgId, keyId, {
-          fileName: file.name,
-          contentType: file.type || 'application/octet-stream',
-          sizeBytes: file.size,
-          storagePath: '',
-        }).subscribe({
-          next: () => {
-            pending--;
-            if (pending <= 0) {
-              this.toast.success('Key saved successfully!');
-              setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
-            }
-          },
-          error: () => {
-            pending--;
-            if (pending <= 0) {
-              this.toast.success('Key saved successfully!');
-              setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
-            }
-          }
-        });
-      };
-      reader.readAsDataURL(file);
+      this.keyVault.addKeyAttachment(orgId, keyId, file, file.name, file.type || 'application/octet-stream', file.size).subscribe({
+        next: () => {
+          pending--;
+          this.maybeFinishKeySubmit(pending);
+        },
+        error: () => {
+          pending--;
+          this.maybeFinishKeySubmit(pending);
+        }
+      });
     });
   }
 
-  get showPreview(): boolean {
-    return !!(this.keyName || this.keyId || this.keyType || this.keyCategory || this.assignSite || this.storageLocation);
+  private maybeFinishKeySubmit(pending: number): void {
+    if (pending <= 0) {
+      this.finishKeySubmit();
+    }
+  }
+
+  private finishKeySubmit(): void {
+    this.toast.success(this.editing ? 'Key updated successfully!' : 'Key saved successfully!');
+    const destination = this.clientId ? ['/clients', this.clientId] : ['/keys'];
+    setTimeout(() => this.router.navigate(destination), 800);
+  }
+
+  markTouched(field: string) {
+    this.touched.add(field);
+  }
+
+  isSectionValid(section: keyof AddKeyComponent['sectionErrors']): boolean {
+    return (this.sectionErrors[section] || []).length === 0;
+  }
+
+  get infoInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('information');
+  }
+  get assignInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('assign');
+  }
+  get detailsInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('details');
+  }
+  get statusInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('status');
+  }
+
+  validate(): boolean {
+    const errors: { information: string[]; assign: string[]; details: string[]; status: string[] } = {
+      information: [],
+      assign: [],
+      details: [],
+      status: []
+    };
+
+    this.submitted = true;
+
+    this.touched.add('keyName');
+    this.touched.add('keyType');
+    this.touched.add('keyCategory');
+    this.touched.add('assignClientId');
+    this.touched.add('assignSite');
+
+    if (!this.keyName.trim()) errors.information.push('Key Name is required');
+    if (!this.keyType) errors.information.push('Key Type is required');
+    if (!this.keyCategory) errors.information.push('Key Category is required');
+    if (!this.assignClientId) errors.assign.push('Client is required');
+    if (!this.assignSite) errors.assign.push('Site is required');
+    this.sectionErrors = errors;
+    return !errors.information.length && !errors.assign.length && !errors.details.length && !errors.status.length;
   }
 
   get statusClass(): string {
@@ -303,5 +402,25 @@ export class AddKeyComponent implements OnInit {
       'inactive': 'bg-rose-50 text-rose-600',
     };
     return map[this.keyStatus] || 'bg-slate-100 text-slate-600';
+  }
+
+  get keyStatusDisplay(): string {
+    const map: Record<string, string> = {
+      'active': 'Active',
+      'inactive': 'Inactive',
+    };
+    return map[this.keyStatus] || this.keyStatus;
+  }
+
+  get showPreview(): boolean {
+    return !!(this.keyName || this.keyType || this.keyCategory || this.assignSite);
+  }
+
+  isImage(type = ''): boolean {
+    return type.toLowerCase().startsWith('image/');
+  }
+
+  trackByIndex(index: number): number {
+    return index;
   }
 }

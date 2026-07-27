@@ -51,6 +51,7 @@ export interface Client {
   sites: number;
   users: number;
   created: string;
+  lastUpdated?: string;
   phone?: string;
   website?: string;
   address?: string;
@@ -223,6 +224,7 @@ export class ClientService {
       sites: item.sites ?? 0,
       users: item.users ?? 0,
       created: this.formatDate(item.createdAt ?? item.created),
+      lastUpdated: this.formatDate(item.updatedAt ?? item.lastUpdated ?? item.modifiedAt),
       phone: item.phone ?? item.phoneNumber,
       website: item.website,
       address: item.address,

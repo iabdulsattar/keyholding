@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 
 @Component({
   selector: 'app-add-site',
@@ -20,7 +21,6 @@ import { ToastService } from '../../core/services/toast.service';
 })
 export class AddSiteComponent implements OnInit {
   siteName = '';
-  siteCode = '';
   siteType = '';
   address1 = '';
   address2 = '';
@@ -38,6 +38,8 @@ export class AddSiteComponent implements OnInit {
   securityLevel = '';
   alarmSystem = '';
   fileName = '';
+  selectedFiles: File[] = [];
+  attachmentPreviews: { file: File; url: string }[] = [];
   apptRequired = true;
   minNotice = '4 Hours';
   approvalContact = 'James Walker';
@@ -58,11 +60,74 @@ export class AddSiteComponent implements OnInit {
   restrictedCallBeforeEntry = true;
   restrictedSecurityEscort = true;
 
-  private clientId = '';
+  submitted = false;
+
+  activeSection = 'information';
+  touched = new Set<string>();
+  sectionErrors: { information: string[]; contact: string[]; details: string[] } = {
+    information: [],
+    contact: [],
+    details: []
+  };
   editMode = false;
   editingSiteId: string | null = null;
+  clientId = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
+
+  markTouched(field: string) {
+    this.touched.add(field);
+  }
+
+  isSectionValid(section: keyof AddSiteComponent['sectionErrors']): boolean {
+    return (this.sectionErrors[section] || []).length === 0;
+  }
+
+  get informationInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('information');
+  }
+  get contactInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('contact');
+  }
+  get detailsInvalid(): boolean {
+    return this.submitted && !this.isSectionValid('details');
+  }
+
+  validate(): boolean {
+    const errors: { information: string[]; contact: string[]; details: string[] } = {
+      information: [],
+      contact: [],
+      details: []
+    };
+
+    this.submitted = true;
+
+    this.touched.add('siteName');
+    this.touched.add('siteType');
+    this.touched.add('address1');
+    this.touched.add('city');
+    this.touched.add('postcode');
+    this.touched.add('country');
+    this.touched.add('contactName');
+    this.touched.add('contactPhone');
+    this.touched.add('contactEmail');
+    this.touched.add('securityLevel');
+    this.touched.add('alarmSystem');
+
+    if (!this.siteName.trim()) errors.information.push('Site Name is required');
+    if (!this.siteType) errors.information.push('Site Type is required');
+    if (!this.address1.trim()) errors.information.push('Address Line 1 is required');
+    if (!this.city.trim()) errors.information.push('City is required');
+    if (!this.postcode.trim()) errors.information.push('Postcode is required');
+    if (!this.country) errors.information.push('Country is required');
+    if (!this.contactName.trim()) errors.contact.push('Primary Contact Name is required');
+    if (!this.contactPhone.trim()) errors.contact.push('Phone is required');
+    if (!this.contactEmail.trim()) errors.contact.push('Email is required');
+    if (!this.securityLevel) errors.details.push('Security Level is required');
+    if (!this.alarmSystem) errors.details.push('Alarm System is required');
+    this.sectionErrors = errors;
+    return !errors.information.length && !errors.contact.length && !errors.details.length;
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -80,9 +145,27 @@ export class AddSiteComponent implements OnInit {
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.fileName = input.files[0].name;
-    }
+    if (!input.files) return;
+    Array.from(input.files).forEach(file => {
+      this.selectedFiles.push(file);
+      const reader = new FileReader();
+      reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string });
+      reader.readAsDataURL(file);
+    });
+    this.fileName = this.selectedFiles.map(f => f.name).join(', ') || '';
+    input.value = '';
+  }
+
+  removeAttachment(index: number): void {
+    this.selectedFiles.splice(index, 1);
+    const url = this.attachmentPreviews[index]?.url;
+    this.attachmentPreviews.splice(index, 1);
+    if (url && url.startsWith('blob:')) URL.revokeObjectURL(url);
+    this.fileName = this.selectedFiles.map(f => f.name).join(', ') || '';
+  }
+
+  isImage(type = ''): boolean {
+    return type.toLowerCase().startsWith('image/');
   }
 
   private loadSite(siteId: string): void {
@@ -92,7 +175,6 @@ export class AddSiteComponent implements OnInit {
       const item = res?.data ?? res;
       if (!item) return;
       this.siteName = item.name || '';
-      this.siteCode = item.siteCode || item.code || '';
       this.siteType = item.siteType || item.type || '';
       this.address1 = item.addressLine1 || '';
       this.address2 = item.addressLine2 || '';
@@ -144,7 +226,6 @@ export class AddSiteComponent implements OnInit {
   resetSiteForm(): void {
     if (confirm('Are you sure you want to discard your current inputs?')) {
       this.siteName = '';
-      this.siteCode = '';
       this.siteType = '';
       this.address1 = '';
       this.address2 = '';
@@ -162,6 +243,9 @@ export class AddSiteComponent implements OnInit {
       this.securityLevel = '';
       this.alarmSystem = '';
       this.fileName = '';
+      this.selectedFiles = [];
+      this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
+      this.attachmentPreviews = [];
       this.apptRequired = true;
       this.minNotice = '4 Hours';
       this.approvalContact = 'James Walker';
@@ -180,6 +264,8 @@ export class AddSiteComponent implements OnInit {
   }
 
   submitSiteForm(): void {
+    if (!this.validate()) return;
+
     const accessScheduleMap: Record<string, 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'RESTRICTED_HOURS'> = {
       'Business Hours': 'BUSINESS_HOURS',
       'By Appointment Only': 'BY_APPOINTMENT',
@@ -244,11 +330,19 @@ export class AddSiteComponent implements OnInit {
       return;
     }
 
+    const onSaved = (siteId: string) => {
+      if (this.selectedFiles.length && siteId) {
+        this.uploadSiteAttachments(orgId, siteId);
+      } else {
+        this.finishSiteSubmit();
+      }
+    };
+
     if (this.editMode && this.editingSiteId) {
       this.clientService.updateSite(orgId, this.editingSiteId, site).subscribe({
-        next: () => {
-          this.toast.success('Site updated successfully!');
-          setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+        next: (res: any) => {
+          const createdId = res?.id || this.editingSiteId || '';
+          onSaved(createdId);
         },
         error: () => {
           this.toast.error('Failed to update site. Please try again.');
@@ -256,9 +350,9 @@ export class AddSiteComponent implements OnInit {
       });
     } else {
       this.clientService.createSite(orgId, this.clientId, site).subscribe({
-        next: () => {
-          this.toast.success('Site saved successfully!');
-          setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+        next: (res: any) => {
+          const createdId = res?.id || res?.data?.id || '';
+          onSaved(createdId);
         },
         error: () => {
           this.toast.error('Failed to save site. Please try again.');
@@ -267,8 +361,46 @@ export class AddSiteComponent implements OnInit {
     }
   }
 
+  private uploadSiteAttachments(orgId: string, siteId: string): void {
+    let pending = this.selectedFiles.length;
+    if (!pending) {
+      this.finishSiteSubmit();
+      return;
+    }
+
+    this.selectedFiles.forEach(file => {
+      const keyVault = (this as any).clientService?.keyVault;
+      if (!keyVault) {
+        pending--;
+        this.maybeFinishSiteSubmit(pending);
+        return;
+      }
+      keyVault.addSiteAttachment(orgId, siteId, file, file.name, file.type || 'application/octet-stream', file.size).subscribe({
+        next: () => {
+          pending--;
+          this.maybeFinishSiteSubmit(pending);
+        },
+        error: () => {
+          pending--;
+          this.maybeFinishSiteSubmit(pending);
+        }
+      });
+    });
+  }
+
+  private maybeFinishSiteSubmit(pending: number): void {
+    if (pending <= 0) {
+      this.finishSiteSubmit();
+    }
+  }
+
+  private finishSiteSubmit(): void {
+    this.toast.success(this.editMode ? 'Site updated successfully!' : 'Site saved successfully!');
+    setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+  }
+
   get showPreview(): boolean {
-    return !!(this.siteName || this.siteCode || this.siteType || this.city || this.contactName || this.accessSchedule || this.securityLevel);
+    return !!(this.siteName || this.siteType || this.city || this.contactName || this.accessSchedule || this.securityLevel);
   }
 
   get securityClass(): string {
@@ -279,5 +411,9 @@ export class AddSiteComponent implements OnInit {
       'Very High': 'bg-rose-50 text-rose-600 border border-rose-200/50'
     };
     return map[this.securityLevel] || 'bg-slate-100 text-slate-500';
+  }
+
+  trackByIndex(index: number): number {
+    return index;
   }
 }

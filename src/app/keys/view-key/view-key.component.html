@@ -4,35 +4,48 @@
       <header class="bg-white px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-4 border-b border-slate-200 shrink-0">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <div class="flex items-center gap-1.5 text-xs font-medium text-blue-600 mb-2">
-              <a routerLink="/clients" class="hover:underline">Client Management</a>
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              <a routerLink="/clients" class="hover:underline">Clients</a>
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              <a routerLink="/clients" class="hover:underline">Metro Security Services</a>
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              <a routerLink="/clients" class="hover:underline">Keys</a>
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              <span class="text-slate-500 font-normal">KEY-000156</span>
-            </div>
+             <div class="flex items-center gap-1.5 text-xs font-medium text-blue-600 mb-2">
+               <a routerLink="/clients" class="hover:underline">Client Management</a>
+               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+               <a routerLink="/clients" class="hover:underline">Clients</a>
+               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+               <a routerLink="/clients" class="hover:underline">Metro Security Services</a>
+               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+               <a routerLink="/clients" class="hover:underline">Keys</a>
+               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+               <span class="text-slate-500 font-normal">{{ keyCode || keyId }}</span>
+             </div>
             <a routerLink="/clients" class="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1.5 mb-1">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
               Back to Keys
             </a>
             <h2 class="text-2xl font-bold text-slate-900">View Key Details</h2>
           </div>
-<div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <button class="w-full sm:w-auto bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-1.5">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-              Deactivate Key
-            </button>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            @if (showDeactivateModal) {
+              <app-deactivate-key-modal [key]="key" [orgId]="orgId" (close)="showDeactivateModal = false" (confirmed)="onKeyDeactivated()" />
+            }
+            @if (showReactivateModal) {
+              <app-reactivate-key-modal [key]="key" [orgId]="orgId" (close)="showReactivateModal = false" (confirmed)="onKeyReactivated()" />
+            }
+            @if (isActive) {
+              <button class="w-full sm:w-auto bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-1.5" (click)="onDeactivateKey()">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                Deactivate Key
+              </button>
+            } @else {
+              <button class="w-full sm:w-auto bg-white border border-emerald-200 text-emerald-600 hover:bg-emerald-50 font-semibold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-1.5" (click)="onReactivateKey()">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                Reactivate Key
+              </button>
+            }
             <div class="relative inline-block text-left">
               <button (click)="toggleDropdown()" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-2">
                 More <i class="fa-solid fa-ellipsis"></i>
               </button>
               <div id="moreDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
-                <a href="#" class="block px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-pen mr-2"></i> Edit Details</a>
-                <a href="#" class="block px-4 py-2 hover:bg-slate-50 text-rose-600"><i class="fa-solid fa-trash mr-2"></i> Delete Key</a>
+                <a href="#" (click)="onEditKey(); toggleDropdown()" class="block px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-pen mr-2"></i> Edit Details</a>
+                <a href="#" (click)="onDeleteKey(); toggleDropdown()" class="block px-4 py-2 hover:bg-slate-50 text-rose-600"><i class="fa-solid fa-trash mr-2"></i> Delete Key</a>
               </div>
             </div>
           </div>
@@ -45,42 +58,45 @@
               <svg class="w-8 h-8 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
               <span class="absolute text-[8px] font-bold bottom-1 text-slate-400 uppercase tracking-tighter">MASTER</span>
             </div>
-            <div>
-              <div class="flex items-center gap-2.5">
-                <h3 class="text-xl font-bold text-slate-900">Master Key</h3>
-                <span class="bg-emerald-50 text-emerald-600 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-200/50 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> In Storage</span>
-              </div>
-              <div class="flex items-center gap-2 mt-1">
-                <span class="text-xs text-slate-400">Key ID / Reference: <strong class="font-mono text-slate-700 font-semibold">KEY-000156</strong></span>
-                <button class="text-slate-400 hover:text-blue-600 transition" (click)="copyToClipboard('KEY-000156')">
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                </button>
-                <span class="bg-blue-50 text-blue-600 font-medium text-[10px] px-2 py-0.5 rounded ml-2">Master Key</span>
-              </div>
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h3 class="text-xl font-bold text-slate-900">{{ key.name || 'Key Details' }}</h3>
+              <span [class]="keyStatusClass" class="font-bold text-[10px] px-2.5 py-0.5 rounded-full border flex items-center gap-1"><span [class]="key.status === 'inactive' ? 'w-1.5 h-1.5 rounded-full bg-slate-500' : 'w-0.5 h-0.5 rounded-full bg-emerald-500'"></span> {{ statusLabel }}</span>
             </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="text-xs text-slate-400">Key ID / Reference: <strong class="font-mono text-slate-700 font-semibold">{{ keyCode || keyId }}</strong></span>
+              <button class="text-slate-400 hover:text-blue-600 transition" (click)="copyToClipboard(keyCode || keyId)">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              @if (keyCategoryName) {
+                <span class="bg-blue-50 text-blue-600 font-medium text-[10px] px-2 py-0.5 rounded ml-2">{{ keyCategoryName }}</span>
+              }
+            </div>
+          </div>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-4 sm:gap-x-8 gap-y-3 pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 w-full md:w-auto">
             <div class="space-y-0.5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i> Site</span>
-              <p class="text-xs font-bold text-slate-700">Head Office</p>
+              <span class="text-[14px] font-normal text-slate-400 tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> Site</span>
+              <p class="text-xs font-bold text-slate-700">{{ siteName || '--' }}</p>
             </div>
             <div class="space-y-0.5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-box-archive mr-1"></i> Storage Location</span>
-              <p class="text-xs font-bold text-slate-700">Head Office Safe</p>
-              <p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p>
+              <span class="text-[14px] font-normal text-slate-400 tracking-wider"><i class="fa-solid fa-box-archive mr-1"></i> Storage Location</span>
+              <p class="text-xs font-bold text-slate-700">{{ key.storageLocationName || key.storageLocation || '--' }}</p>
+              @if (key.storageLocationDetails) {
+                <p class="text-[10px] text-slate-400">{{ key.storageLocationDetails }}</p>
+              }
             </div>
             <div class="space-y-0.5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-user-tie mr-1"></i> Linked Client</span>
-              <p class="text-xs font-bold text-slate-700">Metro Security Services</p>
+              <span class="text-[14px] font-normal text-slate-400 tracking-wider"><i class="fa-solid fa-user-tie mr-1"></i> Linked Client</span>
+              <p class="text-xs font-bold text-slate-700">{{ clientName || '--' }}</p>
             </div>
             <div class="space-y-0.5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-calendar-days mr-1"></i> Created On</span>
-              <p class="text-xs font-bold text-slate-700">15 May 2024</p>
-              <p class="text-[10px] text-slate-400">10:30 AM</p>
+              <span class="text-[14px] font-normal text-slate-400 tracking-wider"><i class="fa-solid fa-calendar-days mr-1"></i> Created On</span>
+              <p class="text-xs font-bold text-slate-700">{{ key.createdAt || key.created || '--' }}</p>
             </div>
             <div class="space-y-0.5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-user mr-1"></i> Created By</span>
-              <p class="text-xs font-bold text-slate-700">Faiza Ahmed</p>
+              <span class="text-[14px] font-normal text-slate-400 tracking-wider"><i class="fa-solid fa-user mr-1"></i> Created By</span>
+              <p class="text-xs font-bold text-slate-700">{{ key.createdBy || '--' }}</p>
             </div>
           </div>
         </div>
@@ -99,30 +115,30 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm md:col-span-2">
                   <h4 class="text-xs font-bold text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-3 mb-4">Key Information</h4>
                   <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-xs">
-                    <div><span class="text-slate-400 block mb-0.5">Key Name</span><span class="font-bold text-slate-800 text-sm">Master Key</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Key Category</span><span class="font-bold text-slate-800">Building / Premises</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Key Type</span><span class="font-bold text-slate-800">Master Key</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Number of Keys</span><span class="font-bold text-slate-800">1</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Key Make / Brand</span><span class="font-bold text-slate-800">Yale</span></div>
-                    <div class="row-span-2"><span class="text-slate-400 block mb-0.5">Description / Notes</span><p class="font-medium text-slate-700 leading-relaxed">Main master key for Head Office building access.</p></div>
-                    <div><span class="text-slate-400 block mb-0.5">Key Model</span><span class="font-bold text-slate-800">5000</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Linked Site</span><span class="font-bold text-slate-800">Head Office</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Key Colour</span><span class="font-bold text-slate-800">Silver</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Linked Client</span><span class="font-bold text-slate-800">Metro Security Services</span></div>
-                    <div><span class="text-slate-400 block mb-0.5">Key Tag / Label</span><span class="font-bold text-slate-800 font-mono">MK-01</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Name</span><span class="font-bold text-slate-800 text-sm">{{ key.name || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Category</span><span class="font-bold text-slate-800">{{ keyCategoryName || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Type</span><span class="font-bold text-slate-800">{{ keyTypeName || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key ID</span><span class="font-bold text-slate-800 font-mono">{{ keyCode || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Make / Brand</span><span class="font-bold text-slate-800">{{ key.makeBrand || key.brand || '--' }}</span></div>
+                    <div class="row-span-2"><span class="text-slate-400 block mb-0.5">Description / Notes</span><p class="font-medium text-slate-700 leading-relaxed">{{ key.description || key.notes || '--' }}</p></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Model</span><span class="font-bold text-slate-800">{{ key.model || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Linked Site</span><span class="font-bold text-slate-800">{{ siteName || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Colour</span><span class="font-bold text-slate-800">{{ key.colour || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Linked Client</span><span class="font-bold text-slate-800">{{ clientName || '--' }}</span></div>
+                    <div><span class="text-slate-400 block mb-0.5">Key Tag / Label</span><span class="font-bold text-slate-800 font-mono">{{ key.tagLabel || '--' }}</span></div>
                   </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
                   <div>
                     <h4 class="text-xs font-bold text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-3 mb-4">Status & Location</h4>
                     <div class="space-y-4 text-xs">
-                      <div><span class="text-slate-400 block mb-1">Current Status</span><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="font-bold text-slate-800">In Storage</span></div><p class="text-slate-400 text-[11px] mt-0.5 pl-4">Key is securely stored</p></div>
-                      <div><span class="text-slate-400 block mb-1">Storage Location</span><div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 text-slate-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-slate-400 text-[11px]">Cabinet A - Hook 12</p></div></div></div>
+                      <div><span class="text-slate-400 block mb-1">Current Status</span><div class="flex items-center gap-2"><span [class]="key.status === 'inactive' ? 'w-2 h-2 rounded-full bg-slate-500' : 'w-2 h-2 rounded-full bg-emerald-500'"></span><span class="font-bold text-slate-800">{{ statusLabel }}</span></div><p class="text-slate-400 text-[11px] mt-0.5 pl-4">{{ key.status === 'inactive' ? 'Key is inactive and cannot be assigned.' : 'Key is active and available for assignment.' }}</p></div>
+                      <div><span class="text-slate-400 block mb-1">Storage Location</span><div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 text-slate-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><div><p class="font-bold text-slate-800">{{ key.storageLocationName || key.storageLocation || '--' }}</p>@if (key.storageLocationDetails) {<p class="text-slate-400 text-[11px]">{{ key.storageLocationDetails }}</p>}</div></div></div>
                     </div>
                   </div>
                   <div class="space-y-3 pt-4 border-t border-slate-100 text-xs">
-                    <div class="flex justify-between items-center"><span class="text-slate-400">Last Movement</span><div class="text-right"><p class="font-bold text-slate-700 flex items-center gap-1 justify-end"><svg class="w-3 h-3 text-[10px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 15 May 2024, 10:30 AM</p><p class="text-[10px] text-slate-400">Received and Stored</p></div></div>
-                    <div class="flex justify-between items-center"><span class="text-slate-400">Next Review Date</span><span class="font-bold text-slate-700 flex items-center gap-1"><svg class="w-3 h-3 text-[10px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 15 May 2025</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">Created On</span><span class="font-bold text-slate-700">{{ key.createdAt || key.created || '--' }}</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">Created By</span><span class="font-bold text-slate-700">{{ key.createdBy || '--' }}</span></div>
                   </div>
                 </div>
               </div>
@@ -135,10 +151,10 @@
                   <table class="w-full text-left text-xs border-collapse">
                     <thead><tr class="bg-slate-50 text-slate-400 font-bold border-b border-slate-200"><th class="p-3 pl-4 rounded-l-xl">Date & Time</th><th class="p-3">Action</th><th class="p-3">From</th><th class="p-3">To</th><th class="p-3">Handled By</th><th class="p-3 pr-4 rounded-r-xl">Reference</th></tr></thead>
                     <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
-                      <tr class="hover:bg-slate-50/50 transition"><td class="p-3 pl-4 text-slate-400 font-normal"><div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><p class="font-semibold text-slate-700">15 May 2024</p><p class="text-[10px]">10:30 AM</p></div></div></td><td class="p-3"><span class="inline-flex items-center gap-1.5"><span class="w-5 h-5 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-[10px]"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span> Received & Stored</span></td><td class="p-3 text-slate-400">—</td><td class="p-3"><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p></div></td><td class="p-3 font-semibold">Faiza Ahmed</td><td class="p-3 text-slate-400 font-mono">—</td></tr>
+                      <tr class="hover:bg-slate-50/50 transition"><td class="p-3 pl-4 text-slate-400 font-normal"><div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><p class="font-semibold text-slate-700">15 May 2024</p><p class="text-[10px]">10:30 AM</p></div></div></td><td class="p-3"><span class="inline-flex items-center gap-1.5"><span class="w-5 h-5 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-[10px]"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span> Received & Stored</span></td><td class="p-3 text-slate-400">ï¿½</td><td class="p-3"><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p></div></td><td class="p-3 font-semibold">Faiza Ahmed</td><td class="p-3 text-slate-400 font-mono">ï¿½</td></tr>
                       <tr class="hover:bg-slate-50/50 transition"><td class="p-3 pl-4 text-slate-400 font-normal"><div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><p class="font-semibold text-slate-700">14 May 2024</p><p class="text-[10px]">04:15 PM</p></div></div></td><td class="p-3"><span class="inline-flex items-center gap-1.5"><span class="w-5 h-5 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center text-[10px]"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span> Returned</span></td><td class="p-3"><div><p class="font-bold text-slate-800">James Walker</p><p class="text-[10px] text-slate-400">(Officer)</p></div></td><td class="p-3"><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p></div></td><td class="p-3 font-semibold">James Walker</td><td class="p-3 font-mono text-blue-600 font-semibold hover:underline cursor-pointer">JOB-000345</td></tr>
                       <tr class="hover:bg-slate-50/50 transition"><td class="p-3 pl-4 text-slate-400 font-normal"><div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><p class="font-semibold text-slate-700">14 May 2024</p><p class="text-[10px]">10:00 AM</p></div></div></td><td class="p-3"><span class="inline-flex items-center gap-1.5"><span class="w-5 h-5 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-[10px]"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span> Issued</span></td><td class="p-3"><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p></div></td><td class="p-3"><div><p class="font-bold text-slate-800">James Walker</p><p class="text-[10px] text-slate-400">(Officer)</p></div></td><td class="p-3 font-semibold">Faiza Ahmed</td><td class="p-3 font-mono text-blue-600 font-semibold hover:underline cursor-pointer">JOB-000345</td></tr>
-                      <tr class="hover:bg-slate-50/50 transition"><td class="p-3 pl-4 text-slate-400 font-normal"><div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><p class="font-semibold text-slate-700">15 Apr 2024</p><p class="text-[10px]">09:20 AM</p></div></div></td><td class="p-3"><span class="inline-flex items-center gap-1.5"><span class="w-5 h-5 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-[10px]"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span> Received & Stored</span></td><td class="p-3 text-slate-400">—</td><td class="p-3"><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p></div></td><td class="p-3 font-semibold">Faiza Ahmed</td><td class="p-3 text-slate-400 font-mono">—</td></tr>
+                      <tr class="hover:bg-slate-50/50 transition"><td class="p-3 pl-4 text-slate-400 font-normal"><div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><p class="font-semibold text-slate-700">15 Apr 2024</p><p class="text-[10px]">09:20 AM</p></div></div></td><td class="p-3"><span class="inline-flex items-center gap-1.5"><span class="w-5 h-5 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-[10px]"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span> Received & Stored</span></td><td class="p-3 text-slate-400">ï¿½</td><td class="p-3"><div><p class="font-bold text-slate-800">Head Office Safe</p><p class="text-[10px] text-slate-400">Cabinet A - Hook 12</p></div></td><td class="p-3 font-semibold">Faiza Ahmed</td><td class="p-3 text-slate-400 font-mono">ï¿½</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -156,8 +172,8 @@
             <div *ngIf="isJobsActive" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
               <h4 class="text-sm font-bold text-slate-900 mb-2">Linked Operations Tasks</h4>
               <div class="divide-y divide-slate-100 text-xs">
-                <div class="py-2.5 flex justify-between"><span>JOB-000345 — Patrol Guard Dispatch</span><span class="text-emerald-600 font-bold font-mono">COMPLETED</span></div>
-                <div class="py-2.5 flex justify-between"><span>JOB-000342 — Facilities Entry Check</span><span class="text-emerald-600 font-bold font-mono">COMPLETED</span></div>
+                <div class="py-2.5 flex justify-between"><span>JOB-000345 ï¿½ Patrol Guard Dispatch</span><span class="text-emerald-600 font-bold font-mono">COMPLETED</span></div>
+                <div class="py-2.5 flex justify-between"><span>JOB-000342 ï¿½ Facilities Entry Check</span><span class="text-emerald-600 font-bold font-mono">COMPLETED</span></div>
               </div>
             </div>
             <div *ngIf="isAttachmentsActive" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
@@ -177,6 +193,7 @@
                     <p class="font-bold truncate">{{ a.fileName }}</p>
                     <p class="text-slate-400">{{ formatSize(a.sizeBytes) }}</p>
                   </div>
+                  <button (click)="downloadAttachment(a)" class="text-[11px] text-blue-600 hover:text-blue-700 font-semibold px-2 py-1 rounded-md hover:bg-blue-50 transition">Download</button>
                   <button (click)="deleteAttachment(a.id || '')" class="text-[11px] text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-md hover:bg-rose-50 transition">Delete</button>
                 </div>
                 <div class="border border-dashed border-slate-200 rounded-xl p-3 flex items-center justify-center text-xs text-slate-400" *ngIf="!attachments.length">No attachments found</div>
@@ -191,7 +208,7 @@
           <div class="space-y-6">
             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
               <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Image & Documents</h4>
+                <h4 class="text-[14px] font-normal text-slate-400 tracking-wider">Key Image & Documents</h4>
               </div>
               <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-center h-32 relative group overflow-hidden shadow-inner">
                 <img *ngIf="attachments.length && isImage(attachments[0].contentType)" [src]="attachments[0].storagePath" class="w-full h-full object-cover">
@@ -203,20 +220,16 @@
                 <button (click)="switchTab('attachments')" class="text-blue-600 hover:underline font-bold">View All</button>
               </div>
             </div>
-            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
-              <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">Key Status Timeline</h4>
-              <div class="relative pl-5 space-y-5 border-l-2 border-slate-100 ml-1.5 text-xs">
-                <div class="relative"><span class="absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white ring-4 ring-emerald-50"></span><div class="flex justify-between items-start"><div><h5 class="font-bold text-slate-800">In Storage</h5><p class="text-slate-400 text-[11px] mt-0.5">Key is securely stored</p></div><span class="text-[10px] text-slate-400 font-medium text-right shrink-0">15 May 2024,<br>10:30 AM</span></div></div>
-                <div class="relative"><span class="absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-amber-500 border-2 border-white ring-4 ring-amber-50"></span><div class="flex justify-between items-start"><div><h5 class="font-bold text-slate-800">Issued</h5><p class="text-slate-400 text-[11px] mt-0.5">Issued to <span class="text-slate-600 font-semibold">James Walker</span> (Officer)</p></div><span class="text-[10px] text-slate-400 font-medium text-right shrink-0">14 May 2024,<br>10:00 AM</span></div></div>
-                <div class="relative"><span class="absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-white ring-4 ring-blue-50"></span><div class="flex justify-between items-start"><div><h5 class="font-bold text-slate-800">In Use</h5><p class="text-slate-400 text-[11px] mt-0.5">Used for job: <span class="font-mono text-blue-600 font-semibold hover:underline cursor-pointer">JOB-000345</span></p></div><span class="text-[10px] text-slate-400 font-medium text-right shrink-0">14 May 2024,<br>10:05 AM</span></div></div>
-                <div class="relative"><span class="absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-amber-500 border-2 border-white ring-4 ring-amber-50"></span><div class="flex justify-between items-start"><div><h5 class="font-bold text-slate-800">Returned</h5><p class="text-slate-400 text-[11px] mt-0.5">Returned by <span class="text-slate-600 font-semibold">James Walker</span></p></div><span class="text-[10px] text-slate-400 font-medium text-right shrink-0">14 May 2024,<br>04:15 PM</span></div></div>
-                <div class="relative"><span class="absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white ring-4 ring-emerald-50"></span><div class="flex justify-between items-start"><div><h5 class="font-bold text-slate-800">Received & Stored</h5><p class="text-slate-400 text-[11px] mt-0.5">Stored in safe</p></div><span class="text-[10px] text-slate-400 font-medium text-right shrink-0">15 May 2024,<br>10:30 AM</span></div></div>
-              </div>
-            </div>
+             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+               <h4 class="text-[14px] font-normal text-slate-400 tracking-wider border-b border-slate-100 pb-2">Key Status Timeline</h4>
+               <div class="relative pl-5 space-y-5 border-l-2 border-slate-100 ml-1.5 text-xs">
+                 <div class="relative"><span [class]="key.status === 'inactive' ? 'absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-slate-500 border-2 border-white ring-4 ring-slate-50' : 'absolute -left-[25px] top-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white ring-4 ring-emerald-50'"></span><div class="flex justify-between items-start"><div><h5 class="font-bold text-slate-800">{{ statusLabel }}</h5><p class="text-slate-400 text-[11px] mt-0.5">{{ key.status === 'inactive' ? 'Key is inactive and cannot be assigned.' : 'Key is active and available for assignment.' }}</p></div><span class="text-[10px] text-slate-400 font-medium text-right shrink-0">{{ key.updatedAt || key.createdAt || key.created || '--' }}</span></div></div>
+               </div>
+             </div>
             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
-              <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2 mb-1">Quick Actions</h4>
+              <h4 class="text-[14px] font-normal text-slate-400 tracking-wider border-b border-slate-100 pb-2 mb-1">Quick Actions</h4>
               <div class="space-y-1 text-xs font-semibold text-slate-700">
-                <button class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 flex items-center gap-2.5 text-slate-700 transition"><i class="fa-solid fa-pen text-slate-400 text-xs w-4"></i> Edit Key Details</button>
+                 <button (click)="onEditKey()" class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 flex items-center gap-2.5 text-slate-700 transition"><i class="fa-solid fa-pen text-slate-400 text-xs w-4"></i> Edit Key Details</button>
                 <button class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 flex items-center gap-2.5 text-slate-700 transition"><i class="fa-solid fa-right-left text-slate-400 text-xs w-4"></i> Transfer Key</button>
                 <button class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 flex items-center gap-2.5 text-slate-700 transition"><i class="fa-solid fa-download text-slate-400 text-xs w-4"></i> Download Key Report</button>
                 <button class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 flex items-center gap-2.5 text-slate-700 transition"><i class="fa-solid fa-print text-slate-400 text-xs w-4"></i> Print Key Label</button>

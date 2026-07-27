@@ -212,7 +212,7 @@
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-normal font-outfit z-1 bg-[#fafbfc];
   }
   input, select, textarea, button {
     font-family: inherit;
