@@ -142,7 +142,13 @@ export interface KeyAttachment {
   contentType?: string;
   sizeBytes?: number;
   storagePath?: string;
+  publicUrl?: string;
+  uploadedByUserId?: string;
+  uploadedByUserName?: string;
   createdAt?: string;
+  isImage?: boolean;
+  isPdf?: boolean;
+  kind?: string;
   [key: string]: any;
 }
 

@@ -197,7 +197,7 @@ export class ViewKeyComponent implements OnInit {
   }
 
   downloadAttachment(attachment: any): void {
-    const url = attachment.storagePath;
+    const url = attachment.publicUrl || attachment.storagePath;
     if (!url) {
       this.toast.error('Attachment URL is not available.');
       return;

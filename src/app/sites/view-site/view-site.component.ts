@@ -74,9 +74,9 @@ export class ViewSiteComponent implements OnInit {
   }
 
   openAttachment(attachment: KeyAttachment): void {
-    const path = attachment.storagePath;
+    const path = attachment.publicUrl || attachment.storagePath;
     if (!path) {
-      this.toast.error('Attachment path is not available.');
+      this.toast.error('Attachment URL is not available.');
       return;
     }
     window.open(path, '_blank');

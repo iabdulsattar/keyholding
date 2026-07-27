@@ -55,12 +55,7 @@
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Category <span class="text-red-500">*</span></label>
-                <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
-                @if (infoInvalid && touched.has('keyCategory')) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
-              </div>
-              <div class="md:col-span-2 space-y-1.5">
+              <div class="md:col-span-3 space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Description / Notes</label>
                 <textarea [(ngModel)]="keyNotes" name="keyNotes" rows="2" placeholder="Optional notes about this key" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
               </div>
