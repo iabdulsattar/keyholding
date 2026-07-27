@@ -73,8 +73,8 @@
 
       <!-- Profile summary card -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-card p-6">
-        <div class="flex flex-col xl:flex-row xl:items-stretch divide-y xl:divide-y-0 xl:divide-x divide-slate-100 justify-between">
-          <div class="flex items-start gap-4 min-w-0 pb-5 xl:pb-0 xl:pr-8">
+        <div class="flex flex-col xl:flex-row xl:items-stretch divide-y xl:divide-y-0 divide-slate-100 justify-between">
+          <div class="flex items-start gap-4 min-w-0 pb-5 xl:pb-0 xl:pr-8 xl:border-r">
             <div class="h-16 w-16 shrink-0 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7M9 9v.01M9 12v.01M9 15v.01"/></svg>
             </div>
@@ -103,25 +103,25 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-3 divide-x divide-slate-100 items-center py-5 xl:py-0 xl:px-8">
-            <div class="px-4 first:pl-0 last:pr-0 text-center">
+          <div class="grid grid-cols-3 divide-x divide-slate-100 py-5 xl:py-0 xl:px-8">
+            <div class="px-4 py-7 first:pl-0 last:pr-0 text-center">
               <div class="text-sm text-slate-500">Sites</div>
               <span class="block text-2xl font-bold text-slate-900 mt-1">{{ sites.length }}</span>
               <div class="text-xs text-slate-400 mt-0.5">Total Sites</div>
             </div>
-            <div class="px-4 first:pl-0 last:pr-0 text-center">
+            <div class="px-4 py-7  first:pl-0 last:pr-0 text-center">
               <div class="text-sm text-slate-500">Keys</div>
               <span class="block text-2xl font-bold text-slate-900 mt-1">{{ keys.length }}</span>
               <div class="text-xs text-slate-400 mt-0.5">Total Keys</div>
             </div>
-            <div class="px-4 first:pl-0 last:pr-0 text-center">
+            <div class="px-4 py-7  first:pl-0 last:pr-0 text-center">
               <div class="text-sm text-slate-500">Jobs</div>
               <span class="block text-2xl font-bold text-slate-900 mt-1">{{ totalJobs }}</span>
               <div class="text-xs text-slate-400 mt-0.5">Total Jobs</div>
             </div>
           </div>
 
-          <div class="flex flex-col justify-center py-5 xl:py-0 xl:pl-8 space-y-3 shrink-0">
+          <div class="flex flex-col justify-center py-5 xl:py-0 xl:pl-8 space-y-3 shrink-0 xl:border-l border-slate-100">
             <div class="flex items-start gap-2">
               <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               <div>
