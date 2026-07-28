@@ -145,14 +145,14 @@
                 <label class="text-xs font-semibold text-slate-600">Access Instructions</label>
                 <textarea [(ngModel)]="accessInstructions" name="accessInstructions" class="w-full bg-white border border-slate-200 text-sm px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none h-20" placeholder="e.g. Instructions...">Use main entrance. Reception on the ground floor.</textarea>
               </div>
-              <div class="space-y-2 md:col-span-1">
+              <div class="space-y-2">
                 <label class="text-xs font-semibold text-slate-600">Access Schedule <span class="text-red-500">*</span></label>
-                <div class="space-y-2 text-sm text-slate-700 mt-1">
-                  <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="24/7 Access" class="w-4 h-4 text-blue-600"> 24/7 Access</label>
-                  <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="Business Hours" class="w-4 h-4 text-blue-600"> Business Hours <span class="text-xs text-slate-400">(Mon-Fri, 09:00-17:00)</span></label>
-                  <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="Restricted Hours" class="w-4 h-4 text-blue-600"> Restricted Hours</label>
-                  <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" [(ngModel)]="accessSchedule" name="accessSchedule" value="By Appointment Only" class="w-4 h-4 text-blue-600" checked> By Appointment Only</label>
-                </div>
+                <select [(ngModel)]="accessSchedule" name="accessSchedule" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                  <option value="24/7 Access">24/7 Access</option>
+                  <option value="Business Hours">Business Hours <span class="text-xs text-slate-400">(Mon-Fri, 09:00-17:00)</span></option>
+                  <option value="Restricted Hours">Restricted Hours</option>
+                  <option value="By Appointment Only">By Appointment Only</option>
+                </select>
               </div>
               <div class="space-y-4 md:col-span-1">
                 <div class="space-y-1.5">
@@ -176,6 +176,56 @@
                     <option value="Intruder & CCTV">Intruder & CCTV</option>
                   </select>
                   @if (detailsInvalid && touched.has('alarmSystem')) { <p class="text-xs text-rose-600 mt-1">Alarm System is required</p> }
+                </div>
+              </div>
+            </div>
+
+            <!-- RESTRICTED HOURS CONDITIONAL GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 pt-2" *ngIf="accessSchedule === 'Restricted Hours'">
+              
+              <!-- Operating Time Slots Entry Form -->
+              <div class="lg:col-span-3 bg-slate-50 border border-slate-200 rounded-xl p-4 overflow-x-auto">
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">
+                  <span>Restricted Access Schedule</span>
+                  <i class="fa-solid fa-circle-info text-blue-500 cursor-pointer"></i>
+                </div>
+                <table class="w-full text-xs text-left text-slate-600 min-w-[340px]">
+                  <thead>
+                    <tr class="text-slate-400 font-medium border-b border-slate-200">
+                      <th class="pb-2 w-20">Day</th>
+                      <th class="pb-2 pl-2">Allowed From</th>
+                      <th class="pb-2 pl-2">Allowed Until</th>
+                      <th class="pb-2 text-center w-16">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 font-medium">
+                    <tr class="h-10"><td>Monday</td><td><input type="text" value="08:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td><input type="text" value="18:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td class="text-center text-slate-400 space-x-2"><i class="fa-solid fa-circle-plus text-blue-500 cursor-pointer"></i><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                    <tr class="h-10"><td>Tuesday</td><td><input type="text" value="08:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td><input type="text" value="18:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td class="text-center text-slate-400 space-x-2"><i class="fa-solid fa-circle-plus text-blue-500 cursor-pointer"></i><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                    <tr class="h-10"><td>Wednesday</td><td><input type="text" value="08:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td><input type="text" value="18:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td class="text-center text-slate-400 space-x-2"><i class="fa-solid fa-circle-plus text-blue-500 cursor-pointer"></i><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                    <tr class="h-10"><td>Thursday</td><td><input type="text" value="08:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td><input type="text" value="18:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td class="text-center text-slate-400 space-x-2"><i class="fa-solid fa-circle-plus text-blue-500 cursor-pointer"></i><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                    <tr class="h-10"><td>Friday</td><td><input type="text" value="08:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td><input type="text" value="16:00" class="w-20 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center"></td><td class="text-center text-slate-400 space-x-2"><i class="fa-solid fa-circle-plus text-blue-500 cursor-pointer"></i><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                    <tr class="h-10"><td>Saturday</td><td><input type="text" value="Closed" class="w-20 bg-slate-100 text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 text-center select-none" disabled></td><td><input type="text" value="Closed" class="w-20 bg-slate-100 text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 text-center select-none" disabled></td><td class="text-center text-slate-400"><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                    <tr class="h-10"><td>Sunday</td><td><input type="text" value="Closed" class="w-20 bg-slate-100 text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 text-center select-none" disabled></td><td><input type="text" value="Closed" class="w-20 bg-slate-100 text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 text-center select-none" disabled></td><td class="text-center text-slate-400"><i class="fa-solid fa-trash cursor-pointer"></i></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Rule Warnings & Checkboxes Panel -->
+              <div class="lg:col-span-2 bg-amber-50/60 border border-amber-200/70 rounded-xl p-5 space-y-4">
+                <div class="flex gap-2.5 text-amber-800">
+                  <i class="fa-solid fa-triangle-exclamation text-base mt-0.5 shrink-0"></i>
+                  <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wide">Restricted Access</h4>
+                    <p class="text-xs text-amber-700/90 mt-1 leading-relaxed">This site may only be accessed during the configured hours. Any job scheduled outside these hours will trigger a warning.</p>
+                  </div>
+                </div>
+                
+                <div class="space-y-2.5 pt-2 border-t border-amber-200/40 text-xs font-medium text-slate-700">
+                  <h5 class="font-bold text-slate-500 uppercase tracking-wider text-[10px] mb-1.5">Additional Access Rules</h5>
+                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Access prohibited on Bank Holidays</label>
+                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Out-of-hours access requires client approval</label>
+                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Officer must call before entry</label>
+                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Security escort required</label>
                 </div>
               </div>
             </div>
