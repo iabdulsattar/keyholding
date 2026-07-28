@@ -45,6 +45,8 @@ export class ClientDetailComponent implements OnInit {
   showDeactivateClientModal = false;
   showActivateClientModal = false;
 
+  siteDonutSegments: { color: string; offset: number; length: number }[] = [];
+
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
   ngOnInit(): void {
@@ -66,6 +68,32 @@ export class ClientDetailComponent implements OnInit {
     if (!this.clientId) return;
     this.clientService.getSiteStats(this.clientId).subscribe((stats: any) => {
       this.siteStats = stats?.data ?? stats ?? null;
+      const total = this.siteStats?.total ?? this.sites.length ?? 0;
+      const active = this.siteStats?.active ?? 0;
+      const inactive = this.siteStats?.inactive ?? 0;
+      const maintenance = 0;
+      const planned = 0;
+
+      const activePct = total > 0 ? (active / total) * 100 : 0;
+      const inactivePct = total > 0 ? (inactive / total) * 100 : 0;
+      const maintenancePct = total > 0 ? (maintenance / total) * 100 : 0;
+      const plannedPct = total > 0 ? (planned / total) * 100 : 0;
+
+      const circumference = 2 * Math.PI * 50; // 314.16
+      const segments = [
+        { color: '#10b981', pct: activePct },
+        { color: '#ef4444', pct: inactivePct },
+        { color: '#f59e0b', pct: maintenancePct },
+        { color: '#a855f7', pct: plannedPct },
+      ];
+
+      let cumulativeOffset = 0;
+      this.siteDonutSegments = segments.map(seg => {
+        const length = (seg.pct / 100) * circumference;
+        const offset = -cumulativeOffset;
+        cumulativeOffset += length;
+        return { color: seg.color, offset, length };
+      });
     });
   }
 
@@ -213,12 +241,28 @@ export class ClientDetailComponent implements OnInit {
       const existing = counts.get(k.status) || { count: 0, color };
       counts.set(k.status, { count: existing.count + 1, color });
     });
-    return Array.from(counts.entries()).map(([status, data]) => ({
-      status,
-      count: data.count,
-      color: data.color,
-      pct: Math.round((data.count / total) * 100)
-    }));
+
+    const ordered = ['In Storage', 'Issued', 'In Use', 'Overdue', 'Lost / Damaged'];
+    const colorMap: Record<string, string> = {
+      'In Storage': 'bg-emerald-500',
+      'Issued': 'bg-amber-500',
+      'In Use': 'bg-blue-500',
+      'Overdue': 'bg-rose-500',
+      'Lost': 'bg-slate-400',
+      'Lost / Damaged': 'bg-slate-400',
+      'Damaged': 'bg-slate-400',
+      'Damaged / Lost': 'bg-slate-400',
+    };
+
+    return ordered.map(status => {
+      const data = counts.get(status) || { count: 0, color: colorMap[status] || 'bg-slate-400' };
+      return {
+        status,
+        count: data.count,
+        color: data.color,
+        pct: Math.round((data.count / total) * 100)
+      };
+    });
   }
 
   get keyTypeStats(): { type: string; count: number; color: string; pct: number }[] {
