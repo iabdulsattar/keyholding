@@ -149,11 +149,6 @@ export class AppSidebarComponent implements OnInit {
     return Object.entries(queryParams).every(([key, value]) => currentParams.get(key) === String(value));
   }
 
-  isDashboardActive(): boolean {
-    const currentPath = this.router.url.split('?')[0];
-    return currentPath === '/dashboard' || currentPath === '';
-  }
-
   isNavVisible(item: NavItem): boolean {
     if (!item.permissions || item.permissions.length === 0) return true;
     return this.permissions.hasAnyPermission(item.permissions);
