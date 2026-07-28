@@ -272,6 +272,18 @@ export class KeyVaultService {
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/sites${query ? `?${query}` : ''}`, headers);
   }
 
+  listAllSites(orgId: string, params?: { q?: string; status?: string; siteType?: string; page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.q) q.set('q', params.q);
+    if (params?.status) q.set('status', params.status);
+    if (params?.siteType) q.set('siteType', params.siteType);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 10));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/sites${query ? `?${query}` : ''}`, headers);
+  }
+
   getSiteStats(orgId: string, clientId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/sites/stats`, headers);
@@ -394,6 +406,17 @@ export class KeyVaultService {
     if (params?.status) q.set('status', params.status);
     q.set('page', String(params?.page ?? 0));
     q.set('size', String(params?.size ?? 50));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys${query ? `?${query}` : ''}`, headers);
+  }
+
+  listAllKeys(orgId: string, params?: { q?: string; status?: string; page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.q) q.set('q', params.q);
+    if (params?.status) q.set('status', params.status);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 10));
     const query = q.toString();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys${query ? `?${query}` : ''}`, headers);
   }

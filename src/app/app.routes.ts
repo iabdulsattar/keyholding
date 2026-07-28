@@ -76,6 +76,11 @@ export const routes: Routes = [
             title: 'View Key Details | KeyVault Pro'
           },
           {
+            path: 'keys/all-keys',
+            loadComponent: () => import('./keys/all-keys/all-keys.component').then(m => m.AllKeysComponent),
+            title: 'All Keys | KeyVault Pro'
+          },
+          {
             path: 'sites/add-site',
             loadComponent: () => import('./sites/add-site/add-site.component').then(m => m.AddSiteComponent),
             title: 'Add New Site | KeyVault Pro'
@@ -84,6 +89,11 @@ export const routes: Routes = [
             path: 'sites/view-site/:id',
             loadComponent: () => import('./sites/view-site/view-site.component').then(m => m.ViewSiteComponent),
             title: 'Site Details | KeyVault Pro'
+          },
+          {
+            path: 'sites/all-sites',
+            loadComponent: () => import('./sites/all-sites/all-sites.component').then(m => m.AllSitesComponent),
+            title: 'All Sites | KeyVault Pro'
           },
           {
             path: 'user-management',

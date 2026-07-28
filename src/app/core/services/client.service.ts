@@ -26,6 +26,8 @@ export interface KeyRecord {
   assignedTo: string;
   lastMovement: string;
   lastMovementTime: string;
+  clientId?: string;
+  clientName?: string;
 }
 
 export interface SiteRecord {
@@ -39,6 +41,8 @@ export interface SiteRecord {
   status: 'Active' | 'Inactive';
   keys: number;
   jobs: number;
+  clientId?: string;
+  clientName?: string;
 }
 
 export interface Client {
@@ -198,6 +202,22 @@ export class ClientService {
     );
   }
 
+  listAllSites(params?: { q?: string; status?: string; siteType?: string; page?: number; size?: number }): Observable<PaginatedResult<SiteRecord>> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+    const page = params?.page ?? 0;
+    const size = params?.size ?? 10;
+    return this.keyVault.listAllSites(orgId, { q: params?.q, status: params?.status, siteType: params?.siteType, page, size }).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapSite(item));
+        const totalItems = data.totalItems ?? data.total ?? items.length;
+        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        return { items, totalItems, page, size, totalPages };
+      })
+    );
+  }
+
   getSiteById(orgId: string, siteId: string): Observable<any> {
     return this.keyVault.getSite(orgId, siteId);
   }
@@ -220,6 +240,22 @@ export class ClientService {
 
   createSite(orgId: string, clientId: string, site: any): Observable<any> {
     return this.keyVault.createSite(orgId, clientId, site);
+  }
+
+  listAllKeys(params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+    const page = params?.page ?? 0;
+    const size = params?.size ?? 10;
+    return this.keyVault.listAllKeys(orgId, { q: params?.q, status: params?.status, page, size }).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapKey(item));
+        const totalItems = data.totalItems ?? data.total ?? items.length;
+        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        return { items, totalItems, page, size, totalPages };
+      })
+    );
   }
 
   private mapClient(item: any): Client {
@@ -268,8 +304,10 @@ export class ClientService {
       address: item.address ?? [item.addressLine1, item.addressLine2, item.city, item.postcode, item.country].filter(Boolean).join(', '),
       contact: item.primaryContactName ?? '',
       status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
-      keys: 0,
-      jobs: 0,
+      keys: item.keys ?? item.keyCount ?? 0,
+      jobs: item.jobs ?? item.jobCount ?? 0,
+      clientId: item.clientId ?? item.client?.id,
+      clientName: item.clientName ?? item.client?.name,
     };
   }
 
@@ -296,6 +334,8 @@ export class ClientService {
       assignedTo: item.assignedToUserName ?? '',
       lastMovement: '',
       lastMovementTime: '',
+      clientId: item.clientId ?? item.client?.id,
+      clientName: item.clientName ?? item.client?.name,
     };
   }
 }

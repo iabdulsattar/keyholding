@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
@@ -19,7 +21,7 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
     select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem; }
   `]
 })
-export class AddSiteComponent implements OnInit {
+export class AddSiteComponent implements OnInit, AfterViewChecked {
   siteName = '';
   siteType = '';
   address1 = '';
@@ -34,9 +36,13 @@ export class AddSiteComponent implements OnInit {
   altContactName = '';
   altPhone = '';
   accessInstructions = '';
-  accessSchedule = 'By Appointment Only';
-  securityLevel = '';
+accessSchedule = '4';
+securityLevel = '';
   alarmSystem = '';
+  get accessScheduleLabel(): string {
+    const labels: Record<string, string> = { '1': '24/7 Access', '2': 'Business Hours', '3': 'Restricted Hours', '4': 'By Appointment Only' };
+    return labels[this.accessSchedule] || '-';
+  }
   fileName = '';
   selectedFiles: File[] = [];
   attachmentPreviews: { file: File; url: string }[] = [];
@@ -46,15 +52,16 @@ export class AddSiteComponent implements OnInit {
   apptPhone = '+44 020 7946 0958';
   apptEmail = 'james.walker@metrosecurity.co.uk';
   apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
-  restrictedHours: Record<string, { from: string; to: string; closed: boolean }> = {
-    Monday: { from: '08:00', to: '18:00', closed: false },
-    Tuesday: { from: '08:00', to: '18:00', closed: false },
-    Wednesday: { from: '08:00', to: '18:00', closed: false },
-    Thursday: { from: '08:00', to: '18:00', closed: false },
-    Friday: { from: '08:00', to: '16:00', closed: false },
-    Saturday: { from: 'Closed', to: 'Closed', closed: true },
-    Sunday: { from: 'Closed', to: 'Closed', closed: true },
+  restrictedHours: Record<string, { from: string; to: string; closed: boolean }[]> = {
+    Monday: [{ from: '08:00', to: '18:00', closed: false }],
+    Tuesday: [{ from: '08:00', to: '18:00', closed: false }],
+    Wednesday: [{ from: '08:00', to: '18:00', closed: false }],
+    Thursday: [{ from: '08:00', to: '18:00', closed: false }],
+    Friday: [{ from: '08:00', to: '16:00', closed: false }],
+    Saturday: [{ from: 'Closed', to: 'Closed', closed: true }],
+    Sunday: [{ from: 'Closed', to: 'Closed', closed: true }],
   };
+  restrictedDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   restrictedBankHolidays = true;
   restrictedOutOfHoursApproval = true;
   restrictedCallBeforeEntry = true;
@@ -72,6 +79,8 @@ export class AddSiteComponent implements OnInit {
   editMode = false;
   editingSiteId: string | null = null;
   clientId = '';
+  clients: any[] = [];
+  showClientDropdown = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
 
@@ -114,6 +123,11 @@ export class AddSiteComponent implements OnInit {
     this.touched.add('securityLevel');
     this.touched.add('alarmSystem');
 
+    if (this.showClientDropdown) {
+      this.touched.add('clientId');
+      if (!this.clientId) errors.information.push('Client is required');
+    }
+
     if (!this.siteName.trim()) errors.information.push('Site Name is required');
     if (!this.siteType) errors.information.push('Site Type is required');
     if (!this.address1.trim()) errors.information.push('Address Line 1 is required');
@@ -139,6 +153,28 @@ export class AddSiteComponent implements OnInit {
       } else {
         this.editMode = false;
         this.editingSiteId = null;
+      }
+      this.showClientDropdown = !this.clientId && !this.editMode;
+      if (this.showClientDropdown) {
+        this.loadClients();
+      }
+    });
+  }
+
+  ngAfterViewChecked(): void {
+    const schedule = this.accessSchedule;
+    if (schedule !== '3') return;
+    const els = document.querySelectorAll('.time-input');
+    els.forEach((el: Element) => {
+      if (!(el as any)._flatpickr) {
+        flatpickr(el, {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: 'H:i',
+          time_24hr: true,
+          hourIncrement: 1,
+          minuteIncrement: 1,
+        });
       }
     });
   }
@@ -188,7 +224,7 @@ export class AddSiteComponent implements OnInit {
       this.altContactName = item.altContactName || '';
       this.altPhone = item.altPhone || '';
       this.accessInstructions = item.accessInstructions || '';
-      this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? 'Business Hours' : item.accessSchedule === 'BY_APPOINTMENT' ? 'By Appointment Only' : item.accessSchedule === '24_7' ? '24/7' : item.accessSchedule === 'RESTRICTED_HOURS' ? 'Restricted Hours' : 'By Appointment Only';
+      this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? '2' : item.accessSchedule === 'BY_APPOINTMENT' ? '4' : item.accessSchedule === '24_7' ? '1' : item.accessSchedule === 'RESTRICTED_HOURS' ? '3' : '4';
       this.securityLevel = item.securityLevel || '';
       this.alarmSystem = item.alarmSystem || '';
       if (item.appointment) {
@@ -199,17 +235,19 @@ export class AddSiteComponent implements OnInit {
         this.apptEmail = item.appointment.approvalRequiredEmail || '';
         this.apptNotes = item.appointment.notes || '';
       }
-      if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
-        const hours: Record<string, { from: string; to: string; closed: boolean }> = {};
-        item.restrictedHours.forEach((slot: any) => {
-          hours[slot.day] = {
-            from: slot.allowedFrom || '08:00',
-            to: slot.allowedUntil || '18:00',
-            closed: slot.closed || false,
-          };
-        });
-        this.restrictedHours = { ...this.restrictedHours, ...hours };
-      }
+if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
+         const hours: Record<string, { from: string; to: string; closed: boolean }[]> = {};
+         item.restrictedHours.forEach((slot: any) => {
+           const day = slot.day;
+           if (!hours[day]) { hours[day] = []; }
+           hours[day].push({
+             from: slot.allowedFrom || '08:00',
+             to: slot.allowedUntil || '18:00',
+             closed: slot.closed || false,
+           });
+         });
+         this.restrictedHours = { ...this.restrictedHours, ...hours };
+       }
     });
   }
 
@@ -223,8 +261,17 @@ export class AddSiteComponent implements OnInit {
     }
   }
 
+  private loadClients(): void {
+    this.clientService.listClients({ page: 0, size: 200 }).subscribe((result: any) => {
+      this.clients = result.items || [];
+    });
+  }
+
   resetSiteForm(): void {
     if (confirm('Are you sure you want to discard your current inputs?')) {
+      if (this.showClientDropdown) {
+        this.clientId = '';
+      }
       this.siteName = '';
       this.siteType = '';
       this.address1 = '';
@@ -239,7 +286,7 @@ export class AddSiteComponent implements OnInit {
       this.altContactName = '';
       this.altPhone = '';
       this.accessInstructions = '';
-      this.accessSchedule = 'By Appointment Only';
+      this.accessSchedule = '4';
       this.securityLevel = '';
       this.alarmSystem = '';
       this.fileName = '';
@@ -250,16 +297,29 @@ export class AddSiteComponent implements OnInit {
       this.minNotice = '4 Hours';
       this.approvalContact = 'James Walker';
       this.updateContactInfo();
-      this.apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
+this.apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
       this.restrictedHours = {
-        Monday: { from: '08:00', to: '18:00', closed: false },
-        Tuesday: { from: '08:00', to: '18:00', closed: false },
-        Wednesday: { from: '08:00', to: '18:00', closed: false },
-        Thursday: { from: '08:00', to: '18:00', closed: false },
-        Friday: { from: '08:00', to: '16:00', closed: false },
-        Saturday: { from: 'Closed', to: 'Closed', closed: true },
-        Sunday: { from: 'Closed', to: 'Closed', closed: true },
-      };
+         Monday: [{ from: '08:00', to: '18:00', closed: false }],
+         Tuesday: [{ from: '08:00', to: '18:00', closed: false }],
+         Wednesday: [{ from: '08:00', to: '18:00', closed: false }],
+         Thursday: [{ from: '08:00', to: '18:00', closed: false }],
+         Friday: [{ from: '08:00', to: '16:00', closed: false }],
+         Saturday: [{ from: 'Closed', to: 'Closed', closed: true }],
+         Sunday: [{ from: 'Closed', to: 'Closed', closed: true }],
+       };
+    }
+  }
+
+  addRestrictedHour(day: string): void {
+    if (!this.restrictedHours[day]) {
+      this.restrictedHours[day] = [];
+    }
+    this.restrictedHours[day].push({ from: '08:00', to: '18:00', closed: false });
+  }
+
+  removeRestrictedHour(day: string, index: number): void {
+    if (this.restrictedHours[day] && this.restrictedHours[day].length > 1) {
+      this.restrictedHours[day].splice(index, 1);
     }
   }
 
@@ -267,11 +327,10 @@ export class AddSiteComponent implements OnInit {
     if (!this.validate()) return;
 
     const accessScheduleMap: Record<string, 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'RESTRICTED_HOURS'> = {
-      'Business Hours': 'BUSINESS_HOURS',
-      'By Appointment Only': 'BY_APPOINTMENT',
-      '24/7': '24_7',
-      '24/7 Access': '24_7',
-      'Restricted Hours': 'RESTRICTED_HOURS',
+      '1': '24_7',
+      '2': 'BUSINESS_HOURS',
+      '3': 'RESTRICTED_HOURS',
+      '4': 'BY_APPOINTMENT',
     };
     const site: any = {
       name: this.siteName,
@@ -305,12 +364,14 @@ export class AddSiteComponent implements OnInit {
     }
 
     if (site.accessSchedule === 'RESTRICTED_HOURS' && this.restrictedHours) {
-      site.restrictedHours = Object.entries(this.restrictedHours).map(([day, slot]) => ({
-        day,
-        allowedFrom: slot.closed ? 'Closed' : slot.from,
-        allowedUntil: slot.closed ? 'Closed' : slot.to,
-        closed: slot.closed,
-      }));
+      site.restrictedHours = Object.entries(this.restrictedHours).flatMap(([day, slots]) =>
+        slots.map((slot) => ({
+          day,
+          allowedFrom: slot.closed ? 'Closed' : slot.from,
+          allowedUntil: slot.closed ? 'Closed' : slot.to,
+          closed: slot.closed,
+        }))
+      );
       site.restrictedHoursRules = {
         bankHolidays: this.restrictedBankHolidays,
         outOfHoursApproval: this.restrictedOutOfHoursApproval,
@@ -319,8 +380,7 @@ export class AddSiteComponent implements OnInit {
       };
     }
 
-    if (!this.clientId) {
-      alert('Missing client context. Please add this site from a client page.');
+    if (!this.clientId && this.showClientDropdown) {
       return;
     }
 

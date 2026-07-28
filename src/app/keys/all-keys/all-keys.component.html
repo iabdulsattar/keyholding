@@ -1,0 +1,178 @@
+<div class="min-h-[calc(100vh-48px)] flex flex-col text-gray-900">
+  <div class="flex-1 mx-auto w-full max-w-full space-y-5">
+    <!-- Title & Actions -->
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">All Keys</h2>
+        <p class="text-sm text-slate-500 mt-1">View and manage all keys across all clients</p>
+      </div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <button routerLink="/keys/add-key" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg text-sm shadow-sm shadow-blue-500/10 transition w-full sm:w-auto">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add New Key
+        </button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Total Keys</p>
+          <p class="text-2xl font-bold text-slate-900">{{ totalKeys }}</p>
+          <p class="text-xs text-slate-400">Across all clients</p>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Keys On Hook</p>
+          <p class="text-2xl font-bold text-slate-900">{{ onHookKeys }} <span class="text-base font-semibold text-slate-400">({{ onHookPercentage }}%)</span></p>
+          <p class="text-xs text-slate-400">Currently on the hook</p>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <p class="text-sm text-slate-500">Keys Issued</p>
+          <p class="text-2xl font-bold text-slate-900">{{ issuedKeys }} <span class="text-base font-semibold text-slate-400">({{ issuedPercentage }}%)</span></p>
+          <p class="text-xs text-slate-400">Currently issued</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="flex flex-col lg:flex-row gap-3">
+        <div class="relative flex-1">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+          <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search keys by ID, name, type, site..."
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:flex lg:gap-3">
+          <select [(ngModel)]="clientFilter" (ngModelChange)="onClientChange()" class="filter-select">
+            <option value="">All Clients</option>
+            @for (c of clientOptions; track c.id) {
+              <option [value]="c.id">{{ c.name }}</option>
+            }
+          </select>
+          <select [(ngModel)]="siteFilter" (ngModelChange)="onSiteChange()" class="filter-select">
+            <option value="">All Sites</option>
+            @for (s of siteOptions; track s.id) {
+              <option [value]="s.id">{{ s.name }}</option>
+            }
+          </select>
+          <select [(ngModel)]="keyTypeFilter" (ngModelChange)="onKeyTypeChange()" class="filter-select">
+            @for (opt of keyTypeOptions; track opt) {
+              <option [value]="opt === 'All Key Types' ? '' : opt">{{ opt }}</option>
+            }
+          </select>
+          <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusChange()" class="filter-select">
+            @for (opt of statusOptions; track opt.label) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm min-w-[1200px]">
+          <thead>
+            <tr class="border-b border-slate-100 text-left text-slate-500">
+              <th class="th-cell w-10"><input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500/30" /></th>
+              <th class="th-cell">Key ID <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Key Name <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Key Type <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Site <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Client <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Status <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Storage Location <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell">Assigned To <span class="sort-arrow">⇕</span></th>
+              <th class="th-cell text-right pr-5">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100" *ngIf="!loading && pageKeys.length > 0">
+            @for (k of pageKeys; track k.id) {
+            <tr class="hover:bg-slate-50/70 transition">
+              <td class="td-cell"><input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500/30" /></td>
+              <td class="td-cell">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium text-blue-600">{{ k.keyCode }}</span>
+                  <span class="text-slate-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="3" width="6" height="6"/><rect x="3" y="15" width="6" height="6"/><rect x="15" y="15" width="2" height="2"/><rect x="19" y="15" width="2" height="2"/><rect x="15" y="19" width="2" height="2"/><rect x="19" y="19" width="2" height="2"/><rect x="17" y="17" width="2" height="2"/></svg>
+                  </span>
+                </div>
+              </td>
+              <td class="td-cell font-semibold text-slate-900">{{ k.name }}</td>
+              <td class="td-cell" [innerHTML]="typeBadge(k.type)"></td>
+              <td class="td-cell text-slate-600">{{ k.siteName || '--' }}</td>
+              <td class="td-cell text-slate-600">{{ k.clientName || '--' }}</td>
+              <td class="td-cell" [innerHTML]="statusBadge(k.status)"></td>
+              <td class="td-cell text-slate-600 whitespace-pre-line leading-snug max-w-[200px] truncate" [title]="k.storageLocation">{{ k.storageLocation || '--' }}</td>
+              <td class="td-cell text-slate-600">{{ k.assignedTo || '--' }}</td>
+              <td class="td-cell text-right pr-5">
+                <div class="flex items-center justify-end gap-2">
+                  <a [routerLink]="['/keys/view-key', k.id]" class="text-blue-600 hover:text-blue-700">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </a>
+                  <a [routerLink]="['/keys/add-key']" [queryParams]="{ clientId: k.clientId || '', siteId: k.site || '', editId: k.id }" class="text-slate-400 hover:text-slate-600">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="py-8 text-center text-slate-400">No matching key records found.</td>
+            </tr>
+            }
+          </tbody>
+          <tbody class="divide-y divide-slate-100" *ngIf="loading">
+            <tr>
+              <td colspan="10" class="py-8 text-center text-slate-400">Loading keys...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-5 py-4 border-t border-slate-100">
+        <p class="text-sm text-slate-500">Showing {{ showingStart }} to {{ showingEnd }} of {{ totalItems }} keys</p>
+        <div class="flex items-center gap-1.5">
+          <button (click)="prevPage()" [disabled]="page === 0 || loading" class="page-btn disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          @for (p of getPageNumbers(); track p) {
+            @if (p === '...') {
+              <span class="w-8 h-8 flex items-center justify-center text-slate-400">...</span>
+            } @else {
+              <button (click)="goToPage(p)" [class.bg-blue-600]="page === p" [class.text-white]="page === p" [class.bg-white]="page !== p" [class.text-slate-700]="page !== p" [class.border]="page !== p" [class.border-slate-200]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-slate-50 transition">
+                {{ pageLabel(p) }}
+              </button>
+            }
+          }
+          <button (click)="nextPage()" [disabled]="page >= totalPages - 1 || loading" class="page-btn disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <select (change)="onPageSizeChange($event)" class="filter-select !py-2 !w-auto">
+          <option value="10">10 / page</option>
+          <option value="25">25 / page</option>
+          <option value="50">50 / page</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

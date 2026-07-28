@@ -139,7 +139,7 @@ export class AddKeyComponent implements OnInit {
       next: (result: any) => {
         this.clients = result?.items ?? result?.data ?? [];
         this.clientOptions = this.toRichOptions(this.clients);
-        if (this.clients.length > 0 && !this.assignClientId) {
+        if (this.clients.length > 0 && !this.assignClientId && (this.clientId || this.editing)) {
           this.assignClient = this.clients[0].name;
           this.assignClientId = this.clients[0].id;
           this.loadSites();
@@ -245,8 +245,13 @@ export class AddKeyComponent implements OnInit {
       this.keyType = '';
       this.keyCategory = '';
       this.keyNotes = '';
-      this.assignClient = this.clients.length > 0 ? this.clients[0].name : '';
-      this.assignClientId = this.clients.length > 0 ? this.clients[0].id : '';
+      if (this.clientId || this.editing) {
+        this.assignClient = this.clients.length > 0 ? this.clients[0].name : '';
+        this.assignClientId = this.clients.length > 0 ? this.clients[0].id : '';
+      } else {
+        this.assignClient = '';
+        this.assignClientId = '';
+      }
       this.assignSite = '';
       this.keyBrand = '';
       this.keyModel = '';
@@ -286,8 +291,8 @@ export class AddKeyComponent implements OnInit {
       status: statusMap[this.keyStatus] || 'IN_STORAGE',
     };
 
-    if (!this.clientId) {
-      alert('Missing client context. Please add this key from a client page.');
+    if (!this.assignClientId) {
+      this.toast.error('Please select a client before saving.');
       return;
     }
 
@@ -346,7 +351,7 @@ export class AddKeyComponent implements OnInit {
 
   private finishKeySubmit(): void {
     this.toast.success(this.editing ? 'Key updated successfully!' : 'Key saved successfully!');
-    const destination = this.clientId ? ['/clients', this.clientId] : ['/keys'];
+    const destination = this.clientId ? ['/clients', this.clientId] : ['/keys/all-keys'];
     setTimeout(() => this.router.navigate(destination), 800);
   }
 
