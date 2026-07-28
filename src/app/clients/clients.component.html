@@ -84,7 +84,7 @@
       <div class="overflow-x-auto custom-scrollbar">
         <table class="w-full text-left border-collapse min-w-[1000px]">
           <thead>
-            <tr class="bg-slate-50/70 border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+            <tr class="bg-slate-50/70 border-b border-slate-100 text-[11px] font-bold text-slate-500  tracking-wider">
               <th class="py-3 px-4 w-10">
                 <input type="checkbox" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white">
               </th>
@@ -133,8 +133,8 @@
             @for (client of clients; track client.id) {
             <tr class="hover:bg-slate-50/50 transition">
               <td class="py-3 px-4"><input type="checkbox" class="row-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white"></td>
-              <td class="py-3 px-4 font-semibold text-blue-600 tracking-wide">{{ client.code }}</td>
-              <td class="py-3 px-4 text-slate-900 font-bold">{{ client.name }}</td>
+              <td class="py-3 px-4 font-semibold text-blue-600 tracking-wide bg-blue-50 rounded-md">{{ client.code }}</td>
+              <td class="py-3 px-4 text-slate-900 font-normal">{{ client.name }}</td>
               <td class="py-3 px-4 text-slate-500 font-normal">{{ client.email }}</td>
               <td class="py-3 px-4 text-slate-600">{{ client.region }}</td>
               <td class="py-3 px-4 text-center" [innerHTML]="statusBadge(client.status)"></td>
