@@ -243,10 +243,22 @@
                 
                 <div class="space-y-2.5 pt-2 border-t border-amber-200/40 text-xs font-medium text-slate-700">
                   <h5 class="font-bold text-slate-500 uppercase tracking-wider text-[10px] mb-1.5">Additional Access Rules</h5>
-                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Access prohibited on Bank Holidays</label>
-                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Out-of-hours access requires client approval</label>
-                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Officer must call before entry</label>
-                  <label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked class="mt-0.5 text-blue-600 rounded"> Security escort required</label>
+                  <label class="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="restrictedBankHolidays" name="restrictedBankHolidays" class="mt-0.5 text-blue-600 rounded">
+                    Access prohibited on Bank Holidays
+                  </label>
+                  <label class="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="restrictedOutOfHoursApproval" name="restrictedOutOfHoursApproval" class="mt-0.5 text-blue-600 rounded">
+                    Out-of-hours access requires client approval
+                  </label>
+                  <label class="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="restrictedCallBeforeEntry" name="restrictedCallBeforeEntry" class="mt-0.5 text-blue-600 rounded">
+                    Officer must call before entry
+                  </label>
+                  <label class="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="restrictedSecurityEscort" name="restrictedSecurityEscort" class="mt-0.5 text-blue-600 rounded">
+                    Security escort required
+                  </label>
                 </div>
               </div>
 </div>
@@ -259,48 +271,48 @@
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div class="space-y-2 bg-white border border-slate-100 p-3 rounded-xl flex items-center justify-between">
-                  <div>
-                    <span class="font-bold text-slate-700 block">Appointment Required</span>
-                    <span class="text-[10px] text-slate-400 block mt-0.5">All visits must be pre-approved.</span>
-                  </div>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" id="apptRequiredCheck" checked class="sr-only peer">
-                    <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
-                  </label>
-                </div>
+                 <div class="space-y-2 bg-white border border-slate-100 p-3 rounded-xl flex items-center justify-between">
+                   <div>
+                     <span class="font-bold text-slate-700 block">Appointment Required</span>
+                     <span class="text-[10px] text-slate-400 block mt-0.5">All visits must be pre-approved.</span>
+                   </div>
+                   <label class="relative inline-flex items-center cursor-pointer">
+                     <input type="checkbox" [(ngModel)]="apptRequired" name="apptRequired" checked class="sr-only peer">
+                     <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                   </label>
+                 </div>
 
-                <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Minimum Notice Required *</label>
-                  <select id="minNotice" class="w-full bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                    <option value="2 Hours">2 Hours</option>
-                    <option value="4 Hours" selected>4 Hours</option>
-                    <option value="24 Hours">24 Hours</option>
-                  </select>
-                </div>
+                 <div class="space-y-1.5">
+                   <label class="text-xs font-semibold text-slate-600">Minimum Notice Required *</label>
+                   <select [(ngModel)]="minNotice" name="minNotice" class="w-full bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                     <option value="2 Hours">2 Hours</option>
+                     <option value="4 Hours">4 Hours</option>
+                     <option value="24 Hours">24 Hours</option>
+                   </select>
+                 </div>
 
-                <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Approval Required From *</label>
-                  <select id="approvalContact" class="w-full bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                    <option value="James Walker" selected>James Walker</option>
-                    <option value="Sarah Miller">Sarah Miller</option>
-                  </select>
-                </div>
-              </div>
+                 <div class="space-y-1.5">
+                   <label class="text-xs font-semibold text-slate-600">Approval Required From *</label>
+                   <select [(ngModel)]="approvalContact" name="approvalContact" (change)="updateContactInfo()" class="w-full bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                     <option value="James Walker">James Walker</option>
+                     <option value="Sarah Miller">Sarah Miller</option>
+                   </select>
+                 </div>
+               </div>
 
-              <!-- Secondary Info Readouts Mapping Parameters inside Card -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium pt-2 text-slate-600">
-                <div class="space-y-1 bg-white/70 border border-slate-100 rounded-xl p-3">
-                  <span class="text-slate-400 text-[10px] block font-semibold uppercase tracking-wider">Appointment Contact</span>
-                  <p class="flex items-center gap-2 font-semibold text-slate-800 mt-1"><i class="fa-solid fa-phone text-slate-400 text-[10px]"></i> <span>+44 020 7946 0958</span></p>
-                  <p class="flex items-center gap-2 font-semibold text-slate-800 mt-1"><i class="fa-solid fa-envelope text-slate-400 text-[10px]"></i> <span>james.walker@metrosecurity.co.uk</span></p>
-                </div>
-                <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-600">Appointment Notes (Optional)</label>
-                  <input type="text" id="apptNotes" value="Access will only be granted to scheduled visitors. Please ensure you have valid ID." class="w-full bg-white border border-slate-200 text-xs px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                </div>
-              </div>
-            </div>
+               <!-- Secondary Info Readouts Mapping Parameters inside Card -->
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium pt-2 text-slate-600">
+                 <div class="space-y-1 bg-white/70 border border-slate-100 rounded-xl p-3">
+                   <span class="text-slate-400 text-[10px] block font-semibold uppercase tracking-wider">Appointment Contact</span>
+                   <p class="flex items-center gap-2 font-semibold text-slate-800 mt-1"><i class="fa-solid fa-phone text-slate-400 text-[10px]"></i> <span>{{ apptPhone }}</span></p>
+                   <p class="flex items-center gap-2 font-semibold text-slate-800 mt-1"><i class="fa-solid fa-envelope text-slate-400 text-[10px]"></i> <span>{{ apptEmail }}</span></p>
+                 </div>
+                 <div class="space-y-1.5">
+                   <label class="text-xs font-semibold text-slate-600">Appointment Notes (Optional)</label>
+                   <input type="text" [(ngModel)]="apptNotes" name="apptNotes" class="w-full bg-white border border-slate-200 text-xs px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                 </div>
+               </div>
+             </div>
           </div>
 
           <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">

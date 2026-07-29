@@ -109,6 +109,27 @@ export interface StorageLocation {
   [key: string]: any;
 }
 
+export interface KeyVaultDocument {
+  id?: string;
+  code?: string;
+  name: string;
+  category?: string;
+  documentType?: string;
+  description?: string;
+  fileSize?: number;
+  fileName?: string;
+  contentType?: string;
+  storagePath?: string;
+  publicUrl?: string;
+  relatedToType?: string;
+  relatedToId?: string;
+  uploadedByUserId?: string;
+  uploadedByUserName?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
 export interface KeyMovement {
   id?: string;
   keyId?: string;
@@ -482,13 +503,14 @@ export class KeyVaultService {
     return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, fd, headers);
   }
 
-  addSiteAttachment(orgId: string, siteId: string, file: File, fileName?: string, contentType?: string, sizeBytes?: number): Observable<any> {
+  addSiteAttachment(orgId: string, siteId: string, file: File, fileName?: string, contentType?: string, sizeBytes?: number, kind?: string): Observable<any> {
     const headers = this.getAuthHeaders();
     const fd = new FormData();
     fd.append('file', file, file.name);
-    fd.append('fileName', fileName || file.name);
-    fd.append('contentType', contentType || file.type || 'application/octet-stream');
-    fd.append('sizeBytes', String(sizeBytes || file.size));
+    if (fileName) fd.append('fileName', fileName);
+    if (contentType) fd.append('contentType', contentType);
+    if (sizeBytes) fd.append('sizeBytes', String(sizeBytes));
+    if (kind) fd.append('kind', kind);
     return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments`, fd, headers);
   }
 
@@ -643,6 +665,63 @@ export class KeyVaultService {
   deleteStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, headers);
+  }
+
+  getOrgSiteStats(orgId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/sites/stats`, headers);
+  }
+
+  listDocuments(orgId: string, clientId: string, params?: { q?: string; category?: string; documentType?: string; page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.q) q.set('q', params.q);
+    if (params?.category) q.set('category', params.category);
+    if (params?.documentType) q.set('documentType', params.documentType);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 10));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents${query ? `?${query}` : ''}`, headers);
+  }
+
+  getDocumentStats(orgId: string, clientId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents/stats`, headers);
+  }
+
+  getDocument(orgId: string, clientId: string, documentId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents/${documentId}`, headers);
+  }
+
+  uploadDocument(orgId: string, clientId: string, file: File, name: string, category: string, documentType: string, description?: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('name', name);
+    fd.append('category', category);
+    fd.append('documentType', documentType);
+    if (description) fd.append('description', description);
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents`, fd, headers);
+  }
+
+  updateDocument(orgId: string, clientId: string, documentId: string, params: { name?: string; category?: string }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.name) q.set('name', params.name);
+    if (params?.category) q.set('category', params.category);
+    const query = q.toString();
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents/${documentId}${query ? `?${query}` : ''}`, {}, headers);
+  }
+
+  downloadDocument(orgId: string, clientId: string, documentId: string): Observable<Blob> {
+    const headers = this.getAuthHeaders();
+    return this.api.getBlob(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents/${documentId}/download`, headers);
+  }
+
+  deleteDocument(orgId: string, clientId: string, documentId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents/${documentId}`, headers);
   }
 
   getInternalPermissions(authUserId: string, orgId: string): Observable<any> {

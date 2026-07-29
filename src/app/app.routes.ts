@@ -66,6 +66,26 @@ export const routes: Routes = [
             title: 'Client Details | KeyVault Pro'
           },
           {
+            path: 'clients/:id/add-document',
+            loadComponent: () => import('./clients/add-document/add-document.component').then(m => m.AddDocumentComponent),
+            title: 'Add Document | KeyVault Pro'
+          },
+          {
+            path: 'clients/:id/add-contact',
+            loadComponent: () => import('./clients/add-contact/add-contact.component').then(m => m.AddContactComponent),
+            title: 'Add Contact | KeyVault Pro'
+          },
+          {
+            path: 'clients/:id/view-document/:docId',
+            loadComponent: () => import('./clients/view-document/view-document.component').then(m => m.ViewDocumentComponent),
+            title: 'View Document | KeyVault Pro'
+          },
+          {
+            path: 'clients/:id/view-contact/:contactId',
+            loadComponent: () => import('./clients/view-contact/view-contact.component').then(m => m.ViewContactComponent),
+            title: 'View Contact | KeyVault Pro'
+          },
+          {
             path: 'keys/add-key',
             loadComponent: () => import('./keys/add-key/add-key.component').then(m => m.AddKeyComponent),
             title: 'Add New Key | KeyVault Pro'
@@ -79,6 +99,11 @@ export const routes: Routes = [
             path: 'keys/all-keys',
             loadComponent: () => import('./keys/all-keys/all-keys.component').then(m => m.AllKeysComponent),
             title: 'All Keys | KeyVault Pro'
+          },
+          {
+            path: 'jobs',
+            loadComponent: () => import('./jobs/all-jobs/all-jobs.component').then(m => m.AllJobsComponent),
+            title: 'All Jobs | KeyVault Pro'
           },
           {
             path: 'sites/add-site',

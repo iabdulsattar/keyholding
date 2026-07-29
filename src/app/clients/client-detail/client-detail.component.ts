@@ -18,6 +18,26 @@ import { ActivateClientModalComponent } from '../activate-client-modal/activate-
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     .tab-content-panel { display: none; }
     .tab-content-panel.active { display: block; }
+    .nav-item { display:flex; align-items:center; gap:.75rem; padding:.6rem .75rem; border-radius:.6rem; font-size:.875rem; color:#cbd5e1; transition: background .15s, color .15s; }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color:#fff; }
+    .nav-item-active { background: #4338ca; color:#fff; }
+    .nav-icon { width:1.15rem; height:1.15rem; flex-shrink:0; }
+    .btn-outline { display:inline-flex; align-items:center; gap:.4rem; padding:.5rem .9rem; border-radius:.6rem; border:1px solid #e2e8f0; font-size:.8rem; font-weight:500; color:#334155; background:#fff; white-space:nowrap; transition: background .15s; }
+    .btn-outline:hover { background:#f8fafc; }
+    .btn-primary { display:inline-flex; align-items:center; gap:.4rem; padding:.55rem 1rem; border-radius:.6rem; background:#4338ca; color:#fff; font-size:.8rem; font-weight:600; white-space:nowrap; transition: background .15s; }
+    .btn-primary:hover { background:#372da3; }
+    .badge { display:inline-flex; align-items:center; padding:.15rem .55rem; border-radius:9999px; font-size:.7rem; font-weight:600; }
+    .tab { padding:.85rem .25rem; border-bottom:2px solid transparent; color:#94a3b8; white-space:nowrap; }
+    .tab:hover { color:#475569; }
+    .tab-active { color:#4338ca; border-color:#4338ca; font-weight:600; }
+    .stat-card { background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.1rem; display:flex; align-items:center; gap:.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .stat-icon { width:2.75rem; height:2.75rem; border-radius:.75rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .th { padding: .85rem 1.25rem; text-align:left; font-weight:600; }
+    .td { padding: .85rem 1.25rem; vertical-align:middle; }
+    .page-btn { width:2rem; height:2rem; border-radius:.5rem; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; font-weight:600; color:#334155; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+    .avatar { display:inline-flex; align-items:center; justify-content:center; width:2rem; height:2rem; border-radius:9999px; font-size:.75rem; font-weight:700; }
   `
 })
 export class ClientDetailComponent implements OnInit {
@@ -457,13 +477,6 @@ export class ClientDetailComponent implements OnInit {
     }
   }
 
-  toggleDropdown(id: string): void {
-    const dropdown = document.getElementById(id);
-    if (dropdown) {
-      dropdown.classList.toggle('hidden');
-    }
-  }
-
   triggerAction(actionName: string): void {
     if (actionName === 'Add New Key') {
       this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId } });
@@ -541,6 +554,20 @@ export class ClientDetailComponent implements OnInit {
     });
   }
 
+  uploadDocument(): void {
+    if (!this.clientId) return;
+    this.router.navigate(['/clients', this.clientId, 'add-document'], {
+      queryParams: { clientName: this.client?.name || '' }
+    });
+  }
+
+  viewDocument(docId: string = ''): void {
+    if (!this.clientId) return;
+    this.router.navigate(['/clients', this.clientId, 'view-document', docId], {
+      queryParams: { clientName: this.client?.name || '' }
+    });
+  }
+
   onRowCheckboxChange(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     if (checkbox.checked) {
@@ -550,5 +577,42 @@ export class ClientDetailComponent implements OnInit {
       const selectAll = document.getElementById('selectAllRows') as HTMLInputElement;
       if (selectAll) selectAll.checked = false;
     }
+  }
+
+  contacts = [
+    { name: 'James Walker', title: 'Operations Manager', dept: 'Operations', email: 'james.walker@metrosecurity.co.uk', phone: '+44 020 7946 0958', status: 'Active', primary: true, initials: 'JW', color: 'bg-violet-100 text-violet-700' },
+    { name: 'Sarah Miller', title: 'Account Manager', dept: 'Accounts', email: 'sarah.miller@metrosecurity.co.uk', phone: '+44 020 7946 0961', status: 'Active', primary: true, initials: 'SM', color: 'bg-orange-100 text-orange-700' },
+    { name: 'David Johnson', title: 'Finance Manager', dept: 'Finance', email: 'david.johnson@metrosecurity.co.uk', phone: '+44 020 7946 0962', status: 'Active', primary: false, initials: 'DJ', color: 'bg-amber-100 text-amber-700' },
+    { name: 'Lisa Martin', title: 'HR Manager', dept: 'Human Resources', email: 'lisa.martin@metrosecurity.co.uk', phone: '+44 020 7946 0963', status: 'Inactive', primary: false, initials: 'LM', color: 'bg-pink-100 text-pink-700' },
+    { name: 'Robert Vance', title: 'Compliance Officer', dept: 'Compliance', email: 'robert.vance@metrosecurity.co.uk', phone: '+44 020 7946 0964', status: 'Active', primary: false, initials: 'RV', color: 'bg-indigo-100 text-indigo-700' },
+    { name: 'Amy King', title: 'Customer Support Lead', dept: 'Customer Support', email: 'amy.king@metrosecurity.co.uk', phone: '+44 020 7946 0965', status: 'Active', primary: false, initials: 'AK', color: 'bg-emerald-100 text-emerald-700' },
+    { name: 'Mark Taylor', title: 'IT Manager', dept: 'IT', email: 'mark.taylor@metrosecurity.co.uk', phone: '+44 020 7946 0966', status: 'Inactive', primary: false, initials: 'MT', color: 'bg-red-100 text-red-700' },
+    { name: 'Emma Parker', title: 'Procurement Officer', dept: 'Procurement', email: 'emma.parker@metrosecurity.co.uk', phone: '+44 020 7946 0967', status: 'Inactive', primary: false, initials: 'EP', color: 'bg-teal-100 text-teal-700' },
+  ];
+
+  contactStatusClass(status: string): string {
+    return status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500';
+  }
+
+  toggleDropdown(id: string): void {
+    const dropdown = document.getElementById(id);
+    if (dropdown) {
+      dropdown.classList.toggle('hidden');
+    }
+  }
+
+  viewContact(contactName: string): void {
+    if (!this.clientId) return;
+    const slug = contactName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    this.router.navigate(['/clients', this.clientId, 'view-contact', slug], {
+      queryParams: { clientName: this.client?.name || '' }
+    });
+  }
+
+  addContact(): void {
+    if (!this.clientId) return;
+    this.router.navigate(['/clients', this.clientId, 'add-contact'], {
+      queryParams: { clientName: this.client?.name || '' }
+    });
   }
 }
