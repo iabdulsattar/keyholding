@@ -7,7 +7,7 @@
         <div>
           <!-- Breadcrumbs Segment -->
           <h2 class="text-2xl font-bold tracking-tight text-slate-900 mb-1.5">{{ editMode ? 'Edit Client' : 'Add New Client' }}</h2>
-          <div class="flex items-center gap-1.5 text-xs font-medium text-slate-400 mb-1">
+          <div class="flex items-center gap-1.5 text-xs font-medium text-slate-400 mb-1.5">
             <a routerLink="/clients" class="text-blue-600 hover:underline">Client Management</a>
             <svg class="w-3 h-3 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <a routerLink="/clients" class="text-blue-600 hover:underline">Clients</a>
@@ -19,11 +19,11 @@
         </div>
         <!-- Action Controls Block -->
         <div class="flex items-center gap-3 self-end sm:self-auto">
-          <button type="button" (click)="cancel()" class="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-600 shadow-sm transition">
+          <button type="button" (click)="cancel()" class="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs font-semibold text-slate-600 transition">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             <span>Cancel</span>
           </button>
-          <button type="button" (click)="onSubmit()" [disabled]="loading" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-2.5 text-xs font-semibold shadow-sm transition disabled:opacity-50">
+          <button type="button" (click)="onSubmit()" [disabled]="loading" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-xs font-semibold transition disabled:opacity-50">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
             <span>{{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Update Client' : 'Save Client') }}</span>
           </button>
@@ -38,21 +38,21 @@
 
           <!-- MODULE 1: CLIENT INFORMATION BOX -->
           <div class="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 space-y-5 shadow-sm">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide uppercase border-slate-100">1. Client Information</h3>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">1. Client Information</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <!-- Client Name -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Client Name <span class="text-red-500">*</span></label>
-                <input type="text" [(ngModel)]="clientName" name="clientName" (blur)="markTouched('clientName')" placeholder="Enter client name" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('clientName'))" [class.border-rose-500]="informationInvalid && touched.has('clientName')">
+                <label class="text-xs font-semibold text-slate-700">Client Name <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="clientName" name="clientName" (blur)="markTouched('clientName')" placeholder="Enter client name" class="w-full bg-white border text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('clientName'))" [class.border-rose-500]="informationInvalid && touched.has('clientName')">
                 @if (informationInvalid && touched.has('clientName')) {
                   <p class="text-xs text-rose-600 mt-1">Client Name is required</p>
                 }
               </div>
               <!-- Email Input -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Email <span class="text-red-500">*</span></label>
-                <input type="email" [(ngModel)]="email" name="email" (blur)="markTouched('email')" placeholder="Enter email address" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('email'))" [class.border-rose-500]="informationInvalid && touched.has('email')">
+                <label class="text-xs font-semibold text-slate-700">Email <span class="text-red-500">*</span></label>
+                <input type="email" [(ngModel)]="email" name="email" (blur)="markTouched('email')" placeholder="Enter email address" class="w-full bg-white border text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(informationInvalid && touched.has('email'))" [class.border-rose-500]="informationInvalid && touched.has('email')">
                 @if (informationInvalid && touched.has('email')) {
                   <p class="text-xs text-rose-600 mt-1">{{ sectionErrors.information.find(m => m.toLowerCase().includes('email')) || 'Email is required' }}</p>
                 }
@@ -62,17 +62,17 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <!-- Phone -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Phone</label>
-                <input type="text" [(ngModel)]="phone" name="phone" placeholder="Enter phone number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Phone</label>
+                <input type="text" [(ngModel)]="phone" name="phone" placeholder="Enter phone number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Website -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Website</label>
-                <input type="url" [(ngModel)]="website" name="website" placeholder="https://example.com" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Website</label>
+                <input type="url" [(ngModel)]="website" name="website" placeholder="https://example.com" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Region Custom Dropdown -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Region <span class="text-red-500">*</span></label>
+                <label class="text-xs font-semibold text-slate-700">Region <span class="text-red-500">*</span></label>
                 <app-rich-select
                   [options]="regions"
                   [(value)]="region"
@@ -90,19 +90,19 @@
 
             <!-- Address Textarea -->
             <div class="space-y-1.5">
-              <label class="text-xs font-semibold text-slate-600">Address</label>
-              <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Enter full address" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
+              <label class="text-xs font-semibold text-slate-700">Address</label>
+              <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Enter full address" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
             </div>
           </div>
 
           <!-- MODULE 2: ADDITIONAL METADATA DETAILS MODULE -->
           <div class="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 space-y-5 shadow-sm">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide uppercase border-slate-100">2. Additional Details</h3>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">2. Additional Details</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <!-- Industry Custom Select Dropdown -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Industry</label>
+                <label class="text-xs font-semibold text-slate-700">Industry</label>
                 <app-rich-select
                   [options]="industries"
                   [(value)]="industry"
@@ -114,44 +114,44 @@
               </div>
               <!-- VAT/Tax Number -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">VAT / Tax Number</label>
-                <input type="text" [(ngModel)]="vatNumber" name="vatNumber" placeholder="Enter VAT or tax number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">VAT / Tax Number</label>
+                <input type="text" [(ngModel)]="vatNumber" name="vatNumber" placeholder="Enter VAT or tax number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Registration Number -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Registration Number</label>
-                <input type="text" [(ngModel)]="registrationNumber" name="registrationNumber" placeholder="Enter registration number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Registration Number</label>
+                <input type="text" [(ngModel)]="registrationNumber" name="registrationNumber" placeholder="Enter registration number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <!-- Contact Person -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Contact Person</label>
-                <input type="text" [(ngModel)]="contactPerson" name="contactPerson" placeholder="Enter contact person name" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Contact Person</label>
+                <input type="text" [(ngModel)]="contactPerson" name="contactPerson" placeholder="Enter contact person name" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Designation -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Designation</label>
-                <input type="text" [(ngModel)]="designation" name="designation" placeholder="Enter designation" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Designation</label>
+                <input type="text" [(ngModel)]="designation" name="designation" placeholder="Enter designation" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <!-- Contact Email -->
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Contact Email</label>
-                <input type="email" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Enter contact email" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Contact Email</label>
+                <input type="email" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Enter contact email" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
 
             <!-- Additional Optional Notes Textarea -->
             <div class="space-y-1.5">
-              <label class="text-xs font-semibold text-slate-600">Notes</label>
-              <textarea [(ngModel)]="notes" name="notes" rows="3" placeholder="Enter any additional notes (optional)" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
+              <label class="text-xs font-semibold text-slate-700">Notes</label>
+              <textarea [(ngModel)]="notes" name="notes" rows="3" placeholder="Enter any additional notes (optional)" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
             </div>
           </div>
 
           <!-- MODULE 3: CLIENT OPERATION STATE SYSTEM STATUS -->
           <div class="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 space-y-4 shadow-sm mb-5">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide uppercase border-slate-100">3. Client Status</h3>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">3. Client Status</h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <!-- Active Card Selection Control -->
@@ -181,8 +181,8 @@
           <!-- Context Help Box Component -->
           <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3">
             <div class="flex items-center gap-2.5 text-blue-600">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-              <h4 class="text-[14px] font-normal text-slate-400 tracking-wider">About Clients</h4>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">About Clients</h4>
             </div>
             <p class="text-xs font-medium text-slate-500 leading-relaxed">
               Add a new client to your system. You can configure access settings, notifications and other preferences after the client is created.
@@ -191,18 +191,18 @@
 
           <!-- Live Form Validation Trackers Checklist -->
           <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4">
-            <h4 class="text-[14px] font-normal text-slate-400 tracking-wider text-slate-500"><span class="text-red-500">*</span> Required Fields</h4>
+            <h4 class="text-[13px] font-bold text-slate-400 tracking-wider text-slate-900"><span class="text-red-500">*</span> Required Fields</h4>
             <ul class="space-y-2.5 text-xs font-semibold" [ngClass]="!submitted ? 'text-slate-500' : 'text-slate-500'">
               <li [ngClass]="(submitted && !clientName) ? 'text-rose-500' : (submitted && clientName ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
-                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !clientName) ? 'bg-rose-500' : (submitted && clientName ? 'bg-emerald-500' : 'bg-slate-300')"></span>
+                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !clientName) ? 'bg-rose-500' : (submitted && clientName ? 'bg-emerald-500' : 'bg-slate-600')"></span>
                 <span>Client Name</span>
               </li>
               <li [ngClass]="(submitted && !email) ? 'text-rose-500' : (submitted && email ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
-                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !email) ? 'bg-rose-500' : (submitted && email ? 'bg-emerald-500' : 'bg-slate-300')"></span>
+                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !email) ? 'bg-rose-500' : (submitted && email ? 'bg-emerald-500' : 'bg-slate-600')"></span>
                 <span>Email</span>
               </li>
               <li [ngClass]="(submitted && !region) ? 'text-rose-500' : (submitted && region ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
-                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !region) ? 'bg-rose-500' : (submitted && region ? 'bg-emerald-500' : 'bg-slate-300')"></span>
+                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !region) ? 'bg-rose-500' : (submitted && region ? 'bg-emerald-500' : 'bg-slate-600')"></span>
                 <span>Region</span>
               </li>
             </ul>
@@ -211,27 +211,21 @@
           <!-- Future Procedures Info List -->
           <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3">
             <div class="flex items-center gap-2.5 text-blue-600">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-              <h4 class="text-[14px] font-normal text-slate-400 tracking-wider">What's Next?</h4>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-up-icon lucide-square-arrow-up"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+              <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">What's Next?</h4>
             </div>
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">After saving, you can:</p>
+            <p class="text-[11px] font-medium text-slate-600 tracking-wide">After saving, you can:</p>
             <ul class="space-y-2 text-xs font-medium text-slate-600">
               <li class="flex items-center gap-2.5">
                 <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <span>Add sites for this client</span>
+                <span>Add keys</span>
               </li>
               <li class="flex items-center gap-2.5">
                 <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <span>Create client users</span>
+                <span>Add Site
+                </span>
               </li>
-              <li class="flex items-center gap-2.5">
-                <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <span>Assign permissions</span>
-              </li>
-              <li class="flex items-center gap-2.5">
-                <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <span>Configure notification settings</span>
-              </li>
+              
             </ul>
           </div>
         </div>
