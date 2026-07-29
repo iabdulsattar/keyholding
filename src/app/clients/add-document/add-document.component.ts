@@ -43,8 +43,17 @@ export class AddDocumentComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      this.fileName = this.selectedFile.name;
+      const file = input.files[0];
+      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Only PDF and image files (.pdf, .jpg, .jpeg, .png, .webp) are allowed.');
+        input.value = '';
+        this.selectedFile = null;
+        this.fileName = '';
+        return;
+      }
+      this.selectedFile = file;
+      this.fileName = file.name;
     }
   }
 

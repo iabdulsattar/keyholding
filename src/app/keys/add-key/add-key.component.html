@@ -45,12 +45,12 @@
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Type <span class="text-red-500">*</span></label>
-                <app-rich-select [options]="keyTypeOptions" [(value)]="keyType" placeholder="Select key type" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('keyType')"></app-rich-select>
+                <app-rich-select [options]="keyTypeOptions" [(value)]="keyType" placeholder="Select key type" class="w-full" (valueChange)="markTouched('keyType')"></app-rich-select>
                 @if (infoInvalid && touched.has('keyType')) { <p class="text-xs text-rose-600 mt-1">Key Type is required</p> }
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Key Category <span class="text-red-500">*</span></label>
-                <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
+                <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
                 @if (infoInvalid && touched.has('keyCategory')) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
               </div>
             </div>
@@ -67,12 +67,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Client <span class="text-red-500">*</span></label>
-                <app-rich-select [options]="clientOptions" [(value)]="assignClientId" placeholder="Select client" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="onClientChange()"></app-rich-select>
+                <app-rich-select [options]="clientOptions" [(value)]="assignClientId" placeholder="Select client" class="w-full" (valueChange)="onClientChange()"></app-rich-select>
                 @if (assignInvalid && touched.has('assignClientId')) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-slate-600">Site <span class="text-red-500">*</span></label>
-                <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" [showSearch]="true" panelWidth="wide" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
+                <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
                 @if (assignInvalid && touched.has('assignSite')) { <p class="text-xs text-rose-600 mt-1">Site is required</p> }
               </div>
             </div>
