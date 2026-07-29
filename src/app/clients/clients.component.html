@@ -48,7 +48,7 @@
 
       <div (click)="setFilter('Inactive')" class="bg-white border border-slate-200 rounded-lg p-4 flex items-start space-x-4 hover:border-amber-400 transition duration-200 cursor-pointer group">
         <div class="p-3 bg-amber-50 text-amber-600 rounded-full group-hover:scale-105 transition">
-          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="10" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="10" y2="16"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-pause-icon lucide-circle-pause"><circle cx="12" cy="12" r="10"/><line x1="10" x2="10" y1="15" y2="9"/><line x1="14" x2="14" y1="15" y2="9"/></svg>
         </div>
         <div>
           <span class="text-[14px] font-normal text-black/90 tracking-wider block">Inactive Clients</span>
@@ -68,9 +68,6 @@
         <table class="w-full text-left border-collapse min-w-[1000px]">
           <thead>
             <tr class=" border-b border-black/10 text-[11px] font-bold text-black tracking-wider">
-              <th class="py-3 px-4 w-10">
-                <input type="checkbox" class="w-4 h-4 rounded border-black/30 text-blue-600 focus:ring-blue-500 bg-white">
-              </th>
               <th class="py-3 px-4">
                 <div class="flex items-center space-x-1 cursor-pointer hover:text-black">
                   <span>Client Code</span>
@@ -115,7 +112,6 @@
           <tbody class="divide-y divide-black/10 text-xs text-black/80 font-medium">
             @for (client of clients; track client.id) {
             <tr class="hover:bg-black/5 transition">
-              <td class="py-3 px-4"><input type="checkbox" class="row-checkbox w-4 h-4 rounded border-black/30 text-blue-600 focus:ring-blue-500 bg-white"></td>
               <td class="py-3 px-4"><span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100">{{ client.code }}</span></td>
               <td class="py-3 px-4 text-black font-normal">{{ client.name }}</td>
               <td class="py-3 px-4 text-black/70 font-normal">{{ client.email }}</td>
@@ -125,7 +121,7 @@
               <td class="py-3 px-4 text-center">{{ client.users }}</td>
               <td class="py-3 px-4 text-black/70 font-normal">{{ client.created }}</td>
               <td class="py-3 px-4 text-center">
-                <div class="flex items-center justify-center space-x-2 text-black/60">
+                <div class="flex items-center justify-center space-x-2 text-blue-500">
                   <button (click)="viewClient(client.id)" class="hover:text-blue-600 p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
                   <button class="hover:text-black p-1 transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
                 </div>
@@ -154,7 +150,7 @@
               @if (p === '...') {
                 <span class="w-8 h-8 flex items-center justify-center text-black/60">...</span>
               } @else {
-                <button (click)="goToPage(p)" [class.bg-blue-600]="page === p" [class.text-white]="page === p" [class.bg-white]="page !== p" [class.text-black/80]="page !== p" [class.border]="page !== p" [class.border-black/20]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-black/5 transition">
+                <button (click)="goToPage(p)" [class.bg-white]="page === p" [class.text-blue-500]="page === p" [class.border-blue-500]="page === p" [class.bg-white]="page !== p" [class.text-black/80]="page !== p" [class.border-black/20]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-black/5 transition border">
                   {{ pageLabel(p) }}
                 </button>
               }
@@ -177,7 +173,7 @@
     
   </div>
   <!-- Footer -->
-    <footer class="w-full bg-white border-t border-black/20 px-4 pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-black/60 font-medium space-y-2 sm:space-y-0">
+    <footer class="w-full bg-white border-t border-black/20 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
       <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
       <div class="flex items-center space-x-4">
         <a href="#" class="hover:text-black transition">Privacy Policy</a>
