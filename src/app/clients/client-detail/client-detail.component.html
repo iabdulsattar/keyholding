@@ -473,29 +473,32 @@
         <!-- RIGHT SIDEBAR METRIC & ACTIONS CARDS (Col Span 3) -->
         <div class="xl:col-span-4 space-y-5 w-full">
           
-           <!-- PIE CHART METRIC BOX OVERVIEW -->
-           <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
-            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Key Status Overview</h4>
-            
-            <!-- Custom Concentric Ring Donut Mock Graphic -->
-            <div class="flex items-center justify-center py-2">
-              <div class="relative w-36 h-36 flex items-center justify-center rounded-full border-8 border-emerald-500" style="border-right-color: #f59e0b; border-bottom-color: #3b82f6; border-left-color: #ef4444;">
-                <div class="absolute inset-0 m-2 rounded-full bg-white flex flex-col items-center justify-center shadow-inner">
-                  <span class="text-2xl font-black text-slate-900 tracking-tight">{{ filteredKeys.length }}</span>
-                  <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Total Keys</span>
+         
+           <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
+              <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Key Status Overview</h4>
+              <div class="flex items-center justify-between gap-2">
+                <div class="w-28 h-28 relative flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#f1f5f9" stroke-width="14"/>
+                     @for (seg of keyDonutSegments; track $index) {
+                       <circle cx="60" cy="60" r="50" fill="none" [attr.stroke]="seg.color" stroke-width="14" [attr.stroke-dasharray]="seg.length + ' ' + (314.16 - seg.length)" [attr.stroke-dashoffset]="seg.offset" stroke-linecap="butt"/>
+                     }
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1">
+                    <span class="text-xl font-extrabold text-slate-900 leading-none">{{  filteredKeys.length }}</span>
+                    <span class="text-[9px] font-medium tracking-wider text-slate-400 uppercase">Total Keys</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- Legend Metric Distribution Links -->
-            <div class="text-[11px] font-semibold text-slate-600 space-y-2 pt-1">
-              <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>In Storage</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[0]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[0]?.pct ?? 0 }}%)</span></span></div>
+                <div class="flex-1 space-y-1.5 text-xs pl-2">
+                 <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>In Storage</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[0]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[0]?.pct ?? 0 }}%)</span></span></div>
               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>Issued</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[1]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[1]?.pct ?? 0 }}%)</span></span></div>
               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>In Use</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[2]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[2]?.pct ?? 0 }}%)</span></span></div>
               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span>Overdue</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[3]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[3]?.pct ?? 0 }}%)</span></span></div>
               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span><span>Lost / Damaged</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[4]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[4]?.pct ?? 0 }}%)</span></span></div>
+         </div>
+              </div>
             </div>
-          </div>
+
 
           <!-- QUICK OPERATIONS UTILITY NAVIGATION LINKS -->
           <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3.5">
@@ -633,9 +636,9 @@
                 <div class="w-28 h-28 relative flex items-center justify-center shrink-0">
                   <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
                     <circle cx="60" cy="60" r="50" fill="none" stroke="#f1f5f9" stroke-width="14"/>
-                    @for (seg of siteDonutSegments; track $index) {
-                      <circle cx="60" cy="60" r="50" fill="none" [attr.stroke]="seg.color" stroke-width="14" stroke-dasharray="314.16" [attr.stroke-dashoffset]="seg.offset" stroke-linecap="butt"/>
-                    }
+                     @for (seg of siteDonutSegments; track $index) {
+                       <circle cx="60" cy="60" r="50" fill="none" [attr.stroke]="seg.color" stroke-width="14" [attr.stroke-dasharray]="seg.length + ' ' + (314.16 - seg.length)" [attr.stroke-dashoffset]="seg.offset" stroke-linecap="butt"/>
+                     }
                   </svg>
                   <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1">
                     <span class="text-xl font-extrabold text-slate-900 leading-none">{{ siteStats?.total ?? sites.length }}</span>

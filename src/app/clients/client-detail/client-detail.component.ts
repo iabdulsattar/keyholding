@@ -113,7 +113,7 @@ export class ClientDetailComponent implements OnInit {
         const offset = -cumulativeOffset;
         cumulativeOffset += length;
         return { color: seg.color, offset, length };
-      });
+      }).filter(seg => seg.length > 0);
     });
   }
 
@@ -283,6 +283,29 @@ export class ClientDetailComponent implements OnInit {
         pct: Math.round((data.count / total) * 100)
       };
     });
+  }
+
+  get keyDonutSegments(): { color: string; offset: number; length: number }[] {
+    const circumference = 2 * Math.PI * 50;
+    const stats = this.keyStatusStats;
+    const segments = stats.map(s => ({
+      color: s.color === 'bg-emerald-500' ? '#10b981' :
+             s.color === 'bg-amber-500' ? '#f59e0b' :
+             s.color === 'bg-blue-500' ? '#3b82f6' :
+             s.color === 'bg-rose-500' ? '#ef4444' : '#94a3b8',
+      count: s.count,
+      pct: s.pct
+    }));
+
+    let cumulativeOffset = 0;
+    const all = segments.map(seg => {
+      const length = (seg.pct / 100) * circumference;
+      const offset = -cumulativeOffset;
+      cumulativeOffset += length;
+      return { color: seg.color, offset, length, count: seg.count };
+    });
+
+    return all.filter(seg => seg.length > 0 && seg.count > 0);
   }
 
   get keyTypeStats(): { type: string; count: number; color: string; pct: number }[] {
