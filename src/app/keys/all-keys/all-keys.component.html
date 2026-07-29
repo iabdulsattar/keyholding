@@ -116,10 +116,10 @@
                 </div>
               </td>
               <td class="td-cell font-semibold text-slate-900">{{ k.name }}</td>
-              <td class="td-cell" [innerHTML]="typeBadge(k.type)"></td>
+              <td class="td-cell" [innerHTML]="typeBadge(k.type, k.typeColor)"></td>
               <td class="td-cell text-slate-600">{{ k.siteName || '--' }}</td>
               <td class="td-cell text-slate-600">{{ k.clientName || '--' }}</td>
-              <td class="td-cell" [innerHTML]="statusBadge(k.status)"></td>
+               <td class="td-cell" [innerHTML]="statusBadge(k.status, k.statusColor)"></td>
               <td class="td-cell text-slate-600 whitespace-pre-line leading-snug max-w-[200px] truncate" [title]="k.storageLocation">{{ k.storageLocation || '--' }}</td>
               <td class="td-cell text-slate-600">{{ k.assignedTo || '--' }}</td>
               <td class="td-cell text-right pr-5">

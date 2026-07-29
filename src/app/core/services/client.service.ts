@@ -19,7 +19,7 @@ export interface KeyRecord {
   typeColor: string;
   site: string;
   siteName: string;
-  status: 'In Storage' | 'Issued' | 'In Use' | 'Overdue' | 'Lost';
+  status: 'In Storage' | 'Issued' | 'In Use' | 'Overdue' | 'Lost' | 'Damaged' | 'Damaged / Lost';
   statusColor: string;
   storageLocation: string;
   storageDetail: string;
@@ -375,18 +375,41 @@ export class ClientService {
       'ISSUED': 'Issued',
       'IN_USE': 'In Use',
       'OVERDUE': 'Overdue',
+      'DAMAGED': 'Damaged',
       'LOST': 'Lost',
+      'LOST_DAMAGED': 'Damaged / Lost',
+      'DAMAGED_LOST': 'Damaged / Lost',
     };
+    const typeColorMap: Record<string, string> = {
+      'Master Key': 'blue',
+      'Door Key': 'emerald',
+      'Alarm Key': 'violet',
+      'Gate Key': 'orange',
+      'Utility Key': 'cyan',
+      'Office Key': 'indigo',
+      'IT Key': 'violet',
+    };
+    const statusColorMap: Record<string, string> = {
+      'In Storage': 'emerald',
+      'Issued': 'blue',
+      'In Use': 'indigo',
+      'Overdue': 'orange',
+      'Damaged': 'violet',
+      'Lost': 'rose',
+      'Damaged / Lost': 'rose',
+    };
+    const rawStatus = item.status ?? 'IN_STORAGE';
+    const mappedStatus = statusMap[rawStatus] ?? 'In Storage';
     return {
       id: item.id ?? '',
       keyCode: item.keyCode ?? item.code ?? '',
       name: item.name ?? '',
       type: item.keyTypeName ?? item.type ?? '',
-      typeColor: 'blue',
+      typeColor: typeColorMap[item.keyTypeName ?? item.type ?? ''] || 'blue',
       site: item.siteId ?? '',
       siteName: item.siteName ?? '',
-      status: statusMap[item.status] ?? 'In Storage',
-      statusColor: 'emerald',
+      status: mappedStatus,
+      statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
       storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
       storageDetail: '',
       assignedTo: item.assignedToUserName ?? '',

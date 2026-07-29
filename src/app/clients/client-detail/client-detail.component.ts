@@ -310,18 +310,31 @@ export class ClientDetailComponent implements OnInit {
 
   get keyTypeStats(): { type: string; count: number; color: string; pct: number }[] {
     const total = this.filteredKeys.length || 1;
-    const counts = new Map<string, { count: number; color: string }>();
+    const hexMap: Record<string, string> = {
+      'Master Key': '#3b82f6',
+      'Door Key': '#10b981',
+      'Alarm Key': '#8b5cf6',
+      'Gate Key': '#f59e0b',
+      'Utility Key': '#06b6d4',
+      'Office Key': '#6366f1',
+      'IT Key': '#8b5cf6',
+    };
+    const knownTypes = ['Master Key', 'Door Key', 'Alarm Key', 'Gate Key', 'Utility Key', 'Office Key', 'IT Key'];
+    const counts = new Map<string, number>();
     this.filteredKeys.forEach(k => {
-      const color = k.typeColor || 'bg-slate-400';
-      const existing = counts.get(k.type) || { count: 0, color };
-      counts.set(k.type, { count: existing.count + 1, color });
+      counts.set(k.type, (counts.get(k.type) || 0) + 1);
     });
-    return Array.from(counts.entries()).map(([type, data]) => ({
+    const others = this.filteredKeys.filter(k => !knownTypes.includes(k.type)).length;
+    const stats = knownTypes.map(type => ({
       type,
-      count: data.count,
-      color: data.color,
-      pct: Math.round((data.count / total) * 100)
+      count: counts.get(type) || 0,
+      color: hexMap[type] || '#94a3b8',
+      pct: Math.round(((counts.get(type) || 0) / total) * 100)
     }));
+    if (others > 0) {
+      stats.push({ type: 'Others', count: others, color: '#94a3b8', pct: Math.round((others / total) * 100) });
+    }
+    return stats;
   }
 
   private statusColorFor(status: string, fallback?: string): string {

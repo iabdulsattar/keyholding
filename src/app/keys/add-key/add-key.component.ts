@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { KeyVaultService, KeyType, KeyCategory } from '../../core/services/keyvault.service';
+import { KeyVaultService, KeyType, KeyCategory, KeyAttachment } from '../../core/services/keyvault.service';
 import { ClientService, SiteRecord, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
@@ -41,6 +41,9 @@ export class AddKeyComponent implements OnInit {
   fileName = '';
   selectedFiles: File[] = [];
   attachmentPreviews: { file: File; url: string }[] = [];
+  existingAttachments: KeyAttachment[] = [];
+  attachmentsLoading = false;
+  attachmentError = '';
 
   keyTypes: KeyType[] = [];
   keyCategories: KeyCategory[] = [];
@@ -210,16 +213,68 @@ export class AddKeyComponent implements OnInit {
       },
       error: () => this.toast.error('Failed to load key details.')
     });
+    this.loadExistingAttachments(keyId);
   }
 
   setStatus(status: 'active' | 'inactive'): void {
     this.keyStatus = status;
   }
 
+  private loadExistingAttachments(keyId: string): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId || !keyId) return;
+    this.attachmentsLoading = true;
+    this.attachmentError = '';
+    this.keyVault.listKeyAttachments(orgId, keyId).subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res ?? [];
+        this.existingAttachments = Array.isArray(payload) ? payload : [];
+        this.attachmentsLoading = false;
+      },
+      error: () => {
+        this.existingAttachments = [];
+        this.attachmentsLoading = false;
+        this.attachmentError = 'Unable to load existing attachments.';
+      }
+    });
+  }
+
+  deleteExistingAttachment(attachmentId: string | undefined): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId || !this.editKeyId || !attachmentId) return;
+    this.keyVault.deleteKeyAttachment(orgId, this.editKeyId, attachmentId).subscribe({
+      next: () => {
+        this.toast.success('Attachment removed');
+        this.existingAttachments = this.existingAttachments.filter(a => a.id !== attachmentId);
+      },
+      error: () => this.toast.error('Failed to remove attachment')
+    });
+  }
+
+  get totalAttachments(): number {
+    return this.existingAttachments.length + this.selectedFiles.length;
+  }
+
+  get hasAttachments(): boolean {
+    return this.totalAttachments > 0;
+  }
+
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
-    Array.from(input.files).forEach(file => {
+    if (this.totalAttachments >= 1) {
+      this.toast.error('Only 1 attachment is allowed. Remove the existing one first.');
+      input.value = '';
+      return;
+    }
+    const remaining = 1 - this.selectedFiles.length;
+    if (remaining <= 0) {
+      this.toast.error('Only 1 attachment is allowed.');
+      input.value = '';
+      return;
+    }
+    const files = Array.from(input.files).slice(0, remaining);
+    files.forEach(file => {
       this.selectedFiles.push(file);
       const reader = new FileReader();
       reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string });
@@ -261,6 +316,9 @@ export class AddKeyComponent implements OnInit {
       this.selectedFiles = [];
       this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
       this.attachmentPreviews = [];
+      this.existingAttachments = [];
+      this.attachmentsLoading = false;
+      this.attachmentError = '';
     }
   }
 
@@ -310,7 +368,11 @@ export class AddKeyComponent implements OnInit {
         const savedKey = res?.data ?? res;
         const savedKeyId = savedKey?.id || this.editKeyId;
         if (savedKeyId && this.selectedFiles.length) {
-          this.uploadAttachments(orgId, savedKeyId);
+          if (this.editing && this.existingAttachments.length > 0) {
+            this.deleteExistingAttachmentsBeforeUpload(orgId, savedKeyId);
+          } else {
+            this.uploadAttachments(orgId, savedKeyId);
+          }
         } else {
           this.finishKeySubmit();
         }
@@ -337,6 +399,32 @@ export class AddKeyComponent implements OnInit {
         error: () => {
           pending--;
           this.maybeFinishKeySubmit(pending);
+        }
+      });
+    });
+  }
+
+  private deleteExistingAttachmentsBeforeUpload(orgId: string, keyId: string): void {
+    let pending = this.existingAttachments.length;
+    if (!pending) {
+      this.uploadAttachments(orgId, keyId);
+      return;
+    }
+
+    this.existingAttachments.forEach(att => {
+      if (!att.id) {
+        pending--;
+        if (pending <= 0) this.uploadAttachments(orgId, keyId);
+        return;
+      }
+      this.keyVault.deleteKeyAttachment(orgId, keyId, att.id).subscribe({
+        next: () => {
+          pending--;
+          if (pending <= 0) this.uploadAttachments(orgId, keyId);
+        },
+        error: () => {
+          pending--;
+          if (pending <= 0) this.uploadAttachments(orgId, keyId);
         }
       });
     });
@@ -422,6 +510,19 @@ export class AddKeyComponent implements OnInit {
 
   isImage(type = ''): boolean {
     return type.toLowerCase().startsWith('image/');
+  }
+
+  formatSize(bytes = 0): string {
+    if (!bytes) return '-';
+    const mb = bytes / (1024 * 1024);
+    return mb >= 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
+  }
+
+  iconForType(type = ''): string {
+    const t = type.toLowerCase();
+    if (t.includes('image')) return 'image';
+    if (t.includes('pdf')) return 'pdf';
+    return 'doc';
   }
 
   trackByIndex(index: number): number {

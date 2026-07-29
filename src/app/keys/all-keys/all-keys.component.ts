@@ -222,36 +222,21 @@ export class AllKeysComponent implements OnInit {
     return key.id;
   }
 
-  statusBadge(status: string): string {
-    switch (status) {
-      case 'In Storage':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>On the Hook</span></span>`;
-      case 'Issued':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span><span>Issued</span></span>`;
-      case 'In Use':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span><span>In Use</span></span>`;
-      case 'Overdue':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-orange-50 text-orange-700 border border-orange-100"><span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span><span>Overdue</span></span>`;
-      case 'Damaged':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-violet-50 text-violet-700 border border-violet-100"><span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span><span>Damaged</span></span>`;
-      case 'Lost':
-      case 'Damaged / Lost':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-100"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>Damaged / Lost</span></span>`;
-      default:
-        return status;
-    }
+  statusBadge(status: string, color = 'emerald'): string {
+    const labelMap: Record<string, string> = {
+      'In Storage': 'On the Hook',
+      'Issued': 'Issued',
+      'In Use': 'In Use',
+      'Overdue': 'Overdue',
+      'Damaged': 'Damaged',
+      'Lost': 'Damaged / Lost',
+      'Damaged / Lost': 'Damaged / Lost',
+    };
+    const label = labelMap[status] || status;
+    return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-${color}-50 text-${color}-700 border border-${color}-100"><span class="w-1.5 h-1.5 rounded-full bg-${color}-500"></span><span>${label}</span></span>`;
   }
 
-  typeBadge(type: string): string {
-    const map: Record<string, string> = {
-      'Master Key': 'bg-blue-50 text-blue-600',
-      'Door Key': 'bg-emerald-50 text-emerald-600',
-      'Alarm Key': 'bg-violet-50 text-violet-600',
-      'Gate Key': 'bg-orange-50 text-orange-600',
-      'Utility Key': 'bg-cyan-50 text-cyan-600',
-      'Office Key': 'bg-indigo-50 text-indigo-600',
-      'IT Key': 'bg-violet-50 text-violet-600',
-    };
-    return `<span class="tag ${map[type] || 'bg-slate-100 text-slate-600'}">${type}</span>`;
+  typeBadge(type: string, color = 'slate'): string {
+    return `<span class="tag bg-${color}-50 text-${color}-600">${type}</span>`;
   }
 }
