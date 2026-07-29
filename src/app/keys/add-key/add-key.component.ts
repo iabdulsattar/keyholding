@@ -102,11 +102,10 @@ export class AddKeyComponent implements OnInit {
     });
   }
 
-  private toRichOptions(items: any[], labelKey = 'name', valueKey = 'id', descKey = 'code'): RichSelectOption[] {
+  private toRichOptions(items: any[], labelKey = 'name', valueKey = 'id'): RichSelectOption[] {
     return items.map((item: any) => ({
       value: item[valueKey] || '',
-      label: item[labelKey] || '',
-      description: item[descKey] || ''
+      label: item[labelKey] || ''
     }));
   }
 
