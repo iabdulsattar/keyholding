@@ -47,8 +47,8 @@
                   More <i class="fa-solid fa-ellipsis"></i>
                 </button>
                 <div id="moreDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
-                  <a href="#" (click)="onEditKey(); toggleDropdown()" class="block px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-pen mr-2"></i> Edit Details</a>
-                  <a href="#" (click)="onDeleteKey(); toggleDropdown()" class="block px-4 py-2 hover:bg-slate-50 text-rose-600"><i class="fa-solid fa-trash mr-2"></i> Delete Key</a>
+                  <button type="button" (click)="onEditKey(); toggleDropdown()" class="w-full text-left block px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-pen mr-2"></i> Edit Details</button>
+                  <button type="button" (click)="onDeleteKey(); toggleDropdown()" class="w-full text-left block px-4 py-2 hover:bg-slate-50 text-rose-600"><i class="fa-solid fa-trash mr-2"></i> Delete Key</button>
                 </div>
               </div>
             </div>
