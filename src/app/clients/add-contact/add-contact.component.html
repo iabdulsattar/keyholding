@@ -1,0 +1,228 @@
+<div class="min-h-[calc(100vh-48px)] text-gray-900">
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- Topbar -->
+    <header class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="flex items-start gap-3 min-w-0">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 text-[12.5px] text-slate-400">
+              <span>Client Management</span>
+              <span>›</span>
+              <span>Clients</span>
+              <span>›</span>
+              <span>Client Details</span>
+              <span>›</span>
+              <span class="text-slate-700 font-medium">Add Contact</span>
+            </div>
+            <h1 class="text-[20px] sm:text-[22px] font-bold text-slate-900 mt-1">Add Contact</h1>
+            <p class="text-[13px] text-slate-500 mt-0.5">Add a new contact for {{ clientName }}.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+          <button (click)="goBack()" class="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-slate-300 text-slate-600 text-[13px] font-medium hover:bg-slate-50 transition">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Back to Contacts
+          </button>
+          <button class="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-slate-300 text-slate-600 text-[13px] font-medium hover:bg-slate-50 transition w-10 justify-center px-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6h.01M12 12h.01M12 18h.01"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-[1400px] w-full mx-auto">
+      <div class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
+
+        <!-- Form column -->
+        <div class="space-y-6">
+
+          <!-- Contact Information -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <h3 class="text-base font-bold text-slate-900 mb-5">Contact Information</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div>
+                <label class="field-label">First Name <span class="text-rose-500">*</span></label>
+                <input type="text" [(ngModel)]="firstName" placeholder="Enter first name" class="field-input" />
+              </div>
+              <div>
+                <label class="field-label">Last Name <span class="text-rose-500">*</span></label>
+                <input type="text" [(ngModel)]="lastName" placeholder="Enter last name" class="field-input" />
+              </div>
+              <div>
+                <label class="field-label">Job Title <span class="text-rose-500">*</span></label>
+                <input type="text" [(ngModel)]="jobTitle" placeholder="Enter job title" class="field-input" />
+              </div>
+
+              <div>
+                <label class="field-label">Email Address <span class="text-rose-500">*</span></label>
+                <input type="email" [(ngModel)]="email" placeholder="Enter email address" class="field-input" />
+                <p class="field-hint">Enter a valid email address.</p>
+              </div>
+              <div>
+                <label class="field-label">Phone Number <span class="text-rose-500">*</span></label>
+                <div class="flex gap-2">
+                  <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
+                    🇬🇧 +44
+                    <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <input type="text" [(ngModel)]="phone" placeholder="Enter phone number" class="field-input flex-1" />
+                </div>
+                <p class="field-hint">Enter a valid phone number.</p>
+              </div>
+              <div>
+                <label class="field-label">Department</label>
+                <select [(ngModel)]="department" class="field-input">
+                  <option value="">Select department</option>
+                  <option>Operations</option>
+                  <option>Accounts</option>
+                  <option>Finance</option>
+                  <option>Human Resources</option>
+                  <option>Compliance</option>
+                  <option>Customer Support</option>
+                  <option>IT</option>
+                  <option>Procurement</option>
+                </select>
+                <p class="field-hint">Select the department.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+              <div>
+                <label class="field-label">Primary Contact <span class="text-rose-500">*</span></label>
+                <div class="flex items-center gap-6 h-10">
+                  <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                    <input type="radio" name="primary" [(ngModel)]="primaryContact" [value]="true" class="accent-[#4338ca] w-4 h-4" /> Yes
+                  </label>
+                  <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                    <input type="radio" name="primary" [(ngModel)]="primaryContact" [value]="false" class="accent-[#4338ca] w-4 h-4" /> No
+                  </label>
+                </div>
+                <p class="field-hint">Select if this contact is the primary contact.</p>
+              </div>
+              <div>
+                <label class="field-label">Status <span class="text-rose-500">*</span></label>
+                <select [(ngModel)]="status" class="field-input">
+                  <option>Active</option>
+                  <option>Inactive</option>
+                </select>
+                <p class="field-hint">Set the status of this contact.</p>
+              </div>
+              <div>
+                <label class="field-label">Preferred Contact Method</label>
+                <select [(ngModel)]="preferredContactMethod" class="field-input">
+                  <option>Email</option>
+                  <option>Phone</option>
+                  <option>SMS</option>
+                </select>
+                <p class="field-hint">How would you like to be contacted?</p>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <label class="field-label">Address <span class="text-slate-400 font-normal">(Optional)</span></label>
+              <textarea rows="3" [(ngModel)]="address" placeholder="Enter address" class="field-input resize-y"></textarea>
+              <p class="field-hint">Enter the contact address.</p>
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <h3 class="text-base font-bold text-slate-900 mb-5">Additional Information <span class="text-slate-400 font-normal text-sm">(Optional)</span></h3>
+            <label class="field-label">Notes</label>
+            <textarea rows="4" [(ngModel)]="notes" placeholder="Enter any additional notes about this contact" class="field-input resize-y"></textarea>
+            <p class="field-hint">Add any extra information about this contact.</p>
+
+            <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-6">
+              <button (click)="goBack()" class="btn-outline justify-center">Cancel</button>
+              <button (click)="saveContact()" class="btn-primary justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Save Contact
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar column -->
+        <div class="space-y-6">
+          <!-- Tips -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3a6 6 0 00-4 10.472V15a1 1 0 001 1h6a1 1 0 001-1v-1.528A6 6 0 0012 3z"/></svg>
+              </div>
+              <h4 class="font-bold text-slate-900">Tips</h4>
+            </div>
+            <div class="space-y-4">
+              <div class="flex gap-3">
+                <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Add accurate contact details</p>
+                  <p class="text-xs text-slate-400 mt-0.5">Ensure all information is correct for effective communication.</p>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Set as Primary Contact</p>
+                  <p class="text-xs text-slate-400 mt-0.5">Primary contacts receive important notifications and updates.</p>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Keep Information Updated</p>
+                  <p class="text-xs text-slate-400 mt-0.5">Regularly update contact details to maintain accurate records.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Preview -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              </div>
+              <h4 class="font-bold text-slate-900">Quick Preview</h4>
+            </div>
+            <dl class="divide-y divide-slate-100 text-sm">
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Name</dt>
+                <dd class="text-slate-400">{{ firstName || lastName ? firstName + ' ' + lastName : '–' }}</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Job Title</dt>
+                <dd class="text-slate-400">{{ jobTitle || '–' }}</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Email</dt>
+                <dd class="text-slate-400">{{ email || '–' }}</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Phone</dt>
+                <dd class="text-slate-400">{{ phone || '–' }}</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Department</dt>
+                <dd class="text-slate-400">{{ department || '–' }}</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Status</dt>
+                <dd class="text-slate-400">{{ status || '–' }}</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="font-medium text-slate-700">Primary Contact</dt>
+                <dd class="text-slate-400">{{ primaryContact ? 'Yes' : 'No' }}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>

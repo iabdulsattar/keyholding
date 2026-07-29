@@ -180,6 +180,64 @@ export class ClientService {
     return this.keyVault.getSiteStats(orgId, clientId);
   }
 
+  getOrgSiteStats(): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.getOrgSiteStats(orgId);
+  }
+
+  listDocuments(clientId: string, params?: { q?: string; category?: string; documentType?: string; page?: number; size?: number }): Observable<PaginatedResult<any>> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+    const page = params?.page ?? 0;
+    const size = params?.size ?? 10;
+    return this.keyVault.listDocuments(orgId, clientId, { q: params?.q, category: params?.category, documentType: params?.documentType, page, size }).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => item);
+        const totalItems = data.totalItems ?? data.total ?? items.length;
+        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        return { items, totalItems, page, size, totalPages };
+      })
+    );
+  }
+
+  getDocumentStats(clientId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.getDocumentStats(orgId, clientId);
+  }
+
+  getDocument(clientId: string, documentId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.getDocument(orgId, clientId, documentId);
+  }
+
+  createDocument(clientId: string, file: File, name: string, category: string, documentType: string, description?: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.uploadDocument(orgId, clientId, file, name, category, documentType, description);
+  }
+
+  updateDocument(clientId: string, documentId: string, params: { name?: string; category?: string }): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.updateDocument(orgId, clientId, documentId, params);
+  }
+
+  deleteDocument(clientId: string, documentId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.deleteDocument(orgId, clientId, documentId);
+  }
+
+  downloadDocument(clientId: string, documentId: string): Observable<Blob> {
+    const orgId = this.getOrgId();
+    if (!orgId) throw new Error('No organization ID');
+    return this.keyVault.downloadDocument(orgId, clientId, documentId);
+  }
+
   getKeysByClient(clientCode: string): Observable<KeyRecord[]> {
     const orgId = this.getOrgId();
     if (!orgId) return of([]);
