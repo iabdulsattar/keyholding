@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClientService } from '../../core/services/client.service';
+import { SafeUrlPipe } from '../../shared/pipe/safe-url.pipe';
 
 @Component({
   selector: 'app-view-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe],
   templateUrl: './view-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -20,16 +22,10 @@ export class ViewDocumentComponent implements OnInit {
   clientName = 'Metro Security Services';
   docId = '';
 
-  documentName = 'Service Agreement.pdf';
-  category = 'Legal';
-  documentType = 'PDF';
-  size = '1.2 MB';
-  uploadedBy = 'Faisa Ahmed';
-  uploadDate = '15 May 2024, 10:30 AM';
-  lastModified = '15 May 2024, 10:30 AM';
-  description = 'Service agreement with terms and conditions.';
+  document: any = null;
+  previewType: 'pdf' | 'image' | 'other' = 'other';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
@@ -37,6 +33,64 @@ export class ViewDocumentComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.clientName = params['clientName'] || this.clientName;
     });
+    if (this.clientId && this.docId) {
+      this.clientService.getDocument(this.clientId, this.docId).subscribe({
+        next: (doc: any) => {
+          this.document = doc ?? {};
+          const type = (doc?.documentType || doc?.fileType || '').toLowerCase();
+          const fileName = (doc?.name || doc?.fileName || '').toLowerCase();
+          if (type.includes('pdf') || fileName.endsWith('.pdf')) {
+            this.previewType = 'pdf';
+          } else if (type.includes('image') || /\.(jpe?g|png|gif|webp|bmp|svg)$/.test(fileName)) {
+            this.previewType = 'image';
+          } else {
+            this.previewType = 'other';
+          }
+        },
+        error: () => {
+          this.document = {};
+        }
+      });
+    }
+  }
+
+  get documentName(): string {
+    return this.document?.name || this.document?.fileName || 'Document';
+  }
+
+  get category(): string {
+    return this.document?.category || 'General';
+  }
+
+  get documentType(): string {
+    return this.document?.documentType || this.document?.fileType || '—';
+  }
+
+  get size(): string {
+    const bytes = this.document?.sizeBytes || this.document?.fileSize || 0;
+    if (!bytes) return '—';
+    const mb = bytes / (1024 * 1024);
+    return mb >= 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
+  }
+
+  get uploadedBy(): string {
+    return this.document?.uploadedByUserName || '—';
+  }
+
+  get uploadDate(): string {
+    return this.formatDateTime(this.document?.createdAt);
+  }
+
+  get lastModified(): string {
+    return this.formatDateTime(this.document?.updatedAt);
+  }
+
+  get description(): string {
+    return this.document?.description || '—';
+  }
+
+  get publicUrl(): string {
+    return this.document?.publicUrl || this.document?.url || '';
   }
 
   goBack(): void {
@@ -51,11 +105,24 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   downloadDocument(): void {
-    console.log('Download document:', this.docId);
+    if (!this.docId) return;
+    this.clientService.downloadDocument(this.clientId, this.docId).subscribe({
+      next: (blob: Blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = this.documentName || 'document';
+        a.click();
+        URL.revokeObjectURL(url);
+      },
+      error: () => alert('Failed to download document.')
+    });
   }
 
   openInNewTab(): void {
-    console.log('Open document in new tab:', this.docId);
+    if (this.publicUrl) {
+      window.open(this.publicUrl, '_blank');
+    }
   }
 
   shareDocument(): void {
@@ -67,6 +134,21 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   deleteDocument(): void {
-    console.log('Delete document:', this.docId);
+    if (!confirm('Are you sure you want to delete this document?')) return;
+    this.clientService.deleteDocument(this.clientId, this.docId).subscribe({
+      next: () => {
+        this.router.navigate(['/clients', this.clientId]);
+      },
+      error: () => alert('Failed to delete document.')
+    });
+  }
+
+  private formatDateTime(value: any): string {
+    if (!value) return '—';
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return `${datePart}, ${timePart}`;
   }
 }
