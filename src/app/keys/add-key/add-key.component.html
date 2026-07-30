@@ -5,103 +5,103 @@
       <div class=" flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 shrink-0 gap-4 pb-5">
         <div>
           <div class="flex items-center gap-3">
-            <a routerLink="/clients" class="text-slate-400 hover:text-slate-600 text-xs flex items-center gap-1 font-semibold">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            <a routerLink="/clients" class="text-blue-500 hover:text-slate-600 text-xs flex items-center gap-1 font-semibold">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
               Back to Keys
             </a>
           </div>
-          <h2 class="text-xl font-bold text-slate-900 mt-1">{{ pageTitle }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 mt-2">{{ pageTitle }}</h2>
           <div class="flex items-center gap-2 text-xs text-slate-400 mt-1.5">
-            <a routerLink="/clients" class="hover:text-blue-600">Client Management</a>
+            <a routerLink="/clients" class="hover:text-blue-600 text-blue-500 font-medium">Client Management</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <a routerLink="/clients" class="hover:text-blue-600">Clients</a>
+            <a routerLink="/clients" class="hover:text-blue-600 text-blue-500 font-medium">Clients</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <a routerLink="/clients" class="hover:text-blue-600">Metro Security Services</a>
+            <a routerLink="/clients" class="hover:text-blue-600 text-blue-500 font-medium">Metro Security Services</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            <a routerLink="/clients" class="hover:text-blue-600">Keys</a>
+            <a routerLink="/clients" class="hover:text-blue-600 text-blue-500 font-medium">Keys</a>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <span class="text-slate-600 font-medium">{{ pageTitle }}</span>
           </div>
         </div>
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-          <button type="button" (click)="resetForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-3 border border-slate-200 rounded-xl transition">Cancel</button>
-          <button type="button" (click)="submitKeyForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-sm flex items-center justify-center gap-2 transition">
+          <button type="button" (click)="resetForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-3 border border-slate-200 rounded-lg transition">Cancel</button>
+          <button type="button" (click)="submitKeyForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-lg shadow-sm flex items-center justify-center gap-2 transition">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
             {{ editing ? 'Update Key' : 'Save Key' }}
           </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 items-start">
-        <form id="keyForm" class="xl:col-span-3 space-y-5" (ngSubmit)="submitKeyForm()">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+        <form id="keyForm" class="xl:col-span-8 space-y-5" (ngSubmit)="submitKeyForm()">
 
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Key Information</h3>
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 ">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100">Key Information</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Name <span class="text-red-500">*</span></label>
-                <input type="text" [(ngModel)]="keyName" name="keyName" (blur)="markTouched('keyName')" placeholder="e.g. Front Door Key" class="w-full bg-white border text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(infoInvalid && touched.has('keyName'))" [class.border-rose-500]="infoInvalid && touched.has('keyName')">
+                <label class="text-xs font-semibold text-slate-700">Key Name <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="keyName" name="keyName" (blur)="markTouched('keyName')" placeholder="e.g. Front Door Key" class="w-full bg-white border text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(infoInvalid && touched.has('keyName'))" [class.border-rose-500]="infoInvalid && touched.has('keyName')">
                 @if (infoInvalid && touched.has('keyName')) { <p class="text-xs text-rose-600 mt-1">Key Name is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Type <span class="text-red-500">*</span></label>
+                <label class="text-xs font-semibold text-slate-700">Key Type <span class="text-red-500">*</span></label>
                 <app-rich-select [options]="keyTypeOptions" [(value)]="keyType" placeholder="Select key type" class="w-full" (valueChange)="markTouched('keyType')"></app-rich-select>
                 @if (infoInvalid && touched.has('keyType')) { <p class="text-xs text-rose-600 mt-1">Key Type is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Category <span class="text-red-500">*</span></label>
+                <label class="text-xs font-semibold text-slate-700">Key Category <span class="text-red-500">*</span></label>
                 <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
                 @if (infoInvalid && touched.has('keyCategory')) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
               <div class="md:col-span-3 space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Description / Notes</label>
-                <textarea [(ngModel)]="keyNotes" name="keyNotes" rows="2" placeholder="Optional notes about this key" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
+                <label class="text-xs font-semibold text-slate-700">Key Description / Notes</label>
+                <textarea [(ngModel)]="keyNotes" name="keyNotes" rows="2" placeholder="Optional notes about this key" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Assign To</h3>
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 ">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 ">Assign To</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Client <span class="text-red-500">*</span></label>
+                <label class="text-xs font-semibold text-slate-700">Client <span class="text-red-500">*</span></label>
                 <app-rich-select [options]="clientOptions" [value]="assignClientId" (valueChange)="onClientChange($event)" placeholder="Select client" class="w-full"></app-rich-select>
                 @if (assignInvalid && touched.has('assignClientId')) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Site <span class="text-red-500">*</span></label>
+                <label class="text-xs font-semibold text-slate-700">Site <span class="text-red-500">*</span></label>
                 <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
                 @if (assignInvalid && touched.has('assignSite')) { <p class="text-xs text-rose-600 mt-1">Site is required</p> }
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Key Details</h3>
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 ">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 ">Key Details</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Make / Brand</label>
-                <input type="text" [(ngModel)]="keyBrand" name="keyBrand" placeholder="e.g. Yale" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Key Make / Brand</label>
+                <input type="text" [(ngModel)]="keyBrand" name="keyBrand" placeholder="e.g. Yale" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Model</label>
-                <input type="text" [(ngModel)]="keyModel" name="keyModel" placeholder="e.g. 5000" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Key Model</label>
+                <input type="text" [(ngModel)]="keyModel" name="keyModel" placeholder="e.g. 5000" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Colour</label>
-                <input type="text" [(ngModel)]="keyColour" name="keyColour" placeholder="e.g. Silver" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Key Colour</label>
+                <input type="text" [(ngModel)]="keyColour" name="keyColour" placeholder="e.g. Silver" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-600">Key Tag / Label</label>
-                <input type="text" [(ngModel)]="keyTag" name="keyTag" placeholder="e.g. FD-01" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                <label class="text-xs font-semibold text-slate-700">Key Tag / Label</label>
+                <input type="text" [(ngModel)]="keyTag" name="keyTag" placeholder="e.g. FD-01" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Status & Settings</h3>
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 ">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 ">Status & Settings</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div (click)="setStatus('active')" [class.border-emerald-600]="keyStatus === 'active'" [class.border-slate-200]="keyStatus !== 'active'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
                 <div class="mt-0.5">
@@ -125,8 +125,8 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-900 tracking-wide uppercase border-b border-slate-100 pb-2">Attachments</h3>
+          <div class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4 ">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 ">Attachments</h3>
             @if (editing && existingAttachments.length > 0) {
               <div class="space-y-2">
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Existing Attachment</p>
@@ -156,8 +156,8 @@
                   <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
                   <p class="text-xs text-slate-400 mt-1">Supported files: JPG, PNG, PDF (Max 10MB)</p>
                 </div>
-                <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
-                  <h4 class="text-[14px] font-normal text-slate-400 tracking-wider mb-1">Tips:</h4>
+                <div class="space-y-2 text-xs text-slate-500 border-slate-100 pl-4 md:pl-6">
+                  <h4 class="text-[14px] font-semibold text-slate-700 tracking-wider mb-1">Tips:</h4>
                   <p class="flex items-start gap-2"><span>•</span> Upload a clear photo of the key</p>
                   <p class="flex items-start gap-2"><span>•</span> Upload key tag / label if available</p>
                   <p class="flex items-start gap-2"><span>•</span> Upload any related documents</p>
@@ -187,9 +187,9 @@
 
         </form>
 
-        <div class="space-y-5">
-          <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm space-y-6">
-            <h4 class="text-[14px] font-normal text-slate-400 tracking-wider border-b border-slate-100 pb-3">Key Summary (Preview)</h4>
+        <div class="space-y-5 xl:col-span-4">
+          <div class="bg-white rounded-lg border border-slate-200 p-6 space-y-6">
+            <h4 class="text-[14px] font-bold text-slate-900 tracking-wider border-slate-100 mb-2">Key Summary (Preview)</h4>
             <div class="flex flex-col items-center justify-center text-center p-4" *ngIf="!showPreview">
               <div class="w-20 h-20 border-2 border-dashed border-slate-200 rounded-full flex items-center justify-center text-slate-300 mb-4">
                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
@@ -215,35 +215,9 @@
               </div>
             </div>
           </div>
-
-          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
-            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">About Key Status</h4>
-            <div class="space-y-3 text-xs">
-              <div class="flex gap-3">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1 shrink-0"></span>
-                <div><h5 class="font-bold text-slate-800">In Storage</h5><p class="text-slate-400">Key is securely stored</p></div>
-              </div>
-              <div class="flex gap-3">
-                <span class="w-2 h-2 rounded-full bg-amber-500 mt-1 shrink-0"></span>
-                <div><h5 class="font-bold text-slate-800">Issued</h5><p class="text-slate-400">Key is issued to an officer</p></div>
-              </div>
-              <div class="flex gap-3">
-                <span class="w-2 h-2 rounded-full bg-blue-500 mt-1 shrink-0"></span>
-                <div><h5 class="font-bold text-slate-800">In Use</h5><p class="text-slate-400">Key is currently in use</p></div>
-              </div>
-              <div class="flex gap-3">
-                <span class="w-2 h-2 rounded-full bg-purple-500 mt-1 shrink-0"></span>
-                <div><h5 class="font-bold text-slate-800">Overdue</h5><p class="text-slate-400">Key is overdue / not returned</p></div>
-              </div>
-              <div class="flex gap-3">
-                <span class="w-2 h-2 rounded-full bg-rose-500 mt-1 shrink-0"></span>
-                <div><h5 class="font-bold text-slate-800">Lost / Damaged</h5><p class="text-slate-400">Key is lost or damaged</p></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-3">
-            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">Important Notes</h4>
+          
+          <div class="bg-white rounded-lg border border-slate-200 p-5 space-y-3">
+            <h4 class="text-sm font-bold text-slate-900 border-slate-100 ">Important Notes</h4>
             <ul class="space-y-2 text-xs text-slate-500 list-disc list-inside pl-1">
               <li>Ensure all key information is accurate</li>
               <li>Assign keys only to authorized officers</li>
