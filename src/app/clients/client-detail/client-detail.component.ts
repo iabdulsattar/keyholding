@@ -307,6 +307,13 @@ showDeactivateClientModal = false;
     return `${datePart}, ${timePart}`;
   }
 
+  private formatDate(value: any): string {
+    if (!value) return '--';
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
   private formatTargetType(value?: string): string {
     if (!value) return '—';
     return value.charAt(0) + value.slice(1).toLowerCase();

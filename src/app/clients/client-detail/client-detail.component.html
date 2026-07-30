@@ -1164,7 +1164,7 @@
                       </td>
                       <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">{{ formatSize(doc.sizeBytes) }}</td>
                       <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">{{ doc.uploadedByUserName || '-' }}</td>
-                      <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ doc.createdAt || '-' }}</td>
+                       <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ doc.createdAt | date:'dd MMM yyyy, h:mm a' }}</td>
                       <td class="px-5 py-3.5 text-right">
                         <div class="flex items-center justify-end gap-3 text-slate-400">
                           <button (click)="viewDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="View document">

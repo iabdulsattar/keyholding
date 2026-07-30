@@ -35,13 +35,11 @@ export class ViewDocumentComponent implements OnInit {
     });
     if (this.clientId && this.docId) {
       this.clientService.getDocument(this.clientId, this.docId).subscribe({
-        next: (doc: any) => {
-          this.document = doc ?? {};
-          const type = (doc?.documentType || doc?.fileType || '').toLowerCase();
-          const fileName = (doc?.name || doc?.fileName || '').toLowerCase();
-          if (type.includes('pdf') || fileName.endsWith('.pdf')) {
+        next: (res: any) => {
+          this.document = res?.data ?? res ?? {};
+          if (this.document?.isPdf) {
             this.previewType = 'pdf';
-          } else if (type.includes('image') || /\.(jpe?g|png|gif|webp|bmp|svg)$/.test(fileName)) {
+          } else if (this.document?.isImage) {
             this.previewType = 'image';
           } else {
             this.previewType = 'other';
@@ -63,7 +61,7 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   get documentType(): string {
-    return this.document?.documentType || this.document?.fileType || '—';
+    return this.document?.documentType || this.document?.contentType || this.document?.fileType || '—';
   }
 
   get size(): string {
@@ -89,8 +87,8 @@ export class ViewDocumentComponent implements OnInit {
     return this.document?.description || '—';
   }
 
-  get publicUrl(): string {
-    return this.document?.publicUrl || this.document?.url || '';
+  get previewUrl(): string {
+    return this.document?.downloadUrl || this.document?.publicUrl || this.document?.url || '';
   }
 
   goBack(): void {
@@ -120,9 +118,15 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   openInNewTab(): void {
-    if (this.publicUrl) {
-      window.open(this.publicUrl, '_blank');
-    }
+    if (!this.previewUrl) return;
+    this.clientService.downloadDocument(this.clientId, this.docId).subscribe({
+      next: (blob: Blob) => {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      },
+      error: () => alert('Failed to open document in new tab.')
+    });
   }
 
   shareDocument(): void {
