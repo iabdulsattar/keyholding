@@ -8,17 +8,17 @@ import 'flatpickr/dist/flatpickr.css';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-    select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem; }
   `]
 })
 export class AddSiteComponent implements OnInit, AfterViewChecked {
@@ -83,6 +83,58 @@ securityLevel = '';
   clientId = '';
   clients: any[] = [];
   showClientDropdown = false;
+  siteTypeOptions: RichSelectOption[] = [
+    { value: '', label: 'Select site type' },
+    { value: 'Office', label: 'Office' },
+    { value: 'Warehouse', label: 'Warehouse' },
+    { value: 'Retail', label: 'Retail' },
+    { value: 'Distribution Centre', label: 'Distribution Centre' },
+    { value: 'Data Centre', label: 'Data Centre' },
+    { value: 'Storage Lockup', label: 'Storage Lockup' },
+    { value: 'Construction Site', label: 'Construction Site' },
+    { value: 'Remote Office', label: 'Remote Office' },
+    { value: 'Other', label: 'Other' },
+  ];
+  clientOptions: RichSelectOption[] = [];
+  countryOptions: RichSelectOption[] = [
+    { value: 'United Kingdom', label: 'United Kingdom' },
+    { value: 'United States', label: 'United States' },
+    { value: 'Canada', label: 'Canada' },
+    { value: 'Australia', label: 'Australia' },
+    { value: 'Germany', label: 'Germany' },
+    { value: 'France', label: 'France' },
+  ];
+  accessScheduleOptions: RichSelectOption[] = [
+    { value: '1', label: '24/7 Access' },
+    { value: '2', label: 'Business Hours' },
+    { value: '3', label: 'Restricted Hours' },
+    { value: '4', label: 'By Appointment Only' },
+  ];
+  securityLevelOptions: RichSelectOption[] = [
+    { value: '', label: 'Select level' },
+    { value: 'Low', label: 'Low' },
+    { value: 'Standard', label: 'Standard' },
+    { value: 'High', label: 'High' },
+    { value: 'Very High', label: 'Very High' },
+  ];
+  alarmSystemOptions: RichSelectOption[] = [
+    { value: '', label: 'Select system' },
+    { value: 'None', label: 'None' },
+    { value: 'Intruder Alarm', label: 'Intruder Alarm' },
+    { value: 'CCTV', label: 'CCTV' },
+    { value: 'Intruder & CCTV', label: 'Intruder & CCTV' },
+  ];
+  minNoticeOptions: RichSelectOption[] = [
+    { value: '1 Hour', label: '1 Hour' },
+    { value: '2 Hours', label: '2 Hours' },
+    { value: '4 Hours', label: '4 Hours' },
+    { value: '24 Hours', label: '24 Hours' },
+    { value: '48 Hours', label: '48 Hours' },
+  ];
+  approvalContactOptions: RichSelectOption[] = [
+    { value: 'James Walker', label: 'James Walker' },
+    { value: 'Sarah Miller', label: 'Sarah Miller' },
+  ];
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
 
@@ -266,6 +318,7 @@ if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
   private loadClients(): void {
     this.clientService.listClients({ page: 0, size: 200 }).subscribe((result: any) => {
       this.clients = result.items || [];
+      this.clientOptions = this.clients.map((c: any) => ({ value: c.id, label: c.name }));
     });
   }
 

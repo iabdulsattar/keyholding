@@ -4,17 +4,17 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-    select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem; }
   `]
 })
 export class AddDocumentComponent implements OnInit {
@@ -30,6 +30,28 @@ export class AddDocumentComponent implements OnInit {
   fileName = '';
   selectedFile: File | null = null;
   uploading = false;
+
+  categoryOptions: RichSelectOption[] = [
+    { value: '', label: 'Select category' },
+    { value: 'Contract', label: 'Contract' },
+    { value: 'License', label: 'License' },
+    { value: 'Insurance', label: 'Insurance' },
+    { value: 'Report', label: 'Report' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'Certificate', label: 'Certificate' },
+    { value: 'Other', label: 'Other' },
+  ];
+  documentTypeOptions: RichSelectOption[] = [
+    { value: '', label: 'Select document type' },
+    { value: 'PDF', label: 'PDF' },
+    { value: 'Image', label: 'Image' },
+  ];
+  relatedToOptions: RichSelectOption[] = [
+    { value: '', label: 'Select related item' },
+    { value: 'Site', label: 'Site' },
+    { value: 'Job', label: 'Job' },
+    { value: 'Key', label: 'Key' },
+  ];
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 

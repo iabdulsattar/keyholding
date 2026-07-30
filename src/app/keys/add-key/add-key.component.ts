@@ -142,45 +142,46 @@ export class AddKeyComponent implements OnInit {
         this.clients = result?.items ?? result?.data ?? [];
         this.clientOptions = this.toRichOptions(this.clients);
         if (this.clients.length > 0 && !this.assignClientId && (this.clientId || this.editing)) {
-          this.assignClient = this.clients[0].name;
-          this.assignClientId = this.clients[0].id;
+          const prefetch = this.clients.find((c: any) => c.id === this.clientId);
+          const pick = prefetch || this.clients[0];
+          this.assignClient = pick.name;
+          this.assignClientId = pick.id;
           this.loadSites();
         }
       },
-      complete: () => { this.loadingClients = false; }
+      error: () => {
+        this.clients = [];
+        this.clientOptions = [];
+        this.loadingClients = false;
+        this.toast.error('Failed to load clients. Please refresh.');
+      }
     });
   }
 
   loadSites(): void {
     this.siteOptions = [];
     this.sites = [];
-    if (!this.assignClientId) return;
+    if (!this.assignClientId) {
+      this.loadingSites = false;
+      return;
+    }
     this.loadingSites = true;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-    this.keyVault.listSites(orgId, this.assignClientId, { size: 100 }).subscribe({
-      next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = data.items ?? data.data ?? data ?? [];
-        this.sites = items.map((item: any) => ({
-          id: item.id ?? '',
-          code: item.siteCode ?? item.code ?? '',
-          name: item.name ?? '',
-          type: item.siteType ?? item.type ?? '',
-          typeColor: 'blue',
-          address: item.address ?? '',
-          contact: item.primaryContactName ?? '',
-          status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
-          keys: 0,
-          jobs: 0,
-        }));
+    this.clientService.getSitesByClient(this.assignClientId).subscribe({
+      next: (sites: any[]) => {
+        this.sites = sites || [];
         this.siteOptions = this.toRichOptions(this.sites);
+        this.loadingSites = false;
       },
-      complete: () => { this.loadingSites = false; }
+      error: () => {
+        this.sites = [];
+        this.siteOptions = [];
+        this.loadingSites = false;
+      }
     });
   }
 
-  onClientChange(): void {
+  onClientChange(value: string): void {
+    this.assignClientId = value;
     this.assignSite = '';
     const client = this.clients.find(c => c.id === this.assignClientId);
     this.assignClient = client?.name ?? '';

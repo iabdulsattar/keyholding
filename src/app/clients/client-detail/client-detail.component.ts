@@ -452,8 +452,7 @@ export class ClientDetailComponent implements OnInit {
           showActions: true,
           actions: [
             { label: 'Add New Site', icon: 'plus', class: 'bg-blue-600 hover:bg-blue-700 text-white' },
-            { label: 'Import Sites', icon: 'upload', class: 'bg-white hover:bg-slate-50 border border-slate-200 text-slate-600' },
-            { label: 'Export', icon: 'download', class: 'bg-white hover:bg-slate-50 border border-slate-200 text-slate-600' }
+           
           ]
         };
       case 'jobs':

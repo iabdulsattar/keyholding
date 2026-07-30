@@ -45,43 +45,19 @@
 
       <div>
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Category <span class="text-red-500">*</span></label>
-        <div class="relative">
-          <select [(ngModel)]="category" class="w-full appearance-none rounded-lg border border-slate-300 px-3.5 py-2.5 text-[13.5px] text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 bg-white">
-            <option value="">Select category</option>
-            <option value="Contract">Contract</option>
-            <option value="License">License</option>
-            <option value="Insurance">Insurance</option>
-            <option value="Report">Report</option>
-            <option value="Compliance">Compliance</option>
-            <option value="Certificate">Certificate</option>
-            <option value="Other">Other</option>
-          </select>
-          <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </div>
+        <app-rich-select [options]="categoryOptions" [(value)]="category" placeholder="Select category" class="w-full"></app-rich-select>
         <p class="text-[12px] text-slate-400 mt-1.5">Choose the category that best fits this document.</p>
       </div>
 
       <div>
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Document Type <span class="text-red-500">*</span></label>
-        <div class="relative">
-          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-          <select [(ngModel)]="documentType" class="w-full appearance-none rounded-lg border border-slate-300 pl-9 pr-3.5 py-2.5 text-[13.5px] text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 bg-white">
-            <option value="">Select document type</option>
-            <option value="PDF">PDF</option>
-            <option value="Image">Image</option>
-          </select>
-        </div>
+        <app-rich-select [options]="documentTypeOptions" [(value)]="documentType" placeholder="Select document type" class="w-full"></app-rich-select>
         <p class="text-[12px] text-slate-400 mt-1.5">Select the type of file you are uploading.</p>
       </div>
 
       <div>
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Related To <span class="text-slate-400 font-normal">(Optional)</span></label>
-        <div class="relative">
-          <select [(ngModel)]="relatedTo" class="w-full appearance-none rounded-lg border border-slate-300 px-3.5 py-2.5 text-[13.5px] text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 bg-white">
-            <option value="">Select related item</option>
-          </select>
-          <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </div>
+        <app-rich-select [options]="relatedToOptions" [(value)]="relatedTo" placeholder="Select related item" class="w-full"></app-rich-select>
         <p class="text-[12px] text-slate-400 mt-1.5">Link this document to a site, job or key (optional).</p>
       </div>
 
