@@ -67,7 +67,7 @@ showDeactivateClientModal = false;
 
   siteDonutSegments: { color: string; offset: number; length: number }[] = [];
 
-  // Document state
+   // Document state
   documents: any[] = [];
   filteredDocuments: any[] = [];
   documentStats: any = null;
@@ -76,6 +76,23 @@ showDeactivateClientModal = false;
   documentsSearch = '';
   documentsCategory = 'All';
   documentsLoading = false;
+
+  // Contact state
+  contacts: any[] = [];
+  filteredContacts: any[] = [];
+  contactsPage = 1;
+  contactsRowsPerPage = 10;
+  contactsSearch = '';
+  contactsStatus = 'All';
+  contactsLoading = false;
+
+  // Activity log state
+  activities: any[] = [];
+  filteredActivities: any[] = [];
+  activitiesPage = 1;
+  activitiesRowsPerPage = 10;
+  activitiesSearch = '';
+  activitiesLoading = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
@@ -88,6 +105,8 @@ showDeactivateClientModal = false;
     this.loadSiteStats();
     this.loadDocuments();
     this.loadDocumentStats();
+    this.loadContacts();
+    this.loadActivities();
   }
 
   private loadDocuments(): void {
@@ -117,6 +136,180 @@ showDeactivateClientModal = false;
         this.documentStats = null;
       }
     });
+  }
+
+  private loadContacts(): void {
+    if (!this.clientId) return;
+    this.contactsLoading = true;
+    this.clientService.listContacts(this.clientId, { page: 0, size: this.contactsRowsPerPage }).subscribe({
+      next: (result: any) => {
+        this.contacts = (result?.items ?? []).map((item: any) => ({
+          id: item.id ?? '',
+          name: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim() || item.name || '—',
+          title: item.jobTitle || '—',
+          dept: item.department || '—',
+          email: item.email || '—',
+          phone: item.phone || '—',
+          status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+          primary: item.primaryContact ?? false,
+          initials: this.getInitials(item.firstName, item.lastName),
+          color: this.getAvatarColor(item.firstName, item.lastName),
+        }));
+        this.filteredContacts = [...this.contacts];
+        this.contactsLoading = false;
+      },
+      error: () => {
+        this.contacts = [];
+        this.filteredContacts = [];
+        this.contactsLoading = false;
+      }
+    });
+  }
+
+  private loadActivities(): void {
+    if (!this.clientId) return;
+    this.activitiesLoading = true;
+    this.clientService.listAuditLog({ targetType: 'CLIENT', targetId: this.clientId, page: 0, size: this.activitiesRowsPerPage }).subscribe({
+      next: (result: any) => {
+        const items = result?.items ?? result?.data?.items ?? [];
+        this.activities = items.map((item: any) => ({
+          id: item.id ?? '',
+          time: this.formatDateTime(item.createdAt),
+          by: item.userName || 'System',
+          role: item.userRole || '—',
+          initials: this.getInitials(item.userName),
+          avatarColor: this.getAvatarColor(item.userName),
+          action: item.action || '—',
+          entity: this.formatTargetType(item.targetType),
+          name: item.details || '—',
+          detail1: '',
+          ip: item.ipAddress || '—',
+          details: item.details || '—',
+        }));
+        this.filteredActivities = [...this.activities];
+        this.activitiesLoading = false;
+      },
+      error: () => {
+        this.activities = [];
+        this.filteredActivities = [];
+        this.activitiesLoading = false;
+      }
+    });
+  }
+
+  get contactsPaginated(): any[] {
+    const q = this.contactsSearch.toLowerCase().trim();
+    const data = q ? this.filteredContacts : this.contacts;
+    const start = (this.contactsPage - 1) * this.contactsRowsPerPage;
+    return data.slice(start, start + this.contactsRowsPerPage);
+  }
+
+  get contactsTotalPages(): number {
+    const q = this.contactsSearch.toLowerCase().trim();
+    const data = q ? this.filteredContacts : this.contacts;
+    return Math.max(1, Math.ceil(data.length / this.contactsRowsPerPage));
+  }
+
+  get contactsShowingStart(): number {
+    const q = this.contactsSearch.toLowerCase().trim();
+    const data = q ? this.filteredContacts : this.contacts;
+    return data.length === 0 ? 0 : (this.contactsPage - 1) * this.contactsRowsPerPage + 1;
+  }
+
+  get contactsShowingEnd(): number {
+    const q = this.contactsSearch.toLowerCase().trim();
+    const data = q ? this.filteredContacts : this.contacts;
+    return Math.min(this.contactsPage * this.contactsRowsPerPage, data.length);
+  }
+
+  get activitiesPaginated(): any[] {
+    const q = this.activitiesSearch.toLowerCase().trim();
+    const data = q ? this.filteredActivities : this.activities;
+    const start = (this.activitiesPage - 1) * this.activitiesRowsPerPage;
+    return data.slice(start, start + this.activitiesRowsPerPage);
+  }
+
+  get activitiesTotalPages(): number {
+    const q = this.activitiesSearch.toLowerCase().trim();
+    const data = q ? this.filteredActivities : this.activities;
+    return Math.max(1, Math.ceil(data.length / this.activitiesRowsPerPage));
+  }
+
+  get activitiesShowingStart(): number {
+    const q = this.activitiesSearch.toLowerCase().trim();
+    const data = q ? this.filteredActivities : this.activities;
+    return data.length === 0 ? 0 : (this.activitiesPage - 1) * this.activitiesRowsPerPage + 1;
+  }
+
+  get activitiesShowingEnd(): number {
+    const q = this.activitiesSearch.toLowerCase().trim();
+    const data = q ? this.filteredActivities : this.activities;
+    return Math.min(this.activitiesPage * this.activitiesRowsPerPage, data.length);
+  }
+
+  onContactsSearch(): void {
+    this.contactsPage = 1;
+    const q = this.contactsSearch.toLowerCase().trim();
+    this.filteredContacts = this.contacts.filter((c: any) => (c.name + ' ' + c.email + ' ' + c.dept).toLowerCase().includes(q));
+  }
+
+  onActivitiesSearch(): void {
+    this.activitiesPage = 1;
+    const q = this.activitiesSearch.toLowerCase().trim();
+    this.filteredActivities = this.activities.filter((a: any) => (a.by + ' ' + a.action + ' ' + a.details).toLowerCase().includes(q));
+  }
+
+  contactsPreviousPage(): void {
+    if (this.contactsPage > 1) this.contactsPage--;
+  }
+
+  contactsNextPage(): void {
+    if (this.contactsPage < this.contactsTotalPages) this.contactsPage++;
+  }
+
+  contactsGoToPage(page: number): void {
+    if (page >= 1 && page <= this.contactsTotalPages) this.contactsPage = page;
+  }
+
+  activitiesPreviousPage(): void {
+    if (this.activitiesPage > 1) this.activitiesPage--;
+  }
+
+  activitiesNextPage(): void {
+    if (this.activitiesPage < this.activitiesTotalPages) this.activitiesPage++;
+  }
+
+  activitiesGoToPage(page: number): void {
+    if (page >= 1 && page <= this.activitiesTotalPages) this.activitiesPage = page;
+  }
+
+  private getInitials(first?: string, last?: string): string {
+    const a = (first || '').trim();
+    const b = (last || '').trim();
+    if (!a && !b) return '?';
+    return ((a[0] || '') + (b[0] || '')).toUpperCase();
+  }
+
+  private getAvatarColor(first?: string, last?: string): string {
+    const colors = ['bg-violet-100 text-violet-700','bg-orange-100 text-orange-700','bg-amber-100 text-amber-700','bg-pink-100 text-pink-700','bg-indigo-100 text-indigo-700','bg-emerald-100 text-emerald-700','bg-red-100 text-red-700','bg-teal-100 text-teal-700','bg-brand-100 text-brand-700'];
+    const seed = ((first || '') + (last || '')).trim() || 'default';
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) hash = (hash + seed.charCodeAt(i) * 37) % colors.length;
+    return colors[hash];
+  }
+
+  private formatDateTime(value: any): string {
+    if (!value) return '';
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return `${datePart}, ${timePart}`;
+  }
+
+  private formatTargetType(value?: string): string {
+    if (!value) return '—';
+    return value.charAt(0) + value.slice(1).toLowerCase();
   }
 
   get documentsPaginated(): any[] {
@@ -164,7 +357,9 @@ showDeactivateClientModal = false;
   get lastUploadedDate(): string {
     if (this.filteredDocuments.length === 0) return '--';
     const dates = this.filteredDocuments.map(d => d.createdAt).filter(Boolean).sort().reverse();
-    return dates[0] || '--';
+    const raw = dates[0] || '--';
+    if (!raw || raw === '--') return '--';
+    return this.formatDate(raw);
   }
 
   get totalDocuments(): number {
@@ -804,26 +999,15 @@ showDeactivateClientModal = false;
     }
   }
 
-  contacts = [
-    { name: 'James Walker', title: 'Operations Manager', dept: 'Operations', email: 'james.walker@metrosecurity.co.uk', phone: '+44 020 7946 0958', status: 'Active', primary: true, initials: 'JW', color: 'bg-violet-100 text-violet-700' },
-    { name: 'Sarah Miller', title: 'Account Manager', dept: 'Accounts', email: 'sarah.miller@metrosecurity.co.uk', phone: '+44 020 7946 0961', status: 'Active', primary: true, initials: 'SM', color: 'bg-orange-100 text-orange-700' },
-    { name: 'David Johnson', title: 'Finance Manager', dept: 'Finance', email: 'david.johnson@metrosecurity.co.uk', phone: '+44 020 7946 0962', status: 'Active', primary: false, initials: 'DJ', color: 'bg-amber-100 text-amber-700' },
-    { name: 'Lisa Martin', title: 'HR Manager', dept: 'Human Resources', email: 'lisa.martin@metrosecurity.co.uk', phone: '+44 020 7946 0963', status: 'Inactive', primary: false, initials: 'LM', color: 'bg-pink-100 text-pink-700' },
-    { name: 'Robert Vance', title: 'Compliance Officer', dept: 'Compliance', email: 'robert.vance@metrosecurity.co.uk', phone: '+44 020 7946 0964', status: 'Active', primary: false, initials: 'RV', color: 'bg-indigo-100 text-indigo-700' },
-    { name: 'Amy King', title: 'Customer Support Lead', dept: 'Customer Support', email: 'amy.king@metrosecurity.co.uk', phone: '+44 020 7946 0965', status: 'Active', primary: false, initials: 'AK', color: 'bg-emerald-100 text-emerald-700' },
-    { name: 'Mark Taylor', title: 'IT Manager', dept: 'IT', email: 'mark.taylor@metrosecurity.co.uk', phone: '+44 020 7946 0966', status: 'Inactive', primary: false, initials: 'MT', color: 'bg-red-100 text-red-700' },
-    { name: 'Emma Parker', title: 'Procurement Officer', dept: 'Procurement', email: 'emma.parker@metrosecurity.co.uk', phone: '+44 020 7946 0967', status: 'Inactive', primary: false, initials: 'EP', color: 'bg-teal-100 text-teal-700' },
-  ];
-
-  contactStatusClass(status: string): string {
-    return status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500';
-  }
-
   toggleDropdown(id: string): void {
     const dropdown = document.getElementById(id);
     if (dropdown) {
       dropdown.classList.toggle('hidden');
     }
+  }
+
+  contactStatusClass(status: string): string {
+    return status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500';
   }
 
   viewContact(contactName: string): void {
@@ -840,17 +1024,6 @@ showDeactivateClientModal = false;
       queryParams: { clientName: this.client?.name || '' }
     });
   }
-
-  activities = [
-    { time:"15 May 2024, 11:45 AM", by:"Faisa Ahmed", role:"Admin", initials:"FA", avatarColor:"bg-brand-100 text-brand-700", action:"Added", entity:"Site", name:"Head Office", detail1:"25 Fenchurch Street, London", ip:"192.168.1.25", details:"Added new site" },
-    { time:"15 May 2024, 11:30 AM", by:"James Walker", role:"Operations Manager", initials:"JW", avatarColor:"bg-violet-100 text-violet-700", action:"Edited", entity:"Site", name:"Head Office", detail1:"Updated address and contact", ip:"192.168.1.18", details:"Edited site details" },
-    { time:"15 May 2024, 11:15 AM", by:"Sarah Miller", role:"Account Manager", initials:"SM", avatarColor:"bg-orange-100 text-orange-700", action:"Deleted", entity:"Site", name:"Old Warehouse", detail1:"12 Old Kent Road, London", ip:"192.168.1.35", details:"Deleted site" },
-    { time:"15 May 2024, 10:50 AM", by:"David Johnson", role:"Finance Manager", initials:"DJ", avatarColor:"bg-amber-100 text-amber-700", action:"Added", entity:"Key", name:"HQ Main Entrance Key", detail1:"(KY-0123)", ip:"192.168.1.22", details:"Added new key" },
-    { time:"15 May 2024, 10:20 AM", by:"James Walker", role:"Operations Manager", initials:"JW", avatarColor:"bg-violet-100 text-violet-700", action:"Deactivated", entity:"Key", name:"Store Room Key", detail1:"(KY-0456)", ip:"192.168.1.18", details:"Deactivated key" },
-    { time:"15 May 2024, 09:45 AM", by:"Emma Parker", role:"Procurement Officer", initials:"EP", avatarColor:"bg-teal-100 text-teal-700", action:"Created", entity:"Job", name:"JOB-000345", detail1:"Routine Key Check", ip:"192.168.1.41", details:"Created new job" },
-    { time:"14 May 2024, 04:30 PM", by:"Michael Brown", role:"Compliance Officer", initials:"MB", avatarColor:"bg-indigo-100 text-indigo-700", action:"Uploaded", entity:"Document", name:"Key Policy.pdf", detail1:"", ip:"192.168.1.25", details:"Uploaded document" },
-    { time:"14 May 2024, 03:10 PM", by:"Faisa Ahmed", role:"Admin", initials:"FA", avatarColor:"bg-brand-100 text-brand-700", action:"Deactivated", entity:"Contact", name:"Lisa Martin (HR Manager)", detail1:"", ip:"192.168.1.25", details:"Deactivated contact" },
-  ];
 
   getActivityIcon(entity: string): { bg: string; color: string; path: string } {
     const map: Record<string, { bg: string; color: string; path: string }> = {

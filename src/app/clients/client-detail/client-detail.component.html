@@ -962,7 +962,7 @@
               <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
                 <div class="relative">
                   <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
-                  <input type="text" placeholder="Search activity..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                  <input type="text" placeholder="Search activity..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" [(ngModel)]="activitiesSearch" (ngModelChange)="onActivitiesSearch()"/>
                 </div>
                 <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M6 8h12M10 12h4M11 16h2"/></svg>
@@ -990,56 +990,64 @@
                      <th class="th text-right">Details</th>
                    </tr>
                  </thead>
-                 <tbody id="activity-tbody" class="divide-y divide-slate-100">
-                   @for (activity of activities; track $index) {
-                   <tr class="hover:bg-slate-50">
-                     <td class="td">
-                       <div class="flex items-center gap-2.5">
-                         <div class="w-8 h-8 rounded-lg" [class]="getActivityIcon(activity.entity).bg + ' ' + getActivityIcon(activity.entity).color" flex items-center justify-center shrink-0>
-                           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="getActivityIcon(activity.entity).path"></svg>
-                         </div>
-                         <span class="font-medium text-slate-800 whitespace-nowrap">{{ activity.time }}</span>
-                       </div>
-                     </td>
-                     <td class="td whitespace-nowrap">
-                       <div class="flex items-center gap-2.5">
-                         <div class="avatar" [class]="activity.avatarColor">{{ activity.initials }}</div>
-                         <div>
-                           <p class="text-slate-800 font-medium leading-tight">{{ activity.by }}</p>
-                           <p class="text-xs text-slate-400 leading-tight">{{ activity.role }}</p>
-                         </div>
-                       </div>
-                     </td>
-                     <td class="td">
-                       <span class="badge" [class]="getActionColor(activity.action)">{{ activity.action }}</span>
-                     </td>
-                     <td class="td text-slate-600 whitespace-nowrap">{{ activity.entity }}</td>
-                     <td class="td whitespace-nowrap">
-                       <p class="text-slate-800 font-medium leading-tight">{{ activity.name }}</p>
-                       @if (activity.detail1) {
-                         <p class="text-xs text-slate-400 leading-tight">{{ activity.detail1 }}</p>
-                       }
-                     </td>
-                     <td class="td text-slate-600 whitespace-nowrap">{{ activity.ip }}</td>
-                     <td class="td text-right">
-                       <button class="text-slate-400 hover:text-slate-600">
-                         <svg class="w-4 h-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                       </button>
-                     </td>
-                   </tr>
-                   }
-                 </tbody>
+                  <tbody id="activity-tbody" class="divide-y divide-slate-100">
+                    @for (activity of activitiesPaginated; track activity.id) {
+                    <tr class="hover:bg-slate-50">
+                      <td class="td">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-8 h-8 rounded-lg" [class]="getActivityIcon(activity.entity).bg + ' ' + getActivityIcon(activity.entity).color" flex items-center justify-center shrink-0>
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="getActivityIcon(activity.entity).path"></svg>
+                          </div>
+                          <span class="font-medium text-slate-800 whitespace-nowrap">{{ activity.time }}</span>
+                        </div>
+                      </td>
+                      <td class="td whitespace-nowrap">
+                        <div class="flex items-center gap-2.5">
+                          <div class="avatar" [class]="activity.avatarColor">{{ activity.initials }}</div>
+                          <div>
+                            <p class="text-slate-800 font-medium leading-tight">{{ activity.by }}</p>
+                            <p class="text-xs text-slate-400 leading-tight">{{ activity.role }}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="td">
+                        <span class="badge" [class]="getActionColor(activity.action)">{{ activity.action }}</span>
+                      </td>
+                      <td class="td text-slate-600 whitespace-nowrap">{{ activity.entity }}</td>
+                      <td class="td whitespace-nowrap">
+                        <p class="text-slate-800 font-medium leading-tight">{{ activity.name }}</p>
+                        @if (activity.detail1) {
+                          <p class="text-xs text-slate-400 leading-tight">{{ activity.detail1 }}</p>
+                        }
+                      </td>
+                      <td class="td text-slate-600 whitespace-nowrap">{{ activity.ip }}</td>
+                      <td class="td text-right">
+                        <button class="text-slate-400 hover:text-slate-600">
+                          <svg class="w-4 h-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
                </table>
              </div>
 
-             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
-               <p>Showing 1 to {{ activities.length }} of {{ activities.length }} activities</p>
-               <div class="flex items-center gap-1">
-                 <button class="page-btn"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
-                 <button class="page-btn bg-blue-600 text-white">1</button>
-                 <button class="page-btn"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
-               </div>
-             </div>
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
+                <p>Showing {{ activitiesShowingStart }} to {{ activitiesShowingEnd }} of {{ activities.length }} activities</p>
+                <div class="flex items-center gap-1">
+                  <button (click)="activitiesPreviousPage()" [disabled]="activitiesPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <button (click)="activitiesGoToPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium" [class.bg-blue-600]="activitiesPage === 1" [class.text-white]="activitiesPage === 1" [class.text-slate-600]="activitiesPage !== 1" [class.hover:bg-slate-50]="activitiesPage !== 1">1</button>
+                  <button (click)="activitiesGoToPage(2)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
+                  <button (click)="activitiesGoToPage(3)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
+                  <span class="px-1 text-slate-400 text-sm">&#8230;</span>
+                  <button (click)="activitiesGoToPage(activitiesTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ activitiesTotalPages }}</button>
+                  <button (click)="activitiesNextPage()" [disabled]="activitiesPage === activitiesTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
            </div>
          </div>
          } @else if (activeTab === 'documents') {
@@ -1210,7 +1218,7 @@
               <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
                 <div class="relative">
                   <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
-                  <input type="text" placeholder="Search contacts..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+                  <input type="text" placeholder="Search contacts..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" [(ngModel)]="contactsSearch" (ngModelChange)="onContactsSearch()"/>
                 </div>
                 <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 8h12M10 12h4M11 16h2"/></svg>
@@ -1280,54 +1288,62 @@
                      <th class="th text-right">Actions</th>
                    </tr>
                  </thead>
-                 <tbody class="divide-y divide-slate-100">
-                   @for (contact of contacts; track contact.name) {
-                     <tr class="hover:bg-slate-50">
-                       <td class="td">
-                         <div class="flex items-center gap-3">
-                           <div class="avatar {{ contact.color }}">{{ contact.initials }}</div>
-                           <span class="font-medium text-slate-800 whitespace-nowrap">{{ contact.name }}</span>
-                         </div>
-                       </td>
-                       <td class="td text-slate-600 whitespace-nowrap">{{ contact.title }}</td>
-                       <td class="td text-slate-600 whitespace-nowrap">{{ contact.dept }}</td>
-                       <td class="td text-slate-600 whitespace-nowrap">{{ contact.email }}</td>
-                       <td class="td text-slate-600 whitespace-nowrap">{{ contact.phone }}</td>
-                       <td class="td">
-                         <span class="badge {{ contactStatusClass(contact.status) }}">{{ contact.status }}</span>
-                       </td>
-                       <td class="td text-slate-600">{{ contact.primary ? 'Yes' : 'No' }}</td>
+                  <tbody class="divide-y divide-slate-100">
+                    @for (contact of contactsPaginated; track contact.id) {
+                      <tr class="hover:bg-slate-50">
                         <td class="td">
-                          <div class="flex items-center justify-end gap-3 text-slate-400">
-                            <button (click)="viewContact(contact.name)" class="hover:text-blue-600 cursor-pointer" title="View contact">
-                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </button>
-                            <div class="relative inline-block text-left">
-                              <button (click)="toggleDropdown('contact-more-' + $index)" class="hover:text-slate-600">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
-                              </button>
-                              <div id="contact-more-{{ $index }}" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
-                                <a href="#" class="block px-4 py-2 hover:bg-slate-50">Edit Contact</a>
-                                <a href="#" class="block px-4 py-2 hover:bg-slate-50 text-red-600">Delete Contact</a>
-                              </div>
-                            </div>
+                          <div class="flex items-center gap-3">
+                            <div class="avatar {{ contact.color }}">{{ contact.initials }}</div>
+                            <span class="font-medium text-slate-800 whitespace-nowrap">{{ contact.name }}</span>
                           </div>
                         </td>
-                     </tr>
-                   }
-                 </tbody>
+                        <td class="td text-slate-600 whitespace-nowrap">{{ contact.title }}</td>
+                        <td class="td text-slate-600 whitespace-nowrap">{{ contact.dept }}</td>
+                        <td class="td text-slate-600 whitespace-nowrap">{{ contact.email }}</td>
+                        <td class="td text-slate-600 whitespace-nowrap">{{ contact.phone }}</td>
+                        <td class="td">
+                          <span class="badge {{ contactStatusClass(contact.status) }}">{{ contact.status }}</span>
+                        </td>
+                        <td class="td text-slate-600">{{ contact.primary ? 'Yes' : 'No' }}</td>
+                         <td class="td">
+                           <div class="flex items-center justify-end gap-3 text-slate-400">
+                             <button (click)="viewContact(contact.name)" class="hover:text-blue-600 cursor-pointer" title="View contact">
+                               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                             </button>
+                             <div class="relative inline-block text-left">
+                               <button (click)="toggleDropdown('contact-more-' + $index)" class="hover:text-slate-600">
+                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
+                               </button>
+                               <div id="contact-more-{{ $index }}" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
+                                 <a href="#" class="block px-4 py-2 hover:bg-slate-50">Edit Contact</a>
+                                 <a href="#" class="block px-4 py-2 hover:bg-slate-50 text-red-600">Delete Contact</a>
+                               </div>
+                             </div>
+                           </div>
+                         </td>
+                      </tr>
+                    }
+                  </tbody>
                </table>
              </div>
 
-             <!-- Pagination -->
-             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
-               <p>Showing 1 to {{ contacts.length }} of {{ contacts.length }} contacts</p>
-               <div class="flex items-center gap-1">
-                 <button class="page-btn"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
-                 <button class="page-btn bg-[#4338ca] text-white border-[#4338ca]">1</button>
-                 <button class="page-btn"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
-               </div>
-             </div>
+              <!-- Pagination -->
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
+                <p>Showing {{ contactsShowingStart }} to {{ contactsShowingEnd }} of {{ contacts.length }} contacts</p>
+                <div class="flex items-center gap-1">
+                  <button (click)="contactsPreviousPage()" [disabled]="contactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <button (click)="contactsGoToPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium" [class.bg-blue-600]="contactsPage === 1" [class.text-white]="contactsPage === 1" [class.text-slate-600]="contactsPage !== 1" [class.hover:bg-slate-50]="contactsPage !== 1">1</button>
+                  <button (click)="contactsGoToPage(2)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
+                  <button (click)="contactsGoToPage(3)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
+                  <span class="px-1 text-slate-400 text-sm">&#8230;</span>
+                  <button (click)="contactsGoToPage(contactsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ contactsTotalPages }}</button>
+                  <button (click)="contactsNextPage()" [disabled]="contactsPage === contactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
            </div>
 
          </div>
