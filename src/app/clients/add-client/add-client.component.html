@@ -3,7 +3,7 @@
     <div class="flex-grow overflow-y-auto custom-scrollbar">
 
       <!-- CONTROLLER ACTION HEADER ROW -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-5">
         <div>
           <!-- Breadcrumbs Segment -->
           <h2 class="text-2xl font-bold tracking-tight text-slate-900 mb-1.5">{{ editMode ? 'Edit Client' : 'Add New Client' }}</h2>
@@ -37,7 +37,7 @@
         <form id="clientForm" class="lg:col-span-8 space-y-5">
 
           <!-- MODULE 1: CLIENT INFORMATION BOX -->
-          <div class="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 space-y-5">
+          <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-6 space-y-5">
             <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">1. Client Information</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -95,7 +95,7 @@
           </div>
 
           <!-- MODULE 2: ADDITIONAL METADATA DETAILS MODULE -->
-          <div class="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 space-y-5 ">
+          <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-6 space-y-5 ">
             <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">2. Additional Details</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -148,7 +148,7 @@
           </div>
 
           <!-- MODULE 3: CLIENT OPERATION STATE SYSTEM STATUS -->
-          <div class="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 space-y-4 mb-5">
+          <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-6 space-y-4 mb-5">
             <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">3. Client Status</h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -177,7 +177,7 @@
         <div class="lg:col-span-4 space-y-5">
 
           <!-- Context Help Box Component -->
-          <div class="bg-white border border-slate-200 rounded-lg p-5 space-y-3">
+          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-3">
             <div class="flex items-center gap-2.5 text-blue-600">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
               <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">About Clients</h4>
@@ -188,7 +188,7 @@
           </div>
 
           <!-- Live Form Validation Trackers Checklist -->
-          <div class="bg-white border border-slate-200 rounded-lg p-5 space-y-4">
+          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-4">
             <h4 class="text-[13px] font-bold text-slate-400 tracking-wider text-slate-900"><span class="text-red-500">*</span> Required Fields</h4>
             <ul class="space-y-2.5 text-xs font-semibold" [ngClass]="!submitted ? 'text-slate-500' : 'text-slate-500'">
               <li [ngClass]="(submitted && !clientName) ? 'text-rose-500' : (submitted && clientName ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
@@ -207,7 +207,7 @@
           </div>
 
           <!-- Future Procedures Info List -->
-          <div class="bg-white border border-slate-200 rounded-lg p-5 space-y-3">
+          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-3">
             <div class="flex items-center gap-2.5 text-blue-600">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-up-icon lucide-square-arrow-up"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
               <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">What's Next?</h4>
@@ -234,7 +234,7 @@
   </div>
 
     <!-- Global Base Platform Navigation Sub Footer -->
-    <footer class="w-full bg-white border-t border-slate-200 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
+    <footer class="w-full bg-white border-t border-slate-100 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
       <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
       <div class="flex items-center gap-4">
         <a href="#" class="hover:text-slate-600 transition">Privacy Policy</a>

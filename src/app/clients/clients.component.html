@@ -24,7 +24,7 @@
 
     <!-- KEY STATUS METRIC HERO CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div (click)="setFilter('all')" class="bg-white border border-slate-200 rounded-lg p-4 flex items-start space-x-4 hover:border-blue-400 transition duration-200 cursor-pointer group">
+      <div (click)="setFilter('all')" class="bg-white border border-slate-100 rounded-lg p-4 flex items-start space-x-4 hover:border-blue-400 transition duration-200 cursor-pointer group">
         <div class="p-3 bg-blue-50 text-blue-600 rounded-full group-hover:scale-105 transition">
           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
         </div>
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div (click)="setFilter('Active')" class="bg-white border border-slate-200 rounded-lg p-4 flex items-start space-x-4 hover:border-emerald-400 transition duration-200 cursor-pointer group">
+      <div (click)="setFilter('Active')" class="bg-white border border-slate-100 rounded-lg p-4 flex items-start space-x-4 hover:border-emerald-400 transition duration-200 cursor-pointer group">
         <div class="p-3 bg-emerald-50 text-emerald-600 rounded-full group-hover:scale-105 transition">
           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div (click)="setFilter('Inactive')" class="bg-white border border-slate-200 rounded-lg p-4 flex items-start space-x-4 hover:border-amber-400 transition duration-200 cursor-pointer group">
+      <div (click)="setFilter('Inactive')" class="bg-white border border-slate-100 rounded-lg p-4 flex items-start space-x-4 hover:border-amber-400 transition duration-200 cursor-pointer group">
         <div class="p-3 bg-amber-50 text-amber-600 rounded-full group-hover:scale-105 transition">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-pause-icon lucide-circle-pause"><circle cx="12" cy="12" r="10"/><line x1="10" x2="10" y1="15" y2="9"/><line x1="14" x2="14" y1="15" y2="9"/></svg>
         </div>
@@ -61,13 +61,13 @@
     </div>
 
     <!-- CORE DATA FILTER AND DATAGRID CANVAS -->
-    <div class="bg-white border border-slate-200 rounded-lg overflow-hidden flex flex-col mb-5">
+    <div class="bg-white border border-slate-100 rounded-lg overflow-hidden flex flex-col mb-5">
       
       <!-- Responsive Scrollable Data Grid -->
       <div class="overflow-x-auto custom-scrollbar">
         <table class="w-full text-left border-collapse min-w-[1000px]">
           <thead>
-            <tr class=" border-b border-black/10 text-[11px] font-bold text-black tracking-wider">
+            <tr class=" border-b border-slate-100 text-[11px] font-bold text-black tracking-wider">
               <th class="py-3 px-4">
                 <div class="flex items-center space-x-1 cursor-pointer hover:text-black">
                   <span>Client Code</span>
@@ -109,7 +109,7 @@
               <th class="py-3 px-4 text-center w-24">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-black/10 text-xs text-black/80 font-medium">
+          <tbody class="divide-y divide-slate-100 text-xs text-black/80 font-medium">
             @for (client of clients; track client.id) {
             <tr class="hover:bg-black/5 transition">
               <td class="py-3 px-4"><span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100">{{ client.code }}</span></td>
@@ -137,7 +137,7 @@
       </div>
 
       <!-- Pagination Footer -->
-      <div class="p-4 border-t border-black/10 flex flex-col sm:flex-row gap-4 items-center justify-between text-xs text-black/70 font-medium ">
+      <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between text-xs text-black/70 font-medium ">
         <div>
           Showing <span class="text-black font-semibold">{{ showingStart }}-{{ showingEnd }}</span> of <span class="text-black font-semibold">{{ totalItems }}</span> clients
         </div>
@@ -173,7 +173,7 @@
     
   </div>
   <!-- Footer -->
-    <footer class="w-full bg-white border-t border-black/20 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
+    <footer class="w-full bg-white border-t border-slate-100 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
       <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
       <div class="flex items-center space-x-4">
         <a href="#" class="text-blue transition">Privacy Policy</a>
