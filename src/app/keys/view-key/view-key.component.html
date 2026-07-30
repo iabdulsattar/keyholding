@@ -8,10 +8,10 @@
           <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <a routerLink="/keys" class="inline-flex items-center gap-1.5 text-blue-600 text-sm font-medium hover:underline mb-2">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>              
                 Back to Keys
               </a>
-              <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">View Key Details</h1>
+              <h2 class="text-xl font-bold text-slate-900 ">View Key Details</h2>
               <div class="flex flex-wrap items-center gap-1.5 text-xs font-medium text-blue-600 mt-1.5">
                 <a routerLink="/clients" class="hover:underline">Client Management</a>
                 <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -32,7 +32,7 @@
                 <app-reactivate-key-modal [key]="key" [orgId]="orgId" (close)="showReactivateModal = false" (confirmed)="onKeyReactivated()" />
               }
               @if (isActive) {
-                <button class="w-full sm:w-auto bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-1.5" (click)="onDeactivateKey()">
+                <button class="w-full sm:w-auto bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold text-xs px-4 py-3 rounded-lg transition flex items-center justify-center gap-1.5" (click)="onDeactivateKey()">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
                   Deactivate Key
                 </button>
@@ -43,8 +43,9 @@
                 </button>
               }
               <div class="relative inline-block text-left">
-                <button (click)="toggleDropdown()" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-2">
-                  More <i class="fa-solid fa-ellipsis"></i>
+                <button (click)="toggleDropdown()" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-4 py-3 rounded-lg transition flex items-center justify-center gap-2">
+                  More Actions 
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div id="moreDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
                   <button type="button" (click)="onEditKey(); toggleDropdown()" class="w-full text-left block px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-pen mr-2"></i> Edit Details</button>
@@ -64,19 +65,19 @@
           <div class="lg:col-span-2 space-y-5">
             
             <!-- Key Information Section -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              <h2 class="text-lg font-bold text-slate-900 mb-4">Key Information</h2>
+            <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-4">Key Information</h3>
               <div class="flex flex-col sm:flex-row gap-5">
                 <div class="w-full sm:w-32 h-32 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
                   <svg viewBox="0 0 24 24" class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
                   <div>
-                    <div class="text-xs font-medium text-slate-500 mb-1">Key Name</div>
+                    <div class="text-xs font-semibold text-slate-800 mb-1">Key Name</div>
                     <div class="text-sm font-semibold text-slate-900">{{ key.name || '--' }}</div>
                   </div>
                   <div>
-                    <div class="text-xs font-medium text-slate-500 mb-1">Key ID / Reference</div>
+                    <div class="text-xs font-semibold text-slate-800 mb-1">Key ID / Reference</div>
                     <div class="text-sm font-semibold text-slate-900 flex items-center gap-1.5">
                       {{ keyCode || keyId }}
                       <button class="text-slate-400 hover:text-blue-600 transition" (click)="copyToClipboard(keyCode || keyId)" title="Copy">
@@ -85,49 +86,49 @@
                     </div>
                   </div>
                   <div>
-                    <div class="text-xs font-medium text-slate-500 mb-1">Key Type</div>
+                    <div class="text-xs font-semibold text-slate-800 mb-1">Key Type</div>
                     <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md">{{ keyTypeName || '--' }}</span>
                   </div>
                   <div>
-                    <div class="text-xs font-medium text-slate-500 mb-1">Key Category</div>
+                    <div class="text-xs font-semibold text-slate-800 mb-1">Key Category</div>
                     <div class="text-sm font-semibold text-slate-900">{{ keyCategoryName || '--' }}</div>
                   </div>
                   <div class="col-span-1 sm:col-span-2">
-                    <div class="text-xs font-medium text-slate-500 mb-1">Key Description / Notes</div>
-                    <div class="text-sm text-blue-700 leading-relaxed">{{ key.description || key.notes || '--' }}</div>
+                    <div class="text-xs font-semibold text-slate-800 mb-1">Key Description / Notes</div>
+                    <div class="text-sm text-slate-500 leading-relaxed">{{ key.description || key.notes || '--' }}</div>
                   </div>
                 </div>
               </div>
             </section>
 
             <!-- Assigned To -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              <h2 class="text-lg font-bold text-slate-900 mb-4">Assigned To</h2>
+            <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-4">Assigned To</h3>
               <div class="grid grid-cols-2 sm:grid-cols-5 gap-5">
                 <div class="col-span-2 sm:col-span-1">
-                  <div class="text-xs font-medium text-slate-500 mb-1.5">Client</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1.5">Client</div>
                   <div class="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
                     <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4 8 4v14"/></svg>
                     <span class="truncate">{{ clientName || '--' }}</span>
                   </div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1.5">Site</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1.5">Site</div>
                   <div class="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
                     <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="1"/><path d="M9 8V5a1 1 0 011-1h4a1 1 0 011 1v3"/></svg>
-                    <span>{{ siteName || '--' }}</span>
+                    <span>{{ siteName || '-' }}</span>
                   </div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1.5">Storage Location</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1.5">Storage Location</div>
                   <div class="text-sm font-semibold text-slate-900">{{ key.storageLocationName || key.storageLocation || '--' }}</div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1.5">Cabinet</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1.5">Cabinet</div>
                   <div class="text-sm font-semibold text-slate-900">&ndash;</div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1.5">Hook</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1.5">Hook</div>
                   <div class="text-sm font-semibold text-slate-900 flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></span>
                     Unassigned
@@ -137,34 +138,34 @@
             </section>
 
             <!-- Key Details -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              <h2 class="text-lg font-bold text-slate-900 mb-4">Key Details</h2>
+            <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-4">Key Details</h3>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-5">
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1">Key Make / Brand</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1">Key Make / Brand</div>
                   <div class="text-sm font-semibold text-slate-900">{{ key.makeBrand || key.brand || '--' }}</div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1">Key Model</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1">Key Model</div>
                   <div class="text-sm font-semibold text-slate-900">{{ key.model || '--' }}</div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1">Key Colour</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1">Key Colour</div>
                   <div class="text-sm font-semibold text-slate-900">{{ key.colour || '--' }}</div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-1">Key Tag / Label</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-1">Key Tag / Label</div>
                   <div class="text-sm font-semibold text-slate-900">{{ key.tagLabel || '--' }}</div>
                 </div>
               </div>
             </section>
 
             <!-- Status -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              <h2 class="text-lg font-bold text-slate-900 mb-4">Status</h2>
+            <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-4">Status</h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-2">Operational Status</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-2">Operational Status</div>
                   <div class="flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
                     <svg class="w-5 h-5 text-blue-600 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <div>
@@ -174,7 +175,7 @@
                   </div>
                 </div>
                 <div>
-                  <div class="text-xs font-medium text-slate-500 mb-2">Active Status</div>
+                  <div class="text-xs font-semibold text-slate-800 mb-2">Active Status</div>
                   <div class="flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3">
                     <svg class="w-5 h-5 text-green-600 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg>
                     <div>
@@ -194,8 +195,8 @@
           <div class="space-y-5">
             
             <!-- Key Preview -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              <h2 class="text-lg font-bold text-slate-900 mb-4">Key Preview</h2>
+            <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-4">Key Preview</h3>
               @if (attachments.length > 0) {
                 <div class="w-full h-44 rounded-lg bg-slate-100 flex items-center justify-center mb-3 overflow-hidden">
                   @if (isImage(attachments[0].contentType)) {
@@ -230,8 +231,8 @@
             </section>
 
             <!-- Key Activity -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              <h2 class="text-lg font-bold text-slate-900 mb-5">Key Activity</h2>
+            <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-5">Key Activity</h3>
               <ul class="space-y-5">
                 <li class="flex gap-3">
                   <div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
@@ -239,7 +240,7 @@
                   </div>
                   <div class="min-w-0">
                     <div class="text-sm font-semibold text-slate-900">Key issued to officer</div>
-                    <div class="text-sm text-blue-700">James Walker (Officer)</div>
+                    <div class="text-sm text-slate-500">James Walker (Officer)</div>
                     <div class="flex flex-wrap items-baseline gap-2 text-xs text-slate-400 mt-0.5">
                       <span>15 May 2024, 10:30 AM</span>
                       <span class="text-slate-500">Faiza Ahmed</span>
@@ -252,7 +253,7 @@
                   </div>
                   <div class="min-w-0">
                     <div class="text-sm font-semibold text-slate-900">Key status updated</div>
-                    <div class="text-sm text-blue-700">Changed to Unassigned</div>
+                    <div class="text-sm text-slate-500">Changed to Unassigned</div>
                     <div class="flex flex-wrap items-baseline gap-2 text-xs text-slate-400 mt-0.5">
                       <span>15 May 2024, 10:30 AM</span>
                       <span class="text-slate-500">Faiza Ahmed</span>
@@ -265,7 +266,7 @@
                   </div>
                   <div class="min-w-0">
                     <div class="text-sm font-semibold text-slate-900">Key stored</div>
-                    <div class="text-sm text-blue-700">Key was securely stored</div>
+                    <div class="text-sm text-slate-500">Key was securely stored</div>
                     <div class="flex flex-wrap items-baseline gap-2 text-xs text-slate-400 mt-0.5">
                       <span>14 May 2024, 04:00 PM</span>
                       <span class="text-slate-500">System</span>
@@ -278,7 +279,7 @@
                   </div>
                   <div class="min-w-0">
                     <div class="text-sm font-semibold text-slate-900">Key added</div>
-                    <div class="text-sm text-blue-700">Key created and added to system</div>
+                    <div class="text-sm text-slate-500">Key created and added to system</div>
                     <div class="flex flex-wrap items-baseline gap-2 text-xs text-slate-400 mt-0.5">
                       <span>14 May 2024, 03:15 PM</span>
                       <span class="text-slate-500">Faiza Ahmed</span>
