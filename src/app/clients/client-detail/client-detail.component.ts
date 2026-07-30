@@ -62,10 +62,20 @@ export class ClientDetailComponent implements OnInit {
   loading = false;
   clientStats: any = null;
   siteStats: any = null;
-  showDeactivateClientModal = false;
+showDeactivateClientModal = false;
   showActivateClientModal = false;
 
   siteDonutSegments: { color: string; offset: number; length: number }[] = [];
+
+  // Document state
+  documents: any[] = [];
+  filteredDocuments: any[] = [];
+  documentStats: any = null;
+  documentsPage = 1;
+  documentsRowsPerPage = 8;
+  documentsSearch = '';
+  documentsCategory = 'All';
+  documentsLoading = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
@@ -76,6 +86,184 @@ export class ClientDetailComponent implements OnInit {
     this.loadSites();
     this.loadClientStats();
     this.loadSiteStats();
+    this.loadDocuments();
+    this.loadDocumentStats();
+  }
+
+  private loadDocuments(): void {
+    if (!this.clientId) return;
+    this.documentsLoading = true;
+    this.clientService.listDocuments(this.clientId, { page: 0, size: this.documentsRowsPerPage }).subscribe({
+      next: (result: any) => {
+        this.documents = result?.items ?? [];
+        this.filteredDocuments = [...this.documents];
+        this.documentsLoading = false;
+      },
+      error: () => {
+        this.documents = [];
+        this.filteredDocuments = [];
+        this.documentsLoading = false;
+      }
+    });
+  }
+
+  private loadDocumentStats(): void {
+    if (!this.clientId) return;
+    this.clientService.getDocumentStats(this.clientId).subscribe({
+      next: (stats: any) => {
+        this.documentStats = stats ?? null;
+      },
+      error: () => {
+        this.documentStats = null;
+      }
+    });
+  }
+
+  get documentsPaginated(): any[] {
+    const q = this.documentsSearch.toLowerCase().trim();
+    const data = q ? this.filteredDocuments : this.documents;
+    const start = (this.documentsPage - 1) * this.documentsRowsPerPage;
+    return data.slice(start, start + this.documentsRowsPerPage);
+  }
+
+  get documentsTotalPages(): number {
+    const q = this.documentsSearch.toLowerCase().trim();
+    const data = q ? this.filteredDocuments : this.documents;
+    return Math.max(1, Math.ceil(data.length / this.documentsRowsPerPage));
+  }
+
+  get documentsShowingStart(): number {
+    const q = this.documentsSearch.toLowerCase().trim();
+    const data = q ? this.filteredDocuments : this.documents;
+    return data.length === 0 ? 0 : (this.documentsPage - 1) * this.documentsRowsPerPage + 1;
+  }
+
+  get documentsShowingEnd(): number {
+    const q = this.documentsSearch.toLowerCase().trim();
+    const data = q ? this.filteredDocuments : this.documents;
+    return Math.min(this.documentsPage * this.documentsRowsPerPage, data.length);
+  }
+
+  get documentCategories(): string[] {
+    const categories = Array.from(new Set(this.documents.map(d => d.category).filter(Boolean)));
+    return ['All', ...categories.sort()];
+  }
+
+  get pdfDocumentCount(): number {
+    return this.filteredDocuments.filter(d => (d.documentType || d.fileType || '').toLowerCase().includes('pdf')).length;
+  }
+
+  get otherDocumentCount(): number {
+    return this.filteredDocuments.length - this.pdfDocumentCount;
+  }
+
+  get totalStorageBytes(): number {
+    return this.filteredDocuments.reduce((sum, d) => sum + (d.sizeBytes || 0), 0);
+  }
+
+  get lastUploadedDate(): string {
+    if (this.filteredDocuments.length === 0) return '--';
+    const dates = this.filteredDocuments.map(d => d.createdAt).filter(Boolean).sort().reverse();
+    return dates[0] || '--';
+  }
+
+  get totalDocuments(): number {
+    const q = this.documentsSearch.toLowerCase().trim();
+    return q ? this.filteredDocuments.length : this.documents.length;
+  }
+
+  onDocumentsSearch(): void {
+    this.documentsPage = 1;
+    const q = this.documentsSearch.toLowerCase().trim();
+    this.filteredDocuments = this.documents.filter(doc => {
+      const name = (doc.name || doc.fileName || '').toLowerCase();
+      return name.includes(q);
+    });
+  }
+
+  documentsPreviousPage(): void {
+    if (this.documentsPage > 1) this.documentsPage--;
+  }
+
+  documentsNextPage(): void {
+    if (this.documentsPage < this.documentsTotalPages) this.documentsPage++;
+  }
+
+  documentsGoToPage(page: number): void {
+    if (page >= 1 && page <= this.documentsTotalPages) this.documentsPage = page;
+  }
+
+  onDocumentsRowsPerPageChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.documentsRowsPerPage = parseInt(select.value);
+    this.documentsPage = 1;
+  }
+
+  viewDocument(docId: string = ''): void {
+    if (!this.clientId) return;
+    this.router.navigate(['/clients', this.clientId, 'view-document', docId], {
+      queryParams: { clientName: this.client?.name || '' }
+    });
+  }
+
+  editDocument(docId: string): void {
+    if (!this.clientId) return;
+    this.router.navigate(['/clients', this.clientId, 'add-document', docId], {
+      queryParams: { clientName: this.client?.name || '' }
+    });
+  }
+
+  deleteDocument(docId: string): void {
+    if (!confirm('Are you sure you want to delete this document?')) return;
+    this.clientService.deleteDocument(this.clientId, docId).subscribe({
+      next: () => {
+        this.documents = this.documents.filter(d => d.id !== docId);
+        this.filteredDocuments = this.filteredDocuments.filter(d => d.id !== docId);
+        this.loadDocumentStats();
+      },
+      error: () => alert('Failed to delete document.')
+    });
+  }
+
+  getDocumentIcon(type = ''): string {
+    if (!type) return 'doc';
+    const t = type.toLowerCase();
+    if (t.includes('pdf')) return 'file-text';
+    if (t.includes('image') || t.includes('jpg') || t.includes('png')) return 'image';
+    if (t.includes('sheet') || t.includes('xls')) return 'sheet';
+    if (t.includes('word') || t.includes('doc')) return 'file-text';
+    return 'doc';
+  }
+
+  getDocumentColor(type = ''): string {
+    if (!type) return 'text-slate-500 bg-slate-100';
+    const t = type.toLowerCase();
+    if (t.includes('pdf')) return 'text-red-600 bg-red-50';
+    if (t.includes('image') || t.includes('jpg') || t.includes('png')) return 'text-blue-600 bg-blue-50';
+    if (t.includes('sheet') || t.includes('xls')) return 'text-emerald-600 bg-emerald-50';
+    if (t.includes('word') || t.includes('doc')) return 'text-indigo-600 bg-indigo-50';
+    return 'text-slate-600 bg-slate-100';
+  }
+
+  getCategoryColor(category = ''): string {
+    const map: Record<string, string> = {
+      'Contract': 'bg-blue-50 text-blue-600',
+      'License': 'bg-purple-50 text-purple-600',
+      'Insurance': 'bg-amber-50 text-amber-600',
+      'Report': 'bg-emerald-50 text-emerald-600',
+      'Compliance': 'bg-green-50 text-green-600',
+      'Certificate': 'bg-cyan-50 text-cyan-600',
+      'General': 'bg-slate-100 text-slate-600',
+      'Legal': 'bg-rose-50 text-rose-600',
+      'Finance': 'bg-orange-50 text-orange-600',
+    };
+    return map[category] || 'bg-slate-100 text-slate-600';
+  }
+
+  formatSize(bytes = 0): string {
+    if (!bytes) return '-';
+    const mb = bytes / (1024 * 1024);
+    return mb >= 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
   }
 
   private loadClientStats(): void {
@@ -455,6 +643,13 @@ export class ClientDetailComponent implements OnInit {
            
           ]
         };
+      case 'documents':
+        return {
+          breadcrumbs: [...baseBreadcrumbs, { label: 'Documents' }],
+          title: clientName,
+          showActions: true,
+          actions: []
+        };
       case 'jobs':
         return {
           breadcrumbs: [...baseBreadcrumbs, { label: 'Jobs' }],
@@ -523,6 +718,10 @@ export class ClientDetailComponent implements OnInit {
       this.router.navigate(['/clients/add-client'], { queryParams: { editId: this.clientId } });
       return;
     }
+    if (actionName === 'Upload Document') {
+      this.uploadDocument();
+      return;
+    }
     if (actionName === 'Export Client Data') {
       this.exportClientData();
       return;
@@ -587,21 +786,14 @@ export class ClientDetailComponent implements OnInit {
     });
   }
 
-  uploadDocument(): void {
-    if (!this.clientId) return;
-    this.router.navigate(['/clients', this.clientId, 'add-document'], {
-      queryParams: { clientName: this.client?.name || '' }
-    });
-  }
+   uploadDocument(): void {
+     if (!this.clientId) return;
+     this.router.navigate(['/clients', this.clientId, 'add-document'], {
+       queryParams: { clientName: this.client?.name || '' }
+     });
+   }
 
-  viewDocument(docId: string = ''): void {
-    if (!this.clientId) return;
-    this.router.navigate(['/clients', this.clientId, 'view-document', docId], {
-      queryParams: { clientName: this.client?.name || '' }
-    });
-  }
-
-  onRowCheckboxChange(event: Event): void {
+   onRowCheckboxChange(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     if (checkbox.checked) {
       checkbox.closest('tr')?.classList.add('bg-blue-50/20');
@@ -647,5 +839,39 @@ export class ClientDetailComponent implements OnInit {
     this.router.navigate(['/clients', this.clientId, 'add-contact'], {
       queryParams: { clientName: this.client?.name || '' }
     });
+  }
+
+  activities = [
+    { time:"15 May 2024, 11:45 AM", by:"Faisa Ahmed", role:"Admin", initials:"FA", avatarColor:"bg-brand-100 text-brand-700", action:"Added", entity:"Site", name:"Head Office", detail1:"25 Fenchurch Street, London", ip:"192.168.1.25", details:"Added new site" },
+    { time:"15 May 2024, 11:30 AM", by:"James Walker", role:"Operations Manager", initials:"JW", avatarColor:"bg-violet-100 text-violet-700", action:"Edited", entity:"Site", name:"Head Office", detail1:"Updated address and contact", ip:"192.168.1.18", details:"Edited site details" },
+    { time:"15 May 2024, 11:15 AM", by:"Sarah Miller", role:"Account Manager", initials:"SM", avatarColor:"bg-orange-100 text-orange-700", action:"Deleted", entity:"Site", name:"Old Warehouse", detail1:"12 Old Kent Road, London", ip:"192.168.1.35", details:"Deleted site" },
+    { time:"15 May 2024, 10:50 AM", by:"David Johnson", role:"Finance Manager", initials:"DJ", avatarColor:"bg-amber-100 text-amber-700", action:"Added", entity:"Key", name:"HQ Main Entrance Key", detail1:"(KY-0123)", ip:"192.168.1.22", details:"Added new key" },
+    { time:"15 May 2024, 10:20 AM", by:"James Walker", role:"Operations Manager", initials:"JW", avatarColor:"bg-violet-100 text-violet-700", action:"Deactivated", entity:"Key", name:"Store Room Key", detail1:"(KY-0456)", ip:"192.168.1.18", details:"Deactivated key" },
+    { time:"15 May 2024, 09:45 AM", by:"Emma Parker", role:"Procurement Officer", initials:"EP", avatarColor:"bg-teal-100 text-teal-700", action:"Created", entity:"Job", name:"JOB-000345", detail1:"Routine Key Check", ip:"192.168.1.41", details:"Created new job" },
+    { time:"14 May 2024, 04:30 PM", by:"Michael Brown", role:"Compliance Officer", initials:"MB", avatarColor:"bg-indigo-100 text-indigo-700", action:"Uploaded", entity:"Document", name:"Key Policy.pdf", detail1:"", ip:"192.168.1.25", details:"Uploaded document" },
+    { time:"14 May 2024, 03:10 PM", by:"Faisa Ahmed", role:"Admin", initials:"FA", avatarColor:"bg-brand-100 text-brand-700", action:"Deactivated", entity:"Contact", name:"Lisa Martin (HR Manager)", detail1:"", ip:"192.168.1.25", details:"Deactivated contact" },
+  ];
+
+  getActivityIcon(entity: string): { bg: string; color: string; path: string } {
+    const map: Record<string, { bg: string; color: string; path: string }> = {
+      Site: { bg:"bg-violet-50", color:"text-violet-600", path:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 6v-3a1 1 0 011-1h2a1 1 0 011 1v3"/>' },
+      Key: { bg:"bg-amber-50", color:"text-amber-600", path:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM3 21l7-7"/>' },
+      Job: { bg:"bg-emerald-50", color:"text-emerald-600", path:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7h-3V5a2 2 0 00-2-2H9a2 2 0 00-2 2v2H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1zM9 5h6v2H9V5z"/>' },
+      Document: { bg:"bg-sky-50", color:"text-sky-600", path:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>' },
+      Contact: { bg:"bg-slate-100", color:"text-slate-600", path:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>' },
+    };
+    return map[entity] || { bg:"bg-slate-100", color:"text-slate-600", path:'' };
+  }
+
+  getActionColor(action: string): string {
+    const map: Record<string, string> = {
+      Added: "bg-emerald-50 text-emerald-600",
+      Edited: "bg-slate-100 text-slate-500",
+      Deleted: "bg-rose-50 text-rose-500",
+      Deactivated: "bg-slate-100 text-slate-500",
+      Created: "bg-amber-50 text-amber-600",
+      Uploaded: "bg-sky-50 text-sky-600",
+    };
+    return map[action] || "bg-slate-100 text-slate-600";
   }
 }

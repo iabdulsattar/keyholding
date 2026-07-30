@@ -1,25 +1,27 @@
-# Client Detail Component - Design Updates
-
-## Plan Overview
-Update the overview tab content design and the top card section above tabs in the Angular client-detail component.
+# Task: Make Documents Tab Listing Dynamic
 
 ## Steps
 
-### Step 1: Update Hero Profile Card (Top Card above tabs)
-- [x] Reorganize contact details into polished grid with icon badges
-- [x] Improve stat cards (Sites/Keys/Jobs) with better visual styling  
-- [x] Enhance "Client Since" section with "Last Updated by" info
+### Step 1: Update `client-detail.component.ts`
+- [x] Add document-related properties (documents, filteredDocuments, documentStats, pagination, search, category filter)
+- [x] Add `loadDocuments()` method using `clientService.listDocuments()`
+- [x] Add `loadDocumentStats()` method using `clientService.getDocumentStats()`
+- [x] Add computed getters for pagination (documentsPaginated, documentsTotalPages, etc.)
+- [x] Add document filtering methods (onDocumentsSearch, onDocumentsCategoryChange, applyDocumentsFilter)
+- [x] Add document action methods (deleteDocument, downloadDocument)
+- [x] Call loadDocuments() and loadDocumentStats() in ngOnInit()
 
-### Step 2: Update Overview Tab Content Design
-- [x] Refine "Client Information" panel with cleaner flex layout with border separators
-- [x] Refine "Additional Details" panel with consistent flex layout with border separators
-- [x] Improve "Status & Timeline" with 2px solid border, larger indicator dots, spacing
-- [x] Enhance "Recent Activity" table with better header styling, cursor-pointer rows
-- [x] Polish "Related Items" list with icon badge containers and hover effects
-- [x] Improve "Quick Actions" buttons with blue-50/50 hover backgrounds
+### Step 2: Update `client-detail.component.html`
+- [x] Replace hardcoded document stat pills with dynamic data from documentStats
+- [x] Replace hardcoded document table rows with @for loop over filteredDocuments
+- [x] Add search input binding to documentsSearch
+- [x] Add category filter dropdown
+- [x] Wire up action buttons (view, download, delete) with proper handlers
+- [x] Add proper pagination with page numbers
 
-### ✅ All steps completed!
-
-### Bonus Fix
-- [x] Fixed broken HTML structure in "Right: Client Since + Last Updated" section (resolved improper nesting of div/svg elements)
+### Step 3: Update `view-document.component.ts`
+- [x] Inject ClientService
+- [x] Fetch document details from API using clientService.getDocument()
+- [x] Add loading state
+- [x] Map API response to component properties
 
