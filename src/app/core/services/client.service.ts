@@ -68,6 +68,37 @@ export interface Client {
   notes?: string;
 }
 
+export interface ContactRecord {
+  id: string;
+  code?: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  jobTitle?: string;
+  email?: string;
+  phone?: string;
+  department?: string;
+  primaryContact: boolean;
+  status: 'Active' | 'Inactive';
+  preferredMethod?: string;
+  address?: string;
+  notes?: string;
+  clientId?: string;
+}
+
+export interface AuditRecord {
+  id: string;
+  targetType: string;
+  targetId: string;
+  action: string;
+  userId?: string;
+  userName?: string;
+  userRole?: string;
+  details?: string;
+  ipAddress?: string;
+  createdAt: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -300,6 +331,109 @@ export class ClientService {
     return this.keyVault.createSite(orgId, clientId, site);
   }
 
+  listContacts(clientId: string, params?: { q?: string; status?: string; department?: string; page?: number; size?: number }): Observable<PaginatedResult<ContactRecord>> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+    const page = params?.page ?? 0;
+    const size = params?.size ?? 10;
+    return this.keyVault.listContacts(orgId, clientId, { q: params?.q, status: params?.status, department: params?.department, page, size }).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapContact(item));
+        const totalItems = data.totalItems ?? data.total ?? items.length;
+        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        return { items, totalItems, page, size, totalPages };
+      })
+    );
+  }
+
+  getContact(clientId: string, contactId: string): Observable<ContactRecord | undefined> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(undefined);
+    return this.keyVault.getContact(orgId, clientId, contactId).pipe(
+      map((res: any) => {
+        const item = res?.data ?? res;
+        return item ? this.mapContact(item) : undefined;
+      })
+    );
+  }
+
+  createContact(clientId: string, contact: Partial<ContactRecord>): Observable<ContactRecord> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({} as ContactRecord);
+    const payload: any = {
+      ...contact,
+      firstName: contact.firstName || '',
+      lastName: contact.lastName || '',
+      status: contact.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE',
+    };
+    return this.keyVault.createContact(orgId, clientId, payload).pipe(
+      map((res: any) => this.mapContact(res?.data ?? res))
+    );
+  }
+
+  updateContact(clientId: string, contactId: string, contact: Partial<ContactRecord>): Observable<ContactRecord> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({} as ContactRecord);
+    const payload: any = { ...contact };
+    if (payload.status) {
+      payload.status = payload.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE';
+    }
+    return this.keyVault.updateContact(orgId, clientId, contactId, payload).pipe(
+      map((res: any) => this.mapContact(res?.data ?? res))
+    );
+  }
+
+  deactivateContact(clientId: string, contactId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.deactivateContact(orgId, clientId, contactId);
+  }
+
+  reactivateContact(clientId: string, contactId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.reactivateContact(orgId, clientId, contactId);
+  }
+
+  deleteContact(clientId: string, contactId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.deleteContact(orgId, clientId, contactId);
+  }
+
+  listAuditLog(params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+    const page = params?.page ?? 0;
+    const size = params?.size ?? 50;
+    return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, page, size }).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+        const totalItems = data.totalItems ?? data.total ?? items.length;
+        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        return { items, totalItems, page, size, totalPages };
+      })
+    );
+  }
+
+  listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+    const page = params?.page ?? 0;
+    const size = params?.size ?? 50;
+    return this.keyVault.listEntityAuditLog(orgId, targetType, targetId, { page, size }).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+        const totalItems = data.totalItems ?? data.total ?? items.length;
+        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        return { items, totalItems, page, size, totalPages };
+      })
+    );
+  }
+
   listAllKeys(params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
     const orgId = this.getOrgId();
     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
@@ -369,54 +503,90 @@ export class ClientService {
     };
   }
 
-  private mapKey(item: any): KeyRecord {
-    const statusMap: Record<string, KeyRecord['status']> = {
-      'IN_STORAGE': 'In Storage',
-      'ISSUED': 'Issued',
-      'IN_USE': 'In Use',
-      'OVERDUE': 'Overdue',
-      'DAMAGED': 'Damaged',
-      'LOST': 'Lost',
-      'LOST_DAMAGED': 'Damaged / Lost',
-      'DAMAGED_LOST': 'Damaged / Lost',
-    };
-    const typeColorMap: Record<string, string> = {
-      'Master Key': 'blue',
-      'Door Key': 'emerald',
-      'Alarm Key': 'violet',
-      'Gate Key': 'orange',
-      'Utility Key': 'cyan',
-      'Office Key': 'indigo',
-      'IT Key': 'violet',
-    };
-    const statusColorMap: Record<string, string> = {
-      'In Storage': 'emerald',
-      'Issued': 'blue',
-      'In Use': 'indigo',
-      'Overdue': 'orange',
-      'Damaged': 'violet',
-      'Lost': 'rose',
-      'Damaged / Lost': 'rose',
-    };
-    const rawStatus = item.status ?? 'IN_STORAGE';
-    const mappedStatus = statusMap[rawStatus] ?? 'In Storage';
-    return {
-      id: item.id ?? '',
-      keyCode: item.keyCode ?? item.code ?? '',
-      name: item.name ?? '',
-      type: item.keyTypeName ?? item.type ?? '',
-      typeColor: typeColorMap[item.keyTypeName ?? item.type ?? ''] || 'blue',
-      site: item.siteId ?? '',
-      siteName: item.siteName ?? '',
-      status: mappedStatus,
-      statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
-      storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
-      storageDetail: '',
-      assignedTo: item.assignedToUserName ?? '',
-      lastMovement: '',
-      lastMovementTime: '',
-      clientId: item.clientId ?? item.client?.id,
-      clientName: item.clientName ?? item.client?.name,
-    };
-  }
+   private mapKey(item: any): KeyRecord {
+     const statusMap: Record<string, KeyRecord['status']> = {
+       'IN_STORAGE': 'In Storage',
+       'ISSUED': 'Issued',
+       'IN_USE': 'In Use',
+       'OVERDUE': 'Overdue',
+       'DAMAGED': 'Damaged',
+       'LOST': 'Lost',
+       'LOST_DAMAGED': 'Damaged / Lost',
+       'DAMAGED_LOST': 'Damaged / Lost',
+     };
+     const typeColorMap: Record<string, string> = {
+       'Master Key': 'blue',
+       'Door Key': 'emerald',
+       'Alarm Key': 'violet',
+       'Gate Key': 'orange',
+       'Utility Key': 'cyan',
+       'Office Key': 'indigo',
+       'IT Key': 'violet',
+     };
+     const statusColorMap: Record<string, string> = {
+       'In Storage': 'emerald',
+       'Issued': 'blue',
+       'In Use': 'indigo',
+       'Overdue': 'orange',
+       'Damaged': 'violet',
+       'Lost': 'rose',
+       'Damaged / Lost': 'rose',
+     };
+     const rawStatus = item.status ?? 'IN_STORAGE';
+     const mappedStatus = statusMap[rawStatus] ?? 'In Storage';
+     return {
+       id: item.id ?? '',
+       keyCode: item.keyCode ?? item.code ?? '',
+       name: item.name ?? '',
+       type: item.keyTypeName ?? item.type ?? '',
+       typeColor: typeColorMap[item.keyTypeName ?? item.type ?? ''] || 'blue',
+       site: item.siteId ?? '',
+       siteName: item.siteName ?? '',
+       status: mappedStatus,
+       statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
+       storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
+       storageDetail: '',
+       assignedTo: item.assignedToUserName ?? '',
+       lastMovement: '',
+       lastMovementTime: '',
+       clientId: item.clientId ?? item.client?.id,
+       clientName: item.clientName ?? item.client?.name,
+     };
+   }
+
+   private mapContact(item: any): ContactRecord {
+     return {
+       id: item.id ?? '',
+       code: item.code ?? '',
+       firstName: item.firstName ?? '',
+       lastName: item.lastName ?? '',
+       fullName: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim(),
+       jobTitle: item.jobTitle,
+       email: item.email,
+       phone: item.phone,
+       department: item.department,
+       primaryContact: item.primaryContact ?? false,
+       status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+       preferredMethod: item.preferredMethod,
+       address: item.address,
+       notes: item.notes,
+       clientId: item.clientId,
+     };
+   }
+
+   private mapAudit(item: any): AuditRecord {
+     return {
+       id: item.id ?? '',
+       targetType: item.targetType ?? '',
+       targetId: item.targetId ?? '',
+       action: item.action ?? '',
+       userId: item.userId,
+       userName: item.userName,
+       userRole: item.userRole,
+       details: item.details,
+       ipAddress: item.ipAddress,
+       createdAt: item.createdAt ?? '',
+     };
+   }
 }
+

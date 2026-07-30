@@ -45,7 +45,7 @@ export interface KeyVaultSite {
   altContactName?: string;
   altPhone?: string;
   accessInstructions?: string;
-  accessSchedule?: 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7';
+  accessSchedule?: 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'ALWAYS';
   securityLevel?: 'STANDARD' | 'HIGH' | 'VERY_HIGH';
   alarmSystem?: string;
   appointment?: {
@@ -63,7 +63,7 @@ export interface KeyVaultKey {
   id?: string;
   code?: string;
   name: string;
-  type: string;
+  type?: string;
   category?: string;
   clientId?: string;
   siteId?: string;
@@ -77,6 +77,7 @@ export interface KeyVaultKey {
   tagLabel?: string;
   reference?: string;
   status?: 'IN_STORAGE' | 'ISSUED' | 'IN_USE' | 'OVERDUE' | 'LOST' | 'DAMAGED' | 'INACTIVE';
+  assignedToUserId?: string | null;
   notes?: string;
   [key: string]: any;
 }
@@ -85,6 +86,7 @@ export interface KeyType {
   id?: string;
   code?: string;
   name: string;
+  description?: string;
   color?: string;
   sortOrder?: number;
   active?: boolean;
@@ -95,8 +97,29 @@ export interface KeyCategory {
   id?: string;
   code?: string;
   name: string;
+  description?: string;
+  color?: string;
   sortOrder?: number;
   active?: boolean;
+  [key: string]: any;
+}
+
+export interface KeyVaultContact {
+  id?: string;
+  code?: string;
+  firstName: string;
+  lastName: string;
+  jobTitle?: string;
+  email?: string;
+  phoneCountryCode?: string;
+  phone?: string;
+  department?: string;
+  primaryContact?: boolean;
+  status?: 'ACTIVE' | 'INACTIVE';
+  preferredMethod?: string;
+  address?: string;
+  notes?: string;
+  clientId?: string;
   [key: string]: any;
 }
 
@@ -177,6 +200,20 @@ export interface KeyNote {
   id?: string;
   keyId?: string;
   body?: string;
+  createdAt?: string;
+  [key: string]: any;
+}
+
+export interface KeyVaultAuditEntry {
+  id?: string;
+  targetType?: 'CLIENT' | 'SITE' | 'KEY' | 'DOCUMENT' | 'CONTACT';
+  targetId?: string;
+  action?: string;
+  userId?: string;
+  userName?: string;
+  userRole?: string;
+  details?: string;
+  ipAddress?: string;
   createdAt?: string;
   [key: string]: any;
 }
@@ -344,6 +381,55 @@ export class KeyVaultService {
   deleteSite(orgId: string, siteId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}`, headers);
+  }
+
+  // Contacts
+  listContacts(orgId: string, clientId: string, params?: { q?: string; status?: string; department?: string; page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.q) q.set('q', params.q);
+    if (params?.status) q.set('status', params.status);
+    if (params?.department) q.set('department', params.department);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 10));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts${query ? `?${query}` : ''}`, headers);
+  }
+
+  getContact(orgId: string, clientId: string, contactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts/${contactId}`, headers);
+  }
+
+  createContact(orgId: string, clientId: string, contact: KeyVaultContact): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts`, contact, headers);
+  }
+
+  updateContact(orgId: string, clientId: string, contactId: string, contact: Partial<KeyVaultContact>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts/${contactId}`, contact, headers);
+  }
+
+  deactivateContact(orgId: string, clientId: string, contactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts/${contactId}/deactivate`, {}, headers);
+  }
+
+  reactivateContact(orgId: string, clientId: string, contactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts/${contactId}/reactivate`, {}, headers);
+  }
+
+  deleteContact(orgId: string, clientId: string, contactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts/${contactId}`, headers);
   }
 
   // Roles & Permissions
@@ -737,5 +823,26 @@ export class KeyVaultService {
       ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
     });
     return this.api.post<any>(`/api/v1/users/organizations/${orgId}/services/${serviceCode}/enable`, { email, code }, headers);
+  }
+
+  // Audit / Activity Log
+  listAuditLog(orgId: string, params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.targetType) q.set('targetType', params.targetType);
+    if (params?.targetId) q.set('targetId', params.targetId);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 50));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/audit${query ? `?${query}` : ''}`, headers);
+  }
+
+  listEntityAuditLog(orgId: string, targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 50));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/audit/${targetType}/${targetId}${query ? `?${query}` : ''}`, headers);
   }
 }
