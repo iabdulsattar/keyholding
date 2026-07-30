@@ -198,21 +198,17 @@
               <p class="text-xs text-slate-400 mt-1 max-w-[200px]">Fill in the information to see a summary of the key</p>
             </div>
             <div class="space-y-4" *ngIf="showPreview">
-              <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg shadow-sm shrink-0">
-                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                </div>
-                <div class="min-w-0">
-                  <h4 class="text-sm font-bold text-slate-900 truncate">{{ keyName || 'Untitled Key' }}</h4>
-                  <p class="text-xs text-slate-400 font-mono">{{ keyId || 'NO REFERENCE' }}</p>
-                </div>
+            <div class="flex flex-col items-center justify-center text-center p-4" >
+              <div class="w-20 h-20 border-2 border-dashed border-slate-200 rounded-full flex items-center justify-center text-slate-300 mb-4">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
               </div>
-              <div class="space-y-2.5 text-xs border-t border-slate-100 pt-4">
-                <div class="flex justify-between"><span class="text-slate-400">Type</span> <span class="font-semibold text-slate-700">{{ keyType ? (keyTypes.find(t => t.id === keyType)?.name || keyType) : '-' }}</span></div>
-                <div class="flex justify-between"><span class="text-slate-400">Category</span> <span class="font-semibold text-slate-700">{{ keyCategory ? (keyCategories.find(c => c.id === keyCategory)?.name || keyCategory) : '-' }}</span></div>
-                <div class="flex justify-between"><span class="text-slate-400">Site Location</span> <span class="font-semibold text-slate-700">{{ assignSite ? (sites.find(s => s.id === assignSite)?.name || assignSite) : '-' }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-slate-400">Status</span> <span class="px-2 py-0.5 rounded font-bold text-[10px] {{ statusClass }}">{{ keyStatusDisplay }}</span></div>
-              </div>
+              <h5 class="text-sm font-bold text-slate-800 mb-1">Front Door Key</h5>
+              <p class="text-[11px] text-slate-700 mb-3 font-semibold">Master Key - Building Premises</p>
+              
+              <h5 class="text-sm font-bold text-slate-800">Key details will appear here</h5>
+              <p class="text-xs text-slate-400 mt-1 ">Fill in the information to see a summary of the key</p>
+            </div>
+            
             </div>
           </div>
           
