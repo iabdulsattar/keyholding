@@ -16,7 +16,7 @@ import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '.
     .filter-select {
       background-color: white;
       border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
+      border-radius: 0.5rem;
       padding: 0.6rem 0.9rem;
       font-size: 0.875rem;
       color: #334155;
@@ -233,10 +233,10 @@ export class AllKeysComponent implements OnInit {
       'Damaged / Lost': 'Damaged / Lost',
     };
     const label = labelMap[status] || status;
-    return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-${color}-50 text-${color}-700 border border-${color}-100"><span class="w-1.5 h-1.5 rounded-full bg-${color}-500"></span><span>${label}</span></span>`;
+    return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-${color}-50 text-${color}-700 border border-${color}-100"><span>${label}</span></span>`;
   }
 
   typeBadge(type: string, color = 'slate'): string {
-    return `<span class="tag bg-${color}-50 text-${color}-600">${type}</span>`;
+    return `<span class="px-2.5 py-1 rounded-lg border border-${color}-100 tag bg-${color}-50 text-${color}-600">${type}</span>`;
   }
 }

@@ -7,7 +7,7 @@
         <p class="text-sm text-slate-500 mt-1">View and manage all keys across all clients</p>
       </div>
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <button routerLink="/keys/add-key" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-sm shadow-sm shadow-blue-500/10 transition w-full sm:w-auto">
+        <button routerLink="/keys/add-key" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-sm shadow-blue-500/10 transition w-full sm:w-auto">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add New Key
         </button>
@@ -16,47 +16,47 @@
 
     <!-- STAT CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+      <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center shrink-0">
           <svg class="w-6 h-6 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-500">Total Keys</p>
+          <p class="text-sm text-slate-800">Total Keys</p>
           <p class="text-2xl font-bold text-slate-900">{{ totalKeys }}</p>
           <p class="text-xs text-slate-400">Across all clients</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+      <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
           <svg class="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-500">Keys On Hook</p>
-          <p class="text-2xl font-bold text-slate-900">{{ onHookKeys }} <span class="text-base font-semibold text-slate-400">({{ onHookPercentage }}%)</span></p>
+          <p class="text-sm text-slate-800">Keys On Hook</p>
+          <p class="text-2xl font-bold text-slate-900">{{ onHookKeys }} <span class="text-base font-semibold text-slate-900">({{ onHookPercentage }}%)</span></p>
           <p class="text-xs text-slate-400">Currently on the hook</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-500">Keys Issued</p>
-          <p class="text-2xl font-bold text-slate-900">{{ issuedKeys }} <span class="text-base font-semibold text-slate-400">({{ issuedPercentage }}%)</span></p>
+          <p class="text-sm text-slate-800">Keys Issued</p>
+          <p class="text-2xl font-bold text-slate-900">{{ issuedKeys }} <span class="text-base font-semibold text-slate-900">({{ issuedPercentage }}%)</span></p>
           <p class="text-xs text-slate-400">Currently issued</p>
         </div>
       </div>
     </div>
 
     <!-- FILTERS -->
-    <div class="bg-white rounded-lg border border-slate-200 p-4">
+    <div class="bg-white rounded-lg border border-slate-100 p-4">
       <div class="flex flex-col xl:flex-row gap-3">
         <div class="relative flex-1">
           <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
           <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search keys by ID, name, type, site..."
-            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
+            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:flex lg:gap-3">
           <select [(ngModel)]="clientFilter" (ngModelChange)="onClientChange()" class="filter-select">
@@ -77,6 +77,7 @@
             }
           </select>
           <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusChange()" class="filter-select">
+            
             @for (opt of statusOptions; track opt.label) {
               <option [value]="opt.value">{{ opt.label }}</option>
             }
@@ -86,11 +87,11 @@
     </div>
 
     <!-- TABLE CARD -->
-    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-slate-100 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-sm min-w-[1200px]">
           <thead>
-            <tr class="border-b border-slate-100 text-left text-slate-500">
+            <tr class="border-b border-slate-100 text-left text-slate-900">
               <th class="th-cell w-10"><input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500/30" /></th>
               <th class="th-cell">Key ID <span class="sort-arrow">⇕</span></th>
               <th class="th-cell">Key Name <span class="sort-arrow">⇕</span></th>
@@ -110,8 +111,9 @@
               <td class="td-cell">
                 <div class="flex items-center gap-2">
                   <span class="font-medium text-blue-600">{{ k.keyCode }}</span>
-                  <span class="text-slate-400">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="3" width="6" height="6"/><rect x="3" y="15" width="6" height="6"/><rect x="15" y="15" width="2" height="2"/><rect x="19" y="15" width="2" height="2"/><rect x="15" y="19" width="2" height="2"/><rect x="19" y="19" width="2" height="2"/><rect x="17" y="17" width="2" height="2"/></svg>
+                  <span class="text-slate-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code-icon lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+                    
                   </span>
                 </div>
               </td>
@@ -124,10 +126,10 @@
               <td class="td-cell text-slate-600">{{ k.assignedTo || '--' }}</td>
               <td class="td-cell text-right pr-5">
                 <div class="flex items-center justify-end gap-2">
-                  <a [routerLink]="['/keys/view-key', k.id]" class="text-blue-600 hover:text-blue-700">
+                  <a [routerLink]="['/keys/view-key', k.id]" class="text-blue-500 hover:text-blue-700">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   </a>
-                  <a [routerLink]="['/keys/add-key']" [queryParams]="{ clientId: k.clientId || '', siteId: k.site || '', editId: k.id }" class="text-slate-400 hover:text-slate-600">
+                  <a [routerLink]="['/keys/add-key']" [queryParams]="{ clientId: k.clientId || '', siteId: k.site || '', editId: k.id }" class="text-blue-500 hover:text-blue-700">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                   </a>
                 </div>
@@ -158,7 +160,7 @@
             @if (p === '...') {
               <span class="w-8 h-8 flex items-center justify-center text-slate-400">...</span>
             } @else {
-              <button (click)="goToPage(p)" [class.bg-blue-600]="page === p" [class.text-white]="page === p" [class.bg-white]="page !== p" [class.text-slate-700]="page !== p" [class.border]="page !== p" [class.border-slate-200]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-slate-50 transition">
+              <button (click)="goToPage(p)" [class.bg-white]="page === p" [class.text-blue-500]="page === p" [class.border-blue-500]="page == p" [class.bg-white]="page !== p" [class.text-slate-700]="page !== p" [class.border-slate-200]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-slate-50 transition border">
                 {{ pageLabel(p) }}
               </button>
             }
