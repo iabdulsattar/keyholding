@@ -41,9 +41,14 @@
       </div>
     </header>
 
-    <!-- Content -->
+     <!-- Content -->
     <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-[1400px] w-full mx-auto">
-      <div class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
+      @if (loading) {
+        <div class="flex items-center justify-center py-12">
+          <div class="animate-spin rounded-full h-8 w-8 border-2 border-slate-200 border-t-brand-600"></div>
+        </div>
+      }
+      <div [class.opacity-50]="loading" [class.pointer-events-none]="loading" class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
 
         <!-- Main column -->
         <div class="space-y-6">

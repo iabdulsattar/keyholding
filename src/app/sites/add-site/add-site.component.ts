@@ -54,6 +54,7 @@ securityLevel = '';
   apptPhone = '+44 020 7946 0958';
   apptEmail = 'james.walker@metrosecurity.co.uk';
   apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
+  siteStatus = 'Active';
   restrictedHours: Record<string, { from: string; to: string; closed: boolean }[]> = {
     Monday: [{ from: '08:00', to: '18:00', closed: false }],
     Tuesday: [{ from: '08:00', to: '18:00', closed: false }],

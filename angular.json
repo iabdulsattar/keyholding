@@ -20,8 +20,8 @@
               "zone.js"
             ],
             "allowedCommonJsDependencies": [
-               "prismjs",
-               "polylabel"
+              "prismjs",
+              "polylabel"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -37,7 +37,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -107,7 +110,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js"
+            ]
           }
         }
       }

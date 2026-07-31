@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClientService, ContactRecord } from '../../core/services/client.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-add-contact',
@@ -29,6 +31,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AddContactComponent implements OnInit {
   clientId = '';
   clientName = 'Metro Security Services';
+  contactId = '';
 
   firstName = '';
   lastName = '';
@@ -42,12 +45,52 @@ export class AddContactComponent implements OnInit {
   address = '';
   notes = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  saving = false;
+
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
+
+  get isEditMode(): boolean {
+    return !!this.contactId;
+  }
 
   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
+    this.contactId = this.route.snapshot.queryParamMap.get('contactId') || '';
     this.route.queryParams.subscribe(params => {
       this.clientName = params['clientName'] || this.clientName;
+      const cid = params['contactId'] || '';
+      if (cid && cid !== this.contactId) {
+        this.contactId = cid;
+        this.loadContact();
+      }
+    });
+
+    if (this.contactId) {
+      this.loadContact();
+    }
+  }
+
+  private loadContact(): void {
+    if (!this.clientId || !this.contactId) return;
+    this.clientService.getContact(this.clientId, this.contactId).subscribe({
+      next: (contact: ContactRecord | undefined) => {
+        if (contact) {
+          this.firstName = contact.firstName || '';
+          this.lastName = contact.lastName || '';
+          this.jobTitle = contact.jobTitle || '';
+          this.email = contact.email || '';
+          this.phone = contact.phone || '';
+          this.department = contact.department || '';
+          this.primaryContact = contact.primaryContact ?? false;
+          this.status = contact.status || 'Active';
+          this.preferredContactMethod = contact.preferredMethod || 'Email';
+          this.address = contact.address || '';
+          this.notes = contact.notes || '';
+        }
+      },
+      error: () => {
+        this.toast.error('Failed to load contact');
+      }
     });
   }
 
@@ -55,9 +98,23 @@ export class AddContactComponent implements OnInit {
     this.router.navigate(['/clients', this.clientId]);
   }
 
+  cancel(): void {
+    this.goBack();
+  }
+
   saveContact(): void {
-    console.log('Save contact:', {
-      clientId: this.clientId,
+    if (this.saving) return;
+    if (!this.firstName.trim() || !this.lastName.trim()) {
+      this.toast.error('First name and last name are required');
+      return;
+    }
+    if (!this.email.trim()) {
+      this.toast.error('Email address is required');
+      return;
+    }
+
+    this.saving = true;
+    const contact: Partial<ContactRecord> = {
       firstName: this.firstName,
       lastName: this.lastName,
       jobTitle: this.jobTitle,
@@ -65,10 +122,33 @@ export class AddContactComponent implements OnInit {
       phone: this.phone,
       department: this.department,
       primaryContact: this.primaryContact,
-      status: this.status,
-      preferredContactMethod: this.preferredContactMethod,
+      status: this.status as 'Active' | 'Inactive',
+      preferredMethod: this.preferredContactMethod,
       address: this.address,
       notes: this.notes,
-    });
+    };
+
+    const handleSuccess = () => {
+      this.saving = false;
+      this.toast.success(this.isEditMode ? 'Contact updated successfully' : 'Contact created successfully');
+      this.router.navigate(['/clients', this.clientId]);
+    };
+
+    const handleError = () => {
+      this.saving = false;
+      this.toast.error(this.isEditMode ? 'Failed to update contact' : 'Failed to create contact');
+    };
+
+    if (this.isEditMode) {
+      this.clientService.updateContact(this.clientId, this.contactId, contact).subscribe({
+        next: handleSuccess,
+        error: handleError,
+      });
+    } else {
+      this.clientService.createContact(this.clientId, contact).subscribe({
+        next: handleSuccess,
+        error: handleError,
+      });
+    }
   }
 }

@@ -30,6 +30,7 @@
 @import "tailwindcss";
 @import "swiper/css/bundle";
 @import "flatpickr/dist/flatpickr.css";
+@import "datatables.net-dt/css/dataTables.dataTables.min.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -25,14 +25,6 @@ import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '.
     .filter-select:focus { box-shadow: 0 0 0 2px rgba(47,75,245,0.25); border-color: #2f4bf5; }
     .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
     .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle; white-space: nowrap; }
-    .page-btn {
-      width: 2rem; height: 2rem; border-radius: 0.55rem;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 500; color: #475569;
-      border: 1px solid #e2e8f0; background: white;
-    }
-    .page-btn:hover { background: #f8fafc; }
-    .sort-arrow { color: #cbd5e1; font-size: 0.7rem; }
     .status-badge {
       display: inline-block; font-size: 0.75rem; font-weight: 600;
       padding: 0.25rem 0.7rem; border-radius: 0.5rem;
@@ -47,17 +39,12 @@ export class AllKeysComponent implements OnInit {
   keys: KeyRecord[] = [];
   clients: Client[] = [];
   sites: SiteRecord[] = [];
-  pageKeys: KeyRecord[] = [];
   loading = false;
   searchQuery = '';
   clientFilter = '';
   siteFilter = '';
   keyTypeFilter = '';
   statusFilter: string = '';
-  page = 0;
-  pageSize = 10;
-  totalItems = 0;
-  totalPages = 0;
 
   clientOptions: Client[] = [];
   siteOptions: SiteRecord[] = [];
@@ -100,8 +87,8 @@ export class AllKeysComponent implements OnInit {
     this.clientService.listAllKeys({
       q: this.searchQuery || undefined,
       status,
-      page: this.page,
-      size: this.pageSize,
+      page: 0,
+      size: 200,
     }).subscribe((result: PaginatedResult<KeyRecord>) => {
       let keys = result.items;
       if (this.clientFilter) {
@@ -114,47 +101,31 @@ export class AllKeysComponent implements OnInit {
         keys = keys.filter((k: KeyRecord) => k.type === this.keyTypeFilter);
       }
       this.keys = keys;
-      this.totalItems = keys.length;
-      this.totalPages = Math.max(1, Math.ceil(this.totalItems / this.pageSize));
-      if (this.page >= this.totalPages) {
-        this.page = Math.max(0, this.totalPages - 1);
-      }
-      this.applyPagination();
       this.loading = false;
     });
   }
 
-  private applyPagination(): void {
-    const start = this.page * this.pageSize;
-    this.pageKeys = this.keys.slice(start, start + this.pageSize);
-  }
-
   onSearch(): void {
-    this.page = 0;
     this.loadKeys();
   }
 
   onClientChange(): void {
-    this.page = 0;
     this.loadKeys();
   }
 
   onSiteChange(): void {
-    this.page = 0;
     this.loadKeys();
   }
 
   onKeyTypeChange(): void {
-    this.page = 0;
     this.loadKeys();
   }
 
   onStatusChange(): void {
-    this.page = 0;
     this.loadKeys();
   }
 
-  get totalKeys(): number { return this.totalItems; }
+  get totalKeys(): number { return this.keys.length; }
   get onHookKeys(): number { return this.keys.filter(k => k.status === 'In Storage').length; }
   get issuedKeys(): number { return this.keys.filter(k => k.status === 'Issued').length; }
   get onHookPercentage(): string {
@@ -164,62 +135,6 @@ export class AllKeysComponent implements OnInit {
   get issuedPercentage(): string {
     if (!this.totalKeys) return '0';
     return (this.issuedKeys / this.totalKeys * 100).toFixed(1);
-  }
-
-  get showingStart(): number {
-    return this.totalItems === 0 ? 0 : this.page * this.pageSize + 1;
-  }
-
-  get showingEnd(): number {
-    return Math.min((this.page + 1) * this.pageSize, this.totalItems);
-  }
-
-  goToPage(p: number | string): void {
-    if (typeof p !== 'number') return;
-    if (p < 0 || p >= this.totalPages) return;
-    this.page = p;
-    this.applyPagination();
-  }
-
-  prevPage(): void {
-    this.goToPage(this.page - 1);
-  }
-
-  nextPage(): void {
-    this.goToPage(this.page + 1);
-  }
-
-  onPageSizeChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.pageSize = parseInt(select.value, 10) || 10;
-    this.page = 0;
-    this.applyPagination();
-  }
-
-  getPageNumbers(): (number | string)[] {
-    const pages: (number | string)[] = [];
-    const total = this.totalPages;
-    const current = this.page;
-    if (total <= 7) {
-      for (let i = 0; i < total; i++) pages.push(i);
-    } else {
-      pages.push(0);
-      if (current > 2) pages.push('...');
-      const start = Math.max(1, current - 1);
-      const end = Math.min(total - 2, current + 1);
-      for (let i = start; i <= end; i++) pages.push(i);
-      if (current < total - 3) pages.push('...');
-      pages.push(total - 1);
-    }
-    return pages;
-  }
-
-  pageLabel(p: number | string): string {
-    return typeof p === 'number' ? String(p + 1) : String(p);
-  }
-
-  trackByKeyId(index: number, key: KeyRecord): string {
-    return key.id;
   }
 
   statusBadge(status: string, color = 'emerald'): string {

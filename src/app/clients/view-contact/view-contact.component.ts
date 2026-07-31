@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClientService, ContactRecord } from '../../core/services/client.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-view-contact',
@@ -25,35 +27,76 @@ export class ViewContactComponent implements OnInit {
   clientName = 'Metro Security Services';
   contactId = '';
 
-  firstName = 'James';
-  lastName = 'Walker';
-  jobTitle = 'Operations Manager';
-  email = 'james.walker@metrosecurity.co.uk';
-  phone = '+44 020 7946 0958';
-  department = 'Operations';
+  firstName = '';
+  lastName = '';
+  jobTitle = '';
+  email = '';
+  phone = '';
+  department = '';
   primaryContact = true;
   status = 'Active';
   preferredContactMethod = 'Email';
   address = 'Metro Security Services\n1 Security House, Park Lane\nLondon, W1K 1AB, UK';
   notes = 'James is the main point of contact for all operational matters and key management operations.';
 
-  jobsAssigned = 48;
-  keysManaged = 26;
-  sitesAccess = 8;
-  primaryFor = 'Metro Security Services';
-
   addedBy = 'Faisa Ahmed';
   createdOn = '15 May 2024, 09:15 AM';
   lastUpdated = '15 May 2024, 11:20 AM';
   lastUpdatedBy = 'Faisa Ahmed';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  jobsAssigned = 48;
+  keysManaged = 26;
+  sitesAccess = 8;
+  primaryFor = 'Metro Security Services';
+
+  loading = false;
+
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
+
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
+  get isEditMode(): boolean {
+    return !!this.contactId;
+  }
 
   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
     this.contactId = this.route.snapshot.paramMap.get('contactId') || '';
     this.route.queryParams.subscribe(params => {
       this.clientName = params['clientName'] || this.clientName;
+    });
+
+    if (this.contactId) {
+      this.loadContact();
+    }
+  }
+
+  private loadContact(): void {
+    if (!this.clientId || !this.contactId) return;
+    this.loading = true;
+    this.clientService.getContact(this.clientId, this.contactId).subscribe({
+      next: (contact: ContactRecord | undefined) => {
+        if (contact) {
+          this.firstName = contact.firstName || '';
+          this.lastName = contact.lastName || '';
+          this.jobTitle = contact.jobTitle || '';
+          this.email = contact.email || '';
+          this.phone = contact.phone || '';
+          this.department = contact.department || '';
+          this.primaryContact = contact.primaryContact ?? false;
+          this.status = contact.status || 'Active';
+          this.preferredContactMethod = contact.preferredMethod || 'Email';
+          this.address = contact.address || '';
+          this.notes = contact.notes || '';
+        }
+        this.loading = false;
+      },
+      error: () => {
+        this.toast.error('Failed to load contact');
+        this.loading = false;
+      }
     });
   }
 
@@ -62,11 +105,24 @@ export class ViewContactComponent implements OnInit {
   }
 
   editContact(): void {
-    console.log('Edit contact:', this.contactId);
+    if (!this.clientId || !this.contactId) return;
+    this.router.navigate(['/clients', this.clientId, 'add-contact'], {
+      queryParams: { contactId: this.contactId, clientName: this.clientName }
+    });
   }
 
   deleteContact(): void {
-    console.log('Delete contact:', this.contactId);
+    if (!this.clientId || !this.contactId) return;
+    if (!confirm('Are you sure you want to delete this contact? This action cannot be undone.')) return;
+    this.clientService.deleteContact(this.clientId, this.contactId).subscribe({
+      next: () => {
+        this.toast.success('Contact deleted successfully');
+        this.router.navigate(['/clients', this.clientId]);
+      },
+      error: () => {
+        this.toast.error('Failed to delete contact');
+      }
+    });
   }
 
   toggleDropdown(id: string): void {
@@ -74,9 +130,5 @@ export class ViewContactComponent implements OnInit {
     if (dropdown) {
       dropdown.classList.toggle('hidden');
     }
-  }
-
-  get fullName(): string {
-    return `${this.firstName} ${this.lastName}`;
   }
 }

@@ -139,7 +139,7 @@
           <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Jobs ({{ totalJobs }})</button>
           <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Activity Log</button>
           <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Documents ({{ totalDocuments }})</button>
-          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Contact</button>
+          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Contact ({{ contacts.length }})</button>
           <button (click)="switchTab('emergency')" [class]="activeTab === 'emergency' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Emergency Contact</button>
         </nav>
       </div>
@@ -808,13 +808,13 @@
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
                   <tr class="border-b border-slate-200 text-left text-slate-500">
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job ID <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Site <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job Type <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Officer <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Scheduled Date &amp; Time <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Status <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Priority <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job ID <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Site <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job Type <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Officer <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Scheduled Date &amp; Time <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Status <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Priority <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
                     <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
@@ -1135,12 +1135,12 @@
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
                   <tr class="border-b border-slate-200 text-left text-slate-500">
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Document Name <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Category <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">File Type <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Size <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded By <span class="text-slate-300">&#8645;</span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded On <span class="text-slate-300">&#8645;</span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Document Name <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Category <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">File Type <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Size <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded By <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded On <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
                     <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
@@ -1305,17 +1305,17 @@
                         <td class="td text-slate-600">{{ contact.primary ? 'Yes' : 'No' }}</td>
                          <td class="td">
                            <div class="flex items-center justify-end gap-3 text-slate-400">
-                             <button (click)="viewContact(contact.name)" class="hover:text-blue-600 cursor-pointer" title="View contact">
-                               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                             </button>
-                             <div class="relative inline-block text-left">
-                               <button (click)="toggleDropdown('contact-more-' + $index)" class="hover:text-slate-600">
-                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
-                               </button>
-                               <div id="contact-more-{{ $index }}" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
-                                 <a href="#" class="block px-4 py-2 hover:bg-slate-50">Edit Contact</a>
-                                 <a href="#" class="block px-4 py-2 hover:bg-slate-50 text-red-600">Delete Contact</a>
-                               </div>
+                              <button (click)="viewContact(contact.id)" class="hover:text-blue-600 cursor-pointer" title="View contact">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                              </button>
+                              <div class="relative inline-block text-left">
+                                <button (click)="toggleDropdown('contact-more-' + $index)" class="hover:text-slate-600">
+                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
+                                </button>
+                                <div id="contact-more-{{ $index }}" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
+                                  <a href="#" (click)="editContact(contact.id); $event.preventDefault()" class="block px-4 py-2 hover:bg-slate-50">Edit Contact</a>
+                                  <a href="#" (click)="deleteContact(contact.id); $event.preventDefault()" class="block px-4 py-2 hover:bg-slate-50 text-red-600">Delete Contact</a>
+                                </div>
                              </div>
                            </div>
                          </td>

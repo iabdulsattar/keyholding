@@ -143,18 +143,23 @@ showDeactivateClientModal = false;
     this.contactsLoading = true;
     this.clientService.listContacts(this.clientId, { page: 0, size: this.contactsRowsPerPage }).subscribe({
       next: (result: any) => {
-        this.contacts = (result?.items ?? []).map((item: any) => ({
-          id: item.id ?? '',
-          name: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim() || item.name || '—',
-          title: item.jobTitle || '—',
-          dept: item.department || '—',
-          email: item.email || '—',
-          phone: item.phone || '—',
-          status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
-          primary: item.primaryContact ?? false,
-          initials: this.getInitials(item.firstName, item.lastName),
-          color: this.getAvatarColor(item.firstName, item.lastName),
-        }));
+         this.contacts = (result?.items ?? []).map((item: any) => {
+           const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
+           const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
+           const name = `${firstName} ${lastName}`.trim() || item.fullName || item.name || '—';
+           return {
+             id: item.id ?? '',
+             name: name,
+             title: item.jobTitle || '—',
+             dept: item.department || '—',
+             email: item.email || '—',
+             phone: item.phone || '—',
+             status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+             primary: item.primaryContact ?? false,
+             initials: this.getInitials(firstName, lastName),
+             color: this.getAvatarColor(firstName, lastName),
+           };
+         });
         this.filteredContacts = [...this.contacts];
         this.contactsLoading = false;
       },
@@ -169,7 +174,7 @@ showDeactivateClientModal = false;
   private loadActivities(): void {
     if (!this.clientId) return;
     this.activitiesLoading = true;
-    this.clientService.listAuditLog({ targetType: 'CLIENT', targetId: this.clientId, page: 0, size: this.activitiesRowsPerPage }).subscribe({
+     this.clientService.listEntityAuditLog('CLIENT', this.clientId, { page: 0, size: this.activitiesRowsPerPage }).subscribe({
       next: (result: any) => {
         const items = result?.items ?? result?.data?.items ?? [];
         this.activities = items.map((item: any) => ({
@@ -1017,11 +1022,32 @@ showDeactivateClientModal = false;
     return status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500';
   }
 
-  viewContact(contactName: string): void {
+  viewContact(contactId: string): void {
     if (!this.clientId) return;
-    const slug = contactName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    this.router.navigate(['/clients', this.clientId, 'view-contact', slug], {
+    this.router.navigate(['/clients', this.clientId, 'view-contact', contactId], {
       queryParams: { clientName: this.client?.name || '' }
+    });
+  }
+
+  editContact(contactId: string): void {
+    if (!this.clientId) return;
+    this.router.navigate(['/clients', this.clientId, 'add-contact'], {
+      queryParams: { contactId: contactId, clientName: this.client?.name || '' }
+    });
+  }
+
+  deleteContact(contactId: string): void {
+    if (!this.clientId) return;
+    if (!confirm('Are you sure you want to delete this contact? This action cannot be undone.')) return;
+    this.clientService.deleteContact(this.clientId, contactId).subscribe({
+      next: () => {
+        this.contacts = this.contacts.filter(c => c.id !== contactId);
+        this.filteredContacts = this.filteredContacts.filter(c => c.id !== contactId);
+        this.showToast('Contact deleted successfully');
+      },
+      error: () => {
+        this.showToast('Failed to delete contact');
+      }
     });
   }
 

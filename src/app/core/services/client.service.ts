@@ -339,9 +339,10 @@ export class ClientService {
     return this.keyVault.listContacts(orgId, clientId, { q: params?.q, status: params?.status, department: params?.department, page, size }).pipe(
       map((res: any) => {
         const data = res?.data ?? res ?? {};
-        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapContact(item));
-        const totalItems = data.totalItems ?? data.total ?? items.length;
-        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        const meta = res?.meta ?? data?.meta ?? {};
+        const items = (Array.isArray(data) ? data : (data.items ?? data.data ?? data ?? [])).map((item: any) => this.mapContact(item));
+        const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
+        const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
         return { items, totalItems, page, size, totalPages };
       })
     );
@@ -358,31 +359,35 @@ export class ClientService {
     );
   }
 
-  createContact(clientId: string, contact: Partial<ContactRecord>): Observable<ContactRecord> {
-    const orgId = this.getOrgId();
-    if (!orgId) return of({} as ContactRecord);
-    const payload: any = {
-      ...contact,
-      firstName: contact.firstName || '',
-      lastName: contact.lastName || '',
-      status: contact.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE',
-    };
-    return this.keyVault.createContact(orgId, clientId, payload).pipe(
-      map((res: any) => this.mapContact(res?.data ?? res))
-    );
-  }
+   createContact(clientId: string, contact: Partial<ContactRecord>): Observable<ContactRecord> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of({} as ContactRecord);
+     const fullName = `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim();
+     const payload: any = {
+       ...contact,
+       fullName: contact.fullName || fullName || `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim(),
+       status: contact.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE',
+     };
+     return this.keyVault.createContact(orgId, clientId, payload).pipe(
+       map((res: any) => this.mapContact(res?.data ?? res))
+     );
+   }
 
-  updateContact(clientId: string, contactId: string, contact: Partial<ContactRecord>): Observable<ContactRecord> {
-    const orgId = this.getOrgId();
-    if (!orgId) return of({} as ContactRecord);
-    const payload: any = { ...contact };
-    if (payload.status) {
-      payload.status = payload.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE';
-    }
-    return this.keyVault.updateContact(orgId, clientId, contactId, payload).pipe(
-      map((res: any) => this.mapContact(res?.data ?? res))
-    );
-  }
+   updateContact(clientId: string, contactId: string, contact: Partial<ContactRecord>): Observable<ContactRecord> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of({} as ContactRecord);
+     const fullName = `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim();
+     const payload: any = {
+       ...contact,
+       fullName: contact.fullName || fullName || `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim(),
+     };
+     if (payload.status) {
+       payload.status = payload.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE';
+     }
+     return this.keyVault.updateContact(orgId, clientId, contactId, payload).pipe(
+       map((res: any) => this.mapContact(res?.data ?? res))
+     );
+   }
 
   deactivateContact(clientId: string, contactId: string): Observable<any> {
     const orgId = this.getOrgId();
@@ -555,12 +560,15 @@ export class ClientService {
    }
 
    private mapContact(item: any): ContactRecord {
+     const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();
+     const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
+     const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
      return {
        id: item.id ?? '',
        code: item.code ?? '',
-       firstName: item.firstName ?? '',
-       lastName: item.lastName ?? '',
-       fullName: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim(),
+       firstName: firstName,
+       lastName: lastName,
+       fullName: fullName,
        jobTitle: item.jobTitle,
        email: item.email,
        phone: item.phone,

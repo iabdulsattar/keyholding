@@ -72,11 +72,11 @@
       @if (isNavVisible(item)) {
         @if (item.subItems) {
           <div class="space-y-0.5">
-            <div class="flex items-center justify-between px-2 sm:px-3 py-2 rounded-lg text-lg font-medium text-slate-400 hover:text-white hover:bg-white/5 transition cursor-pointer"
+            <div class="flex items-center justify-between px-2 sm:px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition cursor-pointer"
                  (click)="toggleSubmenu('main', $index)">
               <div class="flex items-center gap-2 sm:gap-3">
                 <span [innerHTML]="sanitizeIcon(item.icon)" class="flex-shrink-0"></span>
-                <span class="text-lg" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ item.name }}</span>
+                <span class="text-sm" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ item.name }}</span>
               </div>
               <svg class="w-4 h-4 transition-transform flex-shrink-0"
                    [ngClass]="{'rotate-180': openSubmenu === 'main-' + $index}"
@@ -88,12 +88,12 @@
               <div class="pl-5 space-y-0.5 border-slate-800/80 ml-3 sm:ml-4">
                  @for (sub of item.subItems; track sub.name) {
                    <a [routerLink]="sub.path" [queryParams]="sub.queryParams || {}"
-                      class="flex items-center gap-2 px-2 py-1.5 text-base font-medium text-slate-400 hover:text-white hover:bg-white/5 transition rounded-md"
+                       class="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition rounded-md"
                       [class.bg-blue-600/90]="isActive(sub.path, sub.queryParams)"
                       [class.text-white]="isActive(sub.path, sub.queryParams)"
                       (click)="onSubmenuClick()">
                       <span class="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span>
-                      <span class="text-base" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ sub.name }}</span>
+                      <span class="text-sm" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ sub.name }}</span>
                    </a>
                  }
               </div>
@@ -101,7 +101,7 @@
           </div>
         } @else {
           <a [routerLink]="item.path"
-             class="nav-item flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg text-base font-medium transition"
+             class="nav-item flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg text-sm font-medium transition"
              [class.active]="isActive(item.path || '')"
              [class.text-white]="isActive(item.path || '')"
              [class.font-semibold]="isActive(item.path || '')"
@@ -110,7 +110,7 @@
              [class.hover:text-white]="!isActive(item.path || '')"
              [style.background]="isActive(item.path || '') ? 'linear-gradient(90deg, rgba(76,141,255,0.22) 0%, rgba(76,141,255,0.06) 100%)' : ''">
             <span [innerHTML]="sanitizeIcon(item.icon)" class="flex-shrink-0" [class.text-[#7FADFF]]="isActive(item.path || '')"></span>
-            <span class="text-lg" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ item.name }}</span>
+             <span class="text-sm" [class.hidden]="!(isExpanded$ | async) && !(isHovered$ | async) && !(isMobileOpen$ | async)">{{ item.name }}</span>
           </a>
         }
       }
@@ -121,7 +121,7 @@
       @for (item of othersItems; track item.name) {
         @if (isNavVisible(item)) {
           <a [routerLink]="item.path"
-            class="nav-item flex items-center gap-3 rounded-lg px-3 py-2.5 text-xl font-medium transition"
+              class="nav-item flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition"
             [class.active]="isActive(item.path || '')"
             [class.text-white]="isActive(item.path || '')"
             [class.text-slate-300]="!isActive(item.path || '')"
@@ -130,7 +130,7 @@
             [style.background]="isActive(item.path || '') ? 'linear-gradient(90deg, rgba(76,141,255,0.22) 0%, rgba(76,141,255,0.06) 100%)' : ''"
           >
             <span [innerHTML]="sanitizeIcon(item.icon)" class="w-6 h-6 shrink-0" [class.text-[#7FADFF]]="isActive(item.path || '')"></span>
-            <span class="text-xl">{{ item.name }}</span>
+             <span class="text-sm">{{ item.name }}</span>
           </a>
         }
       }

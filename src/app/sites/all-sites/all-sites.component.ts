@@ -25,15 +25,6 @@ import { ClientService, Client, SiteRecord } from '../../core/services/client.se
     .filter-select:focus { box-shadow: 0 0 0 2px rgba(47,75,245,0.25); border-color: #2f4bf5; }
     .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
     .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle; white-space: nowrap; }
-    .page-btn {
-      width: 2rem; height: 2rem; border-radius: 0.55rem;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 500; color: #475569;
-      border: 1px solid #e2e8f0; background: white;
-    }
-    .page-btn:hover { background: #f8fafc; }
-    .page-btn-active { background: #eef2ff; color: #2f4bf5; border-color: #c7d2fe; }
-    .sort-arrow { color: #cbd5e1; font-size: 0.7rem; }
     .status-badge {
       display: inline-block; font-size: 0.75rem; font-weight: 600;
       padding: 0.25rem 0.7rem; border-radius: 0.5rem;
@@ -47,16 +38,11 @@ import { ClientService, Client, SiteRecord } from '../../core/services/client.se
 export class AllSitesComponent implements OnInit {
   allSites: SiteRecord[] = [];
   clients: Client[] = [];
-  pageSites: SiteRecord[] = [];
   loading = false;
   searchQuery = '';
   clientFilter = '';
   siteTypeFilter = '';
   statusFilter: 'all' | 'Active' | 'Inactive' = 'all';
-  page = 0;
-  pageSize = 10;
-  totalItems = 0;
-  totalPages = 0;
 
   clientOptions: Client[] = [];
   siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution', 'Construction', 'Storage'];
@@ -99,19 +85,8 @@ export class AllSitesComponent implements OnInit {
         sites = sites.filter((s: SiteRecord) => s.status === status);
       }
       this.allSites = sites;
-      this.applyPagination();
       this.loading = false;
     });
-  }
-
-  private applyPagination(): void {
-    this.totalItems = this.allSites.length;
-    this.totalPages = Math.max(1, Math.ceil(this.totalItems / this.pageSize));
-    if (this.page >= this.totalPages) {
-      this.page = Math.max(0, this.totalPages - 1);
-    }
-    const start = this.page * this.pageSize;
-    this.pageSites = this.allSites.slice(start, start + this.pageSize);
   }
 
   loadSites(): void {
@@ -119,21 +94,18 @@ export class AllSitesComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.page = 0;
     this.loadAllSites();
   }
 
   onClientChange(): void {
-    this.page = 0;
     this.loadAllSites();
   }
 
   onSiteTypeChange(): void {
-    this.page = 0;
     this.loadAllSites();
   }
 
-  get totalSites(): number { return this.totalItems; }
+  get totalSites(): number { return this.allSites.length; }
   get activeSites(): number { return this.allSites.filter(s => s.status === 'Active').length; }
   get inactiveSites(): number { return this.allSites.filter(s => s.status === 'Inactive').length; }
   get activePercentage(): string {
@@ -143,62 +115,6 @@ export class AllSitesComponent implements OnInit {
   get inactivePercentage(): string {
     if (!this.totalSites) return '0';
     return (this.inactiveSites / this.totalSites * 100).toFixed(1);
-  }
-
-  get showingStart(): number {
-    return this.totalItems === 0 ? 0 : this.page * this.pageSize + 1;
-  }
-
-  get showingEnd(): number {
-    return Math.min((this.page + 1) * this.pageSize, this.totalItems);
-  }
-
-  goToPage(p: number | string): void {
-    if (typeof p !== 'number') return;
-    if (p < 0 || p >= this.totalPages) return;
-    this.page = p;
-    this.applyPagination();
-  }
-
-  prevPage(): void {
-    this.goToPage(this.page - 1);
-  }
-
-  nextPage(): void {
-    this.goToPage(this.page + 1);
-  }
-
-  onPageSizeChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.pageSize = parseInt(select.value, 10) || 10;
-    this.page = 0;
-    this.applyPagination();
-  }
-
-  getPageNumbers(): (number | string)[] {
-    const pages: (number | string)[] = [];
-    const total = this.totalPages;
-    const current = this.page;
-    if (total <= 7) {
-      for (let i = 0; i < total; i++) pages.push(i);
-    } else {
-      pages.push(0);
-      if (current > 2) pages.push('...');
-      const start = Math.max(1, current - 1);
-      const end = Math.min(total - 2, current + 1);
-      for (let i = start; i <= end; i++) pages.push(i);
-      if (current < total - 3) pages.push('...');
-      pages.push(total - 1);
-    }
-    return pages;
-  }
-
-  pageLabel(p: number | string): string {
-    return typeof p === 'number' ? String(p + 1) : String(p);
-  }
-
-  trackBySiteId(index: number, site: SiteRecord): string {
-    return site.id;
   }
 
   statusBadge(status: string): string {
