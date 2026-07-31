@@ -16,47 +16,47 @@
 
     <!-- STAT CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+      <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center shrink-0">
           <svg class="w-6 h-6 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h.01M9 12h.01M9 16h.01M15 8h.01M15 12h.01M15 16h.01" stroke-linecap="round"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-500">Total Sites</p>
+          <p class="text-sm text-slate-800">Total Sites</p>
           <p class="text-2xl font-bold text-slate-900">{{ totalSites }}</p>
           <p class="text-xs text-slate-400">Across all clients</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+      <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
           <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 block"></span>
         </div>
         <div>
-          <p class="text-sm text-slate-500">Active Sites</p>
-          <p class="text-2xl font-bold text-slate-900">{{ activeSites }} <span class="text-base font-semibold text-slate-400">({{ activePercentage }}%)</span></p>
+          <p class="text-sm text-slate-800">Active Sites</p>
+          <p class="text-2xl font-bold text-slate-900">{{ activeSites }} <span class="text-base font-semibold text-slate-900">({{ activePercentage }}%)</span></p>
           <p class="text-xs text-slate-400">Currently active</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-200/80 rounded-lg p-4 flex items-center gap-4">
+      <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
           <span class="w-3.5 h-3.5 rounded-full bg-rose-500 block"></span>
         </div>
         <div>
-          <p class="text-sm text-slate-500">Inactive Sites</p>
-          <p class="text-2xl font-bold text-slate-900">{{ inactiveSites }} <span class="text-base font-semibold text-slate-400">({{ inactivePercentage }}%)</span></p>
+          <p class="text-sm text-slate-800">Inactive Sites</p>
+          <p class="text-2xl font-bold text-slate-900">{{ inactiveSites }} <span class="text-base font-semibold text-slate-900">({{ inactivePercentage }}%)</span></p>
           <p class="text-xs text-slate-400">Currently inactive</p>
         </div>
       </div>
     </div>
 
     <!-- FILTERS -->
-    <div class="bg-white rounded-lg border border-slate-200 p-4">
+    <div class="bg-white rounded-lg border border-slate-100 p-4">
       <div class="flex flex-col lg:flex-row gap-3">
         <div class="relative flex-1">
           <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
           <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search sites by name, code, client or address..."
-            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
+            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 lg:flex lg:gap-3">
           <select [(ngModel)]="clientFilter" (ngModelChange)="onClientChange()" class="filter-select">
@@ -80,11 +80,11 @@
     </div>
 
     <!-- TABLE CARD -->
-    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-slate-100 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-sm min-w-[900px]">
           <thead>
-            <tr class="border-b border-slate-100 text-left text-slate-500">
+            <tr class="border-b border-slate-100 text-left text-slate-900">
               <th class="th-cell">Site Code <span class="sort-arrow">⇕</span></th>
               <th class="th-cell">Site Name <span class="sort-arrow">⇕</span></th>
               <th class="th-cell">Client <span class="sort-arrow">⇕</span></th>
@@ -99,7 +99,7 @@
           <tbody class="divide-y divide-slate-100" *ngIf="!loading && pageSites.length > 0">
             @for (s of pageSites; track s.id) {
             <tr class="hover:bg-slate-50/70 transition">
-              <td class="td-cell font-medium text-blue-600">{{ s.code }}</td>
+              <td class="td-cell font-medium text-slate-700">{{ s.code }}</td>
               <td class="td-cell">
                 <p class="font-semibold text-slate-900">{{ s.name }}</p>
                 <span class="tag bg-slate-100 text-slate-600">{{ s.type }}</span>
@@ -119,7 +119,7 @@
                   <a [routerLink]="['/sites/view-site', s.id]" class="text-blue-600 hover:text-blue-700">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   </a>
-                  <a [routerLink]="['/sites/add-site']" [queryParams]="{ clientId: s.clientId || '', editId: s.id }" class="text-slate-400 hover:text-slate-600">
+                  <a [routerLink]="['/sites/add-site']" [queryParams]="{ clientId: s.clientId || '', editId: s.id }" class="text-blue-600 hover:text-blue-700">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                   </a>
                 </div>
@@ -150,7 +150,7 @@
             @if (p === '...') {
               <span class="w-8 h-8 flex items-center justify-center text-slate-400">...</span>
             } @else {
-              <button (click)="goToPage(p)" [class.bg-blue-600]="page === p" [class.text-white]="page === p" [class.bg-white]="page !== p" [class.text-slate-700]="page !== p" [class.border]="page !== p" [class.border-slate-200]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-slate-50 transition">
+              <button (click)="goToPage(p)" [class.bg-white]="page === p" [class.text-blue-500]="page === p" [class.border-blue-500]="page == p" [class.bg-white]="page !== p" [class.text-slate-700]="page !== p" [class.border-slate-200]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-slate-50 transition border">
                 {{ pageLabel(p) }}
               </button>
             }

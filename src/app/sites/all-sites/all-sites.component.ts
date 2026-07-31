@@ -16,7 +16,7 @@ import { ClientService, Client, SiteRecord } from '../../core/services/client.se
     .filter-select {
       background-color: white;
       border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
+      border-radius: 0.5rem;
       padding: 0.6rem 0.9rem;
       font-size: 0.875rem;
       color: #334155;
@@ -204,9 +204,9 @@ export class AllSitesComponent implements OnInit {
   statusBadge(status: string): string {
     switch (status) {
       case 'Active':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Active</span></span>`;
+        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span>Active</span></span>`;
       case 'Inactive':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-100"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Inactive</span></span>`;
+        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-rose-50 text-rose-600 border border-rose-100"><span>Inactive</span></span>`;
       default:
         return status;
     }
