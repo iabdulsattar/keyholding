@@ -53,7 +53,7 @@ export class AllKeysComponent implements OnInit {
   clientFilter = '';
   siteFilter = '';
   keyTypeFilter = '';
-  statusFilter: 'all' | 'In Storage' | 'Issued' | 'In Use' | 'Overdue' | 'Lost' | 'Damaged' | 'Damaged / Lost' = 'all';
+  statusFilter: string = '';
   page = 0;
   pageSize = 10;
   totalItems = 0;
@@ -63,7 +63,7 @@ export class AllKeysComponent implements OnInit {
   siteOptions: SiteRecord[] = [];
   keyTypeOptions = ['All Key Types', 'Master Key', 'Door Key', 'Alarm Key', 'Gate Key', 'Utility Key', 'Office Key', 'IT Key'];
   statusOptions = [
-    { value: '', label: 'All Statuses' },
+    { value: '', label: 'All Status' },
     { value: 'IN_STORAGE', label: 'On the Hook' },
     { value: 'ISSUED', label: 'Issued' },
     { value: 'IN_USE', label: 'In Use' },
@@ -96,7 +96,7 @@ export class AllKeysComponent implements OnInit {
 
   private loadKeys(): void {
     this.loading = true;
-    const status = this.statusFilter === 'all' ? undefined : this.statusFilter;
+    const status = this.statusFilter ? this.statusFilter : undefined;
     this.clientService.listAllKeys({
       q: this.searchQuery || undefined,
       status,
