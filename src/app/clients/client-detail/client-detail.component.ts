@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClientService, Client, KeyRecord, SiteRecord } from '../../core/services/client.service';
+import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
 
@@ -77,14 +77,22 @@ showDeactivateClientModal = false;
   documentsCategory = 'All';
   documentsLoading = false;
 
-  // Contact state
-  contacts: any[] = [];
-  filteredContacts: any[] = [];
-  contactsPage = 1;
-  contactsRowsPerPage = 10;
-  contactsSearch = '';
-  contactsStatus = 'All';
-  contactsLoading = false;
+   // Contact state
+   contacts: any[] = [];
+   filteredContacts: any[] = [];
+   contactsPage = 1;
+   contactsRowsPerPage = 10;
+   contactsSearch = '';
+   contactsStatus = 'All';
+   contactsLoading = false;
+
+   // Emergency contact state
+   emergencyContacts: EmergencyContact[] = [];
+   filteredEmergencyContacts: EmergencyContact[] = [];
+   emergencyContactsPage = 1;
+   emergencyContactsRowsPerPage = 10;
+   emergencyContactsSearch = '';
+   emergencyContactsLoading = false;
 
   // Activity log state
   activities: any[] = [];
@@ -96,18 +104,19 @@ showDeactivateClientModal = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
-  ngOnInit(): void {
-    this.clientId = this.route.snapshot.paramMap.get('id') || '';
-    this.loadClient();
-    this.loadKeys();
-    this.loadSites();
-    this.loadClientStats();
-    this.loadSiteStats();
-    this.loadDocuments();
-    this.loadDocumentStats();
-    this.loadContacts();
-    this.loadActivities();
-  }
+   ngOnInit(): void {
+     this.clientId = this.route.snapshot.paramMap.get('id') || '';
+     this.loadClient();
+     this.loadKeys();
+     this.loadSites();
+     this.loadClientStats();
+     this.loadSiteStats();
+     this.loadDocuments();
+     this.loadDocumentStats();
+     this.loadContacts();
+     this.loadEmergencyContacts();
+     this.loadActivities();
+   }
 
   private loadDocuments(): void {
     if (!this.clientId) return;
@@ -163,15 +172,171 @@ showDeactivateClientModal = false;
         this.filteredContacts = [...this.contacts];
         this.contactsLoading = false;
       },
-      error: () => {
-        this.contacts = [];
-        this.filteredContacts = [];
-        this.contactsLoading = false;
-      }
-    });
-  }
+       error: () => {
+         this.contacts = [];
+         this.filteredContacts = [];
+         this.contactsLoading = false;
+       }
+     });
+   }
 
-  private loadActivities(): void {
+    private loadEmergencyContacts(): void {
+     if (!this.clientId) return;
+     this.emergencyContactsLoading = true;
+     this.clientService.listEmergencyContacts(this.clientId, { page: 0, size: this.emergencyContactsRowsPerPage }).subscribe({
+       next: (result: any) => {
+         this.emergencyContacts = (result?.items ?? []).map((item: any) => {
+           const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
+           const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
+           return {
+             id: item.id ?? '',
+             firstName: firstName,
+             lastName: lastName,
+             fullName: item.fullName ?? `${firstName} ${lastName}`.trim(),
+             department: item.department || '—',
+             phone: item.phone || '—',
+             email: item.email || '—',
+             availability: item.availability || '—',
+             status: item.status === 'Inactive' ? 'Inactive' : 'Active',
+             primaryContact: item.primaryContact ?? false,
+             notifyFor: item.notifyFor || '—',
+             address: item.address || '—',
+             notes: item.notes || '',
+             clientId: item.clientId,
+             initials: this.getInitials(firstName, lastName),
+             color: this.getAvatarColor(firstName, lastName),
+           };
+         });
+         this.filteredEmergencyContacts = [...this.emergencyContacts];
+         this.emergencyContactsLoading = false;
+       },
+       error: () => {
+         this.emergencyContacts = [];
+         this.filteredEmergencyContacts = [];
+         this.emergencyContactsLoading = false;
+       }
+     });
+   }
+
+   get emergencyContactsPaginated(): any[] {
+     const q = this.emergencyContactsSearch.toLowerCase().trim();
+     const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
+     const start = (this.emergencyContactsPage - 1) * this.emergencyContactsRowsPerPage;
+     return data.slice(start, start + this.emergencyContactsRowsPerPage);
+   }
+
+   get emergencyContactsTotalPages(): number {
+     const q = this.emergencyContactsSearch.toLowerCase().trim();
+     const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
+     return Math.max(1, Math.ceil(data.length / this.emergencyContactsRowsPerPage));
+   }
+
+   get emergencyContactsShowingStart(): number {
+     const q = this.emergencyContactsSearch.toLowerCase().trim();
+     const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
+     return data.length === 0 ? 0 : (this.emergencyContactsPage - 1) * this.emergencyContactsRowsPerPage + 1;
+   }
+
+   get emergencyContactsShowingEnd(): number {
+     const q = this.emergencyContactsSearch.toLowerCase().trim();
+     const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
+     return Math.min(this.emergencyContactsPage * this.emergencyContactsRowsPerPage, data.length);
+   }
+
+   get totalEmergencyContacts(): number {
+     const q = this.emergencyContactsSearch.toLowerCase().trim();
+     return q ? this.filteredEmergencyContacts.length : this.emergencyContacts.length;
+   }
+
+   get activeEmergencyContacts(): number {
+     return this.emergencyContacts.filter(c => c.status === 'Active').length;
+   }
+
+   get inactiveEmergencyContacts(): number {
+     return this.emergencyContacts.filter(c => c.status === 'Inactive').length;
+   }
+
+   get primaryEmergencyContacts(): number {
+     return this.emergencyContacts.filter(c => c.primaryContact).length;
+   }
+
+   onEmergencyContactsSearch(): void {
+     this.emergencyContactsPage = 1;
+     const q = this.emergencyContactsSearch.toLowerCase().trim();
+     this.filteredEmergencyContacts = this.emergencyContacts.filter((c: EmergencyContact) =>
+       (c.fullName + ' ' + c.email + ' ' + c.department).toLowerCase().includes(q)
+     );
+   }
+
+   emergencyContactsPreviousPage(): void {
+     if (this.emergencyContactsPage > 1) this.emergencyContactsPage--;
+   }
+
+   emergencyContactsNextPage(): void {
+     if (this.emergencyContactsPage < this.emergencyContactsTotalPages) this.emergencyContactsPage++;
+   }
+
+   emergencyContactsGoToPage(page: number): void {
+     if (page >= 1 && page <= this.emergencyContactsTotalPages) this.emergencyContactsPage = page;
+   }
+
+   onEmergencyContactsRowsPerPageChange(event: Event): void {
+     const select = event.target as HTMLSelectElement;
+     this.emergencyContactsRowsPerPage = parseInt(select.value);
+     this.emergencyContactsPage = 1;
+   }
+
+   viewEmergencyContact(contactId: string): void {
+     if (!this.clientId) return;
+     this.router.navigate(['/clients', this.clientId, 'view-emergency-contact', contactId], {
+       queryParams: { clientName: this.client?.name || '' }
+     });
+   }
+
+   editEmergencyContact(contactId: string): void {
+     if (!this.clientId) return;
+     this.router.navigate(['/clients', this.clientId, 'add-emergency-contact'], {
+       queryParams: { contactId: contactId, clientName: this.client?.name || '' }
+     });
+   }
+
+   deleteEmergencyContact(contactId: string): void {
+     if (!this.clientId) return;
+     if (!confirm('Are you sure you want to delete this emergency contact? This action cannot be undone.')) return;
+     this.clientService.deleteEmergencyContact(this.clientId, contactId).subscribe({
+       next: () => {
+         this.emergencyContacts = this.emergencyContacts.filter(c => c.id !== contactId);
+         this.filteredEmergencyContacts = this.filteredEmergencyContacts.filter(c => c.id !== contactId);
+         this.showToast('Emergency contact deleted successfully');
+       },
+       error: () => {
+         this.showToast('Failed to delete emergency contact');
+       }
+     });
+   }
+
+   addEmergencyContact(): void {
+     if (!this.clientId) return;
+     this.router.navigate(['/clients', this.clientId, 'add-emergency-contact'], {
+       queryParams: { clientName: this.client?.name || '' }
+     });
+   }
+
+   toggleEmergencyContactStatus(contactId: string, currentStatus: string): void {
+     if (!this.clientId) return;
+     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+     this.clientService.updateEmergencyContact(this.clientId, contactId, { status: newStatus }).subscribe({
+       next: () => {
+         this.loadEmergencyContacts();
+         this.showToast(`Emergency contact ${newStatus === 'Active' ? 'activated' : 'deactivated'} successfully`);
+       },
+       error: () => {
+         this.showToast('Failed to update emergency contact status');
+       }
+     });
+   }
+
+   private loadActivities(): void {
     if (!this.clientId) return;
     this.activitiesLoading = true;
      this.clientService.listEntityAuditLog('CLIENT', this.clientId, { page: 0, size: this.activitiesRowsPerPage }).subscribe({

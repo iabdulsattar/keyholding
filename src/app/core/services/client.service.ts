@@ -86,6 +86,23 @@ export interface ContactRecord {
   clientId?: string;
 }
 
+export interface EmergencyContact {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  department?: string;
+  phone?: string;
+  email?: string;
+  availability?: string;
+  status: 'Active' | 'Inactive';
+  primaryContact: boolean;
+  notifyFor?: string;
+  address?: string;
+  notes?: string;
+  clientId?: string;
+}
+
 export interface AuditRecord {
   id: string;
   targetType: string;
@@ -401,29 +418,141 @@ export class ClientService {
     return this.keyVault.reactivateContact(orgId, clientId, contactId);
   }
 
-  deleteContact(clientId: string, contactId: string): Observable<any> {
-    const orgId = this.getOrgId();
-    if (!orgId) return of(null);
-    return this.keyVault.deleteContact(orgId, clientId, contactId);
-  }
+   deleteContact(clientId: string, contactId: string): Observable<any> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of(null);
+     return this.keyVault.deleteContact(orgId, clientId, contactId);
+   }
 
-  listAuditLog(params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
-    const orgId = this.getOrgId();
-    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
-    const page = params?.page ?? 0;
-    const size = params?.size ?? 50;
-    return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, page, size }).pipe(
-      map((res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
-        const totalItems = data.totalItems ?? data.total ?? items.length;
-        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-        return { items, totalItems, page, size, totalPages };
-      })
-    );
-  }
+   listEmergencyContacts(clientId: string, params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<EmergencyContact>> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+     const page = params?.page ?? 0;
+     const size = params?.size ?? 10;
+     return this.keyVault.listEmergencyContacts(orgId, clientId, { q: params?.q, status: params?.status, page, size }).pipe(
+       map((res: any) => {
+         const data = res?.data ?? res ?? {};
+         const items = (Array.isArray(data) ? data : (data.items ?? data.data ?? data ?? [])).map((item: any) => this.mapEmergencyContact(item));
+         const totalItems = data.totalItems ?? data.total ?? items.length;
+         const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+         return { items, totalItems, page, size, totalPages };
+       })
+     );
+   }
 
-  listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+   getEmergencyContact(clientId: string, emergencyContactId: string): Observable<EmergencyContact | undefined> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of(undefined);
+     return this.keyVault.getEmergencyContact(orgId, clientId, emergencyContactId).pipe(
+       map((res: any) => {
+         const item = res?.data ?? res;
+         return item ? this.mapEmergencyContact(item) : undefined;
+       })
+     );
+   }
+
+   createEmergencyContact(clientId: string, contact: Partial<EmergencyContact>): Observable<EmergencyContact> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of({} as EmergencyContact);
+     const fullName = `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim();
+     const payload: any = {
+       ...contact,
+       fullName: contact.fullName || fullName || `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim(),
+       status: contact.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE',
+     };
+     return this.keyVault.createEmergencyContact(orgId, clientId, payload).pipe(
+       map((res: any) => this.mapEmergencyContact(res?.data ?? res))
+     );
+   }
+
+   updateEmergencyContact(clientId: string, emergencyContactId: string, contact: Partial<EmergencyContact>): Observable<EmergencyContact> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of({} as EmergencyContact);
+     const fullName = `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim();
+     const payload: any = {
+       ...contact,
+       fullName: contact.fullName || fullName || `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim(),
+     };
+     if (payload.status) {
+       payload.status = payload.status === 'Inactive' ? 'INACTIVE' : 'ACTIVE';
+     }
+     return this.keyVault.updateEmergencyContact(orgId, clientId, emergencyContactId, payload).pipe(
+       map((res: any) => this.mapEmergencyContact(res?.data ?? res))
+     );
+   }
+
+   deactivateEmergencyContact(clientId: string, emergencyContactId: string): Observable<any> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of(null);
+     return this.keyVault.deactivateEmergencyContact(orgId, clientId, emergencyContactId);
+   }
+
+   reactivateEmergencyContact(clientId: string, emergencyContactId: string): Observable<any> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of(null);
+     return this.keyVault.reactivateEmergencyContact(orgId, clientId, emergencyContactId);
+   }
+
+   deleteEmergencyContact(clientId: string, emergencyContactId: string): Observable<any> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of(null);
+     return this.keyVault.deleteEmergencyContact(orgId, clientId, emergencyContactId);
+   }
+
+   private mapEmergencyContact(item: any): EmergencyContact {
+     const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();
+     const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
+     const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
+     return {
+       id: item.id ?? '',
+       firstName: firstName,
+       lastName: lastName,
+       fullName: fullName,
+       department: item.department,
+       phone: item.phone,
+       email: item.email,
+       availability: item.availability,
+       status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+       primaryContact: item.primaryContact ?? false,
+       notifyFor: item.notifyFor,
+       address: item.address,
+       notes: item.notes,
+       clientId: item.clientId,
+     };
+   }
+
+    listAuditLog(params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+     const orgId = this.getOrgId();
+     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+     const page = params?.page ?? 0;
+     const size = params?.size ?? 50;
+     return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, page, size }).pipe(
+       map((res: any) => {
+         const data = res?.data ?? res ?? {};
+         const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+         const totalItems = data.totalItems ?? data.total ?? items.length;
+         const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+         return { items, totalItems, page, size, totalPages };
+       })
+     );
+   }
+
+   private mapAudit(item: any): AuditRecord {
+     return {
+       id: item.id ?? '',
+       targetType: item.targetType ?? '',
+       targetId: item.targetId ?? '',
+       action: item.action ?? '',
+       userId: item.userId,
+       userName: item.userName,
+       userRole: item.userRole,
+       details: item.details,
+       ipAddress: item.ipAddress,
+       createdAt: item.createdAt ?? '',
+      };
+    }
+
+    listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
     const orgId = this.getOrgId();
     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
     const page = params?.page ?? 0;
@@ -579,22 +708,7 @@ export class ClientService {
        address: item.address,
        notes: item.notes,
        clientId: item.clientId,
-     };
-   }
-
-   private mapAudit(item: any): AuditRecord {
-     return {
-       id: item.id ?? '',
-       targetType: item.targetType ?? '',
-       targetId: item.targetId ?? '',
-       action: item.action ?? '',
-       userId: item.userId,
-       userName: item.userName,
-       userRole: item.userRole,
-       details: item.details,
-       ipAddress: item.ipAddress,
-       createdAt: item.createdAt ?? '',
-     };
-   }
+      };
+    }
 }
 
