@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 export interface KeyVaultClient {
   id?: string;
   code?: string;
+  clientCode?: string;
   name: string;
   email: string;
   phone?: string;
@@ -31,6 +32,7 @@ export interface KeyVaultClient {
 export interface KeyVaultSite {
   id?: string;
   code?: string;
+  siteCode?: string;
   name: string;
   siteType: string;
   addressLine1?: string;
@@ -45,9 +47,25 @@ export interface KeyVaultSite {
   altContactName?: string;
   altPhone?: string;
   accessInstructions?: string;
-  accessSchedule?: 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'ALWAYS';
+  accessSchedule?: 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'ALWAYS' | 'RESTRICTED';
   securityLevel?: 'STANDARD' | 'HIGH' | 'VERY_HIGH';
   alarmSystem?: string;
+  scheduleConfig?: {
+    days?: Array<{ day: string; from: string; until: string }>;
+    windows?: Array<{ day: string; from: string; until: string }>;
+    rules?: {
+      prohibitedOnBankHolidays?: boolean;
+      outOfHoursNeedsClientApproval?: boolean;
+      officerMustCallBeforeEntry?: boolean;
+      securityEscortRequired?: boolean;
+    };
+    appointmentRequired?: boolean;
+    minimumNoticeRequired?: string;
+    approvalRequiredName?: string;
+    approvalRequiredNumber?: string;
+    approvalRequiredEmail?: string;
+    notes?: string;
+  };
   appointment?: {
     minimumNoticeRequired?: string;
     approvalRequiredName?: string;
@@ -62,6 +80,7 @@ export interface KeyVaultSite {
 export interface KeyVaultKey {
   id?: string;
   code?: string;
+  keyCode?: string;
   name: string;
   type?: string;
   category?: string;
@@ -117,6 +136,24 @@ export interface KeyVaultContact {
   primaryContact?: boolean;
   status?: 'ACTIVE' | 'INACTIVE';
   preferredMethod?: string;
+  address?: string;
+  notes?: string;
+  clientId?: string;
+  [key: string]: any;
+}
+
+export interface EmergencyContact {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  department?: string;
+  phoneCountryCode?: string;
+  phone?: string;
+  email?: string;
+  availability?: string;
+  status?: 'ACTIVE' | 'INACTIVE';
+  primaryContact?: boolean;
+  notifyFor?: 'ALL_EMERGENCIES' | 'KEY_RELATED' | 'SITE_RELATED' | 'SECURITY_INCIDENTS' | 'OTHER';
   address?: string;
   notes?: string;
   clientId?: string;
@@ -432,6 +469,55 @@ export class KeyVaultService {
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/contacts/${contactId}`, headers);
   }
 
+  // Emergency Contacts
+  listEmergencyContacts(orgId: string, clientId: string, params?: { q?: string; status?: string; department?: string; page?: number; size?: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.q) q.set('q', params.q);
+    if (params?.status) q.set('status', params.status);
+    if (params?.department) q.set('department', params.department);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 10));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts${query ? `?${query}` : ''}`, headers);
+  }
+
+  getEmergencyContact(orgId: string, clientId: string, emergencyContactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts/${emergencyContactId}`, headers);
+  }
+
+  createEmergencyContact(orgId: string, clientId: string, contact: EmergencyContact): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts`, contact, headers);
+  }
+
+  updateEmergencyContact(orgId: string, clientId: string, emergencyContactId: string, contact: Partial<EmergencyContact>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts/${emergencyContactId}`, contact, headers);
+  }
+
+  deactivateEmergencyContact(orgId: string, clientId: string, emergencyContactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts/${emergencyContactId}/deactivate`, {}, headers);
+  }
+
+  reactivateEmergencyContact(orgId: string, clientId: string, emergencyContactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts/${emergencyContactId}/reactivate`, {}, headers);
+  }
+
+  deleteEmergencyContact(orgId: string, clientId: string, emergencyContactId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/emergency-contacts/${emergencyContactId}`, headers);
+  }
+
   // Roles & Permissions
   listRoles(orgId: string, includeInactive = true): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -471,19 +557,13 @@ export class KeyVaultService {
   }
 
   deactivateRole(orgId: string, roleId: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
-    });
-    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}/deactivate`, { roleIds: [roleId] }, headers);
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}/deactivate`, { roleIds: [roleId] }, headers);
   }
 
   reactivateRole(orgId: string, roleId: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
-    });
-    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}/reactivate`, { roleIds: [roleId] }, headers);
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/roles/${roleId}/reactivate`, { roleIds: [roleId] }, headers);
   }
 
   assignRolesToUser(orgId: string, userId: string, roleIds: string[]): Observable<any> {
@@ -579,23 +659,17 @@ export class KeyVaultService {
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments`, headers);
   }
 
-  addKeyAttachment(orgId: string, keyId: string, file: File, fileName?: string, contentType?: string, sizeBytes?: number): Observable<any> {
+  addKeyAttachment(orgId: string, keyId: string, file: File): Observable<any> {
     const headers = this.getAuthHeaders();
     const fd = new FormData();
     fd.append('file', file, file.name);
-    fd.append('fileName', fileName || file.name);
-    fd.append('contentType', contentType || file.type || 'application/octet-stream');
-    fd.append('sizeBytes', String(sizeBytes || file.size));
     return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/attachments`, fd, headers);
   }
 
-  addSiteAttachment(orgId: string, siteId: string, file: File, fileName?: string, contentType?: string, sizeBytes?: number, kind?: string): Observable<any> {
+  addSiteAttachment(orgId: string, siteId: string, file: File, kind?: string): Observable<any> {
     const headers = this.getAuthHeaders();
     const fd = new FormData();
     fd.append('file', file, file.name);
-    if (fileName) fd.append('fileName', fileName);
-    if (contentType) fd.append('contentType', contentType);
-    if (sizeBytes) fd.append('sizeBytes', String(sizeBytes));
     if (kind) fd.append('kind', kind);
     return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/sites/${siteId}/attachments`, fd, headers);
   }

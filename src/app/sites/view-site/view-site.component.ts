@@ -63,7 +63,7 @@ export class ViewSiteComponent implements OnInit {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     if (!orgId) return;
 
-    this.keyVault.addSiteAttachment(orgId, this.siteId, file, file.name, file.type || 'application/octet-stream', file.size).subscribe({
+    this.keyVault.addSiteAttachment(orgId, this.siteId, file).subscribe({
       next: () => {
         this.toast.success('Attachment uploaded');
         this.loadAttachments();

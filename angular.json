@@ -34,15 +34,14 @@
                 "input": "src/assets"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/datatables.net/js/jquery.dataTables.min.js"
-            ]
-          },
-          "configurations": {
+"styles": [
+                "src/styles.css"
+              ],
+              "scripts": [
+                "node_modules/jquery/dist/jquery.min.js"
+              ]
+            },
+            "configurations": {
             "production": {
               "fileReplacements": [
                 {
@@ -107,15 +106,14 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/datatables.net/js/jquery.dataTables.min.js"
-            ]
+"styles": [
+                "src/styles.css"
+              ],
+              "scripts": [
+                "node_modules/jquery/dist/jquery.min.js"
+              ]
+            }
           }
-        }
       }
     }
   },

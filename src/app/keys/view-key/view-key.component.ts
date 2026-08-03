@@ -174,7 +174,7 @@ export class ViewKeyComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (!input.files || !this.keyId) return;
     Array.from(input.files).forEach(file => {
-      this.keyVault.addKeyAttachment(this.orgId, this.keyId, file, file.name, file.type || 'application/octet-stream', file.size).subscribe({
+      this.keyVault.addKeyAttachment(this.orgId, this.keyId, file).subscribe({
         next: () => {
           this.toast.success('Attachment uploaded');
           this.loadAttachments();

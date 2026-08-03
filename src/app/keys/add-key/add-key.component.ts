@@ -392,7 +392,7 @@ export class AddKeyComponent implements OnInit {
     }
 
     this.selectedFiles.forEach(file => {
-      this.keyVault.addKeyAttachment(orgId, keyId, file, file.name, file.type || 'application/octet-stream', file.size).subscribe({
+      this.keyVault.addKeyAttachment(orgId, keyId, file).subscribe({
         next: () => {
           pending--;
           this.maybeFinishKeySubmit(pending);
