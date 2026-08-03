@@ -1,0 +1,413 @@
+<div class="min-h-screen w-full bg-slate-50 font-sans text-slate-900" *ngIf="loading; else loaded">
+  <div class="mx-auto max-w-7xl p-3 sm:p-5 lg:p-8">
+    <div class="animate-pulse space-y-4">
+      <div class="h-8 w-48 rounded bg-slate-200"></div>
+      <div class="h-4 w-64 rounded bg-slate-200"></div>
+      <div class="h-96 rounded-2xl bg-slate-200"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loaded>
+  <div *ngIf="error" class="mx-auto max-w-7xl p-3 sm:p-5 lg:p-8">
+    <div class="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
+      <i data-lucide="alert-circle" class="h-6 w-6 text-rose-500 mx-auto mb-2"></i>
+      <p class="text-rose-700">{{ error }}</p>
+      <button (click)="onBack()" class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+        Back to Storage Locations
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="location" class="min-h-screen w-full bg-slate-50 font-sans text-slate-900">
+    <div class="mx-auto max-w-7xl p-3 sm:p-5 lg:p-8">
+
+      <!-- Header -->
+      <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
+        <div class="flex items-start gap-3">
+          <button (click)="onBack()" class="mt-1 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100">
+            <i data-lucide="arrow-left" class="h-5 w-5"></i>
+          </button>
+          <div>
+            <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Storage Location Detail</h1>
+            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-400 sm:text-sm">
+              <span>Home</span>
+              <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+              <span>Storage Management</span>
+              <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+              <span>Storage Locations</span>
+              <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+              <span class="text-blue-500">{{ location.name }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+          <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50">
+            <i data-lucide="help-circle" class="h-4 w-4"></i>
+            <span class="hidden sm:inline">Help</span>
+          </button>
+          <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50">
+            <i data-lucide="pencil" class="h-4 w-4"></i>
+            Edit
+          </button>
+          <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50">
+            <i data-lucide="power" class="h-4 w-4"></i>
+            Deactivate
+          </button>
+          <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50">
+            <i data-lucide="more-vertical" class="h-4 w-4"></i>
+            More
+          </button>
+        </div>
+      </div>
+
+      <!-- Identity card -->
+      <div class="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:mb-6 sm:p-6">
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
+
+          <!-- Name block -->
+          <div class="flex items-start gap-4">
+            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-50">
+              <i data-lucide="building-2" class="h-6 w-6 text-blue-500"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="text-lg font-bold text-slate-900">{{ location.name }}</h2>
+                <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium"
+                      [ngClass]="getStatusClass(location.status)">
+                  <span class="h-1.5 w-1.5 rounded-full"
+                        [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-slate-400'"></span>
+                  {{ location.status }}
+                </span>
+              </div>
+              <div class="mt-1 flex items-center gap-1.5 text-sm text-slate-400">
+                <span>{{ location.code }}</span>
+                <i data-lucide="copy" class="h-3.5 w-3.5 cursor-pointer hover:text-slate-600"
+                   (click)="copyCode()"></i>
+              </div>
+              <div class="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
+                <i data-lucide="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-slate-400"></i>
+                <span>{{ location.address }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle facts -->
+          <div class="grid grid-cols-2 gap-x-4 gap-y-3 border-slate-100 text-sm lg:border-l lg:pl-6">
+            <div>
+              <div class="text-slate-400">Site / Building</div>
+              <div class="mt-0.5 font-medium text-slate-800">{{ location.siteName }}</div>
+            </div>
+            <div></div>
+            <div>
+              <div class="text-slate-400">Location Type</div>
+              <div class="mt-0.5 font-medium text-slate-800">{{ location.locationType || '—' }}</div>
+            </div>
+            <div></div>
+            <div>
+              <div class="text-slate-400">Responsible Person</div>
+              <div class="mt-0.5 font-medium text-blue-500">{{ location.responsiblePerson }}</div>
+              <div class="text-xs text-slate-400">{{ location.responsiblePersonTitle }}</div>
+            </div>
+          </div>
+
+          <!-- Right facts -->
+          <div class="grid grid-cols-2 gap-x-4 gap-y-3 border-slate-100 text-sm lg:border-l lg:pl-6">
+            <div>
+              <div class="text-slate-400">Contact Number</div>
+              <div class="mt-0.5 font-medium text-slate-800">{{ location.contactNumber }}</div>
+            </div>
+            <div></div>
+            <div>
+              <div class="text-slate-400">Status</div>
+              <div class="mt-0.5 inline-flex items-center gap-1.5 font-medium"
+                   [ngClass]="getStatusClass(location.status)">
+                <span class="h-1.5 w-1.5 rounded-full"
+                      [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-slate-400'"></span>
+                {{ location.status }}
+              </div>
+            </div>
+            <div></div>
+            <div>
+              <div class="text-slate-400">Created By</div>
+              <div class="mt-0.5 font-medium text-slate-800">{{ location.createdBy }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Created On</div>
+              <div class="mt-0.5 font-medium text-slate-800">{{ formatDate(location.createdDate) }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mb-4 grid grid-cols-2 gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:mb-6 sm:grid-cols-3 sm:gap-4 sm:p-5 lg:grid-cols-5">
+        <div class="flex items-start gap-2.5">
+          <div class="rounded-lg bg-blue-50 p-2">
+            <i data-lucide="archive" class="h-4 w-4 text-blue-500"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">Total Cabinets</div>
+            <div class="text-lg font-bold text-slate-900">{{ location.totalCabinets }}</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <div class="rounded-lg bg-emerald-50 p-2">
+            <i data-lucide="anchor" class="h-4 w-4 text-emerald-500"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">Total Hooks / Slots</div>
+            <div class="text-lg font-bold text-slate-900">{{ location.totalHooks }}</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <div class="rounded-lg bg-violet-50 p-2">
+            <i data-lucide="key" class="h-4 w-4 text-violet-500"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">Keys in Storage</div>
+            <div class="text-lg font-bold text-slate-900">{{ location.keysInStorage }}</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <div class="rounded-lg bg-amber-50 p-2">
+            <i data-lucide="wrench" class="h-4 w-4 text-amber-500"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">Available Hooks</div>
+            <div class="text-lg font-bold text-slate-900">{{ location.availableHooks }}</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <div class="rounded-lg bg-rose-50 p-2">
+            <i data-lucide="triangle-alert" class="h-4 w-4 text-rose-500"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">Out of Order Hooks</div>
+            <div class="text-lg font-bold text-slate-900">{{ location.outOfOrderHooks }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="mb-4 overflow-x-auto border-b border-slate-200 sm:mb-6">
+        <div class="flex min-w-max gap-6 px-1 text-sm font-medium">
+          <button class="whitespace-nowrap border-b-2 border-blue-600 pb-3 text-blue-600">Location Information</button>
+          <button class="whitespace-nowrap border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600">Access &amp; Notes</button>
+          <button class="whitespace-nowrap border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600">Activity Log</button>
+          <button class="whitespace-nowrap border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600">Documents</button>
+        </div>
+      </div>
+
+      <!-- Info + Quick Actions -->
+      <div class="mb-4 grid grid-cols-1 gap-4 sm:mb-6 lg:grid-cols-3 lg:gap-6">
+
+        <!-- Location Information -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:col-span-2">
+          <h3 class="mb-4 text-sm font-bold text-slate-900">Location Information</h3>
+          <div class="grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+            <div>
+              <div class="text-slate-400">Location Code</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.code }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Responsible Person</div>
+              <div class="mt-0.5 font-medium text-blue-500">{{ location.responsiblePerson }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Location Name</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.name }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Contact Number</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.contactNumber }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Site / Building</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.siteName }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Status</div>
+              <div class="mt-0.5 inline-flex items-center gap-1.5 font-medium"
+                   [ngClass]="getStatusClass(location.status)">
+                <span class="h-1.5 w-1.5 rounded-full"
+                      [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-slate-400'"></span>
+                {{ location.status }}
+              </div>
+            </div>
+            <div>
+              <div class="text-slate-400">Location Type</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.locationType || '—' }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Created By</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.createdBy }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Address</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.address }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Created On</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ formatDate(location.createdDate) }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">City</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.city }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Last Updated By</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.updatedBy }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Postcode / ZIP</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.postcode }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Last Updated On</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ formatDate(location.updatedDate) }}</div>
+            </div>
+            <div>
+              <div class="text-slate-400">Country</div>
+              <div class="mt-0.5 font-medium text-slate-700">{{ location.country }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+          <h3 class="mb-4 text-sm font-bold text-slate-900">Quick Actions</h3>
+          <div class="space-y-4">
+            <a routerLink="/storage/locations/add" class="flex items-start gap-3 group">
+              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
+                <i data-lucide="archive" class="h-4 w-4 text-blue-500"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-blue-600 group-hover:underline">Add Cabinet</div>
+                <div class="text-xs text-slate-400">Add a new cabinet to this location</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-start gap-3 group">
+              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
+                <i data-lucide="archive" class="h-4 w-4 text-blue-500"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-blue-600 group-hover:underline">View Cabinets</div>
+                <div class="text-xs text-slate-400">Manage cabinets in this location</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-start gap-3 group">
+              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
+                <i data-lucide="anchor" class="h-4 w-4 text-blue-500"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-blue-600 group-hover:underline">View Hooks / Slots</div>
+                <div class="text-xs text-slate-400">View and manage hooks or slots</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-start gap-3 group">
+              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
+                <i data-lucide="printer" class="h-4 w-4 text-blue-500"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-blue-600 group-hover:underline">Print Location Details</div>
+                <div class="text-xs text-slate-400">Download or print this location information</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cabinets table card -->
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <h3 class="text-sm font-bold text-slate-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
+          <button class="flex items-center justify-center gap-1.5 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700">
+            <i data-lucide="plus" class="h-4 w-4"></i>
+            Add Cabinet
+          </button>
+        </div>
+
+        <!-- Desktop table -->
+        <div class="hidden overflow-x-auto lg:block">
+          <table class="w-full min-w-[800px] text-left text-sm">
+            <thead>
+              <tr class="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
+                <th class="px-5 py-3 font-medium">Cabinet Code</th>
+                <th class="px-5 py-3 font-medium">Cabinet Name</th>
+                <th class="px-5 py-3 font-medium">Cabinet Type</th>
+                <th class="px-5 py-3 font-medium">Capacity (Hooks)</th>
+                <th class="px-5 py-3 font-medium">Hooks / Slots</th>
+                <th class="px-5 py-3 font-medium">Keys in Storage</th>
+                <th class="px-5 py-3 font-medium">Status</th>
+                <th class="px-5 py-3 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cabinet of location.cabinets"
+                  class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
+                <td class="px-5 py-4 font-medium text-blue-500">{{ cabinet.code }}</td>
+                <td class="px-5 py-4 text-slate-700">{{ cabinet.name }}</td>
+                <td class="px-5 py-4 text-slate-500">{{ cabinet.type }}</td>
+                <td class="px-5 py-4 text-slate-600">{{ cabinet.capacity }}</td>
+                <td class="px-5 py-4 text-slate-600">{{ cabinet.hooks }}</td>
+                <td class="px-5 py-4 text-slate-600">{{ cabinet.keysInStorage }}</td>
+                <td class="px-5 py-4">
+                  <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-600">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+                  </span>
+                </td>
+                <td class="px-5 py-4">
+                  <div class="flex items-center justify-end gap-2">
+                    <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
+                    <button class="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+                      <i data-lucide="more-vertical" class="h-4 w-4"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile cards -->
+        <div *ngFor="let cabinet of location.cabinets" class="divide-y divide-slate-50 lg:hidden">
+          <div class="p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-medium text-blue-500">{{ cabinet.code }}</div>
+                <div class="text-sm text-slate-700">{{ cabinet.name }}</div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+              </span>
+            </div>
+            <div class="mt-3 grid grid-cols-2 gap-y-2 text-xs">
+              <div><span class="text-slate-400">Type:</span> <span class="text-slate-600">{{ cabinet.type }}</span></div>
+              <div><span class="text-slate-400">Capacity:</span> <span class="text-slate-600">{{ cabinet.capacity }}</span></div>
+              <div><span class="text-slate-400">Hooks/Slots:</span> <span class="text-slate-600">{{ cabinet.hooks }}</span></div>
+              <div><span class="text-slate-400">Keys:</span> <span class="text-slate-600">{{ cabinet.keysInStorage }}</span></div>
+            </div>
+            <button class="mt-3 w-full rounded-lg border border-slate-200 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <span class="text-slate-400">Showing 1 to {{ location.cabinets?.length }} of {{ location.cabinets?.length }} cabinets</span>
+          <div class="flex items-center gap-2">
+            <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">
+              <i data-lucide="chevron-left" class="h-4 w-4"></i>
+            </button>
+            <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 font-medium text-white">1</button>
+            <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">2</button>
+            <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">
+              <i data-lucide="chevron-right" class="h-4 w-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ng-template>

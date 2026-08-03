@@ -827,6 +827,11 @@ export class KeyVaultService {
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, headers);
   }
 
+  getStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, headers);
+  }
+
   getOrgSiteStats(orgId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/sites/stats`, headers);

@@ -53,6 +53,13 @@ export class AppSidebarComponent implements OnInit {
       path: "/jobs",
     },
     {
+      icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>`,
+      name: "Storage Management",
+      subItems: [
+        { name: "Storage Locations", path: "/storage/locations" },
+      ],
+    },
+    {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 21v-2a4 4 0 0 1 4-4h1"/><circle cx="10" cy="7" r="3.5"/><path d="M15.5 21v-1.5a3.5 3.5 0 0 0-2-3.16"/><path d="M14 4.2a3.5 3.5 0 0 1 0 6.6"/></svg>`,
       name: "Officers",
       path: "/officers",

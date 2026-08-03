@@ -106,6 +106,21 @@ export const routes: Routes = [
             title: 'All Jobs | KeyVault Pro'
           },
           {
+            path: 'storage/locations',
+            loadComponent: () => import('./storage/storage-locations/storage-locations.component').then(m => m.StorageLocationsComponent),
+            title: 'Storage Locations | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/add',
+            loadComponent: () => import('./storage/add-storage-location/add-storage-location.component').then(m => m.AddStorageLocationComponent),
+            title: 'Add Storage Location | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/view/:id',
+            loadComponent: () => import('./storage/storage-location-detail/storage-location-detail.component').then(m => m.StorageLocationDetailComponent),
+            title: 'Storage Location Detail | KeyVault Pro'
+          },
+          {
             path: 'sites/add-site',
             loadComponent: () => import('./sites/add-site/add-site.component').then(m => m.AddSiteComponent),
             title: 'Add New Site | KeyVault Pro'
