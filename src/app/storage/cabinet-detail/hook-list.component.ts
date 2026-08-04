@@ -20,6 +20,8 @@ interface HookRow {
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 9999px; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+    .animate-fade-in { animation: fadeIn .15s ease-out; }
   `],
 })
 export class HookListComponent {
@@ -42,4 +44,34 @@ export class HookListComponent {
     { no: '09', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:00 AM', by: 'System' },
     { no: '10', status: 'Hook Damaged', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 08:45 AM', by: 'Maintenance' },
   ];
+
+  isDeactivateModalOpen = false;
+  isReactivateModalOpen = false;
+  isMoreMenuOpen = false;
+
+  openDeactivateModal(): void {
+    this.isDeactivateModalOpen = true;
+    this.isMoreMenuOpen = false;
+  }
+
+  closeDeactivateModal(): void {
+    this.isDeactivateModalOpen = false;
+  }
+
+  openReactivateModal(): void {
+    this.isReactivateModalOpen = true;
+    this.isMoreMenuOpen = false;
+  }
+
+  closeReactivateModal(): void {
+    this.isReactivateModalOpen = false;
+  }
+
+  toggleMoreMenu(): void {
+    this.isMoreMenuOpen = !this.isMoreMenuOpen;
+  }
+
+  closeMoreMenu(): void {
+    this.isMoreMenuOpen = false;
+  }
 }
