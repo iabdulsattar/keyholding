@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 
 interface HookRow {
   no: string;
@@ -10,11 +11,21 @@ interface HookRow {
   type: string;
   updated: string;
   by: string;
+  hookId: string;
 }
 
-interface Hook {
+interface HookGridItem {
   num: number;
   used: boolean;
+  damaged: boolean;
+}
+
+interface HookStats {
+  totalHooks: number;
+  keyHooked: number;
+  keyInUse: number;
+  available: number;
+  damaged: number;
 }
 
 @Component({
@@ -27,11 +38,18 @@ interface Hook {
     .scrollbar-thin::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 9999px; }
   `],
 })
-export class HookListComponent implements OnInit {
+export class HookListComponent implements OnInit, AfterViewInit {
   cabinetId = '';
-  activeTab = 'hooks';
+  cabinet: any = null;
+  loading = true;
+  error = '';
 
-  readonly usedHookSet = new Set([1, 2, 3, 4, 5, 7, 9, 11, 13, 14, 17, 18, 19, 20]);
+  activeTab = 'hooks';
+  rows: HookRow[] = [];
+  hooks: HookGridItem[] = [];
+  stats: HookStats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
+
+  private allHooksRaw: any[] = [];
 
   readonly statusStyles: Record<string, string> = {
     'Key Hooked': 'bg-blue-100 text-blue-700',
@@ -40,45 +58,226 @@ export class HookListComponent implements OnInit {
     'Hook Damaged': 'bg-red-100 text-red-700',
   };
 
-  readonly rows: HookRow[] = [
-    { no: '01', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0001', type: 'Yale', updated: '15 May 2024, 11:20 AM', by: 'Faiza Ahmed' },
-    { no: '02', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0002', type: 'Yale', updated: '15 May 2024, 10:58 AM', by: 'James Walker' },
-    { no: '03', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:45 AM', by: 'System' },
-    { no: '04', status: 'Key In Use', key: 'Mortice Key', keyId: 'KEY-0003', type: 'Mortice', updated: '15 May 2024, 10:30 AM', by: 'Sarah Johnson' },
-    { no: '05', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0004', type: 'Yale', updated: '15 May 2024, 11:10 AM', by: 'Faiza Ahmed' },
-    { no: '06', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:12 AM', by: 'System' },
-    { no: '07', status: 'Key In Use', key: 'Yale Key', keyId: 'KEY-0005', type: 'Yale', updated: '15 May 2024, 10:05 AM', by: 'James Walker' },
-    { no: '08', status: 'Key Hooked', key: 'Padlock Key', keyId: 'KEY-0006', type: 'Padlock', updated: '15 May 2024, 11:00 AM', by: 'Faiza Ahmed' },
-    { no: '09', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:00 AM', by: 'System' },
-    { no: '10', status: 'Hook Damaged', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 08:45 AM', by: 'Maintenance' },
-  ];
-
-  readonly hooks: Hook[] = Array.from({ length: 20 }, (_, i) => ({
-    num: i + 1,
-    used: this.usedHookSet.has(i + 1),
-  }));
-
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private keyVault: KeyVaultService
+  ) {}
 
   ngOnInit(): void {
     this.cabinetId = this.route.snapshot.paramMap.get('id') || '';
+    this.loadCabinetDetails();
+    this.loadHooks();
+  }
+
+  ngAfterViewInit(): void {
+    this.createIcons();
+  }
+
+  private createIcons(): void {
+    setTimeout(() => {
+      const icons = (window as any).lucide;
+      if (icons && icons.createIcons) {
+        icons.createIcons();
+      }
+    }, 0);
+  }
+
+  private loadCabinetDetails(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !this.cabinetId) return;
+    this.keyVault.getCabinet(orgId, this.cabinetId).subscribe({
+      next: (res: any) => {
+        const item = res?.data ?? res ?? {};
+        this.cabinet = {
+          id: item.id || '',
+          code: item.code || item.cabinetCode || '',
+          name: item.name || item.cabinetName || '',
+          type: item.cabinetType || item.type || '',
+          status: item.status || 'Active',
+          totalHooks: item.numberOfHooks || item.totalHooks || 20,
+          usedHooks: item.usedHooks || 0,
+          availableHooks: item.availableHooks || 0,
+          storageLocation: item.storageLocationName || item.locationName || '',
+          floor: item.floorArea || item.floor || '',
+        };
+      },
+      error: () => {
+        this.cabinet = this.getFallbackCabinet();
+      }
+    });
+  }
+
+  private getFallbackCabinet(): any {
+    return {
+      id: this.cabinetId,
+      code: 'CAB-0001',
+      name: 'Cabinet A - Main Floor',
+      type: 'Standard',
+      status: 'Active',
+      totalHooks: 20,
+      usedHooks: 14,
+      availableHooks: 6,
+      storageLocation: 'Head Office Vault (LOC-0001)',
+      floor: 'Main Floor',
+    };
+  }
+
+  private loadHooks(): void {
+    this.loading = true;
+    this.error = '';
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !this.cabinetId) {
+      this.setFallbackData();
+      this.loading = false;
+      this.createIcons();
+      return;
+    }
+
+    this.keyVault.listHooks(orgId, this.cabinetId, { page: 0, size: 100 }).subscribe({
+      next: (hooks: any[]) => {
+        this.allHooksRaw = hooks || [];
+        this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
+        this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
+        if (this.hooks.length === 0) {
+          this.hooks = Array.from({ length: this.stats.totalHooks || 20 }, (_, i) => ({
+            num: i + 1, used: false, damaged: false
+          }));
+        }
+        this.loadHookStats();
+      },
+      error: () => {
+        this.setFallbackData();
+        this.loading = false;
+        this.createIcons();
+      }
+    });
+  }
+
+  private loadHookStats(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !this.cabinetId) return;
+    this.keyVault.getHookStats(orgId, this.cabinetId).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        this.stats = {
+          totalHooks: data.totalHooks || data.hooks || this.hooks.length,
+          keyHooked: data.keyHooked || data.keysOnHooks || 0,
+          keyInUse: data.keyInUse || data.inUse || 0,
+          available: data.available || data.availableHooks || 0,
+          damaged: data.damaged || data.hookDamaged || 0,
+        };
+        this.loading = false;
+        this.createIcons();
+      },
+      error: () => {
+        this.computeStatsFromHooks();
+        this.loading = false;
+        this.createIcons();
+      }
+    });
+  }
+
+  private computeStatsFromHooks(): void {
+    const keyHooked = this.allHooksRaw.filter(h => this.translateStatus(h).includes('Key Hooked')).length;
+    const keyInUse = this.allHooksRaw.filter(h => this.translateStatus(h).includes('In Use')).length;
+    const available = this.allHooksRaw.filter(h => this.translateStatus(h).includes('Available')).length;
+    const damaged = this.allHooksRaw.filter(h => this.translateStatus(h).includes('Damaged')).length;
+    this.stats = {
+      totalHooks: this.allHooksRaw.length,
+      keyHooked,
+      keyInUse,
+      available,
+      damaged,
+    };
+  }
+
+  private setFallbackData(): void {
+    this.stats = { totalHooks: 20, keyHooked: 10, keyInUse: 4, available: 5, damaged: 1 };
+    const fallbackRows: HookRow[] = [
+      { no: '01', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0001', type: 'Yale', updated: '15 May 2024, 11:20 AM', by: 'Faiza Ahmed', hookId: '1' },
+      { no: '02', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0002', type: 'Yale', updated: '15 May 2024, 10:58 AM', by: 'James Walker', hookId: '2' },
+      { no: '03', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:45 AM', by: 'System', hookId: '3' },
+      { no: '04', status: 'Key In Use', key: 'Mortice Key', keyId: 'KEY-0003', type: 'Mortice', updated: '15 May 2024, 10:30 AM', by: 'Sarah Johnson', hookId: '4' },
+      { no: '05', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0004', type: 'Yale', updated: '15 May 2024, 11:10 AM', by: 'Faiza Ahmed', hookId: '5' },
+      { no: '06', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:12 AM', by: 'System', hookId: '6' },
+      { no: '07', status: 'Key In Use', key: 'Yale Key', keyId: 'KEY-0005', type: 'Yale', updated: '15 May 2024, 10:05 AM', by: 'James Walker', hookId: '7' },
+      { no: '08', status: 'Key Hooked', key: 'Padlock Key', keyId: 'KEY-0006', type: 'Padlock', updated: '15 May 2024, 11:00 AM', by: 'Faiza Ahmed', hookId: '8' },
+      { no: '09', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:00 AM', by: 'System', hookId: '9' },
+      { no: '10', status: 'Hook Damaged', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 08:45 AM', by: 'Maintenance', hookId: '10' },
+    ];
+    this.rows = fallbackRows;
+    this.hooks = Array.from({ length: 20 }, (_, i) => ({
+      num: i + 1,
+      used: [1, 2, 3, 4, 5, 7, 9, 11, 13, 14, 17, 18, 19, 20].includes(i + 1),
+      damaged: i + 1 === 10,
+    }));
+  }
+
+  private normalizeHookRow(h: any): HookRow {
+    const hookNo = h.hookNo || h.number || h.hookNumber || 0;
+    const status = this.translateStatus(h);
+    const assignedKeyId = h.assignedKeyId || null;
+    const assignedKeyName = h.assignedKeyName || h.keyName || '';
+    return {
+      no: String(hookNo).padStart(2, '0'),
+      status: status,
+      key: assignedKeyName || '-',
+      keyId: assignedKeyId || '-',
+      type: h.keyType || h.type || '-',
+      updated: h.updatedAt || h.lastUpdated || '',
+      by: h.updatedBy || h.lastUpdatedBy || 'System',
+      hookId: h.id || String(hookNo),
+    };
+  }
+
+  private normalizeGridHook(h: any): HookGridItem {
+    const hookNo = h.hookNo || h.number || h.hookNumber || 0;
+    const status = this.translateStatus(h);
+    return {
+      num: hookNo,
+      used: status === 'Key Hooked' || status === 'Key In Use',
+      damaged: status === 'Hook Damaged',
+    };
+  }
+
+  private translateStatus(h: any): string {
+    const s = (h.status || '').toUpperCase();
+    if (s === 'KEY_HOOKED' || s === 'KEYHOOKED') return 'Key Hooked';
+    if (s === 'KEY_IN_USE' || s === 'KEYINUSE') return 'Key In Use';
+    if (s === 'HOOK_DAMAGED' || s === 'HOOKDAMAGED') return 'Hook Damaged';
+    if (s === 'AVAILABLE_FOR_KEY' || s === 'AVAILABLEFORKEY') return 'Available for Key';
+    if (s === 'IN_USE') return 'Key In Use';
+    if (s === 'DAMAGED') return 'Hook Damaged';
+    if (s === 'AVAILABLE') return 'Available for Key';
+    return 'Available for Key';
   }
 
   switchTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  getHookBorder(hook: Hook): string {
+  getHookBorder(hook: HookGridItem): string {
+    if (hook.damaged) return 'border-t-red-500';
     if (hook.used) return 'border-t-blue-500';
     return 'border-t-emerald-500';
   }
 
-  getHookBadge(hook: Hook): string {
+  getHookBadge(hook: HookGridItem): string {
+    if (hook.damaged) return 'bg-red-100 text-red-700';
     if (hook.used) return 'bg-blue-100 text-blue-700';
     return 'bg-emerald-100 text-emerald-700';
   }
 
-  isHookDamaged(hook: Hook): boolean {
-    return hook.num === 10;
+  isHookDamaged(hook: HookGridItem): boolean {
+    return hook.damaged;
+  }
+
+  formatDate(value: string | null | undefined): string {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return String(value);
+    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return `${datePart}, ${timePart}`;
   }
 }

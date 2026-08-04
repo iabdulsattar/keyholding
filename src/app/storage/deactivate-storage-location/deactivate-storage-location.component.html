@@ -1,5 +1,16 @@
-<div class="min-h-screen w-full bg-slate-50 font-sans text-slate-900">
+<div class="min-h-screen w-full bg-slate-50 font-sans text-slate-900" *ngIf="loading; else loaded">
   <div class="mx-auto max-w-7xl p-3 sm:p-5 lg:p-8">
+    <div class="animate-pulse space-y-4">
+      <div class="h-8 w-48 rounded bg-slate-200"></div>
+      <div class="h-4 w-64 rounded bg-slate-200"></div>
+      <div class="h-96 rounded-2xl bg-slate-200"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loaded>
+<div class="min-h-screen w-full bg-slate-50 font-sans text-slate-900">
+    <div class="mx-auto max-w-7xl p-3 sm:p-5 lg:p-8">
 
     <!-- Header -->
     <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
@@ -63,7 +74,7 @@
           <div class="grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
             <div>
               <div class="font-medium text-slate-700">Location Name</div>
-              <div class="mt-0.5 text-blue-500">Head Office Vault</div>
+              <div class="mt-0.5 text-blue-500">{{ location?.name || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Access Schedule</div>
@@ -72,7 +83,7 @@
             </div>
             <div>
               <div class="font-medium text-slate-700">Location Code</div>
-              <div class="mt-0.5 text-blue-500">LOC-0001</div>
+              <div class="mt-0.5 text-blue-500">{{ location?.code || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Access Instructions</div>
@@ -80,26 +91,25 @@
             </div>
             <div>
               <div class="font-medium text-slate-700">Site / Building</div>
-              <div class="mt-0.5 text-slate-600">Head Office</div>
+              <div class="mt-0.5 text-slate-600">{{ location?.siteName || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Responsible Person</div>
-              <div class="mt-0.5 text-blue-500">James Walker</div>
+              <div class="mt-0.5 text-blue-500">{{ location?.responsiblePerson || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Location Type</div>
-              <div class="mt-0.5 text-slate-600">Safe Room</div>
+              <div class="mt-0.5 text-slate-600">{{ location?.locationType || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Contact Number</div>
               <div class="mt-0.5 flex items-center gap-1.5 text-slate-600">
-                <span>🇬🇧</span> +44 &nbsp;020 7946 0958
+                <span>🇬🇧</span> {{ location?.contactNumber || '—' }}
               </div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Address</div>
-              <div class="mt-0.5 text-slate-600">25 Fenchurch Street,</div>
-              <div class="text-slate-600">London, EC3M 5BN, UK</div>
+              <div class="mt-0.5 text-slate-600">{{ location?.address || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Security Level</div>
@@ -107,27 +117,17 @@
             </div>
             <div>
               <div class="font-medium text-slate-700">City</div>
-              <div class="mt-0.5 text-slate-600">London</div>
+              <div class="mt-0.5 text-slate-600">{{ location?.city || '—' }}</div>
             </div>
             <div>
               <div class="font-medium text-slate-700">CCTV Monitored</div>
               <div class="mt-1">
-                <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">Yes</span>
-              </div>
-            </div>
-            <div>
-              <div class="font-medium text-slate-700">Postcode / ZIP</div>
-              <div class="mt-0.5 text-slate-600">EC3M 5BN</div>
-            </div>
-            <div>
-              <div class="font-medium text-slate-700">Alarm System</div>
-              <div class="mt-1">
-                <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">Yes</span>
+                <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location?.cctvMonitored ? 'Yes' : 'No' }}</span>
               </div>
             </div>
             <div>
               <div class="font-medium text-slate-700">Country</div>
-              <div class="mt-0.5 text-slate-600">United Kingdom</div>
+              <div class="mt-0.5 text-slate-600">{{ location?.country || '—' }}</div>
             </div>
           </div>
         </div>
@@ -169,16 +169,19 @@
           <div class="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <button
               type="button"
+              (click)="onCancel()"
               class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
             >
               Cancel
             </button>
             <button
               type="button"
-              class="flex items-center justify-center gap-2 rounded-lg bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-rose-700"
+              (click)="confirmDeactivate()"
+              [disabled]="deactivating"
+              class="flex items-center justify-center gap-2 rounded-lg bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-rose-700 disabled:opacity-50"
             >
               <i data-lucide="ban" class="h-4 w-4"></i>
-              Deactivate Storage Location
+              {{ deactivating ? 'Deactivating...' : 'Deactivate Storage Location' }}
             </button>
           </div>
         </div>
@@ -262,3 +265,4 @@
     </div>
   </div>
 </div>
+</ng-template>

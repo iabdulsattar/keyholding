@@ -105,14 +105,20 @@ export interface EmergencyContact {
 
 export interface AuditRecord {
   id: string;
+  eventId?: string;
+  eventType?: string;
+  category?: string;
+  severity?: string;
+  source?: string;
+  outcome?: string;
   targetType: string;
-  targetId: string;
+  targetId?: string;
   action: string;
-  userId?: string;
+  actorUserId?: string;
   userName?: string;
   userRole?: string;
   details?: string;
-  ipAddress?: string;
+  ipAddress?: string | null;
   createdAt: string;
 }
 
@@ -521,52 +527,61 @@ export class ClientService {
      };
    }
 
-    listAuditLog(params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+     listAuditLog(params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+      const orgId = this.getOrgId();
+      if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+      const page = params?.page ?? 0;
+      const size = params?.size ?? 50;
+      return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, page, size }).pipe(
+        map((res: any) => {
+          const data = res?.data ?? res ?? {};
+          const meta = data?.meta ?? res?.meta ?? {};
+          const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+          const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
+          const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+          return { items, totalItems, page, size, totalPages };
+        })
+      );
+    }
+
+    private mapAudit(item: any): AuditRecord {
+      const data = item?.data ?? {};
+      return {
+        id: item.id ?? '',
+        eventId: item.eventId,
+        eventType: item.eventType,
+        category: item.category,
+        severity: item.severity,
+        source: item.source,
+        outcome: item.outcome,
+        targetType: item.targetType ?? '',
+        targetId: item.targetId ?? '',
+        action: item.eventType ?? item.action ?? '',
+        actorUserId: data?.actorUserId ?? item.userId,
+        userName: item.actor ?? item.userName ?? '',
+        userRole: item.userRole ?? '',
+        details: data?.message ?? item.details ?? '',
+        ipAddress: item.ipAddress ?? null,
+        createdAt: item.occurredAt ?? item.createdAt ?? '',
+       };
+     }
+
+     listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
      const orgId = this.getOrgId();
      if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
      const page = params?.page ?? 0;
      const size = params?.size ?? 50;
-     return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, page, size }).pipe(
+     return this.keyVault.listEntityAuditLog(orgId, targetType, targetId, { page, size }).pipe(
        map((res: any) => {
          const data = res?.data ?? res ?? {};
+         const meta = data?.meta ?? res?.meta ?? {};
          const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
-         const totalItems = data.totalItems ?? data.total ?? items.length;
-         const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+         const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
+         const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
          return { items, totalItems, page, size, totalPages };
        })
      );
    }
-
-   private mapAudit(item: any): AuditRecord {
-     return {
-       id: item.id ?? '',
-       targetType: item.targetType ?? '',
-       targetId: item.targetId ?? '',
-       action: item.action ?? '',
-       userId: item.userId,
-       userName: item.userName,
-       userRole: item.userRole,
-       details: item.details,
-       ipAddress: item.ipAddress,
-       createdAt: item.createdAt ?? '',
-      };
-    }
-
-    listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
-    const orgId = this.getOrgId();
-    if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
-    const page = params?.page ?? 0;
-    const size = params?.size ?? 50;
-    return this.keyVault.listEntityAuditLog(orgId, targetType, targetId, { page, size }).pipe(
-      map((res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
-        const totalItems = data.totalItems ?? data.total ?? items.length;
-        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-        return { items, totalItems, page, size, totalPages };
-      })
-    );
-  }
 
   listAllKeys(params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
     const orgId = this.getOrgId();

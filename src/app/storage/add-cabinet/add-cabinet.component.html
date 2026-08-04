@@ -1,13 +1,19 @@
-<div class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900">
+<div class="min-h-screen w-full bg-[#f6f7f7] font-sans text-slate-900" *ngIf="loading; else loaded">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="animate-pulse space-y-4">
+      <div class="h-8 w-48 rounded bg-slate-200"></div>
+      <div class="h-96 rounded-2xl bg-slate-200"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loaded>
+<div class="min-h-screen w-full bg-[#f6f7f7] font-sans text-slate-900">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <!-- Breadcrumb -->
     <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-4">
       <a href="#" class="hover:underline">Storage Management</a>
-      <span class="text-slate-400">›</span>
-      <a href="#" class="hover:underline">Storage Locations</a>
-      <span class="text-slate-400">›</span>
-      <a href="#" class="hover:underline">Head Office Vault (LOC-0001)</a>
       <span class="text-slate-400">›</span>
       <a [routerLink]="['/storage/locations/cabinets']" class="hover:underline">Cabinets</a>
       <span class="text-slate-400">›</span>
@@ -45,9 +51,9 @@
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Storage Location <span class="text-rose-500">*</span></label>
               <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-                  <option>Select storage location</option>
-                  <option>Head Office Vault</option>
+                <select [(ngModel)]="storageLocationId" class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="">Select storage location</option>
+                  <option *ngFor="let loc of storageLocations" [value]="loc.id">{{ loc.name }} ({{ loc.code }})</option>
                 </select>
                 <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
               </div>
@@ -64,14 +70,14 @@
 
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Cabinet Name <span class="text-rose-500">*</span></label>
-              <input type="text" placeholder="Enter cabinet name" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <input type="text" [(ngModel)]="cabinetName" placeholder="Enter cabinet name" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               <p class="mt-1 text-xs text-slate-400">A unique and easy to identify name for this cabinet.</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Cabinet Type <span class="text-rose-500">*</span></label>
               <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-                  <option>Select cabinet type</option>
+                <select [(ngModel)]="cabinetType" class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="">Select cabinet type</option>
                   <option>Standard</option>
                   <option>Fire Rated</option>
                   <option>High Security</option>
@@ -83,7 +89,7 @@
 
             <div class="sm:col-span-2">
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Description (Optional)</label>
-              <textarea rows="3" placeholder="Enter description" class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
+              <textarea [(ngModel)]="description" rows="3" placeholder="Enter description" class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
               <p class="mt-1 text-xs text-slate-400">Additional information about this cabinet.</p>
             </div>
           </div>
@@ -93,14 +99,14 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Number of Hooks (Slots) <span class="text-rose-500">*</span></label>
-              <input type="text" placeholder="Enter number of hooks" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <input type="number" [(ngModel)]="numberOfHooks" min="1" max="200" placeholder="Enter number of hooks" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               <p class="mt-1 text-xs text-slate-400">Total number of hooks/slots available in this cabinet.</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Security Level <span class="text-rose-500">*</span></label>
               <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-                  <option>Select security level</option>
+                <select [(ngModel)]="cabinetType" class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="">Select security level</option>
                   <option>Standard</option>
                   <option>High</option>
                 </select>
@@ -112,8 +118,8 @@
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Fire Rating (Optional)</label>
               <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-                  <option>Select fire rating</option>
+                <select [(ngModel)]="fireRating" class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="">Select fire rating</option>
                   <option>30 min</option>
                   <option>60 min</option>
                   <option>120 min</option>
@@ -137,31 +143,26 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Installed By</label>
-              <input type="text" placeholder="Enter installer name" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <input type="text" [(ngModel)]="responsiblePerson" placeholder="Enter installer name" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               <p class="mt-1 text-xs text-slate-400">Person who installed this cabinet.</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Responsible Person</label>
               <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-                  <option>Select responsible person</option>
-                  <option>James Walker</option>
-                  <option>Sarah Miller</option>
-                </select>
-                <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                <input type="text" [(ngModel)]="responsiblePerson" placeholder="Enter responsible person" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               </div>
               <p class="mt-1 text-xs text-slate-400">Person responsible for this cabinet.</p>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1.5">Notes (Optional)</label>
-              <input type="text" placeholder="Enter any additional notes" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <input type="text" [(ngModel)]="notes" placeholder="Enter any additional notes" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               <p class="mt-1 text-xs text-slate-400">Any other relevant notes about this cabinet.</p>
             </div>
             <div class="flex flex-col gap-4 sm:justify-center">
               <div class="flex items-center gap-3">
                 <label class="relative inline-block w-11 h-6 shrink-0">
-                  <input type="checkbox" checked class="peer opacity-0 w-0 h-0">
+                  <input type="checkbox" [(ngModel)]="cctvMonitored" class="peer opacity-0 w-0 h-0">
                   <span class="absolute inset-0 cursor-pointer rounded-full bg-slate-300 transition-colors peer-checked:bg-blue-600"></span>
                   <span class="absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span>
                 </label>
@@ -172,9 +173,9 @@
               </div>
               <div class="flex items-center gap-3">
                 <label class="relative inline-block w-11 h-6 shrink-0">
-                  <input type="checkbox" checked class="peer opacity-0 w-0 h-0">
+                  <input type="checkbox" [(ngModel)]="alarmSystem" class="peer opacity-0 w-0 h-0">
                   <span class="absolute inset-0 cursor-pointer rounded-full bg-slate-300 transition-colors peer-checked:bg-blue-600"></span>
-                  <span class="absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span>
+                  <span class="absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow transition-colors peer-checked:translate-x-5"></span>
                 </label>
                 <div>
                   <p class="text-sm font-semibold text-slate-700">Alarm System</p>
@@ -186,8 +187,8 @@
 
           <!-- Buttons -->
           <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-8">
-            <button class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
-            <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+            <button (click)="onCancel()" type="button" class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+            <button (click)="onSaveCabinet()" type="button" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               Save Cabinet
             </button>
@@ -196,17 +197,16 @@
       </div>
 
       <!-- RIGHT / SIDEBAR -->
-      <div class="flex flex-col gap-5">
-
+      <div class="space-y-4 lg:space-y-6">
         <!-- About Cabinets -->
-        <div class="rounded-xl border border-blue-100 bg-blue-50/60 p-5 sm:p-6">
-          <div class="flex items-center gap-2 mb-3">
+        <div class="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
+          <div class="flex items-center gap-2">
             <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">i</span>
-            <h2 class="text-sm font-semibold text-slate-800">About Cabinets</h2>
+            <h2 class="text-sm font-bold text-slate-900">About Cabinets</h2>
           </div>
-          <p class="text-sm text-slate-500 leading-relaxed mb-4">Cabinets are used to organize and securely store keys within a storage location. Each cabinet contains multiple hooks/slots for key storage.</p>
-          <p class="text-sm font-semibold text-slate-700 mb-2">Examples:</p>
-          <ul class="space-y-1.5 text-sm text-slate-500">
+          <p class="mt-3 text-sm text-slate-500">Cabinets are used to organize and securely store keys within a storage location. Each cabinet contains multiple hooks/slots for key storage.</p>
+          <p class="mt-3 text-sm font-semibold text-slate-700">Examples:</p>
+          <ul class="mt-2 space-y-1.5 text-sm text-slate-500">
             <li class="flex gap-2"><span class="text-slate-400">•</span>Standard Key Cabinet</li>
             <li class="flex gap-2"><span class="text-slate-400">•</span>Fire Rated Cabinet</li>
             <li class="flex gap-2"><span class="text-slate-400">•</span>High Security Cabinet</li>
@@ -215,13 +215,13 @@
         </div>
 
         <!-- What's Next -->
-        <div class="rounded-xl border border-emerald-200 bg-emerald-50/60 p-5 sm:p-6">
-          <div class="flex items-center gap-2 mb-3">
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+          <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
-            <h2 class="text-sm font-semibold text-slate-800">What's Next?</h2>
+            <h2 class="text-sm font-bold text-slate-800">What's Next?</h2>
           </div>
-          <p class="text-sm text-slate-500 mb-3">After adding a cabinet, you can:</p>
-          <ol class="space-y-2.5 text-sm text-slate-600">
+          <p class="mt-3 text-sm text-slate-500">After adding a cabinet, you can:</p>
+          <ol class="mt-3 space-y-2.5 text-sm text-slate-600">
             <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">1</span>Generate hooks/slots</li>
             <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">2</span>Assign keys to hooks/slots</li>
             <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">3</span>Manage access logs and audit trail</li>
@@ -229,20 +229,20 @@
         </div>
 
         <!-- Important Notes -->
-        <div class="rounded-xl border border-amber-200 bg-amber-50/60 p-5 sm:p-6">
-          <div class="flex items-center gap-2 mb-3">
+        <div class="rounded-2xl border border-amber-200 bg-amber-50/60 p-5">
+          <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zM12 15.75h.007"/></svg>
-            <h2 class="text-sm font-semibold text-slate-800">Important Notes</h2>
+            <h2 class="text-sm font-bold text-slate-800">Important Notes</h2>
           </div>
-          <ul class="space-y-2 text-sm text-slate-600">
+          <ul class="mt-3 space-y-2 text-sm text-slate-600">
             <li class="flex gap-2"><span class="text-slate-400">•</span>Cabinet code is auto-generated and must be unique within the location.</li>
             <li class="flex gap-2"><span class="text-slate-400">•</span>You can generate hooks/slots after creating the cabinet.</li>
             <li class="flex gap-2"><span class="text-slate-400">•</span>Ensure the cabinet is properly secured and access is restricted.</li>
           </ul>
         </div>
-
       </div>
     </div>
 
   </div>
 </div>
+</ng-template>

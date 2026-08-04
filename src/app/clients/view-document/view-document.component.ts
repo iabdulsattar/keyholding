@@ -100,7 +100,11 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   get previewUrl(): string {
-    return this.document?.downloadUrl || this.document?.publicUrl || this.document?.url || '';
+    return this.document?.publicUrl || this.document?.downloadUrl || this.document?.url || '';
+  }
+
+  get hasPublicUrl(): boolean {
+    return !!this.document?.publicUrl;
   }
 
   goBack(): void {
@@ -131,10 +135,14 @@ export class ViewDocumentComponent implements OnInit {
 
   openInNewTab(): void {
     if (!this.previewUrl) return;
+    if (this.hasPublicUrl) {
+      window.open(this.previewUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     this.clientService.downloadDocument(this.clientId, this.docId).subscribe({
       next: (blob: Blob) => {
         const url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        window.open(url, '_blank', 'noopener,noreferrer');
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       },
       error: () => alert('Failed to open document in new tab.')

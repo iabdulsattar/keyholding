@@ -91,6 +91,7 @@ export interface KeyVaultKey {
   keyTypeId?: string;
   keyCategoryId?: string;
   brand?: string;
+  makeBrand?: string;
   model?: string;
   colour?: string;
   tagLabel?: string;
@@ -163,9 +164,69 @@ export interface EmergencyContact {
 export interface StorageLocation {
   id?: string;
   code?: string;
+  locationCode?: string;
   name: string;
-  sortOrder?: number;
+  siteBuilding?: string;
+  site?: string;
+  building?: string;
+  buildingName?: string;
+  locationType?: string;
+  address?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  postcode?: string;
+  postalCode?: string;
+  zipCode?: string;
+  country?: string;
+  responsiblePerson?: string;
+  responsiblePersonName?: string;
+  contactPerson?: string;
+  contactNumber?: string;
+  phone?: string;
+  accessInstructions?: string;
+  description?: string;
+  status?: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE';
   active?: boolean;
+  sortOrder?: number;
+  fireRating?: string;
+  totalCabinets?: number;
+  totalHooks?: number;
+  keysInStorage?: number;
+  availableHooks?: number;
+  outOfOrderHooks?: number;
+  [key: string]: any;
+}
+
+export interface Cabinet {
+  id?: string;
+  code?: string;
+  cabinetCode?: string;
+  storageLocationId: string;
+  name: string;
+  cabinetType?: string;
+  description?: string;
+  numberOfHooks?: number;
+  securityLevel?: 'LOW' | 'MEDIUM' | 'HIGH' | 'TOP_SECRET';
+  fireRating?: string;
+  installedOn?: string;
+  installedBy?: string;
+  responsiblePerson?: string;
+  notes?: string;
+  cctvMonitored?: boolean;
+  alarmSystem?: boolean;
+  status?: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE';
+  [key: string]: any;
+}
+
+export interface KeyHook {
+  id?: string;
+  cabinetId?: string;
+  hookNo?: number;
+  label?: string;
+  status?: 'AVAILABLE_FOR_KEY' | 'KEY_HOOKED' | 'KEY_IN_USE' | 'HOOK_DAMAGED';
+  notes?: string;
+  assignedKeyId?: string | null;
   [key: string]: any;
 }
 
@@ -585,21 +646,24 @@ export class KeyVaultService {
   }
 
   // Keys
-  listKeys(orgId: string, params?: { clientId?: string; siteId?: string; status?: string; page?: number; size?: number }): Observable<any> {
+  listKeys(orgId: string, params?: { clientId?: string; siteId?: string; q?: string; status?: string; keyTypeId?: string; page?: number; size?: number }): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = new URLSearchParams();
     if (params?.clientId) q.set('clientId', params.clientId);
     if (params?.siteId) q.set('siteId', params.siteId);
+    if (params?.q) q.set('q', params.q);
     if (params?.status) q.set('status', params.status);
+    if (params?.keyTypeId) q.set('keyTypeId', params.keyTypeId);
     q.set('page', String(params?.page ?? 0));
     q.set('size', String(params?.size ?? 50));
     const query = q.toString();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys${query ? `?${query}` : ''}`, headers);
   }
 
-  listAllKeys(orgId: string, params?: { q?: string; status?: string; page?: number; size?: number }): Observable<any> {
+  listAllKeys(orgId: string, params?: { clientId?: string; q?: string; status?: string; page?: number; size?: number }): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = new URLSearchParams();
+    if (params?.clientId) q.set('clientId', params.clientId);
     if (params?.q) q.set('q', params.q);
     if (params?.status) q.set('status', params.status);
     q.set('page', String(params?.page ?? 0));
@@ -789,7 +853,7 @@ export class KeyVaultService {
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/key-categories/${keyCategoryId}`, headers);
   }
 
-  listStorageLocations(orgId: string, includeInactive = false): Observable<any> {
+   listCatalogStorageLocations(orgId: string, includeInactive = false): Observable<any[]> {
     const headers = this.getAuthHeaders();
     const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
     const cacheKey = this.getCatalogCacheKey('storageLocations', orgId, includeInactive);
@@ -804,33 +868,70 @@ export class KeyVaultService {
         return items;
       })
     );
-  }
+   }
 
-  createStorageLocation(orgId: string, storageLocation: StorageLocation): Observable<any> {
+   listStorageLocations(orgId: string, params?: { q?: string; status?: string; locationType?: string; page?: number; size?: number }): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.q) q.set('q', params.q);
+    if (params?.status) q.set('status', params.status);
+    if (params?.locationType) q.set('locationType', params.locationType);
+    q.set('page', String(params?.page ?? 0));
+    q.set('size', String(params?.size ?? 10));
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations${query ? `?${query}` : ''}`, headers).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        return data.content ?? data.items ?? data.data ?? data ?? [];
+      })
+    );
+   }
+
+   getStorageLocationStats(orgId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/stats`, headers);
+   }
+
+   createStorageLocation(orgId: string, storageLocation: StorageLocation): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
     });
-    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations`, storageLocation, headers);
-  }
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations`, storageLocation, headers);
+   }
 
-  updateStorageLocation(orgId: string, storageLocationId: string, storageLocation: Partial<StorageLocation>): Observable<any> {
+   getStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/${storageLocationId}`, headers);
+   }
+
+   updateStorageLocation(orgId: string, storageLocationId: string, storageLocation: Partial<StorageLocation>): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
     });
-    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, storageLocation, headers);
-  }
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/${storageLocationId}`, storageLocation, headers);
+   }
 
-  deleteStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+   setStorageLocationMaintenance(orgId: string, storageLocationId: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, headers);
-  }
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/${storageLocationId}/maintenance`, {}, headers);
+   }
 
-  getStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+   deactivateStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/catalog/storage-locations/${storageLocationId}`, headers);
-  }
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/${storageLocationId}/deactivate`, {}, headers);
+   }
+
+   reactivateStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/${storageLocationId}/reactivate`, {}, headers);
+   }
+
+   deleteStorageLocation(orgId: string, storageLocationId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations/${storageLocationId}`, headers);
+   }
 
   getOrgSiteStats(orgId: string): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -922,6 +1023,143 @@ export class KeyVaultService {
     q.set('page', String(params?.page ?? 0));
     q.set('size', String(params?.size ?? 50));
     const query = q.toString();
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/audit/${targetType}/${targetId}${query ? `?${query}` : ''}`, headers);
-  }
+     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/audit/${targetType}/${targetId}${query ? `?${query}` : ''}`, headers);
+   }
+
+   // Cabinets
+    listCabinets(orgId: string, params?: { storageLocationId?: string; q?: string; status?: string; cabinetType?: string; page?: number; size?: number }): Observable<any[]> {
+     const headers = this.getAuthHeaders();
+     const q = new URLSearchParams();
+     if (params?.storageLocationId) q.set('storageLocationId', params.storageLocationId);
+     if (params?.q) q.set('q', params.q);
+     if (params?.status) q.set('status', params.status);
+     if (params?.cabinetType) q.set('cabinetType', params.cabinetType);
+     q.set('page', String(params?.page ?? 0));
+     q.set('size', String(params?.size ?? 10));
+     const query = q.toString();
+     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets${query ? `?${query}` : ''}`, headers).pipe(
+       map((res: any) => {
+         const data = res?.data ?? res ?? {};
+         return data.content ?? data.items ?? data.data ?? data ?? [];
+       })
+     );
+    }
+
+   createCabinet(orgId: string, cabinet: Cabinet): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets`, cabinet, headers);
+   }
+
+   getCabinet(orgId: string, cabinetId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}`, headers);
+   }
+
+   updateCabinet(orgId: string, cabinetId: string, cabinet: Partial<Cabinet>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}`, cabinet, headers);
+   }
+
+   deactivateCabinet(orgId: string, cabinetId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/deactivate`, {}, headers);
+   }
+
+   reactivateCabinet(orgId: string, cabinetId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/reactivate`, {}, headers);
+   }
+
+   deleteCabinet(orgId: string, cabinetId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}`, headers);
+   }
+
+   // Hooks
+   listHooks(orgId: string, cabinetId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any[]> {
+     const headers = this.getAuthHeaders();
+     const q = new URLSearchParams();
+     if (params?.q) q.set('q', params.q);
+     if (params?.status) q.set('status', params.status);
+     if (params?.assigned) q.set('assigned', params.assigned);
+     q.set('page', String(params?.page ?? 0));
+     q.set('size', String(params?.size ?? 20));
+     const query = q.toString();
+     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks${query ? `?${query}` : ''}`, headers).pipe(
+       map((res: any) => {
+         const data = res?.data ?? res ?? {};
+         return data.content ?? data.items ?? data.data ?? data ?? [];
+       })
+     );
+   }
+
+   getHookStats(orgId: string, cabinetId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/stats`, headers);
+   }
+
+   getHook(orgId: string, cabinetId: string, hookId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}`, headers);
+   }
+
+   addHook(orgId: string, cabinetId: string, data: { hookNo?: number; label?: string; status?: string; notes?: string }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks`, data, headers);
+   }
+
+   autoGenerateHooks(orgId: string, cabinetId: string, count?: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    const body = count !== undefined ? { count } : {};
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/auto-generate`, body, headers);
+   }
+
+   updateHook(orgId: string, cabinetId: string, hookId: string, data: Partial<KeyHook>): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.put<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}`, data, headers);
+   }
+
+   deleteHook(orgId: string, cabinetId: string, hookId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}`, headers);
+   }
+
+   assignKeyToHook(orgId: string, cabinetId: string, hookId: string, data: { keyId: string; note?: string }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/assign-key`, data, headers);
+   }
+
+   removeKeyFromHook(orgId: string, cabinetId: string, hookId: string, data: { reason: string; note?: string }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/remove-key`, data, headers);
+   }
+
+   moveKeyToHook(orgId: string, cabinetId: string, hookId: string, data: { targetHookId: string; note?: string }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/move-key`, data, headers);
+   }
 }

@@ -46,7 +46,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
       this.createIcons();
       return;
     }
-    this.keyVault.listStorageLocations(orgId, true).subscribe({
+    this.keyVault.listStorageLocations(orgId, { page: 0, size: 50 }).subscribe({
       next: (locations: any[]) => {
         const normalized = (locations && locations.length ? locations : []).map(loc => this.normalizeLocation(loc));
         const complete = normalized.length > 0 && normalized.every(loc => loc.address && loc.siteName);

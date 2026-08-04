@@ -6,11 +6,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
+import { DeactivateSiteModalComponent } from '../deactivate-site-modal/deactivate-site-modal.component';
+import { ActivateSiteModalComponent } from '../activate-site-modal/activate-site-modal.component';
 
 @Component({
   selector: 'app-view-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent],
   templateUrl: './view-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -21,11 +23,15 @@ import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.ser
 export class ViewSiteComponent implements OnInit {
   activeTab = 'overview';
   siteId = '';
+  orgId = '';
   site: any = null;
   loading = false;
   attachments: KeyAttachment[] = [];
   attachmentsLoading = false;
   attachmentError = '';
+
+  showDeactivateModal = false;
+  showActivateModal = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
 
@@ -99,6 +105,7 @@ export class ViewSiteComponent implements OnInit {
       this.loading = false;
       return;
     }
+    this.orgId = orgId;
     this.clientService.getSiteById(orgId, this.siteId).subscribe((res: any) => {
       const item = res?.data ?? res;
       this.site = item
@@ -143,29 +150,23 @@ export class ViewSiteComponent implements OnInit {
   }
 
   onDeactivateSite(): void {
-    if (!confirm('Are you sure you want to deactivate this site?')) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-    this.clientService.deactivateSite(orgId, this.siteId).subscribe({
-      next: () => {
-        this.toast.success('Site deactivated successfully');
-        this.loadSite();
-      },
-      error: () => this.toast.error('Failed to deactivate site')
-    });
+    this.showDeactivateModal = true;
   }
 
   onReactivateSite(): void {
-    if (!confirm('Are you sure you want to activate this site?')) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-    this.clientService.reactivateSite(orgId, this.siteId).subscribe({
-      next: () => {
-        this.toast.success('Site activated successfully');
-        this.loadSite();
-      },
-      error: () => this.toast.error('Failed to activate site')
-    });
+    this.showActivateModal = true;
+  }
+
+  onSiteDeactivated(): void {
+    this.showDeactivateModal = false;
+    this.toast.success('Site deactivated successfully');
+    this.loadSite();
+  }
+
+  onSiteReactivated(): void {
+    this.showActivateModal = false;
+    this.toast.success('Site activated successfully');
+    this.loadSite();
   }
 
   onDeleteSite(): void {

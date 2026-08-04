@@ -1,3 +1,14 @@
+<div class="bg-[#f6f7f7] min-h-screen" *ngIf="loading; else loaded">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="animate-pulse space-y-4">
+      <div class="h-8 w-48 rounded bg-slate-200"></div>
+      <div class="h-4 w-64 rounded bg-slate-200"></div>
+      <div class="h-96 rounded-2xl bg-slate-200"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loaded>
 <div class="bg-[#f6f7f7] min-h-screen">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
@@ -58,72 +69,72 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Location Name</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">Head Office Vault</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.name || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Access Schedule</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">Restricted Hours<br>Mon - Fri, 09:00 - 17:00</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.accessInstructions || 'Restricted Hours' }}<br>Mon - Fri, 09:00 - 17:00</dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Location Code</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">LOC-0001</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.code || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Access Instructions</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">Access is restricted to authorized personnel only.</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.accessInstructions || '—' }}</dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Site / Building</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">Head Office</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.siteName || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Responsible Person</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">James Walker</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.responsiblePerson || '—' }}</dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Location Type</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">Safe Room</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.locationType || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Contact Number</dt>
               <dd class="font-semibold text-slate-800 text-right sm:text-left flex items-center gap-1.5 justify-end sm:justify-start">
-                <span class="text-base leading-none">🇬🇧</span> +44 020 7946 0958
+                <span class="text-base leading-none">🇬🇧</span> {{ location?.contactNumber || '—' }}
               </dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Address</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">25 Fenchurch Street,<br>London, EC3M 5BN, UK</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.address || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Security Level</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">High</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.locationType || '—' }}</dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">City</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">London</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.city || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4 items-center">
               <dt class="text-slate-500 shrink-0">CCTV Monitored</dt>
-              <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">Yes</span></dd>
+              <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">{{ location?.cctvMonitored ? 'Yes' : 'No' }}</span></dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Postcode / ZIP</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">EC3M 5BN</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.postcode || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4 items-center">
               <dt class="text-slate-500 shrink-0">Alarm System</dt>
-              <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">Yes</span></dd>
+              <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">{{ location?.alarmSystem ? 'Yes' : 'No' }}</span></dd>
             </div>
 
             <div class="flex justify-between sm:justify-start sm:gap-4">
               <dt class="text-slate-500 shrink-0">Country</dt>
-              <dd class="font-semibold text-slate-800 text-right sm:text-left">United Kingdom</dd>
+              <dd class="font-semibold text-slate-800 text-right sm:text-left">{{ location?.country || '—' }}</dd>
             </div>
             <div class="flex justify-between sm:justify-start sm:gap-4 items-center">
               <dt class="text-slate-500 shrink-0">Status</dt>
@@ -161,10 +172,10 @@
           </div>
 
           <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-6">
-            <button class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
-            <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-700 text-sm font-medium text-white hover:bg-emerald-800">
+            <button (click)="onCancel()" class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+            <button (click)="confirmReactivate()" [disabled]="reactivating" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-700 text-sm font-medium text-white hover:bg-emerald-800 disabled:opacity-50">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
-              Reactivate Storage Location
+              {{ reactivating ? 'Reactivating...' : 'Reactivate Storage Location' }}
             </button>
           </div>
         </div>
@@ -222,3 +233,4 @@
 
   </div>
 </div>
+</ng-template>

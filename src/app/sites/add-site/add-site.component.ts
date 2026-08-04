@@ -41,6 +41,8 @@ securityLevel = '';
   alarmSystem = '';
   private alarmSystemToApi: Record<string, string> = { 'None': 'NONE', 'Intruder Alarm': 'INTRUDER_ALARM', 'CCTV': 'CCTV', 'Intruder & CCTV': 'INTRUDER_AND_CCTV' };
   private alarmSystemFromApi: Record<string, string> = { 'NONE': 'None', 'INTRUDER_ALARM': 'Intruder Alarm', 'CCTV': 'CCTV', 'INTRUDER_AND_CCTV': 'Intruder & CCTV' };
+  private securityLevelToApi: Record<string, string> = { 'Low': 'LOW', 'Standard': 'STANDARD', 'High': 'HIGH', 'Very High': 'VERY_HIGH' };
+  private securityLevelFromApi: Record<string, string> = { 'LOW': 'Low', 'STANDARD': 'Standard', 'HIGH': 'High', 'VERY_HIGH': 'Very High' };
   get accessScheduleLabel(): string {
     const labels: Record<string, string> = { '1': '24/7 Access', '2': 'Business Hours', '3': 'Restricted Hours', '4': 'By Appointment Only' };
     return labels[this.accessSchedule] || '-';
@@ -280,7 +282,7 @@ securityLevel = '';
       this.altPhone = item.altPhone || '';
       this.accessInstructions = item.accessInstructions || '';
       this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? '2' : item.accessSchedule === 'BY_APPOINTMENT' ? '4' : item.accessSchedule === '24_7' ? '1' : item.accessSchedule === 'RESTRICTED_HOURS' ? '3' : '4';
-      this.securityLevel = item.securityLevel || '';
+      this.securityLevel = this.securityLevelFromApi[item.securityLevel] || item.securityLevel || '';
       this.alarmSystem = this.alarmSystemFromApi[item.alarmSystem || ''] || '';
       if (item.appointment) {
         this.apptRequired = true;
@@ -404,7 +406,7 @@ this.apptNotes = 'Access will only be granted to scheduled visitors. Please ensu
       altPhone: this.altPhone,
       accessInstructions: this.accessInstructions,
       accessSchedule: accessScheduleMap[this.accessSchedule] || 'BUSINESS_HOURS',
-      securityLevel: this.securityLevel,
+      securityLevel: this.securityLevelToApi[this.securityLevel] || this.securityLevel,
       alarmSystem: this.alarmSystemToApi[this.alarmSystem] || this.alarmSystem,
       status: 'ACTIVE',
     };
