@@ -161,6 +161,11 @@ export const routes: Routes = [
             title: 'Cabinet Detail | KeyVault Pro'
           },
           {
+            path: 'storage/locations/cabinets/view/:id/hooks',
+            loadComponent: () => import('./storage/cabinet-detail/hook-list.component').then(m => m.HookListComponent),
+            title: 'Hook List | KeyVault Pro'
+          },
+          {
             path: 'sites/add-site',
             loadComponent: () => import('./sites/add-site/add-site.component').then(m => m.AddSiteComponent),
             title: 'Add New Site | KeyVault Pro'
