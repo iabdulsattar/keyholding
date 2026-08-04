@@ -1,5 +1,5 @@
 <!-- Breadcrumb -->
-<nav class="flex flex-wrap items-center gap-1.5 text-[13px] text-slate-500 mb-4">
+<nav class="flex flex-wrap items-center gap-1.5 text-[13px] text-blue-500 mb-2">
   <a routerLink="/clients" class="hover:text-blue-600">Client Management</a>
   <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
   <a routerLink="/clients" class="hover:text-blue-600">Clients</a>
@@ -18,10 +18,10 @@
     <p class="text-slate-500 text-[13.5px] mt-1">Upload a new document for {{ clientName }}.</p>
   </div>
   <div class="flex items-center gap-2 shrink-0">
-    <button (click)="goBack()" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 text-[13.5px] font-medium hover:bg-slate-50 transition">
+    <button (click)="goBack()" class="inline-flex items-center gap-2 px-3.5 py-3 rounded-lg border border-slate-200 bg-white text-slate-700 text-[13.5px] font-medium hover:bg-slate-50 transition">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to Documents
     </button>
-    <button class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
+    <button class="inline-flex items-center gap-1 px-3 py-3 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
       <span class="hidden sm:inline text-[13.5px] font-medium">More</span>
     </button>
@@ -29,10 +29,10 @@
 </div>
 
 <!-- Content grid -->
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
 
   <!-- Form card -->
-  <section class="xl:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-7">
+  <section class="xl:col-span-2 bg-white rounded-lg border border-slate-100 p-5 sm:p-7">
     <h2 class="text-[15px] font-semibold text-slate-900 mb-5">Document Information</h2>
 
     <div class="grid sm:grid-cols-2 gap-x-6 gap-y-5">
@@ -40,45 +40,45 @@
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Document Name <span class="text-red-500">*</span></label>
         <input type="text" [(ngModel)]="documentName" placeholder="Enter document name"
           class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-[13.5px] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
-        <p class="text-[12px] text-slate-400 mt-1.5">Give your document a clear and descriptive name.</p>
+        <p class="text-[12px] text-slate-500 font-medium mt-1.5">Give your document a clear and descriptive name.</p>
       </div>
 
       <div>
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Category <span class="text-red-500">*</span></label>
         <app-rich-select [options]="categoryOptions" [(value)]="category" placeholder="Select category" class="w-full"></app-rich-select>
-        <p class="text-[12px] text-slate-400 mt-1.5">Choose the category that best fits this document.</p>
+        <p class="text-[12px] text-slate-500 font-medium mt-1.5">Choose the category that best fits this document.</p>
       </div>
 
       <div>
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Document Type <span class="text-red-500">*</span></label>
         <app-rich-select [options]="documentTypeOptions" [(value)]="documentType" placeholder="Select document type" class="w-full"></app-rich-select>
-        <p class="text-[12px] text-slate-400 mt-1.5">Select the type of file you are uploading.</p>
+        <p class="text-[12px] text-slate-500 font-medium mt-1.5">Select the type of file you are uploading.</p>
       </div>
 
       <div>
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Related To <span class="text-slate-400 font-normal">(Optional)</span></label>
         <app-rich-select [options]="relatedToOptions" [(value)]="relatedTo" placeholder="Select related item" class="w-full"></app-rich-select>
-        <p class="text-[12px] text-slate-400 mt-1.5">Link this document to a site, job or key (optional).</p>
+        <p class="text-[12px] text-slate-500 font-medium mt-1.5">Link this document to a site, job or key (optional).</p>
       </div>
 
       <div class="sm:col-span-2">
         <label class="block text-[13px] font-medium text-slate-700 mb-1.5">Description <span class="text-slate-400 font-normal">(Optional)</span></label>
         <textarea [(ngModel)]="description" rows="3" placeholder="Enter a brief description about this document"
           class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-[13.5px] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 resize-none"></textarea>
-        <p class="text-[12px] text-slate-400 mt-1.5">Provide additional details about this document.</p>
+        <p class="text-[12px] text-slate-500 font-medium mt-1.5">Provide additional details about this document.</p>
       </div>
     </div>
 
     <div class="mt-6 pt-6 border-t border-slate-100">
       <h3 class="text-[14px] font-semibold text-slate-900 mb-3">Upload Document</h3>
-      <label for="fileInput" class="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100/70 transition cursor-pointer px-6 py-10 text-center">
+      <label for="fileInput" class="flex flex-col items-center justify-center gap-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100/70 transition cursor-pointer px-6 py-10 text-center">
         <svg class="w-8 h-8 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13v8"/><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m8 17 4-4 4 4"/></svg>
         <p class="text-[14px] font-medium text-slate-700">Drag and drop your file here</p>
-        <p class="text-[12.5px] text-slate-400">or</p>
-        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 text-[13px] font-medium hover:bg-slate-50">
+        <p class="text-[12.5px] text-slate-500">or</p>
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-500 bg-white text-slate-700 text-[13px] font-medium hover:bg-slate-50">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg> Browse Files
         </span>
-        <p class="text-[12px] text-slate-400 mt-1">You can upload a single file up to 25 MB.</p>
+        <p class="text-[12px] text-slate-500 mt-1">You can upload a single file up to 25 MB.</p>
         <input id="fileInput" type="file" class="hidden" (change)="onFileSelected($event)" />
       </label>
       @if (fileName) {
@@ -107,7 +107,7 @@
   <!-- Right column -->
   <aside class="flex flex-col gap-6">
     <!-- Upload tips -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+    <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
       <div class="flex items-center gap-2.5 mb-4">
         <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
           <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
@@ -117,28 +117,28 @@
       <ul class="space-y-3.5">
         <li class="flex items-start gap-3">
           <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
-          <p class="text-[13px] text-slate-600">Use clear and consistent file names.</p>
+          <p class="text-[13px] text-slate-700">Use clear and consistent file names.</p>
         </li>
         <li class="flex items-start gap-3">
           <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
-          <p class="text-[13px] text-slate-600">Choose the correct category and type for easy search and management.</p>
+          <p class="text-[13px] text-slate-700">Choose the correct category and type for easy search and management.</p>
         </li>
         <li class="flex items-start gap-3">
           <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
-          <p class="text-[13px] text-slate-600">Add a description to help others understand the document.</p>
+          <p class="text-[13px] text-slate-700">Add a description to help others understand the document.</p>
         </li>
         <li class="flex items-start gap-3">
           <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
-          <p class="text-[13px] text-slate-600">You can link the document to a site, job or key for better organization.</p>
+          <p class="text-[13px] text-slate-700">You can link the document to a site, job or key for better organization.</p>
         </li>
       </ul>
     </div>
 
     <!-- Allowed file types -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+    <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
       <div class="flex items-center gap-2.5 mb-4">
-        <div class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
-          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-icon lucide-file"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></svg>
         </div>
         <h3 class="text-[14.5px] font-semibold text-slate-900">Allowed File Types</h3>
       </div>
