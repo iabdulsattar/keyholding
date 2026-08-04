@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClientService, ContactRecord } from '../../core/services/client.service';
+import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
-  selector: 'app-view-contact',
+  selector: 'app-view-emergency-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './view-contact.component.html',
+  imports: [CommonModule, RouterModule],
+  templateUrl: './view-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -22,40 +21,27 @@ import { ToastService } from '../../core/services/toast.service';
     .btn-outline:hover { background-color: #f8fafc; color: #1e293b; }
   `]
 })
-export class ViewContactComponent implements OnInit {
+export class ViewEmergencyContactComponent implements OnInit {
   clientId = '';
-  clientName = 'Metro Security Services';
+  clientName = '';
   contactId = '';
 
   firstName = '';
   lastName = '';
-  jobTitle = '';
-  email = '';
-  phone = '';
+  fullName = '';
   department = '';
+  phone = '';
+  email = '';
+  availability = '';
+  notifyFor = '';
   primaryContact = true;
   status = 'Active';
-  preferredContactMethod = 'Email';
-  address = 'Metro Security Services\n1 Security House, Park Lane\nLondon, W1K 1AB, UK';
-  notes = 'James is the main point of contact for all operational matters and key management operations.';
-
-  addedBy = 'Faisa Ahmed';
-  createdOn = '15 May 2024, 09:15 AM';
-  lastUpdated = '15 May 2024, 11:20 AM';
-  lastUpdatedBy = 'Faisa Ahmed';
-
-  jobsAssigned = 48;
-  keysManaged = 26;
-  sitesAccess = 8;
-  primaryFor = 'Metro Security Services';
+  address = '';
+  notes = '';
 
   loading = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
-
-  get fullName(): string {
-    return `${this.firstName} ${this.lastName}`;
-  }
 
   get isEditMode(): boolean {
     return !!this.contactId;
@@ -65,7 +51,6 @@ export class ViewContactComponent implements OnInit {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
     this.contactId = this.route.snapshot.paramMap.get('contactId') || '';
     this.loadClientName();
-
     if (this.contactId) {
       this.loadContact();
     }
@@ -88,25 +73,26 @@ export class ViewContactComponent implements OnInit {
   private loadContact(): void {
     if (!this.clientId || !this.contactId) return;
     this.loading = true;
-    this.clientService.getContact(this.clientId, this.contactId).subscribe({
-      next: (contact: ContactRecord | undefined) => {
+    this.clientService.getEmergencyContact(this.clientId, this.contactId).subscribe({
+      next: (contact: EmergencyContact | undefined) => {
         if (contact) {
           this.firstName = contact.firstName || '';
           this.lastName = contact.lastName || '';
-          this.jobTitle = contact.jobTitle || '';
-          this.email = contact.email || '';
-          this.phone = contact.phone || '';
+          this.fullName = contact.fullName || '';
           this.department = contact.department || '';
+          this.phone = contact.phone || '';
+          this.email = contact.email || '';
+          this.availability = contact.availability || '';
+          this.notifyFor = contact.notifyFor || '';
           this.primaryContact = contact.primaryContact ?? false;
           this.status = contact.status || 'Active';
-          this.preferredContactMethod = contact.preferredMethod || 'Email';
           this.address = contact.address || '';
           this.notes = contact.notes || '';
         }
         this.loading = false;
       },
       error: () => {
-        this.toast.error('Failed to load contact');
+        this.toast.error('Failed to load emergency contact');
         this.loading = false;
       }
     });
@@ -118,21 +104,21 @@ export class ViewContactComponent implements OnInit {
 
   editContact(): void {
     if (!this.clientId || !this.contactId) return;
-    this.router.navigate(['/clients', this.clientId, 'add-contact'], {
+    this.router.navigate(['/clients', this.clientId, 'add-emergency-contact'], {
       queryParams: { contactId: this.contactId }
     });
   }
 
   deleteContact(): void {
     if (!this.clientId || !this.contactId) return;
-    if (!confirm('Are you sure you want to delete this contact? This action cannot be undone.')) return;
-    this.clientService.deleteContact(this.clientId, this.contactId).subscribe({
+    if (!confirm('Are you sure you want to delete this emergency contact? This action cannot be undone.')) return;
+    this.clientService.deleteEmergencyContact(this.clientId, this.contactId).subscribe({
       next: () => {
-        this.toast.success('Contact deleted successfully');
+        this.toast.success('Emergency contact deleted successfully');
         this.router.navigate(['/clients', this.clientId]);
       },
       error: () => {
-        this.toast.error('Failed to delete contact');
+        this.toast.error('Failed to delete emergency contact');
       }
     });
   }

@@ -286,19 +286,17 @@ showDeactivateClientModal = false;
      this.emergencyContactsPage = 1;
    }
 
-   viewEmergencyContact(contactId: string): void {
-     if (!this.clientId) return;
-     this.router.navigate(['/clients', this.clientId, 'view-emergency-contact', contactId], {
-       queryParams: { clientName: this.client?.name || '' }
-     });
-   }
+viewEmergencyContact(contactId: string): void {
+      if (!this.clientId) return;
+      this.router.navigate(['/clients', this.clientId, 'view-emergency-contact', contactId]);
+    }
 
-   editEmergencyContact(contactId: string): void {
-     if (!this.clientId) return;
-     this.router.navigate(['/clients', this.clientId, 'add-emergency-contact'], {
-       queryParams: { contactId: contactId, clientName: this.client?.name || '' }
-     });
-   }
+    editEmergencyContact(contactId: string): void {
+      if (!this.clientId) return;
+      this.router.navigate(['/clients', this.clientId, 'add-emergency-contact'], {
+        queryParams: { contactId: contactId }
+      });
+    }
 
    deleteEmergencyContact(contactId: string): void {
      if (!this.clientId) return;
@@ -315,12 +313,10 @@ showDeactivateClientModal = false;
      });
    }
 
-   addEmergencyContact(): void {
-     if (!this.clientId) return;
-     this.router.navigate(['/clients', this.clientId, 'add-emergency-contact'], {
-       queryParams: { clientName: this.client?.name || '' }
-     });
-   }
+    addEmergencyContact(): void {
+      if (!this.clientId) return;
+      this.router.navigate(['/clients', this.clientId, 'add-emergency-contact']);
+    }
 
    toggleEmergencyContactStatus(contactId: string, currentStatus: string): void {
      if (!this.clientId) return;
@@ -573,16 +569,12 @@ showDeactivateClientModal = false;
 
   viewDocument(docId: string = ''): void {
     if (!this.clientId) return;
-    this.router.navigate(['/clients', this.clientId, 'view-document', docId], {
-      queryParams: { clientName: this.client?.name || '' }
-    });
+    this.router.navigate(['/clients', this.clientId, 'view-document', docId]);
   }
 
   editDocument(docId: string): void {
     if (!this.clientId) return;
-    this.router.navigate(['/clients', this.clientId, 'add-document', docId], {
-      queryParams: { clientName: this.client?.name || '' }
-    });
+    this.router.navigate(['/clients', this.clientId, 'add-document', docId]);
   }
 
   deleteDocument(docId: string): void {
@@ -1158,12 +1150,10 @@ showDeactivateClientModal = false;
     });
   }
 
-   uploadDocument(): void {
-     if (!this.clientId) return;
-     this.router.navigate(['/clients', this.clientId, 'add-document'], {
-       queryParams: { clientName: this.client?.name || '' }
-     });
-   }
+uploadDocument(): void {
+      if (!this.clientId) return;
+      this.router.navigate(['/clients', this.clientId, 'add-document']);
+    }
 
    onRowCheckboxChange(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
@@ -1189,15 +1179,13 @@ showDeactivateClientModal = false;
 
   viewContact(contactId: string): void {
     if (!this.clientId) return;
-    this.router.navigate(['/clients', this.clientId, 'view-contact', contactId], {
-      queryParams: { clientName: this.client?.name || '' }
-    });
+    this.router.navigate(['/clients', this.clientId, 'view-contact', contactId]);
   }
 
   editContact(contactId: string): void {
     if (!this.clientId) return;
     this.router.navigate(['/clients', this.clientId, 'add-contact'], {
-      queryParams: { contactId: contactId, clientName: this.client?.name || '' }
+      queryParams: { contactId: contactId }
     });
   }
 
@@ -1218,9 +1206,7 @@ showDeactivateClientModal = false;
 
   addContact(): void {
     if (!this.clientId) return;
-    this.router.navigate(['/clients', this.clientId, 'add-contact'], {
-      queryParams: { clientName: this.client?.name || '' }
-    });
+    this.router.navigate(['/clients', this.clientId, 'add-contact']);
   }
 
   getActivityIcon(entity: string): { bg: string; color: string; path: string } {

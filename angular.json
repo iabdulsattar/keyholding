@@ -37,11 +37,12 @@
 "styles": [
                 "src/styles.css"
               ],
-              "scripts": [
-                "node_modules/jquery/dist/jquery.min.js"
-              ]
-            },
-            "configurations": {
+            "scripts": [
+                 "node_modules/jquery/dist/jquery.min.js",
+                 "node_modules/lucide/dist/umd/lucide.min.js"
+               ]
+             },
+             "configurations": {
             "production": {
               "fileReplacements": [
                 {

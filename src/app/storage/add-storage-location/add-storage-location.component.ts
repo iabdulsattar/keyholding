@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-add-storage-location',
@@ -6,5 +6,11 @@
   imports: [],
   templateUrl: './add-storage-location.component.html',
 })
-export class AddStorageLocationComponent {
+export class AddStorageLocationComponent implements AfterViewInit {
+  ngAfterViewInit(): void {
+    const icons = (window as any).lucide;
+    if (icons && icons.createIcons) {
+      icons.createIcons();
+    }
+  }
 }

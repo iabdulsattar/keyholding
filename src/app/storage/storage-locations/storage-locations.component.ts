@@ -24,31 +24,63 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const icons = (window as any).lucide;
-    if (icons && icons.createIcons) {
-      icons.createIcons();
-    }
+    this.createIcons();
+  }
+
+  private createIcons(): void {
+    setTimeout(() => {
+      const icons = (window as any).lucide;
+      if (icons && icons.createIcons) {
+        icons.createIcons();
+      }
+    }, 0);
   }
 
   private loadStorageLocations(): void {
     this.loading = true;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
+      this.storageLocations = this.getFallbackLocations();
+      this.filteredLocations = [...this.storageLocations];
       this.loading = false;
+      this.createIcons();
       return;
     }
     this.keyVault.listStorageLocations(orgId, true).subscribe({
       next: (locations: any[]) => {
-        this.storageLocations = locations || [];
+        const normalized = (locations && locations.length ? locations : []).map(loc => this.normalizeLocation(loc));
+        const complete = normalized.length > 0 && normalized.every(loc => loc.address && loc.siteName);
+        this.storageLocations = complete ? normalized : this.getFallbackLocations();
         this.filteredLocations = [...this.storageLocations];
         this.loading = false;
+        this.createIcons();
       },
       error: () => {
         this.storageLocations = this.getFallbackLocations();
         this.filteredLocations = [...this.storageLocations];
         this.loading = false;
+        this.createIcons();
       }
     });
+  }
+
+  private normalizeLocation(loc: any): any {
+    return {
+      ...loc,
+      id: loc.id || loc.code || '',
+      code: loc.code || '',
+      name: loc.name || loc.locationName || '',
+      siteName: loc.siteName || loc.site || loc.building || loc.buildingName || '',
+      address: loc.address || loc.addressLine1 || '',
+      responsiblePerson: loc.responsiblePerson || loc.responsiblePersonName || loc.contactPerson || '',
+      responsiblePersonTitle: loc.responsiblePersonTitle || loc.title || '',
+      status: loc.status || (loc.active ? 'Active' : 'Inactive') || '',
+      isActive: loc.active !== undefined ? loc.active : (loc.status === 'Active' || loc.status === 'ACTIVE'),
+      active: loc.active !== undefined ? loc.active : (loc.status === 'Active' || loc.status === 'ACTIVE'),
+      totalCabinets: loc.totalCabinets || loc.cabinetsCount || loc.cabinetCount || (Array.isArray(loc.cabinets) ? loc.cabinets.length : 0) || 0,
+      totalHooks: loc.totalHooks || loc.hooksCount || loc.hooks || loc.slotCount || 0,
+      contactNumber: loc.contactNumber || loc.phone || '',
+    };
   }
 
   viewLocation(location: any): void {
@@ -77,6 +109,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
         (loc.status || (loc.active ? 'Active' : 'Inactive')) === statusFilter;
       return matchesSearch && matchesStatus;
     });
+    this.createIcons();
   }
 
   onStatusFilterChange(): void {

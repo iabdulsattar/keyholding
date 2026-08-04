@@ -30,9 +30,7 @@ export class ViewDocumentComponent implements OnInit {
   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
     this.docId = this.route.snapshot.paramMap.get('docId') || '';
-    this.route.queryParams.subscribe(params => {
-      this.clientName = params['clientName'] || this.clientName;
-    });
+    this.loadClientName();
     if (this.clientId && this.docId) {
       this.clientService.getDocument(this.clientId, this.docId).subscribe({
         next: (res: any) => {
@@ -50,6 +48,20 @@ export class ViewDocumentComponent implements OnInit {
         }
       });
     }
+  }
+
+  private loadClientName(): void {
+    if (!this.clientId) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.clientService.getClientById(orgId, this.clientId).subscribe({
+      next: (client) => {
+        if (client?.name) {
+          this.clientName = client.name;
+        }
+      },
+      error: () => {}
+    });
   }
 
   get documentName(): string {

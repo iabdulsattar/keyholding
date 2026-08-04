@@ -57,8 +57,20 @@ export class AddDocumentComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
-    this.route.queryParams.subscribe(params => {
-      this.clientName = params['clientName'] || this.clientName;
+    this.loadClientName();
+  }
+
+  private loadClientName(): void {
+    if (!this.clientId) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.clientService.getClientById(orgId, this.clientId).subscribe({
+      next: (client) => {
+        if (client?.name) {
+          this.clientName = client.name;
+        }
+      },
+      error: () => {}
     });
   }
 

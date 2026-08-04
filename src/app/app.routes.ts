@@ -76,6 +76,11 @@ export const routes: Routes = [
             title: 'Add Contact | KeyVault Pro'
           },
           {
+            path: 'clients/:id/add-emergency-contact',
+            loadComponent: () => import('./clients/add-emergency-contact/add-emergency-contact.component').then(m => m.AddEmergencyContactComponent),
+            title: 'Add Emergency Contact | KeyVault Pro'
+          },
+          {
             path: 'clients/:id/view-document/:docId',
             loadComponent: () => import('./clients/view-document/view-document.component').then(m => m.ViewDocumentComponent),
             title: 'View Document | KeyVault Pro'
@@ -84,6 +89,11 @@ export const routes: Routes = [
             path: 'clients/:id/view-contact/:contactId',
             loadComponent: () => import('./clients/view-contact/view-contact.component').then(m => m.ViewContactComponent),
             title: 'View Contact | KeyVault Pro'
+          },
+          {
+            path: 'clients/:id/view-emergency-contact/:contactId',
+            loadComponent: () => import('./clients/view-emergency-contact/view-emergency-contact.component').then(m => m.ViewEmergencyContactComponent),
+            title: 'View Emergency Contact | KeyVault Pro'
           },
           {
             path: 'keys/add-key',
@@ -119,6 +129,36 @@ export const routes: Routes = [
             path: 'storage/locations/view/:id',
             loadComponent: () => import('./storage/storage-location-detail/storage-location-detail.component').then(m => m.StorageLocationDetailComponent),
             title: 'Storage Location Detail | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/edit/:id',
+            loadComponent: () => import('./storage/edit-storage-location/edit-storage-location.component').then(m => m.EditStorageLocationComponent),
+            title: 'Edit Storage Location | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/deactivate/:id',
+            loadComponent: () => import('./storage/deactivate-storage-location/deactivate-storage-location.component').then(m => m.DeactivateStorageLocationComponent),
+            title: 'Deactivate Storage Location | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/reactivate/:id',
+            loadComponent: () => import('./storage/reactivate-storage-location/reactivate-storage-location.component').then(m => m.ReactivateStorageLocationComponent),
+            title: 'Reactivate Storage Location | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/cabinets',
+            loadComponent: () => import('./storage/cabinet-list/cabinet-list.component').then(m => m.CabinetListComponent),
+            title: 'Cabinets | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/cabinets/add',
+            loadComponent: () => import('./storage/add-cabinet/add-cabinet.component').then(m => m.AddCabinetComponent),
+            title: 'Add Cabinet | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/cabinets/view/:id',
+            loadComponent: () => import('./storage/cabinet-detail/cabinet-detail.component').then(m => m.CabinetDetailComponent),
+            title: 'Cabinet Detail | KeyVault Pro'
           },
           {
             path: 'sites/add-site',

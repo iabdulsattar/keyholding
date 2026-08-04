@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClientService, ContactRecord } from '../../core/services/client.service';
+import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
-  selector: 'app-add-contact',
+  selector: 'app-add-emergency-contact',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './add-contact.component.html',
+  templateUrl: './add-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -28,20 +28,20 @@ import { ToastService } from '../../core/services/toast.service';
     .btn-primary:hover { background-color: #372da3; }
   `]
 })
-export class AddContactComponent implements OnInit {
+export class AddEmergencyContactComponent implements OnInit {
   clientId = '';
   clientName = 'Metro Security Services';
   contactId = '';
 
   firstName = '';
   lastName = '';
-  jobTitle = '';
   email = '';
   phone = '';
   department = '';
+  availability = '';
+  notifyFor = '';
   primaryContact = true;
   status = 'Active';
-  preferredContactMethod = 'Email';
   address = '';
   notes = '';
 
@@ -53,14 +53,22 @@ export class AddContactComponent implements OnInit {
     return !!this.contactId;
   }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
     this.contactId = this.route.snapshot.queryParamMap.get('contactId') || '';
-    this.loadClientName();
+    this.route.queryParams.subscribe(params => {
+      const cid = params['contactId'] || '';
+      if (cid && cid !== this.contactId) {
+        this.contactId = cid;
+        this.loadContact();
+      }
+    });
 
     if (this.contactId) {
       this.loadContact();
     }
+
+    this.loadClientName();
   }
 
   private loadClientName(): void {
@@ -79,24 +87,24 @@ export class AddContactComponent implements OnInit {
 
   private loadContact(): void {
     if (!this.clientId || !this.contactId) return;
-    this.clientService.getContact(this.clientId, this.contactId).subscribe({
-      next: (contact: ContactRecord | undefined) => {
+    this.clientService.getEmergencyContact(this.clientId, this.contactId).subscribe({
+      next: (contact: EmergencyContact | undefined) => {
         if (contact) {
           this.firstName = contact.firstName || '';
           this.lastName = contact.lastName || '';
-          this.jobTitle = contact.jobTitle || '';
           this.email = contact.email || '';
           this.phone = contact.phone || '';
           this.department = contact.department || '';
+          this.availability = contact.availability || '';
+          this.notifyFor = contact.notifyFor || '';
           this.primaryContact = contact.primaryContact ?? false;
           this.status = contact.status || 'Active';
-          this.preferredContactMethod = contact.preferredMethod || 'Email';
           this.address = contact.address || '';
           this.notes = contact.notes || '';
         }
       },
       error: () => {
-        this.toast.error('Failed to load contact');
+        this.toast.error('Failed to load emergency contact');
       }
     });
   }
@@ -121,38 +129,38 @@ export class AddContactComponent implements OnInit {
     }
 
     this.saving = true;
-    const contact: Partial<ContactRecord> = {
+    const contact: Partial<EmergencyContact> = {
       firstName: this.firstName,
       lastName: this.lastName,
-      jobTitle: this.jobTitle,
       email: this.email,
       phone: this.phone,
       department: this.department,
+      availability: this.availability,
+      notifyFor: this.notifyFor,
       primaryContact: this.primaryContact,
       status: this.status as 'Active' | 'Inactive',
-      preferredMethod: this.preferredContactMethod,
       address: this.address,
       notes: this.notes,
     };
 
     const handleSuccess = () => {
       this.saving = false;
-      this.toast.success(this.isEditMode ? 'Contact updated successfully' : 'Contact created successfully');
+      this.toast.success(this.isEditMode ? 'Emergency contact updated successfully' : 'Emergency contact created successfully');
       this.router.navigate(['/clients', this.clientId]);
     };
 
     const handleError = () => {
       this.saving = false;
-      this.toast.error(this.isEditMode ? 'Failed to update contact' : 'Failed to create contact');
+      this.toast.error(this.isEditMode ? 'Failed to update emergency contact' : 'Failed to create emergency contact');
     };
 
     if (this.isEditMode) {
-      this.clientService.updateContact(this.clientId, this.contactId, contact).subscribe({
+      this.clientService.updateEmergencyContact(this.clientId, this.contactId, contact).subscribe({
         next: handleSuccess,
         error: handleError,
       });
     } else {
-      this.clientService.createContact(this.clientId, contact).subscribe({
+      this.clientService.createEmergencyContact(this.clientId, contact).subscribe({
         next: handleSuccess,
         error: handleError,
       });

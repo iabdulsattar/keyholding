@@ -70,10 +70,12 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
           cabinets: item.cabinets || [],
         };
         this.loading = false;
+        this.createIcons();
       },
       error: () => {
         this.location = this.getFallbackLocation();
         this.loading = false;
+        this.createIcons();
       }
     });
   }
@@ -112,10 +114,16 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const icons = (window as any).lucide;
-    if (icons && icons.createIcons) {
-      icons.createIcons();
-    }
+    this.createIcons();
+  }
+
+  private createIcons(): void {
+    setTimeout(() => {
+      const icons = (window as any).lucide;
+      if (icons && icons.createIcons) {
+        icons.createIcons();
+      }
+    }, 0);
   }
 
   onBack(): void {

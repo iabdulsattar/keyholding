@@ -57,6 +57,7 @@ export class AppSidebarComponent implements OnInit {
       name: "Storage Management",
       subItems: [
         { name: "Storage Locations", path: "/storage/locations" },
+        { name: "Cabinets", path: "/storage/locations/cabinets" },
       ],
     },
     {

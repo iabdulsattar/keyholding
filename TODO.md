@@ -1,27 +1,13 @@
-# Task: Make Documents Tab Listing Dynamic
+# Task: Fix 404 for `/clients/:id/add-emergency-contact`
+
+**Problem:** Navigating to `/clients/:id/add-emergency-contact` shows a 404 because no route exists for it.
 
 ## Steps
 
-### Step 1: Update `client-detail.component.ts`
-- [x] Add document-related properties (documents, filteredDocuments, documentStats, pagination, search, category filter)
-- [x] Add `loadDocuments()` method using `clientService.listDocuments()`
-- [x] Add `loadDocumentStats()` method using `clientService.getDocumentStats()`
-- [x] Add computed getters for pagination (documentsPaginated, documentsTotalPages, etc.)
-- [x] Add document filtering methods (onDocumentsSearch, onDocumentsCategoryChange, applyDocumentsFilter)
-- [x] Add document action methods (deleteDocument, downloadDocument)
-- [x] Call loadDocuments() and loadDocumentStats() in ngOnInit()
-
-### Step 2: Update `client-detail.component.html`
-- [x] Replace hardcoded document stat pills with dynamic data from documentStats
-- [x] Replace hardcoded document table rows with @for loop over filteredDocuments
-- [x] Add search input binding to documentsSearch
-- [x] Add category filter dropdown
-- [x] Wire up action buttons (view, download, delete) with proper handlers
-- [x] Add proper pagination with page numbers
-
-### Step 3: Update `view-document.component.ts`
-- [x] Inject ClientService
-- [x] Fetch document details from API using clientService.getDocument()
-- [x] Add loading state
-- [x] Map API response to component properties
+- [x] 1. Analyze routes (`app.routes.ts`) and navigation logic (`client-detail.component.ts`)
+- [x] 2. Confirm `ClientService` has emergency-contact CRUD methods ready
+- [x] 3. Create `AddEmergencyContactComponent` (TS)
+- [x] 4. Create `AddEmergencyContactComponent` template (HTML)
+- [x] 5. Register route `clients/:id/add-emergency-contact` in `app.routes.ts`
+- [x] 6. Verify build / compile
 
