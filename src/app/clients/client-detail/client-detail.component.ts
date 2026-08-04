@@ -30,8 +30,8 @@ import { ActivateClientModalComponent } from '../activate-client-modal/activate-
     .tab { padding:.85rem .25rem; border-bottom:2px solid transparent; color:#94a3b8; white-space:nowrap; }
     .tab:hover { color:#475569; }
     .tab-active { color:#4338ca; border-color:#4338ca; font-weight:600; }
-    .stat-card { background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.1rem; display:flex; align-items:center; gap:.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-    .stat-icon { width:2.75rem; height:2.75rem; border-radius:.75rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .stat-card { background:#fff; border:1px solid #f9f3f4; border-radius:0.5rem; padding:1rem 1.1rem; display:flex; align-items:center; gap:.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .stat-icon { width:2.75rem; height:2.75rem; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .th { padding: .85rem 1.25rem; text-align:left; font-weight:600; }
     .td { padding: .85rem 1.25rem; vertical-align:middle; }
     .page-btn { width:2rem; height:2rem; border-radius:.5rem; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; font-weight:600; color:#334155; }
