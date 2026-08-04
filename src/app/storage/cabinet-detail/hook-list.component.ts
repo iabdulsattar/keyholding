@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 
 interface HookRow {
   no: string;
@@ -12,6 +12,11 @@ interface HookRow {
   by: string;
 }
 
+interface Hook {
+  num: number;
+  used: boolean;
+}
+
 @Component({
   selector: 'app-hook-list',
   standalone: true,
@@ -20,11 +25,14 @@ interface HookRow {
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 9999px; }
-    @keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
-    .animate-fade-in { animation: fadeIn .15s ease-out; }
   `],
 })
-export class HookListComponent {
+export class HookListComponent implements OnInit {
+  cabinetId = '';
+  activeTab = 'hooks';
+
+  readonly usedHookSet = new Set([1, 2, 3, 4, 5, 7, 9, 11, 13, 14, 17, 18, 19, 20]);
+
   readonly statusStyles: Record<string, string> = {
     'Key Hooked': 'bg-blue-100 text-blue-700',
     'Available for Key': 'bg-emerald-100 text-emerald-700',
@@ -45,33 +53,32 @@ export class HookListComponent {
     { no: '10', status: 'Hook Damaged', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 08:45 AM', by: 'Maintenance' },
   ];
 
-  isDeactivateModalOpen = false;
-  isReactivateModalOpen = false;
-  isMoreMenuOpen = false;
+  readonly hooks: Hook[] = Array.from({ length: 20 }, (_, i) => ({
+    num: i + 1,
+    used: this.usedHookSet.has(i + 1),
+  }));
 
-  openDeactivateModal(): void {
-    this.isDeactivateModalOpen = true;
-    this.isMoreMenuOpen = false;
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.cabinetId = this.route.snapshot.paramMap.get('id') || '';
   }
 
-  closeDeactivateModal(): void {
-    this.isDeactivateModalOpen = false;
+  switchTab(tab: string): void {
+    this.activeTab = tab;
   }
 
-  openReactivateModal(): void {
-    this.isReactivateModalOpen = true;
-    this.isMoreMenuOpen = false;
+  getHookBorder(hook: Hook): string {
+    if (hook.used) return 'border-t-blue-500';
+    return 'border-t-emerald-500';
   }
 
-  closeReactivateModal(): void {
-    this.isReactivateModalOpen = false;
+  getHookBadge(hook: Hook): string {
+    if (hook.used) return 'bg-blue-100 text-blue-700';
+    return 'bg-emerald-100 text-emerald-700';
   }
 
-  toggleMoreMenu(): void {
-    this.isMoreMenuOpen = !this.isMoreMenuOpen;
-  }
-
-  closeMoreMenu(): void {
-    this.isMoreMenuOpen = false;
+  isHookDamaged(hook: Hook): boolean {
+    return hook.num === 10;
   }
 }

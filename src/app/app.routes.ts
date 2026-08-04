@@ -166,11 +166,6 @@ export const routes: Routes = [
             title: 'Hook List | KeyVault Pro'
           },
           {
-            path: 'storage/locations/cabinets/view/:id/hook-grid',
-            loadComponent: () => import('./storage/cabinet-detail/hook-grid.component').then(m => m.HookGridComponent),
-            title: 'Hook Grid | KeyVault Pro'
-          },
-          {
             path: 'storage/locations/cabinets/view/:id/assign-key',
             loadComponent: () => import('./storage/cabinet-detail/assign-key-to-hook.component').then(m => m.AssignKeyToHookComponent),
             title: 'Assign Key to Hook | KeyVault Pro'
