@@ -24,15 +24,25 @@
         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Hook List</h1>
         <p class="text-slate-500 mt-1 text-sm sm:text-base">View and manage all hooks in this cabinet in a list format.</p>
       </div>
-      <div class="flex items-center gap-3 shrink-0">
+      <div class="flex items-center gap-3 shrink-0 relative">
         <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
           Export List
         </button>
-        <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
+        <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm" (click)="toggleMoreMenu()">
           More
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
         </button>
+        <div *ngIf="isMoreMenuOpen" class="absolute right-0 mt-2 w-56 bg-white rounded-xl border border-slate-200 shadow-lg py-1.5 z-40" (click)="closeMoreMenu()">
+          <button class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2" (click)="openDeactivateModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z"/></svg>
+            Deactivate Cabinet
+          </button>
+          <button class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2" (click)="openReactivateModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+            Reactivate Cabinet
+          </button>
+        </div>
       </div>
     </div>
 
@@ -108,9 +118,9 @@
         <!-- Tabs -->
         <div class="border-b border-slate-200 px-4 sm:px-6 overflow-x-auto scrollbar-thin">
           <div class="flex gap-6 whitespace-nowrap text-sm font-medium">
-            <button class="py-4 text-slate-400 hover:text-slate-600">Overview</button>
-            <button class="py-4 text-slate-400 hover:text-slate-600">Hook Grid</button>
-            <button class="py-4 text-indigo-600 border-b-2 border-indigo-600">Hook List</button>
+            <a [routerLink]="['/storage/locations/cabinets/view/' + cabinetId]" class="py-4 text-slate-400 hover:text-slate-600">Overview</a>
+            <a [routerLink]="['/storage/locations/cabinets/view/' + cabinetId + '/hook-grid']" class="py-4 text-slate-400 hover:text-slate-600">Hook Grid</a>
+            <a [routerLink]="['/storage/locations/cabinets/view/' + cabinetId + '/hooks']" class="py-4 text-indigo-600 border-b-2 border-indigo-600">Hook List</a>
             <button class="py-4 text-slate-400 hover:text-slate-600">Key Assignments</button>
             <button class="py-4 text-slate-400 hover:text-slate-600">Activity Log</button>
             <button class="py-4 text-slate-400 hover:text-slate-600">Documents</button>
@@ -286,6 +296,114 @@
         </div>
 
       </div>
+    </div>
+  </div>
+
+  <!-- Deactivate Cabinet Modal -->
+  <div *ngIf="isDeactivateModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" (click)="closeDeactivateModal()">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 relative animate-fade-in" (click)="$event.stopPropagation()">
+
+      <button (click)="closeDeactivateModal()" aria-label="Close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="flex flex-col items-center text-center mb-4">
+        <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z"/></svg>
+        </div>
+        <h2 class="text-lg font-bold text-slate-900">Deactivate Cabinet?</h2>
+        <p class="text-sm text-slate-500 mt-2">You are about to deactivate "Cabinet A - Main Floor" (CAB-0001).</p>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex gap-2.5 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
+        <div class="text-sm">
+          <p class="font-semibold text-amber-800">This cabinet has 14 keys on 14 hooks.</p>
+          <p class="text-amber-700 mt-0.5">All keys and hooks in this cabinet must be removed before it can be deactivated.</p>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-sm font-semibold text-slate-900 mb-2">What happens when deactivated:</p>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            The cabinet will be marked as inactive.
+          </li>
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            It will no longer be available for key storage.
+          </li>
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            It will not appear in active cabinet lists or hook assignments.
+          </li>
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            You can reactivate this cabinet at any time.
+          </li>
+        </ul>
+      </div>
+
+      <div class="flex gap-3">
+        <button (click)="closeDeactivateModal()" class="flex-1 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+        <button class="flex-1 py-2.5 rounded-lg bg-red-500 text-sm font-medium text-white hover:bg-red-600">Continue</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Reactivate Cabinet Modal -->
+  <div *ngIf="isReactivateModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" (click)="closeReactivateModal()">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 relative animate-fade-in" (click)="$event.stopPropagation()">
+
+      <button (click)="closeReactivateModal()" aria-label="Close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="flex flex-col items-center text-center mb-4">
+        <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h2 class="text-lg font-bold text-slate-900">Reactivate Cabinet?</h2>
+        <p class="text-sm text-slate-500 mt-2">You are about to reactivate "Cabinet A - Main Floor" (CAB-0001).</p>
+      </div>
+
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex gap-2.5 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        <div class="text-sm">
+          <p class="font-semibold text-emerald-800">This cabinet is currently inactive.</p>
+          <p class="text-emerald-700 mt-0.5">All keys and hooks will be available for use once the cabinet is reactivated.</p>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-sm font-semibold text-slate-900 mb-2">What happens when reactivated:</p>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            The cabinet will be marked as active.
+          </li>
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            It will be available for key storage and assignments.
+          </li>
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            It will appear in active cabinet lists and hook assignments.
+          </li>
+          <li class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            You can deactivate this cabinet at any time.
+          </li>
+        </ul>
+      </div>
+
+      <div class="flex gap-3">
+        <button (click)="closeReactivateModal()" class="flex-1 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+        <button class="flex-1 py-2.5 rounded-lg bg-emerald-600 text-sm font-medium text-white hover:bg-emerald-700">Reactivate Cabinet</button>
+      </div>
+
     </div>
   </div>
 </div>

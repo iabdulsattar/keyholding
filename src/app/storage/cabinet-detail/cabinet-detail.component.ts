@@ -20,6 +20,8 @@ interface Hook {
     }
     .donut::after { content: ""; position: absolute; inset: 12px; background: #fff; border-radius: 50%; }
     .donut-label { position: relative; z-index: 1; text-align: center; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+    .animate-fade-in { animation: fadeIn .15s ease-out; }
   `],
 })
 export class CabinetDetailComponent {
@@ -29,4 +31,34 @@ export class CabinetDetailComponent {
     num: i + 1,
     used: this.usedHookSet.has(i + 1),
   }));
+
+  isDeactivateModalOpen = false;
+  isReactivateModalOpen = false;
+  isMoreMenuOpen = false;
+
+  openDeactivateModal(): void {
+    this.isDeactivateModalOpen = true;
+    this.isMoreMenuOpen = false;
+  }
+
+  closeDeactivateModal(): void {
+    this.isDeactivateModalOpen = false;
+  }
+
+  openReactivateModal(): void {
+    this.isReactivateModalOpen = true;
+    this.isMoreMenuOpen = false;
+  }
+
+  closeReactivateModal(): void {
+    this.isReactivateModalOpen = false;
+  }
+
+  toggleMoreMenu(): void {
+    this.isMoreMenuOpen = !this.isMoreMenuOpen;
+  }
+
+  closeMoreMenu(): void {
+    this.isMoreMenuOpen = false;
+  }
 }
