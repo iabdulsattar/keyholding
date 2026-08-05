@@ -5,12 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-add-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -31,14 +30,6 @@ export class AddDocumentComponent implements OnInit {
   fileName = '';
   selectedFile: File | null = null;
   uploading = false;
-
-  breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Client Management', link: '/clients' },
-    { label: 'Clients', link: '/clients' },
-    { label: this.clientName, link: ['/clients', this.clientId] },
-    { label: 'Documents' },
-    { label: 'Add Document' }
-  ];
 
   categoryOptions: RichSelectOption[] = [
     { value: '', label: 'Select category' },

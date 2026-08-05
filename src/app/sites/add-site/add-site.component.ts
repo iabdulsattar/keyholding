@@ -9,12 +9,11 @@ import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-add-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -85,20 +84,8 @@ securityLevel = '';
   editMode = false;
   editingSiteId: string | null = null;
   clientId = '';
-  clientName = '';
   clients: any[] = [];
   showClientDropdown = false;
-
-  get breadcrumbs(): BreadcrumbItem[] {
-    const crumbs: BreadcrumbItem[] = [{ label: 'Sites', link: '/sites/all-sites' }];
-    if (this.clientId && this.clientName) {
-      crumbs.unshift({ label: this.clientName, link: ['/clients', this.clientId] });
-      crumbs.unshift({ label: 'Clients', link: '/clients' });
-      crumbs.unshift({ label: 'Client Management', link: '/clients' });
-    }
-    crumbs.push({ label: this.editMode ? 'Edit Site' : 'Add New Site' });
-    return crumbs;
-  }
   siteTypeOptions: RichSelectOption[] = [
     { value: '', label: 'Select site type' },
     { value: 'Office', label: 'Office' },
@@ -335,59 +322,49 @@ if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
     this.clientService.listClients({ page: 0, size: 200 }).subscribe((result: any) => {
       this.clients = result.items || [];
       this.clientOptions = this.clients.map((c: any) => ({ value: c.id, label: c.name }));
-      if (this.clientId && !this.clientName) {
-        const client = this.clients.find((c: any) => c.id === this.clientId);
-        if (client) {
-          this.clientName = client.name || '';
-        }
-      }
     });
   }
 
   resetSiteForm(): void {
-    const targetClientId = this.clientId;
-    if (this.showClientDropdown) {
-      this.clientId = '';
-    }
-    this.siteName = '';
-    this.siteType = '';
-    this.address1 = '';
-    this.address2 = '';
-    this.city = '';
-    this.postcode = '';
-    this.country = 'United Kingdom';
-    this.contactName = '';
-    this.designation = '';
-    this.contactPhone = '';
-    this.contactEmail = '';
-    this.altContactName = '';
-    this.altPhone = '';
-    this.accessInstructions = '';
-    this.accessSchedule = '4';
-    this.securityLevel = '';
-    this.alarmSystem = '';
-    this.fileName = '';
-    this.selectedFiles = [];
-    this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
-    this.attachmentPreviews = [];
-    this.apptRequired = true;
-    this.minNotice = '4 Hours';
-    this.approvalContact = 'James Walker';
-    this.updateContactInfo();
-    this.apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
-    this.restrictedHours = {
-       Monday: [{ from: '08:00', to: '18:00', closed: false }],
-       Tuesday: [{ from: '08:00', to: '18:00', closed: false }],
-       Wednesday: [{ from: '08:00', to: '18:00', closed: false }],
-       Thursday: [{ from: '08:00', to: '18:00', closed: false }],
-       Friday: [{ from: '08:00', to: '16:00', closed: false }],
-       Saturday: [{ from: 'Closed', to: 'Closed', closed: true }],
-       Sunday: [{ from: 'Closed', to: 'Closed', closed: true }],
-     };
-    if (targetClientId) {
-      this.router.navigate(['/clients', targetClientId]);
-    } else {
-      this.router.navigate(['/sites/all-sites']);
+    if (confirm('Are you sure you want to discard your current inputs?')) {
+      if (this.showClientDropdown) {
+        this.clientId = '';
+      }
+      this.siteName = '';
+      this.siteType = '';
+      this.address1 = '';
+      this.address2 = '';
+      this.city = '';
+      this.postcode = '';
+      this.country = 'United Kingdom';
+      this.contactName = '';
+      this.designation = '';
+      this.contactPhone = '';
+      this.contactEmail = '';
+      this.altContactName = '';
+      this.altPhone = '';
+      this.accessInstructions = '';
+      this.accessSchedule = '4';
+      this.securityLevel = '';
+      this.alarmSystem = '';
+      this.fileName = '';
+      this.selectedFiles = [];
+      this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
+      this.attachmentPreviews = [];
+      this.apptRequired = true;
+      this.minNotice = '4 Hours';
+      this.approvalContact = 'James Walker';
+      this.updateContactInfo();
+this.apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
+      this.restrictedHours = {
+         Monday: [{ from: '08:00', to: '18:00', closed: false }],
+         Tuesday: [{ from: '08:00', to: '18:00', closed: false }],
+         Wednesday: [{ from: '08:00', to: '18:00', closed: false }],
+         Thursday: [{ from: '08:00', to: '18:00', closed: false }],
+         Friday: [{ from: '08:00', to: '16:00', closed: false }],
+         Saturday: [{ from: 'Closed', to: 'Closed', closed: true }],
+         Sunday: [{ from: 'Closed', to: 'Closed', closed: true }],
+       };
     }
   }
 

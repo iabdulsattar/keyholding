@@ -7,13 +7,11 @@ import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.ser
 import { ToastService } from '../../core/services/toast.service';
 import { DeactivateKeyModalComponent } from '../deactivate-key-modal/deactivate-key-modal.component';
 import { ReactivateKeyModalComponent } from '../reactivate-key-modal/reactivate-key-modal.component';
-import { DeleteKeyModalComponent } from '../delete-key-modal/delete-key-modal.component';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-key',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateKeyModalComponent, ReactivateKeyModalComponent, DeleteKeyModalComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateKeyModalComponent, ReactivateKeyModalComponent],
   templateUrl: './view-key.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -41,18 +39,6 @@ export class ViewKeyComponent implements OnInit {
   clientName = '';
   showDeactivateModal = false;
   showReactivateModal = false;
-  showDeleteModal = false;
-
-  get breadcrumbs(): BreadcrumbItem[] {
-    const crumbs: BreadcrumbItem[] = [{ label: 'Keys', link: '/keys/all-keys' }];
-    if (this.clientName) {
-      crumbs.unshift({ label: this.clientName, link: ['/clients', this.clientId] });
-      crumbs.unshift({ label: 'Clients', link: '/clients' });
-      crumbs.unshift({ label: 'Client Management', link: '/clients' });
-    }
-    crumbs.push({ label: 'View Key' });
-    return crumbs;
-  }
 
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private toast: ToastService) {}
 
@@ -124,26 +110,20 @@ export class ViewKeyComponent implements OnInit {
     if (el) el.classList.toggle('hidden');
   }
 
-  goBack(): void {
-    if (this.clientId) {
-      this.router.navigate(['/clients', this.clientId]);
-    } else {
-      this.router.navigate(['/keys/all-keys']);
-    }
-  }
-
   onEditKey(): void {
     this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId, editId: this.keyId } });
   }
 
   onDeleteKey(): void {
-    this.showDeleteModal = true;
-  }
-
-  onKeyDeleted(): void {
-    this.showDeleteModal = false;
-    this.toast.success('Key deleted successfully.');
-    this.router.navigate(['/keys/all-keys']);
+    if (!this.orgId || !this.keyId) return;
+    if (!confirm('Are you sure you want to delete this key? This action cannot be undone.')) return;
+    this.keyVault.deleteKey(this.orgId, this.keyId).subscribe({
+      next: () => {
+        this.toast.success('Key deleted successfully.');
+        this.router.navigate(['/keys']);
+      },
+      error: () => this.toast.error('Failed to delete key. Please try again.')
+    });
   }
 
   onDeactivateKey(): void {

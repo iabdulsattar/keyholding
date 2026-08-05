@@ -5,12 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-add-emergency-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './add-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -47,16 +46,6 @@ export class AddEmergencyContactComponent implements OnInit {
   notes = '';
 
   saving = false;
-
-  get breadcrumbs(): BreadcrumbItem[] {
-    return [
-      { label: 'Client Management', link: '/clients' },
-      { label: 'Clients', link: '/clients' },
-      { label: this.clientName, link: ['/clients', this.clientId] },
-      { label: 'Emergency Contacts' },
-      { label: this.isEditMode ? 'Edit Emergency Contact' : 'Add Emergency Contact' }
-    ];
-  }
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
 

@@ -1,8 +1,16 @@
  <!-- Breadcrumb + title + actions -->
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pb-5 border-b border-slate-200">
         <div>
+          <nav class="text-xs sm:text-sm text-slate-400 flex items-center gap-1.5 mb-1 flex-wrap">
+            <span class="text-blue-600 hover:underline cursor-pointer">Client Management</span>
+            <span>›</span>
+            <span class="text-blue-600 hover:underline cursor-pointer">Clients</span>
+            <span>›</span>
+            <span class="text-blue-600 hover:underline cursor-pointer">Client Details</span>
+            <span>›</span>
+            <span class="text-slate-600 font-medium">{{ isEditMode ? 'Edit Contact' : 'Add Contact' }}</span>
+          </nav>
           <h1 class="text-xl sm:text-2xl font-bold text-slate-900">{{ isEditMode ? 'Edit Contact' : 'Add New Contact' }}</h1>
-          <app-page-breadcrumb [pageTitle]="isEditMode ? 'Edit Contact' : 'Add New Contact'" [breadcrumbs]="breadcrumbs" />
           <p class="text-sm text-slate-500 mt-1">{{ isEditMode ? 'Update contact information and details.' : 'Add a new contact for ' + clientName + '.' }}</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">

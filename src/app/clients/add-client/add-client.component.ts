@@ -8,7 +8,6 @@ import { ClientService, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-add-client',
@@ -18,7 +17,6 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
     RouterModule,
     FormsModule,
     RichSelectComponent,
-    PageBreadcrumbComponent,
   ],
   templateUrl: './add-client.component.html',
   styles: [`
@@ -55,20 +53,15 @@ export class AddClientComponent implements OnInit {
   industries: RichSelectOption[] = [
     { value: 'Security Services', label: 'Security Services' },
     { value: 'Commercial Property', label: 'Commercial Property' },
+    { value: 'Logistics & Fleet', label: 'Logistics & Fleet' },
+    { value: 'Corporate Offices', label: 'Corporate Offices' },
+    { value: 'Retail Banking', label: 'Retail Banking' },
   ];
 
   loading = false;
   editMode = false;
   editingClientId: string | null = null;
   submitted = false;
-
-  get breadcrumbs(): BreadcrumbItem[] {
-    return [
-      { label: 'Client Management' },
-      { label: 'Clients' },
-      { label: this.editMode ? 'Edit Client' : 'Add New Client' }
-    ];
-  }
 
   constructor(
     private router: Router,

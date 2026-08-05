@@ -3,9 +3,14 @@
     <!-- Title & Actions -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Clients</h2>
-        <app-page-breadcrumb pageTitle="Clients" [breadcrumbs]="breadcrumbs" />
-        <p class="text-sm text-slate-500 mt-1">View and manage all clients and their details.</p>
+        <h2 class="text-2xl font-bold tracking-tight text-black">Clients</h2>
+        <nav class="flex items-center space-x-1.5 text-xs text-black/60 font-medium mt-1">
+          <span class="text-blue-500 hover:underline cursor-pointer">Client Management</span>
+          <svg class="w-3 h-3 text-black/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <span class="text-black/70">Clients</span>
+        </nav>
+        
+        <p class="text-sm text-black/70 mt-1.5">View and manage all clients and their details.</p>
 
       </div>
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">

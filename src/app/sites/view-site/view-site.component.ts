@@ -8,12 +8,11 @@ import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
 import { DeactivateSiteModalComponent } from '../deactivate-site-modal/deactivate-site-modal.component';
 import { ActivateSiteModalComponent } from '../activate-site-modal/activate-site-modal.component';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent],
   templateUrl: './view-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -25,7 +24,6 @@ export class ViewSiteComponent implements OnInit {
   activeTab = 'overview';
   siteId = '';
   orgId = '';
-  clientId = '';
   site: any = null;
   loading = false;
   attachments: KeyAttachment[] = [];
@@ -34,18 +32,6 @@ export class ViewSiteComponent implements OnInit {
 
   showDeactivateModal = false;
   showActivateModal = false;
-
-  get breadcrumbs(): BreadcrumbItem[] {
-    const crumbs: BreadcrumbItem[] = [{ label: 'Sites', link: '/sites/all-sites' }];
-    const clientName = this.site?.clientName;
-    if (clientName) {
-      crumbs.unshift({ label: clientName, link: ['/clients', this.clientId] });
-      crumbs.unshift({ label: 'Clients', link: '/clients' });
-      crumbs.unshift({ label: 'Client Management', link: '/clients' });
-    }
-    crumbs.push({ label: 'View Site' });
-    return crumbs;
-  }
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
 
@@ -122,7 +108,6 @@ export class ViewSiteComponent implements OnInit {
     this.orgId = orgId;
     this.clientService.getSiteById(orgId, this.siteId).subscribe((res: any) => {
       const item = res?.data ?? res;
-      this.clientId = item?.clientId || item?.client?.id || '';
       this.site = item
         ? {
             ...item,
@@ -155,14 +140,6 @@ export class ViewSiteComponent implements OnInit {
     const el = document.getElementById('actionsDropdown');
     if (el) {
       el.classList.toggle('hidden');
-    }
-  }
-
-  goBack(): void {
-    if (this.clientId) {
-      this.router.navigate(['/clients', this.clientId]);
-    } else {
-      this.router.navigate(['/sites/all-sites']);
     }
   }
 

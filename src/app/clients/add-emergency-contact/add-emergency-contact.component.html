@@ -1,8 +1,16 @@
 <!-- Breadcrumb + title + actions -->
 <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
   <div>
+    <nav class="text-xs sm:text-sm text-slate-400 flex items-center gap-1.5 mb-1 flex-wrap">
+      <span class="text-brand-600 hover:underline cursor-pointer">Client Management</span>
+      <span>›</span>
+      <span class="text-brand-600 hover:underline cursor-pointer">Clients</span>
+      <span>›</span>
+      <a [routerLink]="['/clients', clientId]" class="text-brand-600 hover:underline cursor-pointer">Client Details</a>
+      <span>›</span>
+      <span class="text-slate-600 font-medium">{{ isEditMode ? 'Edit Emergency Contact' : 'Add Emergency Contact' }}</span>
+    </nav>
     <h1 class="text-xl sm:text-2xl font-bold text-slate-900">{{ isEditMode ? 'Edit Emergency Contact' : 'Add New Emergency Contact' }}</h1>
-    <app-page-breadcrumb [pageTitle]="isEditMode ? 'Edit Emergency Contact' : 'Add New Emergency Contact'" [breadcrumbs]="breadcrumbs" />
     <p class="text-sm text-slate-400 mt-1">{{ isEditMode ? 'Update emergency contact information and details.' : 'Add a new emergency contact for ' + clientName + '.' }}</p>
   </div>
   <div class="flex flex-wrap items-center gap-2">

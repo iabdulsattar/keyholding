@@ -4,12 +4,11 @@ import { RouterModule } from '@angular/router';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-emergency-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './view-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -41,16 +40,6 @@ export class ViewEmergencyContactComponent implements OnInit {
   notes = '';
 
   loading = false;
-
-  get breadcrumbs(): BreadcrumbItem[] {
-    return [
-      { label: 'Client Management', link: '/clients' },
-      { label: 'Clients', link: '/clients' },
-      { label: this.clientName, link: ['/clients', this.clientId] },
-      { label: 'Emergency Contacts' },
-      { label: 'View Emergency Contact' }
-    ];
-  }
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
 
