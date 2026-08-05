@@ -31,14 +31,18 @@ export class ViewEmergencyContactComponent implements OnInit {
   lastName = '';
   fullName = '';
   department = '';
+  phoneCountryCode = '+44';
   phone = '';
   email = '';
   availability = '';
   notifyFor = '';
-  primaryContact = true;
   status = 'Active';
   address = '';
   notes = '';
+  createdBy = '';
+  createdDate = '';
+  updatedBy = '';
+  updatedDate = '';
 
   loading = false;
 
@@ -91,14 +95,18 @@ export class ViewEmergencyContactComponent implements OnInit {
           this.lastName = contact.lastName || '';
           this.fullName = contact.fullName || '';
           this.department = contact.department || '';
+          this.phoneCountryCode = contact.phoneCountryCode || '+44';
           this.phone = contact.phone || '';
           this.email = contact.email || '';
           this.availability = contact.availability || '';
           this.notifyFor = contact.notifyFor || '';
-          this.primaryContact = contact.primaryContact ?? false;
           this.status = contact.status || 'Active';
           this.address = contact.address || '';
           this.notes = contact.notes || '';
+          this.createdBy = contact.createdBy || 'Faisa Ahmed';
+          this.createdDate = contact.createdDate || '15 May 2024, 09:15 AM';
+          this.updatedBy = contact.updatedBy || 'Faisa Ahmed';
+          this.updatedDate = contact.updatedDate || '15 May 2024, 11:20 AM';
         }
         this.loading = false;
       },

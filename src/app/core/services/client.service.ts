@@ -91,19 +91,21 @@ export interface EmergencyContact {
   firstName: string;
   lastName: string;
   fullName: string;
-  jobTitle?: string;
   department?: string;
   phoneCountryCode?: string;
   phone?: string;
   email?: string;
   availability?: string;
-  preferredMethod?: string;
   status: 'Active' | 'Inactive' | 'ACTIVE' | 'INACTIVE';
   primaryContact: boolean;
   notifyFor?: string;
   address?: string;
   notes?: string;
   clientId?: string;
+  createdBy?: string;
+  createdDate?: string;
+  updatedBy?: string;
+  updatedDate?: string;
 }
 
 export interface AuditRecord {
