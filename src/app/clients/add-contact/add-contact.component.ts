@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-add-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './add-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -46,6 +47,16 @@ export class AddContactComponent implements OnInit {
   notes = '';
 
   saving = false;
+
+  get breadcrumbs(): BreadcrumbItem[] {
+    return [
+      { label: 'Client Management', link: '/clients' },
+      { label: 'Clients', link: '/clients' },
+      { label: this.clientName, link: ['/clients', this.clientId] },
+      { label: 'Contacts' },
+      { label: this.isEditMode ? 'Edit Contact' : 'Add Contact' }
+    ];
+  }
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
 

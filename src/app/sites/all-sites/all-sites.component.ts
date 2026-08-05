@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord } from '../../core/services/client.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-all-sites',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './all-sites.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -46,6 +47,11 @@ export class AllSitesComponent implements OnInit {
 
   clientOptions: Client[] = [];
   siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution', 'Construction', 'Storage'];
+
+  breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Sites' },
+    { label: 'All Sites' }
+  ];
 
   constructor(private clientService: ClientService) {}
 

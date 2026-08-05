@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { SafeUrlPipe } from '../../shared/pipe/safe-url.pipe';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe],
+  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, PageBreadcrumbComponent],
   templateUrl: './view-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -24,6 +25,16 @@ export class ViewDocumentComponent implements OnInit {
 
   document: any = null;
   previewType: 'pdf' | 'image' | 'other' = 'other';
+
+  get breadcrumbs(): BreadcrumbItem[] {
+    return [
+      { label: 'Client Management', link: '/clients' },
+      { label: 'Clients', link: '/clients' },
+      { label: this.clientName, link: ['/clients', this.clientId] },
+      { label: 'Documents' },
+      { label: 'View Document' }
+    ];
+  }
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 

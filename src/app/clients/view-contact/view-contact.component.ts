@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './view-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -18,7 +19,7 @@ import { ToastService } from '../../core/services/toast.service';
     .badge { display: inline-flex; align-items: center; padding: 0.125rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
     .info-label { font-size: 0.75rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem; }
     .info-value { font-size: 0.875rem; color: #1e293b; display: flex; align-items: center; gap: 0.5rem; }
-    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 500; color: #475569; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.15s, color 0.15s; text-decoration: none; }
+    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; color: #475569; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.15s, color 0.15s; text-decoration: none; }
     .btn-outline:hover { background-color: #f8fafc; color: #1e293b; }
   `]
 })
@@ -41,6 +42,16 @@ export class ViewContactComponent implements OnInit {
 
   addedBy = 'Faisa Ahmed';
   createdOn = '15 May 2024, 09:15 AM';
+
+  get breadcrumbs(): BreadcrumbItem[] {
+    return [
+      { label: 'Client Management', link: '/clients' },
+      { label: 'Clients', link: '/clients' },
+      { label: this.clientName, link: ['/clients', this.clientId] },
+      { label: 'Contacts' },
+      { label: 'View Contact' }
+    ];
+  }
   lastUpdated = '15 May 2024, 11:20 AM';
   lastUpdatedBy = 'Faisa Ahmed';
 
