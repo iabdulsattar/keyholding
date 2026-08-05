@@ -91,11 +91,14 @@ export interface EmergencyContact {
   firstName: string;
   lastName: string;
   fullName: string;
+  jobTitle?: string;
   department?: string;
+  phoneCountryCode?: string;
   phone?: string;
   email?: string;
   availability?: string;
-  status: 'Active' | 'Inactive';
+  preferredMethod?: string;
+  status: 'Active' | 'Inactive' | 'ACTIVE' | 'INACTIVE';
   primaryContact: boolean;
   notifyFor?: string;
   address?: string;

@@ -36,10 +36,13 @@ export class AddEmergencyContactComponent implements OnInit {
 
   firstName = '';
   lastName = '';
+  jobTitle = '';
   email = '';
+  phoneCountryCode = '+44';
   phone = '';
   department = '';
   availability = '';
+  preferredMethod = '';
   notifyFor = '';
   primaryContact = true;
   status = 'Active';
@@ -103,10 +106,13 @@ export class AddEmergencyContactComponent implements OnInit {
         if (contact) {
           this.firstName = contact.firstName || '';
           this.lastName = contact.lastName || '';
+          this.jobTitle = contact.jobTitle || '';
           this.email = contact.email || '';
+          this.phoneCountryCode = contact.phoneCountryCode || '+44';
           this.phone = contact.phone || '';
           this.department = contact.department || '';
           this.availability = contact.availability || '';
+          this.preferredMethod = contact.preferredMethod || '';
           this.notifyFor = contact.notifyFor || '';
           this.primaryContact = contact.primaryContact ?? false;
           this.status = contact.status || 'Active';
@@ -143,15 +149,18 @@ export class AddEmergencyContactComponent implements OnInit {
     const contact: Partial<EmergencyContact> = {
       firstName: this.firstName,
       lastName: this.lastName,
+      jobTitle: this.jobTitle || undefined,
       email: this.email,
+      phoneCountryCode: this.phoneCountryCode || undefined,
       phone: this.phone,
-      department: this.department,
-      availability: this.availability,
-      notifyFor: this.notifyFor,
+      department: this.department || undefined,
+      availability: this.availability || undefined,
+      preferredMethod: this.preferredMethod || undefined,
       primaryContact: this.primaryContact,
-      status: this.status as 'Active' | 'Inactive',
-      address: this.address,
-      notes: this.notes,
+      status: this.status as 'Active' | 'Inactive' | 'ACTIVE' | 'INACTIVE',
+      address: this.address || undefined,
+      notes: this.notes || undefined,
+      notifyFor: this.notifyFor || undefined,
     };
 
     const handleSuccess = () => {
