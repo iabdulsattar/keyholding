@@ -26,11 +26,11 @@ import { ActivateClientModalComponent } from '../activate-client-modal/activate-
     .btn-outline:hover { background:#f8fafc; }
     .btn-primary { display:inline-flex; align-items:center; gap:.4rem; padding:.55rem 1rem; border-radius:.6rem; background:#4338ca; color:#fff; font-size:.8rem; font-weight:600; white-space:nowrap; transition: background .15s; }
     .btn-primary:hover { background:#372da3; }
-    .badge { display:inline-flex; align-items:center; padding:.15rem .55rem; border-radius:9999px; font-size:.7rem; font-weight:600; }
+    .badge { display:inline-flex; align-items:center; padding:.15rem .55rem; border-radius: 0.5rem; font-size:.7rem; font-weight:600; }
     .tab { padding:.85rem .25rem; border-bottom:2px solid transparent; color:#94a3b8; white-space:nowrap; }
     .tab:hover { color:#475569; }
     .tab-active { color:#4338ca; border-color:#4338ca; font-weight:600; }
-    .stat-card { background:#fff; border:1px solid #f9f3f4; border-radius:0.5rem; padding:1rem 1.1rem; display:flex; align-items:center; gap:.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .stat-card { background:#fff; border:1px solid #f9f3f4; border-radius:0.5rem; padding:1rem 1.1rem; display:flex; align-items:center; gap:.85rem; }
     .stat-icon { width:2.75rem; height:2.75rem; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .th { padding: .85rem 1.25rem; text-align:left; font-weight:600; }
     .td { padding: .85rem 1.25rem; vertical-align:middle; }
