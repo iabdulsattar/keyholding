@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './view-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -41,6 +42,16 @@ export class ViewContactComponent implements OnInit {
 
   addedBy = 'Faisa Ahmed';
   createdOn = '15 May 2024, 09:15 AM';
+
+  get breadcrumbs(): BreadcrumbItem[] {
+    return [
+      { label: 'Client Management', link: '/clients' },
+      { label: 'Clients', link: '/clients' },
+      { label: this.clientName, link: ['/clients', this.clientId] },
+      { label: 'Contacts' },
+      { label: 'View Contact' }
+    ];
+  }
   lastUpdated = '15 May 2024, 11:20 AM';
   lastUpdatedBy = 'Faisa Ahmed';
 

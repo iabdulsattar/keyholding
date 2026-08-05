@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService, Client, PaginatedResult } from '../core/services/client.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './clients.component.html',
   styles: `.custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -23,6 +24,11 @@ export class ClientsComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
   totalPages = 0;
+
+  breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Client Management' },
+    { label: 'Clients' }
+  ];
 
   constructor(private router: Router, private clientService: ClientService) {}
 

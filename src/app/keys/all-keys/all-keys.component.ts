@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '../../core/services/client.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-all-keys',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './all-keys.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -42,6 +43,11 @@ export class AllKeysComponent implements OnInit {
   loading = false;
   searchQuery = '';
   clientFilter = '';
+
+  breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Keys' },
+    { label: 'All Keys' }
+  ];
   siteFilter = '';
   keyTypeFilter = '';
   statusFilter: string = '';

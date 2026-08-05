@@ -9,11 +9,12 @@ import { ClientService, SiteRecord, Client } from '../../core/services/client.se
 import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-add-key',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, PageBreadcrumbComponent],
   templateUrl: './add-key.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -55,6 +56,7 @@ export class AddKeyComponent implements OnInit {
   loadingCatalog = false;
   editing = false;
   pageTitle = 'Add New Key';
+  clientName = '';
 
   submitted = false;
 
@@ -77,6 +79,17 @@ export class AddKeyComponent implements OnInit {
   private catalogCache: { types: KeyType[]; categories: KeyCategory[] } | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
+
+  get breadcrumbs(): BreadcrumbItem[] {
+    const crumbs: BreadcrumbItem[] = [{ label: 'Keys', link: '/keys/all-keys' }];
+    if (this.clientId && this.assignClient) {
+      crumbs.unshift({ label: this.assignClient, link: ['/clients', this.clientId] });
+      crumbs.unshift({ label: 'Clients', link: '/clients' });
+      crumbs.unshift({ label: 'Client Management', link: '/clients' });
+    }
+    crumbs.push({ label: this.pageTitle });
+    return crumbs;
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -294,32 +307,35 @@ export class AddKeyComponent implements OnInit {
   }
 
   resetForm(): void {
-    if (confirm('Are you sure you want to clear your changes?')) {
-      this.keyName = '';
-      this.keyId = '';
-      this.keyType = '';
-      this.keyCategory = '';
-      this.keyNotes = '';
-      if (this.clientId || this.editing) {
-        this.assignClient = this.clients.length > 0 ? this.clients[0].name : '';
-        this.assignClientId = this.clients.length > 0 ? this.clients[0].id : '';
-      } else {
-        this.assignClient = '';
-        this.assignClientId = '';
-      }
-      this.assignSite = '';
-      this.keyBrand = '';
-      this.keyModel = '';
-      this.keyColour = '';
-      this.keyTag = '';
-      this.keyStatus = 'active';
-      this.fileName = '';
-      this.selectedFiles = [];
-      this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
-      this.attachmentPreviews = [];
-      this.existingAttachments = [];
-      this.attachmentsLoading = false;
-      this.attachmentError = '';
+    this.keyName = '';
+    this.keyId = '';
+    this.keyType = '';
+    this.keyCategory = '';
+    this.keyNotes = '';
+    if (this.clientId || this.editing) {
+      this.assignClient = this.clients.length > 0 ? this.clients[0].name : '';
+      this.assignClientId = this.clients.length > 0 ? this.clients[0].id : '';
+    } else {
+      this.assignClient = '';
+      this.assignClientId = '';
+    }
+    this.assignSite = '';
+    this.keyBrand = '';
+    this.keyModel = '';
+    this.keyColour = '';
+    this.keyTag = '';
+    this.keyStatus = 'active';
+    this.fileName = '';
+    this.selectedFiles = [];
+    this.attachmentPreviews.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
+    this.attachmentPreviews = [];
+    this.existingAttachments = [];
+    this.attachmentsLoading = false;
+    this.attachmentError = '';
+    if (this.clientId) {
+      this.router.navigate(['/clients', this.clientId]);
+    } else {
+      this.router.navigate(['/keys/all-keys']);
     }
   }
 
