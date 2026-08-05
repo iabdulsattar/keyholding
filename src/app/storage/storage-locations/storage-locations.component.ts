@@ -16,11 +16,13 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   loading = false;
   searchTerm = '';
   activeFilter = 'All Statuses';
+  private sitesMap: Record<string, string> = {};
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadStorageLocations();
+    this.loadSites();
   }
 
   ngAfterViewInit(): void {
@@ -34,6 +36,34 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
         icons.createIcons();
       }
     }, 0);
+  }
+
+  private loadSites(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId) return;
+    this.keyVault.listAllSites(orgId, { page: 0, size: 100 }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.sitesMap = items.reduce((acc: Record<string, string>, s: any) => {
+          acc[s.id] = s.name || s.siteName || s.buildingName || '';
+          return acc;
+        }, {});
+        this.resolveSiteNames();
+      },
+      error: () => {
+        this.sitesMap = {};
+      }
+    });
+  }
+
+  private resolveSiteNames(): void {
+    if (!this.storageLocations.length) return;
+    this.storageLocations = this.storageLocations.map(loc => ({
+      ...loc,
+      siteName: loc.siteId ? (this.sitesMap[loc.siteId] || loc.siteName || '') : (loc.siteName || '')
+    }));
+    this.applyFilter();
   }
 
   private loadStorageLocations(): void {
@@ -64,12 +94,15 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   private normalizeLocation(loc: any): any {
+    const siteId = loc.siteId || '';
+    const siteName = siteId ? (this.sitesMap[siteId] || '') : (loc.siteBuilding || '');
     return {
       id: loc.id || loc.locationCode || '',
       code: loc.locationCode || '',
       name: loc.name || '',
       locationType: loc.locationType || '',
-      siteName: loc.siteBuilding || '',
+      siteId: siteId,
+      siteName: siteName,
       siteBuilding: loc.siteBuilding || '',
       address: loc.address || '',
       city: loc.city || '',

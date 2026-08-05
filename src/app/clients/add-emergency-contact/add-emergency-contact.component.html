@@ -1,221 +1,235 @@
 <!-- Breadcrumb + title + actions -->
 <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
   <div>
-    <h1 class="text-xl sm:text-2xl font-bold text-slate-900">{{ isEditMode ? 'Edit Emergency Contact' : 'Add New Emergency Contact' }}</h1>
-    <app-page-breadcrumb [pageTitle]="isEditMode ? 'Edit Emergency Contact' : 'Add New Emergency Contact'" [breadcrumbs]="breadcrumbs" />
-    <p class="text-sm text-slate-400 mt-1">{{ isEditMode ? 'Update emergency contact information and details.' : 'Add a new emergency contact for ' + clientName + '.' }}</p>
+    <h1 class="text-2xl font-semibold text-slate-900">{{ isEditMode ? 'Edit Emergency Contact' : 'Add Emergency Contact' }}</h1>
+    <app-page-breadcrumb [pageTitle]="isEditMode ? 'Edit Emergency Contact' : 'Add Emergency Contact'" [breadcrumbs]="breadcrumbs" />
+    <p class="text-sm text-slate-500 mt-1">{{ isEditMode ? 'Update emergency contact information and details.' : 'Add a new emergency contact for ' + clientName + '.' }}</p>
   </div>
-  <div class="flex flex-wrap items-center gap-2">
-    <button (click)="goBack()" class="btn-outline" [disabled]="saving">
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-      Back to Clients
+  <div class="flex items-center gap-2 shrink-0">
+    <button (click)="goBack()" class="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors" [disabled]="saving">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg>
+      Back to Emergency Contacts
     </button>
-    <button class="btn-outline w-10 justify-center px-0">
-      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"/></svg>
+    <button class="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
+      More
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
 </div>
 
 <!-- Content grid -->
-<div class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
 
-  <!-- Form column -->
-  <div class="space-y-6">
+  <!-- Form card -->
+  <form class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-8" (ngSubmit)="saveContact()">
 
     <!-- Contact Information -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
-      <h3 class="text-base font-bold text-slate-900 mb-5">Emergency Contact Information</h3>
+    <section>
+      <h2 class="text-base font-semibold text-slate-900 mb-4">Contact Information</h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div>
-          <label class="field-label">First Name <span class="text-rose-500">*</span></label>
-          <input type="text" placeholder="Enter first name" class="field-input" [(ngModel)]="firstName" [disabled]="saving" />
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">First Name <span class="text-red-500">*</span></label>
+          <input type="text" placeholder="Enter first name" class="field-input" [(ngModel)]="firstName" name="firstName" [disabled]="saving" />
         </div>
         <div>
-          <label class="field-label">Last Name <span class="text-rose-500">*</span></label>
-          <input type="text" placeholder="Enter last name" class="field-input" [(ngModel)]="lastName" [disabled]="saving" />
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Last Name <span class="text-red-500">*</span></label>
+          <input type="text" placeholder="Enter last name" class="field-input" [(ngModel)]="lastName" name="lastName" [disabled]="saving" />
         </div>
         <div>
-          <label class="field-label">Relationship <span class="text-rose-500">*</span></label>
-          <select class="field-input" [(ngModel)]="department" [disabled]="saving">
-            <option value="">Select relationship</option>
-            <option>Spouse / Partner</option>
-            <option>Parent</option>
-            <option>Sibling</option>
-            <option>Child</option>
-            <option>Relative</option>
-            <option>Friend</option>
-            <option>Neighbour</option>
-            <option>Colleague</option>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Department <span class="text-red-500">*</span></label>
+          <select class="field-input" [(ngModel)]="department" name="department" [disabled]="saving">
+            <option value="">Select department</option>
+            <option>Operations</option>
+            <option>Administration</option>
+            <option>Finance</option>
+            <option>Human Resources</option>
+            <option>IT</option>
+            <option>Sales</option>
+            <option>Support</option>
+            <option>Compliance</option>
             <option>Other</option>
           </select>
-          <p class="field-hint">Select the relationship to the client.</p>
-        </div>
-
-        <div>
-          <label class="field-label">Email Address <span class="text-rose-500">*</span></label>
-          <input type="email" placeholder="Enter email address" class="field-input" [(ngModel)]="email" [disabled]="saving" />
-          <p class="field-hint">Enter a valid email address.</p>
-        </div>
-        <div>
-          <label class="field-label">Phone Number <span class="text-rose-500">*</span></label>
-          <div class="flex gap-2">
-            <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
-              🇬🇧 +44
-              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" [disabled]="saving" />
-          </div>
-          <p class="field-hint">Enter a valid phone number.</p>
-        </div>
-        <div>
-          <label class="field-label">Availability</label>
-          <select class="field-input" [(ngModel)]="availability" [disabled]="saving">
-            <option value="">Select availability</option>
-            <option>24/7</option>
-            <option>Daytime</option>
-            <option>Evening</option>
-            <option>Weekends</option>
-            <option>Office Hours</option>
-          </select>
-          <p class="field-hint">When is this contact available?</p>
+          <p class="text-xs text-slate-400 mt-1.5">Select the department this contact belongs to.</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
         <div>
-          <label class="field-label">Notify For</label>
-          <select class="field-input" [(ngModel)]="notifyFor" [disabled]="saving">
-            <option value="">Select notification type</option>
-            <option>All Alerts</option>
-            <option>Emergencies</option>
-            <option>Security Alerts</option>
-            <option>Key Incidents</option>
-            <option>Site Incidents</option>
-          </select>
-          <p class="field-hint">Choose which alerts this contact is notified for.</p>
-        </div>
-        <div>
-          <label class="field-label">Primary Contact <span class="text-rose-500">*</span></label>
-          <div class="flex items-center gap-6 h-10">
-            <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-              <input type="radio" name="primary" [(ngModel)]="primaryContact" [value]="true" [disabled]="saving" class="accent-brand-600 w-4 h-4" /> Yes
-            </label>
-            <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
-              <input type="radio" name="primary" [(ngModel)]="primaryContact" [value]="false" [disabled]="saving" class="accent-brand-600 w-4 h-4" /> No
-            </label>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number <span class="text-red-500">*</span></label>
+          <div class="flex rounded-lg border border-slate-300 focus-within:ring-2 focus-within:ring-brand-600/30 focus-within:border-brand-600 overflow-hidden">
+            <span class="flex items-center gap-1.5 px-3 py-2.5 bg-slate-50 border-r border-slate-300 text-sm text-slate-600 shrink-0">
+              <span>🇬🇧</span> +44
+              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <input type="tel" placeholder="Enter phone number" class="field-input w-full px-3.5 py-2.5 text-sm placeholder:text-slate-400 min-w-0 border-none" [(ngModel)]="phone" name="phone" [disabled]="saving" />
           </div>
-          <p class="field-hint">Select if this is the primary emergency contact.</p>
+          <p class="text-xs text-slate-400 mt-1.5">Enter a valid phone number.</p>
         </div>
         <div>
-          <label class="field-label">Status <span class="text-rose-500">*</span></label>
-          <select class="field-input" [(ngModel)]="status" [disabled]="saving">
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Email Address <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <input type="email" placeholder="Enter email address" class="field-input w-full rounded-lg border border-slate-300 pl-9 pr-3.5 py-2.5 text-sm placeholder:text-slate-400 focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" [(ngModel)]="email" name="email" [disabled]="saving" />
+          </div>
+          <p class="text-xs text-slate-400 mt-1.5">Enter a valid email address.</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Availability <span class="text-red-500">*</span></label>
+          <select class="field-input" [(ngModel)]="availability" name="availability" [disabled]="saving">
+            <option value="">Select availability</option>
+            <option>24/7</option>
+            <option>Business Hours</option>
+            <option>Evenings</option>
+            <option>Weekends</option>
+            <option>On Call</option>
           </select>
-          <p class="field-hint">Set the status of this contact.</p>
+          <p class="text-xs text-slate-400 mt-1.5">When can this contact be reached?</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Status <span class="text-red-500">*</span></label>
+          <select class="field-input" [(ngModel)]="status" name="status" [disabled]="saving">
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>Suspended</option>
+          </select>
+          <p class="text-xs text-slate-400 mt-1.5">Set the status of this contact.</p>
         </div>
       </div>
 
       <div class="mt-5">
-        <label class="field-label">Address <span class="text-slate-400 font-normal">(Optional)</span></label>
-        <textarea rows="3" placeholder="Enter address" class="field-input resize-y" [(ngModel)]="address" [disabled]="saving"></textarea>
-        <p class="field-hint">Enter the contact address.</p>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Address <span class="text-slate-400 font-normal">(Optional)</span></label>
+        <textarea rows="3" placeholder="Enter address" class="field-input resize-none" [(ngModel)]="address" name="address" [disabled]="saving"></textarea>
+        <p class="text-xs text-slate-400 mt-1.5">Enter the contact address.</p>
       </div>
-    </div>
+    </section>
+
+    <div class="border-t border-slate-200"></div>
 
     <!-- Additional Information -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
-      <h3 class="text-base font-bold text-slate-900 mb-5">Additional Information <span class="text-slate-400 font-normal text-sm">(Optional)</span></h3>
-      <label class="field-label">Notes</label>
-      <textarea rows="4" placeholder="Enter any additional notes about this emergency contact" class="field-input resize-y" [(ngModel)]="notes" [disabled]="saving"></textarea>
-      <p class="field-hint">Add any extra information about this contact.</p>
+    <section>
+      <h2 class="text-base font-semibold text-slate-900 mb-4">Additional Information <span class="text-slate-400 font-normal text-sm">(Optional)</span></h2>
 
-      <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-6">
-        <button (click)="cancel()" [disabled]="saving" class="btn-outline justify-center">Cancel</button>
-        <button (click)="saveContact()" [disabled]="saving" class="btn-primary justify-center">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          {{ saving ? 'Saving...' : (isEditMode ? 'Update Emergency Contact' : 'Save Emergency Contact') }}
-        </button>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Notes</label>
+          <textarea rows="3" placeholder="Enter any additional notes about this contact" class="field-input resize-none" [(ngModel)]="notes" name="notes" [disabled]="saving"></textarea>
+          <p class="text-xs text-slate-400 mt-1.5">Add any extra information that may be useful.</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify For</label>
+          <select class="field-input" [(ngModel)]="notifyFor" name="notifyFor" [disabled]="saving">
+            <option value="">Select notification type</option>
+            <option>All Emergencies</option>
+            <option>Key Related</option>
+            <option>Site Related</option>
+            <option>Security Incidents</option>
+            <option>Other</option>
+          </select>
+          <p class="text-xs text-slate-400 mt-1.5">Choose what notifications this contact should receive.</p>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Sidebar column -->
-  <div class="space-y-6">
+    <!-- Actions -->
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
+      <button type="button" (click)="cancel()" [disabled]="saving" class="px-4 py-2.5 rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+        Cancel
+      </button>
+      <button type="submit" [disabled]="saving" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium transition-colors">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        {{ saving ? 'Saving...' : (isEditMode ? 'Update Emergency Contact' : 'Save Emergency Contact') }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Right column -->
+  <div class="space-y-6 lg:sticky lg:top-6 self-start">
 
     <!-- Tips -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
       <div class="flex items-center gap-2 mb-4">
-        <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3a6 6 0 00-4 10.472V15a1 1 0 001 1h6a1 1 0 001-1v-1.528A6 6 0 0012 3z"/></svg>
+        <div class="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 18h6M10 22h4M12 2a6 6 0 00-3.5 10.9c.3.2.5.6.5 1.1v.5h6v-.5c0-.5.2-.9.5-1.1A6 6 0 0012 2z"/></svg>
         </div>
-        <h4 class="font-bold text-slate-900">Tips</h4>
+        <h3 class="font-semibold text-slate-900">Tips</h3>
       </div>
-      <div class="space-y-4">
-        <div class="flex gap-3">
-          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      <ul class="space-y-4">
+        <li class="flex gap-3">
+          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
           <div>
-            <p class="text-sm font-semibold text-slate-800">Provide accurate details</p>
-            <p class="text-xs text-slate-400 mt-0.5">Ensure phone and email are correct so this contact can be reached in an emergency.</p>
+            <p class="text-sm font-medium text-slate-800">Add accurate contact details</p>
+            <p class="text-xs text-slate-500 mt-0.5">Ensure all information is correct for quick communication.</p>
           </div>
-        </div>
-        <div class="flex gap-3">
-          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </li>
+        <li class="flex gap-3">
+          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3h0a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9v0a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
           <div>
-            <p class="text-sm font-semibold text-slate-800">Set as Primary</p>
-            <p class="text-xs text-slate-400 mt-0.5">Primary emergency contacts are contacted first during critical incidents.</p>
+            <p class="text-sm font-medium text-slate-800">Set as Primary Contact</p>
+            <p class="text-xs text-slate-500 mt-0.5">Primary contacts are notified first in emergencies.</p>
           </div>
-        </div>
-        <div class="flex gap-3">
-          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </li>
+        <li class="flex gap-3">
+          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <div>
-            <p class="text-sm font-semibold text-slate-800">Keep Information Updated</p>
-            <p class="text-xs text-slate-400 mt-0.5">Regularly update contact details to maintain accurate emergency records.</p>
+            <p class="text-sm font-medium text-slate-800">Availability Matters</p>
+            <p class="text-xs text-slate-500 mt-0.5">Let us know when this contact is available.</p>
           </div>
-        </div>
-      </div>
+        </li>
+        <li class="flex gap-3">
+          <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h13l3 3v13H4z" stroke-linejoin="round"/><path d="M8 4v6h8V4" stroke-linejoin="round"/></svg>
+          <div>
+            <p class="text-sm font-medium text-slate-800">Keep Information Updated</p>
+            <p class="text-xs text-slate-500 mt-0.5">Regularly update contact details to ensure we can reach the right person.</p>
+          </div>
+        </li>
+      </ul>
     </div>
 
     <!-- Quick Preview -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
       <div class="flex items-center gap-2 mb-4">
-        <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <div class="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
         </div>
-        <h4 class="font-bold text-slate-900">Quick Preview</h4>
+        <h3 class="font-semibold text-slate-900">Quick Preview</h3>
       </div>
-      <dl class="divide-y divide-slate-100 text-sm">
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Name</dt>
-          <dd class="text-slate-400">{{ firstName || '–' }} {{ lastName || '' }}</dd>
+      <dl class="text-sm divide-y divide-slate-100">
+        <div class="flex justify-between gap-3 py-2.5">
+          <dt class="text-slate-500">Name</dt>
+          <dd class="text-slate-800 font-medium text-right truncate">{{ firstName || '–' }} {{ lastName || '' }}</dd>
         </div>
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Relationship</dt>
-          <dd class="text-slate-400">{{ department || '–' }}</dd>
+        <div class="flex justify-between gap-3 py-2.5">
+          <dt class="text-slate-500">Department</dt>
+          <dd class="text-slate-800 font-medium text-right truncate">{{ department || '–' }}</dd>
         </div>
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Email</dt>
-          <dd class="text-slate-400">{{ email || '–' }}</dd>
+        <div class="flex justify-between gap-3 py-2.5">
+          <dt class="text-slate-500">Phone</dt>
+          <dd class="text-slate-800 font-medium text-right truncate">{{ phone || '–' }}</dd>
         </div>
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Phone</dt>
-          <dd class="text-slate-400">{{ phone || '–' }}</dd>
+        <div class="flex justify-between gap-3 py-2.5">
+          <dt class="text-slate-500">Email</dt>
+          <dd class="text-slate-800 font-medium text-right truncate">{{ email || '–' }}</dd>
         </div>
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Availability</dt>
-          <dd class="text-slate-400">{{ availability || '–' }}</dd>
+        <div class="flex justify-between gap-3 py-2.5">
+          <dt class="text-slate-500">Availability</dt>
+          <dd class="text-slate-800 font-medium text-right truncate">{{ availability || '–' }}</dd>
         </div>
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Status</dt>
-          <dd class="text-slate-400">{{ status || '–' }}</dd>
+        <div class="flex justify-between gap-3 py-2.5">
+          <dt class="text-slate-500">Address</dt>
+          <dd class="text-slate-800 font-medium text-right truncate max-w-[65%]">{{ address || '–' }}</dd>
         </div>
-        <div class="flex items-center justify-between py-2.5">
-          <dt class="font-medium text-slate-700">Primary Contact</dt>
-          <dd class="text-slate-400">{{ primaryContact ? 'Yes' : 'No' }}</dd>
+        <div class="flex justify-between gap-3 py-2.5 items-center">
+          <dt class="text-slate-500">Status</dt>
+          <dd class="text-right">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="status === 'Active' ? 'bg-emerald-100 text-emerald-700' : status === 'Inactive' ? 'bg-slate-100 text-slate-600' : 'bg-red-100 text-red-600'">{{ status || 'Active' }}</span>
+          </dd>
         </div>
       </dl>
     </div>
   </div>
-
 </div>
