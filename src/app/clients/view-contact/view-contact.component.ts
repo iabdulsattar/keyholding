@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
+import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
   templateUrl: './view-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -50,6 +51,16 @@ export class ViewContactComponent implements OnInit {
   primaryFor = 'Metro Security Services';
 
   loading = false;
+
+  get breadcrumbs(): BreadcrumbItem[] {
+    return [
+      { label: 'Client Management', link: '/clients' },
+      { label: 'Clients', link: '/clients' },
+      { label: this.clientName, link: ['/clients', this.clientId] },
+      { label: 'Contacts' },
+      { label: 'View Contact' }
+    ];
+  }
 
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService) {}
 
