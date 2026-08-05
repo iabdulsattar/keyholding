@@ -22,7 +22,7 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
     .field-input { width: 100%; padding: 0.625rem 0.75rem; font-size: 0.875rem; line-height: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; color: #1e293b; background-color: #fff; transition: border-color 0.15s, box-shadow 0.15s; }
     .field-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
     .field-input::placeholder { color: #94a3b8; }
-    .field-hint { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; }
+    .field-hint { font-size: 0.75rem; color: #62748e; font-weight: 500; margin-top: 0.25rem; }
     .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; color: #475569; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.15s, color 0.15s; }
     .btn-outline:hover { background-color: #f8fafc; color: #1e293b; }
     .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600; color: #fff; background-color: #4338ca; border: 1px solid transparent; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.15s; }
