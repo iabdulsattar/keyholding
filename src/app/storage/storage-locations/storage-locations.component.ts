@@ -49,8 +49,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     this.keyVault.listStorageLocations(orgId, { page: 0, size: 50 }).subscribe({
       next: (locations: any[]) => {
         const normalized = (locations && locations.length ? locations : []).map(loc => this.normalizeLocation(loc));
-        const complete = normalized.length > 0 && normalized.every(loc => loc.address && loc.siteName);
-        this.storageLocations = complete ? normalized : this.getFallbackLocations();
+        this.storageLocations = normalized.length > 0 ? normalized : this.getFallbackLocations();
         this.filteredLocations = [...this.storageLocations];
         this.loading = false;
         this.createIcons();
@@ -66,20 +65,28 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
 
   private normalizeLocation(loc: any): any {
     return {
-      ...loc,
-      id: loc.id || loc.code || '',
-      code: loc.code || '',
-      name: loc.name || loc.locationName || '',
-      siteName: loc.siteName || loc.site || loc.building || loc.buildingName || '',
-      address: loc.address || loc.addressLine1 || '',
-      responsiblePerson: loc.responsiblePerson || loc.responsiblePersonName || loc.contactPerson || '',
-      responsiblePersonTitle: loc.responsiblePersonTitle || loc.title || '',
+      id: loc.id || loc.locationCode || '',
+      code: loc.locationCode || '',
+      name: loc.name || '',
+      locationType: loc.locationType || '',
+      siteName: loc.siteBuilding || '',
+      siteBuilding: loc.siteBuilding || '',
+      address: loc.address || '',
+      city: loc.city || '',
+      postcode: loc.postcode || '',
+      country: loc.country || '',
+      responsiblePerson: loc.responsiblePerson || '',
+      responsiblePersonTitle: '',
+      contactNumber: loc.contactNumber || '',
+      accessInstructions: loc.accessInstructions || '',
+      description: loc.description || '',
       status: loc.status || (loc.active ? 'Active' : 'Inactive') || '',
       isActive: loc.active !== undefined ? loc.active : (loc.status === 'Active' || loc.status === 'ACTIVE'),
       active: loc.active !== undefined ? loc.active : (loc.status === 'Active' || loc.status === 'ACTIVE'),
-      totalCabinets: loc.totalCabinets || loc.cabinetsCount || loc.cabinetCount || (Array.isArray(loc.cabinets) ? loc.cabinets.length : 0) || 0,
-      totalHooks: loc.totalHooks || loc.hooksCount || loc.hooks || loc.slotCount || 0,
-      contactNumber: loc.contactNumber || loc.phone || '',
+      totalCabinets: loc.totalCabinets ?? 0,
+      totalHooks: loc.totalHooks ?? 0,
+      createdAt: loc.createdAt || loc.created_at || '',
+      updatedAt: loc.updatedAt || loc.updated_at || '',
     };
   }
 

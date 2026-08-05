@@ -64,8 +64,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     this.keyVault.listCabinets(orgId, { page: 0, size: 50 }).subscribe({
       next: (items: any[]) => {
         const normalized = items.map(c => this.normalizeCabinet(c));
-        const complete = normalized.length > 0 && normalized.every(c => c.code && c.name && c.totalHooks > 0);
-        this.cabinets = complete ? normalized : this.getFallbackCabinets();
+        this.cabinets = normalized.length > 0 ? normalized : this.getFallbackCabinets();
         this.loading = false;
         this.createIcons();
       },

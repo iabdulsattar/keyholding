@@ -67,7 +67,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   requiresOtp?: boolean;
   challengeToken?: string;
-  tokens: {
+  tokens?: {
     access_token: string;
     refresh_token: string;
     expires_in: number;
@@ -118,8 +118,13 @@ export interface RefreshTokenRequest {
 }
 
 export interface RefreshTokenResponse {
-  access_token: string;
-  refresh_token: string;
+  tokens?: {
+    access_token: string;
+    refresh_token: string;
+    organizations?: Organization[];
+    [key: string]: any;
+  };
+  [key: string]: any;
 }
 
 export interface LogoutRequest {
@@ -132,8 +137,14 @@ export interface ResendOtpRequest {
 }
 
 export interface ResendOtpResponse {
-  // Shape unknown; common success responses only
+  tokens?: {
+    access_token: string;
+    refresh_token: string;
+    organizations?: Organization[];
+    [key: string]: any;
+  };
   message?: string;
+  [key: string]: any;
 }
 
 export interface VerifySignupOtpRequest {
@@ -142,10 +153,14 @@ export interface VerifySignupOtpRequest {
 }
 
 export interface VerifySignupOtpResponse {
-  // Often returns tokens or an email-verified marker.
-  access_token?: string;
-  refresh_token?: string;
+  tokens?: {
+    access_token: string;
+    refresh_token: string;
+    organizations?: Organization[];
+    [key: string]: any;
+  };
   message?: string;
+  [key: string]: any;
 }
 
 export interface Verify2faRequest {
@@ -154,10 +169,13 @@ export interface Verify2faRequest {
 }
 
 export interface Verify2faResponse {
-  access_token: string;
-  refresh_token: string;
-  // Some backends also include orgs/user
-  organizations?: Organization[];
+  tokens?: {
+    access_token: string;
+    refresh_token: string;
+    organizations?: Organization[];
+    [key: string]: any;
+  };
+  [key: string]: any;
 }
 
 // -------- Password reset --------
@@ -176,6 +194,49 @@ export interface ResetPasswordRequest {
 
 export interface ResetPasswordResponse {
   message?: string;
+}
+
+// -------- Mobile password reset (no email-existence leak) --------
+export interface MobileRequestResetCodeRequest {
+  email: string;
+}
+
+export interface MobileRequestResetCodeResponse {
+  message?: string;
+  [key: string]: any;
+}
+
+export interface MobileVerifyResetCodeRequest {
+  email: string;
+  code: string;
+}
+
+export interface MobileVerifyResetCodeResponse {
+  resetToken: string;
+  [key: string]: any;
+}
+
+export interface MobileResetPasswordRequest {
+  resetToken: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface MobileResetPasswordResponse {
+  message?: string;
+  [key: string]: any;
+}
+
+export interface MobileResetPasswordOneShotRequest {
+  email: string;
+  code: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface MobileResetPasswordOneShotResponse {
+  message?: string;
+  [key: string]: any;
 }
 
 export interface UpdateProfileRequest {

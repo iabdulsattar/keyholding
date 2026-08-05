@@ -22,8 +22,8 @@ import { ToastService, Toast } from '../../../../core/services/toast.service';
       animation: toast-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     @keyframes toast-progress {
-      from { width: 100%; }
-      to { width: 0%; }
+      from { width: 0%; }
+      to { width: 100%; }
     }
     .toast-progress {
       animation: toast-progress linear forwards;

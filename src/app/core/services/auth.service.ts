@@ -30,6 +30,15 @@ import {
   ResetPasswordRequest,
   ResetPasswordResponse,
 
+  MobileRequestResetCodeRequest,
+  MobileRequestResetCodeResponse,
+  MobileVerifyResetCodeRequest,
+  MobileVerifyResetCodeResponse,
+  MobileResetPasswordRequest,
+  MobileResetPasswordResponse,
+  MobileResetPasswordOneShotRequest,
+  MobileResetPasswordOneShotResponse,
+
   SessionResponse,
   ApiWrapper
 } from '../models/auth.models';
@@ -50,7 +59,9 @@ export class AuthService {
   // POST /api/v1/auth/signup/resend-otp
   resendSignupOtp(payload: ResendOtpRequest): Observable<ResendOtpResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.api.post('/api/v1/auth/signup/resend-otp', payload, headers);
+    return this.api.post<ApiWrapper<ResendOtpResponse>>('/api/v1/auth/signup/resend-otp', payload, headers).pipe(
+      map((res) => res.data)
+    );
   }
 
   // POST /api/v1/auth/signup/verify-otp
@@ -229,6 +240,37 @@ export class AuthService {
   resetPassword(payload: ResetPasswordRequest): Observable<ResetPasswordResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.api.post('/api/v1/auth/password/reset', payload, headers);
+  }
+
+  // POST /api/v1/auth/password/mobile/request-code
+  mobileRequestResetCode(payload: MobileRequestResetCodeRequest): Observable<MobileRequestResetCodeResponse> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.api.post('/api/v1/auth/password/mobile/request-code', payload, headers);
+  }
+
+  // POST /api/v1/auth/password/mobile/verify-code
+  mobileVerifyResetCode(payload: MobileVerifyResetCodeRequest): Observable<MobileVerifyResetCodeResponse> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.api.post('/api/v1/auth/password/mobile/verify-code', payload, headers).pipe(
+      map((res: any) => {
+        if (res && typeof res === 'object' && 'data' in res) {
+          return res.data as MobileVerifyResetCodeResponse;
+        }
+        return res as MobileVerifyResetCodeResponse;
+      })
+    );
+  }
+
+  // POST /api/v1/auth/password/mobile/reset (with resetToken)
+  mobileResetPassword(payload: MobileResetPasswordRequest): Observable<MobileResetPasswordResponse> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.api.post('/api/v1/auth/password/mobile/reset', payload, headers);
+  }
+
+  // POST /api/v1/auth/password/mobile/reset (email + code one-shot)
+  mobileResetPasswordOneShot(payload: MobileResetPasswordOneShotRequest): Observable<MobileResetPasswordOneShotResponse> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.api.post('/api/v1/auth/password/mobile/reset', payload, headers);
   }
 
   refresh(payload: RefreshTokenRequest): Observable<RefreshTokenResponse> {

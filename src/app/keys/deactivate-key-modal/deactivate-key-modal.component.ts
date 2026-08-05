@@ -27,12 +27,12 @@ export class DeactivateKeyModalComponent {
     this.close.emit();
   }
 
-  confirm(): void {
+   confirm(): void {
     if (!this.key()?.id || !this.orgId()) return;
     this.submitting = true;
     this.statusMessage = '';
     this.statusType = '';
-    this.keyVault.updateKey(this.orgId(), this.key().id, { status: 'INACTIVE' }).subscribe({
+    this.keyVault.deactivateKey(this.orgId(), this.key().id).subscribe({
       next: () => {
         this.submitting = false;
         this.statusType = 'success';

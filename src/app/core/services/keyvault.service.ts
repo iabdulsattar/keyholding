@@ -82,6 +82,7 @@ export interface KeyVaultKey {
   code?: string;
   keyCode?: string;
   name: string;
+  description?: string;
   type?: string;
   category?: string;
   clientId?: string;
@@ -97,6 +98,7 @@ export interface KeyVaultKey {
   tagLabel?: string;
   reference?: string;
   status?: 'IN_STORAGE' | 'ISSUED' | 'IN_USE' | 'OVERDUE' | 'LOST' | 'DAMAGED' | 'INACTIVE';
+  active?: boolean;
   assignedToUserId?: string | null;
   notes?: string;
   [key: string]: any;
@@ -696,6 +698,16 @@ export class KeyVaultService {
   deleteKey(orgId: string, keyId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}`, headers);
+  }
+
+  activateKey(orgId: string, keyId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/activate`, {}, headers);
+  }
+
+  deactivateKey(orgId: string, keyId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/keys/${keyId}/deactivate`, {}, headers);
   }
 
   getKeyStats(orgId: string, clientId: string): Observable<any> {

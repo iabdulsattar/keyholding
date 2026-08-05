@@ -93,8 +93,8 @@ export class AuthInterceptor implements HttpInterceptor {
     return from(this.authService.refresh({ refreshToken })).pipe(
       switchMap((res: any) => {
         this.isRefreshing = false;
-        const newToken = res?.access_token;
-        const newRefreshToken = res?.refresh_token;
+        const newToken = res?.access_token ?? res?.tokens?.access_token;
+        const newRefreshToken = res?.refresh_token ?? res?.tokens?.refresh_token;
 
         if (!newToken) {
           console.error('[AuthInterceptor] Refresh response missing access_token');
@@ -136,6 +136,9 @@ export class AuthInterceptor implements HttpInterceptor {
       '/api/v1/auth/login/verify-2fa',
       '/api/v1/auth/password/request-reset',
       '/api/v1/auth/password/reset',
+      '/api/v1/auth/password/mobile/request-code',
+      '/api/v1/auth/password/mobile/verify-code',
+      '/api/v1/auth/password/mobile/reset',
       '/api/v1/auth/invitations',
       '/api/v1/auth/refresh',
     ];
