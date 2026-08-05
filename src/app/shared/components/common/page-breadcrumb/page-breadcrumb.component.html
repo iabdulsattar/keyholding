@@ -1,4 +1,4 @@
-<div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-4">
+<div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-1.5">
   @for (crumb of breadcrumbs; track crumb.label; let last = $last) {
     @if (crumb.link) {
       <a [routerLink]="crumb.link" class="hover:underline">{{ crumb.label }}</a>
