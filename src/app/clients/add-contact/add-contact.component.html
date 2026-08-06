@@ -26,47 +26,47 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <div>
-                <label class="field-label" [class.text-rose-600]="informationInvalid && touched.has('firstName')" [class.text-slate-700]="!(informationInvalid && touched.has('firstName'))">First Name <span class="text-rose-500">*</span></label>
-                <div [class.border-rose-500]="informationInvalid && touched.has('firstName')" class="rounded-lg border border-slate-200 transition">
-                  <input type="text" placeholder="Enter first name" class="field-input border-none" [(ngModel)]="firstName" name="firstName" (blur)="markTouched('firstName')" [disabled]="saving" />
-                </div>
-                @if (informationInvalid && touched.has('firstName')) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
+                 <label class="field-label" [class.text-rose-600]="touched.has('firstName') && !firstName.trim()" [class.text-slate-700]="!(touched.has('firstName') && !firstName.trim())">First Name <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('firstName') && !firstName.trim()" class="rounded-lg border border-slate-200 transition">
+                   <input type="text" placeholder="Enter first name" class="field-input border-none" [(ngModel)]="firstName" name="firstName" (blur)="markTouched('firstName')" [disabled]="saving" />
+                 </div>
+                 @if (touched.has('firstName') && !firstName.trim()) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
               </div>
               <div>
-                <label class="field-label" [class.text-rose-600]="informationInvalid && touched.has('lastName')" [class.text-slate-700]="!(informationInvalid && touched.has('lastName'))">Last Name <span class="text-rose-500">*</span></label>
-                <div [class.border-rose-500]="informationInvalid && touched.has('lastName')" class="rounded-lg border border-slate-200 transition">
-                  <input type="text" placeholder="Enter last name" class="field-input border-none" [(ngModel)]="lastName" name="lastName" (blur)="markTouched('lastName')" [disabled]="saving" />
-                </div>
-                @if (informationInvalid && touched.has('lastName')) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
+                 <label class="field-label" [class.text-rose-600]="touched.has('lastName') && !lastName.trim()" [class.text-slate-700]="!(touched.has('lastName') && !lastName.trim())">Last Name <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('lastName') && !lastName.trim()" class="rounded-lg border border-slate-200 transition">
+                   <input type="text" placeholder="Enter last name" class="field-input border-none" [(ngModel)]="lastName" name="lastName" (blur)="markTouched('lastName')" [disabled]="saving" />
+                 </div>
+                 @if (touched.has('lastName') && !lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
               </div>
               <div>
-                <label class="field-label" [class.text-rose-600]="informationInvalid && touched.has('jobTitle')" [class.text-slate-700]="!(informationInvalid && touched.has('jobTitle'))">Job Title <span class="text-rose-500">*</span></label>
-                <div [class.border-rose-500]="informationInvalid && touched.has('jobTitle')" class="rounded-lg border border-slate-200 transition">
-                  <input type="text" placeholder="Enter job title" class="field-input border-none" [(ngModel)]="jobTitle" name="jobTitle" (blur)="markTouched('jobTitle')" [disabled]="saving" />
-                </div>
-                @if (informationInvalid && touched.has('jobTitle')) { <p class="text-xs text-rose-600 mt-1">Job title is required</p> }
+                 <label class="field-label" [class.text-rose-600]="touched.has('jobTitle') && !jobTitle.trim()" [class.text-slate-700]="!(touched.has('jobTitle') && !jobTitle.trim())">Job Title <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('jobTitle') && !jobTitle.trim()" class="rounded-lg border border-slate-200 transition">
+                   <input type="text" placeholder="Enter job title" class="field-input border-none" [(ngModel)]="jobTitle" name="jobTitle" (blur)="markTouched('jobTitle')" [disabled]="saving" />
+                 </div>
+                 @if (touched.has('jobTitle') && !jobTitle.trim()) { <p class="text-xs text-rose-600 mt-1">Job title is required</p> }
               </div>
 
               <div>
-                <label class="field-label" [class.text-rose-600]="informationInvalid && touched.has('email')" [class.text-slate-700]="!(informationInvalid && touched.has('email'))">Email Address <span class="text-rose-500">*</span></label>
-                <div [class.border-rose-500]="informationInvalid && touched.has('email')" class="rounded-lg border border-slate-200 transition">
-                  <input type="email" placeholder="Enter email address" class="field-input border-none" [(ngModel)]="email" name="email" (blur)="markTouched('email')" [disabled]="saving" />
-                </div>
-                @if (informationInvalid && touched.has('email')) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
+                 <label class="field-label" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-700]="!(touched.has('email') && !email.trim())">Email Address <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg border border-slate-200 transition">
+                   <input type="email" placeholder="Enter email address" class="field-input border-none" [(ngModel)]="email" name="email" (blur)="markTouched('email')" [disabled]="saving" />
+                 </div>
+                 @if (touched.has('email') && !email.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
                 <p class="field-hint">Enter a valid email address.</p>
               </div>
               <div>
-                <label class="field-label" [class.text-rose-600]="informationInvalid && touched.has('phone')" [class.text-slate-700]="!(informationInvalid && touched.has('phone'))">Phone Number <span class="text-rose-500">*</span></label>
-                <div [class.border-rose-500]="informationInvalid && touched.has('phone')" class="rounded-lg border border-slate-200 transition">
-                  <div class="flex gap-2">
-                    <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
-                      🇬🇧 +44
-                      <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <input type="text" placeholder="Enter phone number" class="field-input flex-1 border-none" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
-                  </div>
-                </div>
-                @if (informationInvalid && touched.has('phone')) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
+                 <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg border border-slate-200 transition">
+                   <div class="flex gap-2">
+                     <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
+                       🇬🇧 +44
+                       <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                     </button>
+                     <input type="text" placeholder="Enter phone number" class="field-input flex-1 border-none" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
+                   </div>
+                 </div>
+                 @if (touched.has('phone') && !phone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
                 <p class="field-hint">Enter a valid phone number.</p>
               </div>
               <div>
@@ -77,14 +77,14 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-              <div>
-                <label class="field-label" [class.text-rose-600]="contactInvalid && touched.has('status')" [class.text-slate-700]="!(contactInvalid && touched.has('status'))">Status <span class="text-rose-500">*</span></label>
-                <div [class.border-rose-500]="contactInvalid && touched.has('status')" class="rounded-lg border border-slate-200 transition">
-                  <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
-                </div>
-                @if (contactInvalid && touched.has('status')) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
-                <p class="field-hint">Set the status of this contact.</p>
-              </div>
+               <div>
+                 <label class="field-label" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-700]="!(touched.has('status') && !status)">Status <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg border border-slate-200 transition">
+                   <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
+                 </div>
+                 @if (touched.has('status') && !status) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
+                 <p class="field-hint">Set the status of this contact.</p>
+               </div>
               
               <div>
                 <label class="field-label">Preferred Contact Method</label>

@@ -70,36 +70,36 @@
         <div class="col-span-2 grid grid-cols-2 gap-x-6 gap-y-5">
 
           <div>
-            <label class="block text-sm font-semibold" [class.text-rose-600]="informationInvalid && touched.has('form.firstName')" [class.text-slate-800]="!(informationInvalid && touched.has('form.firstName'))">First Name <span class="text-red-500">*</span></label>
-            <div [class.border-rose-500]="informationInvalid && touched.has('form.firstName')" class="rounded-lg border border-slate-200 transition">
+            <label class="block text-sm font-semibold" [class.text-rose-600]="touched.has('form.firstName') && !form.firstName.trim()" [class.text-slate-800]="!(touched.has('form.firstName') && !form.firstName.trim())">First Name <span class="text-red-500">*</span></label>
+            <div [class.border-rose-500]="touched.has('form.firstName') && !form.firstName.trim()" class="rounded-lg border border-slate-200 transition">
               <div class="relative">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <input type="text" [(ngModel)]="form.firstName" name="form.firstName" (blur)="markTouched('form.firstName')" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
               </div>
             </div>
-            @if (informationInvalid && touched.has('form.firstName')) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
+            @if (touched.has('form.firstName') && !form.firstName.trim()) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
           </div>
 
           <div>
-            <label class="block text-sm font-semibold" [class.text-rose-600]="informationInvalid && touched.has('form.lastName')" [class.text-slate-800]="!(informationInvalid && touched.has('form.lastName'))">Last Name <span class="text-red-500">*</span></label>
-            <div [class.border-rose-500]="informationInvalid && touched.has('form.lastName')" class="rounded-lg border border-slate-200 transition">
+            <label class="block text-sm font-semibold" [class.text-rose-600]="touched.has('form.lastName') && !form.lastName.trim()" [class.text-slate-800]="!(touched.has('form.lastName') && !form.lastName.trim())">Last Name <span class="text-red-500">*</span></label>
+            <div [class.border-rose-500]="touched.has('form.lastName') && !form.lastName.trim()" class="rounded-lg border border-slate-200 transition">
               <div class="relative">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <input type="text" [(ngModel)]="form.lastName" name="form.lastName" (blur)="markTouched('form.lastName')" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
               </div>
             </div>
-            @if (informationInvalid && touched.has('form.lastName')) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
+            @if (touched.has('form.lastName') && !form.lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
           </div>
 
           <div>
-            <label class="block text-sm font-semibold" [class.text-rose-600]="informationInvalid && touched.has('form.email')" [class.text-slate-800]="!(informationInvalid && touched.has('form.email'))">Email Address <span class="text-red-500">*</span></label>
-            <div [class.border-rose-500]="informationInvalid && touched.has('form.email')" class="rounded-lg border border-slate-200 transition">
+            <label class="block text-sm font-semibold" [class.text-rose-600]="touched.has('form.email') && !form.email.trim()" [class.text-slate-800]="!(touched.has('form.email') && !form.email.trim())">Email Address <span class="text-red-500">*</span></label>
+            <div [class.border-rose-500]="touched.has('form.email') && !form.email.trim()" class="rounded-lg border border-slate-200 transition">
               <div class="relative">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
                 <input type="email" [(ngModel)]="form.email" name="form.email" (blur)="markTouched('form.email')" [readonly]="isEditMode" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" [class.bg-slate-50]="isEditMode" />
               </div>
             </div>
-            @if (informationInvalid && touched.has('form.email')) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
+            @if (touched.has('form.email') && !form.email.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
           </div>
 
           <div>

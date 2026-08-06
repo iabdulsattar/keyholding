@@ -27,36 +27,36 @@
             <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100 pb-0">Site Information</h3>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('siteName'))" [class.text-rose-600]="informationInvalid && touched.has('siteName')">Site Name <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('siteName')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('siteName') && !siteName.trim())" [class.text-rose-600]="touched.has('siteName') && !siteName.trim()">Site Name <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('siteName') && !siteName.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="text" [(ngModel)]="siteName" name="siteName" (blur)="markTouched('siteName')" placeholder="e.g. Head Office" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (informationInvalid && touched.has('siteName')) { <p class="text-xs text-rose-600 mt-1">Site Name is required</p> }
+                 @if (touched.has('siteName') && !siteName.trim()) { <p class="text-xs text-rose-600 mt-1">Site Name is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('siteType'))" [class.text-rose-600]="informationInvalid && touched.has('siteType')">Site Type <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('siteType')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('siteType') && !siteType)" [class.text-rose-600]="touched.has('siteType') && !siteType">Site Type <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('siteType') && !siteType" class="rounded-lg border border-slate-200 transition">
                    <app-rich-select [options]="siteTypeOptions" [(value)]="siteType" placeholder="Select site type" (valueChange)="markTouched('siteType')"></app-rich-select>
                  </div>
-                 @if (informationInvalid && touched.has('siteType')) { <p class="text-xs text-rose-600 mt-1">Site Type is required</p> }
+                 @if (touched.has('siteType') && !siteType) { <p class="text-xs text-rose-600 mt-1">Site Type is required</p> }
                </div>
                @if (showClientDropdown) {
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('clientId'))" [class.text-rose-600]="informationInvalid && touched.has('clientId')">Client <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('clientId')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('clientId') && !clientId)" [class.text-rose-600]="touched.has('clientId') && !clientId">Client <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('clientId') && !clientId" class="rounded-lg border border-slate-200 transition">
                    <app-rich-select [options]="clientOptions" [(value)]="clientId" placeholder="Select client" (valueChange)="markTouched('clientId')"></app-rich-select>
                  </div>
-                 @if (informationInvalid && touched.has('clientId')) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
+                 @if (touched.has('clientId') && !clientId) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
                </div>
                }
              </div>
              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('address1'))" [class.text-rose-600]="informationInvalid && touched.has('address1')">Address Line 1 <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('address1')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('address1') && !address1.trim())" [class.text-rose-600]="touched.has('address1') && !address1.trim()">Address Line 1 <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('address1') && !address1.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="text" [(ngModel)]="address1" name="address1" (blur)="markTouched('address1')" placeholder="e.g. 25 Fenchurch Street" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (informationInvalid && touched.has('address1')) { <p class="text-xs text-rose-600 mt-1">Address Line 1 is required</p> }
+                 @if (touched.has('address1') && !address1.trim()) { <p class="text-xs text-rose-600 mt-1">Address Line 1 is required</p> }
                </div>
                <div class="space-y-1.5">
                  <label class="text-xs font-semibold text-slate-700">Address Line 2</label>
@@ -65,25 +65,25 @@
              </div>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('city'))" [class.text-rose-600]="informationInvalid && touched.has('city')">City <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('city')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('city') && !city.trim())" [class.text-rose-600]="touched.has('city') && !city.trim()">City <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('city') && !city.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="text" [(ngModel)]="city" name="city" (blur)="markTouched('city')" placeholder="e.g. London" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (informationInvalid && touched.has('city')) { <p class="text-xs text-rose-600 mt-1">City is required</p> }
+                 @if (touched.has('city') && !city.trim()) { <p class="text-xs text-rose-600 mt-1">City is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('postcode'))" [class.text-rose-600]="informationInvalid && touched.has('postcode')">Postcode <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('postcode')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('postcode') && !postcode.trim())" [class.text-rose-600]="touched.has('postcode') && !postcode.trim()">Postcode <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('postcode') && !postcode.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="text" [(ngModel)]="postcode" name="postcode" (blur)="markTouched('postcode')" placeholder="e.g. EC3M 3AY" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (informationInvalid && touched.has('postcode')) { <p class="text-xs text-rose-600 mt-1">Postcode is required</p> }
+                 @if (touched.has('postcode') && !postcode.trim()) { <p class="text-xs text-rose-600 mt-1">Postcode is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(informationInvalid && touched.has('country'))" [class.text-rose-600]="informationInvalid && touched.has('country')">Country <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="informationInvalid && touched.has('country')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('country') && !country)" [class.text-rose-600]="touched.has('country') && !country">Country <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('country') && !country" class="rounded-lg border border-slate-200 transition">
                    <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" (valueChange)="markTouched('country')"></app-rich-select>
                  </div>
-                 @if (informationInvalid && touched.has('country')) { <p class="text-xs text-rose-600 mt-1">Country is required</p> }
+                 @if (touched.has('country') && !country) { <p class="text-xs text-rose-600 mt-1">Country is required</p> }
                </div>
              </div>
            </div>
@@ -92,29 +92,29 @@
              <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 pb-0">Site Contact</h3>
              <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(contactInvalid && touched.has('contactName'))" [class.text-rose-600]="contactInvalid && touched.has('contactName')">Primary Contact Name <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="contactInvalid && touched.has('contactName')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('contactName') && !contactName.trim())" [class.text-rose-600]="touched.has('contactName') && !contactName.trim()">Primary Contact Name <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('contactName') && !contactName.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="text" [(ngModel)]="contactName" name="contactName" (blur)="markTouched('contactName')" placeholder="e.g. James Walker" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (contactInvalid && touched.has('contactName')) { <p class="text-xs text-rose-600 mt-1">Primary Contact Name is required</p> }
+                 @if (touched.has('contactName') && !contactName.trim()) { <p class="text-xs text-rose-600 mt-1">Primary Contact Name is required</p> }
                </div>
                <div class="space-y-1.5 md:col-span-1">
                  <label class="text-xs font-semibold text-slate-700">Designation</label>
                  <input type="text" [(ngModel)]="designation" name="designation" placeholder="e.g. Operations Manager" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                </div>
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(contactInvalid && touched.has('contactPhone'))" [class.text-rose-600]="contactInvalid && touched.has('contactPhone')">Phone <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="contactInvalid && touched.has('contactPhone')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('contactPhone') && !contactPhone.trim())" [class.text-rose-600]="touched.has('contactPhone') && !contactPhone.trim()">Phone <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('contactPhone') && !contactPhone.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="tel" [(ngModel)]="contactPhone" name="contactPhone" (blur)="markTouched('contactPhone')" placeholder="e.g. +44 020 7946 0958" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (contactInvalid && touched.has('contactPhone')) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
+                 @if (touched.has('contactPhone') && !contactPhone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
                </div>
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(contactInvalid && touched.has('contactEmail'))" [class.text-rose-600]="contactInvalid && touched.has('contactEmail')">Email <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="contactInvalid && touched.has('contactEmail')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('contactEmail') && !contactEmail.trim())" [class.text-rose-600]="touched.has('contactEmail') && !contactEmail.trim()">Email <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('contactEmail') && !contactEmail.trim()" class="rounded-lg border border-slate-200 transition">
                    <input type="email" [(ngModel)]="contactEmail" name="contactEmail" (blur)="markTouched('contactEmail')" placeholder="e.g. james.walker@metrosecurity.ca" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
-                 @if (contactInvalid && touched.has('contactEmail')) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
+                 @if (touched.has('contactEmail') && !contactEmail.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
                </div>
              </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
@@ -137,25 +137,25 @@
                  <textarea [(ngModel)]="accessInstructions" name="accessInstructions" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none h-20" placeholder="e.g. Instructions...">Use main entrance. Reception on the ground floor.</textarea>
                </div>
                <div class="space-y-2">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(detailsInvalid && touched.has('accessSchedule'))" [class.text-rose-600]="detailsInvalid && touched.has('accessSchedule')">Access Schedule <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="detailsInvalid && touched.has('accessSchedule')" class="rounded-lg border border-slate-200 transition">
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('accessSchedule') && !accessSchedule)" [class.text-rose-600]="touched.has('accessSchedule') && !accessSchedule">Access Schedule <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('accessSchedule') && !accessSchedule" class="rounded-lg border border-slate-200 transition">
                    <app-rich-select [options]="accessScheduleOptions" [(value)]="accessSchedule" placeholder="Select access schedule" (valueChange)="markTouched('accessSchedule')"></app-rich-select>
                  </div>
-                 @if (detailsInvalid && touched.has('accessSchedule')) { <p class="text-xs text-rose-600 mt-1">Access Schedule is required</p> }
+                 @if (touched.has('accessSchedule') && !accessSchedule) { <p class="text-xs text-rose-600 mt-1">Access Schedule is required</p> }
                </div>
                  <div class="space-y-1.5">
-                   <label class="text-xs font-semibold" [class.text-slate-700]="!(detailsInvalid && touched.has('securityLevel'))" [class.text-rose-600]="detailsInvalid && touched.has('securityLevel')">Security Level <span class="text-red-500">*</span></label>
-                   <div [class.border-rose-500]="detailsInvalid && touched.has('securityLevel')" class="rounded-lg border border-slate-200 transition">
+                   <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('securityLevel') && !securityLevel)" [class.text-rose-600]="touched.has('securityLevel') && !securityLevel">Security Level <span class="text-red-500">*</span></label>
+                   <div [class.border-rose-500]="touched.has('securityLevel') && !securityLevel" class="rounded-lg border border-slate-200 transition">
                      <app-rich-select [options]="securityLevelOptions" [(value)]="securityLevel" placeholder="Select level" (valueChange)="markTouched('securityLevel')"></app-rich-select>
                    </div>
-                   @if (detailsInvalid && touched.has('securityLevel')) { <p class="text-xs text-rose-600 mt-1">Security Level is required</p> }
+                   @if (touched.has('securityLevel') && !securityLevel) { <p class="text-xs text-rose-600 mt-1">Security Level is required</p> }
                  </div>
                  <div class="space-y-1.5">
-                   <label class="text-xs font-semibold" [class.text-slate-700]="!(detailsInvalid && touched.has('alarmSystem'))" [class.text-rose-600]="detailsInvalid && touched.has('alarmSystem')">Alarm System <span class="text-red-500">*</span></label>
-                   <div [class.border-rose-500]="detailsInvalid && touched.has('alarmSystem')" class="rounded-lg border border-slate-200 transition">
+                   <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('alarmSystem') && !alarmSystem)" [class.text-rose-600]="touched.has('alarmSystem') && !alarmSystem">Alarm System <span class="text-red-500">*</span></label>
+                   <div [class.border-rose-500]="touched.has('alarmSystem') && !alarmSystem" class="rounded-lg border border-slate-200 transition">
                      <app-rich-select [options]="alarmSystemOptions" [(value)]="alarmSystem" placeholder="Select system" (valueChange)="markTouched('alarmSystem')"></app-rich-select>
                    </div>
-                   @if (detailsInvalid && touched.has('alarmSystem')) { <p class="text-xs text-rose-600 mt-1">Alarm System is required</p> }
+                   @if (touched.has('alarmSystem') && !alarmSystem) { <p class="text-xs text-rose-600 mt-1">Alarm System is required</p> }
                  </div>
                
              </div>

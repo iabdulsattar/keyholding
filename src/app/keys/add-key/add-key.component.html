@@ -29,25 +29,25 @@
              <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100">Key Information</h3>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(infoInvalid && touched.has('keyName'))" [class.text-rose-600]="infoInvalid && touched.has('keyName')">Key Name <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="infoInvalid && touched.has('keyName')" class="rounded-lg border border-slate-200 transition">
-                   <input type="text" [(ngModel)]="keyName" name="keyName" (blur)="markTouched('keyName')" placeholder="e.g. Front Door Key" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
-                 </div>
-                 @if (infoInvalid && touched.has('keyName')) { <p class="text-xs text-rose-600 mt-1">Key Name is required</p> }
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('keyName') && !keyName.trim())" [class.text-rose-600]="touched.has('keyName') && !keyName.trim()">Key Name <span class="text-red-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('keyName') && !keyName.trim()" class="rounded-lg border border-slate-200 transition">
+                    <input type="text" [(ngModel)]="keyName" name="keyName" (blur)="markTouched('keyName')" placeholder="e.g. Front Door Key" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+                  </div>
+                  @if (touched.has('keyName') && !keyName.trim()) { <p class="text-xs text-rose-600 mt-1">Key Name is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(infoInvalid && touched.has('keyType'))" [class.text-rose-600]="infoInvalid && touched.has('keyType')">Key Type <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="infoInvalid && touched.has('keyType')" class="rounded-lg border border-slate-200 transition">
-                   <app-rich-select [options]="keyTypeOptions" [(value)]="keyType" placeholder="Select key type" class="w-full" (valueChange)="markTouched('keyType')"></app-rich-select>
-                 </div>
-                 @if (infoInvalid && touched.has('keyType')) { <p class="text-xs text-rose-600 mt-1">Key Type is required</p> }
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('keyType') && !keyType)" [class.text-rose-600]="touched.has('keyType') && !keyType">Key Type <span class="text-red-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('keyType') && !keyType" class="rounded-lg border border-slate-200 transition">
+                    <app-rich-select [options]="keyTypeOptions" [(value)]="keyType" placeholder="Select key type" class="w-full" (valueChange)="markTouched('keyType')"></app-rich-select>
+                  </div>
+                  @if (touched.has('keyType') && !keyType) { <p class="text-xs text-rose-600 mt-1">Key Type is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(infoInvalid && touched.has('keyCategory'))" [class.text-rose-600]="infoInvalid && touched.has('keyCategory')">Key Category <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="infoInvalid && touched.has('keyCategory')" class="rounded-lg border border-slate-200 transition">
-                   <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
-                 </div>
-                 @if (infoInvalid && touched.has('keyCategory')) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('keyCategory') && !keyCategory)" [class.text-rose-600]="touched.has('keyCategory') && !keyCategory">Key Category <span class="text-red-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('keyCategory') && !keyCategory" class="rounded-lg border border-slate-200 transition">
+                    <app-rich-select [options]="keyCategoryOptions" [(value)]="keyCategory" placeholder="Select category" class="w-full" (valueChange)="markTouched('keyCategory')"></app-rich-select>
+                  </div>
+                  @if (touched.has('keyCategory') && !keyCategory) { <p class="text-xs text-rose-600 mt-1">Key Category is required</p> }
                </div>
              </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
@@ -62,18 +62,18 @@
              <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 ">Assign To</h3>
              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(assignInvalid && touched.has('assignClientId'))" [class.text-rose-600]="assignInvalid && touched.has('assignClientId')">Client <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="assignInvalid && touched.has('assignClientId')" class="rounded-lg border border-slate-200 transition">
-                   <app-rich-select [options]="clientOptions" [value]="assignClientId" (valueChange)="onClientChange($event)" placeholder="Select client" class="w-full"></app-rich-select>
-                 </div>
-                 @if (assignInvalid && touched.has('assignClientId')) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('assignClientId') && !assignClientId)" [class.text-rose-600]="touched.has('assignClientId') && !assignClientId">Client <span class="text-red-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('assignClientId') && !assignClientId" class="rounded-lg border border-slate-200 transition">
+                    <app-rich-select [options]="clientOptions" [value]="assignClientId" (valueChange)="onClientChange($event)" placeholder="Select client" class="w-full"></app-rich-select>
+                  </div>
+                  @if (touched.has('assignClientId') && !assignClientId) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(assignInvalid && touched.has('assignSite'))" [class.text-rose-600]="assignInvalid && touched.has('assignSite')">Site <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="assignInvalid && touched.has('assignSite')" class="rounded-lg border border-slate-200 transition">
-                   <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
-                 </div>
-                 @if (assignInvalid && touched.has('assignSite')) { <p class="text-xs text-rose-600 mt-1">Site is required</p> }
+                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('assignSite') && !assignSite)" [class.text-rose-600]="touched.has('assignSite') && !assignSite">Site <span class="text-red-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('assignSite') && !assignSite" class="rounded-lg border border-slate-200 transition">
+                    <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
+                  </div>
+                  @if (touched.has('assignSite') && !assignSite) { <p class="text-xs text-rose-600 mt-1">Site is required</p> }
                </div>
              </div>
            </div>

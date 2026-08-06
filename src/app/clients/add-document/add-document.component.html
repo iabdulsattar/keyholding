@@ -28,26 +28,26 @@
 
     <div class="grid sm:grid-cols-2 gap-x-6 gap-y-5">
       <div>
-        <label class="block text-[13px] font-medium" [class.text-rose-600]="informationInvalid && touched.has('documentName')" [class.text-slate-700]="!(informationInvalid && touched.has('documentName'))">Document Name <span class="text-red-500">*</span></label>
-        <div [class.border-rose-500]="informationInvalid && touched.has('documentName')" class="rounded-lg border border-slate-300 transition">
+        <label class="block text-[13px] font-medium" [class.text-rose-600]="touched.has('documentName') && !documentName.trim()" [class.text-slate-700]="!(touched.has('documentName') && !documentName.trim())">Document Name <span class="text-red-500">*</span></label>
+        <div [class.border-rose-500]="touched.has('documentName') && !documentName.trim()" class="rounded-lg border border-slate-300 transition">
           <input type="text" [(ngModel)]="documentName" name="documentName" (blur)="markTouched('documentName')" placeholder="Enter document name"
             class="w-full rounded-lg border-none px-3.5 py-2.5 text-[13.5px] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
         </div>
-        @if (informationInvalid && touched.has('documentName')) { <p class="text-[12px] text-rose-600 font-medium mt-1">Document name is required</p> }
+        @if (touched.has('documentName') && !documentName.trim()) { <p class="text-[12px] text-rose-600 font-medium mt-1">Document name is required</p> }
         <p class="text-[12px] text-slate-500 font-medium mt-1.5">Give your document a clear and descriptive name.</p>
       </div>
 
       <div>
-        <label class="block text-[13px] font-medium" [class.text-rose-600]="informationInvalid && touched.has('category')" [class.text-slate-700]="!(informationInvalid && touched.has('category'))">Category <span class="text-red-500">*</span></label>
+        <label class="block text-[13px] font-medium" [class.text-rose-600]="touched.has('category') && !category" [class.text-slate-700]="!(touched.has('category') && !category)">Category <span class="text-red-500">*</span></label>
         <app-rich-select [options]="categoryOptions" [(value)]="category" (valueChange)="markTouched('category')" placeholder="Select category" class="w-full"></app-rich-select>
-        @if (informationInvalid && touched.has('category')) { <p class="text-[12px] text-rose-600 font-medium mt-1">Category is required</p> }
+        @if (touched.has('category') && !category) { <p class="text-[12px] text-rose-600 font-medium mt-1">Category is required</p> }
         <p class="text-[12px] text-slate-500 font-medium mt-1.5">Choose the category that best fits this document.</p>
       </div>
 
       <div>
-        <label class="block text-[13px] font-medium" [class.text-rose-600]="informationInvalid && touched.has('documentType')" [class.text-slate-700]="!(informationInvalid && touched.has('documentType'))">Document Type <span class="text-red-500">*</span></label>
+        <label class="block text-[13px] font-medium" [class.text-rose-600]="touched.has('documentType') && !documentType" [class.text-slate-700]="!(touched.has('documentType') && !documentType)">Document Type <span class="text-red-500">*</span></label>
         <app-rich-select [options]="documentTypeOptions" [(value)]="documentType" (valueChange)="markTouched('documentType')" placeholder="Select document type" class="w-full"></app-rich-select>
-        @if (informationInvalid && touched.has('documentType')) { <p class="text-[12px] text-rose-600 font-medium mt-1">Document type is required</p> }
+        @if (touched.has('documentType') && !documentType) { <p class="text-[12px] text-rose-600 font-medium mt-1">Document type is required</p> }
         <p class="text-[12px] text-slate-500 font-medium mt-1.5">Select the type of file you are uploading.</p>
       </div>
 
@@ -80,7 +80,7 @@
       @if (fileName) {
         <p class="text-[13px] text-slate-600 mt-2">Selected: {{ fileName }}</p>
       }
-      @if (informationInvalid && touched.has('file')) {
+      @if (touched.has('file') && !selectedFile) {
         <p class="text-[12px] text-rose-600 font-medium mt-1">Please select a file to upload</p>
       }
     </div>
