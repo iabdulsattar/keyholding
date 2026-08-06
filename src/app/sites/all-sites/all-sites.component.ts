@@ -25,7 +25,7 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
     }
     .filter-select:focus { box-shadow: 0 0 0 2px rgba(47,75,245,0.25); border-color: #2f4bf5; }
     .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
-    .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle; white-space: nowrap; }
+    .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle;  }
     .status-badge {
       display: inline-block; font-size: 0.75rem; font-weight: 600;
       padding: 0.25rem 0.7rem; border-radius: 0.5rem;

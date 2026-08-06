@@ -3,7 +3,11 @@
     <!-- Title & Actions -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
+        <div class="flex items-center gap-1">
+        <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M17 6l2 2M14 9l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        
         <h2 class="text-2xl font-bold tracking-tight text-slate-900">All Keys</h2>
+        </div>
         <app-page-breadcrumb pageTitle="All Keys" [breadcrumbs]="breadcrumbs" />
         <p class="text-sm text-slate-500 mt-1">View and manage all keys across all clients</p>
       </div>
@@ -97,10 +101,12 @@
               <th class="th-cell">Key Name</th>
               <th class="th-cell">Key Type</th>
               <th class="th-cell">Site</th>
-              <th class="th-cell">Client</th>
+              <!-- <th class="th-cell">Client</th> -->
               <th class="th-cell">Status</th>
               <th class="th-cell">Storage Location</th>
               <th class="th-cell">Assigned To</th>
+              <th class="th-cell">Last Movement</th>
+              
               <th class="th-cell text-right pr-5">Actions</th>
             </tr>
           </thead>
@@ -124,10 +130,12 @@
                 <td class="td-cell font-semibold text-slate-900">{{ k.name }}</td>
                 <td class="td-cell" [innerHTML]="typeBadge(k.type, k.typeColor)"></td>
                 <td class="td-cell text-slate-600">{{ k.siteName || '--' }}</td>
-                <td class="td-cell text-slate-600">{{ k.clientName || '--' }}</td>
+                <!-- <td class="td-cell text-slate-600">{{ k.clientName || '--' }}</td> -->
                  <td class="td-cell" [innerHTML]="statusBadge(k.status, k.statusColor)"></td>
                 <td class="td-cell text-slate-600 whitespace-pre-line leading-snug max-w-[200px] truncate" [title]="k.storageLocation">{{ k.storageLocation || '--' }}</td>
                 <td class="td-cell text-slate-600">{{ k.assignedTo || '--' }}</td>
+                <td class="td-cell text-slate-600">{{ k.lastMovement || '--' }}</td>
+                
                 <td class="td-cell text-right pr-5">
                   <div class="flex items-center justify-end gap-2">
                     <a [routerLink]="['/keys/view-key', k.id]" class="text-blue-500 hover:text-blue-700">

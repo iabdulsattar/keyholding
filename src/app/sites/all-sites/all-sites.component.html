@@ -3,7 +3,10 @@
     <!-- Title & Actions -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h2 class="text-2xl font-bold tracking-tight text-slate-900">All Sites</h2>
+        <div class="flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin text-blue-500 mb-1"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>  
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">All Sites</h2>
+        </div>
         <app-page-breadcrumb pageTitle="All Sites" [breadcrumbs]="breadcrumbs" />
         <p class="text-sm text-slate-500 mt-1">View and manage all sites across all clients</p>
       </div>
@@ -19,7 +22,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div class="bg-white border border-slate-100 rounded-lg p-4 flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h.01M9 12h.01M9 16h.01M15 8h.01M15 12h.01M15 16h.01" stroke-linecap="round"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building2-icon lucide-building-2 text-blue-500"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
         </div>
         <div>
           <p class="text-sm text-slate-800">Total Sites</p>
