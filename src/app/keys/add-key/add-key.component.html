@@ -93,23 +93,35 @@
           <div class="bg-white rounded-lg border border-slate-100 p-4 sm:p-6 space-y-4 ">
             <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 ">Status & Settings</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div (click)="setStatus('active')" [class.border-emerald-600]="keyStatus === 'active'" [class.border-slate-200]="keyStatus !== 'active'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
+              <div (click)="setStatus('active')" [class.border-emerald-600]="keyStatus === 'active'" [class.border-slate-200]="keyStatus !== 'active'" class="border-2 bg-white rounded-xl p-4 flex items-center gap-3 cursor-pointer select-none transition">
                 <div class="mt-0.5">
                   <div [class.border-emerald-600]="keyStatus === 'active'" [class.border-slate-300]="keyStatus !== 'active'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
                 </div>
+                <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                  <svg class="w-4.5 h-4.5 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </div>
+                  
                 <div>
                   <h4 class="text-xs font-bold text-slate-900">Active</h4>
-                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Key is in storage and available for assignment.</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">This key is active and operational.
+
+                  </p>
                 </div>
               </div>
 
-              <div (click)="setStatus('inactive')" [class.border-rose-600]="keyStatus === 'inactive'" [class.border-slate-200]="keyStatus !== 'inactive'" class="border-2 bg-white rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition">
+              <div (click)="setStatus('inactive')" [class.border-rose-600]="keyStatus === 'inactive'" [class.border-slate-200]="keyStatus !== 'inactive'" class="border-2 bg-white rounded-xl p-4 flex items-center gap-3 cursor-pointer select-none transition">
                 <div class="mt-0.5">
                   <div [class.border-rose-600]="keyStatus === 'inactive'" [class.border-slate-300]="keyStatus !== 'inactive'" class="w-4 h-4 rounded-full border-4 bg-white flex items-center justify-center"></div>
                 </div>
+                <div class="w-9 h-9 rounded-full bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                  <svg class="w-4.5 h-4.5 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                </div>
+                  
                 <div>
                   <h4 class="text-xs font-bold text-slate-900">Inactive</h4>
-                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">Key is inactive and cannot be assigned.</p>
+                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">This key is inactive and not operational.
+                    
+                  </p>
                 </div>
               </div>
             </div>
