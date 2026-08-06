@@ -35,6 +35,7 @@ export interface SiteRecord {
   siteCode: string;
   name: string;
   siteType: string;
+  typeColor: string;
   address: string;
   primaryContactName: string;
   status: 'ACTIVE' | 'INACTIVE';
@@ -665,15 +666,15 @@ export class ClientService {
     };
     return {
       id: item.id ?? '',
-      code: item.siteCode ?? item.code ?? '',
+      siteCode: item.siteCode ?? '',
       name: item.name ?? '',
-      type: item.siteType ?? item.type ?? '',
-      typeColor: typeColorMap[item.siteType ?? item.type ?? ''] || 'blue',
+      siteType: item.siteType ?? '',
+      typeColor: typeColorMap[item.siteType ?? ''] || 'blue',
       address: item.address ?? [item.addressLine1, item.addressLine2, item.city, item.postcode, item.country].filter(Boolean).join(', '),
-      contact: item.primaryContactName ?? '',
-      status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
-      keys: item.keys ?? item.keyCount ?? 0,
-      jobs: item.jobs ?? item.jobCount ?? 0,
+      primaryContactName: item.primaryContactName ?? '',
+      status: item.status === 'INACTIVE' ? 'INACTIVE' : 'ACTIVE',
+      totalKeys: item.totalKeys ?? 0,
+      totalJobs: item.totalJobs ?? 0,
       clientId: item.clientId ?? item.client?.id,
       clientName: item.clientName ?? item.client?.name,
     };
