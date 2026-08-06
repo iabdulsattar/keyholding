@@ -30,6 +30,7 @@ export class AddDocumentComponent implements OnInit {
   notifyUsers = true;
   fileName = '';
   selectedFile: File | null = null;
+  fileError = '';
   uploading = false;
   touched = new Set<string>();
   submitted = false;
@@ -104,12 +105,13 @@ export class AddDocumentComponent implements OnInit {
       const file = input.files[0];
       const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
-        alert('Only PDF and image files (.pdf, .jpg, .jpeg, .png, .webp) are allowed.');
+        this.fileError = 'Only PDF and image files (.pdf, .jpg, .jpeg, .png, .webp) are allowed.';
         input.value = '';
         this.selectedFile = null;
         this.fileName = '';
         return;
       }
+      this.fileError = '';
       this.selectedFile = file;
       this.fileName = file.name;
     }
