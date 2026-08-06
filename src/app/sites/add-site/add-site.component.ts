@@ -7,9 +7,10 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
-import { KeyVaultService } from '../../core/services/keyvault.service';
+import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-site',
@@ -20,6 +21,21 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .file-card { background: #ffffff; border: 1px solid #e3e6ea; border-radius: 14px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.04); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .file-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.06); }
+    .thumb { width: 100%; aspect-ratio: 16 / 11; border-radius: 8px; overflow: hidden; background: #f1f2f5; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb.doc-thumb { padding: 6px; }
+    .thumb.doc-thumb svg { width: 100%; height: 100%; }
+    .file-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .file-info { min-width: 0; }
+    .file-name { font-size: 13.5px; font-weight: 600; color: #1f2430; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-size: 12px; color: #8a91a0; margin-top: 2px; }
+    .view-btn { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; border: none; background: transparent; color: #2f6fed; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .view-btn:hover { background: rgba(47, 111, 237, 0.1); }
+    .view-btn:focus-visible { outline: 2px solid #2f6fed; outline-offset: 2px; }
+    .view-btn svg { width: 17px; height: 17px; }
   `]
 })
 export class AddSiteComponent implements OnInit, AfterViewChecked {
@@ -51,6 +67,9 @@ securityLevel = '';
   fileName = '';
   selectedFiles: File[] = [];
   attachmentPreviews: { file: File; url: string }[] = [];
+  attachments: KeyAttachment[] = [];
+  attachmentsLoading = false;
+  attachmentError = '';
   apptRequired = true;
   minNotice = '4 Hours';
   approvalContact = 'James Walker';
@@ -58,6 +77,7 @@ securityLevel = '';
   apptEmail = 'james.walker@metrosecurity.co.uk';
   apptNotes = 'Access will only be granted to scheduled visitors. Please ensure you have valid ID.';
   siteStatus = 'Active';
+  private readonly MAX_FILE_SIZE = 10 * 1024 * 1024;
   restrictedHours: Record<string, { from: string; to: string; closed: boolean }[]> = {
     Monday: [{ from: '08:00', to: '18:00', closed: false }],
     Tuesday: [{ from: '08:00', to: '18:00', closed: false }],
@@ -192,6 +212,7 @@ securityLevel = '';
     this.touched.add('contactEmail');
     this.touched.add('securityLevel');
     this.touched.add('alarmSystem');
+    this.touched.add('attachment');
 
     if (this.showClientDropdown) {
       this.touched.add('clientId');
@@ -209,6 +230,9 @@ securityLevel = '';
     if (!this.contactEmail.trim()) errors.contact.push('Email is required');
     if (!this.securityLevel) errors.details.push('Security Level is required');
     if (!this.alarmSystem) errors.details.push('Alarm System is required');
+    if (!this.attachments.length && !this.selectedFiles.length) {
+      errors.details.push('Attachment is required');
+    }
     this.sectionErrors = errors;
     return !errors.information.length && !errors.contact.length && !errors.details.length;
   }
@@ -251,14 +275,27 @@ securityLevel = '';
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files) return;
-    Array.from(input.files).forEach(file => {
-      this.selectedFiles.push(file);
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    if (file.size > this.MAX_FILE_SIZE) {
+      this.toast.error('File size exceeds 10MB limit.');
+      input.value = '';
+      return;
+    }
+    if (this.editMode && this.attachments.length > 0) {
+      this.deleteAttachmentAndToast(this.attachments[0].id || '');
+      this.selectedFiles = [file];
+      const reader = new FileReader();
+      reader.onload = () => this.attachmentPreviews = [{ file, url: reader.result as string }];
+      reader.readAsDataURL(file);
+      this.fileName = file.name;
+    } else {
+      this.selectedFiles = [file];
       const reader = new FileReader();
       reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string });
       reader.readAsDataURL(file);
-    });
-    this.fileName = this.selectedFiles.map(f => f.name).join(', ') || '';
+      this.fileName = file.name;
+    }
     input.value = '';
   }
 
@@ -270,8 +307,58 @@ securityLevel = '';
     this.fileName = this.selectedFiles.map(f => f.name).join(', ') || '';
   }
 
+  loadAttachments(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId || !this.editingSiteId) return;
+    this.attachmentsLoading = true;
+    this.attachmentError = '';
+    this.keyVault.listSiteAttachments(orgId, this.editingSiteId).subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res ?? [];
+        this.attachments = Array.isArray(payload) ? payload : [];
+        this.attachmentsLoading = false;
+      },
+      error: () => {
+        this.attachments = [];
+        this.attachmentsLoading = false;
+        this.attachmentError = 'Unable to load attachments.';
+      }
+    });
+  }
+
+  openAttachment(attachment: KeyAttachment): void {
+    const path = attachment['publicUrl'] || attachment.storagePath;
+    if (!path) {
+      this.toast.error('Attachment URL is not available.');
+      return;
+    }
+    window.open(path, '_blank');
+  }
+
+  deleteAttachment(attachmentId: string): Observable<any> {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId || !this.editingSiteId) return new Observable<any>();
+    return this.keyVault.deleteSiteAttachment(orgId, this.editingSiteId, attachmentId);
+  }
+
+  deleteAttachmentAndToast(attachmentId: string): void {
+    this.deleteAttachment(attachmentId).subscribe({
+      next: () => {
+        this.toast.success('Attachment removed');
+        this.loadAttachments();
+      },
+      error: () => this.toast.error('Failed to remove attachment')
+    });
+  }
+
   isImage(type = ''): boolean {
     return type.toLowerCase().startsWith('image/');
+  }
+
+  formatSize(bytes = 0): string {
+    if (!bytes) return '-';
+    const mb = bytes / (1024 * 1024);
+    return mb >= 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
   }
 
   private loadSite(siteId: string): void {
@@ -297,6 +384,7 @@ securityLevel = '';
       this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? '2' : item.accessSchedule === 'BY_APPOINTMENT' ? '4' : item.accessSchedule === '24_7' ? '1' : item.accessSchedule === 'RESTRICTED_HOURS' ? '3' : '4';
       this.securityLevel = this.securityLevelFromApi[item.securityLevel] || item.securityLevel || '';
       this.alarmSystem = this.alarmSystemFromApi[item.alarmSystem || ''] || '';
+      this.siteStatus = item.status === 'INACTIVE' ? 'Inactive' : 'Active';
       if (item.appointment) {
         this.apptRequired = true;
         this.minNotice = item.appointment.minimumNoticeRequired || '4 Hours';
@@ -305,7 +393,7 @@ securityLevel = '';
         this.apptEmail = item.appointment.approvalRequiredEmail || '';
         this.apptNotes = item.appointment.notes || '';
       }
-if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
+      if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
          const hours: Record<string, { from: string; to: string; closed: boolean }[]> = {};
          item.restrictedHours.forEach((slot: any) => {
            const day = slot.day;
@@ -318,6 +406,9 @@ if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
          });
          this.restrictedHours = { ...this.restrictedHours, ...hours };
        }
+      if (this.editMode) {
+        this.loadAttachments();
+      }
     });
   }
 
@@ -510,13 +601,7 @@ if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
     }
 
     this.selectedFiles.forEach(file => {
-      const keyVault = (this as any).clientService?.keyVault;
-      if (!keyVault) {
-        pending--;
-        this.maybeFinishSiteSubmit(pending);
-        return;
-      }
-      keyVault.addSiteAttachment(orgId, siteId, file, file.name, file.type || 'application/octet-stream', file.size).subscribe({
+      this.keyVault.addSiteAttachment(orgId, siteId, file).subscribe({
         next: () => {
           pending--;
           this.maybeFinishSiteSubmit(pending);
