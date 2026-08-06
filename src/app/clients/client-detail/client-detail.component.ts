@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
