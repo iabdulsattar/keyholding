@@ -125,6 +125,7 @@ export interface AuditRecord {
   details?: string;
   ipAddress?: string | null;
   createdAt: string;
+  clientId?: string;
 }
 
 @Injectable({
@@ -568,8 +569,9 @@ export class ClientService {
         details: data?.message ?? item.details ?? '',
         ipAddress: item.ipAddress ?? null,
         createdAt: item.occurredAt ?? item.createdAt ?? '',
+        clientId: data?.clientId ?? item.clientId ?? '',
        };
-     }
+    }
 
       listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
       const orgId = this.getOrgId();
