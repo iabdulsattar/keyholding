@@ -87,10 +87,9 @@ export class AllSitesComponent implements OnInit {
 
   private loadAllSites(): void {
     this.loading = true;
-    const status = this.statusFilter === 'all' ? undefined : this.statusFilter === 'active' ? 'Active' : this.statusFilter === 'inactive' ? 'Inactive' : this.statusFilter;
     const params: any = { page: 0, size: 200 };
     if (this.searchQuery) params.q = this.searchQuery;
-    if (status) params.status = status;
+    if (this.statusFilter && this.statusFilter !== 'all') params.status = this.statusFilter === 'active' ? 'ACTIVE' : this.statusFilter === 'inactive' ? 'INACTIVE' : this.statusFilter;
     if (this.siteTypeFilter) params.siteType = this.siteTypeFilter;
     if (this.clientFilter) params.clientId = this.clientFilter;
 
