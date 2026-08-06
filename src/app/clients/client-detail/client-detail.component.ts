@@ -335,7 +335,7 @@ viewEmergencyContact(contactId: string): void {
    private loadActivities(): void {
     if (!this.clientId) return;
     this.activitiesLoading = true;
-     this.clientService.listEntityAuditLog('CLIENT', this.clientId, { page: 0, size: this.activitiesRowsPerPage }).subscribe({
+      this.clientService.listOrganizationAuditLog({ page: 0, size: this.activitiesRowsPerPage }).subscribe({
       next: (result: any) => {
         const items = result?.items ?? result?.data?.items ?? [];
         this.activities = items.map((item: any) => ({

@@ -44,6 +44,8 @@ export class AddUserComponent implements OnInit {
   isEditMode = false;
   userId: string | null = null;
   userKeycloakId: string | null = null;
+  touched = new Set<string>();
+  submitted = false;
 
   form = {
     firstName: '',
@@ -81,6 +83,18 @@ export class AddUserComponent implements OnInit {
 
   get canSaveUser(): boolean {
     return this.permissionService.hasPermission('admin.users.manage');
+  }
+
+  get informationInvalid(): boolean {
+    return this.submitted && (
+      !this.form.firstName.trim() ||
+      !this.form.lastName.trim() ||
+      !this.form.email.trim()
+    );
+  }
+
+  markTouched(field: string): void {
+    this.touched.add(field);
   }
 
   ngOnInit(): void {
@@ -242,6 +256,11 @@ export class AddUserComponent implements OnInit {
     if (this.saving) {
       return;
     }
+
+    this.submitted = true;
+    this.touched.add('form.firstName');
+    this.touched.add('form.lastName');
+    this.touched.add('form.email');
 
     if (!this.form.firstName.trim() || !this.form.lastName.trim() || !this.form.email.trim()) {
       this.errorMessage = 'Please fill in all required fields.';

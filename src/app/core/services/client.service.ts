@@ -319,12 +319,12 @@ export class ClientService {
     );
   }
 
-  listAllSites(params?: { q?: string; status?: string; siteType?: string; page?: number; size?: number }): Observable<PaginatedResult<SiteRecord>> {
+  listAllSites(params?: { q?: string; status?: string; siteType?: string; clientId?: string; page?: number; size?: number }): Observable<PaginatedResult<SiteRecord>> {
     const orgId = this.getOrgId();
     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
     const page = params?.page ?? 0;
     const size = params?.size ?? 10;
-    return this.keyVault.listAllSites(orgId, { q: params?.q, status: params?.status, siteType: params?.siteType, page, size }).pipe(
+    return this.keyVault.listAllSites(orgId, { q: params?.q, status: params?.status, siteType: params?.siteType, clientId: params?.clientId, page, size }).pipe(
       map((res: any) => {
         const data = res?.data ?? res ?? {};
         const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapSite(item));
@@ -571,22 +571,39 @@ export class ClientService {
        };
      }
 
-     listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
-     const orgId = this.getOrgId();
-     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
-     const page = params?.page ?? 0;
-     const size = params?.size ?? 50;
-     return this.keyVault.listEntityAuditLog(orgId, targetType, targetId, { page, size }).pipe(
-       map((res: any) => {
-         const data = res?.data ?? res ?? {};
-         const meta = data?.meta ?? res?.meta ?? {};
-         const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
-         const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
-         const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-         return { items, totalItems, page, size, totalPages };
-       })
-     );
-   }
+      listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+      const orgId = this.getOrgId();
+      if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+      const page = params?.page ?? 0;
+      const size = params?.size ?? 50;
+      return this.keyVault.listEntityAuditLog(orgId, targetType, targetId, { page, size }).pipe(
+        map((res: any) => {
+          const data = res?.data ?? res ?? {};
+          const meta = data?.meta ?? res?.meta ?? {};
+          const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+          const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
+          const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+          return { items, totalItems, page, size, totalPages };
+        })
+      );
+    }
+
+      listOrganizationAuditLog(params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+      const orgId = this.getOrgId();
+      if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+      const page = params?.page ?? 0;
+      const size = params?.size ?? 50;
+      return this.keyVault.listAuditLog(orgId, { page, size }).pipe(
+        map((res: any) => {
+          const data = res?.data ?? res ?? {};
+          const meta = data?.meta ?? res?.meta ?? {};
+          const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+          const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
+          const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+          return { items, totalItems, page, size, totalPages };
+        })
+      );
+    }
 
   listAllKeys(params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
     const orgId = this.getOrgId();

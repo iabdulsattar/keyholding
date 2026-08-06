@@ -47,6 +47,20 @@ export class AddEmergencyContactComponent implements OnInit {
   notes = '';
 
   saving = false;
+  touched = new Set<string>();
+  submitted = false;
+
+  get informationInvalid(): boolean {
+    return this.submitted && (
+      !this.firstName.trim() ||
+      !this.lastName.trim() ||
+      !this.email.trim()
+    );
+  }
+
+  markTouched(field: string): void {
+    this.touched.add(field);
+  }
 
   get breadcrumbs(): BreadcrumbItem[] {
     return [
@@ -130,6 +144,11 @@ export class AddEmergencyContactComponent implements OnInit {
 
   saveContact(): void {
     if (this.saving) return;
+    this.submitted = true;
+    this.touched.add('firstName');
+    this.touched.add('lastName');
+    this.touched.add('email');
+
     if (!this.firstName.trim() || !this.lastName.trim()) {
       this.toast.error('First name and last name are required');
       return;

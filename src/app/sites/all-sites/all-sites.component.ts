@@ -46,7 +46,7 @@ export class AllSitesComponent implements OnInit {
   statusFilter: 'all' | 'Active' | 'Inactive' = 'all';
 
   clientOptions: Client[] = [];
-  siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution', 'Construction', 'Storage'];
+  siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution Centre', 'Construction Site', 'Storage', 'Remote Office', 'Data Centre', 'Other'];
 
   breadcrumbs: BreadcrumbItem[] = [
     { label: 'Sites' },
@@ -70,27 +70,14 @@ export class AllSitesComponent implements OnInit {
   private loadAllSites(): void {
     this.loading = true;
     const status = this.statusFilter === 'all' ? undefined : this.statusFilter;
-    this.clientService.listAllSites().subscribe((result: any) => {
-      let sites = result.items;
-      if (this.searchQuery) {
-        const q = this.searchQuery.toLowerCase();
-        sites = sites.filter((s: SiteRecord) =>
-          (s.name || '').toLowerCase().includes(q) ||
-          (s.code || '').toLowerCase().includes(q) ||
-          (s.clientName || '').toLowerCase().includes(q) ||
-          (s.address || '').toLowerCase().includes(q)
-        );
-      }
-      if (this.clientFilter) {
-        sites = sites.filter((s: SiteRecord) => s.clientId === this.clientFilter || s.clientName === this.clientFilter);
-      }
-      if (this.siteTypeFilter) {
-        sites = sites.filter((s: SiteRecord) => s.type === this.siteTypeFilter);
-      }
-      if (status) {
-        sites = sites.filter((s: SiteRecord) => s.status === status);
-      }
-      this.allSites = sites;
+    const params: any = { page: 0, size: 200 };
+    if (this.searchQuery) params.q = this.searchQuery;
+    if (status) params.status = status;
+    if (this.siteTypeFilter) params.siteType = this.siteTypeFilter;
+    if (this.clientFilter) params.clientId = this.clientFilter;
+
+    this.clientService.listAllSites(params).subscribe((result: any) => {
+      this.allSites = result.items;
       this.loading = false;
     });
   }

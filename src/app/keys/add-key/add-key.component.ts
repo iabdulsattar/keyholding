@@ -453,9 +453,13 @@ export class AddKeyComponent implements OnInit {
     }
   }
 
+  get returnUrl(): string {
+    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+  }
+
   private finishKeySubmit(): void {
     this.toast.success(this.editing ? 'Key updated successfully!' : 'Key saved successfully!');
-    const destination = this.clientId ? ['/clients', this.clientId] : ['/keys/all-keys'];
+    const destination = this.returnUrl ? [this.returnUrl] : this.clientId ? ['/clients', this.clientId] : ['/keys/all-keys'];
     setTimeout(() => this.router.navigate(destination), 800);
   }
 

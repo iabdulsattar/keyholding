@@ -124,8 +124,14 @@ export class ViewKeyComponent implements OnInit {
     if (el) el.classList.toggle('hidden');
   }
 
+  get returnUrl(): string {
+    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+  }
+
   goBack(): void {
-    if (this.clientId) {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else if (this.clientId) {
       this.router.navigate(['/clients', this.clientId]);
     } else {
       this.router.navigate(['/keys/all-keys']);
@@ -133,7 +139,7 @@ export class ViewKeyComponent implements OnInit {
   }
 
   onEditKey(): void {
-    this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId, editId: this.keyId } });
+    this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId, editId: this.keyId, returnUrl: this.returnUrl } });
   }
 
   onDeleteKey(): void {
@@ -143,7 +149,11 @@ export class ViewKeyComponent implements OnInit {
   onKeyDeleted(): void {
     this.showDeleteModal = false;
     this.toast.success('Key deleted successfully.');
-    this.router.navigate(['/keys/all-keys']);
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else {
+      this.router.navigate(['/keys/all-keys']);
+    }
   }
 
   onDeactivateKey(): void {

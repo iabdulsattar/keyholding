@@ -207,6 +207,7 @@ securityLevel = '';
     this.touched.add('city');
     this.touched.add('postcode');
     this.touched.add('country');
+    this.touched.add('accessSchedule');
     this.touched.add('contactName');
     this.touched.add('contactPhone');
     this.touched.add('contactEmail');
@@ -225,6 +226,7 @@ securityLevel = '';
     if (!this.city.trim()) errors.information.push('City is required');
     if (!this.postcode.trim()) errors.information.push('Postcode is required');
     if (!this.country) errors.information.push('Country is required');
+    if (!this.accessSchedule) errors.details.push('Access Schedule is required');
     if (!this.contactName.trim()) errors.contact.push('Primary Contact Name is required');
     if (!this.contactPhone.trim()) errors.contact.push('Phone is required');
     if (!this.contactEmail.trim()) errors.contact.push('Email is required');
@@ -620,9 +622,14 @@ securityLevel = '';
     }
   }
 
+  get returnUrl(): string {
+    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+  }
+
   private finishSiteSubmit(): void {
     this.toast.success(this.editMode ? 'Site updated successfully!' : 'Site saved successfully!');
-    setTimeout(() => this.router.navigate(['/clients', this.clientId]), 800);
+    const destination = this.returnUrl ? [this.returnUrl] : this.clientId ? ['/clients', this.clientId] : ['/sites/all-sites'];
+    setTimeout(() => this.router.navigate(destination), 800);
   }
 
   get showPreview(): boolean {

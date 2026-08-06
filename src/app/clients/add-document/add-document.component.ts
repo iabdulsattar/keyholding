@@ -31,6 +31,21 @@ export class AddDocumentComponent implements OnInit {
   fileName = '';
   selectedFile: File | null = null;
   uploading = false;
+  touched = new Set<string>();
+  submitted = false;
+
+  get informationInvalid(): boolean {
+    return this.submitted && (
+      !this.documentName.trim() ||
+      !this.category ||
+      !this.documentType ||
+      !this.selectedFile
+    );
+  }
+
+  markTouched(field: string): void {
+    this.touched.add(field);
+  }
 
   breadcrumbs: BreadcrumbItem[] = [
     { label: 'Client Management', link: '/clients' },
@@ -109,7 +124,13 @@ export class AddDocumentComponent implements OnInit {
   }
 
   uploadDocument(): void {
-    if (!this.selectedFile || !this.documentName || !this.category || !this.documentType) {
+    this.submitted = true;
+    this.touched.add('documentName');
+    this.touched.add('category');
+    this.touched.add('documentType');
+    this.touched.add('file');
+
+    if (!this.selectedFile || !this.documentName.trim() || !this.category || !this.documentType) {
       return;
     }
     this.uploading = true;

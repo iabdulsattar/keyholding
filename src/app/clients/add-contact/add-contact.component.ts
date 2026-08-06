@@ -47,6 +47,26 @@ export class AddContactComponent implements OnInit {
   notes = '';
 
   saving = false;
+  touched = new Set<string>();
+  submitted = false;
+
+  get informationInvalid(): boolean {
+    return this.submitted && (
+      !this.firstName.trim() ||
+      !this.lastName.trim() ||
+      !this.jobTitle.trim() ||
+      !this.email.trim() ||
+      !this.phone.trim()
+    );
+  }
+
+  get contactInvalid(): boolean {
+    return this.submitted && (!this.status);
+  }
+
+  markTouched(field: string): void {
+    this.touched.add(field);
+  }
 
   get breadcrumbs(): BreadcrumbItem[] {
     return [
@@ -122,6 +142,14 @@ export class AddContactComponent implements OnInit {
 
   saveContact(): void {
     if (this.saving) return;
+    this.submitted = true;
+    this.touched.add('firstName');
+    this.touched.add('lastName');
+    this.touched.add('jobTitle');
+    this.touched.add('email');
+    this.touched.add('phone');
+    this.touched.add('status');
+
     if (!this.firstName.trim() || !this.lastName.trim()) {
       this.toast.error('First name and last name are required');
       return;

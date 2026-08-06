@@ -62,6 +62,10 @@ export class ViewSiteComponent implements OnInit {
     return crumbs;
   }
 
+  get returnUrl(): string {
+    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+  }
+
   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
 
   ngOnInit(): void {
@@ -179,7 +183,9 @@ export class ViewSiteComponent implements OnInit {
   }
 
   goBack(): void {
-    if (this.clientId) {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else if (this.clientId) {
       this.router.navigate(['/clients', this.clientId]);
     } else {
       this.router.navigate(['/sites/all-sites']);
@@ -189,7 +195,7 @@ export class ViewSiteComponent implements OnInit {
   onEditSite(): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     const clientId = this.site?.clientId || this.site?.client?.id || '';
-    this.router.navigate(['/sites/add-site'], { queryParams: { clientId: clientId, editId: this.siteId } });
+    this.router.navigate(['/sites/add-site'], { queryParams: { clientId: clientId, editId: this.siteId, returnUrl: this.returnUrl } });
   }
 
   onDeactivateSite(): void {
@@ -219,8 +225,12 @@ export class ViewSiteComponent implements OnInit {
     this.clientService.deleteSite(orgId, this.siteId).subscribe({
       next: () => {
         this.toast.success('Site deleted successfully');
-        const clientId = this.site?.clientId || this.site?.client?.id || '';
-        this.router.navigate(['/clients', clientId]);
+        if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          const clientId = this.site?.clientId || this.site?.client?.id || '';
+          this.router.navigate(['/clients', clientId]);
+        }
       },
       error: () => this.toast.error('Failed to delete site')
     });

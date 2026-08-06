@@ -70,27 +70,36 @@
         <div class="col-span-2 grid grid-cols-2 gap-x-6 gap-y-5">
 
           <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">First Name <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <input type="text" [(ngModel)]="form.firstName" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+            <label class="block text-sm font-semibold" [class.text-rose-600]="informationInvalid && touched.has('form.firstName')" [class.text-slate-800]="!(informationInvalid && touched.has('form.firstName'))">First Name <span class="text-red-500">*</span></label>
+            <div [class.border-rose-500]="informationInvalid && touched.has('form.firstName')" class="rounded-lg border border-slate-200 transition">
+              <div class="relative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <input type="text" [(ngModel)]="form.firstName" name="form.firstName" (blur)="markTouched('form.firstName')" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+              </div>
             </div>
+            @if (informationInvalid && touched.has('form.firstName')) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Last Name <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <input type="text" [(ngModel)]="form.lastName" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+            <label class="block text-sm font-semibold" [class.text-rose-600]="informationInvalid && touched.has('form.lastName')" [class.text-slate-800]="!(informationInvalid && touched.has('form.lastName'))">Last Name <span class="text-red-500">*</span></label>
+            <div [class.border-rose-500]="informationInvalid && touched.has('form.lastName')" class="rounded-lg border border-slate-200 transition">
+              <div class="relative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <input type="text" [(ngModel)]="form.lastName" name="form.lastName" (blur)="markTouched('form.lastName')" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+              </div>
             </div>
+            @if (informationInvalid && touched.has('form.lastName')) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Email Address <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-              <input type="email" [(ngModel)]="form.email" [readonly]="isEditMode" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" [class.bg-slate-50]="isEditMode" />
+            <label class="block text-sm font-semibold" [class.text-rose-600]="informationInvalid && touched.has('form.email')" [class.text-slate-800]="!(informationInvalid && touched.has('form.email'))">Email Address <span class="text-red-500">*</span></label>
+            <div [class.border-rose-500]="informationInvalid && touched.has('form.email')" class="rounded-lg border border-slate-200 transition">
+              <div class="relative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                <input type="email" [(ngModel)]="form.email" name="form.email" (blur)="markTouched('form.email')" [readonly]="isEditMode" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" [class.bg-slate-50]="isEditMode" />
+              </div>
             </div>
+            @if (informationInvalid && touched.has('form.email')) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
           </div>
 
           <div>
@@ -107,7 +116,7 @@
             <label class="block text-sm font-semibold text-slate-800 mb-1.5">Department <span class="font-normal text-slate-400">(Optional)</span></label>
             <div class="relative">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M3 21h18"></path><path d="M5 21V7l8-4 8 4v14"></path><path d="M17 21v-8.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5V21"></path></svg>
-              <select [(ngModel)]="form.department" class="w-full appearance-none pl-9 pr-9 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white">
+              <select [(ngModel)]="form.department" name="form.department" class="w-full appearance-none pl-9 pr-9 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white">
                 <option value="">Select department</option>
                 <option>Operations</option>
                 <option>Security</option>
@@ -122,7 +131,7 @@
             <label class="block text-sm font-semibold text-slate-800 mb-1.5">Phone Number <span class="font-normal text-slate-400">(Optional)</span></label>
             <div class="relative">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-              <input type="text" [(ngModel)]="form.phoneNumber" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+              <input type="text" [(ngModel)]="form.phoneNumber" name="form.phoneNumber" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
             </div>
           </div>
 
@@ -130,7 +139,7 @@
             <label class="block text-sm font-semibold text-slate-800 mb-1.5">Job Title <span class="font-normal text-slate-400">(Optional)</span></label>
             <div class="relative">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><circle cx="8" cy="10" r="1.5" fill="currentColor" stroke="none"></circle><path d="M14 13h4"></path><path d="M14 17h4"></path><path d="M8 17h.01"></path></svg>
-              <input type="text" [(ngModel)]="form.jobTitle" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+              <input type="text" [(ngModel)]="form.jobTitle" name="form.jobTitle" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
             </div>
           </div>
 
@@ -138,7 +147,7 @@
             <label class="block text-sm font-semibold text-slate-800 mb-1.5">Location <span class="font-normal text-slate-400">(Optional)</span></label>
             <div class="relative">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M20 10c0 6-12 13-12 13S4 16 4 10a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              <input type="text" [(ngModel)]="form.location" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+              <input type="text" [(ngModel)]="form.location" name="form.location" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
             </div>
           </div>
 
@@ -154,7 +163,7 @@
 
         <div class="space-y-4">
           <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="form.canAccessWeb" class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+            <input type="checkbox" [(ngModel)]="form.canAccessWeb" name="form.canAccessWeb" class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
             <div>
               <p class="text-sm font-semibold text-slate-800">Web Application</p>
               <p class="text-sm text-slate-500">User can access the system from the web.</p>
@@ -162,7 +171,7 @@
           </label>
 
           <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="form.canAccessMobile" class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+            <input type="checkbox" [(ngModel)]="form.canAccessMobile" name="form.canAccessMobile" class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
             <div>
               <p class="text-sm font-semibold text-slate-800">Mobile Application</p>
               <p class="text-sm text-slate-500">User can access the system from the mobile app.</p>
