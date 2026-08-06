@@ -850,7 +850,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get totalJobs(): number {
-    return this.sites.reduce((sum, site) => sum + (site.jobs || 0), 0);
+    return this.sites.reduce((sum, site) => sum + (site.totalJobs || 0), 0);
   }
 
   get keyStatusStats(): { status: string; count: number; color: string; pct: number }[] {
@@ -984,11 +984,11 @@ viewEmergencyContact(contactId: string): void {
     const q = this.sitesSearch.toLowerCase().trim();
     this.filteredSites = this.sites.filter(item => {
       const matchesSearch = item.name.toLowerCase().includes(q) ||
-                            item.code.toLowerCase().includes(q) ||
+                            item.siteCode.toLowerCase().includes(q) ||
                             item.address.toLowerCase().includes(q) ||
-                            item.contact.toLowerCase().includes(q);
+                            item.primaryContactName.toLowerCase().includes(q);
       const matchesStatus = this.sitesStatus === 'All' || item.status === this.sitesStatus;
-      const matchesType = this.sitesType === 'All' || item.type === this.sitesType;
+      const matchesType = this.sitesType === 'All' || item.siteType === this.sitesType;
       return matchesSearch && matchesStatus && matchesType;
     });
   }

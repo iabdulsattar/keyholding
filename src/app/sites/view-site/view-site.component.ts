@@ -150,7 +150,6 @@ export class ViewSiteComponent implements OnInit {
       this.site = item
         ? {
             ...item,
-            siteCode: item.code,
             address: [item.addressLine1, item.addressLine2, item.city, item.postcode, item.country].filter(Boolean).join(', '),
             region: item.city || item.region || '--',
             clientName: item.clientName || item.client?.name || 'Client',

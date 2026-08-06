@@ -582,18 +582,18 @@
                    @for (site of sitesPaginated; track site.id) {
                    <tr class="hover:bg-slate-50/70 transition duration-150">
                      <td class="py-3.5 px-4"><input type="checkbox" class="rounded text-blue-600"></td>
-                     <td class="py-3.5 px-4 font-mono text-xs text-slate-800">{{ site.code }}</td>
-                     <td class="py-3.5 px-4 text-blue-500 hover:underline cursor-pointer">{{ site.name }}</td>
-                     <td class="py-3.5 px-4">
-                       <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + site.typeColor + '-50 text-' + site.typeColor + '-700 border border-' + site.typeColor + '-100'">{{ site.type }}</span>
-                     </td>
-                     <td class="py-3.5 px-4 text-xs max-w-xs truncate text-slate-500" [title]="site.address">{{ site.address }}</td>
-                     <td class="py-3.5 px-4 text-slate-600 font-medium">{{ site.contact }}</td>
-                     <td class="py-3.5 px-4">
-                       <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (site.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600')"> {{ site.status }}</span>
-                     </td>
-                     <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.keys }}</td>
-                     <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.jobs }}</td>
+                      <td class="py-3.5 px-4 font-mono text-xs text-slate-800">{{ site.siteCode }}</td>
+                      <td class="py-3.5 px-4 text-blue-500 hover:underline cursor-pointer">{{ site.name }}</td>
+                      <td class="py-3.5 px-4">
+                        <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + site.typeColor + '-50 text-' + site.typeColor + '-700 border border-' + site.typeColor + '-100'">{{ site.siteType }}</span>
+                      </td>
+                      <td class="py-3.5 px-4 text-xs max-w-xs truncate text-slate-500" [title]="site.address">{{ site.address }}</td>
+                      <td class="py-3.5 px-4 text-slate-600 font-medium">{{ site.primaryContactName }}</td>
+                      <td class="py-3.5 px-4">
+                        <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (site.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600')"> {{ site.status }}</span>
+                      </td>
+                      <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.totalKeys }}</td>
+                      <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.totalJobs }}</td>
                      <td class="py-3.5 px-4 text-center">
                        <div class="flex items-center justify-center gap-2 text-slate-400">
                          <button (click)="viewSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">

@@ -120,8 +120,8 @@ export class AllSitesComponent implements OnInit {
   }
 
   get totalSites(): number { return this.allSites.length; }
-  get activeSites(): number { return this.allSites.filter(s => s.status === 'Active').length; }
-  get inactiveSites(): number { return this.allSites.filter(s => s.status === 'Inactive').length; }
+  get activeSites(): number { return this.allSites.filter(s => s.status === 'ACTIVE').length; }
+  get inactiveSites(): number { return this.allSites.filter(s => s.status === 'INACTIVE').length; }
   get activePercentage(): string {
     if (!this.totalSites) return '0';
     return ((this.totalSites - this.inactiveSites) / this.totalSites * 100).toFixed(1);
@@ -133,9 +133,9 @@ export class AllSitesComponent implements OnInit {
 
   statusBadge(status: string): string {
     switch (status) {
-      case 'Active':
+      case 'ACTIVE':
         return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span>Active</span></span>`;
-      case 'Inactive':
+      case 'INACTIVE':
         return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-rose-50 text-rose-600 border border-rose-100"><span>Inactive</span></span>`;
       default:
         return status;

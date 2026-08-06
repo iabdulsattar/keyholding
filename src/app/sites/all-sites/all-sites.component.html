@@ -97,21 +97,21 @@
             } @else {
               @for (s of allSites; track s.id) {
               <tr class="hover:bg-slate-50/70 transition">
-                <td class="td-cell font-medium text-slate-700">{{ s.code }}</td>
+                <td class="td-cell font-medium text-slate-700">{{ s.siteCode }}</td>
                 <td class="td-cell">
                   <p class="font-semibold text-slate-900">{{ s.name }}</p>
-                  <span class="tag bg-slate-100 text-slate-600">{{ s.type }}</span>
+                  <span class="tag bg-slate-100 text-slate-600">{{ s.siteType }}</span>
                 </td>
                 <td class="td-cell text-slate-600">{{ s.clientName || '--' }}</td>
                 <td class="td-cell text-slate-600 whitespace-pre-line leading-snug">{{ s.address }}</td>
                 <td class="td-cell">
-                  <p class="text-slate-700 font-medium">{{ s.contact }}</p>
+                  <p class="text-slate-700 font-medium">{{ s.primaryContactName }}</p>
                 </td>
                 <td class="td-cell">
                   <span class="status-badge" [innerHTML]="statusBadge(s.status)"></span>
                 </td>
-                <td class="td-cell text-slate-700">{{ s.keys }}</td>
-                <td class="td-cell text-slate-700">{{ s.jobs }}</td>
+                <td class="td-cell text-slate-700">{{ s.totalKeys }}</td>
+                <td class="td-cell text-slate-700">{{ s.totalJobs }}</td>
                 <td class="td-cell text-right pr-5">
                   <div class="flex items-center justify-end gap-2">
                     <a [routerLink]="['/sites/view-site', s.id]" class="text-blue-600 hover:text-blue-700">

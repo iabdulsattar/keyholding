@@ -32,17 +32,16 @@ export interface KeyRecord {
 
 export interface SiteRecord {
   id: string;
-  code: string;
+  siteCode: string;
   name: string;
-  type: string;
-  typeColor: string;
+  siteType: string;
   address: string;
-  contact: string;
-  status: 'Active' | 'Inactive';
-  keys: number;
-  jobs: number;
-  clientId?: string;
+  primaryContactName: string;
+  status: 'ACTIVE' | 'INACTIVE';
   clientName?: string;
+  totalKeys: number;
+  totalJobs: number;
+  clientId?: string;
 }
 
 export interface Client {
