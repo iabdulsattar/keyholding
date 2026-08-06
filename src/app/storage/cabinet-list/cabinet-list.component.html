@@ -100,27 +100,11 @@
         </div>
         <div class="w-full lg:w-56">
           <p class="text-xs text-slate-400 mb-1 lg:hidden">Status</p>
-          <div class="relative">
-            <select [(ngModel)]="activeFilter" (change)="onStatusFilterChange()"
-              class="w-full appearance-none border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600">
-              <option>All Statuses</option>
-              <option>Active</option>
-              <option>Full</option>
-              <option>Inactive</option>
-            </select>
-            <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-          </div>
+          <app-rich-select [options]="statusFilterOptions" [(value)]="activeFilter" (valueChange)="onStatusFilterChange()" placeholder="All Statuses" class="w-full"></app-rich-select>
         </div>
         <div class="w-full lg:w-56">
           <p class="text-xs text-slate-400 mb-1 lg:hidden">Cabinet Type</p>
-          <div class="relative">
-            <select [(ngModel)]="activeTypeFilter" (change)="onTypeFilterChange()"
-              class="w-full appearance-none border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600">
-              <option>All Types</option>
-              <option *ngFor="let t of uniqueTypes">{{ t }}</option>
-            </select>
-            <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-          </div>
+          <app-rich-select [options]="activeTypeFilterOptions" [(value)]="activeTypeFilter" (valueChange)="onTypeFilterChange()" placeholder="All Types" class="w-full"></app-rich-select>
         </div>
         <button class="inline-flex items-center justify-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 whitespace-nowrap">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 12h12M10 20h4"/></svg>

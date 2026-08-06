@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-emergency-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
   templateUrl: './add-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -45,6 +46,40 @@ export class AddEmergencyContactComponent implements OnInit {
   status = 'Active';
   address = '';
   notes = '';
+
+  departmentOptions: RichSelectOption[] = [
+    { value: '', label: 'Select department' },
+    { value: 'Operations', label: 'Operations' },
+    { value: 'Administration', label: 'Administration' },
+    { value: 'Finance', label: 'Finance' },
+    { value: 'Human Resources', label: 'Human Resources' },
+    { value: 'IT', label: 'IT' },
+    { value: 'Sales', label: 'Sales' },
+    { value: 'Support', label: 'Support' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'Other', label: 'Other' },
+  ];
+  availabilityOptions: RichSelectOption[] = [
+    { value: '', label: 'Select availability' },
+    { value: '24/7', label: '24/7' },
+    { value: 'Business Hours', label: 'Business Hours' },
+    { value: 'Evenings', label: 'Evenings' },
+    { value: 'Weekends', label: 'Weekends' },
+    { value: 'On Call', label: 'On Call' },
+  ];
+  statusOptions: RichSelectOption[] = [
+    { value: '', label: 'Select Status' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
+  notifyForOptions: RichSelectOption[] = [
+    { value: '', label: 'Select notification type' },
+    { value: 'All Emergencies', label: 'All Emergencies' },
+    { value: 'Key Related', label: 'Key Related' },
+    { value: 'Site Related', label: 'Site Related' },
+    { value: 'Security Incidents', label: 'Security Incidents' },
+    { value: 'Other', label: 'Other' },
+  ];
 
   saving = false;
   touched = new Set<string>();

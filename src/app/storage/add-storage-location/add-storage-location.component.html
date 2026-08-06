@@ -60,25 +60,14 @@
                     </div> <!-- Site / Building / Location Type -->
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                             <div> <label class="mb-1.5 block text-sm font-medium text-slate-700"> Site / Building <span
-                                    class="text-rose-500">*</span> </label> <select
-                                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                                [(ngModel)]="siteId" name="siteId">
-                                <option value="">Select site or building (if applicable)</option>
-                                <option *ngFor="let sb of siteBuildings" [value]="sb.id">{{ sb.name }}</option>
-                            </select>
+                                    class="text-rose-500">*</span> </label>
+                            <app-rich-select [options]="siteBuildingOptions" [(value)]="siteId" placeholder="Select site or building (if applicable)" class="w-full"></app-rich-select>
                             <p class="mt-1.5 text-xs text-slate-400">Select the site or building this storage location
                                 belongs to.</p>
                         </div>
                             <div> <label class="mb-1.5 block text-sm font-medium text-slate-700"> Location Type <span
-                                    class="text-rose-500">*</span> </label> <select
-                                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                                [(ngModel)]="locationType" name="locationType">
-                                <option value="">Select location type</option>
-                                <option>Safe Room</option>
-                                <option>Store Room</option>
-                                <option>Mobile Unit</option>
-                                <option>Branch Office</option>
-                            </select>
+                                    class="text-rose-500">*</span> </label>
+                            <app-rich-select [options]="locationTypeOptions" [(value)]="locationType" placeholder="Select location type" class="w-full"></app-rich-select>
                             <p class="mt-1.5 text-xs text-slate-400">e.g., Safe Room, Store Room, Mobile Unit, Branch
                                 Office</p>
                         </div>
@@ -103,14 +92,8 @@
                                 [(ngModel)]="postcode" name="postcode" />
                         </div>
                         <div> <label class="mb-1.5 block text-sm font-medium text-slate-700"> Country <span
-                                    class="text-rose-500">*</span> </label> <select
-                                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                                [(ngModel)]="country" name="country">
-                                <option value="">Select country</option>
-                                <option>United Kingdom</option>
-                                <option>United States</option>
-                                <option>Pakistan</option>
-                            </select> </div>
+                                    class="text-rose-500">*</span> </label>
+                        <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" class="w-full"></app-rich-select> </div>
                     </div>
                     <hr class="border-slate-100" /> <!-- Additional Information -->
                     <div>

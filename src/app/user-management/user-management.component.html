@@ -282,26 +282,10 @@
           <input type="text" [(ngModel)]="permissionsSearchQuery" (ngModelChange)="onPermissionSearch()" placeholder="Search permissions..." class="w-full h-10 rounded-lg border border-gray-200 bg-white pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100" />
         </div>
 
-        <select [(ngModel)]="permissionFilters.module" class="h-10 w-full sm:w-auto rounded-lg border border-gray-200 bg-white px-3 pr-9 text-sm font-medium text-slate-700 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100">
-          @for (opt of permissionModules; track opt) {
-            <option [value]="opt">{{ opt === 'All' ? 'All Modules' : opt }}</option>
-          }
-        </select>
-        <select [(ngModel)]="permissionFilters.category" class="h-10 w-full sm:w-auto rounded-lg border border-gray-200 bg-white px-3 pr-9 text-sm font-medium text-slate-700 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100">
-          @for (opt of permissionCategories; track opt) {
-            <option [value]="opt">{{ opt === 'All' ? 'All Categories' : opt }}</option>
-          }
-        </select>
-        <select [(ngModel)]="permissionFilters.type" class="h-10 w-full sm:w-auto rounded-lg border border-gray-200 bg-white px-3 pr-9 text-sm font-medium text-slate-700 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100">
-          @for (opt of permissionTypes; track opt) {
-            <option [value]="opt">{{ opt === 'All' ? 'All Types' : opt }}</option>
-          }
-        </select>
-        <select [(ngModel)]="permissionFilters.status" class="h-10 w-full sm:w-auto rounded-lg border border-gray-200 bg-white px-3 pr-9 text-sm font-medium text-slate-700 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100">
-          @for (opt of permissionStatuses; track opt) {
-            <option [value]="opt">{{ opt === 'All' ? 'All Statuses' : opt }}</option>
-          }
-        </select>
+        <app-rich-select [options]="permissionModuleOptions" [(value)]="permissionFilters.module" placeholder="All Modules" class="h-10 w-full sm:w-auto"></app-rich-select>
+        <app-rich-select [options]="permissionCategoryOptions" [(value)]="permissionFilters.category" placeholder="All Categories" class="h-10 w-full sm:w-auto"></app-rich-select>
+        <app-rich-select [options]="permissionTypeOptions" [(value)]="permissionFilters.type" placeholder="All Types" class="h-10 w-full sm:w-auto"></app-rich-select>
+        <app-rich-select [options]="permissionStatusOptions" [(value)]="permissionFilters.status" placeholder="All Statuses" class="h-10 w-full sm:w-auto"></app-rich-select>
       </div>
 
       <div class="rounded-2xl border border-gray-200 bg-white shadow-theme-xs overflow-hidden">

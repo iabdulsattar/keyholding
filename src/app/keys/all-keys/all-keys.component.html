@@ -65,22 +65,9 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:flex lg:gap-3">
         
-          <select [(ngModel)]="siteFilter" (ngModelChange)="onSiteChange()" class="filter-select">
-            <option value="">All Sites</option>
-            @for (s of siteOptions; track s.id) {
-              <option [value]="s.id">{{ s.name }}</option>
-            }
-          </select>
-          <select [(ngModel)]="keyTypeFilter" (ngModelChange)="onKeyTypeChange()" class="filter-select">
-            @for (opt of keyTypeOptions; track opt) {
-              <option [value]="opt === 'All Key Types' ? '' : opt">{{ opt }}</option>
-            }
-          </select>
-          <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusChange()" class="filter-select">
-            @for (opt of statusOptions; track opt.label) {
-              <option [value]="opt.value">{{ opt.label }}</option>
-            }
-          </select>
+          <app-rich-select [options]="siteFilterOptions" [(value)]="siteFilter" (valueChange)="onSiteChange()" placeholder="All Sites"></app-rich-select>
+          <app-rich-select [options]="keyTypeFilterOptions" [(value)]="keyTypeFilter" (valueChange)="onKeyTypeChange()" placeholder="All Key Types"></app-rich-select>
+          <app-rich-select [options]="statusFilterOptions" [(value)]="statusFilter" (valueChange)="onStatusChange()" placeholder="All Status"></app-rich-select>
         </div>
       </div>
     </div>

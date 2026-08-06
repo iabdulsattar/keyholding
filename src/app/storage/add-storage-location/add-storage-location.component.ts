@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface SiteBuilding {
   id: string;
@@ -12,7 +13,7 @@ interface SiteBuilding {
 @Component({
   selector: 'app-add-storage-location',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
   templateUrl: './add-storage-location.component.html',
 })
 export class AddStorageLocationComponent implements OnInit, AfterViewInit {
@@ -33,6 +34,24 @@ export class AddStorageLocationComponent implements OnInit, AfterViewInit {
   accessInstructions = '';
   description = '';
   status = 'ACTIVE';
+
+  locationTypeOptions: RichSelectOption[] = [
+    { value: '', label: 'Select location type' },
+    { value: 'Safe Room', label: 'Safe Room' },
+    { value: 'Store Room', label: 'Store Room' },
+    { value: 'Mobile Unit', label: 'Mobile Unit' },
+    { value: 'Branch Office', label: 'Branch Office' },
+  ];
+  countryOptions: RichSelectOption[] = [
+    { value: '', label: 'Select country' },
+    { value: 'United Kingdom', label: 'United Kingdom' },
+    { value: 'United States', label: 'United States' },
+    { value: 'Pakistan', label: 'Pakistan' },
+  ];
+
+  get siteBuildingOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'Select site or building (if applicable)' }, ...this.siteBuildings.map(sb => ({ value: sb.id, label: sb.name }))];
+  }
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 

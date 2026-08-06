@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface StorageLocation {
   id: string;
@@ -13,7 +14,7 @@ interface StorageLocation {
 @Component({
   selector: 'app-add-cabinet',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
   templateUrl: './add-cabinet.component.html',
 })
 export class AddCabinetComponent implements OnInit, AfterViewInit {
@@ -30,6 +31,28 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   alarmSystem = true;
   responsiblePerson = '';
   notes = '';
+
+  cabinetTypeOptions: RichSelectOption[] = [
+    { value: '', label: 'Select cabinet type' },
+    { value: 'Standard', label: 'Standard' },
+    { value: 'Fire Rated', label: 'Fire Rated' },
+    { value: 'High Security', label: 'High Security' },
+  ];
+  securityLevelOptions: RichSelectOption[] = [
+    { value: '', label: 'Select security level' },
+    { value: 'Standard', label: 'Standard' },
+    { value: 'High', label: 'High' },
+  ];
+  fireRatingOptions: RichSelectOption[] = [
+    { value: '', label: 'Select fire rating' },
+    { value: '30 min', label: '30 min' },
+    { value: '60 min', label: '60 min' },
+    { value: '120 min', label: '120 min' },
+  ];
+
+  get storageLocationOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'Select storage location' }, ...this.storageLocations.map(loc => ({ value: loc.id, label: `${loc.name} (${loc.code})` }))];
+  }
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 

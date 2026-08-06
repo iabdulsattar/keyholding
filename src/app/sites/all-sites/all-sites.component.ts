@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord } from '../../core/services/client.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-all-sites',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
   templateUrl: './all-sites.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -47,6 +48,23 @@ export class AllSitesComponent implements OnInit {
 
   clientOptions: Client[] = [];
   siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution Centre', 'Construction Site', 'Storage', 'Remote Office', 'Data Centre', 'Other'];
+  siteTypeFilterOptions: RichSelectOption[] = [
+    { value: '', label: 'All Site Types' },
+    { value: 'Office', label: 'Office' },
+    { value: 'Warehouse', label: 'Warehouse' },
+    { value: 'Retail', label: 'Retail' },
+    { value: 'Distribution Centre', label: 'Distribution Centre' },
+    { value: 'Construction Site', label: 'Construction Site' },
+    { value: 'Storage', label: 'Storage' },
+    { value: 'Remote Office', label: 'Remote Office' },
+    { value: 'Data Centre', label: 'Data Centre' },
+    { value: 'Other', label: 'Other' },
+  ];
+  statusFilterOptions: RichSelectOption[] = [
+    { value: 'all', label: 'All Statuses' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
 
   breadcrumbs: BreadcrumbItem[] = [
     { label: 'Sites' },
@@ -96,6 +114,10 @@ export class AllSitesComponent implements OnInit {
 
   onSiteTypeChange(): void {
     this.loadAllSites();
+  }
+
+  get clientFilterOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'All Clients' }, ...this.clientOptions.map(c => ({ value: c.id, label: c.name }))];
   }
 
   get totalSites(): number { return this.allSites.length; }

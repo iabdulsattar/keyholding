@@ -114,17 +114,7 @@
 
           <div>
             <label class="block text-sm font-semibold text-slate-800 mb-1.5">Department <span class="font-normal text-slate-400">(Optional)</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M3 21h18"></path><path d="M5 21V7l8-4 8 4v14"></path><path d="M17 21v-8.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5V21"></path></svg>
-              <select [(ngModel)]="form.department" name="form.department" class="w-full appearance-none pl-9 pr-9 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white">
-                <option value="">Select department</option>
-                <option>Operations</option>
-                <option>Security</option>
-                <option>Compliance</option>
-                <option>HR</option>
-              </select>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
+            <app-rich-select [options]="departmentOptions" [(value)]="form.department" placeholder="Select department" class="w-full"></app-rich-select>
           </div>
 
           <div>

@@ -71,17 +71,7 @@
               </div>
               <div>
                 <label class="field-label">Department</label>
-                <select class="field-input" [(ngModel)]="department" name="department" (blur)="markTouched('department')" [disabled]="saving">
-                  <option value="">Select department</option>
-                  <option>Operations</option>
-                  <option>Accounts</option>
-                  <option>Finance</option>
-                  <option>Human Resources</option>
-                  <option>Compliance</option>
-                  <option>Customer Support</option>
-                  <option>IT</option>
-                  <option>Procurement</option>
-                </select>
+                <app-rich-select [options]="departmentOptions" [(value)]="department" (valueChange)="markTouched('department')" [disabled]="saving" placeholder="Select department" class="w-full"></app-rich-select>
                 <p class="field-hint">Select the department.</p>
               </div>
             </div>
@@ -90,10 +80,7 @@
               <div>
                 <label class="field-label" [class.text-rose-600]="contactInvalid && touched.has('status')" [class.text-slate-700]="!(contactInvalid && touched.has('status'))">Status <span class="text-rose-500">*</span></label>
                 <div [class.border-rose-500]="contactInvalid && touched.has('status')" class="rounded-lg border border-slate-200 transition">
-                  <select class="field-input border-none" [(ngModel)]="status" name="status" (blur)="markTouched('status')" [disabled]="saving">
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
+                  <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
                 </div>
                 @if (contactInvalid && touched.has('status')) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
                 <p class="field-hint">Set the status of this contact.</p>
@@ -101,11 +88,7 @@
               
               <div>
                 <label class="field-label">Preferred Contact Method</label>
-                <select class="field-input" [(ngModel)]="preferredContactMethod" name="preferredContactMethod" [disabled]="saving">
-                  <option value="Email">Email</option>
-                  <option value="Phone">Phone</option>
-                  <option value="SMS">SMS</option>
-                </select>
+                <app-rich-select [options]="preferredContactMethodOptions" [(value)]="preferredContactMethod" [disabled]="saving" placeholder="Select preferred contact method" class="w-full"></app-rich-select>
                 <p class="field-hint">How would you like to be contacted?</p>
               </div>
             </div>

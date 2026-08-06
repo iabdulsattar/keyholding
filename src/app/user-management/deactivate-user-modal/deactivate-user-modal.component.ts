@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
 import { UserService } from '../../core/services/user.service';
 import { DeactivateReason } from '../../core/models/user.models';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-deactivate-user-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, RichSelectComponent],
   templateUrl: './deactivate-user-modal.component.html',
   styles: ``
 })
@@ -18,12 +19,12 @@ export class DeactivateUserModalComponent {
   readonly close = output<void>();
   readonly deactivated = output<void>();
 
-  reasons: { label: string; value: DeactivateReason }[] = [
-    { label: 'Employee exit', value: 'LEFT_COMPANY' },
-    { label: 'Policy violation', value: 'POLICY_VIOLATION' },
-    { label: 'Extended leave', value: 'TEMPORARY_LEAVE' },
-    { label: 'Duplicate account', value: 'ROLE_CHANGE' },
-    { label: 'Other', value: 'OTHER' },
+  reasons: RichSelectOption[] = [
+    { value: 'LEFT_COMPANY', label: 'Employee exit' },
+    { value: 'POLICY_VIOLATION', label: 'Policy violation' },
+    { value: 'TEMPORARY_LEAVE', label: 'Extended leave' },
+    { value: 'ROLE_CHANGE', label: 'Duplicate account' },
+    { value: 'OTHER', label: 'Other' },
   ];
 
   selectedReason: DeactivateReason | '' = '';

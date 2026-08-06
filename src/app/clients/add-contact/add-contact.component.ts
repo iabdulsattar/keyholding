@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
   templateUrl: './add-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -45,6 +46,27 @@ export class AddContactComponent implements OnInit {
   preferredContactMethod = 'Email';
   address = '';
   notes = '';
+
+  departmentOptions: RichSelectOption[] = [
+    { value: '', label: 'Select department' },
+    { value: 'Operations', label: 'Operations' },
+    { value: 'Accounts', label: 'Accounts' },
+    { value: 'Finance', label: 'Finance' },
+    { value: 'Human Resources', label: 'Human Resources' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'Customer Support', label: 'Customer Support' },
+    { value: 'IT', label: 'IT' },
+    { value: 'Procurement', label: 'Procurement' },
+  ];
+  statusOptions: RichSelectOption[] = [
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
+  preferredContactMethodOptions: RichSelectOption[] = [
+    { value: 'Email', label: 'Email' },
+    { value: 'Phone', label: 'Phone' },
+    { value: 'SMS', label: 'SMS' },
+  ];
 
   saving = false;
   touched = new Set<string>();

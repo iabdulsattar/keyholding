@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '../../core/services/client.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-all-keys',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
   templateUrl: './all-keys.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -55,15 +56,29 @@ export class AllKeysComponent implements OnInit {
   clientOptions: Client[] = [];
   siteOptions: SiteRecord[] = [];
   keyTypeOptions = ['All Key Types', 'Master Key', 'Door Key', 'Alarm Key', 'Gate Key', 'Utility Key', 'Office Key', 'IT Key'];
-  statusOptions = [
+  keyTypeFilterOptions: RichSelectOption[] = [
+    { value: '', label: 'All Key Types' },
+    { value: 'Master Key', label: 'Master Key' },
+    { value: 'Door Key', label: 'Door Key' },
+    { value: 'Alarm Key', label: 'Alarm Key' },
+    { value: 'Gate Key', label: 'Gate Key' },
+    { value: 'Utility Key', label: 'Utility Key' },
+    { value: 'Office Key', label: 'Office Key' },
+    { value: 'IT Key', label: 'IT Key' },
+  ];
+  statusFilterOptions: RichSelectOption[] = [
     { value: '', label: 'All Status' },
     { value: 'IN_STORAGE', label: 'On the Hook' },
     { value: 'ISSUED', label: 'Issued' },
     { value: 'IN_USE', label: 'In Use' },
     { value: 'OVERDUE', label: 'Overdue' },
     { value: 'DAMAGED', label: 'Damaged' },
-    { value: 'LOST', label: 'Damaged / Lost' }
+    { value: 'LOST', label: 'Damaged / Lost' },
   ];
+
+  get siteFilterOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'All Sites' }, ...this.siteOptions.map(s => ({ value: s.id, label: s.name }))];
+  }
 
   constructor(private clientService: ClientService) {}
 

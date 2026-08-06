@@ -28,11 +28,12 @@ interface AssignRolesRequest {
   roleIds: string[];
 }
 import { MultiSelectComponent, Option as MultiOption } from '../../shared/components/form/multi-select/multi-select.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, MultiSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, MultiSelectComponent, RichSelectComponent],
   templateUrl: './add-user.component.html',
   styles: ``
 })
@@ -64,6 +65,14 @@ export class AddUserComponent implements OnInit {
   roles: Role[] = [];
   loadingRoles = false;
   roleOptions: MultiOption[] = [];
+
+  departmentOptions: RichSelectOption[] = [
+    { value: '', label: 'Select department' },
+    { value: 'Operations', label: 'Operations' },
+    { value: 'Security', label: 'Security' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'HR', label: 'HR' },
+  ];
 
   profileImage: string | null = null;
   avatarFile: File | null = null;

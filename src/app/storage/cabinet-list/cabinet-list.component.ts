@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface CabinetRow {
   id: string;
@@ -20,7 +21,7 @@ interface CabinetRow {
 @Component({
   selector: 'app-cabinet-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './cabinet-list.component.html',
 })
 export class CabinetListComponent implements OnInit, AfterViewInit {
@@ -31,6 +32,17 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   searchTerm = '';
   activeFilter = 'All Statuses';
   activeTypeFilter = 'All Types';
+
+  statusFilterOptions: RichSelectOption[] = [
+    { value: 'All Statuses', label: 'All Statuses' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Full', label: 'Full' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
+
+  get activeTypeFilterOptions(): RichSelectOption[] {
+    return [{ value: 'All Types', label: 'All Types' }, ...this.uniqueTypes.map(t => ({ value: t, label: t }))];
+  }
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 

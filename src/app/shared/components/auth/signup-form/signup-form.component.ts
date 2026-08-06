@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Router } from '@angular/router';
+import { RichSelectComponent, RichSelectOption } from '../../../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-signup-form',
   imports: [
     RouterModule,
     FormsModule,
+    RichSelectComponent,
   ],
   templateUrl: './signup-form.component.html',
   styles: ''
@@ -29,6 +31,14 @@ export class SignupFormComponent {
   cname = '';
   pnumber = '';
   selectedValue = '';
+  employeeCountOptions: RichSelectOption[] = [
+    { value: '', label: 'Select number of employees' },
+    { value: '1-10', label: '1-10' },
+    { value: '11-50', label: '11-50' },
+    { value: '51-200', label: '51-200' },
+    { value: '201-500', label: '201-500' },
+    { value: '500+', label: '500+' },
+  ];
   email = '';
   password = '';
   confirmpassword = '';

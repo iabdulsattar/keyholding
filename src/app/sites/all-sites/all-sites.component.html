@@ -63,22 +63,9 @@
             class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 lg:flex lg:gap-3">
-          <select [(ngModel)]="clientFilter" (ngModelChange)="onClientChange()" class="filter-select">
-            <option value="">All Clients</option>
-            @for (c of clientOptions; track c.id) {
-              <option [value]="c.id">{{ c.name }}</option>
-            }
-          </select>
-          <select [(ngModel)]="siteTypeFilter" (ngModelChange)="onSiteTypeChange()" class="filter-select">
-            @for (opt of siteTypeOptions; track opt) {
-              <option [value]="opt === 'All Site Types' ? '' : opt">{{ opt }}</option>
-            }
-          </select>
-          <select [(ngModel)]="statusFilter" (ngModelChange)="onSearch()" class="filter-select">
-            <option value="all">All Statuses</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
+          <app-rich-select [options]="clientFilterOptions" [(value)]="clientFilter" (valueChange)="onClientChange()" placeholder="All Clients"></app-rich-select>
+          <app-rich-select [options]="siteTypeFilterOptions" [(value)]="siteTypeFilter" (valueChange)="onSiteTypeChange()" placeholder="All Site Types"></app-rich-select>
+          <app-rich-select [options]="statusFilterOptions" [(value)]="statusFilter" (valueChange)="onSearch()" placeholder="All Statuses"></app-rich-select>
         </div>
       </div>
     </div>

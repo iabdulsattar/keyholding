@@ -13,6 +13,7 @@ import { ReactivateUserModalComponent } from './reactivate-user-modal/reactivate
 import { ResendCredentialsModalComponent } from './resend-credentials-modal/resend-credentials-modal.component';
 import { UsersTableComponent, TableUser } from '../shared/components/users/users-table/users-table.component';
 import { RolesTableComponent } from '../shared/components/roles/roles-table/roles-table.component';
+import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
 
 interface Role {
   id: string;
@@ -75,7 +76,7 @@ interface PermissionGroup {
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, UsersTableComponent, RolesTableComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, UsersTableComponent, RolesTableComponent, RichSelectComponent],
   templateUrl: './user-management.component.html',
   styles: ``
 })
@@ -192,6 +193,19 @@ export class UserManagementComponent implements OnInit {
   }
   get permissionStatuses(): string[] {
     return ['All', ...Array.from(new Set(this.permissionGroups.flatMap(g => g.rows.map(r => r.status))))];
+  }
+
+  get permissionModuleOptions(): RichSelectOption[] {
+    return this.permissionModules.map(m => ({ value: m, label: m === 'All' ? 'All Modules' : m }));
+  }
+  get permissionCategoryOptions(): RichSelectOption[] {
+    return this.permissionCategories.map(c => ({ value: c, label: c === 'All' ? 'All Categories' : c }));
+  }
+  get permissionTypeOptions(): RichSelectOption[] {
+    return this.permissionTypes.map(t => ({ value: t, label: t === 'All' ? 'All Types' : t }));
+  }
+  get permissionStatusOptions(): RichSelectOption[] {
+    return this.permissionStatuses.map(s => ({ value: s, label: s === 'All' ? 'All Statuses' : s }));
   }
 
   get filteredPermissionGroups(): PermissionGroup[] {

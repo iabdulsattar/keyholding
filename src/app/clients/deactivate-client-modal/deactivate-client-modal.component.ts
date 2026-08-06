@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
 import { ClientService } from '../../core/services/client.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-deactivate-client-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, RichSelectComponent],
   templateUrl: './deactivate-client-modal.component.html',
   styles: ``
 })
@@ -17,12 +18,12 @@ export class DeactivateClientModalComponent {
   readonly close = output<void>();
   readonly confirmed = output<void>();
 
-  reasons: { label: string; value: string }[] = [
-    { label: 'Contract ended', value: 'CONTRACT_ENDED' },
-    { label: 'Non-payment', value: 'NON_PAYMENT' },
-    { label: 'Service no longer needed', value: 'SERVICE_NOT_NEEDED' },
-    { label: 'Merged / Acquired', value: 'MERGED_ACQUIRED' },
-    { label: 'Other', value: 'OTHER' },
+  reasons: RichSelectOption[] = [
+    { value: 'CONTRACT_ENDED', label: 'Contract ended' },
+    { value: 'NON_PAYMENT', label: 'Non-payment' },
+    { value: 'SERVICE_NOT_NEEDED', label: 'Service no longer needed' },
+    { value: 'MERGED_ACQUIRED', label: 'Merged / Acquired' },
+    { value: 'OTHER', label: 'Other' },
   ];
 
   selectedReason: string = '';
