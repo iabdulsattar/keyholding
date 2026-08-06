@@ -147,7 +147,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <!-- Active Card Selection Control -->
-              <div (click)="setStatus('active')" class="rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition" [ngClass]="status === 'active' ? 'border-2 border-blue-600 bg-white' : 'border border-slate-200 bg-white'">
+              <div (click)="setStatus('active')" class="rounded-xl py-4 flex items-start gap-3 cursor-pointer select-none transition" >
                 <div [ngClass]="status === 'active' ? 'mt-0.5 w-4 h-4 rounded-full border-4 border-blue-600 bg-white flex items-center justify-center' : 'mt-0.5 w-4 h-4 rounded-full border border-slate-300 bg-white flex items-center justify-center'"></div>
                 <div>
                   <h4 class="text-xs font-bold text-slate-900">Active</h4>
@@ -156,7 +156,7 @@
               </div>
 
               <!-- Inactive Card Selection Control -->
-              <div (click)="setStatus('inactive')" class="rounded-xl p-4 flex items-start gap-3 cursor-pointer select-none transition" [ngClass]="status === 'inactive' ? 'border-2 border-blue-600 bg-white' : 'border border-slate-200 bg-white hover:border-slate-300'">
+              <div (click)="setStatus('inactive')" class="rounded-xl py-4 flex items-start gap-3 cursor-pointer select-none transition" >
                 <div [ngClass]="status === 'inactive' ? 'mt-0.5 w-4 h-4 rounded-full border-4 border-blue-600 bg-white flex items-center justify-center' : 'mt-0.5 w-4 h-4 rounded-full border border-slate-300 bg-white flex items-center justify-center'"></div>
                 <div>
                   <h4 class="text-xs font-bold text-slate-900">Inactive</h4>
@@ -164,6 +164,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </form>
 
