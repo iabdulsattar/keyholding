@@ -962,11 +962,11 @@
                   <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
                   <input type="text" placeholder="Search activity..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" [(ngModel)]="activitiesSearch" (ngModelChange)="onActivitiesSearch()"/>
                 </div>
-                <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
+                <button class="inline-flex items-center justify-center gap-2 border border-slate-200 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 ">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M6 8h12M10 12h4M11 16h2"/></svg>
                   Filters
                 </button>
-                <button class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-medium shadow-sm">
+                <button class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-medium ">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
                   Export Log
                 </button>
@@ -974,11 +974,11 @@
             </div>
 
             <!-- Activity table -->
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-lg border border-slate-100 shadow-sm overflow-hidden">
              <div class="overflow-x-auto">
                <table class="w-full text-sm min-w-[1000px]">
                  <thead>
-                   <tr class="border-b border-slate-100 text-slate-400 text-xs">
+                   <tr class="border-b border-slate-100 text-slate-500 text-xs">
                      <th class="th">Date &amp; Time</th>
                      <th class="th">Performed By</th>
                      <th class="th">Action</th>
@@ -996,14 +996,14 @@
                           <div class="w-8 h-8 rounded-lg" [class]="getActivityIcon(activity.entity).bg + ' ' + getActivityIcon(activity.entity).color" flex items-center justify-center shrink-0>
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="getActivityIcon(activity.entity).path"></svg>
                           </div>
-                          <span class="font-medium text-slate-800 whitespace-nowrap">{{ activity.time }}</span>
+                          <span class="font-medium text-slate-600 whitespace-nowrap">{{ activity.time }}</span>
                         </div>
                       </td>
                       <td class="td whitespace-nowrap">
                         <div class="flex items-center gap-2.5">
                           <div class="avatar" [class]="activity.avatarColor">{{ activity.initials }}</div>
                           <div>
-                            <p class="text-slate-800 font-medium leading-tight">{{ activity.by }}</p>
+                            <p class="text-slate-600 font-medium leading-tight">{{ activity.by }}</p>
                             <p class="text-xs text-slate-400 leading-tight">{{ activity.role }}</p>
                           </div>
                         </div>
@@ -1013,7 +1013,7 @@
                       </td>
                       <td class="td text-slate-600 whitespace-nowrap">{{ activity.entity }}</td>
                       <td class="td whitespace-nowrap">
-                        <p class="text-slate-800 font-medium leading-tight">{{ activity.name }}</p>
+                        <p class="text-slate-600 font-medium leading-tight">{{ activity.name }}</p>
                         @if (activity.detail1) {
                           <p class="text-xs text-slate-400 leading-tight">{{ activity.detail1 }}</p>
                         }
@@ -1036,7 +1036,7 @@
                   <button (click)="activitiesPreviousPage()" [disabled]="activitiesPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
                   </button>
-                  <button (click)="activitiesGoToPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium" [class.bg-blue-600]="activitiesPage === 1" [class.text-white]="activitiesPage === 1" [class.text-slate-600]="activitiesPage !== 1" [class.hover:bg-slate-50]="activitiesPage !== 1">1</button>
+                  <button (click)="activitiesGoToPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border" [class.bg-white]="activitiesPage === 1" [class.text-blue-500]="activitiesPage === 1" [class.border-blue-500]="activitiesPage === 1" [class.text-slate-600]="activitiesPage !== 1" [class.hover:bg-slate-50]="activitiesPage !== 1">1</button>
                   <button (click)="activitiesGoToPage(2)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
                   <button (click)="activitiesGoToPage(3)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
                   <span class="px-1 text-slate-400 text-sm">&#8230;</span>
