@@ -3,7 +3,7 @@
     type="button"
     (click)="toggle()"
     [disabled]="disabled"
-    class="flex h-11 w-full items-center gap-2 rounded-lg  bg-white px-4 text-sm transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+    class="flex h-11 w-full items-center gap-2 rounded-lg mt-1  border bg-white px-4 text-sm transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
     [ngClass]="isOpen ? 'border-brand-500 ring-1 ring-brand-500/20' : 'border-slate-200'"
   >
     @if (selectedOption?.iconSvg) {
