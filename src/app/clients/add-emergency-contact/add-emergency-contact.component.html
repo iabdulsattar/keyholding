@@ -31,15 +31,15 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div>
-           <label class="block text-sm font-medium" [class.text-rose-600]="touched.has('firstName') && !firstName.trim()" [class.text-slate-700]="!(touched.has('firstName') && !firstName.trim())">First Name <span class="text-red-500">*</span></label>
-           <div [class.border-rose-500]="touched.has('firstName') && !firstName.trim()" class="rounded-lg border border-slate-200 transition">
+           <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('firstName') && !firstName.trim()" [class.text-slate-700]="!(touched.has('firstName') && !firstName.trim())">First Name <span class="text-red-500">*</span></label>
+           <div [class.border-rose-500]="touched.has('firstName') && !firstName.trim()" class="rounded-lg transition">
              <input type="text" placeholder="Enter first name" class="field-input border-none" [(ngModel)]="firstName" name="firstName" (blur)="markTouched('firstName')" [disabled]="saving" />
            </div>
            @if (touched.has('firstName') && !firstName.trim()) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
         </div>
         <div>
-           <label class="block text-sm font-medium" [class.text-rose-600]="touched.has('lastName') && !lastName.trim()" [class.text-slate-700]="!(touched.has('lastName') && !lastName.trim())">Last Name <span class="text-red-500">*</span></label>
-           <div [class.border-rose-500]="touched.has('lastName') && !lastName.trim()" class="rounded-lg border border-slate-200 transition">
+           <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('lastName') && !lastName.trim()" [class.text-slate-700]="!(touched.has('lastName') && !lastName.trim())">Last Name <span class="text-red-500">*</span></label>
+           <div [class.border-rose-500]="touched.has('lastName') && !lastName.trim()" class="rounded-lg transition">
              <input type="text" placeholder="Enter last name" class="field-input border-none" [(ngModel)]="lastName" name="lastName" (blur)="markTouched('lastName')" [disabled]="saving" />
            </div>
            @if (touched.has('lastName') && !lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
@@ -64,8 +64,8 @@
                  <p class="field-hint">Enter a valid phone number.</p>
                </div>
         <div>
-           <label class="block text-sm font-medium" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-700]="!(touched.has('email') && !email.trim())">Email Address <span class="text-red-500">*</span></label>
-           <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg border border-slate-200 transition">
+           <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-700]="!(touched.has('email') && !email.trim())">Email Address <span class="text-red-500">*</span></label>
+           <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg transition">
              <input type="email" placeholder="Enter email address" class="field-input w-full rounded-lg border-none pl-9 pr-3.5 py-2.5 text-sm placeholder:text-slate-400 focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" [(ngModel)]="email" name="email" (blur)="markTouched('email')" [disabled]="saving" />
            </div>
            @if (touched.has('email') && !email.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
