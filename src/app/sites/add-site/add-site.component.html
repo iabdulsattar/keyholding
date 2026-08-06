@@ -333,9 +333,6 @@
                   }
                 </div>
               }
-              @if (detailsInvalid && touched.has('attachment')) {
-                <div class="text-xs text-rose-600 mt-2">Attachment is required.</div>
-              }
               @if (attachmentError) {
                 <div class="text-xs text-rose-600 mt-3">{{ attachmentError }}</div>
               }

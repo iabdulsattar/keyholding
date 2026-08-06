@@ -213,7 +213,6 @@ securityLevel = '';
     this.touched.add('contactEmail');
     this.touched.add('securityLevel');
     this.touched.add('alarmSystem');
-    this.touched.add('attachment');
 
     if (this.showClientDropdown) {
       this.touched.add('clientId');
@@ -232,9 +231,6 @@ securityLevel = '';
     if (!this.contactEmail.trim()) errors.contact.push('Email is required');
     if (!this.securityLevel) errors.details.push('Security Level is required');
     if (!this.alarmSystem) errors.details.push('Alarm System is required');
-    if (!this.attachments.length && !this.selectedFiles.length) {
-      errors.details.push('Attachment is required');
-    }
     this.sectionErrors = errors;
     return !errors.information.length && !errors.contact.length && !errors.details.length;
   }
