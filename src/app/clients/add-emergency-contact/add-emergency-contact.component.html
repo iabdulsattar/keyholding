@@ -64,7 +64,7 @@
                     🇬🇧 +44
                     <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                   </button>
-                  <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" [disabled]="saving" />
+                   <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" name="phone" [disabled]="saving" />
                 </div>
                 <p class="field-hint">Enter a valid phone number.</p>
               </div>
@@ -93,7 +93,9 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
         <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1.5">Status <span class="text-rose-500">*</span></label>
-                <select class="field-input" [(ngModel)]="status" [disabled]="saving">
+                <select class="field-input" [(ngModel)]="status" name="status" [disabled]="saving">
+                              <option value="">Select Status</option>
+
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
