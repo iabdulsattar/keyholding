@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-view-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, ConfirmModalComponent],
   templateUrl: './view-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -51,6 +52,7 @@ export class ViewContactComponent implements OnInit {
   primaryFor = 'Metro Security Services';
 
   loading = false;
+  showDeleteModal = false;
 
   get breadcrumbs(): BreadcrumbItem[] {
     return [
@@ -135,14 +137,19 @@ export class ViewContactComponent implements OnInit {
   }
 
   deleteContact(): void {
+    this.showDeleteModal = true;
+  }
+
+  confirmDeleteContact(): void {
     if (!this.clientId || !this.contactId) return;
-    if (!confirm('Are you sure you want to delete this contact? This action cannot be undone.')) return;
     this.clientService.deleteContact(this.clientId, this.contactId).subscribe({
       next: () => {
+        this.showDeleteModal = false;
         this.toast.success('Contact deleted successfully');
         this.router.navigate(['/clients', this.clientId]);
       },
       error: () => {
+        this.showDeleteModal = false;
         this.toast.error('Failed to delete contact');
       }
     });

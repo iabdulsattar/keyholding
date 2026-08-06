@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { SafeUrlPipe } from '../../shared/pipe/safe-url.pipe';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-view-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, PageBreadcrumbComponent, ConfirmModalComponent],
   templateUrl: './view-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -25,6 +26,10 @@ export class ViewDocumentComponent implements OnInit {
 
   document: any = null;
   previewType: 'pdf' | 'image' | 'other' = 'other';
+
+  showDeleteModal = false;
+  downloadError = '';
+  openError = '';
 
   get breadcrumbs(): BreadcrumbItem[] {
     return [
@@ -130,6 +135,7 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   downloadDocument(): void {
+    this.downloadError = '';
     if (!this.docId) return;
     this.clientService.downloadDocument(this.clientId, this.docId).subscribe({
       next: (blob: Blob) => {
@@ -140,11 +146,14 @@ export class ViewDocumentComponent implements OnInit {
         a.click();
         URL.revokeObjectURL(url);
       },
-      error: () => alert('Failed to download document.')
+      error: () => {
+        this.downloadError = 'Failed to download document.';
+      }
     });
   }
 
   openInNewTab(): void {
+    this.openError = '';
     if (!this.previewUrl) return;
     if (this.hasPublicUrl) {
       window.open(this.previewUrl, '_blank', 'noopener,noreferrer');
@@ -156,7 +165,9 @@ export class ViewDocumentComponent implements OnInit {
         window.open(url, '_blank', 'noopener,noreferrer');
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       },
-      error: () => alert('Failed to open document in new tab.')
+      error: () => {
+        this.openError = 'Failed to open document in new tab.';
+      }
     });
   }
 
@@ -169,12 +180,20 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   deleteDocument(): void {
-    if (!confirm('Are you sure you want to delete this document?')) return;
+    this.showDeleteModal = true;
+  }
+
+  confirmDeleteDocument(): void {
+    if (!this.clientId || !this.docId) return;
     this.clientService.deleteDocument(this.clientId, this.docId).subscribe({
       next: () => {
+        this.showDeleteModal = false;
         this.router.navigate(['/clients', this.clientId]);
       },
-      error: () => alert('Failed to delete document.')
+      error: () => {
+        this.showDeleteModal = false;
+        this.downloadError = 'Failed to delete document.';
+      }
     });
   }
 

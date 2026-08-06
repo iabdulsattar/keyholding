@@ -9,11 +9,12 @@ import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '
 import { UserService } from '../../core/services/user.service';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
+import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, ConfirmModalComponent],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -67,6 +68,18 @@ export class ClientDetailComponent implements OnInit {
   siteStats: any = null;
 showDeactivateClientModal = false;
   showActivateClientModal = false;
+  showDeleteContactModal = false;
+  contactIdToDelete = '';
+  showDeleteEmergencyContactModal = false;
+  emergencyContactIdToDelete = '';
+  showDeleteDocumentModal = false;
+  documentIdToDelete = '';
+  showToggleContactStatusModal = false;
+  contactIdToToggle = '';
+  currentContactStatus = '';
+  showToggleEmergencyContactStatusModal = false;
+  emergencyContactIdToToggle = '';
+  currentEmergencyContactStatus = '';
 
   siteDonutSegments: { color: string; offset: number; length: number }[] = [];
 
@@ -303,38 +316,63 @@ viewEmergencyContact(contactId: string): void {
     }
 
    deleteEmergencyContact(contactId: string): void {
-     if (!this.clientId) return;
-     if (!confirm('Are you sure you want to delete this emergency contact? This action cannot be undone.')) return;
-     this.clientService.deleteEmergencyContact(this.clientId, contactId).subscribe({
-       next: () => {
-         this.emergencyContacts = this.emergencyContacts.filter(c => c.id !== contactId);
-         this.filteredEmergencyContacts = this.filteredEmergencyContacts.filter(c => c.id !== contactId);
-         this.showToast('Emergency contact deleted successfully');
-       },
-       error: () => {
-         this.showToast('Failed to delete emergency contact');
-       }
-     });
-   }
+      if (!this.clientId) return;
+      this.emergencyContactIdToDelete = contactId;
+      this.showDeleteEmergencyContactModal = true;
+    }
 
-    addEmergencyContact(): void {
+    confirmDeleteEmergencyContact(): void {
+      const contactId = this.emergencyContactIdToDelete;
+      if (!this.clientId || !contactId) return;
+      this.clientService.deleteEmergencyContact(this.clientId, contactId).subscribe({
+        next: () => {
+          this.emergencyContacts = this.emergencyContacts.filter(c => c.id !== contactId);
+          this.filteredEmergencyContacts = this.filteredEmergencyContacts.filter(c => c.id !== contactId);
+          this.showDeleteEmergencyContactModal = false;
+          this.emergencyContactIdToDelete = '';
+          this.showToast('Emergency contact deleted successfully');
+        },
+        error: () => {
+          this.showDeleteEmergencyContactModal = false;
+          this.emergencyContactIdToDelete = '';
+          this.showToast('Failed to delete emergency contact');
+        }
+      });
+    }
+
+     addEmergencyContact(): void {
       if (!this.clientId) return;
       this.router.navigate(['/clients', this.clientId, 'add-emergency-contact']);
     }
 
    toggleEmergencyContactStatus(contactId: string, currentStatus: string): void {
-     if (!this.clientId) return;
-     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
-     this.clientService.updateEmergencyContact(this.clientId, contactId, { status: newStatus }).subscribe({
-       next: () => {
-         this.loadEmergencyContacts();
-         this.showToast(`Emergency contact ${newStatus === 'Active' ? 'activated' : 'deactivated'} successfully`);
-       },
-       error: () => {
-         this.showToast('Failed to update emergency contact status');
-       }
-     });
-   }
+      if (!this.clientId) return;
+      this.emergencyContactIdToToggle = contactId;
+      this.currentEmergencyContactStatus = currentStatus;
+      this.showToggleEmergencyContactStatusModal = true;
+    }
+
+    confirmToggleEmergencyContactStatus(): void {
+      const contactId = this.emergencyContactIdToToggle;
+      const currentStatus = this.currentEmergencyContactStatus;
+      if (!this.clientId || !contactId) return;
+      const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+      this.clientService.updateEmergencyContact(this.clientId, contactId, { status: newStatus }).subscribe({
+        next: () => {
+          this.loadEmergencyContacts();
+          this.showToggleEmergencyContactStatusModal = false;
+          this.emergencyContactIdToToggle = '';
+          this.currentEmergencyContactStatus = '';
+          this.showToast(`Emergency contact ${newStatus === 'Active' ? 'activated' : 'deactivated'} successfully`);
+        },
+        error: () => {
+          this.showToggleEmergencyContactStatusModal = false;
+          this.emergencyContactIdToToggle = '';
+          this.currentEmergencyContactStatus = '';
+          this.showToast('Failed to update emergency contact status');
+        }
+      });
+    }
 
      private loadActivities(): void {
       if (!this.clientId) return;
@@ -626,14 +664,26 @@ viewEmergencyContact(contactId: string): void {
   }
 
   deleteDocument(docId: string): void {
-    if (!confirm('Are you sure you want to delete this document?')) return;
+    this.documentIdToDelete = docId;
+    this.showDeleteDocumentModal = true;
+  }
+
+  confirmDeleteDocument(): void {
+    const docId = this.documentIdToDelete;
+    if (!this.clientId || !docId) return;
     this.clientService.deleteDocument(this.clientId, docId).subscribe({
       next: () => {
         this.documents = this.documents.filter(d => d.id !== docId);
         this.filteredDocuments = this.filteredDocuments.filter(d => d.id !== docId);
         this.loadDocumentStats();
+        this.showDeleteDocumentModal = false;
+        this.documentIdToDelete = '';
       },
-      error: () => alert('Failed to delete document.')
+      error: () => {
+        this.showDeleteDocumentModal = false;
+        this.documentIdToDelete = '';
+        this.showToast('Failed to delete document.');
+      }
     });
   }
 
@@ -1242,17 +1292,67 @@ uploadDocument(): void {
 
   deleteContact(contactId: string): void {
     if (!this.clientId) return;
-    if (!confirm('Are you sure you want to delete this contact? This action cannot be undone.')) return;
+    this.contactIdToDelete = contactId;
+    this.showDeleteContactModal = true;
+  }
+
+  confirmDeleteContact(): void {
+    const contactId = this.contactIdToDelete;
+    if (!this.clientId || !contactId) return;
     this.clientService.deleteContact(this.clientId, contactId).subscribe({
       next: () => {
         this.contacts = this.contacts.filter(c => c.id !== contactId);
         this.filteredContacts = this.filteredContacts.filter(c => c.id !== contactId);
+        this.showDeleteContactModal = false;
+        this.contactIdToDelete = '';
         this.showToast('Contact deleted successfully');
       },
       error: () => {
+        this.showDeleteContactModal = false;
+        this.contactIdToDelete = '';
         this.showToast('Failed to delete contact');
       }
     });
+  }
+
+  confirmToggleContactStatus(): void {
+    const contactId = this.contactIdToToggle;
+    const currentStatus = this.currentContactStatus;
+    if (!this.clientId || !contactId) return;
+    const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+    if (newStatus === 'Inactive') {
+      this.clientService.deactivateContact(this.clientId, contactId).subscribe({
+        next: () => {
+          this.loadContacts();
+          this.showToggleContactStatusModal = false;
+          this.contactIdToToggle = '';
+          this.currentContactStatus = '';
+          this.showToast('Contact deactivated successfully');
+        },
+        error: () => {
+          this.showToggleContactStatusModal = false;
+          this.contactIdToToggle = '';
+          this.currentContactStatus = '';
+          this.showToast('Failed to deactivate contact');
+        }
+      });
+    } else {
+      this.clientService.reactivateContact(this.clientId, contactId).subscribe({
+        next: () => {
+          this.loadContacts();
+          this.showToggleContactStatusModal = false;
+          this.contactIdToToggle = '';
+          this.currentContactStatus = '';
+          this.showToast('Contact activated successfully');
+        },
+        error: () => {
+          this.showToggleContactStatusModal = false;
+          this.contactIdToToggle = '';
+          this.currentContactStatus = '';
+          this.showToast('Failed to activate contact');
+        }
+      });
+    }
   }
 
   addContact(): void {
