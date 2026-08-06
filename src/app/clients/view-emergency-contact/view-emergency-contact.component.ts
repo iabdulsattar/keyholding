@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-view-emergency-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, PageBreadcrumbComponent, ConfirmModalComponent],
   templateUrl: './view-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -45,6 +46,7 @@ export class ViewEmergencyContactComponent implements OnInit {
   updatedDate = '';
 
   loading = false;
+  showDeleteModal = false;
 
   get breadcrumbs(): BreadcrumbItem[] {
     return [
@@ -129,14 +131,19 @@ export class ViewEmergencyContactComponent implements OnInit {
   }
 
   deleteContact(): void {
+    this.showDeleteModal = true;
+  }
+
+  confirmDeleteContact(): void {
     if (!this.clientId || !this.contactId) return;
-    if (!confirm('Are you sure you want to delete this emergency contact? This action cannot be undone.')) return;
     this.clientService.deleteEmergencyContact(this.clientId, this.contactId).subscribe({
       next: () => {
+        this.showDeleteModal = false;
         this.toast.success('Emergency contact deleted successfully');
         this.router.navigate(['/clients', this.clientId]);
       },
       error: () => {
+        this.showDeleteModal = false;
         this.toast.error('Failed to delete emergency contact');
       }
     });
