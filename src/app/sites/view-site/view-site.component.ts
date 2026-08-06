@@ -8,12 +8,13 @@ import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
 import { DeactivateSiteModalComponent } from '../deactivate-site-modal/deactivate-site-modal.component';
 import { ActivateSiteModalComponent } from '../activate-site-modal/activate-site-modal.component';
+import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-view-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent, ConfirmModalComponent, PageBreadcrumbComponent],
   templateUrl: './view-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -49,6 +50,7 @@ export class ViewSiteComponent implements OnInit {
 
   showDeactivateModal = false;
   showActivateModal = false;
+  showDeleteModal = false;
 
   get breadcrumbs(): BreadcrumbItem[] {
     const crumbs: BreadcrumbItem[] = [{ label: 'Sites', link: '/sites/all-sites' }];
@@ -218,11 +220,15 @@ export class ViewSiteComponent implements OnInit {
   }
 
   onDeleteSite(): void {
-    if (!confirm('Are you sure you want to delete this site? This action cannot be undone.')) return;
+    this.showDeleteModal = true;
+  }
+
+  confirmDeleteSite(): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     if (!orgId) return;
     this.clientService.deleteSite(orgId, this.siteId).subscribe({
       next: () => {
+        this.showDeleteModal = false;
         this.toast.success('Site deleted successfully');
         if (this.returnUrl) {
           this.router.navigateByUrl(this.returnUrl);
@@ -231,7 +237,10 @@ export class ViewSiteComponent implements OnInit {
           this.router.navigate(['/clients', clientId]);
         }
       },
-      error: () => this.toast.error('Failed to delete site')
+      error: () => {
+        this.showDeleteModal = false;
+        this.toast.error('Failed to delete site')
+      }
     });
   }
 

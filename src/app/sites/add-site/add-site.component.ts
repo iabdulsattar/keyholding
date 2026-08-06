@@ -556,7 +556,7 @@ securityLevel = '';
 
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     if (!orgId) {
-      alert('Missing organization context. Please sign in again.');
+      this.toast.error('Missing organization context. Please sign in again.');
       return;
     }
 

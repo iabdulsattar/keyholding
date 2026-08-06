@@ -80,6 +80,9 @@
       @if (fileName) {
         <p class="text-[13px] text-slate-600 mt-2">Selected: {{ fileName }}</p>
       }
+      @if (fileError) {
+        <p class="text-[12px] text-rose-600 font-medium mt-1">{{ fileError }}</p>
+      }
       @if (touched.has('file') && !selectedFile) {
         <p class="text-[12px] text-rose-600 font-medium mt-1">Please select a file to upload</p>
       }
