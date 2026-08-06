@@ -57,17 +57,20 @@
 
     <!-- FILTERS -->
     <div class="bg-white rounded-lg border border-slate-100 p-4">
-      <div class="flex flex-col xl:flex-row gap-3">
-        <div class="relative flex-1">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+      
+        <div class="relative col-span-5 mt-1">
           <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
           <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search keys by ID, name, type, site..."
             class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:flex lg:gap-3">
+        <div class="col-span-7">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 ">
         
           <app-rich-select [options]="siteFilterOptions" [(value)]="siteFilter" (valueChange)="onSiteChange()" placeholder="All Sites"></app-rich-select>
           <app-rich-select [options]="keyTypeFilterOptions" [(value)]="keyTypeFilter" (valueChange)="onKeyTypeChange()" placeholder="All Key Types"></app-rich-select>
           <app-rich-select [options]="statusFilterOptions" [(value)]="statusFilter" (valueChange)="onStatusChange()" placeholder="All Status"></app-rich-select>
+        </div>
         </div>
       </div>
     </div>
