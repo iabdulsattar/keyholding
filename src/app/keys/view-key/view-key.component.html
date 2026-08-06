@@ -187,43 +187,62 @@
           <!-- Right column -->
           <div class="space-y-5">
             
-            <!-- Key Preview -->
+            <!-- Attachments -->
             <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
-              <h3 class="text-sm font-bold text-slate-900 mb-4">Key Preview</h3>
-              @if (attachments.length > 0) {
-                <div class="w-full h-44 rounded-lg bg-slate-100 flex items-center justify-center mb-3 overflow-hidden">
-                  @if (isImage(attachments[0].contentType)) {
-                    <img [src]="attachments[0]['publicUrl'] || attachments[0].storagePath" class="w-full h-full object-cover">
-                  } @else {
-                    <svg viewBox="0 0 64 64" class="w-20 h-20 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <circle cx="16" cy="20" r="9"/>
-                      <line x1="22" y1="27" x2="48" y2="53"/>
-                      <line x1="34" y1="39" x2="41" y2="32"/>
-                      <line x1="41" y1="46" x2="48" y2="39"/>
-                    </svg>
-                  }
-                </div>
-                <div class="flex items-center gap-2 text-slate-500 text-sm">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.5 3.5 0 014.95 4.95l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-                  {{ attachments.length }} attachment{{ attachments.length === 1 ? '' : 's' }}
+              <div class="flex items-center justify-between border-slate-100 pb-3 mb-4">
+                <h3 class="text-[14px] font-bold text-slate-900 tracking-wider flex items-center gap-2">Attachments <span class="bg-slate-100 text-slate-600 text-[10px] px-1.5 py-0.5 rounded-full font-bold">{{ attachments.length }}</span></h3>
+              </div>
+              <div *ngIf="attachmentError" class="text-xs text-rose-600 mb-3">{{ attachmentError }}</div>
+              @if (attachments.length === 0) {
+                <div class="flex items-start gap-3 text-slate-500">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.5 3.5 0 014.95 4.95l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                  <div>
+                    <div class="text-sm font-semibold text-slate-700">No attachments</div>
+                    <div class="text-xs text-slate-500">No files have been attached to this key.</div>
+                  </div>
                 </div>
               } @else {
-                <div class="w-full h-44 rounded-lg bg-slate-100 flex items-center justify-center mb-3">
-                  <svg viewBox="0 0 64 64" class="w-20 h-20 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <circle cx="16" cy="20" r="9"/>
-                    <line x1="22" y1="27" x2="48" y2="53"/>
-                    <line x1="34" y1="39" x2="41" y2="32"/>
-                    <line x1="41" y1="46" x2="48" y2="39"/>
-                  </svg>
-                </div>
-                <div class="flex items-center gap-2 text-slate-500 text-sm">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.5 3.5 0 014.95 4.95l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-                  No attachments
+                <div class="file-grid">
+                  @for (a of attachments; track a.id) {
+                    <div class="file-card">
+                      <div class="thumb">
+                        @if (isImage(a.contentType)) {
+                          <img [src]="a['publicUrl'] || a.storagePath" alt="{{ a.fileName }}">
+                        } @else {
+                          <div class="thumb doc-thumb">
+                            <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+                              <rect width="100" height="70" fill="#f1f2f5"/>
+                              <g stroke="#c7cbd4" stroke-width="1" fill="none">
+                                <rect x="10" y="8" width="80" height="54"/>
+                                <line x1="10" y1="28" x2="90" y2="28"/>
+                                <line x1="35" y1="8" x2="35" y2="62"/>
+                                <line x1="60" y1="8" x2="60" y2="62"/>
+                              </g>
+                              <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                              <circle cx="32" cy="24" r="2.5" fill="#e8434c"/>
+                              <circle cx="62" cy="24" r="2.5" fill="#e8434c"/>
+                            </svg>
+                          </div>
+                        }
+                      </div>
+                      <div class="file-meta">
+                        <div class="file-info">
+                          <div class="file-name">{{ a.fileName }}</div>
+                          <div class="file-size">{{ formatSize(a.sizeBytes) }}</div>
+                        </div>
+                        <button class="view-btn" aria-label="View {{ a.fileName }}" (click)="downloadAttachment(a)">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  }
                 </div>
               }
+              <div class="text-xs text-slate-400 mt-3" *ngIf="attachmentsLoading">Loading attachments...</div>
             </section>
 
-       
+        
             <!-- Key Activity -->
             <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
     <h3 class="text-sm font-bold text-slate-900 mb-5">Key Activity</h3>

@@ -573,6 +573,10 @@ export class ClientService {
        };
     }
 
+    private isUuid(value: string): boolean {
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+    }
+
       listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
       const orgId = this.getOrgId();
       if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });

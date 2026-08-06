@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
+import { UserService } from '../../core/services/user.service';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
 
@@ -99,10 +102,11 @@ showDeactivateClientModal = false;
   filteredActivities: any[] = [];
   activitiesPage = 1;
   activitiesRowsPerPage = 10;
+  activitiesTotalPagesFromApi = 1;
   activitiesSearch = '';
   activitiesLoading = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
+   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private userService: UserService) {}
 
    ngOnInit(): void {
      this.clientId = this.route.snapshot.paramMap.get('id') || '';
@@ -332,35 +336,79 @@ viewEmergencyContact(contactId: string): void {
      });
    }
 
-   private loadActivities(): void {
-    if (!this.clientId) return;
-    this.activitiesLoading = true;
-      this.clientService.listOrganizationAuditLog({ page: 0, size: this.activitiesRowsPerPage }).subscribe({
-      next: (result: any) => {
-        const items = result?.items ?? result?.data?.items ?? [];
-        this.activities = items.map((item: any) => ({
-          id: item.id ?? '',
-          time: this.formatDateTime(item.createdAt),
-          by: item.userName || 'System',
-          role: item.userRole || '—',
-          initials: this.getInitials(item.userName),
-          avatarColor: this.getAvatarColor(item.userName),
-          action: item.action || '—',
-          entity: this.formatTargetType(item.targetType),
-          name: item.details || '—',
-          detail1: '',
-          ip: item.ipAddress || '—',
-          details: item.details || '—',
-        }));
-        this.filteredActivities = [...this.activities];
-        this.activitiesLoading = false;
-      },
-      error: () => {
-        this.activities = [];
-        this.filteredActivities = [];
-        this.activitiesLoading = false;
+     private loadActivities(): void {
+      if (!this.clientId) return;
+      this.activitiesLoading = true;
+        this.clientService.listOrganizationAuditLog({ page: 0, size: 200 }).subscribe({
+        next: (result: any) => {
+          const items = result?.items ?? result?.data?.items ?? [];
+          this.activities = items.map((item: any) => ({
+            id: item.id ?? '',
+            time: this.formatDateTime(item.createdAt),
+            by: item.userName || 'System',
+            role: item.userRole || '—',
+            initials: this.getInitials(item.userName),
+            avatarColor: this.getAvatarColor(item.userName),
+            action: item.action || '—',
+            entity: this.formatTargetType(item.targetType),
+            name: this.getActivityEntityName(item) || '—',
+            detail1: '',
+            ip: item.ipAddress || '—',
+            details: item.details || '—',
+            actorUserId: item.actorUserId,
+          }));
+          this.filteredActivities = [...this.activities];
+          this.activitiesLoading = false;
+          this.resolveActivityActors(this.activities);
+        },
+         error: () => {
+           this.activities = [];
+           this.filteredActivities = [];
+           this.activitiesLoading = false;
+         }
+       });
+     }
+
+  private resolveActivityActors(activities: any[]): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    const uniqueActorIds = new Set<string>();
+    activities.forEach((a) => {
+      const userId = (a as any).actorUserId;
+      if (userId && this.isUuid(userId)) {
+        uniqueActorIds.add(userId);
       }
     });
+    if (!uniqueActorIds.size) return;
+    const requests = Array.from(uniqueActorIds).map((userId) =>
+      this.userService.getUserDetail(orgId, userId).pipe(
+        map((user: any) => ({ userId, name: user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : (user?.email || userId) }))
+      )
+    );
+    forkJoin(requests).subscribe({
+      next: (results) => {
+        const nameMap = new Map(results.map((r) => [r.userId, r.name]));
+        this.activities = this.activities.map((a: any) => {
+          const userId = a.actorUserId;
+          if (userId && nameMap.has(userId)) {
+            return { ...a, by: nameMap.get(userId) };
+          }
+          return a;
+        });
+        this.filteredActivities = this.filteredActivities.map((a: any) => {
+          const userId = a.actorUserId;
+          if (userId && nameMap.has(userId)) {
+            return { ...a, by: nameMap.get(userId) };
+          }
+          return a;
+        });
+      },
+      error: () => {}
+    });
+  }
+
+  private isUuid(value: string): boolean {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
   }
 
   get contactsPaginated(): any[] {
@@ -1233,5 +1281,36 @@ uploadDocument(): void {
       Uploaded: "bg-sky-50 text-sky-600",
     };
     return map[action] || "bg-slate-100 text-slate-600";
+  }
+
+  private getActivityEntityName(item: any): string {
+    const data = item?.data ?? {};
+    if (data?.organizationName) {
+      return data.organizationName;
+    }
+    const message = data?.message || item?.details || '';
+    const quoted = message.match(/"([^"]+)"/);
+    if (quoted && quoted[1]) {
+      return quoted[1];
+    }
+    return '';
+  }
+
+  getActivityPageNumbers(): (number | '...')[] {
+    const total = this.activitiesTotalPages;
+    const current = this.activitiesPage;
+    const pages: (number | '...')[] = [];
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
   }
 }

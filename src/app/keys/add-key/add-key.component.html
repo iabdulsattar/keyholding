@@ -143,17 +143,37 @@
               <div class="space-y-2">
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Existing Attachment</p>
                 @for (att of existingAttachments; track att.id) {
-                  <div class="flex items-center gap-3 border border-slate-200 rounded-xl p-3">
-                    @if (isImage(att.contentType)) {
-                      <img [src]="att.publicUrl || att.storagePath" class="w-10 h-10 rounded-lg object-cover border border-slate-100">
-                    } @else {
-                      <svg class="w-6 h-6 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    }
-                    <div class="min-w-0 text-xs flex-1">
-                      <p class="font-bold truncate">{{ att.fileName }}</p>
-                      <p class="text-slate-400">{{ formatSize(att.sizeBytes) }}</p>
+                  <div class="file-card">
+                    <div class="thumb">
+                      @if (isImage(att.contentType)) {
+                        <img [src]="att.publicUrl || att.storagePath" alt="{{ att.fileName }}">
+                      } @else {
+                        <div class="thumb doc-thumb">
+                          <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100" height="70" fill="#f1f2f5"/>
+                            <g stroke="#c7cbd4" stroke-width="1" fill="none">
+                              <rect x="10" y="8" width="80" height="54"/>
+                              <line x1="10" y1="28" x2="90" y2="28"/>
+                              <line x1="35" y1="8" x2="35" y2="62"/>
+                              <line x1="60" y1="8" x2="60" y2="62"/>
+                            </g>
+                            <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="32" cy="24" r="2.5" fill="#e8434c"/>
+                            <circle cx="62" cy="24" r="2.5" fill="#e8434c"/>
+                          </svg>
+                        </div>
+                      }
                     </div>
-                    <button type="button" (click)="deleteExistingAttachment(att.id)" class="text-[11px] text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-md hover:bg-rose-50 transition">Remove</button>
+                    <div class="file-meta">
+                      <div class="file-info">
+                        <div class="file-name">{{ att.fileName }}</div>
+                        <div class="file-size">{{ formatSize(att.sizeBytes) }}</div>
+                      </div>
+                      <button type="button" class="view-btn text-rose-500 hover:text-rose-600 hover:bg-rose-50" aria-label="Remove attachment" (click)="deleteExistingAttachment(att.id)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
                   </div>
                 }
               </div>
@@ -177,16 +197,41 @@
               </div>
             }
             @if (attachmentPreviews.length) {
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="border border-slate-200 rounded-xl p-3 flex items-center gap-3" *ngFor="let item of attachmentPreviews; trackBy: trackByIndex">
-                  <img *ngIf="isImage(item.file.type)" [src]="item.url" class="w-10 h-10 rounded-lg object-cover border border-slate-100">
-                  <svg *ngIf="!isImage(item.file.type)" class="w-6 h-6 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  <div class="min-w-0 text-xs flex-1">
-                    <p class="font-bold truncate">{{ item.file.name }}</p>
-                    <p class="text-slate-400">{{ (item.file.size / 1024 >= 1024 ? (item.file.size / (1024 * 1024)).toFixed(1) + ' MB' : (item.file.size / 1024).toFixed(0) + ' KB') || '-' }}</p>
+              <div class="file-grid">
+                @for (item of attachmentPreviews; track $index) {
+                  <div class="file-card">
+                    <div class="thumb">
+                      @if (isImage(item.file.type)) {
+                        <img [src]="item.url" alt="{{ item.file.name }}">
+                      } @else {
+                        <div class="thumb doc-thumb">
+                          <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100" height="70" fill="#f1f2f5"/>
+                            <g stroke="#c7cbd4" stroke-width="1" fill="none">
+                              <rect x="10" y="8" width="80" height="54"/>
+                              <line x1="10" y1="28" x2="90" y2="28"/>
+                              <line x1="35" y1="8" x2="35" y2="62"/>
+                              <line x1="60" y1="8" x2="60" y2="62"/>
+                            </g>
+                            <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="32" cy="24" r="2.5" fill="#e8434c"/>
+                            <circle cx="62" cy="24" r="2.5" fill="#e8434c"/>
+                          </svg>
+                        </div>
+                      }
+                    </div>
+                    <div class="file-meta">
+                      <div class="file-info">
+                        <div class="file-name">{{ item.file.name }}</div>
+                        <div class="file-size">{{ (item.file.size / 1024 >= 1024 ? (item.file.size / (1024 * 1024)).toFixed(1) + ' MB' : (item.file.size / 1024).toFixed(0) + ' KB') || '-' }}</div>
+                      </div>
+                      <button type="button" class="view-btn text-rose-500 hover:text-rose-600 hover:bg-rose-50" aria-label="Remove attachment" (click)="removeAttachment(attachmentPreviews.indexOf(item))">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
                   </div>
-                  <button type="button" (click)="removeAttachment(attachmentPreviews.indexOf(item))" class="text-[11px] text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-md hover:bg-rose-50 transition">Remove</button>
-                </div>
+                }
               </div>
             }
             @if (hasAttachments && attachmentPreviews.length === 0 && existingAttachments.length > 0) {

@@ -23,6 +23,21 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
     select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem; }
     .spinner { width: 1rem; height: 1rem; border: 2px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .file-card { background: #ffffff; border: 1px solid #e3e6ea; border-radius: 14px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.04); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .file-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.06); }
+    .thumb { width: 100%; aspect-ratio: 16 / 11; border-radius: 8px; overflow: hidden; background: #f1f2f5; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb.doc-thumb { padding: 6px; }
+    .thumb.doc-thumb svg { width: 100%; height: 100%; }
+    .file-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .file-info { min-width: 0; }
+    .file-name { font-size: 13.5px; font-weight: 600; color: #1f2430; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-size: 12px; color: #8a91a0; margin-top: 2px; }
+    .view-btn { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; border: none; background: transparent; color: #2f6fed; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .view-btn:hover { background: rgba(47, 111, 237, 0.1); }
+    .view-btn:focus-visible { outline: 2px solid #2f6fed; outline-offset: 2px; }
+    .view-btn svg { width: 17px; height: 17px; }
   `
 })
 export class AddKeyComponent implements OnInit {
