@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
-import { UserService } from '../../core/services/user.service';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
 import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
@@ -119,7 +118,7 @@ showDeactivateClientModal = false;
   activitiesSearch = '';
   activitiesLoading = false;
 
-   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private userService: UserService) {}
+   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
 
    ngOnInit(): void {
      this.clientId = this.route.snapshot.paramMap.get('id') || '';
@@ -380,24 +379,27 @@ viewEmergencyContact(contactId: string): void {
         this.clientService.listOrganizationAuditLog({ page: 0, size: 200 }).subscribe({
         next: (result: any) => {
           const items = result?.items ?? result?.data?.items ?? [];
-          this.activities = items.map((item: any) => ({
-            id: item.id ?? '',
-            time: this.formatDateTime(item.createdAt),
-            by: item.userName || 'System',
-            role: item.userRole || '—',
-            initials: this.getInitials(item.userName),
-            avatarColor: this.getAvatarColor(item.userName),
-            action: item.action || '—',
-            entity: this.formatTargetType(item.targetType),
-            name: this.getActivityEntityName(item) || '—',
-            detail1: '',
-            ip: item.ipAddress || '—',
-            details: item.details || '—',
-            actorUserId: item.actorUserId,
-          }));
+          this.activities = items.map((item: any) => {
+            const data = item?.data ?? {};
+            const actor = data?.userName || item.actor || item.userName || 'System';
+            return {
+              id: item.id ?? '',
+              time: this.formatDateTime(item.createdAt),
+              by: actor,
+              role: item.userRole || '—',
+              initials: this.getInitials(actor),
+              avatarColor: this.getAvatarColor(actor),
+              action: item.action || '—',
+              entity: this.formatTargetType(item.targetType),
+              name: this.getActivityEntityName(item) || '—',
+              detail1: '',
+              ip: item.ipAddress || '—',
+              details: item.details || '—',
+              actorUserId: data?.actorUserId || item.userId,
+            };
+          });
           this.filteredActivities = [...this.activities];
           this.activitiesLoading = false;
-          this.resolveActivityActors(this.activities);
         },
          error: () => {
            this.activities = [];
@@ -406,44 +408,6 @@ viewEmergencyContact(contactId: string): void {
          }
        });
      }
-
-  private resolveActivityActors(activities: any[]): void {
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-    const uniqueActorIds = new Set<string>();
-    activities.forEach((a) => {
-      const userId = (a as any).actorUserId;
-      if (userId && this.isUuid(userId)) {
-        uniqueActorIds.add(userId);
-      }
-    });
-    if (!uniqueActorIds.size) return;
-    const requests = Array.from(uniqueActorIds).map((userId) =>
-      this.userService.getUserDetail(orgId, userId).pipe(
-        map((user: any) => ({ userId, name: user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : (user?.email || userId) }))
-      )
-    );
-    forkJoin(requests).subscribe({
-      next: (results) => {
-        const nameMap = new Map(results.map((r) => [r.userId, r.name]));
-        this.activities = this.activities.map((a: any) => {
-          const userId = a.actorUserId;
-          if (userId && nameMap.has(userId)) {
-            return { ...a, by: nameMap.get(userId) };
-          }
-          return a;
-        });
-        this.filteredActivities = this.filteredActivities.map((a: any) => {
-          const userId = a.actorUserId;
-          if (userId && nameMap.has(userId)) {
-            return { ...a, by: nameMap.get(userId) };
-          }
-          return a;
-        });
-      },
-      error: () => {}
-    });
-  }
 
   private isUuid(value: string): boolean {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);

@@ -552,6 +552,12 @@ export class ClientService {
 
     private mapAudit(item: any): AuditRecord {
       const data = item?.data ?? {};
+      const actor = item.actor ?? item.userName ?? '';
+      const actorId = data?.actorUserId ?? item.userId;
+      let userName = actor;
+      if (this.isUuid(userName) && data?.userName) {
+        userName = data.userName;
+      }
       return {
         id: item.id ?? '',
         eventId: item.eventId,
@@ -563,8 +569,8 @@ export class ClientService {
         targetType: item.targetType ?? '',
         targetId: item.targetId ?? '',
         action: item.eventType ?? item.action ?? '',
-        actorUserId: data?.actorUserId ?? item.userId,
-        userName: item.actor ?? item.userName ?? '',
+        actorUserId: actorId,
+        userName,
         userRole: item.userRole ?? '',
         details: data?.message ?? item.details ?? '',
         ipAddress: item.ipAddress ?? null,
