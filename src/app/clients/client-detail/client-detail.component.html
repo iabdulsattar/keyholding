@@ -974,7 +974,7 @@
             </div>
 
             <!-- Activity table -->
-            <div class="bg-white rounded-lg border border-slate-100 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-lg border border-slate-100 overflow-hidden">
              <div class="overflow-x-auto">
                <table class="w-full text-sm min-w-[1000px]">
                  <thead>
@@ -1040,7 +1040,7 @@
                      @if (page === '...') {
                        <span class="px-1 text-slate-400 text-sm">&#8230;</span>
                      } @else {
-                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium" [class.bg-blue-600]="activitiesPage === page" [class.text-white]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
+                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border" [class.bg-white]="activitiesPage === page" [class.text-blue-500]="activitiesPage === page" [class.border-blue-500]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
                      }
                    }
                    <button (click)="activitiesNextPage()" [disabled]="activitiesPage === activitiesTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
