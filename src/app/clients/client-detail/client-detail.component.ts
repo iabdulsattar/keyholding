@@ -971,6 +971,9 @@ viewEmergencyContact(contactId: string): void {
 
   switchTab(tab: string): void {
     this.activeTab = tab;
+    if (tab === 'activity') {
+      this.loadActivities();
+    }
     setTimeout(() => {
       const icons = (window as any).lucide;
       if (icons && icons.createIcons) {
