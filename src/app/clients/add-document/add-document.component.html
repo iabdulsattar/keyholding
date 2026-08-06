@@ -28,8 +28,8 @@
 
     <div class="grid sm:grid-cols-2 gap-x-6 gap-y-5">
       <div>
-        <label class="block text-[13px] font-medium" [class.text-rose-600]="touched.has('documentName') && !documentName.trim()" [class.text-slate-700]="!(touched.has('documentName') && !documentName.trim())">Document Name <span class="text-red-500">*</span></label>
-        <div [class.border-rose-500]="touched.has('documentName') && !documentName.trim()" class="rounded-lg border border-slate-300 transition">
+        <label class="block text-[13px] font-medium mb-1" [class.text-rose-600]="touched.has('documentName') && !documentName.trim()" [class.text-slate-700]="!(touched.has('documentName') && !documentName.trim())">Document Name <span class="text-red-500">*</span></label>
+        <div [class.border-rose-500]="touched.has('documentName') && !documentName.trim()" class="rounded-lg border border-slate-200 transition">
           <input type="text" [(ngModel)]="documentName" name="documentName" (blur)="markTouched('documentName')" placeholder="Enter document name"
             class="w-full rounded-lg border-none px-3.5 py-2.5 text-[13.5px] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
         </div>

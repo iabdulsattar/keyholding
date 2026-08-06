@@ -27,21 +27,21 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('firstName') && !firstName.trim()" [class.text-slate-700]="!(touched.has('firstName') && !firstName.trim())">First Name <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('firstName') && !firstName.trim()" class="rounded-lg border border-slate-200 transition">
+                 <div [class.border-rose-500]="touched.has('firstName') && !firstName.trim()" class="rounded-lg transition">
                    <input type="text" placeholder="Enter first name" class="field-input border-none" [(ngModel)]="firstName" name="firstName" (blur)="markTouched('firstName')" [disabled]="saving" />
                  </div>
                  @if (touched.has('firstName') && !firstName.trim()) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
               </div>
               <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('lastName') && !lastName.trim()" [class.text-slate-700]="!(touched.has('lastName') && !lastName.trim())">Last Name <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('lastName') && !lastName.trim()" class="rounded-lg border border-slate-200 transition">
+                 <div [class.border-rose-500]="touched.has('lastName') && !lastName.trim()" class="rounded-lg transition">
                    <input type="text" placeholder="Enter last name" class="field-input border-none" [(ngModel)]="lastName" name="lastName" (blur)="markTouched('lastName')" [disabled]="saving" />
                  </div>
                  @if (touched.has('lastName') && !lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
               </div>
               <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('jobTitle') && !jobTitle.trim()" [class.text-slate-700]="!(touched.has('jobTitle') && !jobTitle.trim())">Job Title <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('jobTitle') && !jobTitle.trim()" class="rounded-lg border border-slate-200 transition">
+                 <div [class.border-rose-500]="touched.has('jobTitle') && !jobTitle.trim()" class="rounded-lg transition">
                    <input type="text" placeholder="Enter job title" class="field-input border-none" [(ngModel)]="jobTitle" name="jobTitle" (blur)="markTouched('jobTitle')" [disabled]="saving" />
                  </div>
                  @if (touched.has('jobTitle') && !jobTitle.trim()) { <p class="text-xs text-rose-600 mt-1">Job title is required</p> }
@@ -49,7 +49,7 @@
 
               <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-700]="!(touched.has('email') && !email.trim())">Email Address <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg border border-slate-200 transition">
+                 <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg transition">
                    <input type="email" placeholder="Enter email address" class="field-input border-none" [(ngModel)]="email" name="email" (blur)="markTouched('email')" [disabled]="saving" />
                  </div>
                  @if (touched.has('email') && !email.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
@@ -57,7 +57,7 @@
               </div>
               <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg border border-slate-200 transition">
+                 <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg transition">
                    <div class="flex gap-2">
                      <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
                        🇬🇧 +44
@@ -79,7 +79,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
                <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-700]="!(touched.has('status') && !status)">Status <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg border border-slate-200 transition">
+                 <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg  transition">
                    <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
                  </div>
                  @if (touched.has('status') && !status) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
