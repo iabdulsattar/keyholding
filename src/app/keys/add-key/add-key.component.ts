@@ -10,6 +10,7 @@ import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 
 @Component({
   selector: 'app-add-key',
@@ -93,7 +94,7 @@ export class AddKeyComponent implements OnInit {
   private editKeyId = '';
   private catalogCache: { types: KeyType[]; categories: KeyCategory[] } | null = null;
 
-  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService, private referrer: NavigationReferrerService) {}
 
   get breadcrumbs(): BreadcrumbItem[] {
     const crumbs: BreadcrumbItem[] = [{ label: 'Keys', link: '/keys/all-keys' }];
@@ -471,7 +472,7 @@ export class AddKeyComponent implements OnInit {
   }
 
   get returnUrl(): string {
-    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+    return this.route.snapshot.queryParamMap.get('returnUrl') || this.referrer.getPreviousUrl() || '';
   }
 
   private finishKeySubmit(): void {

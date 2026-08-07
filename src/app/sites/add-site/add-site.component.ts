@@ -11,6 +11,7 @@ import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.ser
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { Observable } from 'rxjs';
+import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 
 @Component({
   selector: 'app-add-site',
@@ -174,7 +175,7 @@ securityLevel = '';
     { value: 'Sarah Miller', label: 'Sarah Miller' },
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService) {}
 
   markTouched(field: string) {
     this.touched.add(field);
@@ -644,7 +645,7 @@ securityLevel = '';
   }
 
   get returnUrl(): string {
-    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+    return this.route.snapshot.queryParamMap.get('returnUrl') || this.referrer.getPreviousUrl() || '';
   }
 
   private finishSiteSubmit(): void {

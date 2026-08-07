@@ -113,6 +113,12 @@ export interface EmergencyContact {
   createdDate?: string;
   updatedBy?: string;
   updatedDate?: string;
+  createdByUserId?: string;
+  createdByUserName?: string;
+  createdAt?: string;
+  updatedByUserId?: string;
+  updatedByUserName?: string;
+  updatedAt?: string;
 }
 
 export interface AuditRecord {

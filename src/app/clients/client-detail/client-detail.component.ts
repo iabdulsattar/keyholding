@@ -1189,11 +1189,11 @@ viewEmergencyContact(contactId: string): void {
 
   triggerAction(actionName: string): void {
     if (actionName === 'Add New Key') {
-      this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId } });
+      this.router.navigate(['/keys/add-key'], { queryParams: { clientId: this.clientId, returnUrl: '/clients/' + this.clientId } });
       return;
     }
     if (actionName === 'Add New Site') {
-      this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientId } });
+      this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientId, returnUrl: '/clients/' + this.clientId } });
       return;
     }
     if (actionName === 'Edit Client') {
@@ -1237,7 +1237,7 @@ viewEmergencyContact(contactId: string): void {
 
   triggerRowAction(action: string, rowId: string): void {
     if (action === 'View') {
-      this.router.navigate(['/keys/view-key', rowId]);
+      this.router.navigate(['/keys/view-key', rowId], { queryParams: { returnUrl: '/clients/' + this.clientId } });
       return;
     }
     const toast = document.getElementById('toastNotification');
@@ -1252,8 +1252,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   viewSite(siteId: string): void {
-    console.log(`Navigating to view site with ID: ${siteId}`);
-    this.router.navigate(['/sites/view-site', siteId]);
+    this.router.navigate(['/sites/view-site', siteId], { queryParams: { returnUrl: '/clients/' + this.clientId } });
   }
 
   toggleSelectAllRows(masterCheckbox: HTMLInputElement): void {

@@ -11,6 +11,7 @@ import { ReactivateKeyModalComponent } from '../reactivate-key-modal/reactivate-
 import { DeleteKeyModalComponent } from '../delete-key-modal/delete-key-modal.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
+import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 
 @Component({
   selector: 'app-view-key',
@@ -75,7 +76,7 @@ export class ViewKeyComponent implements OnInit {
     return crumbs;
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService, private referrer: NavigationReferrerService) {}
 
   ngOnInit(): void {
     this.orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
@@ -147,7 +148,7 @@ export class ViewKeyComponent implements OnInit {
   }
 
   get returnUrl(): string {
-    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+    return this.route.snapshot.queryParamMap.get('returnUrl') || this.referrer.getPreviousUrl() || '';
   }
 
   goBack(): void {

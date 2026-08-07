@@ -11,6 +11,7 @@ import { ActivateSiteModalComponent } from '../activate-site-modal/activate-site
 import { DeleteSiteModalComponent } from '../delete-site-modal/delete-site-modal.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
+import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 
 @Component({
   selector: 'app-view-site',
@@ -71,10 +72,10 @@ export class ViewSiteComponent implements OnInit {
   }
 
   get returnUrl(): string {
-    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+    return this.route.snapshot.queryParamMap.get('returnUrl') || this.referrer.getPreviousUrl() || '';
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService) {}
 
   ngOnInit(): void {
     this.siteId = this.route.snapshot.paramMap.get('id') || '';

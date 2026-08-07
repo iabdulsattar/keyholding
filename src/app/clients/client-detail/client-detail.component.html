@@ -71,8 +71,8 @@
               <h2 class="text-xl font-bold text-slate-900">{{ client?.name || 'Client Details' }}</h2>
               <div class="flex items-center gap-2 mt-1.5 flex-wrap">
                 <span class="inline-flex items-center rounded-lg bg-blue-50 text-blue-600 text-xs font-medium px-2.5 py-1">{{ client?.code || '' }}</span>
-                <span class="inline-flex items-center gap-1.5 rounded-lg text-xs font-medium px-2.5 py-1" [class]="client?.status === 'Active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'">
-                  <span class="h-1.5 w-1.5 rounded-full" [class]="client?.status === 'Active' ? 'bg-emerald-500' : 'bg-rose-500'"></span>{{ clientStatusLabel }}
+                <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
                 </span>
               </div>
               <div class="mt-3 space-y-1.5 text-sm text-slate-600">
@@ -310,7 +310,7 @@
           <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5">
             <h3 class="font-semibold text-slate-900 mb-4">Related Items</h3>
             <div class="space-y-1">
-              <a href="#" class="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-slate-50">
+              <div class="flex items-center justify-between rounded-lg px-2 py-2">
                 <span class="flex items-center gap-3 text-sm text-slate-700">
                   <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7M9 9v.01M9 12v.01M9 15v.01"/></svg>
@@ -321,8 +321,8 @@
                   <span class="text-sm font-medium text-slate-900">{{ sites.length }}</span>
                   <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                 </span>
-              </a>
-              <a href="#" class="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-slate-50">
+              </div>
+              <div class="flex items-center justify-between rounded-lg px-2 py-2">
                 <span class="flex items-center gap-3 text-sm text-slate-700">
                   <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7a2 2 0 11-4 0 2 2 0 014 0zm-2 2v3m0 0l-3 7m3-7l3 7"/></svg>
@@ -333,8 +333,8 @@
                   <span class="text-sm font-medium text-slate-900">{{ keys.length }}</span>
                   <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                 </span>
-              </a>
-              <a href="#" class="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-slate-50">
+              </div>
+              <div class="flex items-center justify-between rounded-lg px-2 py-2">
                 <span class="flex items-center gap-3 text-sm text-slate-700">
                   <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
@@ -345,7 +345,7 @@
                   <span class="text-sm font-medium text-slate-900">{{ totalJobs }}</span>
                   <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                 </span>
-              </a>
+              </div>
             </div>
           </div>
 
@@ -1173,14 +1173,14 @@
                       <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">{{ doc.uploadedByUserName || '-' }}</td>
                        <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ doc.createdAt | date:'dd MMM yyyy, h:mm a' }}</td>
                       <td class="px-5 py-3.5 text-right">
-                        <div class="flex items-center justify-end gap-3 text-slate-400">
-                          <button (click)="viewDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="View document">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                         <div class="flex items-center justify-end gap-3 text-slate-400">
+                          <button class="hover:text-blue-600 cursor-pointer" title="View document">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                           </button>
-                          <button (click)="editDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="Edit document">
+                          <button class="hover:text-blue-600 cursor-pointer" title="Edit document">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
                           </button>
-                          <button (click)="deleteDocument(doc.id)" class="hover:text-rose-600 cursor-pointer" title="Delete document">
+                          <button class="hover:text-rose-600 cursor-pointer" title="Delete document">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
                           </button>
                         </div>

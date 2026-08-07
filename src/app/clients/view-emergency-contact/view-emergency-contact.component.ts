@@ -109,13 +109,13 @@ export class ViewEmergencyContactComponent implements OnInit {
           this.email = contact.email || '';
           this.availability = contact.availability || '';
           this.notifyFor = contact.notifyFor || '';
-          this.status = contact.status || 'Active';
+          this.status = contact.status === 'INACTIVE' ? 'Inactive' : contact.status === 'ACTIVE' ? 'Active' : (contact.status || 'Active');
           this.address = contact.address || '';
           this.notes = contact.notes || '';
-          this.createdBy = contact.createdBy || 'Faisa Ahmed';
-          this.createdDate = contact.createdDate || '15 May 2024, 09:15 AM';
-          this.updatedBy = contact.updatedBy || 'Faisa Ahmed';
-          this.updatedDate = contact.updatedDate || '15 May 2024, 11:20 AM';
+          this.createdBy = contact.createdByUserName || contact.createdBy || '';
+          this.createdDate = contact.createdAt ? this.formatDateTime(contact.createdAt) : '';
+          this.updatedBy = contact.updatedByUserName || contact.updatedBy || '';
+          this.updatedDate = contact.updatedAt ? this.formatDateTime(contact.updatedAt) : '';
         }
         this.loading = false;
       },

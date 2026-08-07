@@ -126,12 +126,12 @@
 
           <!-- Meta footer card -->
           <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-5">
               <div>
                 <p class="text-xs text-slate-500">Added By</p>
                 <div class="flex items-center gap-2 mt-1.5">
                   <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
-                  <p class="text-sm font-medium text-slate-900">Faisa Ahmed</p>
+                  <p class="text-sm font-medium text-slate-900">{{ createdBy || '–' }}</p>
                 </div>
               </div>
               <div>
