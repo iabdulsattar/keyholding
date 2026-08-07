@@ -1321,14 +1321,14 @@
                         <td class="td text-slate-600 text-[14px]">{{ contact.primary ? 'Yes' : 'No' }}</td>
                          <td class="td">
                             <div class="flex items-center justify-end gap-3 text-slate-400">
-                               <button (click)="viewContact(contact.id)" class="hover:text-blue-600 text-slate-600 cursor-pointer" title="View contact">
+                               <button (click)="viewContact(contact.id)" class="flex items-center justify-center hover:text-blue-600 text-slate-600 cursor-pointer" title="View contact">
                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
                                </button>
                                <button (click)="currentContactStatus = contact.status; contactIdToToggle = contact.id; contactNameToToggle = contact.name; showToggleContactStatusModal = true" class="hover:text-emerald-600 cursor-pointer" title="Toggle status">
                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
                                </button>
                                <div class="relative inline-block text-left">
-                                 <button (click)="toggleDropdown('contact-more-' + $index)" class="hover:text-slate-600 text-slate-600">
+                                 <button (click)="toggleDropdown('contact-more-' + $index)" class="flex items-center justify-center hover:text-slate-600 text-slate-600">
                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
                                  </button>
                                  <div id="contact-more-{{ $index }}" class="hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
