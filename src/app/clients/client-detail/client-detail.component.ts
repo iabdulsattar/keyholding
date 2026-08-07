@@ -1157,6 +1157,10 @@ viewEmergencyContact(contactId: string): void {
     this.showDeactivateClientModal = false;
     this.isClientActive = false;
     this.loadClient();
+    this.loadKeys();
+    this.loadSites();
+    this.loadClientStats();
+    this.loadSiteStats();
     this.showToast('Client deactivated successfully');
   }
 
@@ -1164,6 +1168,10 @@ viewEmergencyContact(contactId: string): void {
     this.showActivateClientModal = false;
     this.isClientActive = true;
     this.loadClient();
+    this.loadKeys();
+    this.loadSites();
+    this.loadClientStats();
+    this.loadSiteStats();
     this.showToast('Client activated successfully');
   }
 

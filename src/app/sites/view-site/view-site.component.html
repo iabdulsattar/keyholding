@@ -263,7 +263,7 @@
   <app-delete-site-modal
     [siteId]="siteId"
     [siteName]="siteNameToDelete"
-    [clientId]="clientId"
+    [orgId]="orgId || ''"
     (close)="onDeleteSiteClosed()"
     (confirmed)="onDeleteSiteConfirmed()">
   </app-delete-site-modal>
