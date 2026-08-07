@@ -152,10 +152,10 @@
               <div class="space-y-2">
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Existing Attachment</p>
                 @for (att of existingAttachments; track att.id) {
-                  <div class="file-card">
+                  <div class="file-card w-50">
                     <div class="thumb">
                       @if (isImage(att.contentType)) {
-                        <img [src]="att.publicUrl || att.storagePath" alt="{{ att.fileName }}">
+                        <img [src]="att.publicUrl || att.storagePath" alt="{{ att.fileName }}" class="w-20 h-20">
                       } @else {
                         <div class="thumb doc-thumb">
                           <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">

@@ -86,7 +86,9 @@ export class AddKeyComponent implements OnInit {
     status: []
   };
 
-  keyTypeOptions: RichSelectOption[] = [];
+  keyTypeOptions: RichSelectOption[] = [
+        
+  ];
   keyCategoryOptions: RichSelectOption[] = [];
   clientOptions: RichSelectOption[] = [];
   siteOptions: RichSelectOption[] = [];
