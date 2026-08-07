@@ -2,12 +2,13 @@
   <div class="flex flex-col flex-1 min-w-0">
 
     <!-- Topbar -->
-    <header class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-4">
-      <div class="flex items-start justify-between gap-4 flex-wrap">
+    <header class=" border-b border-slate-200 pb-5">
+      <div class="flex items-center justify-between gap-4 flex-wrap">
         <div class="flex items-start gap-3 min-w-0">
           <div class="min-w-0">
-            <h1 class="text-[20px] sm:text-[22px] font-bold text-slate-900 mt-1">View Emergency Contact</h1>
             <app-page-breadcrumb pageTitle="View Emergency Contact" [breadcrumbs]="breadcrumbs" />
+            
+            <h1 class="text-[20px] font-bold text-slate-900 ">View Emergency Contact</h1>
             <p class="text-[13px] text-slate-500 mt-0.5">View emergency contact details for {{ clientName }}.</p>
           </div>
         </div>
@@ -32,122 +33,124 @@
     </header>
 
     <!-- Content -->
-    <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-[1400px] w-full mx-auto">
+    <main class="flex-1 py-5 space-y-6 w-full mx-auto">
       @if (loading) {
         <div class="flex items-center justify-center py-12">
           <div class="animate-spin rounded-full h-8 w-8 border-2 border-slate-200 border-t-brand-600"></div>
         </div>
       }
-      <div [class.opacity-50]="loading" [class.pointer-events-none]="loading" class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
+      <div [class.opacity-50]="loading" [class.pointer-events-none]="loading" class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-5 items-start">
 
         <!-- Main column -->
-        <div class="space-y-6 min-w-0">
+        <div class="space-y-5 min-w-0">
 
           <!-- Contact Information -->
-          <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
             <h2 class="text-base font-semibold text-slate-900 mb-5">Contact Information</h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6">
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
                 <div>
-                  <p class="text-xs text-slate-500">Full Name</p>
+                  <p class="text-xs text-slate-500 font-medium">Full Name</p>
                   <p class="text-sm font-medium text-slate-900 mt-1">{{ fullName || (firstName + ' ' + lastName) || '–' }}</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 7h6M9 11h6M9 15h3" stroke-linecap="round"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building2-icon lucide-building-2 text-blue-500"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
                 <div>
-                  <p class="text-xs text-slate-500">Department</p>
+                  <p class="text-xs text-slate-500 font-medium">Department</p>
                   <p class="text-sm font-medium text-slate-900 mt-1">{{ department || '–' }}</p>
                 </div>
               </div>
-              <div>
-                <p class="text-xs text-slate-500">Phone Number</p>
+              <div class="flex gap-3">
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3l2 5-2.5 1.5a11 11 0 005 5L14 14l5 2v3a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/></svg>
+                <div>                
+                <p class="text-xs text-slate-500 font-medium">Phone Number</p>
                 <p class="text-sm font-medium text-slate-900 mt-1 flex items-center gap-2">
-                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3l2 5-2.5 1.5a11 11 0 005 5L14 14l5 2v3a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/></svg>
                   {{ phoneCountryCode || '+44' }} {{ phone || '–' }}
                 </p>
+                </div>
               </div>
 
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <div class="min-w-0">
-                  <p class="text-xs text-slate-500">Email Address</p>
+                  <p class="text-xs text-slate-500 font-medium">Email Address</p>
                   <p class="text-sm font-medium text-slate-900 mt-1 break-all">{{ email || '–' }}</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <div>
-                  <p class="text-xs text-slate-500">Availability</p>
+                  <p class="text-xs text-slate-500 font-medium">Availability</p>
                   <p class="text-sm font-medium text-slate-900 mt-1">{{ availability || '–' }}</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-11a7 7 0 0114 0c0 6.5-7 11-7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg>
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-11a7 7 0 0114 0c0 6.5-7 11-7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg>
                 <div>
-                  <p class="text-xs text-slate-500">Address</p>
+                  <p class="text-xs text-slate-500 font-medium">Address</p>
                   <p class="text-sm font-medium text-slate-900 mt-1">{{ address || '–' }}</p>
                 </div>
               </div>
             </div>
 
             <div class="mt-6 flex gap-3">
-              <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <div>
-                <p class="text-xs text-slate-500">Status</p>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1.5" [ngClass]="status === 'Active' ? 'bg-emerald-100 text-emerald-700' : status === 'Inactive' ? 'bg-slate-100 text-slate-600' : 'bg-red-100 text-red-600'">{{ status }}</span>
+                <p class="text-xs text-slate-500 font-medium">Status</p>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-medium mt-1.5" [ngClass]="status === 'Active' ? 'bg-emerald-100 text-emerald-700' : status === 'Inactive' ? 'bg-slate-100 text-slate-600' : 'bg-red-100 text-red-600'">{{ status }}</span>
               </div>
             </div>
           </section>
 
           <!-- Additional Information -->
-          <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
             <h2 class="text-base font-semibold text-slate-900 mb-5">Additional Information</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
                 <div>
-                  <p class="text-xs text-slate-500">Notes</p>
+                  <p class="text-xs text-slate-500 font-medium">Notes</p>
                   <p class="text-sm font-medium text-slate-900 mt-1">{{ notes || '–' }}</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-brand-600 mt-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a2 2 0 002-2H10a2 2 0 002 2z"/><path d="M18 16v-5a6 6 0 10-12 0v5l-2 2h16l-2-2z" stroke-linejoin="round"/></svg>
+                <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a2 2 0 002-2H10a2 2 0 002 2z"/><path d="M18 16v-5a6 6 0 10-12 0v5l-2 2h16l-2-2z" stroke-linejoin="round"/></svg>
                 <div>
-                  <p class="text-xs text-slate-500">Notify For</p>
+                  <p class="text-xs text-slate-500 font-medium">Notify For</p>
                   <p class="text-sm font-medium text-slate-900 mt-1">{{ notifyFor || '–' }}</p>
-                  <p class="text-xs text-brand-600 mt-1">This contact will receive notifications based on the selected preference.</p>
+                  <p class="text-xs text-slate-500 font-medium mt-1">This contact will receive notifications based on the selected preference.</p>
                 </div>
               </div>
             </div>
           </section>
 
           <!-- Meta footer card -->
-          <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-5">
               <div>
-                <p class="text-xs text-slate-500">Added By</p>
+                <p class="text-xs text-slate-500 font-medium">Added By</p>
                 <div class="flex items-center gap-2 mt-1.5">
-                  <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
                   <p class="text-sm font-medium text-slate-900">Faisa Ahmed</p>
                 </div>
               </div>
               <div>
-                <p class="text-xs text-slate-500">Created On</p>
+                <p class="text-xs text-slate-500 font-medium">Created On</p>
                 <div class="flex items-center gap-2 mt-1.5">
-                  <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke-linecap="round"/></svg>
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke-linecap="round"/></svg>
                   <p class="text-sm font-medium text-slate-900">{{ createdDate || '–' }}</p>
                 </div>
               </div>
               <div>
-                <p class="text-xs text-slate-500">Last Updated</p>
+                <p class="text-xs text-slate-500 font-medium">Last Updated</p>
                 <div class="flex items-center gap-2 mt-1.5">
-                  <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   <div>
                     <p class="text-sm font-medium text-slate-900">{{ updatedDate || '–' }}</p>
-                    <p class="text-xs text-slate-500">by {{ updatedBy || '–' }}</p>
+                    <p class="text-xs text-slate-500 font-medium">by {{ updatedBy || '–' }}</p>
                   </div>
                 </div>
               </div>
@@ -156,41 +159,41 @@
         </div>
 
         <!-- Right column -->
-        <div class="space-y-6 min-w-0">
+        <div class="space-y-5 min-w-0">
 
           <!-- Contact Summary -->
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+          <div class="bg-white rounded-lg border border-slate-100 p-5">
             <div class="flex items-center gap-2 mb-4">
-              <div class="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
+              <div class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
               </div>
               <h3 class="font-semibold text-slate-900">Contact Summary</h3>
             </div>
             <dl class="divide-y divide-slate-100 text-sm">
               <div class="flex items-center justify-between py-2.5">
-                <dt class="flex items-center gap-2 text-slate-500">
-                  <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16" stroke-linecap="round"/></svg>
+                <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                  <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16" stroke-linecap="round"/></svg>
                   Jobs Assigned
                 </dt>
                 <dd class="font-semibold text-slate-900">18</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
-                <dt class="flex items-center gap-2 text-slate-500">
-                  <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9m0 0h-4m4 0v4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round-icon lucide-key-round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
                   Keys Managed
                 </dt>
                 <dd class="font-semibold text-slate-900">12</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="flex items-center gap-2 text-slate-500">
-                  <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 21V8l8-5 8 5v13" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke-linejoin="round"/></svg>
+              <div class="flex items-center justify-between py-2.5 ">
+                <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                  <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 21V8l8-5 8 5v13" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke-linejoin="round"/></svg>
                   Sites Access
                 </dt>
                 <dd class="font-semibold text-slate-900">5</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
-                <dt class="flex items-center gap-2 text-slate-500">
-                  <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.9v2a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 013.1 4.2 2 2 0 015 2h2a2 2 0 012 1.7c.1 1 .3 2 .6 2.9a2 2 0 01-.5 2.1l-.9.9a16 16 0 006 6l.9-.9a2 2 0 012.1-.5c.9.3 1.9.5 2.9.6a2 2 0 011.9 2z" stroke-linejoin="round"/></svg>
+                <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                  <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.9v2a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 013.1 4.2 2 2 0 015 2h2a2 2 0 012 1.7c.1 1 .3 2 .6 2.9a2 2 0 01-.5 2.1l-.9.9a16 16 0 006 6l.9-.9a2 2 0 012.1-.5c.9.3 1.9.5 2.9.6a2 2 0 011.9 2z" stroke-linejoin="round"/></svg>
                   Emergency Contacts
                 </dt>
                 <dd class="font-semibold text-slate-900">6</dd>
@@ -199,10 +202,10 @@
           </div>
 
            <!-- Activity Timeline -->
-           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+           <div class="bg-white rounded-lg border border-slate-100 p-5">
              <div class="flex items-center gap-2 mb-5">
-               <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                 <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2 6 4-14 2 8h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+               <div class="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
+                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2 6 4-14 2 8h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                </div>
                <h3 class="font-semibold text-slate-900">Activity Timeline</h3>
              </div>
@@ -223,7 +226,7 @@
            </div>
 
           <!-- Related Actions -->
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+          <div class="bg-white rounded-lg border border-slate-100 p-5">
             <div class="flex items-center gap-2 mb-4">
               <div class="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center shrink-0">
                 <svg class="w-4 h-4 text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke-linejoin="round"/></svg>
@@ -231,15 +234,15 @@
               <h3 class="font-semibold text-slate-900">Related Actions</h3>
             </div>
             <div class="space-y-1">
-              <a href="#" (click)="editContact(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-brand-600 hover:bg-brand-600/5 transition-colors">
-                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="#" (click)="editContact(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
+                <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Edit Emergency Contact
               </a>
-               <a href="#" (click)="showDeleteModal = true; $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-brand-600 hover:bg-brand-600/5 transition-colors">
-                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/></svg>
+               <a href="#" (click)="showDeleteModal = true; $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
+                 <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/></svg>
                  Deactivate Emergency Contact
                </a>
-              <a href="#" (click)="goBack()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-brand-600 hover:bg-brand-600/5 transition-colors">
+              <a href="#" (click)="goBack()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
                 View Activity Log
               </a>
