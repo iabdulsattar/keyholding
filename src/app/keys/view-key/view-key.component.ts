@@ -278,7 +278,8 @@ export class ViewKeyComponent implements OnInit {
     this.activitiesLoading = true;
     this.keyVault.getKeyAuditLog(this.orgId, this.keyId).subscribe({
       next: (result: any) => {
-        const items = result?.items ?? result?.data?.items ?? result ?? [];
+        const data = result?.data ?? result ?? {};
+        const items = (data.items ?? data.data ?? data ?? []);
         this.activities = items.map((item: any) => this.mapAuditToActivity(item));
         this.activitiesLoading = false;
       },
@@ -301,9 +302,7 @@ export class ViewKeyComponent implements OnInit {
   }
 
   private mapAuditToActivity(item: any): ActivityItem {
-    const data = item?.data ?? {};
-    const actor = item.actor || item.userName || 'System';
-    const name = this.getEntityName(data?.message || item?.details || '');
+    const actor = item.actorUserName || item.actor || item.userName || 'System';
     return {
       id: item.id ?? '',
       time: this.formatDateTime(item.createdAt),
@@ -311,12 +310,13 @@ export class ViewKeyComponent implements OnInit {
       role: item.userRole || '—',
       initials: this.getInitials(actor),
       avatarColor: this.getAvatarColor(actor),
-      action: item.action || '—',
+      action: item.event || item.action || '—',
       entity: this.formatTargetType(item.targetType),
-      name: name || '—',
+      name: this.getEntityName(item.detail || item.details || ''),
       detail1: '',
       ip: item.ipAddress || '—',
-      details: item.details || '—',
+      details: item.detail || item.details || '—',
+      reference: item.id ? `#${item.id.slice(0, 8)}` : '—',
     };
   }
 

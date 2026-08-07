@@ -10,11 +10,13 @@ export interface ActivityItem {
   initials: string;
   avatarColor: string;
   action: string;
+  eventType?: string;
   entity: string;
   name: string;
   detail1?: string;
   ip: string;
   details: string;
+  reference?: string;
 }
 
 @Component({

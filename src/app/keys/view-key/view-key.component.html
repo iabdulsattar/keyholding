@@ -245,35 +245,27 @@
         
             <!-- Key Activity -->
             <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
-    <h3 class="text-sm font-bold text-slate-900 mb-5">Key Activity</h3>
-
-    <ul class="relative">
-      @for (activity of activities.slice(0, 4); track activity.id) {
-      <li class="relative flex gap-3 {{ $last ? '' : 'pb-6' }}">
-        @if (!$last) {
-        <span class="absolute left-4 top-8 bottom-0 w-px bg-slate-200"></span>
-        }
-        <div class="relative z-10 w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 ring-4 ring-white">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-        </div>
-        <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1">
-          <div class="min-w-0">
-            <p class="text-sm font-semibold text-slate-900">{{ activity.details || activity.name || 'Activity' }}</p>
-            <p class="text-[12px] text-slate-500">by {{ activity.by }}</p>
-          </div>
-          <p class="text-xs text-slate-400 sm:text-right sm:pl-3 shrink-0 whitespace-nowrap">{{ activity.time }}</p>
-        </div>
-      </li>
-      }
-    </ul>
-
-    @if (activities.length > 4) {
-    <button class="mt-6 w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border border-slate-200 text-blue-500 text-sm font-semibold hover:bg-slate-50 transition-colors">
-      View Full Activity Log
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-    </button>
-    }
-            
+              <h3 class="text-sm font-bold text-slate-900 mb-5">Key Activity</h3>
+              <div class="relative pl-5 space-y-5 border-l-2 border-slate-100 ml-2 text-xs">
+                @for (activity of activities.slice(0, 4); track activity.id) {
+                <div class="relative">
+                  <span class="absolute -left-[27px] top-0.5 bg-white border-2 border-emerald-500 w-3.5 h-3.5 rounded-full flex items-center justify-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span></span>
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="space-y-0.5">
+                      <h5 class="font-bold text-slate-900">{{ activity.details || activity.name || 'Activity' }}</h5>
+                      <p class="text-slate-600 font-medium">by {{ activity.by }}</p>
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-semibibold pt-0.5 whitespace-nowrap">{{ activity.time }}</span>
+                  </div>
+                </div>
+                }
+              </div>
+              @if (activities.length > 4) {
+              <button class="mt-6 w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border border-slate-200 text-blue-500 text-sm font-semibold hover:bg-slate-50 transition-colors">
+                View Full Activity Log
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </button>
+              }
             </section>
 
           </div>
