@@ -14,7 +14,7 @@ import { ClientService } from '../../core/services/client.service';
 export class DeleteSiteModalComponent {
   readonly siteId = input.required<string>();
   readonly siteName = input.required<string>();
-  readonly clientId = input.required<string>();
+  readonly orgId = input.required<string>();
   readonly close = output<void>();
   readonly confirmed = output<void>();
 
@@ -29,11 +29,11 @@ export class DeleteSiteModalComponent {
   }
 
   confirm(): void {
-    if (!this.siteId() || !this.clientId()) return;
+    if (!this.siteId() || !this.orgId()) return;
     this.submitting = true;
     this.statusMessage = '';
     this.statusType = '';
-    this.clientService.deleteSite(this.clientId(), this.siteId()).subscribe({
+    this.clientService.deleteSite(this.orgId(), this.siteId()).subscribe({
       next: () => {
         this.submitting = false;
         this.statusType = 'success';
