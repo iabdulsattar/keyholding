@@ -8,13 +8,14 @@ import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
 import { DeactivateSiteModalComponent } from '../deactivate-site-modal/deactivate-site-modal.component';
 import { ActivateSiteModalComponent } from '../activate-site-modal/activate-site-modal.component';
-import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
+import { DeleteSiteModalComponent } from '../delete-site-modal/delete-site-modal.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 
 @Component({
   selector: 'app-view-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent, ConfirmModalComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent, DeleteSiteModalComponent, PageBreadcrumbComponent],
   templateUrl: './view-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -51,6 +52,11 @@ export class ViewSiteComponent implements OnInit {
   showDeactivateModal = false;
   showActivateModal = false;
   showDeleteModal = false;
+  siteNameToDelete = '';
+
+  activities: ActivityItem[] = [];
+  activitiesLoading = false;
+  activitiesSearch = '';
 
   get breadcrumbs(): BreadcrumbItem[] {
     const crumbs: BreadcrumbItem[] = [{ label: 'Sites', link: '/sites/all-sites' }];
@@ -75,6 +81,7 @@ export class ViewSiteComponent implements OnInit {
     if (this.siteId) {
       this.loadSite();
       this.loadAttachments();
+      this.loadActivities();
     }
   }
 
@@ -220,28 +227,106 @@ export class ViewSiteComponent implements OnInit {
   }
 
   onDeleteSite(): void {
+    this.siteNameToDelete = this.site?.name || 'Site';
     this.showDeleteModal = true;
   }
 
-  confirmDeleteSite(): void {
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-    this.clientService.deleteSite(orgId, this.siteId).subscribe({
-      next: () => {
-        this.showDeleteModal = false;
-        this.toast.success('Site deleted successfully');
-        if (this.returnUrl) {
-          this.router.navigateByUrl(this.returnUrl);
-        } else {
-          const clientId = this.site?.clientId || this.site?.client?.id || '';
-          this.router.navigate(['/clients', clientId]);
-        }
+  onDeleteSiteConfirmed(): void {
+    this.showDeleteModal = false;
+    this.siteNameToDelete = '';
+    this.toast.success('Site deleted successfully');
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else {
+      const clientId = this.site?.clientId || this.site?.client?.id || '';
+      this.router.navigate(['/clients', clientId]);
+    }
+  }
+
+  onDeleteSiteClosed(): void {
+    this.showDeleteModal = false;
+    this.siteNameToDelete = '';
+  }
+
+  loadActivities(): void {
+    if (!this.siteId) return;
+    this.activitiesLoading = true;
+    this.clientService.listEntityAuditLog('SITE', this.siteId, { page: 0, size: 50 }).subscribe({
+      next: (result: any) => {
+        const items = result?.items ?? result?.data?.items ?? [];
+        this.activities = items.map((item: any) => this.mapAuditToActivity(item));
+        this.activitiesLoading = false;
       },
       error: () => {
-        this.showDeleteModal = false;
-        this.toast.error('Failed to delete site')
+        this.activities = [];
+        this.activitiesLoading = false;
       }
     });
+  }
+
+  onActivitiesSearch(): void {
+    const q = this.activitiesSearch.toLowerCase().trim();
+    if (!q) {
+      this.loadActivities();
+      return;
+    }
+    this.activities = this.activities.filter((a: ActivityItem) =>
+      (a.by + ' ' + a.action + ' ' + a.entity + ' ' + a.name + ' ' + a.details).toLowerCase().includes(q)
+    );
+  }
+
+  private mapAuditToActivity(item: any): ActivityItem {
+    const data = item?.data ?? {};
+    const actor = item.actor || item.userName || 'System';
+    const name = this.getEntityName(data?.message || item?.details || '');
+    return {
+      id: item.id ?? '',
+      time: this.formatDateTime(item.createdAt),
+      by: actor,
+      role: item.userRole || '—',
+      initials: this.getInitials(actor),
+      avatarColor: this.getAvatarColor(actor),
+      action: item.action || '—',
+      entity: this.formatTargetType(item.targetType),
+      name: name || '—',
+      detail1: '',
+      ip: item.ipAddress || '—',
+      details: item.details || '—',
+    };
+  }
+
+  private formatDateTime(value: string): string {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return `${datePart}, ${timePart}`;
+  }
+
+  private getInitials(name: string): string {
+    if (!name) return '?';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return name.substring(0, 2).toUpperCase();
+  }
+
+  private getAvatarColor(name: string): string {
+    const colors = ['bg-blue-100 text-blue-600', 'bg-emerald-100 text-emerald-600', 'bg-amber-100 text-amber-600', 'bg-rose-100 text-rose-600', 'bg-violet-100 text-violet-600', 'bg-sky-100 text-sky-600'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
+
+  private getEntityName(details: string): string {
+    if (!details) return '';
+    const match = details.match(/"([^"]+)"/);
+    return match ? match[1] : details.substring(0, 50);
+  }
+
+  private formatTargetType(value?: string): string {
+    if (!value) return '—';
+    return value.charAt(0) + value.slice(1).toLowerCase();
   }
 
   deleteSiteAttachment(attachmentId: string): void {

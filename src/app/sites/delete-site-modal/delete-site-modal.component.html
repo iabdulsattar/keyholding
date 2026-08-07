@@ -1,50 +1,37 @@
-<app-modal [isOpen]="true" [showCloseButton]="false" (close)="cancel()" className="max-w-sm">
+<app-modal [isOpen]="true" [showCloseButton]="false" (close)="close.emit()" className="max-w-sm">
   <div class="p-6 sm:p-8 relative">
 
     <div class="flex items-start justify-between mb-5">
-      <h2 class="text-xl font-bold text-slate-900">Deactivate Client</h2>
-      <button (click)="cancel()" class="text-slate-400 hover:text-slate-600">
+      <h2 class="text-xl font-bold text-slate-900">Delete Site</h2>
+      <button (click)="close.emit()" class="text-slate-400 hover:text-slate-600">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
 
     <div class="flex items-start gap-3 mb-6">
-      <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-orange-400 shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-red-400 shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
       </div>
       <p class="text-[15px] font-semibold text-slate-900">
-        Are you sure you want to deactivate <span class="text-indigo-600">{{ client()?.name }}</span>?
+        Are you sure you want to delete <span class="text-indigo-600">{{ siteName() }}</span>?
       </p>
     </div>
 
-    <p class="text-sm font-semibold text-slate-800 mb-3">Deactivating this client will:</p>
+    <p class="text-sm font-semibold text-slate-800 mb-3">Deleting this site will:</p>
     <ul class="space-y-3 mb-6">
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><line x1="4" y1="4" x2="24" y2="24"></line><circle cx="12" cy="12" r="10"></circle></svg>
-        Prevent new keys and sites from being created under this client.
+        Permanently remove the site and all associated data.
       </li>
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        Preserve all existing records and audit logs.
+        Preserve all historical records and audit logs.
       </li>
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><path d="M20 6L9 17l-5-5"></path></svg>
-        The client can be reactivated later by an administrator.
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        This action cannot be undone.
       </li>
     </ul>
-
-    <div class="h-px bg-slate-200 mb-5"></div>
-
-    <div class="mb-5">
-      <label class="block text-sm font-semibold text-slate-800 mb-2">Reason for Deactivation <span class="text-red-500">*</span></label>
-      <app-rich-select [options]="reasons" [(value)]="selectedReason" placeholder="Select reason" class="w-full"></app-rich-select>
-    </div>
-
-    <div class="mb-6">
-      <label class="block text-sm font-semibold text-slate-800 mb-2">Additional Reason <span class="font-normal text-slate-400">(Optional)</span></label>
-      <textarea rows="3" [(ngModel)]="additionalNote" placeholder="Enter reason (required if &quot;Other&quot; is selected)" class="w-full border border-slate-200 rounded-lg text-sm px-3.5 py-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder:text-slate-400"></textarea>
-      <p class="text-xs text-slate-400 text-right mt-1">{{ additionalNote.length }} / 250</p>
-    </div>
 
     @if (statusMessage) {
       <div class="flex items-start gap-2.5 rounded-xl p-3.5 mb-5"
@@ -71,13 +58,13 @@
     }
 
     <div class="flex justify-end gap-3">
-      <button (click)="cancel()" [disabled]="submitting && statusType !== 'error'" class="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 disabled:opacity-70">
+      <button (click)="close.emit()" [disabled]="submitting && statusType !== 'error'" class="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 disabled:opacity-70">
         Cancel
       </button>
-      <button (click)="confirm()" [disabled]="!canSubmit() || submitting" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-red-500 text-white font-semibold text-sm hover:bg-red-600 disabled:opacity-70">
+      <button (click)="confirm()" [disabled]="submitting" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-red-500 text-white font-semibold text-sm hover:bg-red-600 disabled:opacity-70">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
-        <span *ngIf="!submitting">Deactivate Client</span>
-        <span *ngIf="submitting">Deactivating...</span>
+        <span *ngIf="!submitting">Delete Site</span>
+        <span *ngIf="submitting">Deleting...</span>
       </button>
     </div>
 

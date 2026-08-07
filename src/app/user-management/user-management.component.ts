@@ -73,6 +73,8 @@ interface PermissionGroup {
   rows: PermissionRow[];
 }
 
+import { ActivityItem } from '../shared/components/ui/activity-timeline/activity-timeline.component';
+
 @Component({
   selector: 'app-user-management',
   standalone: true,
@@ -98,6 +100,10 @@ export class UserManagementComponent implements OnInit {
   showResendModal = false;
   resendTargetUser: TableUser | null = null;
   currentUserId: string | null = null;
+
+  activities: ActivityItem[] = [];
+  activitiesLoading = false;
+  activitiesSearch = '';
 
   roles: Role[] = [];
   rolesLoading = false;
@@ -715,6 +721,7 @@ export class UserManagementComponent implements OnInit {
     this.selectedUser = user;
     this.showDetail = true;
     this.loadUserDetail(user);
+    this.loadActivities(user.id);
   }
 
   private loadUserDetail(user: User): void {
@@ -820,5 +827,89 @@ export class UserManagementComponent implements OnInit {
   onCredentialsResent(): void {
     this.showResendModal = false;
     this.resendTargetUser = null;
+  }
+
+  loadActivities(userId?: string): void {
+    const id = userId || this.selectedUser?.id;
+    if (!id) return;
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+    this.activitiesLoading = true;
+    this.keyVault.listEntityAuditLog(orgId, 'USER', id, { page: 0, size: 50 }).subscribe({
+      next: (result: any) => {
+        const items = result?.items ?? result?.data?.items ?? [];
+        this.activities = items.map((item: any) => this.mapAuditToActivity(item));
+        this.activitiesLoading = false;
+      },
+      error: () => {
+        this.activities = [];
+        this.activitiesLoading = false;
+      }
+    });
+  }
+
+  onActivitiesSearch(): void {
+    const q = this.activitiesSearch.toLowerCase().trim();
+    if (!q) {
+      this.loadActivities();
+      return;
+    }
+    this.activities = this.activities.filter((a: ActivityItem) =>
+      (a.by + ' ' + a.action + ' ' + a.entity + ' ' + a.name + ' ' + a.details).toLowerCase().includes(q)
+    );
+  }
+
+  private mapAuditToActivity(item: any): ActivityItem {
+    const data = item?.data ?? {};
+    const actor = item.actor || item.userName || 'System';
+    const name = this.getEntityName(data?.message || item?.details || '');
+    return {
+      id: item.id ?? '',
+      time: this.formatDateTime(item.createdAt),
+      by: actor,
+      role: item.userRole || '—',
+      initials: this.getInitials(actor),
+      avatarColor: this.getAvatarColor(actor),
+      action: item.action || '—',
+      entity: this.formatTargetType(item.targetType),
+      name: name || '—',
+      detail1: '',
+      ip: item.ipAddress || '—',
+      details: item.details || '—',
+    };
+  }
+
+  private formatDateTime(value: string): string {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return `${datePart}, ${timePart}`;
+  }
+
+  private getInitials(name: string): string {
+    if (!name) return '?';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return name.substring(0, 2).toUpperCase();
+  }
+
+  private getAvatarColor(name: string): string {
+    const colors = ['bg-blue-100 text-blue-600', 'bg-emerald-100 text-emerald-600', 'bg-amber-100 text-amber-600', 'bg-rose-100 text-rose-600', 'bg-violet-100 text-violet-600', 'bg-sky-100 text-sky-600'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
+
+  private getEntityName(details: string): string {
+    if (!details) return '';
+    const match = details.match(/"([^"]+)"/);
+    return match ? match[1] : details.substring(0, 50);
+  }
+
+  private formatTargetType(value?: string): string {
+    if (!value) return '—';
+    return value.charAt(0) + value.slice(1).toLowerCase();
   }
 }

@@ -8,12 +8,16 @@ import { switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
-import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
+import { DeleteContactModalComponent } from '../delete-contact-modal/delete-contact-modal.component';
+import { ToggleContactStatusModalComponent } from '../toggle-contact-status-modal/toggle-contact-status-modal.component';
+import { DeleteEmergencyContactModalComponent } from '../delete-emergency-contact-modal/delete-emergency-contact-modal.component';
+import { ToggleEmergencyContactStatusModalComponent } from '../toggle-emergency-contact-status-modal/toggle-emergency-contact-status-modal.component';
+import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-document-modal.component';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, ConfirmModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -69,15 +73,20 @@ showDeactivateClientModal = false;
   showActivateClientModal = false;
   showDeleteContactModal = false;
   contactIdToDelete = '';
+  contactNameToDelete = '';
   showDeleteEmergencyContactModal = false;
   emergencyContactIdToDelete = '';
+  emergencyContactNameToDelete = '';
   showDeleteDocumentModal = false;
   documentIdToDelete = '';
+  documentNameToDelete = '';
   showToggleContactStatusModal = false;
   contactIdToToggle = '';
+  contactNameToToggle = '';
   currentContactStatus = '';
   showToggleEmergencyContactStatusModal = false;
   emergencyContactIdToToggle = '';
+  emergencyContactNameToToggle = '';
   currentEmergencyContactStatus = '';
 
   siteDonutSegments: { color: string; offset: number; length: number }[] = [];
@@ -316,27 +325,24 @@ viewEmergencyContact(contactId: string): void {
 
    deleteEmergencyContact(contactId: string): void {
       if (!this.clientId) return;
+      const contact = this.emergencyContacts.find(c => c.id === contactId);
       this.emergencyContactIdToDelete = contactId;
+      this.emergencyContactNameToDelete = contact?.fullName || 'Emergency Contact';
       this.showDeleteEmergencyContactModal = true;
     }
 
-    confirmDeleteEmergencyContact(): void {
-      const contactId = this.emergencyContactIdToDelete;
-      if (!this.clientId || !contactId) return;
-      this.clientService.deleteEmergencyContact(this.clientId, contactId).subscribe({
-        next: () => {
-          this.emergencyContacts = this.emergencyContacts.filter(c => c.id !== contactId);
-          this.filteredEmergencyContacts = this.filteredEmergencyContacts.filter(c => c.id !== contactId);
-          this.showDeleteEmergencyContactModal = false;
-          this.emergencyContactIdToDelete = '';
-          this.showToast('Emergency contact deleted successfully');
-        },
-        error: () => {
-          this.showDeleteEmergencyContactModal = false;
-          this.emergencyContactIdToDelete = '';
-          this.showToast('Failed to delete emergency contact');
-        }
-      });
+    onDeleteEmergencyContactConfirmed(): void {
+      this.showDeleteEmergencyContactModal = false;
+      this.emergencyContactIdToDelete = '';
+      this.emergencyContactNameToDelete = '';
+      this.loadEmergencyContacts();
+      this.showToast('Emergency contact deleted successfully');
+    }
+
+    onDeleteEmergencyContactClosed(): void {
+      this.showDeleteEmergencyContactModal = false;
+      this.emergencyContactIdToDelete = '';
+      this.emergencyContactNameToDelete = '';
     }
 
      addEmergencyContact(): void {
@@ -346,68 +352,64 @@ viewEmergencyContact(contactId: string): void {
 
    toggleEmergencyContactStatus(contactId: string, currentStatus: string): void {
       if (!this.clientId) return;
+      const contact = this.emergencyContacts.find(c => c.id === contactId);
       this.emergencyContactIdToToggle = contactId;
+      this.emergencyContactNameToToggle = contact?.fullName || 'Emergency Contact';
       this.currentEmergencyContactStatus = currentStatus;
       this.showToggleEmergencyContactStatusModal = true;
     }
 
-    confirmToggleEmergencyContactStatus(): void {
-      const contactId = this.emergencyContactIdToToggle;
-      const currentStatus = this.currentEmergencyContactStatus;
-      if (!this.clientId || !contactId) return;
-      const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
-      this.clientService.updateEmergencyContact(this.clientId, contactId, { status: newStatus }).subscribe({
-        next: () => {
-          this.loadEmergencyContacts();
-          this.showToggleEmergencyContactStatusModal = false;
-          this.emergencyContactIdToToggle = '';
-          this.currentEmergencyContactStatus = '';
-          this.showToast(`Emergency contact ${newStatus === 'Active' ? 'activated' : 'deactivated'} successfully`);
-        },
-        error: () => {
-          this.showToggleEmergencyContactStatusModal = false;
-          this.emergencyContactIdToToggle = '';
-          this.currentEmergencyContactStatus = '';
-          this.showToast('Failed to update emergency contact status');
-        }
-      });
+    onToggleEmergencyContactStatusConfirmed(): void {
+      this.showToggleEmergencyContactStatusModal = false;
+      this.emergencyContactIdToToggle = '';
+      this.emergencyContactNameToToggle = '';
+      this.currentEmergencyContactStatus = '';
+      this.loadEmergencyContacts();
+      this.showToast('Emergency contact status updated successfully');
     }
 
-     private loadActivities(): void {
-      if (!this.clientId) return;
-      this.activitiesLoading = true;
-        this.clientService.listOrganizationAuditLog({ page: 0, size: 200 }).subscribe({
-        next: (result: any) => {
-          const items = result?.items ?? result?.data?.items ?? [];
-          this.activities = items.map((item: any) => {
-            const data = item?.data ?? {};
-            const actor = data?.userName || item.actor || item.userName || 'System';
-            return {
-              id: item.id ?? '',
-              time: this.formatDateTime(item.createdAt),
-              by: actor,
-              role: item.userRole || '—',
-              initials: this.getInitials(actor),
-              avatarColor: this.getAvatarColor(actor),
-              action: item.action || '—',
-              entity: this.formatTargetType(item.targetType),
-              name: this.getActivityEntityName(item) || '—',
-              detail1: '',
-              ip: item.ipAddress || '—',
-              details: item.details || '—',
-              actorUserId: data?.actorUserId || item.userId,
-            };
-          });
-          this.filteredActivities = [...this.activities];
-          this.activitiesLoading = false;
-        },
-         error: () => {
-           this.activities = [];
-           this.filteredActivities = [];
+    onToggleEmergencyContactStatusClosed(): void {
+      this.showToggleEmergencyContactStatusModal = false;
+      this.emergencyContactIdToToggle = '';
+      this.emergencyContactNameToToggle = '';
+      this.currentEmergencyContactStatus = '';
+    }
+
+      private loadActivities(): void {
+       if (!this.clientId) return;
+       this.activitiesLoading = true;
+         this.clientService.listEntityAuditLog('CLIENT', this.clientId, { page: 0, size: 200 }).subscribe({
+         next: (result: any) => {
+           const items = result?.items ?? result?.data?.items ?? [];
+           this.activities = items.map((item: any) => {
+             const data = item?.data ?? {};
+             const actor = item.actor || item.userName || 'System';
+             return {
+               id: item.id ?? '',
+               time: this.formatDateTime(item.createdAt),
+               by: actor,
+               role: item.userRole || '—',
+               initials: this.getInitials(actor),
+               avatarColor: this.getAvatarColor(actor),
+               action: item.action || '—',
+               entity: this.formatTargetType(item.targetType),
+               name: this.getActivityEntityName(item) || '—',
+               detail1: '',
+               ip: item.ipAddress || '—',
+               details: item.details || '—',
+               actorUserId: data?.actorUserId || item.userId,
+             };
+           });
+           this.filteredActivities = [...this.activities];
            this.activitiesLoading = false;
-         }
-       });
-     }
+         },
+          error: () => {
+            this.activities = [];
+            this.filteredActivities = [];
+            this.activitiesLoading = false;
+          }
+        });
+      }
 
   private isUuid(value: string): boolean {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
@@ -628,27 +630,25 @@ viewEmergencyContact(contactId: string): void {
   }
 
   deleteDocument(docId: string): void {
+    const doc = this.documents.find(d => d.id === docId);
     this.documentIdToDelete = docId;
+    this.documentNameToDelete = doc?.name || doc?.fileName || 'Document';
     this.showDeleteDocumentModal = true;
   }
 
-  confirmDeleteDocument(): void {
-    const docId = this.documentIdToDelete;
-    if (!this.clientId || !docId) return;
-    this.clientService.deleteDocument(this.clientId, docId).subscribe({
-      next: () => {
-        this.documents = this.documents.filter(d => d.id !== docId);
-        this.filteredDocuments = this.filteredDocuments.filter(d => d.id !== docId);
-        this.loadDocumentStats();
-        this.showDeleteDocumentModal = false;
-        this.documentIdToDelete = '';
-      },
-      error: () => {
-        this.showDeleteDocumentModal = false;
-        this.documentIdToDelete = '';
-        this.showToast('Failed to delete document.');
-      }
-    });
+  onDeleteDocumentConfirmed(): void {
+    this.showDeleteDocumentModal = false;
+    this.documentIdToDelete = '';
+    this.documentNameToDelete = '';
+    this.loadDocuments();
+    this.loadDocumentStats();
+    this.showToast('Document deleted successfully');
+  }
+
+  onDeleteDocumentClosed(): void {
+    this.showDeleteDocumentModal = false;
+    this.documentIdToDelete = '';
+    this.documentNameToDelete = '';
   }
 
   getDocumentIcon(type = ''): string {
@@ -1256,67 +1256,49 @@ uploadDocument(): void {
 
   deleteContact(contactId: string): void {
     if (!this.clientId) return;
+    const contact = this.contacts.find(c => c.id === contactId);
     this.contactIdToDelete = contactId;
+    this.contactNameToDelete = contact?.name || 'Contact';
     this.showDeleteContactModal = true;
   }
 
-  confirmDeleteContact(): void {
-    const contactId = this.contactIdToDelete;
-    if (!this.clientId || !contactId) return;
-    this.clientService.deleteContact(this.clientId, contactId).subscribe({
-      next: () => {
-        this.contacts = this.contacts.filter(c => c.id !== contactId);
-        this.filteredContacts = this.filteredContacts.filter(c => c.id !== contactId);
-        this.showDeleteContactModal = false;
-        this.contactIdToDelete = '';
-        this.showToast('Contact deleted successfully');
-      },
-      error: () => {
-        this.showDeleteContactModal = false;
-        this.contactIdToDelete = '';
-        this.showToast('Failed to delete contact');
-      }
-    });
+  onDeleteContactConfirmed(): void {
+    this.showDeleteContactModal = false;
+    this.contactIdToDelete = '';
+    this.contactNameToDelete = '';
+    this.loadContacts();
+    this.showToast('Contact deleted successfully');
   }
 
-  confirmToggleContactStatus(): void {
-    const contactId = this.contactIdToToggle;
-    const currentStatus = this.currentContactStatus;
-    if (!this.clientId || !contactId) return;
-    const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
-    if (newStatus === 'Inactive') {
-      this.clientService.deactivateContact(this.clientId, contactId).subscribe({
-        next: () => {
-          this.loadContacts();
-          this.showToggleContactStatusModal = false;
-          this.contactIdToToggle = '';
-          this.currentContactStatus = '';
-          this.showToast('Contact deactivated successfully');
-        },
-        error: () => {
-          this.showToggleContactStatusModal = false;
-          this.contactIdToToggle = '';
-          this.currentContactStatus = '';
-          this.showToast('Failed to deactivate contact');
-        }
-      });
-    } else {
-      this.clientService.reactivateContact(this.clientId, contactId).subscribe({
-        next: () => {
-          this.loadContacts();
-          this.showToggleContactStatusModal = false;
-          this.contactIdToToggle = '';
-          this.currentContactStatus = '';
-          this.showToast('Contact activated successfully');
-        },
-        error: () => {
-          this.showToggleContactStatusModal = false;
-          this.contactIdToToggle = '';
-          this.currentContactStatus = '';
-          this.showToast('Failed to activate contact');
-        }
-      });
-    }
+  onDeleteContactClosed(): void {
+    this.showDeleteContactModal = false;
+    this.contactIdToDelete = '';
+    this.contactNameToDelete = '';
+  }
+
+  toggleContactStatus(contactId: string, currentStatus: string): void {
+    if (!this.clientId) return;
+    const contact = this.contacts.find(c => c.id === contactId);
+    this.contactIdToToggle = contactId;
+    this.contactNameToToggle = contact?.name || 'Contact';
+    this.currentContactStatus = currentStatus;
+    this.showToggleContactStatusModal = true;
+  }
+
+  onToggleContactStatusConfirmed(): void {
+    this.showToggleContactStatusModal = false;
+    this.contactIdToToggle = '';
+    this.contactNameToToggle = '';
+    this.currentContactStatus = '';
+    this.loadContacts();
+    this.showToast('Contact status updated successfully');
+  }
+
+  onToggleContactStatusClosed(): void {
+    this.showToggleContactStatusModal = false;
+    this.contactIdToToggle = '';
+    this.contactNameToToggle = '';
+    this.currentContactStatus = '';
   }
 
   addContact(): void {

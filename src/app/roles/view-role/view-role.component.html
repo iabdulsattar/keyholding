@@ -220,23 +220,25 @@
       <!-- Role Activity -->
       <div class="bg-white border border-[#eef0f3] rounded-xl p-6">
         <div class="text-base font-extrabold text-[#111827] mb-5">Role Activity</div>
-        <div class="flex flex-col">
-          @for (activity of activities; track activity.event) {
-            <div class="flex gap-4 relative {{ $last ? '' : 'pb-6' }}">
-              <div class="flex flex-col items-center">
-                <div class="w-2 h-2 rounded-full bg-[#4f46e5] flex-shrink-0"></div>
-                @if (!$last) {
-                  <div class="w-0.5 flex-1 bg-[#e5e7eb] mt-1"></div>
-                }
-              </div>
-              <div>
-                <div class="text-xs text-[#9ca3af]">{{ activity.date }}</div>
-                <div class="text-sm font-bold text-[#111827] mt-1">{{ activity.event }}</div>
-                <div class="text-xs text-[#9ca3af] mt-1">{{ activity.who }}</div>
-              </div>
-            </div>
-          }
-        </div>
+         <div class="flex flex-col">
+           @for (activity of activities; track activity.id) {
+             <div class="flex gap-4 relative {{ $last ? '' : 'pb-6' }}">
+               <div class="flex flex-col items-center">
+                 <div class="w-2 h-2 rounded-full bg-[#4f46e5] flex-shrink-0"></div>
+                 @if (!$last) {
+                   <div class="w-0.5 flex-1 bg-[#e5e7eb] mt-1"></div>
+                 }
+               </div>
+               <div class="flex-1 min-w-0 flex items-center justify-between gap-4">
+                 <div class="text-sm font-bold text-[#111827]">{{ activity.details || activity.name || 'Activity' }}</div>
+                 <div class="text-right whitespace-nowrap">
+                   <div class="text-xs text-[#9ca3af]">{{ activity.time }}</div>
+                   <div class="text-xs text-[#9ca3af]">{{ activity.by }}</div>
+                 </div>
+               </div>
+             </div>
+           }
+         </div>
       </div>
 
     </div>

@@ -6,12 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { SafeUrlPipe } from '../../shared/pipe/safe-url.pipe';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
-import { ConfirmModalComponent } from '../../shared/components/ui/confirm-modal/confirm-modal.component';
+import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-document-modal.component';
 
 @Component({
   selector: 'app-view-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, PageBreadcrumbComponent, ConfirmModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, PageBreadcrumbComponent, DeleteDocumentModalComponent],
   templateUrl: './view-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -116,7 +116,7 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   get previewUrl(): string {
-    return this.document?.publicUrl || this.document?.downloadUrl || this.document?.url || '';
+    return this.document?.publicUrl || '';
   }
 
   get hasPublicUrl(): boolean {
@@ -147,28 +147,22 @@ export class ViewDocumentComponent implements OnInit {
         URL.revokeObjectURL(url);
       },
       error: () => {
-        this.downloadError = 'Failed to download document.';
+        if (this.hasPublicUrl) {
+          window.open(this.previewUrl, '_blank', 'noopener,noreferrer');
+        } else {
+          this.downloadError = 'Failed to download document.';
+        }
       }
     });
   }
 
   openInNewTab(): void {
     this.openError = '';
-    if (!this.previewUrl) return;
-    if (this.hasPublicUrl) {
-      window.open(this.previewUrl, '_blank', 'noopener,noreferrer');
+    if (!this.hasPublicUrl) {
+      this.openError = 'No public URL available for this document.';
       return;
     }
-    this.clientService.downloadDocument(this.clientId, this.docId).subscribe({
-      next: (blob: Blob) => {
-        const url = URL.createObjectURL(blob);
-        window.open(url, '_blank', 'noopener,noreferrer');
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      },
-      error: () => {
-        this.openError = 'Failed to open document in new tab.';
-      }
-    });
+    window.open(this.previewUrl, '_blank', 'noopener,noreferrer');
   }
 
   shareDocument(): void {
@@ -183,18 +177,13 @@ export class ViewDocumentComponent implements OnInit {
     this.showDeleteModal = true;
   }
 
-  confirmDeleteDocument(): void {
-    if (!this.clientId || !this.docId) return;
-    this.clientService.deleteDocument(this.clientId, this.docId).subscribe({
-      next: () => {
-        this.showDeleteModal = false;
-        this.router.navigate(['/clients', this.clientId]);
-      },
-      error: () => {
-        this.showDeleteModal = false;
-        this.downloadError = 'Failed to delete document.';
-      }
-    });
+  onDeleteDocumentConfirmed(): void {
+    this.showDeleteModal = false;
+    this.router.navigate(['/clients', this.clientId]);
+  }
+
+  onDeleteDocumentClosed(): void {
+    this.showDeleteModal = false;
   }
 
   private formatDateTime(value: any): string {

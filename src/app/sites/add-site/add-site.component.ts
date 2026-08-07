@@ -53,7 +53,7 @@ export class AddSiteComponent implements OnInit, AfterViewChecked {
   altContactName = '';
   altPhone = '';
   accessInstructions = '';
-accessSchedule = '4';
+accessSchedule = 'BUSINESS_HOURS';
 securityLevel = '';
   alarmSystem = '';
   private alarmSystemToApi: Record<string, string> = { 'None': 'NONE', 'Intruder Alarm': 'INTRUDER_ALARM', 'CCTV': 'CCTV', 'Intruder & CCTV': 'INTRUDER_AND_CCTV' };
@@ -61,7 +61,7 @@ securityLevel = '';
   private securityLevelToApi: Record<string, string> = { 'Low': 'LOW', 'Standard': 'STANDARD', 'High': 'HIGH', 'Very High': 'VERY_HIGH' };
   private securityLevelFromApi: Record<string, string> = { 'LOW': 'Low', 'STANDARD': 'Standard', 'HIGH': 'High', 'VERY_HIGH': 'Very High' };
   get accessScheduleLabel(): string {
-    const labels: Record<string, string> = { '1': '24/7 Access', '2': 'Business Hours', '3': 'Restricted Hours', '4': 'By Appointment Only' };
+    const labels: Record<string, string> = { 'ALWAYS': '24/7 Access', 'BUSINESS_HOURS': 'Business Hours', 'RESTRICTED': 'Restricted Hours', 'BY_APPOINTMENT': 'By Appointment Only' };
     return labels[this.accessSchedule] || '-';
   }
   fileName = '';
@@ -141,10 +141,10 @@ securityLevel = '';
     { value: 'France', label: 'France' },
   ];
   accessScheduleOptions: RichSelectOption[] = [
-    { value: '1', label: '24/7 Access' },
-    { value: '2', label: 'Business Hours' },
-    { value: '3', label: 'Restricted Hours' },
-    { value: '4', label: 'By Appointment Only' },
+    { value: 'ALWAYS', label: '24/7 Access' },
+    { value: 'BUSINESS_HOURS', label: 'Business Hours' },
+    { value: 'RESTRICTED', label: 'Restricted Hours' },
+    { value: 'BY_APPOINTMENT', label: 'By Appointment Only' },
   ];
   securityLevelOptions: RichSelectOption[] = [
     { value: '', label: 'Select level' },
@@ -255,7 +255,7 @@ securityLevel = '';
 
   ngAfterViewChecked(): void {
     const schedule = this.accessSchedule;
-    if (schedule !== '3') return;
+    if (schedule !== 'RESTRICTED') return;
     const els = document.querySelectorAll('.time-input');
     els.forEach((el: Element) => {
       if (!(el as any)._flatpickr) {
@@ -379,7 +379,7 @@ securityLevel = '';
       this.altContactName = item.altContactName || '';
       this.altPhone = item.altPhone || '';
       this.accessInstructions = item.accessInstructions || '';
-      this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? '2' : item.accessSchedule === 'BY_APPOINTMENT' ? '4' : item.accessSchedule === '24_7' ? '1' : item.accessSchedule === 'RESTRICTED_HOURS' ? '3' : '4';
+      this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? 'BUSINESS_HOURS' : item.accessSchedule === 'BY_APPOINTMENT' ? 'BY_APPOINTMENT' : item.accessSchedule === '24_7' || item.accessSchedule === 'ALWAYS' ? 'ALWAYS' : item.accessSchedule === 'RESTRICTED_HOURS' || item.accessSchedule === 'RESTRICTED' ? 'RESTRICTED' : 'BUSINESS_HOURS';
       this.securityLevel = this.securityLevelFromApi[item.securityLevel] || item.securityLevel || '';
       this.alarmSystem = this.alarmSystemFromApi[item.alarmSystem || ''] || '';
       this.siteStatus = item.status === 'INACTIVE' ? 'Inactive' : 'Active';
@@ -452,7 +452,7 @@ securityLevel = '';
     this.altContactName = '';
     this.altPhone = '';
     this.accessInstructions = '';
-    this.accessSchedule = '4';
+    this.accessSchedule = 'BUSINESS_HOURS';
     this.securityLevel = '';
     this.alarmSystem = '';
     this.fileName = '';
@@ -496,11 +496,11 @@ securityLevel = '';
   submitSiteForm(): void {
     if (!this.validate()) return;
 
-    const accessScheduleMap: Record<string, 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'RESTRICTED_HOURS'> = {
-      '1': '24_7',
-      '2': 'BUSINESS_HOURS',
-      '3': 'RESTRICTED_HOURS',
-      '4': 'BY_APPOINTMENT',
+    const accessScheduleMap: Record<string, 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'RESTRICTED' | 'ALWAYS'> = {
+      'ALWAYS': 'ALWAYS',
+      'BUSINESS_HOURS': 'BUSINESS_HOURS',
+      'RESTRICTED': 'RESTRICTED',
+      'BY_APPOINTMENT': 'BY_APPOINTMENT',
     };
     const site: any = {
       name: this.siteName,

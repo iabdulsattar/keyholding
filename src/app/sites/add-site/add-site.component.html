@@ -161,7 +161,7 @@
              </div>
 
             <!-- RESTRICTED HOURS CONDITIONAL GRID -->
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 pt-2" *ngIf="accessSchedule === '3'">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 pt-2" *ngIf="accessSchedule === 'RESTRICTED'">
               
               <!-- Operating Time Slots Entry Form -->
               <div class="lg:col-span-3 bg-slate-50 border border-slate-200 rounded-xl p-4 overflow-x-auto">
@@ -233,7 +233,7 @@
 </div>
 
             <!-- APPOINTMENT CRITERIA SPECIFICATION SUBFORM CARD -->
-            <div id="appointmentConfigCard" class="bg-blue-50/30 border border-blue-100 rounded-lg p-5 space-y-4" *ngIf="accessSchedule === '4'">
+             <div id="appointmentConfigCard" class="bg-blue-50/30 border border-blue-100 rounded-lg p-5 space-y-4" *ngIf="accessSchedule === 'BY_APPOINTMENT'">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900 tracking-wide">
                 <span>By Appointment Settings</span>
                 <i class="fa-solid fa-circle-info text-blue-500 cursor-pointer" title="Configures rules specific to appointment-only workflows"></i>

@@ -553,11 +553,6 @@ export class ClientService {
     private mapAudit(item: any): AuditRecord {
       const data = item?.data ?? {};
       const actor = item.actor ?? item.userName ?? '';
-      const actorId = data?.actorUserId ?? item.userId;
-      let userName = actor;
-      if (this.isUuid(userName) && data?.userName) {
-        userName = data.userName;
-      }
       return {
         id: item.id ?? '',
         eventId: item.eventId,
@@ -569,8 +564,8 @@ export class ClientService {
         targetType: item.targetType ?? '',
         targetId: item.targetId ?? '',
         action: item.eventType ?? item.action ?? '',
-        actorUserId: actorId,
-        userName,
+        actorUserId: data?.actorUserId ?? item.userId,
+        userName: actor,
         userRole: item.userRole ?? '',
         details: data?.message ?? item.details ?? '',
         ipAddress: item.ipAddress ?? null,
@@ -579,11 +574,7 @@ export class ClientService {
        };
     }
 
-    private isUuid(value: string): boolean {
-      return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
-    }
-
-      listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+       listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
       const orgId = this.getOrgId();
       if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
       const page = params?.page ?? 0;
