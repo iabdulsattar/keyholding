@@ -43,7 +43,7 @@ export class AddEmergencyContactComponent implements OnInit {
   department = '';
   availability = '';
   notifyFor = '';
-  status = 'Active';
+  status = '';
   address = '';
   notes = '';
 
