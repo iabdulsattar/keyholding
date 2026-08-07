@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, ContactRecord } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
-import { ClientService, ContactRecord } from '../../core/services/client.service';
-import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { DeleteContactModalComponent } from '../delete-contact-modal/delete-contact-modal.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';

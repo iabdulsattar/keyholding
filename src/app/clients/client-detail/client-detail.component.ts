@@ -118,6 +118,49 @@ showDeactivateClientModal = false;
    emergencyContactsSearch = '';
    emergencyContactsLoading = false;
 
+  get timelineItems(): Array<{ action: string; date: string; by: string; color: string }> {
+    const items: Array<{ action: string; date: string; by: string; color: string }> = [];
+    const relevantActions = ['Created', 'Activated', 'Deactivated', 'Updated', 'Added', 'Edited', 'Deleted'];
+    const seen = new Set<string>();
+    for (const activity of this.activities) {
+      const action = (activity.action || '').trim();
+      if (!relevantActions.includes(action)) continue;
+      const key = `${action}-${activity.time}-${activity.by}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      let color = 'bg-blue-600';
+      if (action === 'Created' || action === 'Added') color = 'bg-emerald-500';
+      else if (action === 'Deactivated' || action === 'Deleted') color = 'bg-rose-500';
+      else if (action === 'Activated') color = 'bg-emerald-500';
+      else if (action === 'Updated' || action === 'Edited') color = 'bg-amber-500';
+      items.push({
+        action,
+        date: activity.time,
+        by: activity.by,
+        color,
+      });
+    }
+    if (items.length === 0 && this.client?.created) {
+      items.push({ action: 'Created', date: this.formatDateTime(this.client.created), by: 'System', color: 'bg-emerald-500' });
+    }
+    if (items.length === 0 || !items.some(i => i.action === 'Created')) {
+      if (this.client?.created) {
+        items.unshift({ action: 'Created', date: this.formatDateTime(this.client.created), by: 'System', color: 'bg-emerald-500' });
+      }
+    }
+    return items.slice(0, 10);
+  }
+
+  get clientStatusLabel(): string {
+    if (!this.client) return 'Active';
+    return this.client.status === 'Active' ? 'Active' : this.client.status || 'Active';
+  }
+
+  get clientStatusColor(): string {
+    if (!this.client) return 'bg-emerald-500';
+    return this.client.status === 'Active' ? 'bg-emerald-500' : 'bg-rose-500';
+  }
+
   // Activity log state
   activities: any[] = [];
   filteredActivities: any[] = [];
@@ -384,21 +427,23 @@ viewEmergencyContact(contactId: string): void {
            this.activities = items.map((item: any) => {
              const data = item?.data ?? {};
              const actor = item.actor || item.userName || 'System';
-             return {
-               id: item.id ?? '',
-               time: this.formatDateTime(item.createdAt),
-               by: actor,
-               role: item.userRole || '—',
-               initials: this.getInitials(actor),
-               avatarColor: this.getAvatarColor(actor),
-               action: item.action || '—',
-               entity: this.formatTargetType(item.targetType),
-               name: this.getActivityEntityName(item) || '—',
-               detail1: '',
-               ip: item.ipAddress || '—',
-               details: item.details || '—',
-               actorUserId: data?.actorUserId || item.userId,
-             };
+              return {
+                id: item.id ?? '',
+                time: this.formatDateTime(item.createdAt),
+                by: actor,
+                role: item.userRole || '—',
+                initials: this.getInitials(actor),
+                avatarColor: this.getAvatarColor(actor),
+                action: item.action || '—',
+                eventType: item.eventType || '—',
+                entity: this.formatTargetType(item.targetType),
+                name: this.getActivityEntityName(item) || '—',
+                detail1: '',
+                ip: item.ipAddress || '—',
+                details: item.details || '—',
+                reference: item.id ? `#${item.id.slice(0, 8)}` : '—',
+                actorUserId: data?.actorUserId || item.userId,
+              };
            });
            this.filteredActivities = [...this.activities];
            this.activitiesLoading = false;
