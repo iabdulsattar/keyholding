@@ -223,7 +223,7 @@ export class ViewRoleComponent implements OnInit {
   loadActivities(): void {
     if (!this.orgId || !this.role?.id) return;
     this.activitiesLoading = true;
-    this.keyVault.listEntityAuditLog(this.orgId, 'ROLE', this.role.id, { page: 0, size: 50 }).subscribe({
+      this.keyVault.listEntityAuditLog(this.orgId, 'ROLE', this.role.id, { page: 0, size: 50 }).subscribe({
       next: (result: any) => {
         const items = result?.items ?? result?.data?.items ?? [];
         this.activities = items.map((item: any) => this.mapAuditToActivity(item));

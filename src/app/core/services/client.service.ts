@@ -76,14 +76,21 @@ export interface ContactRecord {
   fullName: string;
   jobTitle?: string;
   email?: string;
-  phone?: string;
+  phoneCountryCode?: string | null;
+  phone?: string | null;
   department?: string;
   primaryContact: boolean;
-  status: 'Active' | 'Inactive';
+  status: 'ACTIVE' | 'INACTIVE' | 'Active' | 'Inactive';
   preferredMethod?: string;
   address?: string;
   notes?: string;
   clientId?: string;
+  createdByUserId?: string;
+  createdByUserName?: string;
+  updatedByUserId?: string;
+  updatedByUserName?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface EmergencyContact {
@@ -533,24 +540,24 @@ export class ClientService {
      };
    }
 
-     listAuditLog(params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
-      const orgId = this.getOrgId();
-      if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
-      const page = params?.page ?? 0;
-      const size = params?.size ?? 50;
-      return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, page, size }).pipe(
-        map((res: any) => {
-          const data = res?.data ?? res ?? {};
-          const meta = data?.meta ?? res?.meta ?? {};
-          const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
-          const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
-          const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-          return { items, totalItems, page, size, totalPages };
-        })
-      );
-    }
+       listAuditLog(params?: { targetType?: string; targetId?: string; includeRelated?: boolean; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
+        const orgId = this.getOrgId();
+        if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
+        const page = params?.page ?? 0;
+        const size = params?.size ?? 50;
+        return this.keyVault.listAuditLog(orgId, { targetType: params?.targetType, targetId: params?.targetId, includeRelated: params?.includeRelated, page, size }).pipe(
+         map((res: any) => {
+           const data = res?.data ?? res ?? {};
+           const meta = data?.meta ?? res?.meta ?? {};
+           const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
+           const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
+           const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+           return { items, totalItems, page, size, totalPages };
+         })
+       );
+     }
 
-    private mapAudit(item: any): AuditRecord {
+     private mapAudit(item: any): AuditRecord {
       const data = item?.data ?? {};
       const actor = item.actor ?? item.userName ?? item.actorUserName ?? '';
       return {
@@ -588,25 +595,8 @@ export class ClientService {
           const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
           return { items, totalItems, page, size, totalPages };
         })
-      );
-    }
-
-      listOrganizationAuditLog(params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
-      const orgId = this.getOrgId();
-      if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
-      const page = params?.page ?? 0;
-      const size = params?.size ?? 50;
-      return this.keyVault.listAuditLog(orgId, { page, size }).pipe(
-        map((res: any) => {
-          const data = res?.data ?? res ?? {};
-          const meta = data?.meta ?? res?.meta ?? {};
-          const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapAudit(item));
-          const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
-          const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-          return { items, totalItems, page, size, totalPages };
-        })
-      );
-    }
+       );
+     }
 
   listAllKeys(params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
     const orgId = this.getOrgId();
@@ -728,27 +718,34 @@ export class ClientService {
      };
    }
 
-   private mapContact(item: any): ContactRecord {
-     const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();
-     const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
-     const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
-     return {
-       id: item.id ?? '',
-       code: item.code ?? '',
-       firstName: firstName,
-       lastName: lastName,
-       fullName: fullName,
-       jobTitle: item.jobTitle,
-       email: item.email,
-       phone: item.phone,
-       department: item.department,
-       primaryContact: item.primaryContact ?? false,
-       status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
-       preferredMethod: item.preferredMethod,
-       address: item.address,
-       notes: item.notes,
-       clientId: item.clientId,
-      };
-    }
+    private mapContact(item: any): ContactRecord {
+      const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();
+      const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
+      const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
+      return {
+        id: item.id ?? '',
+        code: item.code ?? '',
+        firstName: firstName,
+        lastName: lastName,
+        fullName: fullName,
+        jobTitle: item.jobTitle,
+        email: item.email,
+        phoneCountryCode: item.phoneCountryCode ?? null,
+        phone: item.phone ?? null,
+        department: item.department,
+        primaryContact: item.primaryContact ?? false,
+        status: item.status === 'INACTIVE' ? 'Inactive' : (item.status === 'ACTIVE' ? 'Active' : (item.status === 'Inactive' ? 'Inactive' : 'Active')),
+        preferredMethod: item.preferredMethod,
+        address: item.address,
+        notes: item.notes,
+        clientId: item.clientId,
+        createdByUserId: item.createdByUserId,
+        createdByUserName: item.createdByUserName,
+        updatedByUserId: item.updatedByUserId,
+        updatedByUserName: item.updatedByUserName,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
+       };
+     }
 }
 

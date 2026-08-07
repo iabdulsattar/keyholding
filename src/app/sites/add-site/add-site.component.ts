@@ -391,18 +391,33 @@ securityLevel = '';
         this.apptEmail = item.appointment.approvalRequiredEmail || '';
         this.apptNotes = item.appointment.notes || '';
       }
-      if (item.restrictedHours && Array.isArray(item.restrictedHours)) {
+      if (item.scheduleConfig && item.scheduleConfig.windows && Array.isArray(item.scheduleConfig.windows)) {
          const hours: Record<string, { from: string; to: string; closed: boolean }[]> = {};
-         item.restrictedHours.forEach((slot: any) => {
+         const activeDays = new Set<string>();
+         item.scheduleConfig.windows.forEach((slot: any) => {
            const day = slot.day;
+           activeDays.add(day);
            if (!hours[day]) { hours[day] = []; }
            hours[day].push({
-             from: slot.allowedFrom || '08:00',
-             to: slot.allowedUntil || '18:00',
-             closed: slot.closed || false,
+             from: slot.from || '08:00',
+             to: slot.until || '18:00',
+             closed: false,
            });
          });
+         this.restrictedDays.forEach((day) => {
+           const dayCode = day.substring(0, 3).toUpperCase();
+           if (!activeDays.has(dayCode)) {
+             hours[day] = [{ from: 'Closed', to: 'Closed', closed: true }];
+           }
+         });
          this.restrictedHours = { ...this.restrictedHours, ...hours };
+       }
+       if (item.scheduleConfig && item.scheduleConfig.rules) {
+         const rules = item.scheduleConfig.rules;
+         this.restrictedBankHolidays = rules.prohibitedOnBankHolidays ?? this.restrictedBankHolidays;
+         this.restrictedOutOfHoursApproval = rules.outOfHoursNeedsClientApproval ?? this.restrictedOutOfHoursApproval;
+         this.restrictedCallBeforeEntry = rules.officerMustCallBeforeEntry ?? this.restrictedCallBeforeEntry;
+         this.restrictedSecurityEscort = rules.securityEscortRequired ?? this.restrictedSecurityEscort;
        }
       if (this.editMode) {
         this.loadAttachments();
@@ -533,20 +548,26 @@ securityLevel = '';
       };
     }
 
-    if (site.accessSchedule === 'RESTRICTED_HOURS' && this.restrictedHours) {
-      site.restrictedHours = Object.entries(this.restrictedHours).flatMap(([day, slots]) =>
-        slots.map((slot) => ({
-          day,
-          allowedFrom: slot.closed ? 'Closed' : slot.from,
-          allowedUntil: slot.closed ? 'Closed' : slot.to,
-          closed: slot.closed,
-        }))
-      );
-      site.restrictedHoursRules = {
-        bankHolidays: this.restrictedBankHolidays,
-        outOfHoursApproval: this.restrictedOutOfHoursApproval,
-        callBeforeEntry: this.restrictedCallBeforeEntry,
-        securityEscort: this.restrictedSecurityEscort,
+    if (site.accessSchedule === 'RESTRICTED' && this.restrictedHours) {
+      const windows: Array<{ day: string; from: string; until: string }> = [];
+      Object.entries(this.restrictedHours).forEach(([day, slots]) => {
+        const activeSlot = slots.find(s => !s.closed);
+        if (activeSlot) {
+          windows.push({
+            day: day.substring(0, 3).toUpperCase(),
+            from: activeSlot.from || '08:00',
+            until: activeSlot.to || '18:00',
+          });
+        }
+      });
+      site.scheduleConfig = {
+        ...(windows.length ? { windows } : {}),
+        rules: {
+          prohibitedOnBankHolidays: this.restrictedBankHolidays,
+          outOfHoursNeedsClientApproval: this.restrictedOutOfHoursApproval,
+          officerMustCallBeforeEntry: this.restrictedCallBeforeEntry,
+          securityEscortRequired: this.restrictedSecurityEscort,
+        },
       };
     }
 

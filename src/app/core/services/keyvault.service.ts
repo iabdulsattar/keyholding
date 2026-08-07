@@ -1019,11 +1019,12 @@ export class KeyVaultService {
   }
 
   // Audit / Activity Log
-  listAuditLog(orgId: string, params?: { targetType?: string; targetId?: string; page?: number; size?: number }): Observable<any> {
+  listAuditLog(orgId: string, params?: { targetType?: string; targetId?: string; includeRelated?: boolean; page?: number; size?: number }): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = new URLSearchParams();
     if (params?.targetType) q.set('targetType', params.targetType);
     if (params?.targetId) q.set('targetId', params.targetId);
+    if (params?.includeRelated) q.set('includeRelated', 'true');
     q.set('page', String(params?.page ?? 0));
     q.set('size', String(params?.size ?? 50));
     const query = q.toString();
