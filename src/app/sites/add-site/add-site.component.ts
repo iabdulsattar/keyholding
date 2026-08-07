@@ -45,7 +45,7 @@ export class AddSiteComponent implements OnInit, AfterViewChecked {
   address2 = '';
   city = '';
   postcode = '';
-  country = 'United Kingdom';
+  country = '';
   contactName = '';
   designation = '';
   contactPhone = '';
@@ -53,7 +53,7 @@ export class AddSiteComponent implements OnInit, AfterViewChecked {
   altContactName = '';
   altPhone = '';
   accessInstructions = '';
-accessSchedule = 'BUSINESS_HOURS';
+accessSchedule = '';
 securityLevel = '';
   alarmSystem = '';
   private alarmSystemToApi: Record<string, string> = { 'None': 'NONE', 'Intruder Alarm': 'INTRUDER_ALARM', 'CCTV': 'CCTV', 'Intruder & CCTV': 'INTRUDER_AND_CCTV' };
@@ -133,6 +133,7 @@ securityLevel = '';
   ];
   clientOptions: RichSelectOption[] = [];
   countryOptions: RichSelectOption[] = [
+    { value: '', label: 'Select country' },    
     { value: 'United Kingdom', label: 'United Kingdom' },
     { value: 'United States', label: 'United States' },
     { value: 'Canada', label: 'Canada' },
@@ -141,6 +142,7 @@ securityLevel = '';
     { value: 'France', label: 'France' },
   ];
   accessScheduleOptions: RichSelectOption[] = [
+    { value: '', label: 'Select schedule' },        
     { value: 'ALWAYS', label: '24/7 Access' },
     { value: 'BUSINESS_HOURS', label: 'Business Hours' },
     { value: 'RESTRICTED', label: 'Restricted Hours' },
