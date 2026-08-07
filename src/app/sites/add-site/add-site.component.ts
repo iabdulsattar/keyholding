@@ -488,7 +488,9 @@ securityLevel = '';
        Saturday: [{ from: 'Closed', to: 'Closed', closed: true }],
        Sunday: [{ from: 'Closed', to: 'Closed', closed: true }],
      };
-    if (targetClientId) {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else if (targetClientId) {
       this.router.navigate(['/clients', targetClientId]);
     } else {
       this.router.navigate(['/sites/all-sites']);

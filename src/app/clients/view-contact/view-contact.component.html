@@ -24,7 +24,6 @@
             </button>
               <div id="moreDropdown" class="hidden absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
                 <a href="#" (click)="editContact(); $event.preventDefault(); toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50">Edit Contact</a>
-                <a href="#" (click)="toggleContactStatus(); toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50 text-red-600">{{ status === 'ACTIVE' || status === 'Active' ? 'Deactivate Contact' : 'Reactivate Contact' }}</a>
                 <a href="#" (click)="deleteContact(); toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50 text-red-600">Delete Contact</a>
               </div>
           </div>

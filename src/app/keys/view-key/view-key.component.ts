@@ -173,6 +173,8 @@ export class ViewKeyComponent implements OnInit {
     this.toast.success('Key deleted successfully.');
     if (this.returnUrl) {
       this.router.navigateByUrl(this.returnUrl);
+    } else if (this.clientId) {
+      this.router.navigate(['/clients', this.clientId]);
     } else {
       this.router.navigate(['/keys/all-keys']);
     }

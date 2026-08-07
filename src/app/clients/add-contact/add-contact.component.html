@@ -164,31 +164,31 @@
             <dl class="divide-y divide-slate-100 text-sm">
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Name</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ firstName || lastName ? (firstName + ' ' + lastName).trim() : '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Job Title</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ jobTitle || '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Email</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ email || '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Phone</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ phone || '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Department</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ department || '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Status</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ status || '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="font-medium text-slate-700">Primary Contact</dt>
-                <dd class="text-slate-400">–</dd>
+                <dd class="text-slate-900 font-medium">{{ primaryContact ? 'Yes' : 'No' }}</dd>
               </div>
             </dl>
           </div>
