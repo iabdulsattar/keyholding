@@ -552,7 +552,7 @@ export class ClientService {
 
     private mapAudit(item: any): AuditRecord {
       const data = item?.data ?? {};
-      const actor = item.actor ?? item.userName ?? '';
+      const actor = item.actor ?? item.userName ?? item.actorUserName ?? '';
       return {
         id: item.id ?? '',
         eventId: item.eventId,
@@ -563,15 +563,15 @@ export class ClientService {
         outcome: item.outcome,
         targetType: item.targetType ?? '',
         targetId: item.targetId ?? '',
-        action: item.eventType ?? item.action ?? '',
-        actorUserId: data?.actorUserId ?? item.userId,
+        action: item.eventType ?? item.action ?? item.event ?? '',
+        actorUserId: data?.actorUserId ?? item.userId ?? item.actorUserId,
         userName: actor,
         userRole: item.userRole ?? '',
-        details: data?.message ?? item.details ?? '',
+        details: data?.message ?? item.details ?? item.detail ?? '',
         ipAddress: item.ipAddress ?? null,
         createdAt: item.occurredAt ?? item.createdAt ?? '',
         clientId: data?.clientId ?? item.clientId ?? '',
-       };
+      };
     }
 
        listEntityAuditLog(targetType: string, targetId: string, params?: { page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {

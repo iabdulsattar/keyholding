@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
+import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { DeactivateKeyModalComponent } from '../deactivate-key-modal/deactivate-key-modal.component';
 import { ReactivateKeyModalComponent } from '../reactivate-key-modal/reactivate-key-modal.component';
