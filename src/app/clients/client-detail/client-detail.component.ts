@@ -153,12 +153,14 @@ showDeactivateClientModal = false;
 
   get clientStatusLabel(): string {
     if (!this.client) return 'Active';
-    return this.client.status === 'Active' ? 'Active' : this.client.status || 'Active';
+    const status = (this.client.status || '').toUpperCase();
+    return status === 'ACTIVE' ? 'Active' : status === 'INACTIVE' ? 'Inactive' : (this.client.status || 'Active');
   }
 
   get clientStatusColor(): string {
     if (!this.client) return 'bg-emerald-500';
-    return this.client.status === 'Active' ? 'bg-emerald-500' : 'bg-rose-500';
+    const status = (this.client.status || '').toUpperCase();
+    return status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-rose-500';
   }
 
   // Activity log state
@@ -316,13 +318,13 @@ showDeactivateClientModal = false;
      return q ? this.filteredEmergencyContacts.length : this.emergencyContacts.length;
    }
 
-   get activeEmergencyContacts(): number {
-     return this.emergencyContacts.filter(c => c.status === 'Active').length;
-   }
+    get activeEmergencyContacts(): number {
+      return this.emergencyContacts.filter(c => (c.status || '').toUpperCase() === 'ACTIVE').length;
+    }
 
-   get inactiveEmergencyContacts(): number {
-     return this.emergencyContacts.filter(c => c.status === 'Inactive').length;
-   }
+    get inactiveEmergencyContacts(): number {
+      return this.emergencyContacts.filter(c => (c.status || '').toUpperCase() === 'INACTIVE').length;
+    }
 
    get primaryEmergencyContacts(): number {
      return this.emergencyContacts.filter(c => c.primaryContact).length;
@@ -802,7 +804,7 @@ viewEmergencyContact(contactId: string): void {
     this.clientService.getClientById(orgId, this.clientId).subscribe((data: Client | undefined) => {
       this.client = data || null;
       if (this.client) {
-        this.isClientActive = this.client.status === 'Active';
+        this.isClientActive = (this.client.status || '').toUpperCase() === 'ACTIVE';
       }
       this.loading = false;
     });

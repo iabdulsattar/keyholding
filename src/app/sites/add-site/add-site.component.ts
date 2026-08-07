@@ -175,7 +175,7 @@ securityLevel = '';
     { value: 'Sarah Miller', label: 'Sarah Miller' },
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService, private cdRef: ChangeDetectorRef) {}
 
   markTouched(field: string) {
     this.touched.add(field);
@@ -363,71 +363,93 @@ securityLevel = '';
   }
 
   private loadSite(siteId: string): void {
+    console.log('[AddSite] loadSite called with siteId:', siteId);
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
     if (!orgId) return;
-    this.clientService.getSiteById(orgId, siteId).subscribe((res: any) => {
-      const item = res?.data ?? res;
-      if (!item) return;
-      this.siteName = item.name || '';
-      this.siteType = item.siteType || item.type || '';
-      this.address1 = item.addressLine1 || '';
-      this.address2 = item.addressLine2 || '';
-      this.city = item.city || '';
-      this.postcode = item.postcode || '';
-      this.country = item.country || 'United Kingdom';
-      this.contactName = item.primaryContactName || '';
-      this.designation = item.designation || '';
-      this.contactPhone = item.phone || '';
-      this.contactEmail = item.email || '';
-      this.altContactName = item.altContactName || '';
-      this.altPhone = item.altPhone || '';
-      this.accessInstructions = item.accessInstructions || '';
-      this.accessSchedule = item.accessSchedule === 'BUSINESS_HOURS' ? 'BUSINESS_HOURS' : item.accessSchedule === 'BY_APPOINTMENT' ? 'BY_APPOINTMENT' : item.accessSchedule === '24_7' || item.accessSchedule === 'ALWAYS' ? 'ALWAYS' : item.accessSchedule === 'RESTRICTED_HOURS' || item.accessSchedule === 'RESTRICTED' ? 'RESTRICTED' : 'BUSINESS_HOURS';
-      this.securityLevel = this.securityLevelFromApi[item.securityLevel] || item.securityLevel || '';
-      this.alarmSystem = this.alarmSystemFromApi[item.alarmSystem || ''] || '';
-      this.siteStatus = item.status === 'INACTIVE' ? 'Inactive' : 'Active';
-      if (item.appointment) {
-        this.apptRequired = true;
-        this.minNotice = item.appointment.minimumNoticeRequired || '4 Hours';
-        this.approvalContact = item.appointment.approvalRequiredName || '';
-        this.apptPhone = item.appointment.approvalRequiredNumber || '';
-        this.apptEmail = item.appointment.approvalRequiredEmail || '';
-        this.apptNotes = item.appointment.notes || '';
-      }
-      if (item.scheduleConfig && item.scheduleConfig.windows && Array.isArray(item.scheduleConfig.windows)) {
-         const hours: Record<string, { from: string; to: string; closed: boolean }[]> = {};
-         const activeDays = new Set<string>();
-         const dayCodeMap: Record<string, string> = { MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday', SAT: 'Saturday', SUN: 'Sunday' };
-         item.scheduleConfig.windows.forEach((slot: any) => {
-           const dayCode = (slot.day || '').toUpperCase();
-           const day = dayCodeMap[dayCode] || slot.day;
-           activeDays.add(dayCode);
-           if (!hours[day]) { hours[day] = []; }
-           hours[day].push({
-             from: slot.from || '08:00',
-             to: slot.until || '18:00',
-             closed: false,
-           });
-         });
-         this.restrictedDays.forEach((day) => {
-           const dayCode = day.substring(0, 3).toUpperCase();
-           if (!activeDays.has(dayCode)) {
-             hours[day] = [{ from: 'Closed', to: 'Closed', closed: true }];
-           }
-         });
-         this.restrictedHours = { ...this.restrictedHours, ...hours };
+    this.clientService.getSiteById(orgId, siteId).subscribe({
+      next: (res: any) => {
+        console.log('[AddSite] loadSite response:', res);
+        const item = res?.data ?? res;
+        if (!item) return;
+        this.siteName = item.name || '';
+        this.siteType = item.siteType || item.type || '';
+        this.address1 = item.addressLine1 || '';
+        this.address2 = item.addressLine2 || '';
+        this.city = item.city || '';
+        this.postcode = item.postcode || '';
+        this.country = item.country || 'United Kingdom';
+        this.contactName = item.primaryContactName || '';
+        this.designation = item.designation || '';
+        this.contactPhone = item.phone || '';
+        this.contactEmail = item.email || '';
+        this.altContactName = item.altContactName || '';
+        this.altPhone = item.altPhone || '';
+        this.accessInstructions = item.accessInstructions || '';
+        this.accessSchedule = this.mapAccessSchedule(item.accessSchedule);
+        this.securityLevel = this.securityLevelFromApi[item.securityLevel] || item.securityLevel || '';
+        this.alarmSystem = this.alarmSystemFromApi[item.alarmSystem || ''] || '';
+        this.siteStatus = item.status === 'INACTIVE' ? 'Inactive' : 'Active';
+        console.log('[AddSite] accessSchedule set to:', this.accessSchedule);
+        if (item.appointment) {
+          this.apptRequired = true;
+          this.minNotice = item.appointment.minimumNoticeRequired || '4 Hours';
+          this.approvalContact = item.appointment.approvalRequiredName || '';
+          this.apptPhone = item.appointment.approvalRequiredNumber || '';
+          this.apptEmail = item.appointment.approvalRequiredEmail || '';
+          this.apptNotes = item.appointment.notes || '';
         }
-       if (item.scheduleConfig && item.scheduleConfig.rules) {
-         const rules = item.scheduleConfig.rules;
-         this.restrictedBankHolidays = rules.prohibitedOnBankHolidays ?? this.restrictedBankHolidays;
-         this.restrictedOutOfHoursApproval = rules.outOfHoursNeedsClientApproval ?? this.restrictedOutOfHoursApproval;
-         this.restrictedCallBeforeEntry = rules.officerMustCallBeforeEntry ?? this.restrictedCallBeforeEntry;
-         this.restrictedSecurityEscort = rules.securityEscortRequired ?? this.restrictedSecurityEscort;
-       }
-      if (this.editMode) {
-        this.loadAttachments();
+         if (item.scheduleConfig && (item.scheduleConfig.windows || item.scheduleConfig.days)) {
+            const rawSlots = item.scheduleConfig.windows || item.scheduleConfig.days || [];
+            console.log('[AddSite] rawSlots:', rawSlots);
+            const hours: Record<string, { from: string; to: string; closed: boolean }[]> = {};
+            const activeDays = new Set<string>();
+            const dayCodeMap: Record<string, string> = { MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday', SAT: 'Saturday', SUN: 'Sunday' };
+            rawSlots.forEach((slot: any) => {
+              const rawDay = (slot.day || '').toString().trim();
+              const dayCode = rawDay.toUpperCase().substring(0, 3);
+              const day = dayCodeMap[dayCode] || rawDay;
+              activeDays.add(dayCode);
+              if (!hours[day]) { hours[day] = []; }
+              hours[day].push({
+                from: slot.from || '08:00',
+                to: slot.until || '18:00',
+                closed: false,
+              });
+            });
+            this.restrictedDays.forEach((day) => {
+              const dayCode = day.substring(0, 3).toUpperCase();
+              if (!activeDays.has(dayCode)) {
+                hours[day] = [{ from: 'Closed', to: 'Closed', closed: true }];
+              }
+            });
+            this.restrictedHours = hours;
+            console.log('[AddSite] restrictedHours loaded', JSON.parse(JSON.stringify(this.restrictedHours)));
+           }
+          if (item.scheduleConfig && item.scheduleConfig.rules) {
+            const rules = item.scheduleConfig.rules;
+            this.restrictedBankHolidays = rules.prohibitedOnBankHolidays ?? this.restrictedBankHolidays;
+            this.restrictedOutOfHoursApproval = rules.outOfHoursNeedsClientApproval ?? this.restrictedOutOfHoursApproval;
+            this.restrictedCallBeforeEntry = rules.officerMustCallBeforeEntry ?? this.restrictedCallBeforeEntry;
+            this.restrictedSecurityEscort = rules.securityEscortRequired ?? this.restrictedSecurityEscort;
+          }
+         console.log('[AddSite] loadSite complete, editMode:', this.editMode, 'accessSchedule:', this.accessSchedule);
+         if (this.editMode) {
+           this.loadAttachments();
+         }
+      },
+      error: (err) => {
+        console.error('[AddSite] Failed to load site', err);
       }
     });
+  }
+
+  private mapAccessSchedule(value: string): 'ALWAYS' | 'BUSINESS_HOURS' | 'RESTRICTED' | 'BY_APPOINTMENT' {
+    const normalized = (value || '').toUpperCase();
+    if (normalized === 'ALWAYS' || normalized === '24_7') return 'ALWAYS';
+    if (normalized === 'BUSINESS_HOURS') return 'BUSINESS_HOURS';
+    if (normalized === 'RESTRICTED' || normalized === 'RESTRICTED_HOURS') return 'RESTRICTED';
+    if (normalized === 'BY_APPOINTMENT') return 'BY_APPOINTMENT';
+    return 'BUSINESS_HOURS';
   }
 
   updateContactInfo(): void {
