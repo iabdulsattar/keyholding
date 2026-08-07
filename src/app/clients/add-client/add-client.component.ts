@@ -45,6 +45,8 @@ export class AddClientComponent implements OnInit {
   status: 'active' | 'inactive' = 'active';
 
   regions: RichSelectOption[] = [
+    { value: '', label: 'Select region' },
+    
     { value: 'North Region', label: 'North Region' },
     { value: 'Central Region', label: 'Central Region' },
     { value: 'West Region', label: 'West Region' },
@@ -53,6 +55,8 @@ export class AddClientComponent implements OnInit {
   ];
 
   industries: RichSelectOption[] = [
+    { value: '', label: 'Select industry' },
+    
     { value: 'Security Services', label: 'Security Services' },
     { value: 'Commercial Property', label: 'Commercial Property' },
   ];
