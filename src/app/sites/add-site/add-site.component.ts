@@ -175,7 +175,7 @@ securityLevel = '';
     { value: 'Sarah Miller', label: 'Sarah Miller' },
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService, private cdRef: ChangeDetectorRef) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService) {}
 
   markTouched(field: string) {
     this.touched.add(field);
