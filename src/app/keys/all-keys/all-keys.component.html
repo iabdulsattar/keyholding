@@ -12,7 +12,7 @@
         <p class="text-sm text-slate-500 mt-1">View and manage all keys across all clients</p>
       </div>
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <button routerLink="/keys/add-key" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-sm shadow-blue-500/10 transition w-full sm:w-auto">
+        <button routerLink="/keys/add-key" [queryParams]="{ returnUrl: '/keys/all-keys' }" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-sm shadow-blue-500/10 transition w-full sm:w-auto">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add New Key
         </button>
@@ -123,7 +123,7 @@
                 
                 <td class="td-cell text-right pr-5">
                   <div class="flex items-center justify-end gap-2">
-                    <a [routerLink]="['/keys/view-key', k.id]" class="text-blue-500 hover:text-blue-700">
+                     <a [routerLink]="['/keys/view-key', k.id]" [queryParams]="{ returnUrl: '/keys/all-keys' }" class="text-blue-500 hover:text-blue-700">
                       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                     </a>
                      <a [routerLink]="['/keys/add-key']" [queryParams]="{ clientId: k.clientId || '', siteId: k.site || '', editId: k.id, returnUrl: '/keys/all-keys' }" class="text-blue-500 hover:text-blue-700">

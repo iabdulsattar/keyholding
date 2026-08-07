@@ -10,6 +10,7 @@ import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 
 @Component({
   selector: 'app-add-key',
@@ -72,6 +73,7 @@ export class AddKeyComponent implements OnInit {
   editing = false;
   pageTitle = 'Add New Key';
   clientName = '';
+  showClientDropdown = false;
 
   submitted = false;
 
@@ -93,7 +95,7 @@ export class AddKeyComponent implements OnInit {
   private editKeyId = '';
   private catalogCache: { types: KeyType[]; categories: KeyCategory[] } | null = null;
 
-  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService, private referrer: NavigationReferrerService) {}
 
   get breadcrumbs(): BreadcrumbItem[] {
     const crumbs: BreadcrumbItem[] = [{ label: 'Keys', link: '/keys/all-keys' }];
@@ -112,6 +114,7 @@ export class AddKeyComponent implements OnInit {
       this.editKeyId = params['editId'] || '';
       this.editing = !!this.editKeyId;
       this.pageTitle = this.editing ? 'Edit Key' : 'Add New Key';
+      this.showClientDropdown = !this.clientId && !this.editing;
     });
     this.loadAll();
     if (this.editing && this.editKeyId) {
@@ -169,7 +172,7 @@ export class AddKeyComponent implements OnInit {
       next: (result: any) => {
         this.clients = result?.items ?? result?.data ?? [];
         this.clientOptions = this.toRichOptions(this.clients);
-        if (this.clients.length > 0 && !this.assignClientId && (this.clientId || this.editing)) {
+        if (this.clients.length > 0 && !this.assignClientId && this.clientId && !this.editing) {
           const prefetch = this.clients.find((c: any) => c.id === this.clientId);
           const pick = prefetch || this.clients[0];
           this.assignClient = pick.name;
@@ -471,7 +474,7 @@ export class AddKeyComponent implements OnInit {
   }
 
   get returnUrl(): string {
-    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+    return this.route.snapshot.queryParamMap.get('returnUrl') || this.referrer.getPreviousUrl() || '';
   }
 
   private finishKeySubmit(): void {

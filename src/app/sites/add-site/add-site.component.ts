@@ -11,6 +11,7 @@ import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.ser
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { Observable } from 'rxjs';
+import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 
 @Component({
   selector: 'app-add-site',
@@ -174,7 +175,7 @@ securityLevel = '';
     { value: 'Sarah Miller', label: 'Sarah Miller' },
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private toast: ToastService, private keyVault: KeyVaultService, private referrer: NavigationReferrerService) {}
 
   markTouched(field: string) {
     this.touched.add(field);
@@ -396,9 +397,11 @@ securityLevel = '';
       if (item.scheduleConfig && item.scheduleConfig.windows && Array.isArray(item.scheduleConfig.windows)) {
          const hours: Record<string, { from: string; to: string; closed: boolean }[]> = {};
          const activeDays = new Set<string>();
+         const dayCodeMap: Record<string, string> = { MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday', SAT: 'Saturday', SUN: 'Sunday' };
          item.scheduleConfig.windows.forEach((slot: any) => {
-           const day = slot.day;
-           activeDays.add(day);
+           const dayCode = (slot.day || '').toUpperCase();
+           const day = dayCodeMap[dayCode] || slot.day;
+           activeDays.add(dayCode);
            if (!hours[day]) { hours[day] = []; }
            hours[day].push({
              from: slot.from || '08:00',
@@ -413,7 +416,7 @@ securityLevel = '';
            }
          });
          this.restrictedHours = { ...this.restrictedHours, ...hours };
-       }
+        }
        if (item.scheduleConfig && item.scheduleConfig.rules) {
          const rules = item.scheduleConfig.rules;
          this.restrictedBankHolidays = rules.prohibitedOnBankHolidays ?? this.restrictedBankHolidays;
@@ -521,6 +524,10 @@ securityLevel = '';
       'RESTRICTED': 'RESTRICTED',
       'BY_APPOINTMENT': 'BY_APPOINTMENT',
     };
+    const statusMap: Record<string, 'ACTIVE' | 'INACTIVE'> = {
+      'Active': 'ACTIVE',
+      'Inactive': 'INACTIVE',
+    };
     const site: any = {
       name: this.siteName,
       siteType: this.siteType,
@@ -539,7 +546,7 @@ securityLevel = '';
       accessSchedule: accessScheduleMap[this.accessSchedule] || 'BUSINESS_HOURS',
       securityLevel: this.securityLevelToApi[this.securityLevel] || this.securityLevel,
       alarmSystem: this.alarmSystemToApi[this.alarmSystem] || this.alarmSystem,
-      status: 'ACTIVE',
+      status: statusMap[this.siteStatus] || 'ACTIVE',
     };
 
     if (site.accessSchedule === 'BY_APPOINTMENT') {
@@ -644,7 +651,7 @@ securityLevel = '';
   }
 
   get returnUrl(): string {
-    return this.route.snapshot.queryParamMap.get('returnUrl') || '';
+    return this.route.snapshot.queryParamMap.get('returnUrl') || this.referrer.getPreviousUrl() || '';
   }
 
   private finishSiteSubmit(): void {

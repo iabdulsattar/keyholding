@@ -11,7 +11,7 @@
         <p class="text-sm text-slate-500 mt-1">View and manage all sites across all clients</p>
       </div>
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <button routerLink="/sites/add-site" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-sm shadow-sm shadow-blue-500/10 transition w-full sm:w-auto">
+        <button routerLink="/sites/add-site" [queryParams]="{ returnUrl: '/sites/all-sites' }" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-sm shadow-sm shadow-blue-500/10 transition w-full sm:w-auto">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add New Site
         </button>
@@ -114,7 +114,7 @@
                 <td class="td-cell text-slate-700">{{ s.totalJobs }}</td>
                 <td class="td-cell text-right pr-5">
                   <div class="flex items-center justify-end gap-2">
-                    <a [routerLink]="['/sites/view-site', s.id]" class="text-blue-600 hover:text-blue-700">
+                     <a [routerLink]="['/sites/view-site', s.id]" [queryParams]="{ returnUrl: '/sites/all-sites' }" class="text-blue-600 hover:text-blue-700">
                       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                     </a>
                      <a [routerLink]="['/sites/add-site']" [queryParams]="{ clientId: s.clientId || '', editId: s.id, returnUrl: '/sites/all-sites' }" class="text-blue-600 hover:text-blue-700">
