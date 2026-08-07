@@ -1458,22 +1458,14 @@
                    <td class="td">
                      <span class="badge {{ ec.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">{{ ec.status }}</span>
                    </td>
-                    <td class="td">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <button (click)="viewEmergencyContact(ec.id)" class="hover:text-blue-600 cursor-pointer" title="View">
-                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </button>
-                        <button (click)="editEmergencyContact(ec.id)" class="hover:text-slate-600 cursor-pointer" title="Edit">
-                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/><path d="m15 5 4 4"/></svg>
-                        </button>
-                         <button (click)="currentEmergencyContactStatus = ec.status; emergencyContactIdToToggle = ec.id; emergencyContactNameToToggle = ec.fullName; showToggleEmergencyContactStatusModal = true" class="hover:text-emerald-600 cursor-pointer" title="Toggle status">
-                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-                        </button>
-                         <button (click)="emergencyContactIdToDelete = ec.id; emergencyContactNameToDelete = ec.fullName; showDeleteEmergencyContactModal = true" class="hover:text-rose-600 cursor-pointer" title="Delete">
-                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                        </button>
-                      </div>
-                    </td>
+                     <td class="td">
+                       <div class="flex items-center justify-end gap-3 text-slate-400">
+                         <button class="hover:text-blue-600 cursor-pointer" title="View">
+                           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                         </button>
+                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
+                       </div>
+                     </td>
                  </tr>
                }
                @empty {
