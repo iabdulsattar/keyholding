@@ -7,12 +7,13 @@ import { ClientService, ContactRecord } from '../../core/services/client.service
 import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { DeleteContactModalComponent } from '../delete-contact-modal/delete-contact-modal.component';
+import { ToggleContactStatusModalComponent } from '../toggle-contact-status-modal/toggle-contact-status-modal.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 
 @Component({
   selector: 'app-view-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, DeleteContactModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent],
   templateUrl: './view-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -42,10 +43,10 @@ export class ViewContactComponent implements OnInit {
   address = 'Metro Security Services\n1 Security House, Park Lane\nLondon, W1K 1AB, UK';
   notes = 'James is the main point of contact for all operational matters and key management operations.';
 
-  addedBy = 'Faisa Ahmed';
-  createdOn = '15 May 2024, 09:15 AM';
-  lastUpdated = '15 May 2024, 11:20 AM';
-  lastUpdatedBy = 'Faisa Ahmed';
+   addedBy = '';
+  createdOn = '';
+  lastUpdated = '';
+  lastUpdatedBy = '';
 
   jobsAssigned = 48;
   keysManaged = 26;
@@ -55,6 +56,8 @@ export class ViewContactComponent implements OnInit {
   loading = false;
   showDeleteModal = false;
   contactNameToDelete = '';
+  showToggleStatusModal = false;
+  contactNameToToggle = '';
 
   activities: any[] = [];
   activitiesLoading = false;
@@ -122,6 +125,10 @@ export class ViewContactComponent implements OnInit {
           this.preferredContactMethod = contact.preferredMethod || 'Email';
           this.address = contact.address || '';
           this.notes = contact.notes || '';
+          this.addedBy = contact.createdByUserName || '';
+          this.lastUpdatedBy = contact.updatedByUserName || '';
+          this.createdOn = contact.createdAt ? this.formatDateTime(contact.createdAt) : '';
+          this.lastUpdated = contact.updatedAt ? this.formatDateTime(contact.updatedAt) : '';
         }
         this.loading = false;
       },
@@ -145,20 +152,36 @@ export class ViewContactComponent implements OnInit {
     });
   }
 
-  deleteContact(): void {
-    this.contactNameToDelete = this.fullName;
-    this.showDeleteModal = true;
-  }
+   deleteContact(): void {
+     this.contactNameToDelete = this.fullName;
+     this.showDeleteModal = true;
+   }
 
-  onDeleteContactConfirmed(): void {
-    this.showDeleteModal = false;
-    this.toast.success('Contact deleted successfully');
-    this.router.navigate(['/clients', this.clientId]);
-  }
+   onDeleteContactConfirmed(): void {
+     this.showDeleteModal = false;
+     this.toast.success('Contact deleted successfully');
+     this.router.navigate(['/clients', this.clientId]);
+   }
 
-  onDeleteContactClosed(): void {
-    this.showDeleteModal = false;
-  }
+   onDeleteContactClosed(): void {
+     this.showDeleteModal = false;
+   }
+
+   toggleContactStatus(): void {
+     this.contactNameToToggle = this.fullName;
+     this.showToggleStatusModal = true;
+   }
+
+   onToggleStatusConfirmed(): void {
+     this.showToggleStatusModal = false;
+     this.toast.success('Contact status updated successfully');
+     this.loadContact();
+     this.loadActivities();
+   }
+
+   onToggleStatusClosed(): void {
+     this.showToggleStatusModal = false;
+   }
 
   toggleDropdown(id: string): void {
     const dropdown = document.getElementById(id);

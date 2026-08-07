@@ -239,7 +239,11 @@ export class ViewSiteComponent implements OnInit {
       this.router.navigateByUrl(this.returnUrl);
     } else {
       const clientId = this.site?.clientId || this.site?.client?.id || '';
-      this.router.navigate(['/clients', clientId]);
+      if (clientId) {
+        this.router.navigate(['/clients', clientId]);
+      } else {
+        this.router.navigate(['/sites/all-sites']);
+      }
     }
   }
 

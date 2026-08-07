@@ -347,7 +347,9 @@ export class AddKeyComponent implements OnInit {
     this.existingAttachments = [];
     this.attachmentsLoading = false;
     this.attachmentError = '';
-    if (this.clientId) {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else if (this.clientId) {
       this.router.navigate(['/clients', this.clientId]);
     } else {
       this.router.navigate(['/keys/all-keys']);

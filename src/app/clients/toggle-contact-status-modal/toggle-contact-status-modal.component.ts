@@ -30,7 +30,10 @@ export class ToggleContactStatusModalComponent {
   }
 
   get isDeactivate(): boolean {
-    return this.currentStatus() === 'Active';
+    const raw = this.currentStatus();
+    if (!raw) return true;
+    const normalized = raw.toUpperCase();
+    return normalized === 'ACTIVE';
   }
 
   get title(): string {

@@ -75,7 +75,7 @@ export class ViewKeyComponent implements OnInit {
     return crumbs;
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private toast: ToastService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
@@ -173,6 +173,8 @@ export class ViewKeyComponent implements OnInit {
     this.toast.success('Key deleted successfully.');
     if (this.returnUrl) {
       this.router.navigateByUrl(this.returnUrl);
+    } else if (this.clientId) {
+      this.router.navigate(['/clients', this.clientId]);
     } else {
       this.router.navigate(['/keys/all-keys']);
     }
@@ -277,10 +279,9 @@ export class ViewKeyComponent implements OnInit {
   loadActivities(): void {
     if (!this.keyId) return;
     this.activitiesLoading = true;
-    this.keyVault.getKeyAuditLog(this.orgId, this.keyId).subscribe({
+    this.clientService.listEntityAuditLog('KEY', this.keyId, { page: 0, size: 50 }).subscribe({
       next: (result: any) => {
-        const data = result?.data ?? result ?? {};
-        const items = (data.items ?? data.data ?? data ?? []);
+        const items = result?.items ?? result?.data?.items ?? result?.data ?? result ?? [];
         this.activities = items.map((item: any) => this.mapAuditToActivity(item));
         this.activitiesLoading = false;
       },
@@ -303,7 +304,7 @@ export class ViewKeyComponent implements OnInit {
   }
 
   private mapAuditToActivity(item: any): ActivityItem {
-    const actor = item.actorUserName || item.actor || item.userName || 'System';
+    const actor = item.userName || item.actor || 'System';
     return {
       id: item.id ?? '',
       time: this.formatDateTime(item.createdAt),
@@ -311,12 +312,13 @@ export class ViewKeyComponent implements OnInit {
       role: item.userRole || '—',
       initials: this.getInitials(actor),
       avatarColor: this.getAvatarColor(actor),
-      action: item.event || item.action || '—',
+      action: item.action || '—',
+      eventType: item.eventType || '—',
       entity: this.formatTargetType(item.targetType),
-      name: this.getEntityName(item.detail || item.details || ''),
+      name: this.getEntityName(item.details || ''),
       detail1: '',
       ip: item.ipAddress || '—',
-      details: item.detail || item.details || '—',
+      details: item.details || '—',
       reference: item.id ? `#${item.id.slice(0, 8)}` : '—',
     };
   }
