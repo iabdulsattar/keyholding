@@ -1174,16 +1174,16 @@
                        <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ doc.createdAt | date:'dd MMM yyyy, h:mm a' }}</td>
                       <td class="px-5 py-3.5 text-right">
                          <div class="flex items-center justify-end gap-3 text-slate-400">
-                          <button class="hover:text-blue-600 cursor-pointer" title="View document">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                          </button>
-                          <button class="hover:text-blue-600 cursor-pointer" title="Edit document">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
-                          </button>
-                          <button class="hover:text-rose-600 cursor-pointer" title="Delete document">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                          </button>
-                        </div>
+                           <button (click)="viewDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="View document">
+                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                           </button>
+                           <button (click)="downloadDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="Download document">
+                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                           </button>
+                           <button class="hover:text-rose-600 cursor-pointer" title="Delete document">
+                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                           </button>
+                         </div>
                       </td>
                     </tr>
                   }

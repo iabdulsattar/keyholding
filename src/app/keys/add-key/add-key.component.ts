@@ -73,6 +73,7 @@ export class AddKeyComponent implements OnInit {
   editing = false;
   pageTitle = 'Add New Key';
   clientName = '';
+  showClientDropdown = false;
 
   submitted = false;
 
@@ -113,6 +114,7 @@ export class AddKeyComponent implements OnInit {
       this.editKeyId = params['editId'] || '';
       this.editing = !!this.editKeyId;
       this.pageTitle = this.editing ? 'Edit Key' : 'Add New Key';
+      this.showClientDropdown = !this.clientId && !this.editing;
     });
     this.loadAll();
     if (this.editing && this.editKeyId) {
@@ -170,7 +172,7 @@ export class AddKeyComponent implements OnInit {
       next: (result: any) => {
         this.clients = result?.items ?? result?.data ?? [];
         this.clientOptions = this.toRichOptions(this.clients);
-        if (this.clients.length > 0 && !this.assignClientId && (this.clientId || this.editing)) {
+        if (this.clients.length > 0 && !this.assignClientId && this.clientId && !this.editing) {
           const prefetch = this.clients.find((c: any) => c.id === this.clientId);
           const pick = prefetch || this.clients[0];
           this.assignClient = pick.name;

@@ -669,6 +669,21 @@ viewEmergencyContact(contactId: string): void {
     this.router.navigate(['/clients', this.clientId, 'view-document', docId]);
   }
 
+  downloadDocument(docId: string): void {
+    const doc = this.documents.find(d => d.id === docId);
+    const url = doc?.publicUrl || doc?.storagePath;
+    if (!url) {
+      this.showToast('Document download URL not available');
+      return;
+    }
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = doc?.fileName || doc?.name || 'document';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   editDocument(docId: string): void {
     if (!this.clientId) return;
     this.router.navigate(['/clients', this.clientId, 'add-document', docId]);
