@@ -9,53 +9,57 @@
 </div>
 
 <ng-template #loaded>
-<div class="min-h-screen w-full bg-slate-50 font-sans text-slate-900">
-    <div class="mx-auto max-w-7xl p-3 sm:p-5 lg:p-8">
+<div class="min-h-screen w-full font-sans text-slate-900">
+    <div class="mx-auto ">
 
     <!-- Header -->
-    <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
-      <div class="flex items-start gap-3">
-        <button class="mt-1 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100">
-          <i data-lucide="arrow-left" class="h-5 w-5"></i>
+    <div class="mb-5 pb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200">
+      <div >
+        <div class="flex items-start gap-3">
+        <button class=" rounded-lg p-1.5 text-slate-500 hover:bg-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+
         </button>
+        <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Deactivate Storage Location</h1>          
+        </div>
         <div>
-          <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Deactivate Storage Location</h1>
-          <p class="mt-1 text-sm text-slate-400">You are about to deactivate this storage location. Please review the details below.</p>
+          <p class="mt-1 text-sm text-slate-700">You are about to deactivate this storage location. Please review the details below.</p>
           <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-400 sm:text-sm">
             <span class="text-blue-500">Home</span>
-            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
             <span class="text-blue-500">Storage Management</span>
-            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>            
             <span class="text-blue-500">Storage Locations</span>
-            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>            
             <span class="text-blue-500">Storage Location Details</span>
-            <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>            
             <span class="text-slate-500">Deactivate Storage Location</span>
           </div>
         </div>
       </div>
       <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-        <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50">
-          <i data-lucide="help-circle" class="h-4 w-4"></i>
+        <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
           <span class="hidden sm:inline">Help</span>
         </button>
-        <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50">
-          <i data-lucide="arrow-left" class="h-4 w-4"></i>
+        <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-blue-600 hover:bg-slate-50">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          
           Back to List
         </button>
       </div>
     </div>
 
     <!-- Main grid: content + sidebar -->
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-3 ">
 
       <!-- Main content -->
-      <div class="space-y-4 sm:space-y-6 lg:col-span-2">
+      <div class="space-y-5 lg:col-span-2">
 
         <!-- Warning banner -->
-        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-5">
+        <div class="rounded-lg border border-amber-200 bg-amber-50 p-4 sm:p-5">
           <div class="flex gap-3">
-            <i data-lucide="triangle-alert" class="mt-0.5 h-5 w-5 shrink-0 text-amber-500"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert mt-0.5 shrink-0 text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
             <div>
               <h2 class="text-sm font-bold text-slate-900">Deactivate Storage Location</h2>
               <p class="mt-2 text-sm text-slate-600">
@@ -69,7 +73,7 @@
         </div>
 
         <!-- Details card -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div class="rounded-lg border border-slate-100 bg-white p-4 sm:p-6">
           <h3 class="mb-4 text-sm font-bold text-slate-900">Storage Location Details</h3>
           <div class="grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
             <div>

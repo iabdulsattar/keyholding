@@ -34,10 +34,11 @@
         </div>
       </div>
       <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-        <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+        <!-- <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
           <span class="hidden sm:inline">Help</span>
         </button>
+         -->
         <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-blue-600 hover:bg-slate-50" (click)="onCancel()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
           Back to List
@@ -54,14 +55,14 @@
           <!-- Location Name / Location Code -->
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700"> Location Name <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Location Name <span class="text-rose-500">*</span> </label>
               <input type="text" placeholder="Enter storage location name"
                 class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [(ngModel)]="locationName" name="locationName" />
               <p class="mt-1.5 text-xs text-slate-500 font-medium">A unique and easy to identify name for this location.</p>
             </div>
             <div>
-              <label class="mb-1.5 flex items-center gap-1 text-sm font-medium text-slate-700">
+              <label class="mb-1.5 flex items-center gap-1 text-sm font-semibold text-slate-700">
                 Location Code
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-slate-400"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
               </label>
@@ -77,12 +78,12 @@
           <!-- Site / Building / Location Type -->
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700"> Site / Building <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Site / Building <span class="text-rose-500">*</span> </label>
               <app-rich-select [options]="siteBuildingOptions" [(value)]="siteId" placeholder="Select site or building (if applicable)" class="w-full"></app-rich-select>
               <p class="mt-1.5 text-xs text-slate-500 font-medium">Select the site or building this storage location belongs to.</p>
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700"> Location Type <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Location Type <span class="text-rose-500">*</span> </label>
               <app-rich-select [options]="locationTypeOptions" [(value)]="locationType" placeholder="Select location type" class="w-full"></app-rich-select>
               <p class="mt-1.5 text-xs text-slate-500 font-medium">e.g., Safe Room, Store Room, Mobile Unit, Branch Office</p>
             </div>
@@ -90,7 +91,7 @@
 
           <!-- Address -->
           <div>
-            <label class="mb-1.5 block text-sm font-medium text-slate-700"> Address <span class="text-rose-500">*</span> </label>
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Address <span class="text-rose-500">*</span> </label>
             <textarea rows="2" placeholder="Enter complete address"
               class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
               [(ngModel)]="address" name="address"></textarea>
@@ -100,19 +101,19 @@
           <!-- City / Postcode / Country -->
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700"> City <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> City <span class="text-rose-500">*</span> </label>
               <input type="text" placeholder="Enter city"
                 class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [(ngModel)]="city" name="city" />
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700"> Postcode / ZIP <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Postcode / ZIP <span class="text-rose-500">*</span> </label>
               <input type="text" placeholder="Enter postcode or ZIP"
                 class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [(ngModel)]="postcode" name="postcode" />
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700"> Country <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Country <span class="text-rose-500">*</span> </label>
               <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" class="w-full"></app-rich-select>
             </div>
           </div>
@@ -124,14 +125,14 @@
             <h3 class="mb-5 text-base font-bold text-slate-900">Additional Information</h3>
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
-                <label class="mb-1.5 block text-sm font-medium text-slate-700">Responsible Person</label>
+                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Responsible Person</label>
                 <input type="text" placeholder="Enter responsible person name (optional)"
                   class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="responsiblePerson" name="responsiblePerson" />
                 <p class="mt-1.5 text-xs text-slate-500 font-medium">Person responsible for this location.</p>
               </div>
               <div>
-                <label class="mb-1.5 block text-sm font-medium text-slate-700">Contact Number</label>
+                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Contact Number</label>
                 <input type="text" placeholder="Enter contact number (optional)"
                   class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="contactNumber" name="contactNumber" />
@@ -140,14 +141,14 @@
             </div>
             <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
-                <label class="mb-1.5 block text-sm font-medium text-slate-700">Access Instructions</label>
+                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Access Instructions</label>
                 <textarea rows="2" placeholder="Enter access instructions"
                   class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="accessInstructions" name="accessInstructions"></textarea>
                 <p class="mt-1.5 text-xs text-slate-500 font-medium">Instructions for accessing this storage location.</p>
               </div>
               <div>
-                <label class="mb-1.5 block text-sm font-medium text-slate-700">Description</label>
+                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Description</label>
                 <textarea rows="2" placeholder="Enter description (optional)"
                   class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="description" name="description"></textarea>
@@ -158,7 +159,7 @@
 
           <!-- Status -->
           <div>
-            <label class="mb-2 block text-sm font-medium text-slate-700"> Status <span class="text-rose-500">*</span> </label>
+            <label class="mb-2 block text-sm font-semibold text-slate-700"> Status <span class="text-rose-500">*</span> </label>
             <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
               <label class="flex items-center gap-2 text-sm">
                 <input type="radio" name="status" value="ACTIVE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600" />
