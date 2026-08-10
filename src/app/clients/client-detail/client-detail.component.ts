@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
+import { FormatEventTypePipe } from '../../shared/pipe/format-event-type.pipe';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
 import { DeleteContactModalComponent } from '../delete-contact-modal/delete-contact-modal.component';
@@ -17,7 +18,7 @@ import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-do
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent, FormatEventTypePipe],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -443,7 +444,7 @@ viewEmergencyContact(contactId: string): void {
                 detail1: '',
                 ip: item.ipAddress || '—',
                 details: item.details || '—',
-                reference: item.id ? `#${item.id.slice(0, 8)}` : '—',
+                reference: this.extractReference(item.eventType) || (item.id ? `#${item.id.slice(0, 8)}` : '—'),
                 actorUserId: data?.actorUserId || item.userId,
               };
            });
@@ -460,6 +461,16 @@ viewEmergencyContact(contactId: string): void {
 
   private isUuid(value: string): boolean {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+  }
+
+  private extractReference(eventType: string): string {
+    if (!eventType) return '';
+    const match = eventType.match(/^keyvault\.([^.]+)/);
+    if (!match) return '';
+    const raw = match[1];
+    const parts = raw.split('_').filter(Boolean);
+    const camelCased = parts.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
+    return camelCased;
   }
 
   get contactsPaginated(): any[] {
