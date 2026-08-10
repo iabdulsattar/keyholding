@@ -862,7 +862,6 @@ export class UserManagementComponent implements OnInit {
   private mapAuditToActivity(item: any): ActivityItem {
     const data = item?.data ?? {};
     const actor = item.actor || item.userName || 'System';
-    const name = this.getEntityName(data?.message || item?.details || '');
     return {
       id: item.id ?? '',
       time: this.formatDateTime(item.createdAt),
@@ -870,13 +869,56 @@ export class UserManagementComponent implements OnInit {
       role: item.userRole || '—',
       initials: this.getInitials(actor),
       avatarColor: this.getAvatarColor(actor),
-      action: item.action || '—',
+      action: this.getEventAction(item.eventType || '') || item.action || '—',
+      eventType: item.eventType || '—',
       entity: this.formatTargetType(item.targetType),
-      name: name || '—',
+      name: this.getEntityName(data?.message || item?.details || '') || '—',
       detail1: '',
       ip: item.ipAddress || '—',
-      details: item.details || '—',
+      details: this.formatActivityDetails(item),
     };
+  }
+
+  private formatActivityDetails(item: any): string {
+    const data = item?.data ?? {};
+    const message = data?.message || item?.details || '';
+    if (!message) return '—';
+
+    const entityName = this.getEntityName(data?.message || item?.details || '');
+    const eventType = item.eventType || '';
+    const actor = item.actor || item.userName || '';
+
+    let cleanMessage = message;
+    if (actor && cleanMessage.startsWith(actor)) {
+      cleanMessage = cleanMessage.slice(actor.length).trim();
+      if (cleanMessage.startsWith('"')) {
+        cleanMessage = cleanMessage.trim();
+      }
+    }
+
+    if (entityName && eventType) {
+      const entityType = this.formatTargetType(item.targetType);
+      const eventAction = this.getEventAction(eventType);
+      if (eventAction) {
+        return `${entityType} "${entityName}" ${eventAction}`;
+      }
+    }
+
+    return cleanMessage || '—';
+  }
+
+  private getEventAction(eventType: string): string {
+    if (!eventType) return '';
+    const normalized = eventType.toLowerCase();
+    if (normalized.includes('created')) return 'Created';
+    if (normalized.includes('updated')) return 'Updated';
+    if (normalized.includes('deleted')) return 'Deleted';
+    if (normalized.includes('activated')) return 'Activated';
+    if (normalized.includes('deactivated')) return 'Deactivated';
+    if (normalized.includes('status_changed')) return 'Status Changed';
+    if (normalized.includes('added')) return 'Added';
+    if (normalized.includes('edited')) return 'Edited';
+    return '';
   }
 
   private formatDateTime(value: string): string {

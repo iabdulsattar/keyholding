@@ -119,14 +119,14 @@ showDeactivateClientModal = false;
    emergencyContactsSearch = '';
    emergencyContactsLoading = false;
 
-  get timelineItems(): Array<{ action: string; date: string; by: string; color: string }> {
-    const items: Array<{ action: string; date: string; by: string; color: string }> = [];
+  get timelineItems(): Array<{ action: string; date: string; by: string; color: string; details?: string }> {
+    const items: Array<{ action: string; date: string; by: string; color: string; details?: string }> = [];
     const relevantActions = ['Created', 'Activated', 'Deactivated', 'Updated', 'Added', 'Edited', 'Deleted'];
     const seen = new Set<string>();
     for (const activity of this.activities) {
       const action = (activity.action || '').trim();
       if (!relevantActions.includes(action)) continue;
-      const key = `${action}-${activity.time}-${activity.by}`;
+      const key = `${action}-${activity.time}-${activity.by}-${activity.details}`;
       if (seen.has(key)) continue;
       seen.add(key);
       let color = 'bg-blue-600';
@@ -139,6 +139,7 @@ showDeactivateClientModal = false;
         date: activity.time,
         by: activity.by,
         color,
+        details: activity.details,
       });
     }
     if (items.length === 0 && this.client?.created) {
@@ -426,10 +427,10 @@ viewEmergencyContact(contactId: string): void {
        this.activitiesLoading = true;
           this.clientService.listAuditLog({ targetType: 'CLIENT', targetId: this.clientId, includeRelated: true, page: 0, size: 200 }).subscribe({
          next: (result: any) => {
-           const items = result?.items ?? result?.data?.items ?? [];
-           this.activities = items.map((item: any) => {
-             const data = item?.data ?? {};
-             const actor = item.actor || item.userName || 'System';
+            const items = result?.items ?? result?.data?.items ?? [];
+            this.activities = items.map((item: any) => {
+              const data = item?.data ?? {};
+              const actor = item.actor || item.userName || 'System';
               return {
                 id: item.id ?? '',
                 time: this.formatDateTime(item.createdAt),
@@ -437,17 +438,17 @@ viewEmergencyContact(contactId: string): void {
                 role: item.userRole || '—',
                 initials: this.getInitials(actor),
                 avatarColor: this.getAvatarColor(actor),
-                action: item.action || '—',
+                action: this.getEventAction(item.eventType || '') || item.action || '—',
                 eventType: item.eventType || '—',
                 entity: this.formatTargetType(item.targetType),
                 name: this.getActivityEntityName(item) || '—',
                 detail1: '',
                 ip: item.ipAddress || '—',
-                details: item.details || '—',
+                details: this.formatActivityDetails(item),
                 reference: this.extractReference(item.eventType) || (item.id ? `#${item.id.slice(0, 8)}` : '—'),
                 actorUserId: data?.actorUserId || item.userId,
               };
-           });
+            });
            this.filteredActivities = [...this.activities];
            this.activitiesLoading = false;
          },
@@ -471,6 +472,48 @@ viewEmergencyContact(contactId: string): void {
     const parts = raw.split('_').filter(Boolean);
     const camelCased = parts.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
     return camelCased;
+  }
+
+  private formatActivityDetails(item: any): string {
+    const data = item?.data ?? {};
+    const message = data?.message || item?.details || '';
+    if (!message) return '—';
+
+    const entityName = this.getActivityEntityName(item);
+    const eventType = item.eventType || '';
+    const actor = item.actor || item.userName || '';
+
+    let cleanMessage = message;
+    if (actor && cleanMessage.startsWith(actor)) {
+      cleanMessage = cleanMessage.slice(actor.length).trim();
+      if (cleanMessage.startsWith('"')) {
+        cleanMessage = cleanMessage.trim();
+      }
+    }
+
+    if (entityName && eventType) {
+      const entityType = this.formatTargetType(item.targetType);
+      const eventAction = this.getEventAction(eventType);
+      if (eventAction) {
+        return `${entityType} "${entityName}" ${eventAction}`;
+      }
+    }
+
+    return cleanMessage || '—';
+  }
+
+  private getEventAction(eventType: string): string {
+    if (!eventType) return '';
+    const normalized = eventType.toLowerCase();
+    if (normalized.includes('created')) return 'Created';
+    if (normalized.includes('updated')) return 'Updated';
+    if (normalized.includes('deleted')) return 'Deleted';
+    if (normalized.includes('activated')) return 'Activated';
+    if (normalized.includes('deactivated')) return 'Deactivated';
+    if (normalized.includes('status_changed')) return 'Status Changed';
+    if (normalized.includes('added')) return 'Added';
+    if (normalized.includes('edited')) return 'Edited';
+    return '';
   }
 
   get contactsPaginated(): any[] {
