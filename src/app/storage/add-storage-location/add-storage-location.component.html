@@ -14,28 +14,31 @@
         <div class="mb-5 pb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200">
             <div>
                 <div class="flex gap-2">
-                <button class="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100"> 
-                    <i data-lucide="arrow-left" class="h-5 w-5"></i> 
+                <button class="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> 
                 </button>
                 <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Add Storage Location</h1>
                 </div>
                     <p class="mt-1 text-sm text-slate-700">Create a new storage location where cabinets and keys will be stored.</p>
                     <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-400 sm:text-sm">
-                        <span class="text-blue-500">Home</span> 
-                        <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i> 
-                        <span class="text-blue-500">Storage Management</span> 
-                        <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i> 
-                        <span class="text-blue-500">Storage Locations</span> 
-                        <i data-lucide="chevron-right" class="h-3.5 w-3.5"></i> 
+                        <span class="text-blue-500">Home</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg> 
+                        <span class="text-blue-500">Storage Management</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>                          
+                        <span class="text-blue-500">Storage Locations</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>                          
                         <span class="text-slate-500">Add Storage Location</span> 
                     </div>
             </div>                
             <div class="flex shrink-0 items-center gap-2 sm:gap-3"> 
                 <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
-                    <i data-lucide="help-circle" class="h-4 w-4"></i> <span class="hidden sm:inline">Help</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                    <span class="hidden sm:inline">Help</span>
                 </button> 
                 <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-blue-600 hover:bg-slate-50">
-                    <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to List 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> 
+                    
+                    Back to List 
                 </button> 
             </div>
         </div> <!-- Main grid: form + sidebar -->
@@ -52,12 +55,16 @@
                             <p class="mt-1.5 text-xs text-slate-500 font-medium">A unique and easy to identify name for this
                                 location.</p>
                         </div>
-                        <div> <label class="mb-1.5 flex items-center gap-1 text-sm font-medium text-slate-700"> Location
-                                Code <i data-lucide="info" class="h-3.5 w-3.5 text-slate-400"></i> </label>
+                        <div> 
+                            <label class="mb-1.5 flex items-center gap-1 text-sm font-medium text-slate-700"> 
+                                Location Code
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-slate-400"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+
+                            </label>
                             <div class="relative"> <input type="text" placeholder="Auto-generated" disabled
                                     class="w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-400 placeholder:text-slate-400" />
-                                <i data-lucide="lock"
-                                    class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"></i>
+                                   
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock-icon lucide-lock pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>    
                             </div>
                             <p class="mt-1.5 text-xs text-slate-500 font-medium">A unique code will be generated automatically after
                                 saving.</p>
@@ -160,14 +167,17 @@
                                 class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50">
                                 Cancel </button> <button type="submit" [disabled]="saving"
                             class="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-50">
-                            <i data-lucide="save" class="h-4 w-4"></i> {{ saving ? 'Saving...' : 'Save Storage Location' }} </button> </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+                            {{ saving ? 'Saving...' : 'Save Storage Location' }} </button> </div>
                 </form>
             </div> <!-- Sidebar -->
             <div class="space-y-5 "> <!-- About -->
                 <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
                     <div class="flex items-center gap-2">
-                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600"> <i
-                                data-lucide="info" class="h-3.5 w-3.5 text-white"></i> </div>
+                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-white"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                                 
+                            </div>
                         <h3 class="text-sm font-bold text-slate-900">About Storage Locations</h3>
                     </div>
                     <p class="mt-3 text-sm text-slate-600"> Storage locations are physical places where key cabinets are
@@ -189,8 +199,9 @@
                 </div> <!-- What's Next -->
                 <div class="rounded-lg border border-emerald-100 bg-emerald-50/60 p-5">
                     <div class="flex items-center gap-2">
-                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500"> <i
-                                data-lucide="check" class="h-3.5 w-3.5 text-white"></i> </div>
+                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-white"><path d="M20 6 9 17l-5-5"/></svg>
+                            </div>
                         <h3 class="text-sm font-bold text-slate-900">What's Next?</h3>
                     </div>
                     <p class="mt-3 text-sm text-slate-600">After creating a storage location, you can:</p>
@@ -207,8 +218,8 @@
                     </ul>
                 </div> <!-- Important Notes -->
                 <div class="rounded-lg border border-amber-100 bg-amber-50/60 p-5">
-                    <div class="flex items-center gap-2"> <i data-lucide="triangle-alert"
-                            class="h-5 w-5 text-amber-500"></i>
+                    <div class="flex items-center gap-2"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>   
                         <h3 class="text-sm font-bold text-slate-900">Important Notes</h3>
                     </div>
                     <ul class="mt-3 space-y-2 text-sm text-slate-600">
