@@ -122,7 +122,7 @@ export const routes: Routes = [
           },
           {
             path: 'storage/locations/add',
-            loadComponent: () => import('./storage/add-storage-location/add-storage-location.component').then(m => m.AddStorageLocationComponent),
+            loadComponent: () => import('./storage/storage-location-form/storage-location-form.component').then(m => m.StorageLocationFormComponent),
             title: 'Add Storage Location | KeyVault Pro'
           },
           {
@@ -132,7 +132,7 @@ export const routes: Routes = [
           },
           {
             path: 'storage/locations/edit/:id',
-            loadComponent: () => import('./storage/edit-storage-location/edit-storage-location.component').then(m => m.EditStorageLocationComponent),
+            loadComponent: () => import('./storage/storage-location-form/storage-location-form.component').then(m => m.StorageLocationFormComponent),
             title: 'Edit Storage Location | KeyVault Pro'
           },
           {

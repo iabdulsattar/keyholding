@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface SiteBuilding {
   id: string;
@@ -10,17 +11,17 @@ interface SiteBuilding {
 }
 
 @Component({
-  selector: 'app-edit-storage-location',
+  selector: 'app-storage-location-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './edit-storage-location.component.html',
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
+  templateUrl: './storage-location-form.component.html',
 })
-export class EditStorageLocationComponent implements OnInit, AfterViewInit {
+export class StorageLocationFormComponent implements OnInit, AfterViewInit {
   loading = true;
   saving = false;
+  editMode = false;
 
   locationId = '';
-
   siteBuildings: SiteBuilding[] = [];
 
   locationName = '';
@@ -30,32 +31,50 @@ export class EditStorageLocationComponent implements OnInit, AfterViewInit {
   address = '';
   city = '';
   postcode = '';
-  country = '';
+  country = 'United Kingdom';
   responsiblePerson = '';
   contactNumber = '';
   accessInstructions = '';
   description = '';
   status = 'ACTIVE';
 
-  constructor(
-    private keyVault: KeyVaultService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
+  locationTypeOptions: RichSelectOption[] = [
+    { value: '', label: 'Select location type' },
+    { value: 'Safe Room', label: 'Safe Room' },
+    { value: 'Store Room', label: 'Store Room' },
+    { value: 'Mobile Unit', label: 'Mobile Unit' },
+    { value: 'Branch Office', label: 'Branch Office' },
+  ];
+  countryOptions: RichSelectOption[] = [
+    { value: '', label: 'Select country' },
+    { value: 'United Kingdom', label: 'United Kingdom' },
+    { value: 'United States', label: 'United States' },
+    { value: 'Pakistan', label: 'Pakistan' },
+  ];
 
-  private getOrgId(): string {
-    return localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+  get siteBuildingOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'Select site or building (if applicable)' }, ...this.siteBuildings.map(sb => ({ value: sb.id, label: sb.name }))];
   }
+
+  get pageTitle(): string {
+    return this.editMode ? 'Edit Storage Location' : 'Add Storage Location';
+  }
+
+  get submitButtonText(): string {
+    return this.saving ? (this.editMode ? 'Updating...' : 'Saving...') : (this.editMode ? 'Update Storage Location' : 'Save Storage Location');
+  }
+
+  constructor(private keyVault: KeyVaultService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.locationId = this.route.snapshot.paramMap.get('id') || '';
+    this.editMode = !!this.locationId;
     this.loadSiteBuildings();
-    if (this.locationId) {
+    if (this.editMode) {
       this.loadStorageLocation();
     } else {
       this.loading = false;
       this.createIcons();
-      this.router.navigate(['/storage/locations']);
     }
   }
 
@@ -70,6 +89,10 @@ export class EditStorageLocationComponent implements OnInit, AfterViewInit {
         icons.createIcons();
       }
     }, 0);
+  }
+
+  private getOrgId(): string {
+    return localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
   }
 
   private loadSiteBuildings(): void {
@@ -105,13 +128,13 @@ export class EditStorageLocationComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         const loc = res?.data ?? res ?? {};
         this.locationName = loc.name || '';
-        this.locationCode = loc.code || '';
+        this.locationCode = loc.locationCode || '';
         this.siteId = loc.siteId || loc.siteId?.id || '';
         this.locationType = loc.locationType || '';
         this.address = loc.address || '';
         this.city = loc.city || '';
         this.postcode = loc.postcode || '';
-        this.country = loc.country || '';
+        this.country = loc.country || 'United Kingdom';
         this.responsiblePerson = loc.responsiblePerson || '';
         this.contactNumber = loc.contactNumber || '';
         this.accessInstructions = loc.accessInstructions || '';
@@ -132,7 +155,7 @@ export class EditStorageLocationComponent implements OnInit, AfterViewInit {
   }
 
   onSave(): void {
-    if (this.saving || !this.locationId) return;
+    if (this.saving) return;
     const orgId = this.getOrgId();
     if (!orgId || !this.locationName.trim()) return;
 
@@ -152,7 +175,11 @@ export class EditStorageLocationComponent implements OnInit, AfterViewInit {
       status: this.status,
     };
 
-    this.keyVault.updateStorageLocation(orgId, this.locationId, payload as any).subscribe({
+    const request$ = this.editMode
+      ? this.keyVault.updateStorageLocation(orgId, this.locationId, payload as any)
+      : this.keyVault.createStorageLocation(orgId, payload as any);
+
+    request$.subscribe({
       next: () => {
         this.saving = false;
         this.createIcons();
