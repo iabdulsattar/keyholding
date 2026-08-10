@@ -103,9 +103,10 @@ export class AddDocumentComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const allowedTypes = this.getUploadAllowedTypes();
       if (!allowedTypes.includes(file.type)) {
-        this.fileError = 'Only PDF and image files (.pdf, .jpg, .jpeg, .png, .webp) are allowed.';
+        const typeLabel = this.documentType === 'Image' ? 'images' : 'PDFs';
+        this.fileError = `Only ${typeLabel} are allowed for the selected document type.`;
         input.value = '';
         this.selectedFile = null;
         this.fileName = '';
@@ -115,6 +116,42 @@ export class AddDocumentComponent implements OnInit {
       this.selectedFile = file;
       this.fileName = file.name;
     }
+  }
+
+  onDocumentTypeChange(): void {
+    this.markTouched('documentType');
+    if (this.selectedFile) {
+      const allowedTypes = this.getUploadAllowedTypes();
+      if (!allowedTypes.includes(this.selectedFile.type)) {
+        this.selectedFile = null;
+        this.fileName = '';
+        this.fileError = '';
+        const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+      }
+    }
+  }
+
+  private getUploadAllowedTypes(): string[] {
+    if (this.documentType === 'PDF') {
+      return ['application/pdf'];
+    }
+    if (this.documentType === 'Image') {
+      return ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    }
+    return ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  }
+
+  get acceptedFileTypes(): string {
+    if (this.documentType === 'PDF') {
+      return '.pdf';
+    }
+    if (this.documentType === 'Image') {
+      return 'image/*';
+    }
+    return 'application/pdf,image/*';
   }
 
   goBack(): void {
