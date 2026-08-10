@@ -17,6 +17,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   searchTerm = '';
   activeFilter = 'All Statuses';
   private sitesMap: Record<string, string> = {};
+  apiError = false;
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 
@@ -68,10 +69,11 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
 
   private loadStorageLocations(): void {
     this.loading = true;
+    this.apiError = false;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
-      this.storageLocations = this.getFallbackLocations();
-      this.filteredLocations = [...this.storageLocations];
+      this.storageLocations = [];
+      this.filteredLocations = [];
       this.loading = false;
       this.createIcons();
       return;
@@ -79,14 +81,15 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     this.keyVault.listStorageLocations(orgId, { page: 0, size: 50 }).subscribe({
       next: (locations: any[]) => {
         const normalized = (locations && locations.length ? locations : []).map(loc => this.normalizeLocation(loc));
-        this.storageLocations = normalized.length > 0 ? normalized : this.getFallbackLocations();
+        this.storageLocations = normalized;
         this.filteredLocations = [...this.storageLocations];
         this.loading = false;
         this.createIcons();
       },
       error: () => {
-        this.storageLocations = this.getFallbackLocations();
-        this.filteredLocations = [...this.storageLocations];
+        this.storageLocations = [];
+        this.filteredLocations = [];
+        this.apiError = true;
         this.loading = false;
         this.createIcons();
       }
@@ -173,39 +176,31 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   locationStatusClass(status: string): string {
-    if (status === 'Active' || status === 'ACTIVE') {
+    const s = (status || '').toUpperCase();
+    if (s === 'ACTIVE') {
       return 'bg-emerald-50 text-emerald-600';
     }
-    if (status === 'Inactive' || status === 'INACTIVE') {
+    if (s === 'INACTIVE') {
       return 'bg-rose-50 text-rose-600';
     }
-    if (status === 'Under Maintenance' || status === 'MAINTENANCE') {
+    if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') {
       return 'bg-amber-50 text-amber-600';
     }
     return 'bg-slate-100 text-slate-600';
   }
 
   getLocationStatus(loc: any): string {
-    return loc.status || (loc.active ? 'Active' : 'Inactive') || '—';
+    const raw = loc.status || (loc.active ? 'Active' : 'Inactive') || '—';
+    if (raw === 'UNDER_MAINTENANCE' || raw === 'MAINTENANCE') return 'Under Maintenance';
+    return raw;
   }
 
   getLocationStatusDot(loc: any): string {
-    const status = this.getLocationStatus(loc);
-    if (status === 'Active' || status === 'ACTIVE') return 'bg-emerald-500';
-    if (status === 'Inactive' || status === 'INACTIVE') return 'bg-rose-500';
-    if (status === 'Under Maintenance' || status === 'MAINTENANCE') return 'bg-amber-500';
+    const s = (this.getLocationStatus(loc) || '').toUpperCase();
+    if (s === 'ACTIVE') return 'bg-emerald-500';
+    if (s === 'INACTIVE') return 'bg-rose-500';
+    if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') return 'bg-amber-500';
     return 'bg-slate-400';
-  }
-
-  private getFallbackLocations(): any[] {
-    return [
-      { id: 'LOC-001', code: 'LOC-001', name: 'Head Office Safe Room', siteName: 'Head Office', address: '123 Security Way, London, SW1A 1AA', responsiblePerson: 'John Smith', responsiblePersonTitle: 'Facilities Manager', contactNumber: '+44 7123 456789', status: 'Active', active: true, totalCabinets: 6, totalHooks: 248 },
-      { id: 'LOC-002', code: 'LOC-002', name: 'Manchester Branch Store', siteName: 'Manchester Branch', address: '10 King Street, Manchester, M2 4WU', responsiblePerson: 'Sarah Johnson', responsiblePersonTitle: 'Branch Manager', contactNumber: '+44 7234 567890', status: 'Active', active: true, totalCabinets: 4, totalHooks: 160 },
-      { id: 'LOC-003', code: 'LOC-003', name: 'Birmingham Operations Room', siteName: 'Birmingham Office', address: '45 Colmore Row, Birmingham, B3 2BH', responsiblePerson: 'David Williams', responsiblePersonTitle: 'Operations Lead', contactNumber: '+44 121 555 1234', status: 'Active', active: true, totalCabinets: 3, totalHooks: 96 },
-      { id: 'LOC-004', code: 'LOC-004', name: 'Mobile Key Van 1', siteName: 'Mobile Unit', address: 'N/A (Mobile Unit)', responsiblePerson: 'Michael Brown', responsiblePersonTitle: 'Van Supervisor', contactNumber: '+44 7345 678901', status: 'Under Maintenance', active: false, totalCabinets: 2, totalHooks: 40 },
-      { id: 'LOC-005', code: 'LOC-005', name: 'Security Control Room', siteName: 'Head Office', address: '123 Security Way, London, SW1A 1AA', responsiblePerson: 'John Smith', responsiblePersonTitle: 'Facilities Manager', contactNumber: '+44 7123 456789', status: 'Active', active: true, totalCabinets: 2, totalHooks: 80 },
-      { id: 'LOC-006', code: 'LOC-006', name: 'Leeds Branch Store', siteName: 'Leeds Branch', address: '78 Boar Lane, Leeds, LS1 6HW', responsiblePerson: 'Emma Taylor', responsiblePersonTitle: 'Branch Manager', contactNumber: '+44 113 555 7890', status: 'Inactive', active: false, totalCabinets: 0, totalHooks: 0 },
-    ];
   }
 
   formatDate(value: string | null | undefined): string {

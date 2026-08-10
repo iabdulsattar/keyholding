@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
+import { FormatEventTypePipe } from '../../shared/pipe/format-event-type.pipe';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
 import { DeleteContactModalComponent } from '../delete-contact-modal/delete-contact-modal.component';
@@ -17,7 +18,7 @@ import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-do
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent, FormatEventTypePipe],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
