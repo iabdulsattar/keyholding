@@ -123,6 +123,21 @@ export class ViewDocumentComponent implements OnInit {
     return !!this.document?.publicUrl;
   }
 
+  get isSameOriginPreview(): boolean {
+    const url = this.previewUrl;
+    if (!url) return false;
+    try {
+      const parsed = new URL(url);
+      return parsed.origin === window.location.origin;
+    } catch {
+      return false;
+    }
+  }
+
+  get canPreviewInFrame(): boolean {
+    return this.hasPublicUrl && this.previewType === 'pdf' && this.isSameOriginPreview;
+  }
+
   goBack(): void {
     this.router.navigate(['/clients', this.clientId]);
   }

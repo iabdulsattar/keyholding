@@ -58,13 +58,14 @@
               <div>
                  <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg transition">
-                   <div class="flex gap-2">
-                     <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
-                       🇬🇧 +44
-                       <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                     </button>
-                     <input type="text" placeholder="Enter phone number" class="field-input flex-1 border-none" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
-                   </div>
+                  <div class="flex gap-2">
+                    <select [(ngModel)]="phoneCountryCode" name="phoneCountryCode" class="field-input w-auto shrink-0 pr-8 appearance-none" [disabled]="saving">
+                      @for (country of countryCodes; track country.code) {
+                        <option [value]="country.code">{{ country.flag }} {{ country.code }}</option>
+                      }
+                    </select>
+                    <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
+                  </div>
                  </div>
                  @if (touched.has('phone') && !phone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
                 <p class="field-hint">Enter a valid phone number.</p>

@@ -40,6 +40,7 @@ export class AddContactComponent implements OnInit {
   jobTitle = '';
   email = '';
   phone = '';
+  phoneCountryCode = '+44';
   department = '';
   primaryContact = true;
   status = 'Active';
@@ -66,6 +67,70 @@ export class AddContactComponent implements OnInit {
     { value: 'Email', label: 'Email' },
     { value: 'Phone', label: 'Phone' },
     { value: 'SMS', label: 'SMS' },
+  ];
+
+  countryCodes: { code: string; label: string; flag: string }[] = [
+    { code: '+44', label: '+44', flag: '🇬🇧' },
+    { code: '+1', label: '+1', flag: '🇺🇸' },
+    { code: '+1', label: '+1', flag: '🇨🇦' },
+    { code: '+61', label: '+61', flag: '🇦🇺' },
+    { code: '+91', label: '+91', flag: '🇮🇳' },
+    { code: '+92', label: '+92', flag: '🇵🇰' },
+    { code: '+966', label: '+966', flag: '🇸🇦' },
+    { code: '+971', label: '+971', flag: '🇦🇪' },
+    { code: '+65', label: '+65', flag: '🇸🇬' },
+    { code: '+60', label: '+60', flag: '🇲🇾' },
+    { code: '+27', label: '+27', flag: '🇿🇦' },
+    { code: '+234', label: '+234', flag: '🇳🇬' },
+    { code: '+254', label: '+254', flag: '🇰🇪' },
+    { code: '+20', label: '+20', flag: '🇪🇬' },
+    { code: '+973', label: '+973', flag: '🇧🇭' },
+    { code: '+974', label: '+974', flag: '🇶🇦' },
+    { code: '+968', label: '+968', flag: '🇴🇲' },
+    { code: '+964', label: '+964', flag: '🇮🇶' },
+    { code: '+98', label: '+98', flag: '🇮🇷' },
+    { code: '+90', label: '+90', flag: '🇹🇷' },
+    { code: '+880', label: '+880', flag: '🇧🇩' },
+    { code: '+94', label: '+94', flag: '🇱🇰' },
+    { code: '+977', label: '+977', flag: '🇳🇵' },
+    { code: '+66', label: '+66', flag: '🇹🇭' },
+    { code: '+63', label: '+63', flag: '🇵🇭' },
+    { code: '+62', label: '+62', flag: '🇮🇩' },
+    { code: '+84', label: '+84', flag: '🇻🇳' },
+    { code: '+86', label: '+86', flag: '🇨🇳' },
+    { code: '+81', label: '+81', flag: '🇯🇵' },
+    { code: '+82', label: '+82', flag: '🇰🇷' },
+    { code: '+852', label: '+852', flag: '🇭🇰' },
+    { code: '+886', label: '+886', flag: '🇹🇼' },
+    { code: '+48', label: '+48', flag: '🇵🇱' },
+    { code: '+49', label: '+49', flag: '🇩🇪' },
+    { code: '+33', label: '+33', flag: '🇫🇷' },
+    { code: '+34', label: '+34', flag: '🇪🇸' },
+    { code: '+39', label: '+39', flag: '🇮🇹' },
+    { code: '+31', label: '+31', flag: '🇳🇱' },
+    { code: '+46', label: '+46', flag: '🇸🇪' },
+    { code: '+47', label: '+47', flag: '🇳🇴' },
+    { code: '+45', label: '+45', flag: '🇩🇰' },
+    { code: '+358', label: '+358', flag: '🇫🇮' },
+    { code: '+41', label: '+41', flag: '🇨🇭' },
+    { code: '+43', label: '+43', flag: '🇦🇹' },
+    { code: '+32', label: '+32', flag: '🇧🇪' },
+    { code: '+351', label: '+351', flag: '🇵🇹' },
+    { code: '+30', label: '+30', flag: '🇬🇷' },
+    { code: '+420', label: '+420', flag: '🇨🇿' },
+    { code: '+36', label: '+36', flag: '🇭🇺' },
+    { code: '+40', label: '+40', flag: '🇷🇴' },
+    { code: '+7', label: '+7', flag: '🇷🇺' },
+    { code: '+55', label: '+55', flag: '🇧🇷' },
+    { code: '+52', label: '+52', flag: '🇲🇽' },
+    { code: '+54', label: '+54', flag: '🇦🇷' },
+    { code: '+56', label: '+56', flag: '🇨🇱' },
+    { code: '+57', label: '+57', flag: '🇨🇴' },
+    { code: '+51', label: '+51', flag: '🇵🇪' },
+    { code: '+593', label: '+593', flag: '🇪🇨' },
+    { code: '+58', label: '+58', flag: '🇻🇪' },
+    { code: '+63', label: '+63', flag: '🇵🇭' },
+    { code: '+66', label: '+66', flag: '🇹🇭' },
   ];
 
   saving = false;
@@ -110,10 +175,45 @@ export class AddContactComponent implements OnInit {
     this.clientId = this.route.snapshot.paramMap.get('id') || '';
     this.contactId = this.route.snapshot.queryParamMap.get('contactId') || '';
     this.loadClientName();
+    this.detectCountryCode();
 
     if (this.contactId) {
       this.loadContact();
     }
+  }
+
+  private detectCountryCode(): void {
+    if (typeof navigator !== 'undefined') {
+      const locale = navigator.language || (navigator as any).userLanguage || 'en-GB';
+      const region = locale.split('-')[1] || locale.split('_')[1];
+      if (region) {
+        const regionUpper = region.toUpperCase();
+        const matched = this.countryCodes.find(c => c.code === this.regionToCode(regionUpper));
+        if (matched) {
+          this.phoneCountryCode = matched.code;
+          return;
+        }
+      }
+    }
+    this.phoneCountryCode = '+44';
+  }
+
+  private regionToCode(region: string): string {
+    const map: Record<string, string> = {
+      'GB': '+44', 'US': '+1', 'CA': '+1', 'AU': '+61', 'IN': '+91',
+      'PK': '+92', 'SA': '+966', 'AE': '+971', 'SG': '+65', 'MY': '+60',
+      'ZA': '+27', 'NG': '+234', 'KE': '+254', 'EG': '+20', 'BH': '+973',
+      'QA': '+974', 'OM': '+968', 'IQ': '+964', 'IR': '+98', 'TR': '+90',
+      'BD': '+880', 'LK': '+977', 'NP': '+977', 'TH': '+66', 'PH': '+63',
+      'ID': '+62', 'VN': '+84', 'CN': '+86', 'JP': '+81', 'KR': '+82',
+      'HK': '+852', 'TW': '+886', 'PL': '+48', 'DE': '+49', 'FR': '+33',
+      'ES': '+34', 'IT': '+39', 'NL': '+31', 'SE': '+46', 'NO': '+47',
+      'DK': '+45', 'FI': '+358', 'CH': '+41', 'AT': '+43', 'BE': '+32',
+      'PT': '+351', 'GR': '+30', 'CZ': '+420', 'HU': '+36', 'RO': '+40',
+      'RU': '+7', 'BR': '+55', 'MX': '+52', 'AR': '+54', 'CL': '+56',
+      'CO': '+57', 'PE': '+51', 'EC': '+593', 'VE': '+58',
+    };
+    return map[region] || '+44';
   }
 
   private loadClientName(): void {
@@ -140,6 +240,7 @@ export class AddContactComponent implements OnInit {
           this.jobTitle = contact.jobTitle || '';
           this.email = contact.email || '';
           this.phone = contact.phone || '';
+          this.phoneCountryCode = contact.phoneCountryCode || '+44';
           this.department = contact.department || '';
           this.primaryContact = contact.primaryContact ?? false;
           this.status = contact.status || 'Active';
@@ -188,6 +289,7 @@ export class AddContactComponent implements OnInit {
       jobTitle: this.jobTitle,
       email: this.email,
       phone: this.phone,
+      phoneCountryCode: this.phoneCountryCode,
       department: this.department,
       primaryContact: this.primaryContact,
       status: this.status as 'Active' | 'Inactive',
