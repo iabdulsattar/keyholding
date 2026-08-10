@@ -77,13 +77,28 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+                <div>
+                  <label class="field-label" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-700]="!(touched.has('status') && !status)">Status <span class="text-rose-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg  transition">
+                    <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
+                  </div>
+                  @if (touched.has('status') && !status) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
+                  <p class="field-hint">Set the status of this contact.</p>
+                </div>
+
                <div>
-                 <label class="field-label" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-700]="!(touched.has('status') && !status)">Status <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg  transition">
-                   <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
+                 <label class="field-label">Primary Contact</label>
+                 <div class="flex items-center gap-4 mt-1">
+                   <label class="inline-flex items-center gap-2 cursor-pointer">
+                     <input type="radio" [checked]="primaryContact === true" (change)="primaryContact = true" name="primaryContact" class="accent-blue-600 w-4 h-4" />
+                     <span class="text-sm text-slate-700">Yes</span>
+                   </label>
+                   <label class="inline-flex items-center gap-2 cursor-pointer">
+                     <input type="radio" [checked]="primaryContact === false" (change)="primaryContact = false" name="primaryContact" class="accent-blue-600 w-4 h-4" />
+                     <span class="text-sm text-slate-700">No</span>
+                   </label>
                  </div>
-                 @if (touched.has('status') && !status) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
-                 <p class="field-hint">Set the status of this contact.</p>
+                 <p class="field-hint">Mark this contact as the primary point of contact.</p>
                </div>
               
               <div>
