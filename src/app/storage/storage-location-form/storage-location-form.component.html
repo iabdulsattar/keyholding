@@ -23,6 +23,7 @@
         <p class="mt-1 text-sm text-slate-700">
           {{ editMode ? 'Update the storage location details below.' : 'Create a new storage location where cabinets and keys will be stored.' }}
         </p>
+        
         <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-400 sm:text-sm">
           <span class="text-blue-500">Home</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
@@ -222,9 +223,9 @@
         </div>
 
         <!-- What's Next -->
-        <div class="rounded-lg border border-emerald-100 bg-emerald-50/60 p-5">
+        <div class="rounded-lg border order-emerald-100 g-emerald-50/60 border-blue-100 bg-blue-50/60 p-5">
           <div class="flex items-center gap-2">
-            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500">
+            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-[#0F8343]">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-white"><path d="M20 6 9 17l-5-5"/></svg>
             </div>
             <h3 class="text-sm font-bold text-slate-900">What's Next?</h3>
@@ -233,14 +234,14 @@
             {{ editMode ? 'After updating this storage location, you can:' : 'After creating a storage location, you can:' }}
           </p>
           <ul class="mt-3 space-y-2.5 text-sm text-slate-600">
-            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">1</span> {{ editMode ? 'Manage cabinets in this location' : 'Add cabinets to this location' }} </li>
-            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">2</span> Generate hooks/slots in cabinets </li>
-            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">3</span> Assign keys to hooks/slots </li>
+            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0F8343] text-xs font-semibold text-white">1</span> {{ editMode ? 'Manage cabinets in this location' : 'Add cabinets to this location' }} </li>
+            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0F8343] text-xs font-semibold text-white">2</span> Generate hooks/slots in cabinets </li>
+            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0F8343] text-xs font-semibold text-white">3</span> Assign keys to hooks/slots </li>
           </ul>
         </div>
 
         <!-- Important Notes -->
-        <div class="rounded-lg border border-amber-100 bg-amber-50/60 p-5">
+        <div class="rounded-lg border border-amber-100 bg-[#FFF7EC] p-5">
           <div class="flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
             <h3 class="text-sm font-bold text-slate-900">Important Notes</h3>
