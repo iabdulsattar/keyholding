@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService, EmergencyContact } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { DeleteEmergencyContactModalComponent } from '../delete-emergency-contact-modal/delete-emergency-contact-modal.component';
+import { ToggleEmergencyContactStatusModalComponent } from '../toggle-emergency-contact-status-modal/toggle-emergency-contact-status-modal.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 
 @Component({
   selector: 'app-view-emergency-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, PageBreadcrumbComponent, DeleteEmergencyContactModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent],
   templateUrl: './view-emergency-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -49,6 +51,13 @@ export class ViewEmergencyContactComponent implements OnInit {
   loading = false;
   showDeleteModal = false;
   contactNameToDelete = '';
+  showToggleStatusModal = false;
+  contactNameToToggle = '';
+
+  jobsAssigned = 0;
+  keysManaged = 0;
+  sitesAccess = 0;
+  emergencyContactsCount = 0;
 
   activities: ActivityItem[] = [];
   activitiesLoading = false;
@@ -77,6 +86,7 @@ export class ViewEmergencyContactComponent implements OnInit {
     if (this.contactId) {
       this.loadContact();
       this.loadActivities();
+      this.loadStats();
     }
   }
 
@@ -113,15 +123,30 @@ export class ViewEmergencyContactComponent implements OnInit {
           this.address = contact.address || '';
           this.notes = contact.notes || '';
           this.createdBy = contact.createdByUserName || contact.createdBy || '';
-          this.createdDate = contact.createdAt ? this.formatDateTime(contact.createdAt) : '';
+          this.createdDate = contact.createdDate ? this.formatDateTime(contact.createdDate) : '';
           this.updatedBy = contact.updatedByUserName || contact.updatedBy || '';
-          this.updatedDate = contact.updatedAt ? this.formatDateTime(contact.updatedAt) : '';
+          this.updatedDate = contact.updatedDate ? this.formatDateTime(contact.updatedDate) : '';
         }
         this.loading = false;
       },
       error: () => {
         this.toast.error('Failed to load emergency contact');
         this.loading = false;
+      }
+    });
+  }
+
+  private loadStats(): void {
+    if (!this.clientId) return;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    if (!orgId) return;
+    this.clientService.listEmergencyContacts(this.clientId, { page: 0, size: 1 }).subscribe({
+      next: (result: any) => {
+        const total = result?.total ?? result?.data?.total ?? result?.items?.length ?? 0;
+        this.emergencyContactsCount = total;
+      },
+      error: () => {
+        this.emergencyContactsCount = 0;
       }
     });
   }
@@ -152,6 +177,23 @@ export class ViewEmergencyContactComponent implements OnInit {
 
   onDeleteContactClosed(): void {
     this.showDeleteModal = false;
+  }
+
+  toggleContactStatus(): void {
+    this.contactNameToToggle = this.fullName || this.contactNameToDelete;
+    this.showToggleStatusModal = true;
+  }
+
+  onToggleStatusConfirmed(): void {
+    this.showToggleStatusModal = false;
+    this.toast.success('Emergency contact status updated successfully');
+    this.loadContact();
+    this.loadActivities();
+    this.loadStats();
+  }
+
+  onToggleStatusClosed(): void {
+    this.showToggleStatusModal = false;
   }
 
   toggleDropdown(id: string): void {

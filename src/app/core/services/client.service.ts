@@ -524,27 +524,37 @@ export class ClientService {
      return this.keyVault.deleteEmergencyContact(orgId, clientId, emergencyContactId);
    }
 
-   private mapEmergencyContact(item: any): EmergencyContact {
-     const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();
-     const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
-     const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
-     return {
-       id: item.id ?? '',
-       firstName: firstName,
-       lastName: lastName,
-       fullName: fullName,
-       department: item.department,
-       phone: item.phone,
-       email: item.email,
-       availability: item.availability,
-       status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
-       primaryContact: item.primaryContact ?? false,
-       notifyFor: item.notifyFor,
-       address: item.address,
-       notes: item.notes,
-       clientId: item.clientId,
-     };
-   }
+    private mapEmergencyContact(item: any): EmergencyContact {
+      const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();
+      const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
+      const lastName = item.lastName ?? (item.fullName ? item.fullName.replace(/^\S+\s*/, '') : '');
+      return {
+        id: item.id ?? '',
+        firstName: firstName,
+        lastName: lastName,
+        fullName: fullName,
+        department: item.department,
+        phoneCountryCode: item.phoneCountryCode,
+        phone: item.phone,
+        email: item.email,
+        availability: item.availability,
+        status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+        primaryContact: item.primaryContact ?? false,
+        notifyFor: item.notifyFor,
+        address: item.address,
+        notes: item.notes,
+        clientId: item.clientId,
+        createdBy: item.createdByUserName || item.createdBy || '',
+        createdDate: item.createdAt || '',
+        updatedBy: item.updatedByUserName || item.updatedBy || '',
+        updatedDate: item.updatedAt || '',
+        createdByUserId: item.createdByUserId,
+        createdByUserName: item.createdByUserName,
+        createdAt: item.createdAt,
+        updatedByUserId: item.updatedByUserId,
+        updatedByUserName: item.updatedByUserName,
+      };
+    }
 
        listAuditLog(params?: { targetType?: string; targetId?: string; includeRelated?: boolean; page?: number; size?: number }): Observable<PaginatedResult<AuditRecord>> {
         const orgId = this.getOrgId();

@@ -132,9 +132,9 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-5">
               <div>
                 <p class="text-xs text-slate-500 font-medium">Added By</p>
-                <div class="flex items-center gap-2 mt-1.5">
+                 <div class="flex items-center gap-2 mt-1.5">
                   <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
-                  <p class="text-sm font-medium text-slate-900">Faisa Ahmed</p>
+                  <p class="text-sm font-medium text-slate-900">{{ createdBy || '–' }}</p>
                 </div>
               </div>
               <div>
@@ -175,29 +175,29 @@
                   <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16" stroke-linecap="round"/></svg>
                   Jobs Assigned
                 </dt>
-                <dd class="font-semibold text-slate-900">18</dd>
-              </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="flex items-center gap-2 text-slate-500 font-medium">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round-icon lucide-key-round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                  Keys Managed
-                </dt>
-                <dd class="font-semibold text-slate-900">12</dd>
-              </div>
-              <div class="flex items-center justify-between py-2.5 ">
-                <dt class="flex items-center gap-2 text-slate-500 font-medium">
-                  <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 21V8l8-5 8 5v13" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke-linejoin="round"/></svg>
-                  Sites Access
-                </dt>
-                <dd class="font-semibold text-slate-900">5</dd>
-              </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="flex items-center gap-2 text-slate-500 font-medium">
-                  <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.9v2a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 013.1 4.2 2 2 0 015 2h2a2 2 0 012 1.7c.1 1 .3 2 .6 2.9a2 2 0 01-.5 2.1l-.9.9a16 16 0 006 6l.9-.9a2 2 0 012.1-.5c.9.3 1.9.5 2.9.6a2 2 0 011.9 2z" stroke-linejoin="round"/></svg>
-                  Emergency Contacts
-                </dt>
-                <dd class="font-semibold text-slate-900">6</dd>
-              </div>
+                 <dd class="font-semibold text-slate-900">{{ jobsAssigned }}</dd>
+               </div>
+               <div class="flex items-center justify-between py-2.5">
+                 <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round-icon lucide-key-round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                   Keys Managed
+                 </dt>
+                 <dd class="font-semibold text-slate-900">{{ keysManaged }}</dd>
+               </div>
+               <div class="flex items-center justify-between py-2.5 ">
+                 <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                   <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 21V8l8-5 8 5v13" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke-linejoin="round"/></svg>
+                   Sites Access
+                 </dt>
+                 <dd class="font-semibold text-slate-900">{{ sitesAccess }}</dd>
+               </div>
+               <div class="flex items-center justify-between py-2.5">
+                 <dt class="flex items-center gap-2 text-slate-500 font-medium">
+                   <svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.9v2a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 013.1 4.2 2 2 0 015 2h2a2 2 0 012 1.7c.1 1 .3 2 .6 2.9a2 2 0 01-.5 2.1l-.9.9a16 16 0 006 6l.9-.9a2 2 0 012.1-.5c.9.3 1.9.5 2.9.6a2 2 0 011.9 2z" stroke-linejoin="round"/></svg>
+                   Emergency Contacts
+                 </dt>
+                 <dd class="font-semibold text-slate-900">{{ emergencyContactsCount }}</dd>
+               </div>
             </dl>
           </div>
 
@@ -234,16 +234,16 @@
               <h3 class="font-semibold text-slate-900">Related Actions</h3>
             </div>
             <div class="space-y-1">
-              <a href="#" (click)="editContact(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
+               <a href="#" (click)="editContact(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
                 <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Edit Emergency Contact
               </a>
-               <a href="#" (click)="showDeleteModal = true; $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
-                 <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/></svg>
-                 Deactivate Emergency Contact
-               </a>
+               <a href="#" (click)="toggleContactStatus(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
+                  <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/></svg>
+                  {{ status === 'Active' ? 'Deactivate Emergency Contact' : 'Activate Emergency Contact' }}
+                </a>
               <a href="#" (click)="goBack()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
-                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+                <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
                 View Activity Log
               </a>
             </div>
@@ -263,4 +263,15 @@
     (close)="onDeleteContactClosed()"
     (confirmed)="onDeleteContactConfirmed()">
   </app-delete-emergency-contact-modal>
+}
+
+@if (showToggleStatusModal) {
+  <app-toggle-emergency-contact-status-modal
+    [contactId]="contactId"
+    [contactName]="contactNameToToggle"
+    [currentStatus]="status"
+    [clientId]="clientId"
+    (close)="onToggleStatusClosed()"
+    (confirmed)="onToggleStatusConfirmed()">
+  </app-toggle-emergency-contact-status-modal>
 }
