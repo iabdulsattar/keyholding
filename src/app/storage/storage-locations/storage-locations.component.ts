@@ -67,7 +67,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     this.applyFilter();
   }
 
-  private loadStorageLocations(): void {
+  private loadStorageLocations(params?: { q?: string; status?: string }): void {
     this.loading = true;
     this.apiError = false;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
@@ -78,7 +78,9 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
       this.createIcons();
       return;
     }
-    this.keyVault.listStorageLocations(orgId, { page: 0, size: 50 }).subscribe({
+    const q = params?.q ?? this.searchTerm;
+    const status = params?.status ?? this.activeFilter;
+    this.keyVault.listStorageLocations(orgId, { page: 0, size: 50, q: q || undefined, status: status === 'All Statuses' ? undefined : status }).subscribe({
       next: (locations: any[]) => {
         const normalized = (locations && locations.length ? locations : []).map(loc => this.normalizeLocation(loc));
         this.storageLocations = normalized;
@@ -134,29 +136,15 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   onSearch(): void {
-    this.applyFilter();
+    this.loadStorageLocations({ q: this.searchTerm });
   }
 
   applyFilter(): void {
-    const q = this.searchTerm.toLowerCase().trim();
-    const statusFilter = this.activeFilter;
-    this.filteredLocations = this.storageLocations.filter(loc => {
-      const matchesSearch =
-        (loc.name || '').toLowerCase().includes(q) ||
-        (loc.code || '').toLowerCase().includes(q) ||
-        (loc.siteName || loc.site || '').toLowerCase().includes(q) ||
-        (loc.address || '').toLowerCase().includes(q) ||
-        (loc.responsiblePerson || '').toLowerCase().includes(q);
-      const matchesStatus =
-        statusFilter === 'All Statuses' ||
-        (loc.status || (loc.active ? 'Active' : 'Inactive')) === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-    this.createIcons();
+    this.loadStorageLocations({ q: this.searchTerm, status: this.activeFilter });
   }
 
   onStatusFilterChange(): void {
-    this.applyFilter();
+    this.loadStorageLocations({ status: this.activeFilter });
   }
 
   get totalLocations(): number {
