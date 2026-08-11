@@ -57,7 +57,7 @@
       <div class="space-y-5 lg:col-span-2">
 
         <!-- Warning banner -->
-        <div class="rounded-lg border border-amber-200 bg-amber-50 p-4 sm:p-5">
+        <div class="rounded-lg border border-amber-100 bg-[#FDF9F4] p-4 sm:p-5">
           <div class="flex gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert mt-0.5 shrink-0 text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
             <div>
@@ -75,73 +75,117 @@
         <!-- Details card -->
         <div class="rounded-lg border border-slate-100 bg-white p-4 sm:p-6">
           <h3 class="mb-4 text-sm font-bold text-slate-900">Storage Location Details</h3>
-          <div class="grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+          <div class="grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-4">
             <div>
-              <div class="font-medium text-slate-700">Location Name</div>
-              <div class="mt-0.5 text-blue-500">{{ location?.name || '—' }}</div>
+              <div class="font-semibold text-slate-700">Location Name</div>
+              
             </div>
             <div>
-              <div class="font-medium text-slate-700">Access Schedule</div>
-              <div class="mt-0.5 text-slate-600">Restricted Hours</div>
+              <div class="text-slate-600">{{ location?.name || '—' }}</div>
+              
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">Access Schedule</div>
+            </div>
+            <div>
+              <div class=" text-slate-600">Restricted Hours</div>
               <div class="text-slate-500">Mon - Fri, 09:00 - 17:00</div>
+              
             </div>
             <div>
-              <div class="font-medium text-slate-700">Location Code</div>
-              <div class="mt-0.5 text-blue-500">{{ location?.code || '—' }}</div>
+              <div class="font-semibold text-slate-700">Location Code</div>
             </div>
             <div>
-              <div class="font-medium text-slate-700">Access Instructions</div>
-              <div class="mt-0.5 text-slate-600">Access is restricted to authorized personnel only.</div>
+              <div class=" text-slate-600">{{ location?.code || '—' }}</div>
+
             </div>
             <div>
-              <div class="font-medium text-slate-700">Site / Building</div>
-              <div class="mt-0.5 text-slate-600">{{ location?.siteName || '—' }}</div>
+              <div class="font-semibold text-slate-700">Access Instructions</div>
             </div>
             <div>
-              <div class="font-medium text-slate-700">Responsible Person</div>
-              <div class="mt-0.5 text-blue-500">{{ location?.responsiblePerson || '—' }}</div>
+              <div class=" text-slate-600">Access is restricted to authorized personnel only.</div>
+              
             </div>
             <div>
-              <div class="font-medium text-slate-700">Location Type</div>
-              <div class="mt-0.5 text-slate-600">{{ location?.locationType || '—' }}</div>
+              <div class="font-semibold text-slate-700">Site / Building</div>
             </div>
             <div>
-              <div class="font-medium text-slate-700">Contact Number</div>
-              <div class="mt-0.5 flex items-center gap-1.5 text-slate-600">
-                <span>🇬🇧</span> {{ location?.contactNumber || '—' }}
+              <div class="text-slate-600">{{ location?.siteName || '—' }}</div>
+
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">Responsible Person</div>
+            </div>
+            <div>
+              <div class=" text-slate-600">{{ location?.responsiblePerson || '—' }}</div>
+              
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">Location Type</div>
+            </div>
+            <div>
+              <div class=" text-slate-600">{{ location?.locationType || '—' }}</div>
+
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">Contact Number</div>
+              
+            </div>
+            <div>
+              <div class=" flex items-center gap-1.5 text-slate-600">
+                <!-- <span>🇬🇧</span>  -->
+                {{ location?.contactNumber || '—' }}
               </div>
+              
             </div>
             <div>
-              <div class="font-medium text-slate-700">Address</div>
-              <div class="mt-0.5 text-slate-600">{{ location?.address || '—' }}</div>
+              <div class="font-semibold text-slate-700">Address</div>
+              
             </div>
             <div>
-              <div class="font-medium text-slate-700">Security Level</div>
-              <div class="mt-0.5 text-slate-600">High</div>
+              <div class=" text-slate-600">{{ location?.address || '—' }}</div>
+                            
             </div>
             <div>
-              <div class="font-medium text-slate-700">City</div>
-              <div class="mt-0.5 text-slate-600">{{ location?.city || '—' }}</div>
+              <div class="font-semibold text-slate-700">Security Level</div>
             </div>
             <div>
-              <div class="font-medium text-slate-700">CCTV Monitored</div>
-              <div class="mt-1">
+              <div class=" text-slate-600">High</div>
+
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">City</div>
+            </div>
+            <div>
+              <div class=" text-slate-600">{{ location?.city || '—' }}</div>
+
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">CCTV Monitored</div>
+              
+            </div>
+            <div>
+              <div class="">
                 <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location?.cctvMonitored ? 'Yes' : 'No' }}</span>
               </div>
+              
             </div>
             <div>
-              <div class="font-medium text-slate-700">Country</div>
-              <div class="mt-0.5 text-slate-600">{{ location?.country || '—' }}</div>
+              <div class="font-semibold text-slate-700">Country</div>
+            </div>
+            <div>
+              <div class=" text-slate-600">{{ location?.country || '—' }}</div>
+
             </div>
           </div>
         </div>
 
         <!-- Deactivation Information -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div class="rounded-lg border border-slate-100 bg-white p-4 sm:p-6">
           <h3 class="mb-4 text-sm font-bold text-slate-900">Deactivation Information</h3>
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700">
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">
                 Reason for Deactivation <span class="text-rose-500">*</span>
               </label>
               <select class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
@@ -153,7 +197,7 @@
               </select>
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-slate-700">Additional Notes (Optional)</label>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Additional Notes <span class="font-medium text-slate-400">(Optional)</span></label>
               <textarea
                 rows="2"
                 placeholder="Enter any additional notes"
@@ -162,8 +206,11 @@
             </div>
           </div>
 
-          <div class="mt-5 flex items-start gap-2.5 rounded-lg border border-blue-100 bg-blue-50/60 p-3.5">
-            <i data-lucide="info" class="mt-0.5 h-4 w-4 shrink-0 text-blue-500"></i>
+          <div class="mt-5 flex items-center gap-2.5 rounded-lg border border-blue-100 bg-blue-50/60 p-3.5">
+            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="14" height="14"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="rgb(255, 255, 255)" d="M272 112C272 85.5 293.5 64 320 64C346.5 64 368 85.5 368 112C368 138.5 346.5 160 320 160C293.5 160 272 138.5 272 112zM224 256C224 238.3 238.3 224 256 224L320 224C337.7 224 352 238.3 352 256L352 512L384 512C401.7 512 416 526.3 416 544C416 561.7 401.7 576 384 576L256 576C238.3 576 224 561.7 224 544C224 526.3 238.3 512 256 512L288 512L288 288L256 288C238.3 288 224 273.7 224 256z"/></svg>
+              
+            </div> 
             <p class="text-sm text-slate-600">
               You can reactivate this storage location at any time from the
               <a href="#" class="font-medium text-blue-600 hover:underline">Storage Locations list</a>.
@@ -184,7 +231,7 @@
               [disabled]="deactivating"
               class="flex items-center justify-center gap-2 rounded-lg bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-rose-700 disabled:opacity-50"
             >
-              <i data-lucide="ban" class="h-4 w-4"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
               {{ deactivating ? 'Deactivating...' : 'Deactivate Storage Location' }}
             </button>
           </div>
@@ -192,65 +239,67 @@
       </div>
 
       <!-- Sidebar -->
-      <div class="space-y-4 lg:space-y-6">
+      <div class="space-y-5 ">
 
         <!-- About -->
-        <div class="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
+        <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
           <div class="flex items-center gap-2">
             <div class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600">
-              <i data-lucide="info" class="h-3.5 w-3.5 text-white"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="14" height="14"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="rgb(255, 255, 255)" d="M272 112C272 85.5 293.5 64 320 64C346.5 64 368 85.5 368 112C368 138.5 346.5 160 320 160C293.5 160 272 138.5 272 112zM224 256C224 238.3 238.3 224 256 224L320 224C337.7 224 352 238.3 352 256L352 512L384 512C401.7 512 416 526.3 416 544C416 561.7 401.7 576 384 576L256 576C238.3 576 224 561.7 224 544C224 526.3 238.3 512 256 512L288 512L288 288L256 288C238.3 288 224 273.7 224 256z"/></svg>
+              
             </div>
             <h3 class="text-sm font-bold text-slate-900">About Storage Locations</h3>
           </div>
-          <p class="mt-3 text-sm text-slate-500">
+          <p class="mt-3 text-sm text-slate-600">
             Storage locations are physical places where key cabinets are installed. You can add multiple cabinets and hooks/slots inside each location.
           </p>
           <p class="mt-3 text-sm font-semibold text-slate-700">Examples:</p>
-          <ul class="mt-2 space-y-1.5 text-sm text-slate-500">
+          <ul class="mt-2 space-y-1.5 text-sm text-slate-600">
             <li class="flex items-start gap-2">
-              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-400"></span>Head Office Safe Room
+              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Head Office Safe Room
             </li>
             <li class="flex items-start gap-2">
-              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-400"></span>Security Control Room
+              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Security Control Room
             </li>
             <li class="flex items-start gap-2">
-              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-400"></span>Manchester Branch Store
+              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Manchester Branch Store
             </li>
             <li class="flex items-start gap-2">
-              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-400"></span>Mobile Key Van
+              <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Mobile Key Van
             </li>
           </ul>
         </div>
 
         <!-- What Happens Next -->
-        <div class="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-5">
+        <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
           <div class="flex items-center gap-2">
-            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500">
-              <i data-lucide="check" class="h-3.5 w-3.5 text-white"></i>
+            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-[#15874D]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-white"><path d="M20 6 9 17l-5-5"/></svg>
+              
             </div>
             <h3 class="text-sm font-bold text-slate-900">What Happens Next?</h3>
           </div>
-          <p class="mt-3 text-sm text-slate-500">After deactivation:</p>
+          <p class="mt-3 text-sm text-slate-600">After deactivation:</p>
           <ul class="mt-3 space-y-2.5 text-sm text-slate-600">
             <li class="flex items-start gap-2.5">
-              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">1</span>
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#15874D] text-xs font-semibold text-white">1</span>
               This location will be marked as inactive.
             </li>
             <li class="flex items-start gap-2.5">
-              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">2</span>
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#15874D] text-xs font-semibold text-white">2</span>
               New keys cannot be assigned or moved to this location.
             </li>
             <li class="flex items-start gap-2.5">
-              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">3</span>
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#15874D] text-xs font-semibold text-white">3</span>
               Existing keys remain in place but cannot be managed here.
             </li>
           </ul>
         </div>
 
         <!-- Important Notes -->
-        <div class="rounded-2xl border border-amber-100 bg-amber-50/60 p-5">
+        <div class="rounded-2xl border border-amber-100 bg-[#FFF9EC] p-5">
           <div class="flex items-center gap-2">
-            <i data-lucide="triangle-alert" class="h-5 w-5 text-amber-500"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
             <h3 class="text-sm font-bold text-slate-900">Important Notes</h3>
           </div>
           <ul class="mt-3 space-y-2 text-sm text-slate-600">
