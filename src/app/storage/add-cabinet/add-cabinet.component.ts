@@ -8,7 +8,6 @@ import { DatePickerComponent } from '../../shared/components/form/date-picker/da
 
 interface StorageLocation {
   id: string;
-  code: string;
   name: string;
 }
 
