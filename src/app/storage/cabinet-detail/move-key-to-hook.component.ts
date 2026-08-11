@@ -85,7 +85,8 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
   private loadCabinetDetails(): void {
     const orgId = this.getOrgId();
     if (!orgId || !this.cabinetId) {
-      this.cabinet = this.getFallbackCabinet();
+      this.loading = false;
+      this.createIcons();
       return;
     }
     this.keyVault.getCabinet(orgId, this.cabinetId).subscribe({
@@ -97,7 +98,7 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
           name: item.name || item.cabinetName || '',
           type: item.cabinetType || item.type || '',
           status: item.status || 'Active',
-          totalHooks: item.numberOfHooks || item.totalHooks || 20,
+          totalHooks: item.numberOfHooks || item.totalHooks || 0,
           usedHooks: item.usedHooks || 0,
           availableHooks: item.availableHooks || 0,
           storageLocation: item.storageLocationName || item.locationName || '',
@@ -106,7 +107,7 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
         this.createIcons();
       },
       error: () => {
-        this.cabinet = this.getFallbackCabinet();
+        this.cabinet = null;
         this.createIcons();
       }
     });
@@ -115,7 +116,7 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
   private loadCurrentHook(): void {
     const orgId = this.getOrgId();
     if (!orgId || !this.cabinetId || !this.hookId) {
-      this.currentHook = this.getFallbackHook();
+      this.currentHook = null;
       this.loading = false;
       this.createIcons();
       return;
@@ -129,16 +130,16 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
           hookNo: hookNo,
           status: item.status || 'KEY_HOOKED',
           assignedKeyId: item.assignedKeyId || item.keyId || '',
-          assignedKeyName: item.assignedKeyName || item.keyName || 'KEY-0004',
-          keyType: item.keyType || item.type || 'Yale',
-          assignedAt: item.assignedAt || item.updatedAt || '2024-05-15T11:10:00',
-          assignedBy: item.assignedBy || item.updatedBy || 'Faiza Ahmed',
+          assignedKeyName: item.assignedKeyName || item.keyName || '',
+          keyType: item.keyType || item.type || '',
+          assignedAt: item.assignedAt || item.updatedAt || '',
+          assignedBy: item.assignedBy || item.updatedBy || '',
         };
         this.loading = false;
         this.createIcons();
       },
       error: () => {
-        this.currentHook = this.getFallbackHook();
+        this.currentHook = null;
         this.loading = false;
         this.createIcons();
       }
@@ -148,7 +149,7 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
   private loadAvailableHooks(): void {
     const orgId = this.getOrgId();
     if (!orgId || !this.cabinetId) {
-      this.availableHooks = this.getFallbackAvailableHooks();
+      this.availableHooks = [];
       this.createIcons();
       return;
     }
@@ -162,13 +163,10 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
             hookId: h.id || String(hookNo),
           };
         });
-        if (this.availableHooks.length === 0) {
-          this.availableHooks = this.getFallbackAvailableHooks();
-        }
         this.createIcons();
       },
       error: () => {
-        this.availableHooks = this.getFallbackAvailableHooks();
+        this.availableHooks = [];
         this.createIcons();
       }
     });
@@ -177,68 +175,26 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
   private loadHookStats(): void {
     const orgId = this.getOrgId();
     if (!orgId || !this.cabinetId) {
-      this.setFallbackStats();
+      this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
       return;
     }
     this.keyVault.getHookStats(orgId, this.cabinetId).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         this.stats = {
-          totalHooks: data.totalHooks || data.hooks || 20,
-          keyHooked: data.keyHooked || data.keysOnHooks || 10,
-          keyInUse: data.keyInUse || data.inUse || 4,
-          available: data.available || data.availableHooks || 5,
-          damaged: data.damaged || data.hookDamaged || 1,
+          totalHooks: data.totalHooks || data.hooks || 0,
+          keyHooked: data.keyHooked || data.keysOnHooks || 0,
+          keyInUse: data.keyInUse || data.inUse || 0,
+          available: data.available || data.availableHooks || 0,
+          damaged: data.damaged || data.hookDamaged || 0,
         };
         this.createIcons();
       },
       error: () => {
-        this.setFallbackStats();
+        this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
         this.createIcons();
       }
     });
-  }
-
-  private setFallbackStats(): void {
-    this.stats = { totalHooks: 20, keyHooked: 10, keyInUse: 4, available: 5, damaged: 1 };
-  }
-
-  private getFallbackCabinet(): any {
-    return {
-      id: this.cabinetId,
-      code: 'CAB-0001',
-      name: 'Cabinet A - Main Floor',
-      type: 'Standard',
-      status: 'Active',
-      totalHooks: 20,
-      usedHooks: 14,
-      availableHooks: 6,
-      storageLocation: 'Head Office Vault (LOC-0001)',
-      floor: 'Main Floor',
-    };
-  }
-
-  private getFallbackHook(): HookDetail {
-    return {
-      id: this.hookId,
-      hookNo: 8,
-      status: 'KEY_HOOKED',
-      assignedKeyId: '',
-      assignedKeyName: 'KEY-0004',
-      keyType: 'Yale',
-      assignedAt: '2024-05-15T11:10:00',
-      assignedBy: 'Faiza Ahmed',
-    };
-  }
-
-  private getFallbackAvailableHooks(): AvailableHook[] {
-    return [
-      { no: '03', status: 'Available for Key', hookId: '3' },
-      { no: '06', status: 'Available for Key', hookId: '6' },
-      { no: '09', status: 'Available for Key', hookId: '9' },
-      { no: '12', status: 'Available for Key', hookId: '12' },
-      { no: '15', status: 'Available for Key', hookId: '15' },
-    ];
   }
 
   get currentHookNoDisplay(): string {
