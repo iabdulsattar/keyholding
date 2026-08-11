@@ -8,28 +8,30 @@
 </div>
 
 <ng-template #loaded>
-<div class="min-h-screen w-full bg-[#f6f7f7] font-sans text-slate-900">
+<div class="min-h-screen w-full font-sans text-slate-900">
   <div class="">
 
-    <!-- Breadcrumb -->
-    <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-4">
-      <a href="#" class="hover:underline">Storage Management</a>
-      <span class="text-slate-400">›</span>
-      <a [routerLink]="['/storage/locations/cabinets']" class="hover:underline">Cabinets</a>
-      <span class="text-slate-400">›</span>
-      <span class="text-slate-500">Add Cabinet</span>
-    </div>
-
+    
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 border-b border-slate-200 pb-5">
       <div>
+        <!-- Breadcrumb -->
+        <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-500 mb-3">
+          <a href="#" class="hover:underline">Storage Management</a>
+          <span class="text-slate-500">›</span>
+          <a [routerLink]="['/storage/locations/cabinets']" class="hover:underline">Cabinets</a>
+          <span class="text-slate-500">›</span>
+          <span class="text-slate-500">Add Cabinet</span>
+        </div>
+
         <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Add Cabinet</h1>
-        <p class="text-sm text-slate-400 mt-0.5">Create a new cabinet to organize and store keys securely.</p>
+        <p class="text-sm text-slate-500 mt-0.5">Create a new cabinet to organize and store keys securely.</p>
       </div>
       <div class="flex items-center gap-3 shrink-0">
        
-        <a [routerLink]="['/storage/locations/cabinets']" class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-blue-50 whitespace-nowrap">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        <a [routerLink]="['/storage/locations/cabinets']" class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 border border-slate-200 bg-white rounded-lg px-3.5 py-3 hover:bg-blue-50 whitespace-nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          
           Back to List
         </a>
       </div>
@@ -40,73 +42,73 @@
 
       <!-- LEFT / MAIN FORM -->
       <div class="lg:col-span-2 flex flex-col gap-5">
-        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
+        <div class="bg-white border border-slate-100 rounded-lg p-5 sm:p-6">
 
           <!-- Cabinet Information -->
           <h2 class="text-sm font-bold text-slate-800 mb-5">Cabinet Information</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 border-b border-slate-100 pb-5">
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Storage Location <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Storage Location <span class="text-rose-500">*</span></label>
               <app-rich-select [options]="storageLocationOptions" [(value)]="storageLocationId" placeholder="Select storage location" class="w-full" [class.border-rose-400]="storageLocationIdInvalid"></app-rich-select>
               <p class="mt-1 text-xs text-rose-500" *ngIf="storageLocationIdInvalid">Storage location is required.</p>
-              <p class="mt-1 text-xs text-slate-400" *ngIf="!storageLocationIdInvalid">Select the storage location where this cabinet will be installed.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!storageLocationIdInvalid">Select the storage location where this cabinet will be installed.</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Cabinet Code <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cabinet Code <span class="text-rose-500">*</span></label>
               <div class="relative">
                 <input type="text" placeholder="Auto-generated" disabled class="w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-400 placeholder:text-slate-400 pr-9">
                 <svg class="w-4 h-4 text-slate-300 absolute right-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path stroke-linecap="round" d="M8 11V7a4 4 0 118 0v4"/></svg>
               </div>
-              <p class="mt-1 text-xs text-slate-400">A unique code will be generated automatically after saving.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium">A unique code will be generated automatically after saving.</p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Cabinet Name <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cabinet Name <span class="text-rose-500">*</span></label>
               <input type="text" [(ngModel)]="cabinetName" placeholder="Enter cabinet name" required
                 class="w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!cabinetNameInvalid" [class.border-rose-400]="cabinetNameInvalid">
               <p class="mt-1 text-xs text-rose-500" *ngIf="cabinetNameInvalid">Cabinet name is required.</p>
-              <p class="mt-1 text-xs text-slate-400" *ngIf="!cabinetNameInvalid">A unique and easy to identify name for this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!cabinetNameInvalid">A unique and easy to identify name for this cabinet.</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Cabinet Type <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cabinet Type <span class="text-rose-500">*</span></label>
               <app-rich-select [options]="cabinetTypeOptions" [(value)]="cabinetType" placeholder="Select cabinet type" class="w-full" [class.border-rose-400]="cabinetTypeInvalid"></app-rich-select>
               <p class="mt-1 text-xs text-rose-500" *ngIf="cabinetTypeInvalid">Cabinet type is required.</p>
-              <p class="mt-1 text-xs text-slate-400" *ngIf="!cabinetTypeInvalid">e.g., Standard, Fire Rated, High Security</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!cabinetTypeInvalid">e.g., Standard, Fire Rated, High Security</p>
             </div>
 
             <div class="sm:col-span-2">
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Description (Optional)</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Description <span class="font-medium text-slate-500">(Optional)</span></label>
               <textarea [(ngModel)]="description" rows="3" placeholder="Enter description" class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
-              <p class="mt-1 text-xs text-slate-400">Additional information about this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium">Additional information about this cabinet.</p>
             </div>
           </div>
 
           <!-- Cabinet Details -->
-          <h2 class="text-sm font-bold text-slate-800 mt-8 mb-5">Cabinet Details</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+          <h2 class="text-sm font-bold text-slate-800 mt-5 mb-5">Cabinet Details</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 border-b border-slate-100 pb-5">
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Number of Hooks (Slots) <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Number of Hooks (Slots) <span class="text-rose-500">*</span></label>
               <input type="number" [(ngModel)]="numberOfHooks" min="1" max="200" placeholder="Enter number of hooks" required
                 class="w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!numberOfHooksInvalid" [class.border-rose-400]="numberOfHooksInvalid">
               <p class="mt-1 text-xs text-rose-500" *ngIf="numberOfHooksInvalid">Number of hooks must be at least 1.</p>
-              <p class="mt-1 text-xs text-slate-400" *ngIf="!numberOfHooksInvalid">Total number of hooks/slots available in this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!numberOfHooksInvalid">Total number of hooks/slots available in this cabinet.</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Security Level <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Security Level <span class="text-rose-500">*</span></label>
               <app-rich-select [options]="securityLevelOptions" [(value)]="securityLevel" placeholder="Select security level" class="w-full" [class.border-rose-400]="securityLevelInvalid"></app-rich-select>
               <p class="mt-1 text-xs text-rose-500" *ngIf="securityLevelInvalid">Security level is required.</p>
-              <p class="mt-1 text-xs text-slate-400" *ngIf="!securityLevelInvalid">Define the security level of this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!securityLevelInvalid">Define the security level of this cabinet.</p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Fire Rating (Optional)</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Fire Rating <span class="font-medium text-slate-500">(Optional)</span></label>
               <app-rich-select [options]="fireRatingOptions" [(value)]="fireRating" placeholder="Select fire rating" class="w-full"></app-rich-select>
-              <p class="mt-1 text-xs text-slate-400">Applicable fire rating for this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium">Applicable fire rating for this cabinet.</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Installed On <span class="text-rose-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Installed On <span class="text-rose-500">*</span></label>
               <app-date-picker
                 id="installedOn"
                 [defaultDate]="installedOn"
@@ -114,30 +116,30 @@
                 (dateChange)="onInstalledOnChange($event)"
               ></app-date-picker>
               <p class="mt-1 text-xs text-rose-500" *ngIf="installedOnInvalid">Installation date is required.</p>
-              <p class="mt-1 text-xs text-slate-400" *ngIf="!installedOnInvalid">Date when this cabinet is installed.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!installedOnInvalid">Date when this cabinet is installed.</p>
             </div>
           </div>
 
           <!-- Additional Information -->
-          <h2 class="text-sm font-bold text-slate-800 mt-8 mb-5">Additional Information</h2>
+          <h2 class="text-sm font-bold text-slate-800 mt-5 mb-5">Additional Information</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Installed By</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Installed By</label>
               <input type="text" [(ngModel)]="responsiblePerson" placeholder="Enter installer name" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-              <p class="mt-1 text-xs text-slate-400">Person who installed this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium">Person who installed this cabinet.</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Responsible Person</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Responsible Person</label>
               <div class="relative">
                 <input type="text" [(ngModel)]="responsiblePerson" placeholder="Enter responsible person" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               </div>
-              <p class="mt-1 text-xs text-slate-400">Person responsible for this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium">Person responsible for this cabinet.</p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Notes (Optional)</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notes <span class="font-medium text-slate-500">(Optional)</span></label>
               <input type="text" [(ngModel)]="notes" placeholder="Enter any additional notes" class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
-              <p class="mt-1 text-xs text-slate-400">Any other relevant notes about this cabinet.</p>
+              <p class="mt-1 text-xs text-slate-500 font-medium">Any other relevant notes about this cabinet.</p>
             </div>
             <div class="flex flex-col gap-4 sm:justify-center">
               <div class="flex items-center gap-3">
@@ -149,7 +151,7 @@
                 <div>
                   <p class="text-sm font-semibold text-slate-700">CCTV Monitored</p>
                 </div>
-                <p class="text-xs text-slate-400">Yes, this cabinet is under CCTV monitoring.</p>
+                <p class="text-xs text-slate-500 font-medium">Yes, this cabinet is under CCTV monitoring.</p>
               </div>
               <div class="flex items-center gap-3">
                 <label class="relative inline-block w-11 h-6 shrink-0">
@@ -160,7 +162,7 @@
                 <div>
                   <p class="text-sm font-semibold text-slate-700">Alarm System</p>
                 </div>
-                <p class="text-xs text-slate-400">Yes, this cabinet is connected to the alarm system.</p>
+                <p class="text-xs text-slate-500 font-medium">Yes, this cabinet is connected to the alarm system.</p>
               </div>
             </div>
           </div>
@@ -179,45 +181,54 @@
       <!-- RIGHT / SIDEBAR -->
       <div class="space-y-4 lg:space-y-6">
         <!-- About Cabinets -->
-        <div class="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
+        <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
           <div class="flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">i</span>
+            <!-- <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">i</span> -->
+            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="14" height="14"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="rgb(255, 255, 255)" d="M272 112C272 85.5 293.5 64 320 64C346.5 64 368 85.5 368 112C368 138.5 346.5 160 320 160C293.5 160 272 138.5 272 112zM224 256C224 238.3 238.3 224 256 224L320 224C337.7 224 352 238.3 352 256L352 512L384 512C401.7 512 416 526.3 416 544C416 561.7 401.7 576 384 576L256 576C238.3 576 224 561.7 224 544C224 526.3 238.3 512 256 512L288 512L288 288L256 288C238.3 288 224 273.7 224 256z"/></svg>
+              
+            </div>
+             
             <h2 class="text-sm font-bold text-slate-900">About Cabinets</h2>
           </div>
-          <p class="mt-3 text-sm text-slate-500">Cabinets are used to organize and securely store keys within a storage location. Each cabinet contains multiple hooks/slots for key storage.</p>
+          <p class="mt-3 text-sm text-slate-600">Cabinets are used to organize and securely store keys within a storage location. Each cabinet contains multiple hooks/slots for key storage.</p>
           <p class="mt-3 text-sm font-semibold text-slate-700">Examples:</p>
-          <ul class="mt-2 space-y-1.5 text-sm text-slate-500">
-            <li class="flex gap-2"><span class="text-slate-400">•</span>Standard Key Cabinet</li>
-            <li class="flex gap-2"><span class="text-slate-400">•</span>Fire Rated Cabinet</li>
-            <li class="flex gap-2"><span class="text-slate-400">•</span>High Security Cabinet</li>
-            <li class="flex gap-2"><span class="text-slate-400">•</span>Modular Cabinet</li>
+          <ul class="mt-2 space-y-1.5 text-sm text-slate-600">
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Standard Key Cabinet</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Fire Rated Cabinet</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>High Security Cabinet</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Modular Cabinet</li>
           </ul>
         </div>
 
         <!-- What's Next -->
-        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+        <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
           <div class="flex items-center gap-2">
-            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
-            <h2 class="text-sm font-bold text-slate-800">What's Next?</h2>
+            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-[#15874D]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-white"><path d="M20 6 9 17l-5-5"/></svg>
+              
+            </div>
+            
+            <h2 class="text-sm font-bold text-slate-600">What's Next?</h2>
           </div>
           <p class="mt-3 text-sm text-slate-500">After adding a cabinet, you can:</p>
           <ol class="mt-3 space-y-2.5 text-sm text-slate-600">
-            <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">1</span>Generate hooks/slots</li>
-            <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">2</span>Assign keys to hooks/slots</li>
-            <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">3</span>Manage access logs and audit trail</li>
+            <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-[#15874D] text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">1</span>Generate hooks/slots</li>
+            <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-[#15874D] text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">2</span>Assign keys to hooks/slots</li>
+            <li class="flex gap-2.5"><span class="w-4 h-4 rounded-full bg-[#15874D] text-white text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-semibold">3</span>Manage access logs and audit trail</li>
           </ol>
         </div>
 
         <!-- Important Notes -->
-        <div class="rounded-2xl border border-amber-200 bg-amber-50/60 p-5">
+        <div class="rounded-lg border border-amber-200 bg-[#FFF9EC] p-5">
           <div class="flex items-center gap-2">
-            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zM12 15.75h.007"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>            
             <h2 class="text-sm font-bold text-slate-800">Important Notes</h2>
           </div>
           <ul class="mt-3 space-y-2 text-sm text-slate-600">
-            <li class="flex gap-2"><span class="text-slate-400">•</span>Cabinet code is auto-generated and must be unique within the location.</li>
-            <li class="flex gap-2"><span class="text-slate-400">•</span>You can generate hooks/slots after creating the cabinet.</li>
-            <li class="flex gap-2"><span class="text-slate-400">•</span>Ensure the cabinet is properly secured and access is restricted.</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Cabinet code is auto-generated and must be unique within the location.</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>You can generate hooks/slots after creating the cabinet.</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Ensure the cabinet is properly secured and access is restricted.</li>
           </ul>
         </div>
       </div>
