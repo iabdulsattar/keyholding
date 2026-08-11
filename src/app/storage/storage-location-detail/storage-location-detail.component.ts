@@ -131,16 +131,25 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
   }
 
   getStatusClass(status: string): string {
-    if (status === 'Active' || status === 'ACTIVE') {
+    const s = (status || '').toUpperCase();
+    if (s === 'ACTIVE') {
       return 'bg-emerald-50 text-emerald-600';
     }
-    if (status === 'Inactive' || status === 'INACTIVE') {
+    if (s === 'INACTIVE') {
       return 'bg-rose-50 text-rose-600';
     }
-    if (status === 'Under Maintenance' || status === 'MAINTENANCE') {
+    if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') {
       return 'bg-amber-50 text-amber-600';
     }
     return 'bg-slate-100 text-slate-600';
+  }
+
+  getStatusDotClass(status: string): string {
+    const s = (status || '').toUpperCase();
+    if (s === 'ACTIVE') return 'bg-emerald-500';
+    if (s === 'INACTIVE') return 'bg-rose-500';
+    if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') return 'bg-amber-500';
+    return 'bg-slate-400';
   }
 
   formatDate(value: string | null | undefined): string {

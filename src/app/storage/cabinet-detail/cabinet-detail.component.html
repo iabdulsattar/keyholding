@@ -1,5 +1,5 @@
 <div class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900" *ngIf="loading; else loaded">
-  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="">
     <div class="animate-pulse space-y-4">
       <div class="h-8 w-48 rounded bg-slate-200"></div>
       <div class="h-4 w-64 rounded bg-slate-200"></div>
@@ -10,7 +10,7 @@
 
 <ng-template #loaded>
 <div *ngIf="error && !cabinet" class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900">
-  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="">
     <div class="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
       <i data-lucide="alert-circle" class="h-6 w-6 text-rose-500 mx-auto mb-2"></i>
       <p class="text-rose-700">{{ error }}</p>

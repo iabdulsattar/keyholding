@@ -127,7 +127,9 @@ export class HookListComponent implements OnInit, AfterViewInit {
     this.error = '';
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId || !this.cabinetId) {
-      this.setFallbackData();
+      this.rows = [];
+      this.hooks = [];
+      this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
       this.loading = false;
       this.createIcons();
       return;
@@ -138,15 +140,12 @@ export class HookListComponent implements OnInit, AfterViewInit {
         this.allHooksRaw = hooks || [];
         this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
         this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
-        if (this.hooks.length === 0) {
-          this.hooks = Array.from({ length: this.stats.totalHooks || 20 }, (_, i) => ({
-            num: i + 1, used: false, damaged: false
-          }));
-        }
         this.loadHookStats();
       },
       error: () => {
-        this.setFallbackData();
+        this.rows = [];
+        this.hooks = [];
+        this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
         this.loading = false;
         this.createIcons();
       }
@@ -155,7 +154,12 @@ export class HookListComponent implements OnInit, AfterViewInit {
 
   private loadHookStats(): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
-    if (!orgId || !this.cabinetId) return;
+    if (!orgId || !this.cabinetId) {
+      this.computeStatsFromHooks();
+      this.loading = false;
+      this.createIcons();
+      return;
+    }
     this.keyVault.getHookStats(orgId, this.cabinetId).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
@@ -189,28 +193,6 @@ export class HookListComponent implements OnInit, AfterViewInit {
       available,
       damaged,
     };
-  }
-
-  private setFallbackData(): void {
-    this.stats = { totalHooks: 20, keyHooked: 10, keyInUse: 4, available: 5, damaged: 1 };
-    const fallbackRows: HookRow[] = [
-      { no: '01', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0001', type: 'Yale', updated: '15 May 2024, 11:20 AM', by: 'Faiza Ahmed', hookId: '1' },
-      { no: '02', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0002', type: 'Yale', updated: '15 May 2024, 10:58 AM', by: 'James Walker', hookId: '2' },
-      { no: '03', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:45 AM', by: 'System', hookId: '3' },
-      { no: '04', status: 'Key In Use', key: 'Mortice Key', keyId: 'KEY-0003', type: 'Mortice', updated: '15 May 2024, 10:30 AM', by: 'Sarah Johnson', hookId: '4' },
-      { no: '05', status: 'Key Hooked', key: 'Yale Key', keyId: 'KEY-0004', type: 'Yale', updated: '15 May 2024, 11:10 AM', by: 'Faiza Ahmed', hookId: '5' },
-      { no: '06', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:12 AM', by: 'System', hookId: '6' },
-      { no: '07', status: 'Key In Use', key: 'Yale Key', keyId: 'KEY-0005', type: 'Yale', updated: '15 May 2024, 10:05 AM', by: 'James Walker', hookId: '7' },
-      { no: '08', status: 'Key Hooked', key: 'Padlock Key', keyId: 'KEY-0006', type: 'Padlock', updated: '15 May 2024, 11:00 AM', by: 'Faiza Ahmed', hookId: '8' },
-      { no: '09', status: 'Available for Key', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 09:00 AM', by: 'System', hookId: '9' },
-      { no: '10', status: 'Hook Damaged', key: '-', keyId: '-', type: '-', updated: '15 May 2024, 08:45 AM', by: 'Maintenance', hookId: '10' },
-    ];
-    this.rows = fallbackRows;
-    this.hooks = Array.from({ length: 20 }, (_, i) => ({
-      num: i + 1,
-      used: [1, 2, 3, 4, 5, 7, 9, 11, 13, 14, 17, 18, 19, 20].includes(i + 1),
-      damaged: i + 1 === 10,
-    }));
   }
 
   private normalizeHookRow(h: any): HookRow {

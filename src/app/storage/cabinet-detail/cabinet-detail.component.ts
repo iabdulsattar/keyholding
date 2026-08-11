@@ -101,7 +101,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     this.error = '';
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
-      this.cabinet = this.getFallbackCabinet();
+      this.cabinet = null;
       this.loading = false;
       this.createIcons();
       return;
@@ -143,7 +143,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
         this.createIcons();
       },
       error: () => {
-        this.cabinet = this.getFallbackCabinet();
+        this.cabinet = null;
         this.loading = false;
         this.createIcons();
       }

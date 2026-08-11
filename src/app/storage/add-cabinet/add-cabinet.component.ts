@@ -76,6 +76,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   private loadStorageLocations(): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
+      this.storageLocations = [];
       this.loading = false;
       this.createIcons();
       return;
@@ -91,10 +92,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
         this.createIcons();
       },
       error: () => {
-        this.storageLocations = [
-          { id: '1', code: 'LOC-0001', name: 'Head Office Vault' },
-          { id: '2', code: 'LOC-0002', name: 'Manchester Branch' },
-        ];
+        this.storageLocations = [];
         this.loading = false;
         this.createIcons();
       }
