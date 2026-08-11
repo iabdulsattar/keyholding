@@ -90,19 +90,19 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 flex-1">
         <div class="text-center sm:text-left">
           <p class="text-[12px] text-slate-400">Total Cabinets</p>
-          <p class="mt-1 text-xl font-semibold text-slate-900">8</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ totalCabinets }}</p>
         </div>
         <div class="text-center sm:text-left">
           <p class="text-[12px] text-slate-400">Total Hooks</p>
-          <p class="mt-1 text-xl font-semibold text-slate-900">160</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ totalHooks }}</p>
         </div>
         <div class="text-center sm:text-left">
           <p class="text-[12px] text-slate-400">Used Hooks</p>
-          <p class="mt-1 text-xl font-semibold text-slate-900">96</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ usedHooks }}</p>
         </div>
         <div class="text-center sm:text-left">
           <p class="text-[12px] text-slate-400">Available Hooks</p>
-          <p class="mt-1 text-xl font-semibold text-slate-900">64</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ availHooks }}</p>
         </div>
       </div>
 
@@ -116,11 +116,11 @@
             <circle cx="18" cy="18" r="15.5" fill="none" stroke="#eef1f6" stroke-width="3.5"></circle>
             <circle cx="18" cy="18" r="15.5" fill="none" stroke="#2563eb" stroke-width="3.5"
                     stroke-linecap="round"
-                    stroke-dasharray="97.4"
-                    stroke-dashoffset="38.96"></circle>
+                    [attr.stroke-dasharray]="circumference"
+                    [attr.stroke-dashoffset]="utilizationDashoffset"></circle>
           </svg>
           <div class="absolute inset-0 flex items-center justify-center">
-            <span class="text-[13px] font-semibold text-slate-900">60%</span>
+            <span class="text-[13px] font-semibold text-slate-900">{{ utilization }}%</span>
           </div>
         </div>
         <p class="mt-1.5 text-[11px] text-slate-400 whitespace-nowrap">Utilization</p>
