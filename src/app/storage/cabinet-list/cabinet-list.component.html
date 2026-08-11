@@ -96,18 +96,18 @@
             class="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2.5 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600" />
         </div>
         <div class="w-full lg:w-56">
-          <p class="text-xs text-slate-400 mb-1 lg:hidden">Status</p>
+          <p class="text-xs text-black-400 mb-1 lg:hidden">Status</p>
           <app-rich-select [options]="statusFilterOptions" [(value)]="activeFilter" (valueChange)="onStatusFilterChange()" placeholder="All Statuses" class="w-full"></app-rich-select>
         </div>
         <div class="w-full lg:w-56">
-          <p class="text-xs text-slate-400 mb-1 lg:hidden">Cabinet Type</p>
+          <p class="text-xs text-black-400 mb-1 lg:hidden">Cabinet Type</p>
           <app-rich-select [options]="activeTypeFilterOptions" [(value)]="activeTypeFilter" (valueChange)="onTypeFilterChange()" placeholder="All Types" class="w-full"></app-rich-select>
         </div>
-        <button class="inline-flex items-center justify-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 whitespace-nowrap">
+        <button class="inline-flex items-center justify-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-black-600 hover:bg-slate-50 whitespace-nowrap">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 12h12M10 20h4"/></svg>
           Filters
         </button>
-        <button class="inline-flex items-center justify-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 whitespace-nowrap">
+        <button class="inline-flex items-center justify-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-medium text-black-600 hover:bg-slate-50 whitespace-nowrap">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
           Export
         </button>
@@ -119,7 +119,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-sm min-w-[900px]">
           <thead>
-            <tr class="bg-slate-50 text-slate-400 text-xs">
+            <tr class="bg-slate-50 text-black-400 text-xs">
               <th class="text-left font-semibold px-5 py-3 whitespace-nowrap">Cabinet Code</th>
               <th class="text-left font-semibold px-5 py-3 whitespace-nowrap">Cabinet Name</th>
               <th class="text-left font-semibold px-5 py-3 whitespace-nowrap">Cabinet Type</th>

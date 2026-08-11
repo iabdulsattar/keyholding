@@ -32,7 +32,6 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy {
     try {
       this.flatpickrInstance = flatpickr(this.dateInput.nativeElement, {
         mode: this.mode,
-        static: true,
         monthSelectorType: 'static',
         dateFormat: 'Y-m-d',
         defaultDate: this.defaultDate,

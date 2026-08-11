@@ -62,131 +62,132 @@
         </div>
       </div>
 
-      <!-- Identity card -->
-      <div class="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:mb-6 sm:p-6">
-        <div class="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
+      <!-- Header card -->
+      <div class="mb-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:mb-6 sm:p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr_1fr] gap-6 lg:gap-0">
 
-          <!-- Name block -->
-          <div class="flex items-start gap-4">
-            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-50">
-              <i data-lucide="building-2" class="h-6 w-6 text-blue-500"></i>
+          <!-- Identity -->
+          <div class="flex items-start gap-4 lg:pr-6">
+            <div class="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center shrink-0">
+              <i data-lucide="building-2" class="text-indigo-500 w-7 h-7"></i>
             </div>
-            <div>
-              <div class="flex flex-wrap items-center gap-2">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
                 <h2 class="text-lg font-bold text-slate-900">{{ location.name }}</h2>
-                <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium"
-                      [ngClass]="getStatusClass(location.status)">
-                  <span class="h-1.5 w-1.5 rounded-full"
-                        [ngClass]="getStatusDotClass(location.status)"></span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                      [ngClass]="location.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'">
+                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-rose-500'"></span>
                   {{ location.status }}
                 </span>
               </div>
-              <div class="mt-1 flex items-center gap-1.5 text-sm text-slate-400">
-                <span>{{ location.code }}</span>
-                <i data-lucide="copy" class="h-3.5 w-3.5 cursor-pointer hover:text-slate-600"
-                   (click)="copyCode()"></i>
+              <div class="flex items-center gap-1.5 text-sm text-slate-500 mt-1.5">
+                <span class="font-medium">{{ location.code }}</span>
+                <i data-lucide="copy" class="w-3.5 h-3.5 cursor-pointer hover:text-slate-700" (click)="copyCode()"></i>
               </div>
-              <div class="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
-                <i data-lucide="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-slate-400"></i>
+              <div class="flex items-start gap-1.5 text-sm text-slate-500 mt-2">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
                 <span>{{ location.address }}</span>
               </div>
             </div>
           </div>
 
-          <!-- Middle facts -->
-          <div class="grid grid-cols-2 gap-x-4 gap-y-3 border-slate-100 text-sm lg:border-l lg:pl-6">
-            <div>
-              <div class="text-slate-400">Site / Building</div>
-              <div class="mt-0.5 font-medium text-slate-800">{{ location.siteName }}</div>
+          <!-- Site info -->
+          <dl class="flex flex-col gap-y-3 text-sm lg:px-6 lg:border-l lg:border-slate-100">
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Site / Building</dt>
+              <dd class="font-semibold text-slate-800">{{ location.siteName }}</dd>
             </div>
-            <div></div>
-            <div>
-              <div class="text-slate-400">Location Type</div>
-              <div class="mt-0.5 font-medium text-slate-800">{{ location.locationType || '—' }}</div>
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Location Type</dt>
+              <dd class="font-semibold text-slate-800">{{ location.locationType || '—' }}</dd>
             </div>
-            <div></div>
-            <div>
-              <div class="text-slate-400">Responsible Person</div>
-              <div class="mt-0.5 font-medium text-blue-500">{{ location.responsiblePerson }}</div>
-              <div class="text-xs text-slate-400">{{ location.responsiblePersonTitle }}</div>
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Responsible Person</dt>
+              <dd class="font-semibold text-indigo-600">{{ location.responsiblePerson }}</dd>
+              <dd class="text-slate-400 text-xs w-full sm:ml-32">{{ location.responsiblePersonTitle }}</dd>
             </div>
-          </div>
+          </dl>
 
-          <!-- Right facts -->
-          <div class="grid grid-cols-2 gap-x-4 gap-y-3 border-slate-100 text-sm lg:border-l lg:pl-6">
-            <div>
-              <div class="text-slate-400">Contact Number</div>
-              <div class="mt-0.5 font-medium text-slate-800">{{ location.contactNumber }}</div>
+          <!-- Contact / meta -->
+          <dl class="flex flex-col gap-y-3 text-sm lg:pl-6 lg:border-l lg:border-slate-100">
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Contact Number</dt>
+              <dd class="font-semibold text-slate-800">{{ location.contactNumber }}</dd>
             </div>
-            <div></div>
-             <div>
-               <div class="text-slate-400">Status</div>
-               <div class="mt-0.5 inline-flex items-center gap-1.5 font-medium"
-                    [ngClass]="getStatusClass(location.status)">
-                 <span class="h-1.5 w-1.5 rounded-full"
-                       [ngClass]="getStatusDotClass(location.status)"></span>
-                 {{ location.status }}
-               </div>
-             </div>
-             <div></div>
-             <div>
-               <div class="text-slate-400">Created By</div>
-              <div class="mt-0.5 font-medium text-slate-800">{{ location.createdBy }}</div>
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Status</dt>
+              <dd class="font-semibold flex items-center gap-1"
+                  [ngClass]="location.isActive ? 'text-emerald-600' : 'text-rose-600'">
+                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-rose-500'"></span>
+                {{ location.status }}
+              </dd>
             </div>
-            <div>
-              <div class="text-slate-400">Created On</div>
-              <div class="mt-0.5 font-medium text-slate-800">{{ formatDate(location.createdDate) }}</div>
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created By</dt>
+              <dd class="font-semibold text-slate-800">{{ location.createdBy }}</dd>
             </div>
-          </div>
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created On</dt>
+              <dd class="font-semibold text-slate-800">{{ formatDate(location.createdDate) }}</dd>
+            </div>
+          </dl>
         </div>
       </div>
 
-      <!-- Stat strip -->
-      <div class="mb-4 grid grid-cols-2 gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:mb-6 sm:grid-cols-3 sm:gap-4 sm:p-5 lg:grid-cols-5">
-        <div class="flex items-start gap-2.5">
-          <div class="rounded-lg bg-blue-50 p-2">
-            <i data-lucide="archive" class="h-4 w-4 text-blue-500"></i>
+      <!-- Stat cards row -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm sm:p-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+
+          <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6 lg:[&:nth-child(5)]:border-r-0">
+            <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
+              <i data-lucide="archive" class="w-5 h-5 text-indigo-500"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm text-slate-500">Total Cabinets</div>
+              <div class="text-xl font-bold text-slate-900 mt-0.5">{{ location.totalCabinets }}</div>
+            </div>
           </div>
-          <div>
-            <div class="text-xs text-slate-400">Total Cabinets</div>
-            <div class="text-lg font-bold text-slate-900">{{ location.totalCabinets }}</div>
+
+          <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6">
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+              <i data-lucide="anchor" class="w-5 h-5 text-emerald-500"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm text-slate-500">Total Hooks / Slots</div>
+              <div class="text-xl font-bold text-slate-900 mt-0.5">{{ location.totalHooks }}</div>
+            </div>
           </div>
-        </div>
-        <div class="flex items-start gap-2.5">
-          <div class="rounded-lg bg-emerald-50 p-2">
-            <i data-lucide="anchor" class="h-4 w-4 text-emerald-500"></i>
+
+          <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6">
+            <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
+              <i data-lucide="key" class="w-5 h-5 text-purple-500"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm text-slate-500">Keys in Storage</div>
+              <div class="text-xl font-bold text-slate-900 mt-0.5">{{ location.keysInStorage }}</div>
+            </div>
           </div>
-          <div>
-            <div class="text-xs text-slate-400">Total Hooks / Slots</div>
-            <div class="text-lg font-bold text-slate-900">{{ location.totalHooks }}</div>
+
+          <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6">
+            <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
+              <i data-lucide="wrench" class="w-5 h-5 text-amber-500"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm text-slate-500">Available Hooks</div>
+              <div class="text-xl font-bold text-slate-900 mt-0.5">{{ location.availableHooks }}</div>
+            </div>
           </div>
-        </div>
-        <div class="flex items-start gap-2.5">
-          <div class="rounded-lg bg-violet-50 p-2">
-            <i data-lucide="key" class="h-4 w-4 text-violet-500"></i>
+
+          <div class="flex items-start gap-3 col-span-2 sm:col-span-1">
+            <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+              <i data-lucide="triangle-alert" class="w-5 h-5 text-red-500"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm text-slate-500">Out of Order Hooks</div>
+              <div class="text-xl font-bold text-slate-900 mt-0.5">{{ location.outOfOrderHooks }}</div>
+            </div>
           </div>
-          <div>
-            <div class="text-xs text-slate-400">Keys in Storage</div>
-            <div class="text-lg font-bold text-slate-900">{{ location.keysInStorage }}</div>
-          </div>
-        </div>
-        <div class="flex items-start gap-2.5">
-          <div class="rounded-lg bg-amber-50 p-2">
-            <i data-lucide="wrench" class="h-4 w-4 text-amber-500"></i>
-          </div>
-          <div>
-            <div class="text-xs text-slate-400">Available Hooks</div>
-            <div class="text-lg font-bold text-slate-900">{{ location.availableHooks }}</div>
-          </div>
-        </div>
-        <div class="flex items-start gap-2.5">
-          <div class="rounded-lg bg-rose-50 p-2">
-            <i data-lucide="triangle-alert" class="h-4 w-4 text-rose-500"></i>
-          </div>
-          <div>
-            <div class="text-xs text-slate-400">Out of Order Hooks</div>
-            <div class="text-lg font-bold text-slate-900">{{ location.outOfOrderHooks }}</div>
-          </div>
+
         </div>
       </div>
 

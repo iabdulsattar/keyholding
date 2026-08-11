@@ -1,12 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-deactivate-storage-location',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
   templateUrl: './deactivate-storage-location.component.html',
 })
 export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit {
@@ -15,6 +17,13 @@ export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit
   loading = true;
   error = '';
   deactivating = false;
+  deactivateReason = '';
+  deactivateReasonOptions: RichSelectOption[] = [
+    { value: 'Location closed', label: 'Location closed' },
+    { value: 'Under renovation', label: 'Under renovation' },
+    { value: 'Relocating', label: 'Relocating' },
+    { value: 'Other', label: 'Other' },
+  ];
 
   constructor(
     private route: ActivatedRoute,

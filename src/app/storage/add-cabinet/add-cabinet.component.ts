@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { KeyVaultService, Cabinet } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
 
 interface StorageLocation {
   id: string;
@@ -14,7 +15,7 @@ interface StorageLocation {
 @Component({
   selector: 'app-add-cabinet',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent, DatePickerComponent],
   templateUrl: './add-cabinet.component.html',
 })
 export class AddCabinetComponent implements OnInit, AfterViewInit {
@@ -57,7 +58,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   ];
 
   get storageLocationOptions(): RichSelectOption[] {
-    return [{ value: '', label: 'Select storage location' }, ...this.storageLocations.map(loc => ({ value: loc.id, label: `${loc.name} (${loc.code})` }))];
+    return [{ value: '', label: 'Select storage location' }, ...this.storageLocations.map(loc => ({ value: loc.id, label: loc.name }))];
   }
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
@@ -87,11 +88,10 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       this.createIcons();
       return;
     }
-    this.keyVault.listCatalogStorageLocations(orgId, false).subscribe({
+    this.keyVault.listStorageLocations(orgId).subscribe({
       next: (locations: any[]) => {
         this.storageLocations = locations.map(loc => ({
-          id: loc.id || loc.code || '',
-          code: loc.code || '',
+          id: loc.id || '',
           name: loc.name || loc.locationName || '',
         }));
         this.loading = false;
@@ -107,6 +107,10 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
 
   onCancel(): void {
     this.router.navigate(['/storage/locations/cabinets']);
+  }
+
+  onInstalledOnChange(event: any): void {
+    this.installedOn = event?.dateStr || '';
   }
 
   get storageLocationIdInvalid(): boolean {
