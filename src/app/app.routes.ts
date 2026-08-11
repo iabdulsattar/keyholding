@@ -156,6 +156,11 @@ export const routes: Routes = [
             title: 'Add Cabinet | KeyVault Pro'
           },
           {
+            path: 'storage/locations/cabinets/edit/:id',
+            loadComponent: () => import('./storage/add-cabinet/add-cabinet.component').then(m => m.AddCabinetComponent),
+            title: 'Edit Cabinet | KeyVault Pro'
+          },
+          {
             path: 'storage/locations/cabinets/view/:id',
             loadComponent: () => import('./storage/cabinet-detail/cabinet-detail.component').then(m => m.CabinetDetailComponent),
             title: 'Cabinet Detail | KeyVault Pro'

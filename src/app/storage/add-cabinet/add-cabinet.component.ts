@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { KeyVaultService, Cabinet } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
@@ -35,6 +35,10 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   installedOn = '';
 
   submitted = false;
+  editMode = false;
+  cabinetId = '';
+  originalTotalHooks = 0;
+  saving = false;
 
   cabinetTypeOptions: RichSelectOption[] = [
     { value: '', label: 'Select cabinet type' },
@@ -60,10 +64,20 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     return [{ value: '', label: 'Select storage location' }, ...this.storageLocations.map(loc => ({ value: loc.id, label: loc.name }))];
   }
 
-  constructor(private keyVault: KeyVaultService, private router: Router) {}
+  get numberOfHooksMin(): number {
+    return this.editMode ? this.originalTotalHooks : 1;
+  }
+
+  constructor(private keyVault: KeyVaultService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadStorageLocations();
+    this.cabinetId = this.route.snapshot.paramMap.get('id') || this.route.snapshot.queryParamMap.get('editId') || '';
+    this.editMode = !!this.cabinetId;
+    if (this.editMode) {
+      this.loadCabinet();
+    } else {
+      this.loadStorageLocations();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -77,6 +91,40 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
         icons.createIcons();
       }
     }, 0);
+  }
+
+  private loadCabinet(): void {
+    this.loading = true;
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !this.cabinetId) {
+      this.loading = false;
+      this.createIcons();
+      return;
+    }
+    this.keyVault.getCabinet(orgId, this.cabinetId).subscribe({
+      next: (res: any) => {
+        const item = res?.data ?? res ?? {};
+        this.storageLocationId = item.storageLocationId || item.storageLocation?.id || '';
+        this.cabinetName = item.name || item.cabinetName || '';
+        this.cabinetType = item.cabinetType || item.type || '';
+        this.securityLevel = item.securityLevel || '';
+        this.description = item.description || '';
+        this.numberOfHooks = item.numberOfHooks || item.totalHooks || 20;
+        this.originalTotalHooks = this.numberOfHooks;
+        this.fireRating = item.fireRating || '';
+        this.cctvMonitored = item.cctvMonitored ?? true;
+        this.alarmSystem = item.alarmSystem ?? true;
+        this.responsiblePerson = item.responsiblePerson || item.installedBy || '';
+        this.notes = item.notes || '';
+        this.installedOn = item.installedOn || '';
+        this.loading = false;
+        this.createIcons();
+      },
+      error: () => {
+        this.loading = false;
+        this.createIcons();
+      }
+    });
   }
 
   private loadStorageLocations(): void {
@@ -125,7 +173,10 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   }
 
   get numberOfHooksInvalid(): boolean {
-    return this.submitted && (!this.numberOfHooks || this.numberOfHooks < 1);
+    if (this.submitted && (!this.numberOfHooks || this.numberOfHooks < this.numberOfHooksMin)) {
+      return true;
+    }
+    return false;
   }
 
   get securityLevelInvalid(): boolean {
@@ -137,7 +188,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   }
 
   get formInvalid(): boolean {
-    return !this.storageLocationId || !this.cabinetName.trim() || !this.cabinetType || !this.numberOfHooks || this.numberOfHooks < 1 || !this.securityLevel || !this.installedOn.trim();
+    return !this.storageLocationId || !this.cabinetName.trim() || !this.cabinetType || !this.numberOfHooks || this.numberOfHooks < this.numberOfHooksMin || !this.securityLevel || !this.installedOn.trim();
   }
 
   onSaveCabinet(): void {
@@ -162,12 +213,34 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       installedOn: this.installedOn,
     };
 
-    this.keyVault.createCabinet(orgId, cabinet).subscribe({
-      next: () => {
-        this.router.navigate(['/storage/locations/cabinets']);
+    this.saving = true;
+    const request = this.editMode
+      ? this.keyVault.updateCabinet(orgId, this.cabinetId, cabinet)
+      : this.keyVault.createCabinet(orgId, cabinet);
+
+    request.subscribe({
+      next: (res: any) => {
+        const hooksChanged = !this.editMode || this.numberOfHooks !== this.originalTotalHooks;
+        if (this.numberOfHooks > 0 && hooksChanged) {
+          const newCabinetId = this.editMode ? this.cabinetId : (res?.data?.id || res?.id || '');
+          if (newCabinetId) {
+            this.keyVault.autoGenerateHooks(orgId, newCabinetId, this.numberOfHooks).subscribe({
+              next: () => {
+                this.router.navigate(['/storage/locations/cabinets']);
+              },
+              error: () => {
+                this.router.navigate(['/storage/locations/cabinets']);
+              }
+            });
+          } else {
+            this.router.navigate(['/storage/locations/cabinets']);
+          }
+        } else {
+          this.router.navigate(['/storage/locations/cabinets']);
+        }
       },
       error: () => {
-        this.router.navigate(['/storage/locations/cabinets']);
+        this.saving = false;
       }
     });
   }
