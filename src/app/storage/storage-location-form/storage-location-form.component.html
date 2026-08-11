@@ -57,10 +57,12 @@
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Location Name <span class="text-rose-500">*</span> </label>
-              <input type="text" placeholder="Enter storage location name"
-                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              <input type="text" placeholder="Enter storage location name" required
+                class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                [class.border-slate-200]="!locationNameInvalid" [class.border-rose-400]="locationNameInvalid"
                 [(ngModel)]="locationName" name="locationName" />
-              <p class="mt-1.5 text-xs text-slate-500 font-medium">A unique and easy to identify name for this location.</p>
+              <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="locationNameInvalid">Location name is required.</p>
+              <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!locationNameInvalid">A unique and easy to identify name for this location.</p>
             </div>
             <div>
               <label class="mb-1.5 flex items-center gap-1 text-sm font-semibold text-slate-700">
@@ -80,23 +82,27 @@
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Site / Building <span class="text-rose-500">*</span> </label>
-              <app-rich-select [options]="siteBuildingOptions" [(value)]="siteId" placeholder="Select site or building (if applicable)" class="w-full"></app-rich-select>
-              <p class="mt-1.5 text-xs text-slate-500 font-medium">Select the site or building this storage location belongs to.</p>
+              <app-rich-select [options]="siteBuildingOptions" [(value)]="siteId" placeholder="Select site or building (if applicable)" class="w-full" [class.border-rose-400]="siteIdInvalid"></app-rich-select>
+              <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="siteIdInvalid">Site or building is required.</p>
+              <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!siteIdInvalid">Select the site or building this storage location belongs to.</p>
             </div>
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Location Type <span class="text-rose-500">*</span> </label>
-              <app-rich-select [options]="locationTypeOptions" [(value)]="locationType" placeholder="Select location type" class="w-full"></app-rich-select>
-              <p class="mt-1.5 text-xs text-slate-500 font-medium">e.g., Safe Room, Store Room, Mobile Unit, Branch Office</p>
+              <app-rich-select [options]="locationTypeOptions" [(value)]="locationType" placeholder="Select location type" class="w-full" [class.border-rose-400]="locationTypeInvalid"></app-rich-select>
+              <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="locationTypeInvalid">Location type is required.</p>
+              <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!locationTypeInvalid">e.g., Safe Room, Store Room, Mobile Unit, Branch Office</p>
             </div>
           </div>
 
           <!-- Address -->
           <div>
             <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Address <span class="text-rose-500">*</span> </label>
-            <textarea rows="2" placeholder="Enter complete address"
-              class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            <textarea rows="2" placeholder="Enter complete address" required
+              class="w-full resize-none rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              [class.border-slate-200]="!addressInvalid" [class.border-rose-400]="addressInvalid"
               [(ngModel)]="address" name="address"></textarea>
-            <p class="mt-1.5 text-xs text-slate-500 font-medium">Full physical address of the storage location.</p>
+            <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="addressInvalid">Address is required.</p>
+            <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!addressInvalid">Full physical address of the storage location.</p>
           </div>
 
           <!-- City / Postcode / Country -->

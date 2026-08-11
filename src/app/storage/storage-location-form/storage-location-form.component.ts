@@ -38,6 +38,8 @@ export class StorageLocationFormComponent implements OnInit, AfterViewInit {
   description = '';
   status = 'ACTIVE';
 
+  submitted = false;
+
   locationTypeOptions: RichSelectOption[] = [
     { value: '', label: 'Select location type' },
     { value: 'Safe Room', label: 'Safe Room' },
@@ -154,7 +156,45 @@ export class StorageLocationFormComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/storage/locations']);
   }
 
+  get locationNameInvalid(): boolean {
+    return this.submitted && !this.locationName.trim();
+  }
+
+  get siteIdInvalid(): boolean {
+    return this.submitted && !this.siteId;
+  }
+
+  get locationTypeInvalid(): boolean {
+    return this.submitted && !this.locationType;
+  }
+
+  get addressInvalid(): boolean {
+    return this.submitted && !this.address.trim();
+  }
+
+  get cityInvalid(): boolean {
+    return this.submitted && !this.city.trim();
+  }
+
+  get postcodeInvalid(): boolean {
+    return this.submitted && !this.postcode.trim();
+  }
+
+  get countryInvalid(): boolean {
+    return this.submitted && !this.country;
+  }
+
+  get statusInvalid(): boolean {
+    return this.submitted && !this.status;
+  }
+
+  get formInvalid(): boolean {
+    return !this.locationName.trim() || !this.siteId || !this.locationType || !this.address.trim() || !this.city.trim() || !this.postcode.trim() || !this.country || !this.status;
+  }
+
   onSave(): void {
+    this.submitted = true;
+    if (this.formInvalid) return;
     if (this.saving) return;
     const orgId = this.getOrgId();
     if (!orgId || !this.locationName.trim()) return;
