@@ -8,27 +8,28 @@
 </div>
 
 <ng-template #loaded>
-<div class="min-h-screen w-full bg-[#f6f7f7] font-sans text-slate-900">
+<div class="min-h-screen w-full font-sans text-slate-900">
   <div class="">
 
-    <!-- Breadcrumb -->
-    <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-4">
-      <a href="#" class="hover:underline">Storage Management</a>
-      <span class="text-slate-400">›</span>
-      <a href="#" class="hover:underline">Storage Locations</a>
-      <span class="text-slate-400">›</span>
-      <span class="text-slate-500">Cabinets</span>
-    </div>
-
+    
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
       <div>
+        <!-- Breadcrumb -->
+        <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-500 mb-3">
+          <a href="#" class="hover:underline">Storage Management</a>
+          <span class="text-slate-400">›</span>
+          <a href="#" class="hover:underline">Storage Locations</a>
+          <span class="text-slate-400">›</span>
+          <span class="text-slate-500">Cabinets</span>
+        </div>
+
         <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Cabinet List</h1>
-        <p class="text-sm text-slate-400 mt-0.5">View and manage all cabinets across storage locations.</p>
+        <p class="text-sm text-slate-500 mt-0.5">View and manage all cabinets across storage locations.</p>
       </div>
       <div class="flex items-center gap-3 shrink-0">
      
-        <a [routerLink]="['/storage/locations/cabinets/add']" class="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg px-4 py-2.5 hover:bg-blue-700 whitespace-nowrap">
+        <a [routerLink]="['/storage/locations/cabinets/add']" class="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg px-4 py-3 hover:bg-blue-700 whitespace-nowrap">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
           Add Cabinet
         </a>
@@ -36,11 +37,11 @@
     </div>
 
     <!-- Summary card -->
-    <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 mb-5">
+    <div class="bg-white border border-slate-100 rounded-lg p-5 sm:p-6 mb-5">
       <div class="flex flex-col xl:flex-row xl:items-center gap-6">
         <div class="flex items-start gap-4 flex-1 min-w-0">
-          <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-            <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v4c0 5-3.5 8.5-8 11-4.6-1.26-8-5.75-8-11V7l8-4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M9 15.5h6"/></svg>
+          <div class="w-14 h-14 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shelving-unit-icon lucide-shelving-unit text-blue-500"><path d="M12 12V9a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/><path d="M16 20v-3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3"/><path d="M20 22V2"/><path d="M4 12h16"/><path d="M4 20h16"/><path d="M4 2v20"/><path d="M4 4h16"/></svg> 
           </div>
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-2">
@@ -50,12 +51,13 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap gap-x-8 gap-y-4 xl:border-l xl:border-slate-200 xl:pl-6">
-          <div class="text-center">
+        <div class="flex flex-wrap gap-x-4 gap-y-4 l:border-l xl:border-slate-200 l:pl-6">
+          <div class="text-center xl:border-l xl:border-slate-100 xl:px-4">
             <p class="text-xs text-slate-400 mb-1">Total Cabinets</p>
             <p class="text-lg font-bold text-slate-800">{{ totalCabinets }}</p>
           </div>
-          <div class="text-center">
+          <div class="text-center xl:border-l xl:border-slate-100 xl:px-4">
+          
             <p class="text-xs text-slate-400 mb-1">Total Hooks</p>
             <p class="text-lg font-bold text-slate-800">{{ totalHooks }}</p>
           </div>
