@@ -24,6 +24,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   storageLocationId = '';
   cabinetName = '';
   cabinetType = '';
+  securityLevel = '';
   description = '';
   numberOfHooks = 20;
   fireRating = '';
@@ -31,6 +32,9 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   alarmSystem = true;
   responsiblePerson = '';
   notes = '';
+  installedOn = '';
+
+  submitted = false;
 
   cabinetTypeOptions: RichSelectOption[] = [
     { value: '', label: 'Select cabinet type' },
@@ -103,7 +107,38 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/storage/locations/cabinets']);
   }
 
+  get storageLocationIdInvalid(): boolean {
+    return this.submitted && !this.storageLocationId;
+  }
+
+  get cabinetNameInvalid(): boolean {
+    return this.submitted && !this.cabinetName.trim();
+  }
+
+  get cabinetTypeInvalid(): boolean {
+    return this.submitted && !this.cabinetType;
+  }
+
+  get numberOfHooksInvalid(): boolean {
+    return this.submitted && (!this.numberOfHooks || this.numberOfHooks < 1);
+  }
+
+  get securityLevelInvalid(): boolean {
+    return this.submitted && !this.securityLevel;
+  }
+
+  get installedOnInvalid(): boolean {
+    return this.submitted && !this.installedOn.trim();
+  }
+
+  get formInvalid(): boolean {
+    return !this.storageLocationId || !this.cabinetName.trim() || !this.cabinetType || !this.numberOfHooks || this.numberOfHooks < 1 || !this.securityLevel || !this.installedOn.trim();
+  }
+
   onSaveCabinet(): void {
+    this.submitted = true;
+    if (this.formInvalid) return;
+
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId || !this.storageLocationId || !this.cabinetName) return;
 
@@ -111,6 +146,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       storageLocationId: this.storageLocationId,
       name: this.cabinetName,
       cabinetType: this.cabinetType,
+      securityLevel: this.securityLevel,
       description: this.description,
       numberOfHooks: this.numberOfHooks,
       fireRating: this.fireRating,
@@ -118,6 +154,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       alarmSystem: this.alarmSystem,
       responsiblePerson: this.responsiblePerson,
       notes: this.notes,
+      installedOn: this.installedOn,
     };
 
     this.keyVault.createCabinet(orgId, cabinet).subscribe({

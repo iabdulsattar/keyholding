@@ -44,6 +44,7 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
   noteCount = 0;
   isHookDropdownOpen = false;
   isKeyDropdownOpen = false;
+  submitted = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService) {}
 
@@ -253,11 +254,25 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
     this.isKeyDropdownOpen = false;
   }
 
+  get hookInvalid(): boolean {
+    return this.submitted && !this.selectedHook;
+  }
+
+  get keyInvalid(): boolean {
+    return this.submitted && !this.selectedKey;
+  }
+
+  get formInvalid(): boolean {
+    return !this.selectedHook || !this.selectedKey;
+  }
+
   onCancel(): void {
     this.router.navigate(['/storage/locations/cabinets/view', this.cabinetId, 'hooks']);
   }
 
   onAssignKey(): void {
+    this.submitted = true;
+    if (this.formInvalid) return;
     if (!this.selectedHook || !this.selectedKey) return;
     const orgId = this.getOrgId();
     if (!orgId || !this.cabinetId) return;

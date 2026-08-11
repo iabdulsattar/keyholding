@@ -109,19 +109,24 @@
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700"> City <span class="text-rose-500">*</span> </label>
-              <input type="text" placeholder="Enter city"
-                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              <input type="text" placeholder="Enter city" required
+                class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                [class.border-slate-200]="!cityInvalid" [class.border-rose-400]="cityInvalid"
                 [(ngModel)]="city" name="city" />
+              <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="cityInvalid">City is required.</p>
             </div>
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Postcode / ZIP <span class="text-rose-500">*</span> </label>
-              <input type="text" placeholder="Enter postcode or ZIP"
-                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              <input type="text" placeholder="Enter postcode or ZIP" required
+                class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                [class.border-slate-200]="!postcodeInvalid" [class.border-rose-400]="postcodeInvalid"
                 [(ngModel)]="postcode" name="postcode" />
+              <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="postcodeInvalid">Postcode / ZIP is required.</p>
             </div>
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Country <span class="text-rose-500">*</span> </label>
-              <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" class="w-full"></app-rich-select>
+              <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" class="w-full" [class.border-rose-400]="countryInvalid"></app-rich-select>
+              <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="countryInvalid">Country is required.</p>
             </div>
           </div>
 
@@ -167,6 +172,7 @@
           <!-- Status -->
           <div>
             <label class="mb-2 block text-sm font-semibold text-slate-700"> Status <span class="text-rose-500">*</span> </label>
+            <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="statusInvalid">Status is required.</p>
             <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
               <label class="flex items-center gap-2 text-sm">
                 <input type="radio" name="status" value="ACTIVE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600" />
