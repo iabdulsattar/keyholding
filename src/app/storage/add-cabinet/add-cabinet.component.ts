@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { KeyVaultService } from '../../core/services/keyvault.service';
+import { KeyVaultService, Cabinet } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface StorageLocation {
@@ -44,8 +44,10 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   ];
   securityLevelOptions: RichSelectOption[] = [
     { value: '', label: 'Select security level' },
-    { value: 'Standard', label: 'Standard' },
-    { value: 'High', label: 'High' },
+    { value: 'LOW', label: 'Standard' },
+    { value: 'MEDIUM', label: 'Medium' },
+    { value: 'HIGH', label: 'High' },
+    { value: 'TOP_SECRET', label: 'Top Secret' },
   ];
   fireRatingOptions: RichSelectOption[] = [
     { value: '', label: 'Select fire rating' },
@@ -146,7 +148,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       storageLocationId: this.storageLocationId,
       name: this.cabinetName,
       cabinetType: this.cabinetType,
-      securityLevel: this.securityLevel,
+      securityLevel: this.securityLevel as Cabinet['securityLevel'],
       description: this.description,
       numberOfHooks: this.numberOfHooks,
       fireRating: this.fireRating,
