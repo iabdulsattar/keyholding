@@ -169,17 +169,11 @@
              </tr>
               }
              }
-           </tbody>
-        </table>
-      </div>
+            </tbody>
+         </table>
+       </div>
 
-      <!-- Empty state -->
-      <div *ngIf="filteredCabinets.length === 0" class="p-8 text-center">
-        <svg class="w-10 h-10 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5V2m0 0L9 5m3-3l3 3M5.5 12a6.5 6.5 0 0113 0M5.5 12a6.5 6.5 0 0113 0"/></svg>
-        <p class="text-slate-500">No cabinets found.</p>
-      </div>
-
-      <!-- Footer / pagination -->
+       <!-- Footer / pagination -->
       <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
         <span class="text-slate-400">Showing 1 to {{ filteredCabinets.length }} of {{ totalCabinets }} cabinets</span>
       </div>

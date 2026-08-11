@@ -171,6 +171,16 @@ export const routes: Routes = [
             title: 'Assign Key to Hook | KeyVault Pro'
           },
           {
+            path: 'storage/locations/cabinets/view/:id/move-key/:hookId',
+            loadComponent: () => import('./storage/cabinet-detail/move-key-to-hook.component').then(m => m.MoveKeyToHookComponent),
+            title: 'Move Key to Another Hook | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/cabinets/view/:id/remove-key/:hookId',
+            loadComponent: () => import('./storage/cabinet-detail/remove-key-from-hook.component').then(m => m.RemoveKeyFromHookComponent),
+            title: 'Remove Key from Hook | KeyVault Pro'
+          },
+          {
             path: 'sites/add-site',
             loadComponent: () => import('./sites/add-site/add-site.component').then(m => m.AddSiteComponent),
             title: 'Add New Site | KeyVault Pro'
