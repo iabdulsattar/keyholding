@@ -37,57 +37,100 @@
     </div>
 
     <!-- Summary card -->
-    <div class="bg-white border border-slate-100 rounded-lg p-5 sm:p-6 mb-5">
-      <div class="flex flex-col xl:flex-row xl:items-center gap-6">
-        <div class="flex items-start gap-4 flex-1 min-w-0">
-          <div class="w-14 h-14 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shelving-unit-icon lucide-shelving-unit text-blue-500"><path d="M12 12V9a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/><path d="M16 20v-3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3"/><path d="M20 22V2"/><path d="M4 12h16"/><path d="M4 20h16"/><path d="M4 2v20"/><path d="M4 4h16"/></svg> 
-          </div>
-          <div class="min-w-0">
-            <div class="flex flex-wrap items-center gap-2">
-              <h2 class="text-base font-semibold text-slate-800">All Cabinets</h2>
-            </div>
-            <p class="text-xs text-slate-400 mt-0.5">Cabinets across all storage locations</p>
-          </div>
+   <div class="w-full  bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-6 mb-4">
+    <div class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-4">
+
+      <!-- Left: Icon + Title/Address -->
+      <div class="flex items-start gap-3 lg:w-[400px] lg:shrink-0">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="4" y="3" width="16" height="18" rx="1.5"/>
+            <line x1="12" y1="3" x2="12" y2="21"/>
+            <circle cx="9.5" cy="12" r="0.6" fill="currentColor" stroke="none"/>
+            <circle cx="14.5" cy="12" r="0.6" fill="currentColor" stroke="none"/>
+          </svg>
         </div>
 
-        <div class="flex flex-wrap gap-y-4 ">
-          <div class="text-center xl:border-l xl:border-slate-100 px-4">
-            <p class="text-xs text-slate-500 font-medium mb-2">Total Cabinets</p>
-            <p class="text-lg font-bold text-slate-800">{{ totalCabinets }}</p>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="text-[15px] font-semibold text-slate-900">Head Office Vault</h2>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-600">
+              Active
+            </span>
           </div>
-          <div class="text-center xl:border-l xl:border-slate-100 px-4">           
-            <p class="text-xs text-slate-500 font-medium mb-2">Total Hooks</p>
-            <p class="text-lg font-bold text-slate-800">{{ totalHooks }}</p>
-          </div>
-          <div class="text-center xl:border-l xl:border-slate-100 px-4">                      
-            <p class="text-xs text-slate-500 font-medium mb-2">Used Hooks</p>
-            <p class="text-lg font-bold text-slate-800">{{ usedHooks }}</p>
-          </div>
-          <div class="text-center xl:border-x xl:border-slate-100 px-4">                     
-            <p class="text-xs text-slate-500 font-medium mb-2">Available Hooks</p>
-            <p class="text-lg font-bold text-slate-800">{{ availHooks }}</p>
-          </div>
-        </div>
 
-        <div class="flex flex-col items-center justify-center shrink-0">
-          <div class="relative w-16 h-16">
-            <svg class="w-16 h-16 -rotate-90" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="16" fill="none" stroke="#e6e8ee" stroke-width="3"/>
-              <circle cx="18" cy="18" r="16" fill="none" stroke="#2563eb" stroke-width="3"
-                      [attr.stroke-dasharray]="100"
-                      [attr.stroke-dashoffset]="100 - utilization"
-                      stroke-linecap="round"/>
+          <div class="mt-1">
+            <span class="inline-block text-[11px] font-medium text-blue-500 bg-blue-50 px-2 py-0.5 rounded">
+              LOC-0001
+            </span>
+          </div>
+
+          <div class="mt-2 flex items-start gap-1.5 text-[12px] text-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/>
+              <circle cx="12" cy="10" r="2.5"/>
             </svg>
-            <span class="absolute inset-0 flex items-center justify-center text-sm font-bold text-slate-800">{{ utilization }}%</span>
+            <span>25 Fenchurch Street, London, EC3M 5BN, UK</span>
           </div>
-          <p class="text-xs text-slate-500 font-medium mt-1 whitespace-nowrap">Utilization</p>
+
+          <div class="mt-1 flex items-center gap-1.5 text-[12px] text-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 2"/>
+            </svg>
+            <span>Restricted Hours: Mon - Fri, 09:00 - 17:00</span>
+          </div>
         </div>
       </div>
+
+      <!-- Divider (desktop only) -->
+      <div class="hidden lg:block w-px self-stretch bg-slate-100"></div>
+
+      <!-- Middle: Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 flex-1">
+        <div class="text-center sm:text-left">
+          <p class="text-[12px] text-slate-400">Total Cabinets</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ totalCabinets }}</p>
+        </div>
+        <div class="text-center sm:text-left">
+          <p class="text-[12px] text-slate-400">Total Hooks</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ totalHooks }}</p>
+        </div>
+        <div class="text-center sm:text-left">
+          <p class="text-[12px] text-slate-400">Used Hooks</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ usedHooks }}</p>
+        </div>
+        <div class="text-center sm:text-left">
+          <p class="text-[12px] text-slate-400">Available Hooks</p>
+          <p class="mt-1 text-xl font-semibold text-slate-900">{{ availHooks }}</p>
+        </div>
+      </div>
+
+      <!-- Divider (desktop only) -->
+      <div class="hidden lg:block w-px self-stretch bg-slate-100"></div>
+
+      <!-- Right: Utilization ring -->
+      <div class="flex flex-col items-center justify-center lg:w-[110px] shrink-0 mx-auto lg:mx-0">
+        <div class="relative w-16 h-16">
+          <svg viewBox="0 0 36 36" class="w-16 h-16 -rotate-90">
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#eef1f6" stroke-width="3.5"></circle>
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#2563eb" stroke-width="3.5"
+                    stroke-linecap="round"
+                    [attr.stroke-dasharray]="circumference"
+                    [attr.stroke-dashoffset]="utilizationDashoffset"></circle>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-[13px] font-semibold text-slate-900">{{ utilization }}%</span>
+          </div>
+        </div>
+        <p class="mt-1.5 text-[11px] text-slate-400 whitespace-nowrap">Utilization</p>
+      </div>
+
     </div>
+  </div>
 
     <!-- Filters -->
-    <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-5 mb-5">
+    <div class="mt-4 bg-white border border-slate-100 rounded-lg p-4 sm:p-5 mb-5">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
         <div class="relative flex-1 col-span-4 mt-1">
           <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>

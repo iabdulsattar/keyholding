@@ -178,6 +178,22 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     return this.stats?.inactive ?? this.stats?.inactiveLocations ?? this.storageLocations.filter(l => l.status === 'Inactive' || l.status === 'INACTIVE').length;
   }
 
+  get totalCabinetsAll(): number {
+    return this.storageLocations.reduce((sum, l) => sum + (l.totalCabinets || 0), 0);
+  }
+
+  get totalHooksAll(): number {
+    return this.storageLocations.reduce((sum, l) => sum + (l.totalHooks || 0), 0);
+  }
+
+  get keysInStorageAll(): number {
+    return this.storageLocations.reduce((sum, l) => sum + (l.keysInStorage || 0), 0);
+  }
+
+  get availableHooksAll(): number {
+    return this.storageLocations.reduce((sum, l) => sum + (l.availableHooks || 0), 0);
+  }
+
   locationStatusClass(status: string): string {
     const s = (status || '').toUpperCase();
     if (s === 'ACTIVE') {

@@ -22,7 +22,7 @@
 </div>
 
 <div *ngIf="cabinet" class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900">
-  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="">
 
     <!-- Breadcrumb -->
     <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-4">
@@ -46,10 +46,10 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
           Back to Cabinets
         </a>
-        <button class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-slate-50 whitespace-nowrap">
+        <a [routerLink]="['/storage/locations/cabinets/edit', cabinet.id]" class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-slate-50 whitespace-nowrap">
           <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           Edit Cabinet
-        </button>
+        </a>
         <button class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-slate-50 whitespace-nowrap" (click)="toggleMoreMenu()">
           More
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
@@ -125,7 +125,17 @@
 
       <!-- LEFT / MAIN COLUMN -->
       <div class="lg:col-span-2 flex flex-col gap-5">
-
+   <!-- Tabs -->
+        <!-- Tabs -->
+    <div class="flex flex-wrap gap-1 mt-6 -mb-5 border-t border-slate-100 pt-4 sm:pt-0 sm:border-t-0 sm:mt-5">
+      <div class="flex flex-wrap gap-6 border-b border-slate-100 w-full text-sm font-medium overflow-x-auto">
+        <a href="#" class="pb-3 border-b-2 border-brand-600 text-brand-600 whitespace-nowrap">Overview</a>
+        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Hooks (20)</a>
+        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Keys (14)</a>
+        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Activity Log</a>
+        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Documents</a>
+      </div>
+    </div>
         <!-- Cabinet Information -->
         <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
           <h2 class="text-sm font-bold text-slate-800 mb-5">Cabinet Information</h2>
@@ -204,6 +214,7 @@
             </span>
           </div>
         </div>
+     
 
       </div>
 

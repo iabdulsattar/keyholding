@@ -163,6 +163,15 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     return Math.round((this.usedHooks / this.totalHooks) * 100);
   }
 
+  get utilizationDashoffset(): number {
+    const circumference = 2 * Math.PI * 15.5;
+    return circumference - (this.utilization / 100) * circumference;
+  }
+
+  get circumference(): number {
+    return 2 * Math.PI * 15.5;
+  }
+
   cabinetStatusClass(status: string): string {
     if (status === 'Active') return 'bg-emerald-50 text-emerald-600';
     if (status === 'Full') return 'bg-rose-50 text-rose-500';
