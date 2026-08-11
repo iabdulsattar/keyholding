@@ -18,12 +18,14 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   activeFilter = 'All Statuses';
   private sitesMap: Record<string, string> = {};
   apiError = false;
+  stats: any = null;
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadStorageLocations();
     this.loadSites();
+    this.loadStorageLocationStats();
   }
 
   ngAfterViewInit(): void {
@@ -54,6 +56,19 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
       },
       error: () => {
         this.sitesMap = {};
+      }
+    });
+  }
+
+  private loadStorageLocationStats(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId) return;
+    this.keyVault.getStorageLocationStats(orgId).subscribe({
+      next: (res: any) => {
+        this.stats = res?.data ?? res ?? {};
+      },
+      error: () => {
+        this.stats = null;
       }
     });
   }
@@ -148,19 +163,19 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   get totalLocations(): number {
-    return this.storageLocations.length;
+    return this.stats?.total ?? this.stats?.totalLocations ?? this.storageLocations.length;
   }
 
   get activeLocations(): number {
-    return this.storageLocations.filter(l => l.status === 'Active' || l.active === true).length;
+    return this.stats?.active ?? this.stats?.activeLocations ?? this.storageLocations.filter(l => l.status === 'Active' || l.active === true).length;
   }
 
   get maintenanceLocations(): number {
-    return this.storageLocations.filter(l => l.status === 'Under Maintenance' || l.status === 'MAINTENANCE').length;
+    return this.stats?.maintenance ?? this.stats?.underMaintenance ?? this.stats?.maintenanceLocations ?? this.storageLocations.filter(l => l.status === 'Under Maintenance' || l.status === 'MAINTENANCE').length;
   }
 
   get inactiveLocations(): number {
-    return this.storageLocations.filter(l => l.status === 'Inactive' || l.status === 'INACTIVE').length;
+    return this.stats?.inactive ?? this.stats?.inactiveLocations ?? this.storageLocations.filter(l => l.status === 'Inactive' || l.status === 'INACTIVE').length;
   }
 
   locationStatusClass(status: string): string {
