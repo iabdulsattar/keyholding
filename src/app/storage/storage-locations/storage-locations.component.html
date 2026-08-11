@@ -121,10 +121,6 @@
               <tr>
                 <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading storage locations...</td>
               </tr>
-            } @else if (filteredLocations.length === 0) {
-              <tr>
-                <td colspan="8" class="px-5 py-8 text-center text-slate-400">No storage locations found.</td>
-              </tr>
              } @else {
                @for (location of filteredLocations; track location.id) {
                <tr class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
