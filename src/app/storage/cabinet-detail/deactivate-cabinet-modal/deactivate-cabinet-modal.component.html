@@ -10,7 +10,7 @@
     </button>
 
     <div class="flex justify-center mb-3">
-      <div class="h-14 w-14 rounded-full bg-amber-50 flex items-center justify-center">
+      <div class="h-14 w-14 rounded-full flex items-center justify-center">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
           <line x1="12" y1="9" x2="12" y2="13"></line>
@@ -21,21 +21,16 @@
 
     <h2 class="text-center text-lg sm:text-xl font-semibold text-slate-900">Deactivate Cabinet?</h2>
 
-    <p class="text-center text-sm text-slate-500 mt-2 leading-relaxed">
+    <p class="text-center text-sm text-slate-500 font-medium mt-2 leading-relaxed">
       You are about to deactivate "{{ cabinet()?.name || cabinet()?.code || 'this cabinet' }}".
     </p>
 
-    <div class="mt-4 rounded-xl bg-amber-50 border border-amber-100 px-4 py-3">
+    <div class="mt-4 rounded-lg bg-amber-50 border border-amber-100 px-4 py-3">
       <div class="flex items-start gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l1.5 1.5L12 5l-1.5-1.5L12 2z"></path>
-          <path d="M17 8a5 5 0 0 0-10 0c0 3 2 4 2 6h6c0-2 2-3 2-6z"></path>
-          <line x1="9" y1="18" x2="15" y2="18"></line>
-          <line x1="10" y1="21" x2="14" y2="21"></line>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-amber-500 flex-shrink-0 mt-0.5"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
         <div>
           <p class="text-sm font-medium text-amber-800">This cabinet has keys assigned to hooks.</p>
-          <p class="text-sm text-amber-700 mt-1 ml-6">
+          <p class="text-sm text-amber-700 mt-1 ">
             All keys and hooks in this cabinet must be removed before it can be deactivated.
           </p>
         </div>
@@ -46,27 +41,23 @@
       <p class="text-sm font-semibold text-slate-900">What happens when deactivated?</p>
       <ul class="mt-3 space-y-2.5">
         <li class="flex items-start gap-2.5 text-sm text-slate-600">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mt-0.5 flex-shrink-0">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="16" height="16" class="shrink-0"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="#138e3a" d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM438 209.7C427.3 201.9 412.3 204.3 404.5 215L285.1 379.2L233 327.1C223.6 317.7 208.4 317.7 199.1 327.1C189.8 336.5 189.7 351.7 199.1 361L271.1 433C276.1 438 282.9 440.5 289.9 440C296.9 439.5 303.3 435.9 307.4 430.2L443.3 243.2C451.1 232.5 448.7 217.5 438 209.7z"/></svg>
+        
           <span>The cabinet will be marked as inactive.</span>
         </li>
         <li class="flex items-start gap-2.5 text-sm text-slate-600">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mt-0.5 flex-shrink-0">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="16" height="16" class="shrink-0"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="#138e3a" d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM438 209.7C427.3 201.9 412.3 204.3 404.5 215L285.1 379.2L233 327.1C223.6 317.7 208.4 317.7 199.1 327.1C189.8 336.5 189.7 351.7 199.1 361L271.1 433C276.1 438 282.9 440.5 289.9 440C296.9 439.5 303.3 435.9 307.4 430.2L443.3 243.2C451.1 232.5 448.7 217.5 438 209.7z"/></svg>
+        
           <span>It will no longer be available for key storage.</span>
         </li>
         <li class="flex items-start gap-2.5 text-sm text-slate-600">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mt-0.5 flex-shrink-0">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="16" height="16" class="shrink-0"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="#138e3a" d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM438 209.7C427.3 201.9 412.3 204.3 404.5 215L285.1 379.2L233 327.1C223.6 317.7 208.4 317.7 199.1 327.1C189.8 336.5 189.7 351.7 199.1 361L271.1 433C276.1 438 282.9 440.5 289.9 440C296.9 439.5 303.3 435.9 307.4 430.2L443.3 243.2C451.1 232.5 448.7 217.5 438 209.7z"/></svg>
+        
           <span>It will not appear in active cabinet lists or hook assignments.</span>
         </li>
         <li class="flex items-start gap-2.5 text-sm text-slate-600">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mt-0.5 flex-shrink-0">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="16" height="16" class="shrink-0"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="#138e3a" d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM438 209.7C427.3 201.9 412.3 204.3 404.5 215L285.1 379.2L233 327.1C223.6 317.7 208.4 317.7 199.1 327.1C189.8 336.5 189.7 351.7 199.1 361L271.1 433C276.1 438 282.9 440.5 289.9 440C296.9 439.5 303.3 435.9 307.4 430.2L443.3 243.2C451.1 232.5 448.7 217.5 438 209.7z"/></svg>
+        
           <span>You can reactivate this cabinet at any time.</span>
         </li>
       </ul>
