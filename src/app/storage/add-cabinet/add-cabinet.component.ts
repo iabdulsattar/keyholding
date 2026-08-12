@@ -45,10 +45,12 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     { value: 'Standard', label: 'Standard' },
     { value: 'Fire Rated', label: 'Fire Rated' },
     { value: 'High Security', label: 'High Security' },
+    { value: 'Modular', label: 'Modular' },
+    
   ];
   securityLevelOptions: RichSelectOption[] = [
     { value: '', label: 'Select security level' },
-    { value: 'LOW', label: 'Standard' },
+    { value: 'LOW', label: 'Low' },
     { value: 'MEDIUM', label: 'Medium' },
     { value: 'HIGH', label: 'High' },
     { value: 'TOP_SECRET', label: 'Top Secret' },
@@ -57,6 +59,8 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     { value: '', label: 'Select fire rating' },
     { value: '30 min', label: '30 min' },
     { value: '60 min', label: '60 min' },
+    { value: '90 min', label: '90 min' },
+    
     { value: '120 min', label: '120 min' },
   ];
 
