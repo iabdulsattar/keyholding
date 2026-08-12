@@ -14,6 +14,7 @@ interface CabinetRow {
   usedHooks: number;
   availHooks: number;
   status: string;
+  active?: boolean;
   updatedDate: string;
   updatedBy: string;
 }
@@ -110,6 +111,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     const usedHooks = c.usedHooks || c.keysHooked || c.keysOnHooks || 0;
     const availHooks = c.availableHooks !== undefined ? c.availableHooks : (totalHooks - usedHooks);
     let status = c.status || 'ACTIVE';
+    const active = c.active !== undefined ? c.active : (status === 'Active' || status === 'ACTIVE');
     if (status === 'ACTIVE' || status === 'Active') {
       status = usedHooks >= totalHooks && totalHooks > 0 ? 'Full' : 'Active';
     } else if (status === 'INACTIVE' || status === 'Inactive') {
@@ -126,6 +128,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
       usedHooks: usedHooks,
       availHooks: availHooks,
       status: status,
+      active: active,
       updatedDate: c.updatedDate || c.updatedAt || c.lastUpdated || '',
       updatedBy: c.updatedBy || c.lastUpdatedBy || '',
     };
@@ -241,7 +244,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   viewCabinet(cabinet: CabinetRow): void {
@@ -250,5 +253,29 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
 
   editCabinet(cabinet: CabinetRow): void {
     this.router.navigate(['/storage/locations/cabinets/edit', cabinet.id]);
+  }
+
+  toggleCabinetStatus(cabinet: CabinetRow): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !cabinet.id) return;
+    const obs = cabinet.active === false
+      ? this.keyVault.reactivateCabinet(orgId, cabinet.id)
+      : this.keyVault.deactivateCabinet(orgId, cabinet.id);
+    obs.subscribe({
+      next: () => {
+        const row = this.cabinets.find(c => c.id === cabinet.id);
+        if (row) {
+          row.active = cabinet.active === false ? true : false;
+          row.status = row.active ? 'Active' : 'Inactive';
+        }
+      },
+      error: () => {
+        const row = this.cabinets.find(c => c.id === cabinet.id);
+        if (row) {
+          row.active = cabinet.active;
+          row.status = cabinet.status;
+        }
+      }
+    });
   }
 }

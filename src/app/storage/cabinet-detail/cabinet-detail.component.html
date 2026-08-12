@@ -50,20 +50,7 @@
           <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           Edit Cabinet
         </a>
-        <button class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-slate-50 whitespace-nowrap" (click)="toggleMoreMenu()">
-          More
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div *ngIf="isMoreMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-xl border border-slate-200 shadow-lg py-1.5 z-40" (click)="closeMoreMenu()">
-          <button *ngIf="cabinet.active" class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2" (click)="openDeactivateModal()">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z"/></svg>
-            Deactivate Cabinet
-          </button>
-          <button *ngIf="!cabinet.active" class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2" (click)="openReactivateModal()">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-            Reactivate Cabinet
-          </button>
-        </div>
+     
       </div>
     </div>
 
@@ -239,10 +226,10 @@
               </span>
               <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
             </a>
-            <button (click)="openDeactivateModal()" class="flex items-center justify-between py-3 group" *ngIf="cabinet.active">
+            <button (click)="cabinet.active ? openDeactivateModal() : openReactivateModal()" class="flex items-center justify-between py-3 group">
               <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m10 0v4H7v-4m10 0H7m0-9V4a1 1 0 011-1h8a1 1 0 011 1v4H7z"/></svg>
-                Deactivate Cabinet
+                {{ cabinet.active ? 'Deactivate Cabinet' : 'Reactivate Cabinet' }}
               </span>
               <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
             </button>

@@ -154,7 +154,7 @@
                   {{ c.status }}
                 </span>
               </td>
-              <td class="px-5 py-4 text-slate-500 whitespace-nowrap">{{ formatDate(c.updatedDate) }}<br><span class="text-xs text-slate-400">by {{ c.updatedBy || '—' }}</span></td>
+              <td class="px-5 py-4 text-slate-500">{{ formatDate(c.updatedDate) }}<br><span class="text-xs text-slate-400">by {{ c.updatedBy || '—' }}</span></td>
               <td class="px-5 py-4">
                 <div class="flex items-center gap-3 text-slate-400">
                   <button (click)="viewCabinet(c)" class="text-slate-400 hover:text-slate-600 cursor-pointer" title="View details">
