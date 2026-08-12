@@ -247,4 +247,8 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   viewCabinet(cabinet: CabinetRow): void {
     this.router.navigate(['/storage/locations/cabinets/view', cabinet.id]);
   }
+
+  editCabinet(cabinet: CabinetRow): void {
+    this.router.navigate(['/storage/locations/cabinets/edit', cabinet.id]);
+  }
 }
