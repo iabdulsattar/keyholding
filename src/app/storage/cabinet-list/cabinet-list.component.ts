@@ -175,7 +175,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   cabinetStatusClass(status: string): string {
     if (status === 'Active') return 'bg-emerald-50 text-emerald-600';
     if (status === 'Full') return 'bg-rose-50 text-rose-500';
-    if (status === 'Inactive') return 'bg-slate-100 text-slate-500';
+    if (status === 'Inactive') return 'bg-rose-50 text-rose-600';
     return 'bg-slate-100 text-slate-500';
   }
 

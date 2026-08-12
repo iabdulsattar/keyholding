@@ -308,7 +308,7 @@
 
    </div>
 
-   <app-deactivate-cabinet-modal *ngIf="cabinet" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeDeactivateModal()" (confirmed)="onCabinetDeactivated()" />
-   <app-reactivate-cabinet-modal *ngIf="cabinet" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeReactivateModal()" (confirmed)="onCabinetReactivated()" />
+   <app-deactivate-cabinet-modal *ngIf="isDeactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeDeactivateModal()" (confirmed)="onCabinetDeactivated()" />
+   <app-reactivate-cabinet-modal *ngIf="isReactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeReactivateModal()" (confirmed)="onCabinetReactivated()" />
  </div>
 </ng-template>
