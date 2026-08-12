@@ -23,45 +23,45 @@
 
     <!-- Summary cards -->
     <div class="mb-4 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
           <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-800">Total Locations</p>
+          <p class="text-sm text-slate-800 font-medium">Total Locations</p>
           <p class="text-2xl font-bold text-slate-900">{{ totalLocations }}</p>
           <p class="text-xs text-slate-400">All storage locations</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10.5"/><path d="M20 6 9 17l-5-5"/></svg>
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check text-emerald-500"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-800">Active Locations</p>
+          <p class="text-sm text-slate-800 font-medium">Active Locations</p>
           <p class="text-2xl font-bold text-slate-900">{{ activeLocations }}</p>
           <p class="text-xs text-slate-400">Currently active</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
           <svg class="w-6 h-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-800">Under Maintenance</p>
+          <p class="text-sm text-slate-800 font-medium">Under Maintenance</p>
           <p class="text-2xl font-bold text-slate-900">{{ maintenanceLocations }}</p>
           <p class="text-xs text-slate-400">Temporarily unavailable</p>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
           <svg class="w-6 h-6 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10.5"/><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg>
         </div>
         <div>
-          <p class="text-sm text-slate-800">Inactive Locations</p>
+          <p class="text-sm text-slate-800 font-medium">Inactive Locations</p>
           <p class="text-2xl font-bold text-slate-900">{{ inactiveLocations }}</p>
           <p class="text-xs text-slate-400">Not in use</p>
         </div>
