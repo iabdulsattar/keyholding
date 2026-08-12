@@ -33,6 +33,11 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   activeFilter = 'All Statuses';
   activeTypeFilter = 'All Types';
 
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 0;
+  totalItems = 0;
+
   statusFilterOptions: RichSelectOption[] = [
     { value: 'All Statuses', label: 'All Statuses' },
     { value: 'Active', label: 'Active' },
@@ -63,7 +68,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  private loadCabinets(): void {
+  private loadCabinets(params?: { q?: string; status?: string; cabinetType?: string; page?: number }): void {
     this.loading = true;
     this.error = '';
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
@@ -73,10 +78,22 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
       this.createIcons();
       return;
     }
-    this.keyVault.listCabinets(orgId, { page: 0, size: 50 }).subscribe({
-      next: (items: any[]) => {
-        const normalized = items.map(c => this.normalizeCabinet(c));
+    const q = params?.q ?? this.searchTerm;
+    const status = params?.status ?? this.activeFilter;
+    const cabinetType = params?.cabinetType ?? this.activeTypeFilter;
+    const page = params?.page ?? this.currentPage;
+    const apiStatus = status === 'All Statuses' ? undefined : status;
+    const apiType = cabinetType === 'All Types' ? undefined : cabinetType;
+    this.keyVault.listCabinets(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus, cabinetType: apiType }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? data ?? [];
+        const normalized = (items && items.length ? items : []).map((c: any) => this.normalizeCabinet(c));
         this.cabinets = normalized;
+        this.currentPage = Number(data.page ?? data.number ?? page ?? 0);
+        this.pageSize = Number(data.size ?? this.pageSize);
+        this.totalItems = Number(data.totalElements ?? data.total ?? this.cabinets.length);
+        this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
         this.loading = false;
         this.createIcons();
       },
@@ -132,14 +149,57 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onSearch(): void {}
+  onSearch(): void {
+    this.currentPage = 0;
+    this.loadCabinets({ q: this.searchTerm });
+  }
 
-  onStatusFilterChange(): void {}
+  onStatusFilterChange(): void {
+    this.currentPage = 0;
+    this.loadCabinets({ status: this.activeFilter });
+  }
 
-  onTypeFilterChange(): void {}
+  onTypeFilterChange(): void {
+    this.currentPage = 0;
+    this.loadCabinets({ cabinetType: this.activeTypeFilter });
+  }
+
+  goToPage(page: number): void {
+    if (page < 0 || page >= this.totalPages) return;
+    this.currentPage = page;
+    this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter });
+  }
 
   get totalCabinets(): number {
-    return this.cabinets.length;
+    return this.totalItems;
+  }
+
+  get startIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return this.currentPage * this.pageSize + 1;
+  }
+
+  get endIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return Math.min((this.currentPage + 1) * this.pageSize, this.totalItems);
+  }
+
+  get visiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.totalPages;
+    const current = this.currentPage;
+    if (total <= 7) {
+      for (let i = 0; i < total; i++) pages.push(i);
+    } else {
+      pages.push(0);
+      if (current > 3) pages.push('...');
+      const start = Math.max(1, current - 1);
+      const end = Math.min(total - 2, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 4) pages.push('...');
+      pages.push(total - 1);
+    }
+    return pages;
   }
 
   get totalHooks(): number {
