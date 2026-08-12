@@ -14,6 +14,7 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
 export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit {
   locationId = '';
   location: any = null;
+  site: any = null;
   loading = true;
   error = '';
   reactivating = false;
@@ -89,14 +90,33 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
           outOfOrderHooks: item.outOfOrderHooks || 0,
           cctvMonitored: item.cctvMonitored ?? true,
           alarmSystem: item.alarmSystem ?? true,
+          siteId: item.siteId || '',
         };
         this.loading = false;
         this.createIcons();
+        if (this.location.siteId) {
+          this.loadSite(orgId, this.location.siteId);
+        }
       },
       error: () => {
         this.location = this.getFallbackLocation();
         this.loading = false;
         this.createIcons();
+      }
+    });
+  }
+
+  private loadSite(orgId: string, siteId: string): void {
+    this.keyVault.getSite(orgId, siteId).subscribe({
+      next: (res: any) => {
+        const item = res?.data ?? res ?? {};
+        this.site = {
+          accessSchedule: item.accessSchedule || '',
+          accessInstructions: item.accessInstructions || '',
+        };
+      },
+      error: () => {
+        this.site = null;
       }
     });
   }
@@ -164,5 +184,12 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  formatAccessSchedule(value: string | null | undefined): string {
+    if (!value) return 'Restricted Hours';
+    return value
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
   }
 }

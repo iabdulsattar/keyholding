@@ -883,21 +883,16 @@ export class KeyVaultService {
     );
    }
 
-   listStorageLocations(orgId: string, params?: { q?: string; status?: string; locationType?: string; page?: number; size?: number }): Observable<any[]> {
-    const headers = this.getAuthHeaders();
-    const q = new URLSearchParams();
-    if (params?.q) q.set('q', params.q);
-    if (params?.status) q.set('status', params.status);
-    if (params?.locationType) q.set('locationType', params.locationType);
-    q.set('page', String(params?.page ?? 0));
-    q.set('size', String(params?.size ?? 10));
-    const query = q.toString();
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations${query ? `?${query}` : ''}`, headers).pipe(
-      map((res: any) => {
-        const data = res?.data ?? res ?? {};
-        return data.content ?? data.items ?? data.data ?? data ?? [];
-      })
-    );
+   listStorageLocations(orgId: string, params?: { q?: string; status?: string; locationType?: string; page?: number; size?: number }): Observable<any> {
+     const headers = this.getAuthHeaders();
+     const q = new URLSearchParams();
+     if (params?.q) q.set('q', params.q);
+     if (params?.status) q.set('status', params.status);
+     if (params?.locationType) q.set('locationType', params.locationType);
+     q.set('page', String(params?.page ?? 0));
+     q.set('size', String(params?.size ?? 10));
+     const query = q.toString();
+     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/storage-locations${query ? `?${query}` : ''}`, headers);
    }
 
    getStorageLocationStats(orgId: string): Observable<any> {

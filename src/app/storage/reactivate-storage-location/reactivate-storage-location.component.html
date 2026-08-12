@@ -82,7 +82,7 @@
               
             </div>
             <div>
-              <dd class=" text-slate-600 sm:text-left">{{ location?.accessInstructions || 'Restricted Hours' }}<br>Mon - Fri, 09:00 - 17:00</dd>
+              <dd class=" text-slate-600 sm:text-left">{{ formatAccessSchedule(site?.accessSchedule) }}</dd>
               
             </div>
             <div>
@@ -97,7 +97,7 @@
               <dt class="text-slate-700 shrink-0 font-semibold">Access Instructions</dt>
             </div>
             <div>
-              <dd class=" text-slate-600 sm:text-left">{{ location?.accessInstructions || '—' }}</dd>
+              <dd class=" text-slate-600 sm:text-left">{{ site?.accessInstructions || location?.accessInstructions || '—' }}</dd>
               
             </div>
             <div>

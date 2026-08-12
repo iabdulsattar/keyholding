@@ -85,9 +85,7 @@
               <div class="font-semibold text-slate-700">Access Schedule</div>
             </div>
             <div>
-              <div class=" text-slate-600">Restricted Hours</div>
-              <div class="text-slate-500">Mon - Fri, 09:00 - 17:00</div>
-              
+              <div class=" text-slate-600">{{ formatAccessSchedule(site?.accessSchedule) }}</div>
             </div>
             <div>
               <div class="font-semibold text-slate-700">Location Code</div>
@@ -100,7 +98,7 @@
               <div class="font-semibold text-slate-700">Access Instructions</div>
             </div>
             <div>
-              <div class=" text-slate-600">Access is restricted to authorized personnel only.</div>
+              <div class=" text-slate-600">{{ site?.accessInstructions || location?.accessInstructions || '—' }}</div>
               
             </div>
             <div>
@@ -174,6 +172,16 @@
               <div class=" text-slate-600">{{ location?.country || '—' }}</div>
 
             </div>
+            <div>
+              <div class="font-semibold text-slate-700">Alarm System</div>
+              
+            </div>
+            <div>
+              <div class="">
+                <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location?.alarmSystem ? 'Yes' : 'No' }}</span>
+              </div>
+              
+            </div>
           </div>
         </div>
 
@@ -187,14 +195,7 @@
                 </label>
                 <app-rich-select [options]="deactivateReasonOptions" [(value)]="deactivateReason" placeholder="Select reason for deactivation" class="w-full"></app-rich-select>
                 <p class="mt-1 text-xs text-rose-500" *ngIf="deactivateReasonInvalid">Reason for deactivation is required.</p>
-              </div>
-             <div>
-               <label class="mb-1.5 block text-sm font-semibold text-slate-700">Alarm System</label>
-               <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700">
-                 <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location?.alarmSystem ? 'Yes' : 'No' }}</span>
-                 <span class="text-xs text-slate-400">Current status</span>
                </div>
-             </div>
             <div>
               <label class="mb-1.5 block text-sm font-semibold text-slate-700">Additional Notes <span class="font-medium text-slate-400">(Optional)</span></label>
               <textarea

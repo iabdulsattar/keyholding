@@ -19,6 +19,10 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   private sitesMap: Record<string, string> = {};
   apiError = false;
   stats: any = null;
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 0;
+  totalItems = 0;
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 
@@ -82,7 +86,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     this.applyFilter();
   }
 
-  private loadStorageLocations(params?: { q?: string; status?: string }): void {
+  private loadStorageLocations(params?: { q?: string; status?: string; page?: number }): void {
     this.loading = true;
     this.apiError = false;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
@@ -95,11 +99,18 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     }
     const q = params?.q ?? this.searchTerm;
     const status = params?.status ?? this.activeFilter;
-    this.keyVault.listStorageLocations(orgId, { page: 0, size: 50, q: q || undefined, status: status === 'All Statuses' ? undefined : status }).subscribe({
-      next: (locations: any[]) => {
-        const normalized = (locations && locations.length ? locations : []).map(loc => this.normalizeLocation(loc));
+    const page = params?.page ?? this.currentPage;
+    this.keyVault.listStorageLocations(orgId, { page, size: this.pageSize, q: q || undefined, status: status === 'All Statuses' ? undefined : status }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? data ?? [];
+        const normalized = (items && items.length ? items : []).map((loc: any) => this.normalizeLocation(loc));
         this.storageLocations = normalized;
         this.filteredLocations = [...this.storageLocations];
+        this.currentPage = Number(data.page ?? data.number ?? page ?? 0);
+        this.pageSize = Number(data.size ?? this.pageSize);
+        this.totalItems = Number(data.totalElements ?? data.total ?? this.storageLocations.length);
+        this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
         this.loading = false;
         this.createIcons();
       },
@@ -151,19 +162,28 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   onSearch(): void {
+    this.currentPage = 0;
     this.loadStorageLocations({ q: this.searchTerm });
   }
 
   applyFilter(): void {
+    this.currentPage = 0;
     this.loadStorageLocations({ q: this.searchTerm, status: this.activeFilter });
   }
 
   onStatusFilterChange(): void {
+    this.currentPage = 0;
     this.loadStorageLocations({ status: this.activeFilter });
   }
 
+  goToPage(page: number): void {
+    if (page < 0 || page >= this.totalPages) return;
+    this.currentPage = page;
+    this.loadStorageLocations({ q: this.searchTerm, status: this.activeFilter });
+  }
+
   get totalLocations(): number {
-    return this.stats?.total ?? this.stats?.totalLocations ?? this.storageLocations.length;
+    return this.stats?.total ?? this.stats?.totalLocations ?? this.totalItems;
   }
 
   get activeLocations(): number {
@@ -176,6 +196,34 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
 
   get inactiveLocations(): number {
     return this.stats?.inactive ?? this.stats?.inactiveLocations ?? this.storageLocations.filter(l => l.status === 'Inactive' || l.status === 'INACTIVE').length;
+  }
+
+  get startIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return this.currentPage * this.pageSize + 1;
+  }
+
+  get endIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return Math.min((this.currentPage + 1) * this.pageSize, this.totalItems);
+  }
+
+  get visiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.totalPages;
+    const current = this.currentPage;
+    if (total <= 7) {
+      for (let i = 0; i < total; i++) pages.push(i);
+    } else {
+      pages.push(0);
+      if (current > 3) pages.push('...');
+      const start = Math.max(1, current - 1);
+      const end = Math.min(total - 2, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 4) pages.push('...');
+      pages.push(total - 1);
+    }
+    return pages;
   }
 
   get totalCabinetsAll(): number {

@@ -22,45 +22,48 @@
     </div>
 
     <!-- Summary cards -->
-    <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-lg border border-slate-100 bg-white p-4 flex items-start gap-2">
-        <div class="rounded-full p-2.5 bg-blue-50 mt-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-archive-icon lucide-archive text-blue-500"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="16" cy="16" r="3"/><path d="M20 7l-9 9"/><path d="M20 13v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/></svg>
+    <div class="mb-4 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
         <div>
-        <span class="text-sm text-slate-900 font-medium">Total Cabinets</span>
-        <div class="mt-0.5 text-2xl font-bold text-slate-900 sm:text-3xl">{{ totalCabinetsAll }}</div>
-        <div class="mt-0.5 text-xs text-slate-400">Across all locations</div>
+          <p class="text-sm text-slate-800">Total Locations</p>
+          <p class="text-2xl font-bold text-slate-900">{{ totalLocations }}</p>
+          <p class="text-xs text-slate-400">All storage locations</p>
         </div>
       </div>
-      <div class="rounded-lg border border-slate-100 bg-white p-4 flex items-start gap-2">      
-        <div class="rounded-full p-2.5 bg-emerald-50 mt-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-anchor-icon lucide-anchor text-emerald-500"><path d="M10 12h4"/><path d="M12 4v10"/><path d="m5 19 7-7"/></svg>
-        </div>
-        <div>  
-        <span class="text-sm text-slate-900 font-medium">Total Hooks / Slots</span>
-        <div class="mt-0.5 text-2xl font-bold text-slate-900 sm:text-3xl">{{ totalHooksAll }}</div>
-        <div class="mt-0.5 text-xs text-slate-400">Across all locations</div>
-        </div>
-      </div>
-      <div class="rounded-lg border border-slate-100 bg-white p-4 flex items-start gap-2">      
-        <div class="rounded-full p-2.5 bg-purple-50 mt-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-purple-500"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.78 7.78 5.5 5.5 0 0 1 7.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10.5"/><path d="M20 6 9 17l-5-5"/></svg>
         </div>
         <div>
-        <span class="text-sm text-slate-900 font-medium">Keys in Storage</span>
-        <div class="mt-0.5 text-2xl font-bold text-slate-900 sm:text-3xl">{{ keysInStorageAll }}</div>
-        <div class="mt-0.5 text-xs text-slate-400">Currently stored</div>
+          <p class="text-sm text-slate-800">Active Locations</p>
+          <p class="text-2xl font-bold text-slate-900">{{ activeLocations }}</p>
+          <p class="text-xs text-slate-400">Currently active</p>
         </div>
       </div>
-      <div class="rounded-lg border border-slate-100 bg-white p-4 flex items-start gap-2">      
-        <div class="rounded-full p-2.5 bg-amber-50 mt-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench-icon lucide-wrench text-amber-500"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
+
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
         </div>
         <div>
-        <span class="text-sm text-slate-900 font-medium">Available Hooks</span>
-        <div class="mt-0.5 text-2xl font-bold text-slate-900 sm:text-3xl">{{ availableHooksAll }}</div>
-        <div class="mt-0.5 text-xs text-slate-400">Ready for keys</div>
+          <p class="text-sm text-slate-800">Under Maintenance</p>
+          <p class="text-2xl font-bold text-slate-900">{{ maintenanceLocations }}</p>
+          <p class="text-xs text-slate-400">Temporarily unavailable</p>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10.5"/><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg>
+        </div>
+        <div>
+          <p class="text-sm text-slate-800">Inactive Locations</p>
+          <p class="text-2xl font-bold text-slate-900">{{ inactiveLocations }}</p>
+          <p class="text-xs text-slate-400">Not in use</p>
         </div>
       </div>
     </div>
@@ -249,14 +252,21 @@
 
       <!-- Pagination -->
       <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <span class="text-slate-700">Showing {{ filteredLocations.length === 0 ? 0 : 1 }} to {{ filteredLocations.length }} of {{ totalLocations }} locations</span>
+        <span class="text-slate-700">Showing {{ startIndex }} to {{ endIndex }} of {{ totalItems }} locations</span>
         <div class="flex items-center gap-2">
-          <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">
+          <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
           </button>
-          <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 font-medium text-white">1</button>
-          <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">2</button>
-          <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">
+          @for (p of visiblePages; track p) {
+            @if (p === '...') {
+              <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
+            } @else {
+              <button (click)="goToPage(p)" [class.bg-blue-600]="currentPage === p" [class.text-white]="currentPage === p" [class.border-slate-200]="currentPage !== p" [class.text-slate-500]="currentPage !== p" class="flex h-8 w-8 items-center justify-center rounded-lg border font-medium hover:bg-slate-50">
+                {{ p + 1 }}
+              </button>
+            }
+          }
+          <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
           </button>
         </div>

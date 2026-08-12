@@ -136,8 +136,10 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       return;
     }
     this.keyVault.listStorageLocations(orgId).subscribe({
-      next: (locations: any[]) => {
-        this.storageLocations = locations.map(loc => ({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const locations = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.storageLocations = locations.map((loc: any) => ({
           id: loc.id || '',
           name: loc.name || loc.locationName || '',
         }));

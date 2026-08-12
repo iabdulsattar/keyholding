@@ -283,6 +283,18 @@
               <div class="text-slate-400">Country</div>
               <div class="mt-0.5 font-medium text-slate-700">{{ location.country }}</div>
             </div>
+            <div>
+              <div class="font-semibold text-slate-700">CCTV Monitored</div>
+            </div>
+            <div>
+              <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location.cctvMonitored ? 'Yes' : 'No' }}</span>
+            </div>
+            <div>
+              <div class="font-semibold text-slate-700">Alarm System</div>
+            </div>
+            <div>
+              <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location.alarmSystem ? 'Yes' : 'No' }}</span>
+            </div>
           </div>
         </div>
 
