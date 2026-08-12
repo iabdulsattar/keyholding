@@ -82,7 +82,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     const status = params?.status ?? this.activeFilter;
     const cabinetType = params?.cabinetType ?? this.activeTypeFilter;
     const page = params?.page ?? this.currentPage;
-    const apiStatus = status === 'All Statuses' ? undefined : status;
+    const apiStatus = status === 'All Statuses' ? undefined : (status || '').toUpperCase().replace(/ /g, '_');
     const apiType = cabinetType === 'All Types' ? undefined : cabinetType;
     this.keyVault.listCabinets(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus, cabinetType: apiType }).subscribe({
       next: (res: any) => {
@@ -129,24 +129,6 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
       updatedDate: c.updatedDate || c.updatedAt || c.lastUpdated || '',
       updatedBy: c.updatedBy || c.lastUpdatedBy || '',
     };
-  }
-
-  get filteredCabinets(): CabinetRow[] {
-    const q = this.searchTerm.toLowerCase().trim();
-    const statusFilter = this.activeFilter;
-    const typeFilter = this.activeTypeFilter;
-    return this.cabinets.filter(c => {
-      const matchesSearch =
-        (c.name || '').toLowerCase().includes(q) ||
-        (c.code || '').toLowerCase().includes(q) ||
-        (c.type || '').toLowerCase().includes(q) ||
-        (c.updatedBy || '').toLowerCase().includes(q);
-      const matchesStatus =
-        statusFilter === 'All Statuses' || c.status === statusFilter;
-      const matchesType =
-        typeFilter === 'All Types' || c.type === typeFilter;
-      return matchesSearch && matchesStatus && matchesType;
-    });
   }
 
   onSearch(): void {

@@ -18,6 +18,7 @@ interface HookGridItem {
   num: number;
   used: boolean;
   damaged: boolean;
+  id: string;
 }
 
 interface HookStats {
@@ -219,6 +220,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
       num: hookNo,
       used: status === 'Key Hooked' || status === 'Key In Use',
       damaged: status === 'Hook Damaged',
+      id: h.id || String(hookNo),
     };
   }
 

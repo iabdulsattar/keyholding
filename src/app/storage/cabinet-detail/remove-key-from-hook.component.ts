@@ -45,7 +45,7 @@ export class RemoveKeyFromHookComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService) {}
 
   ngOnInit(): void {
-    this.cabinetId = this.route.parent?.snapshot.paramMap.get('id') || '';
+    this.cabinetId = this.route.snapshot.paramMap.get('id') || '';
     this.hookId = this.route.snapshot.paramMap.get('hookId') || '';
     if (this.cabinetId && this.hookId) {
       this.loadCabinetDetails();
