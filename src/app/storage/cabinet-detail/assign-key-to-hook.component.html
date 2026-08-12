@@ -137,6 +137,7 @@
           <p class="text-sm text-slate-500 mt-1 mb-4">Choose the key that you want to assign to the selected hook.</p>
 
           <label class="block text-sm font-medium text-slate-700 mb-1.5">Key <span class="text-red-500">*</span></label>
+          <div class="relative">
           <button (click)="toggleKeyDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border text-sm text-left bg-white hover:border-slate-400"
             [class.border-slate-300]="!keyInvalid" [class.border-rose-400]="keyInvalid">
             <span [class.text-slate-400]="!selectedKey" [class.text-slate-700]="selectedKey">{{ selectedKey ? selectedKey.code + ' - ' + selectedKey.name : 'Select key' }}</span>
@@ -146,6 +147,7 @@
             <button *ngFor="let key of availableKeys" (click)="selectKey(key)" class="w-full text-left px-3 py-2 text-sm hover:bg-slate-50" [class.bg-indigo-50]="selectedKey === key" [class.text-indigo-700]="selectedKey === key" [class.font-medium]="selectedKey === key">
               {{ key.code }} - {{ key.name }} ({{ key.type }})
             </button>
+          </div>
           </div>
           <p class="mt-1.5 text-xs text-rose-500" *ngIf="keyInvalid">Key is required.</p>
         </div>
