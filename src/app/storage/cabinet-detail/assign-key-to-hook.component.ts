@@ -112,8 +112,10 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
       return;
     }
     this.keyVault.listHooks(orgId, this.cabinetId, { assigned: 'UNASSIGNED', page: 0, size: 100 }).subscribe({
-      next: (hooks: any[]) => {
-        this.availableHooks = (hooks || []).map(h => {
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const hooks = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.availableHooks = (hooks || []).map((h: any) => {
           const hookNo = h.hookNo || h.number || 0;
           return {
             no: String(hookNo).padStart(2, '0'),

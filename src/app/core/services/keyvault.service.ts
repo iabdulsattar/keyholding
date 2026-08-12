@@ -1085,23 +1085,30 @@ export class KeyVaultService {
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}`, headers);
    }
 
-   // Hooks
-   listHooks(orgId: string, cabinetId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any[]> {
-     const headers = this.getAuthHeaders();
-     const q = new URLSearchParams();
-     if (params?.q) q.set('q', params.q);
-     if (params?.status) q.set('status', params.status);
-     if (params?.assigned) q.set('assigned', params.assigned);
-     q.set('page', String(params?.page ?? 0));
-     q.set('size', String(params?.size ?? 20));
-     const query = q.toString();
-     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks${query ? `?${query}` : ''}`, headers).pipe(
-       map((res: any) => {
-         const data = res?.data ?? res ?? {};
-         return data.content ?? data.items ?? data.data ?? data ?? [];
-       })
-     );
-   }
+    // Hooks
+    listHooks(orgId: string, cabinetId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      if (params?.q) q.set('q', params.q);
+      if (params?.status) q.set('status', params.status);
+      if (params?.assigned) q.set('assigned', params.assigned);
+      q.set('page', String(params?.page ?? 0));
+      q.set('size', String(params?.size ?? 10));
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks${query ? `?${query}` : ''}`, headers);
+    }
+
+    listAllHooks(orgId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      if (params?.q) q.set('q', params.q);
+      if (params?.status) q.set('status', params.status);
+      if (params?.assigned) q.set('assigned', params.assigned);
+      q.set('page', String(params?.page ?? 0));
+      q.set('size', String(params?.size ?? 10));
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/hooks${query ? `?${query}` : ''}`, headers);
+    }
 
    getHookStats(orgId: string, cabinetId: string): Observable<any> {
     const headers = this.getAuthHeaders();

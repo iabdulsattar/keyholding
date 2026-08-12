@@ -44,11 +44,17 @@ export class HookListComponent implements OnInit, AfterViewInit {
   cabinet: any = null;
   loading = true;
   error = '';
+  showAllHooks = false;
 
   activeTab = 'hooks';
   rows: HookRow[] = [];
   hooks: HookGridItem[] = [];
   stats: HookStats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
+
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 0;
+  totalItems = 0;
 
   private allHooksRaw: any[] = [];
 
@@ -66,6 +72,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.cabinetId = this.route.snapshot.paramMap.get('id') || '';
+    this.showAllHooks = this.route.snapshot.queryParamMap.get('all') === 'true';
     this.loadCabinetDetails();
     this.loadHooks();
   }
@@ -84,6 +91,10 @@ export class HookListComponent implements OnInit, AfterViewInit {
   }
 
   private loadCabinetDetails(): void {
+    if (this.showAllHooks) {
+      this.cabinet = null;
+      return;
+    }
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId || !this.cabinetId) return;
     this.keyVault.getCabinet(orgId, this.cabinetId).subscribe({
@@ -127,7 +138,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.error = '';
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
-    if (!orgId || !this.cabinetId) {
+    if (!orgId) {
       this.rows = [];
       this.hooks = [];
       this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
@@ -136,11 +147,51 @@ export class HookListComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.keyVault.listHooks(orgId, this.cabinetId, { page: 0, size: 100 }).subscribe({
-      next: (hooks: any[]) => {
-        this.allHooksRaw = hooks || [];
+    if (this.showAllHooks) {
+      this.keyVault.listAllHooks(orgId, { page: this.currentPage, size: this.pageSize }).subscribe({
+        next: (res: any) => {
+          const data = res?.data ?? res ?? {};
+          this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
+          this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
+          this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
+          this.currentPage = Number(data.page ?? data.number ?? this.currentPage ?? 0);
+          this.pageSize = Number(data.size ?? this.pageSize);
+          this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
+          this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
+          this.computeStatsFromHooks();
+          this.loading = false;
+          this.createIcons();
+        },
+        error: () => {
+          this.rows = [];
+          this.hooks = [];
+          this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
+          this.loading = false;
+          this.createIcons();
+        }
+      });
+      return;
+    }
+
+    if (!this.cabinetId) {
+      this.rows = [];
+      this.hooks = [];
+      this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
+      this.loading = false;
+      this.createIcons();
+      return;
+    }
+
+    this.keyVault.listHooks(orgId, this.cabinetId, { page: this.currentPage, size: this.pageSize }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
         this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
         this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
+        this.currentPage = Number(data.page ?? data.number ?? this.currentPage ?? 0);
+        this.pageSize = Number(data.size ?? this.pageSize);
+        this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
+        this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
         this.loadHookStats();
       },
       error: () => {
@@ -154,9 +205,13 @@ export class HookListComponent implements OnInit, AfterViewInit {
   }
 
   private loadHookStats(): void {
+    if (this.showAllHooks) {
+      this.loading = false;
+      this.createIcons();
+      return;
+    }
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId || !this.cabinetId) {
-      this.computeStatsFromHooks();
       this.loading = false;
       this.createIcons();
       return;
@@ -175,7 +230,6 @@ export class HookListComponent implements OnInit, AfterViewInit {
         this.createIcons();
       },
       error: () => {
-        this.computeStatsFromHooks();
         this.loading = false;
         this.createIcons();
       }
@@ -238,6 +292,40 @@ export class HookListComponent implements OnInit, AfterViewInit {
 
   switchTab(tab: string): void {
     this.activeTab = tab;
+  }
+
+  goToPage(page: number): void {
+    if (page < 0 || page >= this.totalPages) return;
+    this.currentPage = page;
+    this.loadHooks();
+  }
+
+  get startIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return this.currentPage * this.pageSize + 1;
+  }
+
+  get endIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return Math.min((this.currentPage + 1) * this.pageSize, this.totalItems);
+  }
+
+  get visiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.totalPages;
+    const current = this.currentPage;
+    if (total <= 7) {
+      for (let i = 0; i < total; i++) pages.push(i);
+    } else {
+      pages.push(0);
+      if (current > 3) pages.push('...');
+      const start = Math.max(1, current - 1);
+      const end = Math.min(total - 2, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 4) pages.push('...');
+      pages.push(total - 1);
+    }
+    return pages;
   }
 
   getHookBorder(hook: HookGridItem): string {

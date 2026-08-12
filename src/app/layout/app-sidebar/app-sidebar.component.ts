@@ -58,7 +58,7 @@ export class AppSidebarComponent implements OnInit {
       subItems: [
         { name: "Storage Locations", path: "/storage/locations" },
         { name: "Cabinets", path: "/storage/locations/cabinets" },
-        { name: "Hook List", path: "/storage/locations/cabinets/view/1/hooks" },
+        { name: "Hook List", path: "/storage/locations/cabinets/view/1/hooks", queryParams: { all: 'true' } },
       ],
     },
     {
