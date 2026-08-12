@@ -21,11 +21,11 @@
           <span class="text-slate-500">›</span>
           <a [routerLink]="['/storage/locations/cabinets']" class="hover:underline">Cabinets</a>
           <span class="text-slate-500">›</span>
-          <span class="text-slate-500">Add Cabinet</span>
+          <span class="text-slate-500">{{ editMode ? 'Edit Cabinet' : 'Add Cabinet' }}</span>
         </div>
 
-        <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Add Cabinet</h1>
-        <p class="text-sm text-slate-500 mt-0.5">Create a new cabinet to organize and store keys securely.</p>
+        <h1 class="text-xl sm:text-2xl font-bold text-slate-900">{{ editMode ? 'Edit Cabinet' : 'Add Cabinet' }}</h1>
+        <p class="text-sm text-slate-500 mt-0.5">{{ editMode ? 'Update cabinet details below.' : 'Create a new cabinet to organize and store keys securely.' }}</p>
       </div>
       <div class="flex items-center gap-3 shrink-0">
        

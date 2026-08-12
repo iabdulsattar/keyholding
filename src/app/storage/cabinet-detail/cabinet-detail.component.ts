@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { DeactivateCabinetModalComponent } from './deactivate-cabinet-modal/deactivate-cabinet-modal.component';
+import { ReactivateCabinetModalComponent } from './reactivate-cabinet-modal/reactivate-cabinet-modal.component';
 
 interface Hook {
   num: number;
@@ -43,7 +45,7 @@ interface Cabinet {
 @Component({
   selector: 'app-cabinet-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, DeactivateCabinetModalComponent, ReactivateCabinetModalComponent],
   templateUrl: './cabinet-detail.component.html',
   styles: [`
     .donut {
@@ -204,6 +206,24 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     this.isReactivateModalOpen = false;
   }
 
+  onCabinetDeactivated(): void {
+    if (this.cabinet) {
+      this.cabinet.status = 'Inactive';
+      this.cabinet.active = false;
+    }
+    this.isDeactivateModalOpen = false;
+    this.createIcons();
+  }
+
+  onCabinetReactivated(): void {
+    if (this.cabinet) {
+      this.cabinet.status = 'Active';
+      this.cabinet.active = true;
+    }
+    this.isReactivateModalOpen = false;
+    this.createIcons();
+  }
+
   toggleMoreMenu(): void {
     this.isMoreMenuOpen = !this.isMoreMenuOpen;
   }
@@ -212,40 +232,8 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     this.isMoreMenuOpen = false;
   }
 
-  confirmDeactivate(): void {
-    if (!this.cabinet) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
-    if (!orgId) return;
-    this.keyVault.deactivateCabinet(orgId, this.cabinet.id).subscribe({
-      next: () => {
-        this.cabinet!.status = 'Inactive';
-        this.cabinet!.active = false;
-        this.isDeactivateModalOpen = false;
-        this.createIcons();
-      },
-      error: () => {
-        this.isDeactivateModalOpen = false;
-        this.createIcons();
-      }
-    });
-  }
-
-  confirmReactivate(): void {
-    if (!this.cabinet) return;
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
-    if (!orgId) return;
-    this.keyVault.reactivateCabinet(orgId, this.cabinet.id).subscribe({
-      next: () => {
-        this.cabinet!.status = 'Active';
-        this.cabinet!.active = true;
-        this.isReactivateModalOpen = false;
-        this.createIcons();
-      },
-      error: () => {
-        this.isReactivateModalOpen = false;
-        this.createIcons();
-      }
-    });
+  getOrgId(): string {
+    return localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
   }
 
   onBack(): void {
