@@ -18,6 +18,7 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
   error = '';
   reactivating = false;
   reactivateReason = '';
+  submitted = false;
   reactivateReasonOptions: RichSelectOption[] = [
     { value: 'Location back in service', label: 'Location back in service' },
     { value: 'Renovation complete', label: 'Renovation complete' },
@@ -131,7 +132,9 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
   }
 
   confirmReactivate(): void {
-    if (!this.location) return;
+    this.submitted = true;
+    if (!this.reactivateReason || !this.location) return;
+    if (!this.locationId) return;
     this.reactivating = true;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
@@ -150,6 +153,10 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
         this.createIcons();
       }
     });
+  }
+
+  get reactivateReasonInvalid(): boolean {
+    return this.submitted && !this.reactivateReason;
   }
 
   formatDate(value: string | null | undefined): string {

@@ -18,6 +18,7 @@ export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit
   error = '';
   deactivating = false;
   deactivateReason = '';
+  submitted = false;
   deactivateReasonOptions: RichSelectOption[] = [
     { value: 'Location closed', label: 'Location closed' },
     { value: 'Under renovation', label: 'Under renovation' },
@@ -131,7 +132,9 @@ export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit
   }
 
   confirmDeactivate(): void {
-    if (!this.location) return;
+    this.submitted = true;
+    if (!this.deactivateReason || !this.location) return;
+    if (!this.locationId) return;
     this.deactivating = true;
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
@@ -150,6 +153,10 @@ export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit
         this.createIcons();
       }
     });
+  }
+
+  get deactivateReasonInvalid(): boolean {
+    return this.submitted && !this.deactivateReason;
   }
 
   formatDate(value: string | null | undefined): string {
