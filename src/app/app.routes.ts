@@ -161,11 +161,6 @@ export const routes: Routes = [
             title: 'Edit Cabinet | KeyVault Pro'
           },
           {
-            path: 'storage/locations/cabinets/view/:id',
-            loadComponent: () => import('./storage/cabinet-detail/cabinet-detail.component').then(m => m.CabinetDetailComponent),
-            title: 'Cabinet Detail | KeyVault Pro'
-          },
-          {
             path: 'storage/locations/cabinets/view/:id/hooks',
             loadComponent: () => import('./storage/cabinet-detail/hook-list.component').then(m => m.HookListComponent),
             title: 'Hook List | KeyVault Pro'
@@ -176,14 +171,19 @@ export const routes: Routes = [
             title: 'Assign Key to Hook | KeyVault Pro'
           },
           {
-            path: 'storage/locations/cabinets/view/:id/move-key/:hookId',
+            path: 'storage/locations/cabinets/view/:id/move-key',
             loadComponent: () => import('./storage/cabinet-detail/move-key-to-hook.component').then(m => m.MoveKeyToHookComponent),
             title: 'Move Key to Another Hook | KeyVault Pro'
           },
           {
-            path: 'storage/locations/cabinets/view/:id/remove-key/:hookId',
+            path: 'storage/locations/cabinets/view/:id/remove-key',
             loadComponent: () => import('./storage/cabinet-detail/remove-key-from-hook.component').then(m => m.RemoveKeyFromHookComponent),
             title: 'Remove Key from Hook | KeyVault Pro'
+          },
+          {
+            path: 'storage/locations/cabinets/view/:id',
+            loadComponent: () => import('./storage/cabinet-detail/cabinet-detail.component').then(m => m.CabinetDetailComponent),
+            title: 'Cabinet Detail | KeyVault Pro'
           },
           {
             path: 'sites/add-site',
