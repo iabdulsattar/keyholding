@@ -143,15 +143,31 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   }
 
   get totalHooks(): number {
-    return this.cabinets.reduce((sum, c) => sum + c.totalHooks, 0);
+    return this.cabinets.reduce((sum, c) => sum + (c.totalHooks || 0), 0);
   }
 
   get usedHooks(): number {
-    return this.cabinets.reduce((sum, c) => sum + c.usedHooks, 0);
+    return this.cabinets.reduce((sum, c) => sum + (c.usedHooks || 0), 0);
   }
 
   get availHooks(): number {
-    return this.cabinets.reduce((sum, c) => sum + c.availHooks, 0);
+    return this.cabinets.reduce((sum, c) => sum + (c.availHooks || 0), 0);
+  }
+
+  get activeCabinets(): number {
+    return this.cabinets.filter(c => c.status === 'Active').length;
+  }
+
+  get fullCabinets(): number {
+    return this.cabinets.filter(c => c.status === 'Full').length;
+  }
+
+  get inactiveCabinets(): number {
+    return this.cabinets.filter(c => c.status === 'Inactive').length;
+  }
+
+  get maintenanceCabinets(): number {
+    return this.cabinets.filter(c => c.status === 'Under Maintenance' || c.status === 'MAINTENANCE').length;
   }
 
   get uniqueTypes(): string[] {
