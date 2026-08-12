@@ -125,8 +125,13 @@
                 <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading storage locations...</td>
               </tr>
              } @else {
-               @for (location of filteredLocations; track location.id) {
-               <tr class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
+               @if (filteredLocations.length === 0) {
+                 <tr>
+                   <td colspan="8" class="px-5 py-8 text-center text-slate-400">No storage locations found.</td>
+                 </tr>
+               } @else {
+                 @for (location of filteredLocations; track location.id) {
+                 <tr class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
                <td class="px-5 py-4">
                  <div class="flex items-center gap-3">
                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
@@ -174,10 +179,12 @@
                  </div>
                </td>
              </tr>
-             }
-             }
-        </table>
-      </div>
+              }
+            }
+          }
+              </tbody>
+            </table>
+          </div>
 
       <!-- Mobile / tablet cards -->
       <div *ngFor="let location of filteredLocations" class="divide-y divide-slate-50 lg:hidden">
@@ -244,7 +251,7 @@
       </div>
 
       <!-- Empty state -->
-      <div *ngIf="filteredLocations.length === 0" class="p-8 text-center">
+      <div *ngIf="filteredLocations.length === 0" class="p-8 text-center lg:hidden">
         <i data-lucide="map-pin-off" class="h-10 w-10 text-slate-300 mx-auto mb-3"></i>
         <p class="text-slate-500 font-medium">No storage locations found.</p>
         <p class="text-xs text-slate-400 mt-1">There are no storage locations to display at this time.</p>
