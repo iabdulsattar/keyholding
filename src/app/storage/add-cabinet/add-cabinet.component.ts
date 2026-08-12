@@ -31,6 +31,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   cctvMonitored = true;
   alarmSystem = true;
   responsiblePerson = '';
+  installedBy = '';
   notes = '';
   installedOn = '';
 
@@ -118,7 +119,8 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
         this.fireRating = item.fireRating || '';
         this.cctvMonitored = item.cctvMonitored ?? true;
         this.alarmSystem = item.alarmSystem ?? true;
-        this.responsiblePerson = item.responsiblePerson || item.installedBy || '';
+        this.responsiblePerson = item.responsiblePerson || '';
+        this.installedBy = item.installedBy || '';
         this.notes = item.notes || '';
         this.installedOn = item.installedOn || '';
         this.loading = false;
@@ -215,6 +217,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       cctvMonitored: this.cctvMonitored,
       alarmSystem: this.alarmSystem,
       responsiblePerson: this.responsiblePerson,
+      installedBy: this.installedBy,
       notes: this.notes,
       installedOn: this.installedOn,
     };
