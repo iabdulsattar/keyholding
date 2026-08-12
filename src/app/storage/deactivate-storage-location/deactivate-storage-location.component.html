@@ -16,10 +16,10 @@
     <div class="mb-5 pb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200">
       <div >
         <div class="flex items-start gap-3">
-        <button class=" rounded-lg p-1.5 text-slate-500 hover:bg-slate-100">
+        <a [routerLink]="['/storage/locations/view', locationId]" class=" rounded-lg p-1.5 text-slate-500 hover:bg-slate-100">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
 
-        </button>
+        </a>
         <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Deactivate Storage Location</h1>          
         </div>
         <div>
@@ -39,7 +39,7 @@
       </div>
       <div class="flex shrink-0 items-center gap-2 sm:gap-3">
    
-        <a [routerLink]="['/storage/locations']" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-blue-600 hover:bg-slate-50">
+        <a [routerLink]="['/storage/locations/view', locationId]" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-blue-600 hover:bg-slate-50">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
           
           Back to List

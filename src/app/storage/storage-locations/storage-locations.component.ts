@@ -100,7 +100,8 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     const q = params?.q ?? this.searchTerm;
     const status = params?.status ?? this.activeFilter;
     const page = params?.page ?? this.currentPage;
-    this.keyVault.listStorageLocations(orgId, { page, size: this.pageSize, q: q || undefined, status: status === 'All Statuses' ? undefined : status }).subscribe({
+    const apiStatus = status === 'All Statuses' ? undefined : (status || '').toUpperCase().replace(/ /g, '_');
+    this.keyVault.listStorageLocations(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];

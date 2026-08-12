@@ -148,7 +148,7 @@ export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit
   }
 
   onCancel(): void {
-    this.router.navigate(['/storage/locations']);
+    this.router.navigate(['/storage/locations/view', this.locationId]);
   }
 
   confirmDeactivate(): void {
@@ -166,7 +166,7 @@ export class DeactivateStorageLocationComponent implements OnInit, AfterViewInit
         this.location.status = 'INACTIVE';
         this.deactivating = false;
         this.createIcons();
-        this.router.navigate(['/storage/locations']);
+        this.router.navigate(['/storage/locations/view', this.locationId]);
       },
       error: () => {
         this.deactivating = false;
