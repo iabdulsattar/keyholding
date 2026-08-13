@@ -34,6 +34,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   installedBy = '';
   notes = '';
   installedOn = '';
+  status: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' = 'ACTIVE';
 
   submitted = false;
   editMode = false;
@@ -123,6 +124,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
         this.installedBy = item.installedBy || '';
         this.notes = item.notes || '';
         this.installedOn = item.installedOn || '';
+        this.status = item.status || 'ACTIVE';
         this.loading = false;
         this.createIcons();
       },
@@ -165,7 +167,16 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   }
 
   onInstalledOnChange(event: any): void {
-    this.installedOn = event?.dateStr || '';
+    this.installedOn = event?.dateStr ? this.toIsoDate(event.dateStr) : '';
+  }
+
+  private toIsoDate(dateStr: string): string {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const [day, month, year] = parts;
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    return dateStr;
   }
 
   get storageLocationIdInvalid(): boolean {
@@ -228,6 +239,7 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
       installedBy: this.installedBy,
       notes: this.notes,
       installedOn: this.installedOn,
+      status: this.status,
     };
 
     this.saving = true;
