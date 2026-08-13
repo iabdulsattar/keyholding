@@ -452,26 +452,28 @@
 
           <div class="bg-white border-t border-slate-100 px-6 py-4 flex items-center justify-between">
             <p class="text-xs text-slate-500">Showing <span class="text-slate-800 font-semibold">{{ keysShowingStart }}</span> to <span class="text-slate-800 font-semibold">{{ keysShowingEnd }}</span> of <span class="text-slate-800 font-semibold">{{ filteredKeys.length }}</span> keys</p>
-            <div class="flex items-center gap-1">
-              <button (click)="keysPreviousPage()" [disabled]="keysPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-              @for (page of [].constructor(keysTotalPages); track $index) {
-                <button (click)="keysGoToPage($index + 1)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="$index + 1 === keysPage ? ' border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ $index + 1 }}</button>
-              }
-              <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-              <div class="relative ml-2">
-                <select (change)="onKeysRowsPerPageChange($event)" class="bg-white border border-slate-200 text-slate-600 font-semibold rounded-lg pl-2.5 pr-7 py-1.5 text-xs appearance-none focus:outline-none cursor-pointer transition hover:border-slate-300">
-                  <option value="8">8 / page</option>
-                  <option value="10">10 / page</option>
-                  <option value="25">25 / page</option>
-                  <option value="50">50 / page</option>
-                </select>
-                <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-              </div>
-           </div>
+               <div class="flex items-center gap-1">
+                 <button (click)="keysPreviousPage()" [disabled]="keysPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Previous page">
+                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-7"/></svg>
+                 </button>
+                 @for (p of keysVisiblePages; track p) {
+                   @if (p === '...') {
+                     <span class="px-1 text-slate-400 text-sm">...</span>
+                   } @else {
+                     <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
+                   }
+                 }
+                 <button (click)="keysGoToPage(keysTotalPages)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="keysPage === keysTotalPages ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ keysTotalPages }}</button>
+                 <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Next page">
+                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+               </button>
+               <div class="relative ml-2">
+                 <select [(ngModel)]="keysRowsPerPage" (ngModelChange)="onKeysRowsPerPageChange($event)" class="bg-white border border-slate-200 text-slate-600 font-semibold rounded-lg pl-2.5 pr-7 py-1.5 text-xs appearance-none focus:outline-none cursor-pointer transition hover:border-slate-300">
+                   <option *ngFor="let size of keysRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+                 </select>
+                 <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+               </div>
+            </div>
           </div>
 
           </div>
@@ -617,22 +619,25 @@
              <div class="bg-white border-t border-slate-100 px-6 py-4 flex items-center justify-between">
                <p class="text-xs text-slate-500">Showing {{ sitesShowingStart }} to {{ sitesShowingEnd }} of {{ filteredSites.length }} sites</p>
                <div class="flex items-center gap-4">
-                 <div class="flex items-center gap-1">
-                   <button (click)="sitesPreviousPage()" [disabled]="sitesPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === 1 ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
-                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-                   </button>
-                   @for (page of [].constructor(sitesTotalPages); track $index) {
-                   <button (click)="sitesGoToPage($index + 1)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="$index + 1 === sitesPage ? ' border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ $index + 1 }}</button>
-                   }
-                   <button (click)="sitesNextPage()" [disabled]="sitesPage === sitesTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === sitesTotalPages ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
+                  <div class="flex items-center gap-1">
+                    <button (click)="sitesPreviousPage()" [disabled]="sitesPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === 1 ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    @for (p of sitesVisiblePages; track p) {
+                      @if (p === '...') {
+                        <span class="px-1 text-slate-400 text-sm">...</span>
+                      } @else {
+                        <button (click)="sitesGoToPage(p)" [class]="sitesPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
+                      }
+                    }
+                    <button (click)="sitesGoToPage(sitesTotalPages)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="sitesPage === sitesTotalPages ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ sitesTotalPages }}</button>
+                    <button (click)="sitesNextPage()" [disabled]="sitesPage === sitesTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === sitesTotalPages ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                    </button>
                  </div>
-                 <select (change)="onRowsPerPageChange($event)" class="bg-white border border-slate-200 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none">
-                   <option value="8">8 / page</option>
-                   <option value="12">12 / page</option>
-                   <option value="25">25 / page</option>
-                 </select>
+                  <select [(ngModel)]="sitesRowsPerPage" (ngModelChange)="onRowsPerPageChange($event)" class="bg-white border border-slate-200 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none">
+                    <option *ngFor="let size of sitesRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+                  </select>
                </div>
              </div>
            </div>
@@ -1194,23 +1199,31 @@
               </table>
             </div>
 
-            <!-- Pagination -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
-              <div class="text-sm text-slate-500">Showing {{ documentsShowingStart }} to {{ documentsShowingEnd }} of {{ totalDocuments }} documents</div>
-              <div class="flex items-center gap-1">
-                <button (click)="documentsPreviousPage()" [disabled]="documentsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
-                </button>
-                <button (click)="documentsGoToPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border" [class.bg-white]="documentsPage === 1" [class.text-blue-500]="documentsPage === 1" [class.border-blue-500]="documentsPage === 1" [class.text-slate-600]="documentsPage !== 1" [class.hover:bg-slate-50]="documentsPage !== 1">1</button>
-                <button (click)="documentsGoToPage(2)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
-                <button (click)="documentsGoToPage(3)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
-                <span class="px-1 text-slate-400 text-sm">&#8230;</span>
-                <button (click)="documentsGoToPage(documentsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ documentsTotalPages }}</button>
-                <button (click)="documentsNextPage()" [disabled]="documentsPage === documentsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-                </button>
+              <!-- Pagination -->
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
+                <div class="flex items-center gap-3">
+                  <div class="text-sm text-slate-500">Showing {{ documentsShowingStart }} to {{ documentsShowingEnd }} of {{ totalDocuments }} documents</div>
+                  <select [(ngModel)]="documentsRowsPerPage" (ngModelChange)="onDocumentsRowsPerPageChange($event)" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option *ngFor="let size of documentsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+                  </select>
+                </div>
+               <div class="flex items-center gap-1">
+                  <button (click)="documentsPreviousPage()" [disabled]="documentsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  @for (p of documentsVisiblePages; track p) {
+                    @if (p === '...') {
+                      <span class="px-1 text-slate-400 text-sm">...</span>
+                    } @else {
+                      <button (click)="documentsGoToPage(p)" [class.bg-white]="documentsPage === p" [class.text-blue-500]="documentsPage === p" [class.border-blue-500]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                    }
+                  }
+                  <button (click)="documentsGoToPage(documentsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ documentsTotalPages }}</button>
+                  <button (click)="documentsNextPage()" [disabled]="documentsPage === documentsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                 </button>
+                </div>
               </div>
-            </div>
            </section>
 
          </div>
@@ -1335,16 +1348,19 @@
                      <option *ngFor="let size of contactsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
                    </select>
                  </div>
-                 <div class="flex items-center gap-1">
-                  <button (click)="contactsPreviousPage()" [disabled]="contactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
-                  </button>
-                  <button (click)="contactsGoToPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border" [class.bg-white]="contactsPage === 1" [class.text-blue-500]="contactsPage === 1" [class.border-blue-500]="contactsPage === 1" [class.text-slate-600]="contactsPage !== 1" [class.hover:bg-slate-50]="contactsPage !== 1">1</button>
-                  <button (click)="contactsGoToPage(2)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
-                  <button (click)="contactsGoToPage(3)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
-                  <span class="px-1 text-slate-400 text-sm">&#8230;</span>
-                  <button (click)="contactsGoToPage(contactsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ contactsTotalPages }}</button>
-                  <button (click)="contactsNextPage()" [disabled]="contactsPage === contactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                  <div class="flex items-center gap-1">
+                   <button (click)="contactsPreviousPage()" [disabled]="contactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                   </button>
+                   @for (p of contactsVisiblePages; track p) {
+                     @if (p === '...') {
+                       <span class="px-1 text-slate-400 text-sm">...</span>
+                     } @else {
+                       <button (click)="contactsGoToPage(p)" [class.bg-white]="contactsPage === p" [class.text-blue-500]="contactsPage === p" [class.border-blue-500]="contactsPage === p" [class.text-slate-600]="contactsPage !== p" [class.hover:bg-slate-50]="contactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                     }
+                   }
+                   <button (click)="contactsGoToPage(contactsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ contactsTotalPages }}</button>
+                   <button (click)="contactsNextPage()" [disabled]="contactsPage === contactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                   </button>
                 </div>
@@ -1484,14 +1500,19 @@
               <option *ngFor="let size of emergencyContactsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
             </select>
           </div>
-           <div class="flex items-center gap-1">
-             <button (click)="emergencyContactsPreviousPage()" [disabled]="emergencyContactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
-               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
-             </button>
-             @for (page of [].constructor(emergencyContactsTotalPages); track $index) {
-               <button (click)="emergencyContactsGoToPage($index + 1)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border" [class.bg-white]="$index + 1 === emergencyContactsPage" [class.text-blue-500]="$index + 1 === emergencyContactsPage" [class.border-blue-500]="$index + 1 === emergencyContactsPage" [class.text-slate-600]="$index + 1 !== emergencyContactsPage" [class.hover:bg-slate-50]="$index + 1 !== emergencyContactsPage">{{ $index + 1 }}</button>
-             }
-             <button (click)="emergencyContactsNextPage()" [disabled]="emergencyContactsPage === emergencyContactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+            <div class="flex items-center gap-1">
+               <button (click)="emergencyContactsPreviousPage()" [disabled]="emergencyContactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+               </button>
+               @for (p of emergencyContactsVisiblePages; track p) {
+                 @if (p === '...') {
+                   <span class="px-1 text-slate-400 text-sm">...</span>
+                 } @else {
+                   <button (click)="emergencyContactsGoToPage(p)" [class.bg-white]="emergencyContactsPage === p" [class.text-blue-500]="emergencyContactsPage === p" [class.border-blue-500]="emergencyContactsPage === p" [class.text-slate-600]="emergencyContactsPage !== p" [class.hover:bg-slate-50]="emergencyContactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                 }
+               }
+               <button (click)="emergencyContactsGoToPage(emergencyContactsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ emergencyContactsTotalPages }}</button>
+               <button (click)="emergencyContactsNextPage()" [disabled]="emergencyContactsPage === emergencyContactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
              </button>
            </div>

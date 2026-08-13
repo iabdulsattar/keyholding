@@ -55,21 +55,14 @@
                  @if (touched.has('email') && !email.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
                 <p class="field-hint">Enter a valid email address.</p>
               </div>
-              <div>
-                 <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg transition">
-                  <div class="flex gap-2">
-                    <select [(ngModel)]="phoneCountryCode" name="phoneCountryCode" class="field-input w-auto shrink-0 pr-8 appearance-none" [disabled]="saving">
-                      @for (country of countryCodes; track country.code) {
-                        <option [value]="country.code">{{ country.flag }} {{ country.code }}</option>
-                      }
-                    </select>
-                    <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
+               <div>
+                  <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg transition">
+                    <input type="text" placeholder="Enter phone number" class="field-input" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
                   </div>
-                 </div>
-                 @if (touched.has('phone') && !phone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
-                <p class="field-hint">Enter a valid phone number.</p>
-              </div>
+                  @if (touched.has('phone') && !phone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
+                 <p class="field-hint">Enter a valid phone number.</p>
+               </div>
               <div>
                 <label class="field-label">Department</label>
                 <app-rich-select [options]="departmentOptions" [(value)]="department" (valueChange)="markTouched('department')" [disabled]="saving" placeholder="Select department" class="w-full"></app-rich-select>

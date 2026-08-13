@@ -21,6 +21,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   stats: any = null;
   currentPage = 0;
   pageSize = 10;
+  pageSizeOptions: number[] = [10, 25, 50, 100];
   totalPages = 0;
   totalItems = 0;
 
@@ -180,6 +181,11 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   goToPage(page: number): void {
     if (page < 0 || page >= this.totalPages) return;
     this.currentPage = page;
+    this.loadStorageLocations({ q: this.searchTerm, status: this.activeFilter });
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 0;
     this.loadStorageLocations({ q: this.searchTerm, status: this.activeFilter });
   }
 

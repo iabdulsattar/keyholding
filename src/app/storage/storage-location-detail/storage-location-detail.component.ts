@@ -1,12 +1,13 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 
 @Component({
   selector: 'app-storage-location-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './storage-location-detail.component.html',
 })
 export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
@@ -14,6 +15,10 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
   location: any = null;
   loading = true;
   error = '';
+
+  cabinetsPage = 1;
+  cabinetsRowsPerPage = 8;
+  cabinetsRowsPerPageOptions: number[] = [6, 8, 12, 24];
 
   constructor(
     private route: ActivatedRoute,
@@ -149,6 +154,62 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
     if (s === 'INACTIVE') return 'bg-rose-500';
     if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') return 'bg-amber-500';
     return 'bg-slate-400';
+  }
+
+  get cabinetsPaginated(): any[] {
+    const cabinets = this.location?.cabinets || [];
+    const start = (this.cabinetsPage - 1) * this.cabinetsRowsPerPage;
+    return cabinets.slice(start, start + this.cabinetsRowsPerPage);
+  }
+
+  get cabinetsTotalPages(): number {
+    const cabinets = this.location?.cabinets || [];
+    return Math.max(1, Math.ceil(cabinets.length / this.cabinetsRowsPerPage));
+  }
+
+  get cabinetsShowingStart(): number {
+    const cabinets = this.location?.cabinets || [];
+    return cabinets.length === 0 ? 0 : (this.cabinetsPage - 1) * this.cabinetsRowsPerPage + 1;
+  }
+
+  get cabinetsShowingEnd(): number {
+    const cabinets = this.location?.cabinets || [];
+    return Math.min(this.cabinetsPage * this.cabinetsRowsPerPage, cabinets.length);
+  }
+
+  get cabinetsVisiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.cabinetsTotalPages;
+    const current = this.cabinetsPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
+  cabinetsPreviousPage(): void {
+    if (this.cabinetsPage > 1) this.cabinetsPage--;
+  }
+
+  cabinetsNextPage(): void {
+    if (this.cabinetsPage < this.cabinetsTotalPages) this.cabinetsPage++;
+  }
+
+  cabinetsGoToPage(page: number): void {
+    if (page >= 1 && page <= this.cabinetsTotalPages) this.cabinetsPage = page;
+  }
+
+  onCabinetsRowsPerPageChange(size: string): void {
+    this.cabinetsRowsPerPage = parseInt(size, 10) || 8;
+    this.cabinetsPage = 1;
   }
 
   formatDate(value: string | null | undefined): string {

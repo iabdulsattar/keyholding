@@ -55,18 +55,20 @@ export class ClientDetailComponent implements OnInit {
   client: Client | null = null;
   keys: KeyRecord[] = [];
   filteredKeys: KeyRecord[] = [];
-  keysPage = 1;
-  keysRowsPerPage = 8;
-  keysSearch = '';
-  keysStatus = 'All';
-  keysType = 'All';
-  sites: SiteRecord[] = [];
-  filteredSites: SiteRecord[] = [];
-  sitesPage = 1;
-  sitesRowsPerPage = 8;
-  sitesSearch = '';
-  sitesStatus = 'All';
-  sitesType = 'All';
+   keysPage = 1;
+   keysRowsPerPage = 8;
+   keysRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
+   keysSearch = '';
+   keysStatus = 'All';
+   keysType = 'All';
+   sites: SiteRecord[] = [];
+   filteredSites: SiteRecord[] = [];
+   sitesPage = 1;
+   sitesRowsPerPage = 8;
+   sitesRowsPerPageOptions: number[] = [8, 12, 25, 50, 100];
+   sitesSearch = '';
+   sitesStatus = 'All';
+   sitesType = 'All';
   loading = false;
   clientStats: any = null;
   siteStats: any = null;
@@ -97,7 +99,8 @@ showDeactivateClientModal = false;
   filteredDocuments: any[] = [];
   documentStats: any = null;
   documentsPage = 1;
-  documentsRowsPerPage = 8;
+   documentsRowsPerPage = 8;
+   documentsRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
   documentsSearch = '';
   documentsCategory = 'All';
   documentsLoading = false;
@@ -311,13 +314,31 @@ showDeactivateClientModal = false;
      return data.length === 0 ? 0 : (this.emergencyContactsPage - 1) * this.emergencyContactsRowsPerPage + 1;
    }
 
-   get emergencyContactsShowingEnd(): number {
-     const q = this.emergencyContactsSearch.toLowerCase().trim();
-     const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
-     return Math.min(this.emergencyContactsPage * this.emergencyContactsRowsPerPage, data.length);
-   }
+    get emergencyContactsShowingEnd(): number {
+      const q = this.emergencyContactsSearch.toLowerCase().trim();
+      const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
+      return Math.min(this.emergencyContactsPage * this.emergencyContactsRowsPerPage, data.length);
+    }
 
-   get totalEmergencyContacts(): number {
+    get emergencyContactsVisiblePages(): (number | '...')[] {
+      const pages: (number | '...')[] = [];
+      const total = this.emergencyContactsTotalPages;
+      const current = this.emergencyContactsPage;
+      if (total <= 7) {
+        for (let i = 1; i <= total; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        if (current > 3) pages.push('...');
+        const start = Math.max(2, current - 1);
+        const end = Math.min(total - 1, current + 1);
+        for (let i = start; i <= end; i++) pages.push(i);
+        if (current < total - 2) pages.push('...');
+        pages.push(total);
+      }
+      return pages;
+    }
+
+    get totalEmergencyContacts(): number {
      const q = this.emergencyContactsSearch.toLowerCase().trim();
      return q ? this.filteredEmergencyContacts.length : this.emergencyContacts.length;
    }
@@ -679,6 +700,24 @@ viewEmergencyContact(contactId: string): void {
     return Math.min(this.documentsPage * this.documentsRowsPerPage, data.length);
   }
 
+  get documentsVisiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.documentsTotalPages;
+    const current = this.documentsPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
   get documentCategories(): string[] {
     const categories = Array.from(new Set(this.documents.map(d => d.category).filter(Boolean)));
     return ['All', ...categories.sort()];
@@ -730,9 +769,8 @@ viewEmergencyContact(contactId: string): void {
     if (page >= 1 && page <= this.documentsTotalPages) this.documentsPage = page;
   }
 
-  onDocumentsRowsPerPageChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.documentsRowsPerPage = parseInt(select.value);
+  onDocumentsRowsPerPageChange(size: string): void {
+    this.documentsRowsPerPage = parseInt(size, 10) || 8;
     this.documentsPage = 1;
   }
 
@@ -911,6 +949,24 @@ viewEmergencyContact(contactId: string): void {
     return Math.min(this.sitesPage * this.sitesRowsPerPage, this.filteredSites.length);
   }
 
+  get sitesVisiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.sitesTotalPages;
+    const current = this.sitesPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
   get totalKeys(): number {
     return this.keys.length;
   }
@@ -930,6 +986,24 @@ viewEmergencyContact(contactId: string): void {
 
   get keysShowingEnd(): number {
     return Math.min(this.keysPage * this.keysRowsPerPage, this.filteredKeys.length);
+  }
+
+  get keysVisiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.keysTotalPages;
+    const current = this.keysPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
   }
 
   get keyStatuses(): string[] {
@@ -989,9 +1063,8 @@ viewEmergencyContact(contactId: string): void {
     }
   }
 
-  onKeysRowsPerPageChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.keysRowsPerPage = parseInt(select.value);
+  onKeysRowsPerPageChange(size: string): void {
+    this.keysRowsPerPage = parseInt(size, 10) || 8;
     this.keysPage = 1;
   }
 
@@ -1157,9 +1230,8 @@ viewEmergencyContact(contactId: string): void {
     }
   }
 
-  onRowsPerPageChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.sitesRowsPerPage = parseInt(select.value);
+  onRowsPerPageChange(size: string): void {
+    this.sitesRowsPerPage = parseInt(size, 10) || 8;
     this.sitesPage = 1;
   }
 

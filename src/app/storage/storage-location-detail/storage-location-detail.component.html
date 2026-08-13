@@ -368,7 +368,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cabinet of location.cabinets"
+              <tr *ngFor="let cabinet of cabinetsPaginated"
                   class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
                 <td class="px-5 py-4 font-medium text-blue-500">{{ cabinet.code }}</td>
                 <td class="px-5 py-4 text-slate-700">{{ cabinet.name }}</td>
@@ -395,7 +395,7 @@
         </div>
 
         <!-- Mobile cards -->
-        <div *ngFor="let cabinet of location.cabinets" class="divide-y divide-slate-50 lg:hidden">
+        <div *ngFor="let cabinet of cabinetsPaginated" class="divide-y divide-slate-50 lg:hidden">
           <div class="p-4">
             <div class="flex items-center justify-between">
               <div>
@@ -416,22 +416,35 @@
           </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <span class="text-slate-400">Showing 1 to {{ location.cabinets?.length }} of {{ location.cabinets?.length }} cabinets</span>
-          <div class="flex items-center gap-2">
-            <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">
-              <i data-lucide="chevron-left" class="h-4 w-4"></i>
-            </button>
-            <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 font-medium text-white">1</button>
-            <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">2</button>
-            <button class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">
-              <i data-lucide="chevron-right" class="h-4 w-4"></i>
-            </button>
-          </div>
-        </div>
-      </div>
+         <!-- Pagination -->
+         <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+           <div class="flex items-center gap-3">
+             <span class="text-slate-700">Showing {{ cabinetsShowingStart }} to {{ cabinetsShowingEnd }} of {{ location.cabinets?.length }} cabinets</span>
+             <select [(ngModel)]="cabinetsRowsPerPage" (ngModelChange)="onCabinetsRowsPerPageChange($event)" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+               <option *ngFor="let size of cabinetsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+             </select>
+           </div>
+           <div class="flex items-center gap-1">
+             <button (click)="cabinetsPreviousPage()" [disabled]="cabinetsPage === 1" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+             </button>
+             @for (p of cabinetsVisiblePages; track p) {
+               @if (p === '...') {
+                 <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
+               } @else {
+                 <button (click)="cabinetsGoToPage(p)" [class.bg-blue-600]="cabinetsPage === p" [class.text-white]="cabinetsPage === p" [class.border-slate-200]="cabinetsPage !== p" [class.text-slate-500]="cabinetsPage !== p" class="flex h-8 w-8 items-center justify-center rounded-lg border font-medium hover:bg-slate-50">
+                   {{ p }}
+                 </button>
+               }
+             }
+             <button (click)="cabinetsGoToPage(cabinetsTotalPages)" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">{{ cabinetsTotalPages }}</button>
+             <button (click)="cabinetsNextPage()" [disabled]="cabinetsPage >= cabinetsTotalPages" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+             </button>
+           </div>
+         </div>
+         </div>
+       </div>
 
-    </div>
-  </div>
+     </div>
 </ng-template>
