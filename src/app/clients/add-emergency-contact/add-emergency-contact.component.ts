@@ -183,6 +183,10 @@ export class AddEmergencyContactComponent implements OnInit {
     this.touched.add('firstName');
     this.touched.add('lastName');
     this.touched.add('email');
+    this.touched.add('department');
+    this.touched.add('phone');
+    this.touched.add('availability');
+    this.touched.add('status');
 
     if (!this.firstName.trim() || !this.lastName.trim()) {
       this.toast.error('First name and last name are required');
@@ -190,6 +194,22 @@ export class AddEmergencyContactComponent implements OnInit {
     }
     if (!this.email.trim()) {
       this.toast.error('Email address is required');
+      return;
+    }
+    if (!this.department) {
+      this.toast.error('Department is required');
+      return;
+    }
+    if (!this.phone.trim()) {
+      this.toast.error('Phone number is required');
+      return;
+    }
+    if (!this.availability) {
+      this.toast.error('Availability is required');
+      return;
+    }
+    if (!this.status) {
+      this.toast.error('Status is required');
       return;
     }
 

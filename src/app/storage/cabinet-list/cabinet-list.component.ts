@@ -33,6 +33,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   searchTerm = '';
   activeFilter = 'All Statuses';
   activeTypeFilter = 'All Types';
+  allTypes: string[] = [];
 
   currentPage = 0;
   pageSize = 10;
@@ -46,7 +47,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   ];
 
   get activeTypeFilterOptions(): RichSelectOption[] {
-    return [{ value: 'All Types', label: 'All Types' }, ...this.uniqueTypes.map(t => ({ value: t, label: t }))];
+    return [{ value: 'All Types', label: 'All Types' }, ...this.allTypes.map(t => ({ value: t, label: t }))];
   }
 
   constructor(private keyVault: KeyVaultService, private router: Router) {}
@@ -68,8 +69,8 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  private loadCabinets(params?: { q?: string; status?: string; cabinetType?: string; page?: number }): void {
-    this.loading = true;
+  private loadCabinets(params?: { q?: string; status?: string; cabinetType?: string; page?: number }, showLoading = true): void {
+    if (showLoading) this.loading = true;
     this.error = '';
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
@@ -88,6 +89,8 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
+        const rawTypes = items.map((c: any) => c.cabinetType || c.type).filter((t: any) => !!t) as string[];
+        this.allTypes = [...new Set([...this.allTypes, ...rawTypes])];
         const normalized = (items && items.length ? items : []).map((c: any) => this.normalizeCabinet(c));
         this.cabinets = normalized;
         this.currentPage = Number(data.page ?? data.number ?? page ?? 0);
@@ -135,17 +138,17 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
 
   onSearch(): void {
     this.currentPage = 0;
-    this.loadCabinets({ q: this.searchTerm });
+    this.loadCabinets({ q: this.searchTerm }, false);
   }
 
   onStatusFilterChange(): void {
     this.currentPage = 0;
-    this.loadCabinets({ status: this.activeFilter });
+    this.loadCabinets({ status: this.activeFilter }, false);
   }
 
   onTypeFilterChange(): void {
     this.currentPage = 0;
-    this.loadCabinets({ cabinetType: this.activeTypeFilter });
+    this.loadCabinets({ cabinetType: this.activeTypeFilter }, false);
   }
 
   goToPage(page: number): void {
@@ -208,10 +211,6 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
 
   get maintenanceCabinets(): number {
     return this.cabinets.filter(c => c.status === 'Under Maintenance' || c.status === 'MAINTENANCE').length;
-  }
-
-  get uniqueTypes(): string[] {
-    return [...new Set(this.cabinets.map(c => c.type).filter(t => !!t))];
   }
 
   get utilization(): number {
