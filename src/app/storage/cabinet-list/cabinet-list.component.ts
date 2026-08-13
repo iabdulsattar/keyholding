@@ -42,7 +42,6 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   statusFilterOptions: RichSelectOption[] = [
     { value: 'All Statuses', label: 'All Statuses' },
     { value: 'Active', label: 'Active' },
-    { value: 'Full', label: 'Full' },
     { value: 'Inactive', label: 'Inactive' },
   ];
 
@@ -201,10 +200,6 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
 
   get activeCabinets(): number {
     return this.cabinets.filter(c => c.status === 'Active').length;
-  }
-
-  get fullCabinets(): number {
-    return this.cabinets.filter(c => c.status === 'Full').length;
   }
 
   get inactiveCabinets(): number {
