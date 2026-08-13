@@ -45,24 +45,29 @@
            @if (touched.has('lastName') && !lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1.5">Department <span class="text-red-500">*</span></label>
-          <app-rich-select [options]="departmentOptions" [(value)]="department" (valueChange)="markTouched('department')" [disabled]="saving" placeholder="Select department" class="w-full"></app-rich-select>
-          
+           <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('department') && !department" [class.text-slate-700]="!(touched.has('department') && !department)">Department <span class="text-red-500">*</span></label>
+           <div [class.border-rose-500]="touched.has('department') && !department" class="rounded-lg transition">
+             <app-rich-select [options]="departmentOptions" [(value)]="department" (valueChange)="markTouched('department')" [disabled]="saving" placeholder="Select department" class="w-full"></app-rich-select>
+           </div>
+           @if (touched.has('department') && !department) { <p class="text-xs text-rose-600 mt-1">Department is required</p> }
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-       <div>
-                 <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number <span class="text-rose-500">*</span></label>
-                 <div class="flex gap-2">
-                   <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
-                     🇬🇧 +44
-                     <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                   </button>
-                    <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" name="phone" [disabled]="saving" />
-                 </div>
-                 <p class="field-hint">Enter a valid phone number.</p>
-               </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
+                  <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg transition">
+                    <div class="flex gap-2">
+                      <button type="button" class="flex items-center gap-1 px-2.5 rounded-lg border border-slate-200 text-sm shrink-0">
+                        🇬🇧 +44
+                        <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                      </button>
+                       <input type="text" placeholder="Enter phone number" class="field-input flex-1" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
+                    </div>
+                  </div>
+                  @if (touched.has('phone') && !phone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone number is required</p> }
+                  <p class="field-hint">Enter a valid phone number.</p>
+                </div>
         <div>
            <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-700]="!(touched.has('email') && !email.trim())">Email Address <span class="text-red-500">*</span></label>
            <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg transition">
@@ -72,18 +77,24 @@
           <p class="text-xs text-slate-500 font-medium mt-1.5">Enter a valid email address.</p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1.5">Availability <span class="text-red-500">*</span></label>
-          <app-rich-select [options]="availabilityOptions" [(value)]="availability" (valueChange)="markTouched('availability')" [disabled]="saving" placeholder="Select availability" class="w-full"></app-rich-select>
-          <p class="text-xs text-slate-500 font-medium mt-1.5">When can this contact be reached?</p>
+           <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('availability') && !availability" [class.text-slate-700]="!(touched.has('availability') && !availability)">Availability <span class="text-red-500">*</span></label>
+           <div [class.border-rose-500]="touched.has('availability') && !availability" class="rounded-lg transition">
+             <app-rich-select [options]="availabilityOptions" [(value)]="availability" (valueChange)="markTouched('availability')" [disabled]="saving" placeholder="Select availability" class="w-full"></app-rich-select>
+           </div>
+           @if (touched.has('availability') && !availability) { <p class="text-xs text-rose-600 mt-1">Availability is required</p> }
+           <p class="text-xs text-slate-500 font-medium mt-1.5">When can this contact be reached?</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-        <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1.5">Status <span class="text-rose-500">*</span></label>
-                <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
-                <p class="field-hint">Set the status of this contact.</p>
-              </div>
+               <div>
+                 <label class="block text-sm font-medium mb-1.5" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-700]="!(touched.has('status') && !status)">Status <span class="text-rose-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg transition">
+                   <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
+                 </div>
+                 @if (touched.has('status') && !status) { <p class="text-xs text-rose-600 mt-1">Status is required</p> }
+                 <p class="field-hint">Set the status of this contact.</p>
+               </div>
               
       </div>  
             

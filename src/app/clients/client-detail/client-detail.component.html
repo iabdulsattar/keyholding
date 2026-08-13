@@ -1313,14 +1313,16 @@
                            <span class="badge {{ contactStatusClass(contact.status) }}">{{ contact.status }}</span>
                         </td>
                         <td class="td text-slate-600 text-[14px]">{{ contact.primary ? 'Yes' : 'No' }}</td>
-                         <td class="td">
-                             <div class="flex items-center justify-end gap-3 text-slate-400">
-                                <button (click)="viewContact(contact.id)" class="flex items-center justify-center hover:text-blue-600 text-slate-600 cursor-pointer" title="View contact">
-                                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                 </button>
-                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
-                               </div>
-                          </td>
+                          <td class="td">
+                              <div class="flex items-center justify-end gap-3 text-slate-400">
+                                 <button (click)="viewContact(contact.id)" class="flex items-center justify-center hover:text-blue-600 text-slate-600 cursor-pointer" title="View contact">
+                                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                  </button>
+                                  <button (click)="deleteContact(contact.id)" class="flex items-center justify-center hover:text-red-600 text-slate-600 cursor-pointer" title="Delete contact">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                  </button>
+                                </div>
+                           </td>
                       </tr>
                     }
                   </tbody>
@@ -1453,14 +1455,16 @@
                    <td class="td">
                      <span class="badge {{ ec.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">{{ ec.status }}</span>
                    </td>
-                      <td class="td">
-                        <div class="flex items-center justify-end gap-3 text-slate-400">
-                          <button (click)="viewEmergencyContact(ec.id)" class="hover:text-blue-600 cursor-pointer" title="View">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                          </button>
-                          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
-                        </div>
-                      </td>
+                       <td class="td">
+                         <div class="flex items-center justify-end gap-3 text-slate-400">
+                           <button (click)="viewEmergencyContact(ec.id)" class="hover:text-blue-600 cursor-pointer" title="View">
+                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                           </button>
+                           <button (click)="deleteEmergencyContact(ec.id)" class="hover:text-red-600 cursor-pointer" title="Delete">
+                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                           </button>
+                         </div>
+                       </td>
                  </tr>
                }
                @empty {
