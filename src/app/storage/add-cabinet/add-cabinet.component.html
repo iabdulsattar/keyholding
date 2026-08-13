@@ -89,10 +89,10 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 border-b border-slate-100 pb-5">
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-1.5">Number of Hooks (Slots) <span class="text-rose-500">*</span></label>
-              <input type="number" [(ngModel)]="numberOfHooks" min="1" max="200" placeholder="Enter number of hooks" required
+              <input type="number" [(ngModel)]="numberOfHooks" [min]="numberOfHooksMin" max="200" placeholder="Enter number of hooks" required
                 class="w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!numberOfHooksInvalid" [class.border-rose-400]="numberOfHooksInvalid">
-              <p class="mt-1 text-xs text-rose-500" *ngIf="numberOfHooksInvalid">Number of hooks must be at least 1.</p>
+              <p class="mt-1 text-xs text-rose-500" *ngIf="numberOfHooksInvalid">{{ numberOfHooksErrorMessage }}</p>
               <p class="mt-1 text-xs text-slate-500 font-medium" *ngIf="!numberOfHooksInvalid">Total number of hooks/slots available in this cabinet.</p>
             </div>
             <div>

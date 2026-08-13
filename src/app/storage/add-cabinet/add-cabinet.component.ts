@@ -187,6 +187,14 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+  get numberOfHooksErrorMessage(): string {
+    if (!this.numberOfHooks) return 'Number of hooks is required.';
+    if (this.editMode && this.numberOfHooks < this.originalTotalHooks) {
+      return `Number of hooks cannot be less than the current value (${this.originalTotalHooks}).`;
+    }
+    return 'Number of hooks must be at least 1.';
+  }
+
   get securityLevelInvalid(): boolean {
     return this.submitted && !this.securityLevel;
   }

@@ -75,6 +75,9 @@ export class HookListComponent implements OnInit, AfterViewInit {
     this.showAllHooks = this.route.snapshot.queryParamMap.get('all') === 'true';
     this.loadCabinetDetails();
     this.loadHooks();
+    if (this.showAllHooks) {
+      this.loadAllHooksStats();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -148,7 +151,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
     }
 
     if (this.showAllHooks) {
-      this.keyVault.listAllHooks(orgId, { page: this.currentPage, size: this.pageSize }).subscribe({
+      this.keyVault.listAllCabinetHooks(orgId, { assigned: 'ALL', page: this.currentPage, size: this.pageSize }).subscribe({
         next: (res: any) => {
           const data = res?.data ?? res ?? {};
           this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
@@ -158,7 +161,6 @@ export class HookListComponent implements OnInit, AfterViewInit {
           this.pageSize = Number(data.size ?? this.pageSize);
           this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
           this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
-          this.computeStatsFromHooks();
           this.loading = false;
           this.createIcons();
         },
@@ -230,6 +232,35 @@ export class HookListComponent implements OnInit, AfterViewInit {
         this.createIcons();
       },
       error: () => {
+        this.loading = false;
+        this.createIcons();
+      }
+    });
+  }
+
+  private loadAllHooksStats(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId) {
+      this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
+      this.loading = false;
+      this.createIcons();
+      return;
+    }
+    this.keyVault.getCabinetHooksStats(orgId).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        this.stats = {
+          totalHooks: data.totalHooks || data.hooks || 0,
+          keyHooked: data.keyHooked || data.keysOnHooks || 0,
+          keyInUse: data.keyInUse || data.inUse || 0,
+          available: data.available || data.availableHooks || 0,
+          damaged: data.damaged || data.hookDamaged || 0,
+        };
+        this.loading = false;
+        this.createIcons();
+      },
+      error: () => {
+        this.stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
         this.loading = false;
         this.createIcons();
       }

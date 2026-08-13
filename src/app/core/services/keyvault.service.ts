@@ -1110,12 +1110,29 @@ export class KeyVaultService {
       return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/hooks${query ? `?${query}` : ''}`, headers);
     }
 
-   getHookStats(orgId: string, cabinetId: string): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/stats`, headers);
-   }
+    listAllCabinetHooks(orgId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      if (params?.q) q.set('q', params.q);
+      if (params?.status) q.set('status', params.status);
+      if (params?.assigned) q.set('assigned', params.assigned);
+      q.set('page', String(params?.page ?? 0));
+      q.set('size', String(params?.size ?? 20));
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/hooks${query ? `?${query}` : ''}`, headers);
+    }
 
-   getHook(orgId: string, cabinetId: string, hookId: string): Observable<any> {
+    getHookStats(orgId: string, cabinetId: string): Observable<any> {
+     const headers = this.getAuthHeaders();
+     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/stats`, headers);
+    }
+
+    getCabinetHooksStats(orgId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/hooks/stats`, headers);
+    }
+
+    getHook(orgId: string, cabinetId: string, hookId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}`, headers);
    }
