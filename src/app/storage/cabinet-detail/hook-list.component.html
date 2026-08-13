@@ -97,70 +97,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Cabinet summary card -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 mb-6" *ngIf="!showAllHooks">
-      <div class="flex flex-col lg:flex-row lg:items-center gap-6">
-
-        <!-- Cabinet info -->
-        <div class="flex items-start gap-4 lg:min-w-[300px]">
-          <div class="w-16 h-20 sm:w-20 sm:h-24 rounded-lg bg-slate-800 flex flex-col items-center justify-center gap-1 shrink-0 p-2">
-            <div class="grid grid-cols-2 gap-1 w-full">
-              <div class="h-2 rounded-sm bg-cyan-400"></div>
-              <div class="h-2 rounded-sm bg-slate-500"></div>
-              <div class="h-2 rounded-sm bg-slate-500"></div>
-              <div class="h-2 rounded-sm bg-cyan-400"></div>
-              <div class="h-2 rounded-sm bg-slate-500"></div>
-              <div class="h-2 rounded-sm bg-cyan-400"></div>
-            </div>
-            <div class="w-6 h-6 rounded-full border-2 border-slate-400 mt-2"></div>
-          </div>
-          <div class="min-w-0">
-            <div class="flex items-center gap-2 flex-wrap mb-2">
-              <h2 class="font-semibold text-slate-900 text-base sm:text-lg">{{ cabinet?.name || 'Cabinet Detail' }}</h2>
-              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700">{{ cabinet?.status || 'Active' }}</span>
-            </div>
-            <dl class="text-sm space-y-1">
-              <div class="flex gap-2"><dt class="text-slate-400 w-24 shrink-0">Cabinet Code</dt><dd class="text-slate-700">{{ cabinet?.code || '—' }}</dd></div>
-              <div class="flex gap-2"><dt class="text-slate-400 w-24 shrink-0">Cabinet Type</dt><dd class="text-slate-700">{{ cabinet?.type || '—' }}</dd></div>
-              <div class="flex gap-2"><dt class="text-slate-400 w-24 shrink-0">Location</dt><dd class="text-indigo-600">{{ cabinet?.storageLocation || '—' }}</dd></div>
-              <div class="flex gap-2"><dt class="text-slate-400 w-24 shrink-0">Floor / Area</dt><dd class="text-slate-700">{{ cabinet?.floor || '—' }}</dd></div>
-            </dl>
-          </div>
-        </div>
-
-        <!-- Stat pills -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 flex-1">
-          <div class="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200 py-3 px-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3zM9 12v4a3 3 0 006 0v-1"/></svg>
-            <span class="text-xl font-bold text-slate-900">{{ stats.totalHooks }}</span>
-            <span class="text-xs text-slate-500 text-center">Total Hooks</span>
-          </div>
-          <div class="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200 py-3 px-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
-            <span class="text-xl font-bold text-slate-900">{{ stats.keyHooked }}</span>
-            <span class="text-xs text-slate-500 text-center">Key Hooked</span>
-          </div>
-          <div class="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200 py-3 px-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
-            <span class="text-xl font-bold text-slate-900">{{ stats.keyInUse }}</span>
-            <span class="text-xs text-slate-500 text-center">Key In Use</span>
-          </div>
-          <div class="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200 py-3 px-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
-            <span class="text-xl font-bold text-slate-900">{{ stats.available }}</span>
-            <span class="text-xs text-slate-500 text-center">Available for Key</span>
-          </div>
-          <div class="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200 py-3 px-2 col-span-2 sm:col-span-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z"/></svg>
-            <span class="text-xl font-bold text-slate-900">{{ stats.damaged }}</span>
-            <span class="text-xs text-slate-500 text-center">Hook Damaged</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
+    
     <!-- Main grid: table + sidebar -->
     <div class="grid grid-cols-1 xl:grid-cols-12 xl:gap-5">
 
@@ -237,15 +174,15 @@
       </div>
     
       <!-- Left: tabs + table -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-5">
+      <div class="bg-white rounded-lg border border-slate-100 overflow-hidden mb-5">
 
         <!-- Tabs -->
-        <div class="border-b border-slate-200 px-4 sm:px-6 overflow-x-auto scrollbar-thin">
+        <div class="border-b border-slate-100 px-4 sm:px-6 overflow-x-auto scrollbar-thin">
           <div class="flex gap-6 whitespace-nowrap text-sm font-medium">
-            <button (click)="switchTab('hook-grid')" [class]="activeTab === 'hook-grid' ? 'py-4 text-indigo-600 border-b-2 border-indigo-600' : 'py-4 text-slate-400 hover:text-slate-600'">Hook Grid</button>
-            <button (click)="switchTab('hooks')" [class]="activeTab === 'hooks' ? 'py-4 text-indigo-600 border-b-2 border-indigo-600' : 'py-4 text-slate-400 hover:text-slate-600'">Hook List</button>
-            <button (click)="switchTab('key-assignments')" [class]="activeTab === 'key-assignments' ? 'py-4 text-indigo-600 border-b-2 border-indigo-600' : 'py-4 text-slate-400 hover:text-slate-600'">Key Assignments</button>
-            <button (click)="switchTab('activity-log')" [class]="activeTab === 'activity-log' ? 'py-4 text-indigo-600 border-b-2 border-indigo-600' : 'py-4 text-slate-400 hover:text-slate-600'">Activity Log</button>
+            <button (click)="switchTab('hook-grid')" [class]="activeTab === 'hook-grid' ? 'py-4 text-blue-600 border-b-2 border-blue-600' : 'py-4 text-slate-500 hover:text-slate-600'">Hook Grid</button>
+            <button (click)="switchTab('hooks')" [class]="activeTab === 'hooks' ? 'py-4 text-blue-600 border-b-2 border-blue-600' : 'py-4 text-slate-500 hover:text-slate-600'">Hook List</button>
+            <button (click)="switchTab('key-assignments')" [class]="activeTab === 'key-assignments' ? 'py-4 text-blue-600 border-b-2 border-blue-600' : 'py-4 text-slate-500 hover:text-slate-600'">Key Assignments</button>
+            <button (click)="switchTab('activity-log')" [class]="activeTab === 'activity-log' ? 'py-4 text-blue-600 border-b-2 border-blue-600' : 'py-4 text-slate-500 hover:text-slate-600'">Activity Log</button>
           </div>
         </div>
 
@@ -258,12 +195,12 @@
               <label class="sr-only">Search</label>
               <div class="relative">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
-                <input type="text" placeholder="Search hook number..." class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <input type="text" placeholder="Search hook number..." class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
             </div>
             <div class="w-full md:w-44">
-              <label class="block text-xs text-slate-500 mb-1">Status</label>
-              <select class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <label class="block text-xs text-slate-600  mb-1">Status</label>
+              <select class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <option>All Status</option>
                 <option>Key Hooked</option>
                 <option>Available for Key</option>
@@ -272,12 +209,12 @@
               </select>
             </div>
             <div class="w-full md:w-44">
-              <label class="block text-xs text-slate-500 mb-1">Assigned Key</label>
-              <select class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <label class="block text-xs text-slate-600 mb-1">Assigned Key</label>
+              <select class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <option>All</option>
               </select>
             </div>
-            <button class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shrink-0">
+            <button class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-sm font-medium text-blue-600 hover:bg-slate-50 shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 8h12M9 12h6M11 16h2"/></svg>
               Filter
             </button>
@@ -287,7 +224,7 @@
           <div class="overflow-x-auto scrollbar-thin">
             <table class="w-full text-sm min-w-[720px]">
               <thead>
-                <tr class="text-left text-slate-400 border-b border-slate-100">
+                <tr class="text-left text-slate-600 border-b border-slate-100">
                   <th class="font-medium py-3 px-4 sm:px-6">Hook No.</th>
                   <th class="font-medium py-3 px-2">Status</th>
                   <th class="font-medium py-3 px-2">Assigned Key</th>
@@ -301,11 +238,12 @@
                 <tr *ngFor="let row of rows" class="hover:bg-slate-50">
                   <td class="py-3 px-4 sm:px-6 font-medium text-slate-700 whitespace-nowrap">{{ row.no }}</td>
                   <td class="py-3 px-2 whitespace-nowrap">
-                    <span class="inline-block px-2.5 py-1 rounded-full text-xs font-medium" [ngClass]="statusStyles[row.status]">{{ row.status }}</span>
+                    <span class="inline-block px-2.5 py-1 rounded-lg text-xs font-medium" [ngClass]="statusStyles[row.status]">{{ row.status }}</span>
                   </td>
                   <td class="py-3 px-2 whitespace-nowrap text-slate-700">
                     <span *ngIf="row.key !== '-'; else noKey" class="inline-flex items-center gap-1.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-slate-500"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+              
                       {{ row.key }}
                     </span>
                     <ng-template #noKey><span class="text-slate-300">-</span></ng-template>
@@ -313,20 +251,15 @@
                   <td class="py-3 px-2 whitespace-nowrap text-slate-500">{{ row.keyId }}</td>
                   <td class="py-3 px-2 whitespace-nowrap text-slate-500">{{ row.type }}</td>
                   <td class="py-3 px-2 whitespace-nowrap text-slate-500">
-                    {{ formatDate(row.updated) }}<br/><span class="text-xs text-slate-400">by {{ row.by }}</span>
+                    {{ formatDate(row.updated) }}<br/><span class="text-xs text-slate-500">by {{ row.by }}</span>
                   </td>
                    <td class="py-3 px-2 pr-4 sm:pr-6 whitespace-nowrap text-right">
                      <div class="inline-flex items-center gap-1">
-                       <button class="p-1.5 rounded hover:bg-slate-100 text-slate-400" aria-label="View">
+                       <button class="p-1.5 rounded hover:bg-slate-100 text-blue-500" aria-label="View">
                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.437 0 .644C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                        </button>
-                         <a [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'move-key']" [queryParams]="{hookId: row.hookId}" class="p-1.5 rounded hover:bg-slate-100 text-slate-400" aria-label="Move key">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg>
-                         </a>
-                         <a [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'remove-key']" [queryParams]="{hookId: row.hookId}" class="p-1.5 rounded hover:bg-slate-100 text-slate-400" aria-label="Remove key">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                         </a>
-                       <button class="p-1.5 rounded hover:bg-slate-100 text-slate-400" aria-label="More options">
+                         
+                       <button class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="More options">
                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
                        </button>
                      </div>
@@ -347,7 +280,7 @@
                 @if (p === '...') {
                   <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
                 } @else {
-                  <button (click)="goToPage(p)" [class.bg-indigo-600]="currentPage === p" [class.text-white]="currentPage === p" [class.border-slate-200]="currentPage !== p" [class.text-slate-500]="currentPage !== p" class="flex h-8 w-8 items-center justify-center rounded-md border font-medium hover:bg-slate-50">
+                  <button (click)="goToPage(p)" [class.bg-white]="currentPage === p" [class.text-blue-500]="currentPage === p" [class.border-blue-500]="currentPage === p" [class.border-slate-200]="currentPage !== p" [class.text-slate-500]="currentPage !== p" class="flex h-8 w-8 items-center justify-center rounded-md border font-medium hover:bg-slate-50">
                     {{ p + 1 }}
                   </button>
                 }
@@ -406,77 +339,79 @@
       <div class="flex flex-col gap-6">
 
         <!-- Cabinet info -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5" *ngIf="!showAllHooks">
+        <div class="bg-white rounded-lg border border-slate-100 p-5" *ngIf="!showAllHooks">
           <h3 class="font-semibold text-slate-900 mb-4">Cabinet Information</h3>
           <dl class="text-sm space-y-3">
-            <div class="flex justify-between"><dt class="text-slate-400">Cabinet Code</dt><dd class="font-medium text-slate-700">{{ cabinet?.code || '—' }}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Cabinet Type</dt><dd class="font-medium text-slate-700">{{ cabinet?.type || '—' }}</dd></div>
-            <div class="flex justify-between gap-2"><dt class="text-slate-400 shrink-0">Location</dt><dd class="font-medium text-indigo-600 text-right">{{ cabinet?.storageLocation || '—' }}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Floor / Area</dt><dd class="font-medium text-slate-700">{{ cabinet?.floor || '—' }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Cabinet Code</dt><dd class="font-medium text-slate-500">{{ cabinet?.code || '—' }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Cabinet Type</dt><dd class="font-medium text-slate-500">{{ cabinet?.type || '—' }}</dd></div>
+            <div class="flex justify-between gap-2"><dt class="text-slate-600 font-medium shrink-0">Location</dt><dd class="font-medium text-blue-500 text-right">{{ cabinet?.storageLocation || '—' }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Floor / Area</dt><dd class="font-medium text-slate-500">{{ cabinet?.floor || '—' }}</dd></div>
             <hr class="border-slate-100" />
-            <div class="flex justify-between"><dt class="text-slate-400">Total Hooks</dt><dd class="font-medium text-slate-700">{{ stats.totalHooks }}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Key Hooked</dt><dd class="font-medium text-slate-700">{{ stats.keyHooked }}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Key In Use</dt><dd class="font-medium text-slate-700">{{ stats.keyInUse }}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Available for Key</dt><dd class="font-medium text-slate-700">{{ stats.available }}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Hook Damaged</dt><dd class="font-medium text-slate-700">{{ stats.damaged }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Total Hooks</dt><dd class="font-medium text-slate-500">{{ stats.totalHooks }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Key Hooked</dt><dd class="font-medium text-slate-500">{{ stats.keyHooked }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Key In Use</dt><dd class="font-medium text-slate-500">{{ stats.keyInUse }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Available for Key</dt><dd class="font-medium text-slate-500">{{ stats.available }}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-600 font-medium">Hook Damaged</dt><dd class="font-medium text-slate-500">{{ stats.damaged }}</dd></div>
           </dl>
         </div>
 
         <!-- Quick actions -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="bg-white rounded-lg border border-slate-100 p-5">
           <h3 class="font-semibold text-slate-900 mb-3">Quick Actions</h3>
           <div class="flex flex-col divide-y divide-slate-100">
             <button class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-indigo-600 group">
               <span class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus text-blue-500"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
                 Add Single Hook
               </span>
-              <span class="text-slate-300">›</span>
+              <span class="text-slate-400">›</span>
             </button>
             <button class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-indigo-600 group">
               <span class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-blue-500"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+              
                 Auto Generate Hooks
               </span>
-              <span class="text-slate-300">›</span>
+              <span class="text-slate-400">›</span>
             </button>
             <button [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'assign-key']" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-indigo-600 group">
               <span class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-blue-500"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+              
                 Assign Key to Hook
               </span>
-              <span class="text-slate-300">›</span>
+              <span class="text-slate-400">›</span>
             </button>
             <button [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'move-key']" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-indigo-600 group">
               <span class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right-icon lucide-arrow-left-right text-blue-500"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
                 Move Key to Another Hook
               </span>
-              <span class="text-slate-300">›</span>
+              <span class="text-slate-400">›</span>
             </button>
             <button [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'remove-key']" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-indigo-600 group">
               <span class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-minus-icon lucide-circle-minus text-rose-500"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
                 Remove Key from Hook
               </span>
-              <span class="text-slate-300">›</span>
+              <span class="text-slate-400">›</span>
             </button>
             <button (click)="switchTab('hook-grid')" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-indigo-600 group">
               <span class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-500 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
                 View Hook Grid
               </span>
-              <span class="text-slate-300">›</span>
+              <span class="text-slate-400">›</span>
             </button>
           </div>
         </div>
 
         <!-- Important note -->
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex gap-3">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 flex gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z"/></svg>
           <div>
-            <p class="font-semibold text-amber-800 text-sm">Important Note</p>
-            <p class="text-amber-700 text-sm mt-0.5">Hooks with keys cannot be deleted.</p>
+            <p class="font-semibold text-slate-800 text-sm">Important Note</p>
+            <p class="text-slate-700 text-sm mt-0.5">Hooks with keys cannot be deleted.</p>
           </div>
         </div>
 
