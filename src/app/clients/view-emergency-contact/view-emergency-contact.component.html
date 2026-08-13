@@ -24,9 +24,9 @@
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
              <div id="moreDropdown" class="hidden absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg z-50 text-xs text-slate-700 py-1.5">
-               <a href="#" (click)="editContact(); $event.preventDefault(); toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50">Edit Contact</a>
-               <a href="#" (click)="showDeleteModal = true; toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50 text-red-600">Delete Contact</a>
-             </div>
+                <a (click)="editContact(); toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50 cursor-pointer">Edit Contact</a>
+                <a (click)="showDeleteModal = true; toggleDropdown('moreDropdown')" class="block px-4 py-2 hover:bg-slate-50 text-red-600 cursor-pointer">Delete Contact</a>
+              </div>
           </div>
         </div>
       </div>
@@ -233,20 +233,20 @@
               </div>
               <h3 class="font-semibold text-slate-900">Related Actions</h3>
             </div>
-            <div class="space-y-1">
-               <a href="#" (click)="editContact(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
-                <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Edit Emergency Contact
-              </a>
-               <a href="#" (click)="toggleContactStatus(); $event.preventDefault()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
-                  <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/></svg>
-                  {{ status === 'Active' ? 'Deactivate Emergency Contact' : 'Activate Emergency Contact' }}
-                </a>
-              <a href="#" (click)="goBack()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors">
-                <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
-                View Activity Log
-              </a>
-            </div>
+             <div class="space-y-1">
+                <a (click)="editContact()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors cursor-pointer">
+                 <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                 Edit Emergency Contact
+               </a>
+                <a (click)="toggleContactStatus()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors cursor-pointer">
+                   <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/></svg>
+                   {{ status === 'Active' ? 'Deactivate Emergency Contact' : 'Activate Emergency Contact' }}
+                 </a>
+               <a (click)="goBack()" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-slate-500 hover:bg-brand-600/5 transition-colors cursor-pointer">
+                 <svg class="w-4 h-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+                 View Activity Log
+               </a>
+             </div>
           </div>
         </div>
 
