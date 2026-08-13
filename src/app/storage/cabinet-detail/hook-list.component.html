@@ -9,31 +9,31 @@
 </div>
 
 <ng-template #loaded>
-<div class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900">
+<div class="min-h-screen w-full font-sans text-slate-900">
   <div class="">
-
-    <!-- Breadcrumb -->
-    <nav class="mb-4 text-sm overflow-x-auto whitespace-nowrap scrollbar-thin">
-      <ol class="flex items-center gap-1.5 text-slate-500">
-        <li><a href="#" class="text-indigo-600 hover:underline">Storage Management</a></li>
-        <li class="text-slate-300">›</li>
-        <li><a [routerLink]="['/storage/locations/cabinets']" class="text-indigo-600 hover:underline">Cabinets</a></li>
-        <li class="text-slate-300">›</li>
-        <li *ngIf="!showAllHooks"><a [routerLink]="['/storage/locations/cabinets/view', cabinetId]" class="text-indigo-600 hover:underline">{{ cabinet?.name || 'Cabinet' }}</a></li>
-        <li class="text-slate-300" *ngIf="!showAllHooks">›</li>
-        <li class="text-slate-700 font-medium">Hook List</li>
-      </ol>
-    </nav>
-
+    
     <!-- Header -->
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-6">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-5">
       <div>
+        <!-- Breadcrumb -->
+        <nav class="mb-2 text-sm overflow-x-auto whitespace-nowrap scrollbar-thin">
+          <ol class="flex items-center gap-1.5 text-slate-500">
+            <li><a href="#" class="text-blue-600 hover:underline">Storage Management</a></li>
+            <li class="text-slate-500">›</li>
+            <li><a [routerLink]="['/storage/locations/cabinets']" class="text-blue-600 hover:underline">Cabinets</a></li>
+            <li class="text-slate-500">›</li>
+            <li *ngIf="!showAllHooks"><a [routerLink]="['/storage/locations/cabinets/view', cabinetId]" class="text-blue-600 hover:underline">{{ cabinet?.name || 'Cabinet' }}</a></li>
+            <li class="text-slate-500" *ngIf="!showAllHooks">›</li>
+            <li class="text-slate-500 font-medium">Hook List</li>
+          </ol>
+        </nav>
+
         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Hook List</h1>
         <p class="text-slate-500 mt-1 text-sm sm:text-base" *ngIf="!showAllHooks">View and manage all hooks in this cabinet in a list format.</p>
         <p class="text-slate-500 mt-1 text-sm sm:text-base" *ngIf="showAllHooks">View and manage all hooks across all cabinets.</p>
       </div>
       <div class="flex items-center gap-3 shrink-0">
-        <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
+        <button class="flex items-center gap-2 px-4 py-3 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 ">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
           Export List
         </button>
@@ -162,10 +162,82 @@
     </div>
 
     <!-- Main grid: table + sidebar -->
-    <div class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6">
+    <div class="grid grid-cols-1 xl:grid-cols-12 xl:gap-5">
 
+      <div class="col-span-9">
+      <!-- Cabinet summary card -->
+      <div class="bg-white rounded-lg border border-slate-100 p-4 sm:p-6 mb-5" *ngIf="!showAllHooks">
+        <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+
+          <!-- Cabinet info -->
+          <div class="flex items-start gap-4 lg:min-w-[300px]">
+            <div class="w-16 h-20 sm:w-20 sm:h-24 rounded-lg bg-slate-800 flex flex-col items-center justify-center gap-1 shrink-0 p-2">
+              <div class="grid grid-cols-2 gap-1 w-full">
+                <div class="h-2 rounded-sm bg-cyan-400"></div>
+                <div class="h-2 rounded-sm bg-slate-500"></div>
+                <div class="h-2 rounded-sm bg-slate-500"></div>
+                <div class="h-2 rounded-sm bg-cyan-400"></div>
+                <div class="h-2 rounded-sm bg-slate-500"></div>
+                <div class="h-2 rounded-sm bg-cyan-400"></div>
+              </div>
+              <div class="w-6 h-6 rounded-full border-2 border-slate-400 mt-2"></div>
+            </div>
+            
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-2">
+                <h2 class="font-semibold text-slate-900 text-base sm:text-lg">{{ cabinet?.name || 'Cabinet Detail' }}</h2>
+                <span class="px-2 py-0.5 text-xs font-medium rounded-md bg-emerald-100 text-emerald-700">{{ cabinet?.status || 'Active' }}</span>
+              </div>
+              <dl class="text-sm space-y-1">
+                <div class="flex gap-2"><dt class="text-slate-700 font-medium w-26 shrink-0">Cabinet Code</dt><dd class="text-slate-700">{{ cabinet?.code || '—' }}</dd></div>
+                <div class="flex gap-2"><dt class="text-slate-700 font-medium w-26 shrink-0">Cabinet Type</dt><dd class="text-slate-700">{{ cabinet?.type || '—' }}</dd></div>
+                <div class="flex gap-2"><dt class="text-slate-700 font-medium w-26 shrink-0">Location</dt><dd class="text-blue-600">{{ cabinet?.storageLocation || '—' }}</dd></div>
+                <div class="flex gap-2"><dt class="text-slate-700 font-medium w-26 shrink-0">Floor / Area</dt><dd class="text-slate-700">{{ cabinet?.floor || '—' }}</dd></div>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Stat pills -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 flex-1">
+            <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-100 py-3 px-2">
+              <span class="text-xs text-slate-700 text-center mb-1">Total Hooks</span>
+
+              <svg width="16" height="16" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 C1.09159424 0.00829834 2.18318848 0.01659668 3.30786133 0.02514648 C21.77111876 0.40971215 37.95885371 7.02661208 51.6875 19.4375 C52.74904297 20.37722656 52.74904297 20.37722656 53.83203125 21.3359375 C67.116702 33.78237855 74.95287903 52.29604634 75.890625 70.34765625 C76.29521308 91.8629801 69.9361888 111.25263108 55.015625 127.0625 C54.24734375 127.84625 53.4790625 128.63 52.6875 129.4375 C52.02234375 130.13875 51.3571875 130.84 50.671875 131.5625 C42.6852187 139.36625577 32.17944749 143.97792586 21.6875 147.4375 C21.68391747 149.23703282 21.68391747 149.23703282 21.68026257 151.07291985 C21.62276977 179.61977819 21.54994558 208.1665706 21.45851372 236.71333986 C21.447247 240.23516242 21.43610831 243.75698538 21.42504883 247.27880859 C21.42284514 247.97987209 21.42064146 248.68093559 21.418371 249.40324344 C21.38310177 260.72042616 21.35817929 272.03760883 21.33715298 283.35482596 C21.3153079 294.98730508 21.28195734 306.61971001 21.23879844 318.25212967 C21.21494617 324.77747191 21.19616509 331.30273642 21.18988609 337.82812119 C21.18379897 343.98244531 21.16366913 350.13657078 21.13322449 356.29082108 C21.12450208 358.53760138 21.1207095 360.7844077 21.12249184 363.03120422 C21.13149251 379.62746267 19.983684 395.55709202 15 411.5 C14.74581299 412.3245166 14.49162598 413.1490332 14.22973633 413.99853516 C8.46349864 431.98588301 -0.9932089 448.14712232 -13.3125 462.4375 C-14.56160156 463.88769531 -14.56160156 463.88769531 -15.8359375 465.3671875 C-35.40906709 487.62263983 -60.82087507 501.89837102 -89.3125 509.4375 C-90.55902344 509.7778125 -91.80554688 510.118125 -93.08984375 510.46875 C-112.91968727 514.88902472 -137.70070601 514.64491425 -157.3125 509.4375 C-157.9837793 509.27121094 -158.65505859 509.10492188 -159.34667969 508.93359375 C-196.9876189 499.54509159 -228.66937689 475.28291019 -248.67919922 442.17626953 C-263.89818268 416.2417106 -268.48437909 389.21622842 -268.42602539 359.57568359 C-268.42574301 357.56438193 -268.42590226 355.55308017 -268.4264679 353.54177856 C-268.42675387 348.10451851 -268.42088953 342.66728068 -268.41389394 337.23002577 C-268.40762703 331.5392261 -268.40705396 325.84842588 -268.40586853 320.15762329 C-268.40276504 309.39149737 -268.39456491 298.62538164 -268.38451904 287.8592602 C-268.37332737 275.59807795 -268.36783976 263.3368952 -268.36282361 251.0757091 C-268.35238146 225.86296709 -268.33480108 200.65023412 -268.3125 175.4375 C-264.50260035 176.70746655 -263.77134172 178.19654244 -261.4375 181.4375 C-260.62995616 182.54373594 -259.82129831 183.64915925 -259.01171875 184.75390625 C-258.57649902 185.35090332 -258.1412793 185.94790039 -257.69287109 186.56298828 C-255.25833721 189.86902846 -252.75080902 193.11898484 -250.25 196.375 C-249.13386301 197.83183855 -248.0179859 199.28887622 -246.90234375 200.74609375 C-246.32210449 201.50390137 -245.74186523 202.26170898 -245.14404297 203.04248047 C-241.86061512 207.33605914 -238.58700701 211.63711648 -235.3125 215.9375 C-228.84836854 224.42523251 -222.37293898 232.90422315 -215.88916016 241.37695312 C-213.1961179 244.89650665 -210.5043862 248.41706226 -207.8125 251.9375 C-206.72917271 253.35417128 -205.64583938 254.77083796 -204.5625 256.1875 C-202.39583333 259.02083333 -200.22916667 261.85416667 -198.0625 264.6875 C-197.52608887 265.38891113 -196.98967773 266.09032227 -196.43701172 266.81298828 C-195.3551126 268.22787949 -194.27340646 269.64291828 -193.19189453 271.05810547 C-190.46319128 274.62817943 -187.73104866 278.19552391 -184.9921875 281.7578125 C-179.63018227 288.73725604 -174.29821431 295.73763085 -169.0625 302.8125 C-168.59634277 303.43721191 -168.13018555 304.06192383 -167.64990234 304.70556641 C-162.9092908 311.1537308 -162.59677092 316.59430212 -163.3125 324.4375 C-164.88620302 329.74874768 -167.51672122 333.56003273 -172.3125 336.4375 C-178.39953894 339.28523751 -183.79017947 340.29901349 -190.3125 338.4375 C-197.55358227 334.77956592 -202.02276024 329.59373134 -206.625 323.0625 C-207.80806893 321.4293072 -208.99168274 319.79650899 -210.17578125 318.1640625 C-210.76659988 317.34007965 -211.35741852 316.5160968 -211.96614075 315.66714478 C-214.79448332 311.77407435 -217.67933524 307.92569736 -220.57104492 304.07958984 C-221.12472496 303.34230148 -221.678405 302.60501312 -222.24886322 301.84538269 C-223.60294483 300.04240575 -224.95750068 298.23978729 -226.3125 296.4375 C-226.40591753 307.06151981 -226.4766241 317.68543906 -226.51974869 328.3097887 C-226.54046501 333.24516811 -226.56848405 338.18026286 -226.61425781 343.11547852 C-226.6582936 347.89419465 -226.68175639 352.67264015 -226.69200897 357.45154381 C-226.69929834 359.25846291 -226.71352605 361.06537024 -226.73542023 362.8721714 C-227.0990585 394.1775815 -216.94560081 420.02232399 -195.25 442.9375 C-176.16891931 461.57116224 -150.52827452 470.97850087 -124.0625 471.75 C-99.26700953 471.26261935 -74.95186131 463.01321774 -56.3125 446.4375 C-55.19875 445.53644531 -55.19875 445.53644531 -54.0625 444.6171875 C-35.11958835 428.89720179 -23.73521213 404.09239578 -21.02772617 379.89210987 C-20.0993474 369.13053207 -20.13734546 358.37697891 -20.10717773 347.58276367 C-20.09758296 345.39368003 -20.08757198 343.20459818 -20.07717896 341.01551819 C-20.05029701 335.10739707 -20.02919767 329.19926811 -20.00917697 323.29112029 C-19.98721354 317.10384066 -19.95987582 310.91658477 -19.93312073 304.72932434 C-19.88333319 293.02833471 -19.83834301 281.32733181 -19.79509836 269.62631637 C-19.74560638 256.29856211 -19.69073285 242.97083237 -19.63541877 229.6431011 C-19.52181289 202.24125633 -19.41492778 174.83938867 -19.3125 147.4375 C-19.99494781 147.23761475 -20.67739563 147.03772949 -21.38052368 146.83178711 C-22.27798309 146.5663208 -23.1754425 146.30085449 -24.10009766 146.02734375 C-24.98879547 145.7655835 -25.87749329 145.50382324 -26.79312134 145.23413086 C-37.96120599 141.70276775 -46.26771245 134.58891949 -54.3125 126.4375 C-54.99183594 125.756875 -55.67117188 125.07625 -56.37109375 124.375 C-70.20566078 109.58526241 -74.90222751 90.25913771 -74.5859375 70.53125 C-73.78094607 49.45800911 -63.85298019 32.30547991 -48.98046875 17.79296875 C-35.26407544 5.68318081 -18.13006085 -0.17958956 0 0 Z " fill="#90a1b9" transform="translate(352.3125,-0.4375)"/><path d="M0 0 C8.45535811 5.85002092 13.27864891 13.76475221 15.75390625 23.6796875 C17.17052824 32.94555175 14.34144362 42.46857602 8.94140625 50.0546875 C2.37085723 57.95245466 -4.77053517 63.15994168 -15.24609375 64.1328125 C-26.0279378 64.73945111 -33.92801183 62.62427335 -42.58203125 55.8515625 C-49.19571151 49.80336419 -53.74051918 41.79631094 -54.484375 32.796875 C-54.74096634 21.58788495 -51.97938036 12.9445304 -44.24609375 4.6796875 C-31.36120979 -7.22508469 -15.42287922 -9.06597074 0 0 Z " fill="#90a1b9" transform="translate(372.24609375,45.3203125)"/></svg>          
+              <span class="text-xl font-bold text-slate-900 mt-1">{{ stats.totalHooks }}</span>
+              
+            </div>
+            <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-100 py-3 px-2">
+              <span class="text-xs text-slate-700 text-center mb-1">Key Hooked</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-blue-500"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+              <span class="text-xl font-bold text-slate-900 mt-1">{{ stats.keyHooked }}</span>
+              
+            </div>
+            <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-100 py-3 px-2">
+              <span class="text-xs text-slate-700 text-center mb-1">Key In Use</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-orange-500"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+              
+              <span class="text-xl font-bold text-slate-900 mt-1">{{ stats.keyInUse }}</span>
+
+            </div>
+            <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-100 py-3 px-2">
+              <span class="text-xs text-slate-700 text-center mb-1">Available for Key</span>              
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key text-emerald-500"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+              
+              <span class="text-xl font-bold text-slate-900 mt-1">{{ stats.available }}</span>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-100 py-3 px-2 col-span-2 sm:col-span-1">
+              <span class="text-xs text-slate-700 text-center mb-1">Hook Damaged</span>              
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM10.29 3.86L1.82 18a1.5 1.5 0 001.29 2.25h17.78a1.5 1.5 0 001.29-2.25L13.71 3.86a1.5 1.5 0 00-2.42 0z"/></svg>
+              <span class="text-xl font-bold text-slate-900 mt-1">{{ stats.damaged }}</span>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    
       <!-- Left: tabs + table -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-5">
 
         <!-- Tabs -->
         <div class="border-b border-slate-200 px-4 sm:px-6 overflow-x-auto scrollbar-thin">
@@ -327,7 +399,9 @@
           </div>
         </div>
       </div>
+      </div>
 
+      <div class="col-span-3">      
       <!-- Right sidebar -->
       <div class="flex flex-col gap-6">
 
@@ -407,7 +481,9 @@
         </div>
 
       </div>
+      </div>
     </div>
+
   </div>
 </div>
 </ng-template>
