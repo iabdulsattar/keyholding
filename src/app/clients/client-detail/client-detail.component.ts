@@ -107,6 +107,7 @@ showDeactivateClientModal = false;
    filteredContacts: any[] = [];
    contactsPage = 1;
    contactsRowsPerPage = 10;
+   contactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
    contactsSearch = '';
    contactsStatus = 'All';
    contactsLoading = false;
@@ -116,6 +117,7 @@ showDeactivateClientModal = false;
    filteredEmergencyContacts: EmergencyContact[] = [];
    emergencyContactsPage = 1;
    emergencyContactsRowsPerPage = 10;
+   emergencyContactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
    emergencyContactsSearch = '';
    emergencyContactsLoading = false;
 
@@ -541,6 +543,24 @@ viewEmergencyContact(contactId: string): void {
     return Math.min(this.contactsPage * this.contactsRowsPerPage, data.length);
   }
 
+  get contactsVisiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.contactsTotalPages;
+    const current = this.contactsPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
   get activitiesPaginated(): any[] {
     const q = this.activitiesSearch.toLowerCase().trim();
     const data = q ? this.filteredActivities : this.activities;
@@ -590,16 +610,12 @@ viewEmergencyContact(contactId: string): void {
     if (page >= 1 && page <= this.contactsTotalPages) this.contactsPage = page;
   }
 
-  activitiesPreviousPage(): void {
-    if (this.activitiesPage > 1) this.activitiesPage--;
+  onContactsPageSizeChange(): void {
+    this.contactsPage = 1;
   }
 
-  activitiesNextPage(): void {
-    if (this.activitiesPage < this.activitiesTotalPages) this.activitiesPage++;
-  }
-
-  activitiesGoToPage(page: number): void {
-    if (page >= 1 && page <= this.activitiesTotalPages) this.activitiesPage = page;
+  onEmergencyContactsPageSizeChange(): void {
+    this.emergencyContactsPage = 1;
   }
 
   private getInitials(first?: string, last?: string): string {
@@ -1481,5 +1497,17 @@ uploadDocument(): void {
       pages.push(total);
     }
     return pages;
+  }
+
+  activitiesPreviousPage(): void {
+    if (this.activitiesPage > 1) this.activitiesPage--;
+  }
+
+  activitiesNextPage(): void {
+    if (this.activitiesPage < this.activitiesTotalPages) this.activitiesPage++;
+  }
+
+  activitiesGoToPage(page: number): void {
+    if (page >= 1 && page <= this.activitiesTotalPages) this.activitiesPage = page;
   }
 }

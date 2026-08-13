@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 
 interface HookRow {
@@ -32,7 +33,7 @@ interface HookStats {
 @Component({
   selector: 'app-hook-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './hook-list.component.html',
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
@@ -52,7 +53,8 @@ export class HookListComponent implements OnInit, AfterViewInit {
   stats: HookStats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
 
   currentPage = 0;
-  pageSize = 10;
+  pageSize: number | 'All' = 10;
+  pageSizeOptions: (number | 'All')[] = [10, 20, 50, 100, 'All'];
   totalPages = 0;
   totalItems = 0;
 
@@ -151,16 +153,19 @@ export class HookListComponent implements OnInit, AfterViewInit {
     }
 
     if (this.showAllHooks) {
-      this.keyVault.listAllCabinetHooks(orgId, { assigned: 'ALL', page: this.currentPage, size: this.pageSize }).subscribe({
+      const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
+      this.keyVault.listAllCabinetHooks(orgId, { assigned: 'ALL', page: this.currentPage, size: effectivePageSize }).subscribe({
         next: (res: any) => {
           const data = res?.data ?? res ?? {};
           this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
           this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
           this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
           this.currentPage = Number(data.page ?? data.number ?? this.currentPage ?? 0);
-          this.pageSize = Number(data.size ?? this.pageSize);
           this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
-          this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
+          this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
+          if (this.pageSize !== 'All') {
+            this.pageSize = Number(data.size ?? this.pageSize);
+          }
           this.loading = false;
           this.createIcons();
         },
@@ -184,16 +189,19 @@ export class HookListComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.keyVault.listHooks(orgId, this.cabinetId, { page: this.currentPage, size: this.pageSize }).subscribe({
+    const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
+    this.keyVault.listHooks(orgId, this.cabinetId, { page: this.currentPage, size: effectivePageSize }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
         this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
         this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
         this.currentPage = Number(data.page ?? data.number ?? this.currentPage ?? 0);
-        this.pageSize = Number(data.size ?? this.pageSize);
         this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
-        this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
+        this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
+        if (this.pageSize !== 'All') {
+          this.pageSize = Number(data.size ?? this.pageSize);
+        }
         this.loadHookStats();
       },
       error: () => {
@@ -331,14 +339,21 @@ export class HookListComponent implements OnInit, AfterViewInit {
     this.loadHooks();
   }
 
+  onPageSizeChange(): void {
+    this.currentPage = 0;
+    this.loadHooks();
+  }
+
   get startIndex(): number {
     if (this.totalItems === 0) return 0;
-    return this.currentPage * this.pageSize + 1;
+    const size = this.pageSize === 'All' ? this.totalItems : this.pageSize;
+    return this.currentPage * size + 1;
   }
 
   get endIndex(): number {
     if (this.totalItems === 0) return 0;
-    return Math.min((this.currentPage + 1) * this.pageSize, this.totalItems);
+    const size = this.pageSize === 'All' ? this.totalItems : this.pageSize;
+    return Math.min((this.currentPage + 1) * size, this.totalItems);
   }
 
   get visiblePages(): (number | '...')[] {

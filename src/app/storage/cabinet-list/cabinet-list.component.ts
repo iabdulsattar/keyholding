@@ -37,6 +37,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
 
   currentPage = 0;
   pageSize = 10;
+  pageSizeOptions: number[] = [10, 25, 50, 100];
   totalPages = 0;
   totalItems = 0;
 
@@ -94,7 +95,6 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
         const normalized = (items && items.length ? items : []).map((c: any) => this.normalizeCabinet(c));
         this.cabinets = normalized;
         this.currentPage = Number(data.page ?? data.number ?? page ?? 0);
-        this.pageSize = Number(data.size ?? this.pageSize);
         this.totalItems = Number(data.totalElements ?? data.total ?? this.cabinets.length);
         this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
         this.loading = false;
@@ -154,6 +154,11 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   goToPage(page: number): void {
     if (page < 0 || page >= this.totalPages) return;
     this.currentPage = page;
+    this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter });
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 0;
     this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter });
   }
 

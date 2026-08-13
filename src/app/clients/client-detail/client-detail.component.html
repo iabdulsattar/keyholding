@@ -1327,10 +1327,15 @@
                </table>
              </div>
 
-              <!-- Pagination -->
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
-                <p>Showing {{ contactsShowingStart }} to {{ contactsShowingEnd }} of {{ contacts.length }} contacts</p>
-                <div class="flex items-center gap-1">
+               <!-- Pagination -->
+               <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
+                 <div class="flex items-center gap-3">
+                   <p>Showing {{ contactsShowingStart }} to {{ contactsShowingEnd }} of {{ contacts.length }} contacts</p>
+                   <select [(ngModel)]="contactsRowsPerPage" (ngModelChange)="onContactsPageSizeChange()" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                     <option *ngFor="let size of contactsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+                   </select>
+                 </div>
+                 <div class="flex items-center gap-1">
                   <button (click)="contactsPreviousPage()" [disabled]="contactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
                   </button>
@@ -1472,8 +1477,13 @@
           </table>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-500">
-         <p>Showing {{ emergencyContactsShowingStart }} to {{ emergencyContactsShowingEnd }} of {{ totalEmergencyContacts }} emergency contacts</p>
+         <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-500">
+          <div class="flex items-center gap-3">
+            <p>Showing {{ emergencyContactsShowingStart }} to {{ emergencyContactsShowingEnd }} of {{ totalEmergencyContacts }} emergency contacts</p>
+            <select [(ngModel)]="emergencyContactsRowsPerPage" (ngModelChange)="onEmergencyContactsPageSizeChange()" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option *ngFor="let size of emergencyContactsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+            </select>
+          </div>
            <div class="flex items-center gap-1">
              <button (click)="emergencyContactsPreviousPage()" [disabled]="emergencyContactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
