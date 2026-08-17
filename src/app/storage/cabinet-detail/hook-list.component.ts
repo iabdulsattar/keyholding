@@ -156,15 +156,16 @@ export class HookListComponent implements OnInit, AfterViewInit {
       const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
       this.keyVault.listAllCabinetHooks(orgId, { assigned: 'ALL', page: this.currentPage, size: effectivePageSize }).subscribe({
         next: (res: any) => {
-          const data = res?.data ?? res ?? {};
-          this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
+          const payload = res?.data ?? res ?? {};
+          const meta = res?.meta ?? {};
+          this.allHooksRaw = payload.content ?? payload.items ?? payload.data ?? payload ?? [];
           this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
           this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
-          this.currentPage = Number(data.page ?? data.number ?? this.currentPage ?? 0);
-          this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
-          this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
+          this.currentPage = Number(meta.page ?? meta.number ?? payload.page ?? payload.number ?? this.currentPage ?? 0);
+          this.totalItems = Number(meta.totalElements ?? meta.total ?? payload.totalElements ?? payload.total ?? this.allHooksRaw.length);
+          this.totalPages = Number(meta.totalPages ?? payload.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
           if (this.pageSize !== 'All') {
-            this.pageSize = Number(data.size ?? this.pageSize);
+            this.pageSize = Number(meta.size ?? payload.size ?? this.pageSize);
           }
           this.loading = false;
           this.createIcons();
@@ -192,15 +193,16 @@ export class HookListComponent implements OnInit, AfterViewInit {
     const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
     this.keyVault.listHooks(orgId, this.cabinetId, { page: this.currentPage, size: effectivePageSize }).subscribe({
       next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        this.allHooksRaw = data.content ?? data.items ?? data.data ?? data ?? [];
+        const payload = res?.data ?? res ?? {};
+        const meta = res?.meta ?? {};
+        this.allHooksRaw = payload.content ?? payload.items ?? payload.data ?? payload ?? [];
         this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
         this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
-        this.currentPage = Number(data.page ?? data.number ?? this.currentPage ?? 0);
-        this.totalItems = Number(data.totalElements ?? data.total ?? this.allHooksRaw.length);
-        this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
+        this.currentPage = Number(meta.page ?? meta.number ?? payload.page ?? payload.number ?? this.currentPage ?? 0);
+        this.totalItems = Number(meta.totalElements ?? meta.total ?? payload.totalElements ?? payload.total ?? this.allHooksRaw.length);
+        this.totalPages = Number(meta.totalPages ?? payload.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
         if (this.pageSize !== 'All') {
-          this.pageSize = Number(data.size ?? this.pageSize);
+          this.pageSize = Number(meta.size ?? payload.size ?? this.pageSize);
         }
         this.loadHookStats();
       },

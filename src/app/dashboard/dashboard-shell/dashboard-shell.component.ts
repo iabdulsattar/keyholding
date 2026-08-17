@@ -30,6 +30,9 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
 export class DashboardShellComponent implements OnInit {
   greeting = 'Good morning';
   userName = '';
+  pageTitle = 'Main Dashboard';
+  pageDescription = 'Overview of your keyholding operations';
+  selectedDate = new Date();
   loading = true;
   dashboardError = false;
   orgUsers: any[] = [];
