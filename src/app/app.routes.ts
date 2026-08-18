@@ -336,6 +336,11 @@ export const routes: Routes = [
     title:'Start Free Trial | KeyVault Pro'
   },
   {
+    path:'subscription-trial-ready',
+    loadComponent: () => import('./auth/pages/subscription-trial-ready/subscription-trial-ready.component').then(m => m.SubscriptionTrialReadyComponent),
+    title:'Trial Ready | KeyVault Pro'
+  },
+  {
     path:'signup',
     loadComponent: () => import('./auth/pages/sign-up/sign-up.component').then(m => m.SignUpComponent),
     title:'Sign Up | KeyVault Pro'
