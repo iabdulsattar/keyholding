@@ -7,11 +7,12 @@ import { ProfileResponse } from '../../core/models/auth.models';
 import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { AppChart } from '../../shared/components/charts/donut/chart.component';
 
 @Component({
   selector: 'app-dashboard-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, SafeHtmlPipe],
+  imports: [CommonModule, RouterModule, SafeHtmlPipe, AppChart],
   templateUrl: './dashboard-shell.component.html',
   styles: `
     @keyframes wave {
@@ -73,6 +74,12 @@ export class DashboardShellComponent implements OnInit {
     inProgressCount: 0,
     failedCount: 0,
     cancelledCount: 0,
+  };
+
+  jobsChart = {
+    series: [44, 55, 13, 33],
+    labels: ['Completed', 'In Progress', 'Failed', 'Cancelled'],
+    titleText: '',
   };
 
   criticalAlerts: {
@@ -199,6 +206,12 @@ export class DashboardShellComponent implements OnInit {
       inProgressCount: Math.round(totalJobs * inProgress / 100),
       failedCount: Math.round(totalJobs * failed / 100),
       cancelledCount: Math.round(totalJobs * cancelled / 100),
+    };
+
+    this.jobsChart = {
+      series: [this.jobsOverview.completedCount, this.jobsOverview.inProgressCount, this.jobsOverview.failedCount, this.jobsOverview.cancelledCount],
+      labels: ['Completed', 'In Progress', 'Failed', 'Cancelled'],
+      titleText: 'Jobs Overview',
     };
 
     this.criticalAlerts = [
