@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 export class SubscriptionTrialStartComponent implements OnInit {
   userName = '';
   userEmail = '';
+  userRole = '';
   orgName = '';
   orgId: string | null = null;
   isLoading = false;
@@ -42,6 +43,7 @@ export class SubscriptionTrialStartComponent implements OnInit {
           const user = profile?.user || profile?.data || profile;
           this.userName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'User';
           this.userEmail = user.email || '';
+          this.userRole = this.extractRole(profile);
         },
         error: () => {
           this.userName = 'User';
@@ -64,6 +66,18 @@ export class SubscriptionTrialStartComponent implements OnInit {
       localStorage.getItem('organizationId') ||
       null
     );
+  }
+
+  private extractRole(profile: any): string {
+    const orgs = profile?.organizations || [];
+    if (orgs.length > 0 && orgs[0].role) {
+      return orgs[0].role;
+    }
+    const org = profile?.organization;
+    if (org?.role) {
+      return org.role;
+    }
+    return '';
   }
 
   private loadTrialPlan(): void {
