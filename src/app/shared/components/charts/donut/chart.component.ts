@@ -82,9 +82,16 @@ export class AppChart implements AfterViewInit, OnDestroy {
 
   public chartOptions: Partial<ChartOptions> = {
     chart: {
-      width: 380,
+      height: 240,
+      // width: 380,
       type: 'donut',
     },
+    colors: ['#10b981', '#2563eb', '#f59e0b', '#e9edf5'],
+
+    stroke: {
+      width: 0
+    },
+
     dataLabels: {
       enabled: false,
     },
@@ -102,9 +109,9 @@ export class AppChart implements AfterViewInit, OnDestroy {
       },
     ],
     legend: {
-      position: 'right',
-      offsetY: 0,
-      height: 230,
+      position: 'bottom',
+      // offsetY: 0,
+      // height: 230,
     },
   };
 
