@@ -8,7 +8,7 @@ import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
-import { LineChartDashboardComponent } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
+import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
 
 @Component({
   selector: 'app-dashboard-shell',
@@ -83,7 +83,7 @@ export class DashboardShellComponent implements OnInit {
     titleText: '',
   };
 
-  jobsTrendChart = {
+  jobsTrendChart: Partial<LineChartOptions> = {
     series: [
       {
         name: 'Jobs',
@@ -91,7 +91,7 @@ export class DashboardShellComponent implements OnInit {
       },
     ],
     chart: {
-      type: 'area',
+      type: 'line',
       height: 240,
       toolbar: { show: false },
     },
@@ -122,9 +122,9 @@ export class DashboardShellComponent implements OnInit {
       strokeDashArray: 4,
     },
     markers: {
-      colors: '#2563eb',
+      colors: ['#2563eb'],
       strokeWidth: 2,
-      radius: 4,
+      size: 4,
       hover: { size: 6 },
     },
     tooltip: {

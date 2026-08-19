@@ -2,21 +2,25 @@ import { Component, AfterViewInit, OnDestroy, ViewChild, Input } from '@angular/
 import {
   ChartComponent,
   ApexAxisChartSeries,
+  ApexNonAxisChartSeries,
   ApexChart,
   ApexXAxis,
+  ApexYAxis,
   ApexTitleSubtitle,
   ApexDataLabels,
   ApexStroke,
   ApexGrid,
   ApexMarkers,
   ApexTooltip,
+  ApexFill,
   NgApexchartsModule,
 } from 'ng-apexcharts';
 
 export type ChartOptions = {
-  series?: ApexAxisChartSeries;
+  series?: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart?: ApexChart;
   xaxis?: ApexXAxis;
+  yaxis?: ApexYAxis | ApexYAxis[];
   title?: ApexTitleSubtitle;
   dataLabels?: ApexDataLabels;
   stroke?: ApexStroke;
