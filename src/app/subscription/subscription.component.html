@@ -75,26 +75,26 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 sm:pl-6 sm:border-l sm:border-slate-100">
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 sm:pl-6 sm:border-l-2 sm:border-slate-200">
         <div>
           <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial started</p>
-          <p class="text-slate-900 font-bold text-base mt-0.5">{{ trial.startDate }}</p>
-          <p class=" justify-start text-slate-700 text-xs font-normal font-['Inter']mt-0.5">Today</p>
+          <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.startDate }}</p>
+          <p class=" justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">Today</p>
         </div>
-        <div>
+        <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
           <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial ends</p>
-          <p class="text-slate-900 font-bold text-base mt-0.5">{{ trial.endDate }}</p>
-          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-0.5">(14 days)</p>
+          <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.endDate }}</p>
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">(14 days)</p>
         </div>
-        <div>
+        <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
           <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Days remaining</p>
-          <p class="text-[#3b6df5] font-bold text-base mt-0.5">{{ trial.daysRemaining }}</p>
-          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-0.5">days</p>
+          <p class="justify-start text-blue-600 text-base font-bold font-['Inter'] mt-2">{{ trial.daysRemaining }}</p>
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">days</p>
         </div>
       </div>
 
       <div class="shrink-0">
-        <button class="w-full xl:w-auto border-2 border-[#3b6df5] text-[#3b6df5] font-semibold text-sm rounded-lg px-5 py-2.5 hover:bg-blue-50 transition-colors">
+        <button class="w-full xl:w-auto bg-white rounded-md outline outline-1 outline-offset-[-1px] outline-blue-600 justify-start text-blue-600 text-xs font-semibold font-['Inter'] px-5 py-2.5 hover:bg-blue-50 transition-colors">
           Manage Trial
         </button>
       </div>
