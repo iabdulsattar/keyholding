@@ -51,9 +51,9 @@ export const routes: Routes = [
             title: 'Angular Invoice Details Dashboard | TailAdmin - Angular Admin Dashboard Template'
           },
           {
-            path: 'clients',
-            loadComponent: () => import('./clients/clients.component').then(m => m.ClientsComponent),
-            title: 'Clients | KeyVault Pro'
+            path: 'subscription',
+            loadComponent: () => import('./subscription/subscription.component').then(m => m.SubscriptionComponent),
+            title: 'Subscription & Trial | KeyVault Pro'
           },
           {
             path: 'clients/add-client',
