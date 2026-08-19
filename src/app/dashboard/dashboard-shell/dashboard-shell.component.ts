@@ -8,11 +8,12 @@ import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
+import { LineChartDashboardComponent } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
 
 @Component({
   selector: 'app-dashboard-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, SafeHtmlPipe, AppChart],
+  imports: [CommonModule, RouterModule, SafeHtmlPipe, AppChart, LineChartDashboardComponent],
   templateUrl: './dashboard-shell.component.html',
   styles: `
     @keyframes wave {
@@ -80,6 +81,55 @@ export class DashboardShellComponent implements OnInit {
     series: [44, 55, 13, 33],
     labels: ['Completed', 'In Progress', 'Failed', 'Cancelled'],
     titleText: '',
+  };
+
+  jobsTrendChart = {
+    series: [
+      {
+        name: 'Jobs',
+        data: [30, 40, 35, 50, 49, 60, 70],
+      },
+    ],
+    chart: {
+      type: 'area',
+      height: 240,
+      toolbar: { show: false },
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 2,
+    },
+    title: {
+      text: '',
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      labels: {
+        style: {
+          colors: '#64748B',
+          fontSize: '11px',
+          fontFamily: 'Inter',
+        },
+      },
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+    },
+    grid: {
+      borderColor: '#eef2f7',
+      strokeDashArray: 4,
+    },
+    markers: {
+      colors: '#2563eb',
+      strokeWidth: 2,
+      radius: 4,
+      hover: { size: 6 },
+    },
+    tooltip: {
+      theme: 'light',
+    },
   };
 
   criticalAlerts: {
