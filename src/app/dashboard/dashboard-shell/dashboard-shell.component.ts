@@ -51,6 +51,12 @@ export class DashboardShellComponent implements OnInit {
     keysInStorageChange: '0%',
     keysIssuedChange: '0%',
   };
+   trial = {
+    active: true,
+    startDate: '07 Aug 2026',
+    endDate: '21 Aug 2026',
+    daysRemaining: 13,
+  };
 
   alertMetrics = {
     overdueKeys: 0,

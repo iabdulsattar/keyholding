@@ -79,103 +79,50 @@
 </div>
 </div>
 
-<div class=" grid lg:grid-cols-5 bg-violet-50 rounded-md outline outline-1 outline-offset-[-1px] outline-blue-600/10">
-  <div class="lg:col-span-2">
-  <div class="py-5 px-4 flex">
-  <div class="size-14 bg-blue-600 rounded-md inline-flex justify-center items-center">
-    <div data-svg-wrapper class="relative">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M19.3465 16.1111L21.2403 26.7686C21.2615 26.894 21.2439 27.023 21.1898 27.1382C21.1358 27.2535 21.0478 27.3494 20.9377 27.4133C20.8276 27.4772 20.7007 27.5059 20.5738 27.4957C20.4469 27.4855 20.3262 27.4367 20.2278 27.3561L15.7528 23.9973C15.5368 23.8359 15.2743 23.7487 15.0047 23.7487C14.735 23.7487 14.4726 23.8359 14.2565 23.9973L9.77405 27.3548C9.6757 27.4353 9.55513 27.484 9.42842 27.4942C9.30171 27.5045 9.17489 27.4758 9.06488 27.4121C8.95487 27.3484 8.86689 27.2527 8.8127 27.1377C8.7585 27.0227 8.74066 26.8939 8.76155 26.7686L10.654 16.1111M22.5 9.99899C22.5 14.1411 19.1421 17.499 15 17.499C10.8579 17.499 7.5 14.1411 7.5 9.99899C7.5 5.85686 10.8579 2.49899 15 2.49899C19.1421 2.49899 22.5 5.85686 22.5 9.99899Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </div>
 
-  <div class="h-14 pl-7">
-    <div class="h-5 ">
-      <div class="flex">
-      <div class="left-0 top-0 bsolute justify-start text-zinc-800 text-base font-bold font-['Inter']">KeyVault Trial</div>
-      <div class="w-10 h-4 mt-[2px] ml-2 bg-blue-600/10 rounded-[100px]">
-        <div class="pt-0.5 pl-2 justify-start text-blue-600 text-xs font-semibold font-['Inter']">Trial</div>
+ <!-- Trial banner -->
+  <div class="bg-white rounded-lg shadow-xs p-5 sm:p-6 mb-6">
+    <div class="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-8">
+      <div class="flex items-start gap-4 flex-1 min-w-0">
+        <div class="w-14 h-14 rounded-lg bg-[#3b6df5] flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.5 12.5L6 21l6-3 6 3-2.5-8.5"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="justify-start text-zinc-800 text-base font-bold font-['Inter']">KeyVault Trial</h2>
+            <span class="text-xs font-semibold text-[#3b6df5] bg-blue-50 px-2 py-0.5 rounded-full">Active</span>
+          </div>
+          <p class="text-slate-500 text-sm mt-1">You are currently exploring all features of KeyVault with full access.</p>
+        </div>
       </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 sm:pl-6 sm:border-l-2 sm:border-slate-200">
+        <div>
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial started</p>
+          <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.startDate }}</p>
+          <p class=" justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">Today</p>
+        </div>
+        <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial ends</p>
+          <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.endDate }}</p>
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">(14 days)</p>
+        </div>
+        <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Days remaining</p>
+          <p class="justify-start text-blue-600 text-base font-bold font-['Inter'] mt-2">{{ trial.daysRemaining }}</p>
+          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">days</p>
+        </div>
+      </div>
+
+      <div class="shrink-0">
+        <button class="w-full xl:w-auto bg-white rounded-md outline outline-1 outline-offset-[-1px] outline-blue-600 justify-start text-blue-600 text-xs font-semibold font-['Inter'] px-5 py-2.5 hover:bg-blue-50 transition-colors">
+          Manage Trial
+        </button>
       </div>
     </div>
-    <div class="pt-1 justify-start text-slate-700 text-xs font-normal font-['Inter']">You're exploring Enterprise Key Management</div>
-    <div class="flex pt-0.75">
-    <div class="justify-start text-blue-600 text-xs font-semibold font-['Inter']">View trial details</div>
-    <div data-svg-wrapper class="mt-[1px] ml-0.5">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.9162 7H11.0838M7 11.0838L11.0838 7L7 2.9162" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
-    </div> 
   </div>
-  </div>
-  </div>
-  <div class="lg:col-span-1">
-<div class=" py-5 px-4">
-  <div class="flex gap-2">
-    <div class="size-10 bg-white rounded-[113.89px]">
-      <div data-svg-wrapper class="pl-[10.25px] pt-[10.25px]">
-        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_2004_516)">
-        <path d="M13.6669 17.9375V16.2292C13.6669 15.323 13.3069 14.454 12.6661 13.8132C12.0253 13.1725 11.1562 12.8125 10.25 12.8125H5.12458C4.21835 12.8125 3.34924 13.1725 2.70844 13.8132C2.06764 14.454 1.70764 15.323 1.70764 16.2292V17.9375M13.6669 2.67177C14.3997 2.86171 15.0486 3.28956 15.5118 3.88816C15.975 4.48676 16.2264 5.22222 16.2264 5.97911C16.2264 6.73599 15.975 7.47145 15.5118 8.07005C15.0486 8.66865 14.3997 9.0965 13.6669 9.28644M18.7923 17.9374V16.2291C18.7918 15.472 18.5398 14.7366 18.076 14.1383C17.6121 13.54 16.9627 13.1127 16.2296 12.9234M11.1042 5.97917C11.1042 7.86614 9.57441 9.39583 7.68729 9.39583C5.80016 9.39583 4.27035 7.86614 4.27035 5.97917C4.27035 4.09219 5.80016 2.5625 7.68729 2.5625C9.57441 2.5625 11.1042 4.09219 11.1042 5.97917Z" stroke="#64748B" stroke-width="2.27778" stroke-linecap="round"/>
-        </g>
-        <defs>
-        <clipPath id="clip0_2004_516">
-        <rect width="20.5" height="20.5" fill="white"/>
-        </clipPath>
-        </defs>
-        </svg>
-      </div>
-    </div>
-    <div class="">
-      <div class="justify-start text-blue-600 text-lg font-bold font-['Inter']">29</div>
-      <div class="justify-start text-slate-900 text-xs font-normal font-['Inter']">Users with access</div>
-      <div class="justify-start gap-1">
-        <span class="text-slate-500 text-[9px] font-semibold font-['Inter']">14 <span class="font-normal">Active</span></span>
-        <span class="text-slate-500 text-[9px] font-semibold font-['Inter']"> 15 <span class="font-normal">Inactive</span></span>
-        
-      </div>  
-      <div class="justify-start">
-        
-        <span class="text-slate-500 text-[9px] font-normal font-['Inter']">  </span>
-      </div>
-      
-      <div class="justify-start text-slate-500 text-[9px] font-medium font-['Inter']">of 50 Total    </div>
-    
-    </div>
-  </div>
-  
-</div>
-  </div>
-  <div class="lg:col-span-2">
-<div class=" relative rounded-md py-5 px-4">
-  <div class="justify-start text-slate-900 text-xs font-semibold font-['Inter']">Trial ends in 14 days</div>
-  <div class="justify-start text-slate-900 text-xs font-normal font-['Inter'] mt-1">Choose a plan to continue using keyvault Pro</div>
-  
-  <div class="w-32 h-7 bg-blue-600 rounded-md flex mt-1">
-    <div class="pl-[11px] pt-[7px] justify-start text-white text-xs font-semibold font-['Inter']">Choose a Plan</div>
-    <div data-svg-wrapper class="pt-[8px] pl-[2px]">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.91626 7H11.0839M7.00006 11.0838L11.0839 7L7.00006 2.9162" stroke="white" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </div>
-  
-</div>    
-  </div>
-  <!-- <div data-svg-wrapper class="left-[436px] top-[19px] absolute">
-    <svg width="1" height="76" viewBox="0 0 1 76" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0.5 0V76" stroke="#DBE8FF"/>
-    </svg>
-  </div>
-  <div data-svg-wrapper class="left-[690px] top-[19px] absolute">
-    <svg width="1" height="76" viewBox="0 0 1 76" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0.5 0V76" stroke="#DBE8FF"/>
-    </svg>
-  </div>
-   -->
-</div>
 
       <!-- ROW 1: UPPER STRATEGIC METRICS -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 gap-3 md:gap-4 xl:gap-4 2xl:gap-5">
