@@ -87,7 +87,7 @@ export class DashboardShellComponent implements OnInit {
     series: [
       {
         name: 'Jobs',
-        data: [30, 40, 35, 50, 49, 60, 70],
+        data: [20, 70, 75, 95, 50, 70, 25],
       },
     ],
     chart: {
@@ -95,8 +95,11 @@ export class DashboardShellComponent implements OnInit {
       height: 240,
       toolbar: { show: false },
     },
+    yaxis: {
+      min: 0
+    },
     stroke: {
-      curve: 'smooth',
+      // curve: 'smooth',
       width: 2,
     },
     title: {
