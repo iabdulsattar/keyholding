@@ -66,20 +66,20 @@ export class SubscriptionComponent implements OnInit {
           storage: payload.storageLocations ?? payload.storage ?? 0,
         };
 
-        const isTrial = !!sub.trial && !!sub.active;
+        const isTrial = sub.status === 'TRIAL' || !!sub.trial;
         this.trial = {
           active: isTrial,
-          startDate: sub.effectiveStart ? this.formatDate(sub.effectiveStart) : '-',
-          endDate: sub.effectiveExpiry ? this.formatDate(sub.effectiveExpiry) : '-',
-          daysRemaining: sub.effectiveExpiry ? this.daysUntil(sub.effectiveExpiry) : 0,
+          startDate: sub.trialStart || sub.currentPeriodStart ? this.formatDate(sub.trialStart || sub.currentPeriodStart) : '-',
+          endDate: sub.trialEnd || sub.currentPeriodEnd ? this.formatDate(sub.trialEnd || sub.currentPeriodEnd) : '-',
+          daysRemaining: sub.trialEnd || sub.currentPeriodEnd ? this.daysUntil(sub.trialEnd || sub.currentPeriodEnd) : 0,
         };
 
         this.plan = {
           name: sub.planName || 'No Active Plan',
           type: sub.billingPeriod || (isTrial ? 'Free Trial' : 'Inactive'),
           duration: isTrial ? 'Trial' : (sub.billingPeriod || '-'),
-          startDate: sub.effectiveStart ? this.formatDate(sub.effectiveStart) : '-',
-          endDate: sub.effectiveExpiry ? this.formatDate(sub.effectiveExpiry) : '-',
+          startDate: sub.currentPeriodStart ? this.formatDate(sub.currentPeriodStart) : '-',
+          endDate: sub.currentPeriodEnd ? this.formatDate(sub.currentPeriodEnd) : '-',
           autoConversion: isTrial ? 'Yes' : 'No',
         };
       },
