@@ -71,7 +71,7 @@
   } @else if (error) {
     <div class="text-center py-10 text-red-600">{{ errorMessage || 'Failed to load subscription details.' }}</div>
   } @else {
-  @if (trial?.active) {
+    @if (trial?.active) {
   <!-- Trial banner -->
   <div class="bg-white rounded-md shadow-xs p-5 sm:p-6 mb-4">
     <div class="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-8">
@@ -86,7 +86,7 @@
         <div class="min-w-0">
           <div class="flex items-center gap-2 flex-wrap">
             <h2 class="justify-start text-zinc-800 text-base font-bold font-['Inter']">KeyVault Trial</h2>
-            <span class="text-xs font-semibold text-[#3b6df5] bg-blue-50 px-2 py-0.5 rounded-full">Active</span>
+            <span class="text-xs font-semibold text-[#3b6df5] bg-blue-50 px-2 py-0.5 rounded-full">Active Trial</span>
           </div>
           <p class="text-slate-500 text-sm mt-1">You are currently exploring all features of KeyVault with full access.
           </p>
@@ -126,7 +126,7 @@
 
     <!-- Left: Usage + Help -->
     <div class="xl:col-span-8 space-y-4">
-      <!-- Usage -->
+      <!-- Help section -->
       <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
         <h3 class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mb-5">Your Current Usage</h3>
 
@@ -257,9 +257,6 @@
           <p class="text-slate-500 text-xs font-normal font-['Inter']">Keep your data secure. All your information is
             safe and will be available
             after your trial.</p>
-        </div>
-      </div>
-
       <!-- Help section -->
       <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-6">
@@ -309,7 +306,7 @@
         <div class="bg-slate-100 rounded-md shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)] p-4">
           <div class="flex items-center justify-between">
             <p class="text-slate-500 text-xs font-semibold font-['Inter'] uppercase">CURRENT PLAN</p>
-            <span class="text-xs font-semibold text-green-700 font-['Inter'] bg-green-100 px-2 py-0.5 rounded-xl">Active</span>
+            <span class="text-xs font-semibold text-green-700 font-['Inter'] bg-green-100 px-2 py-0.5 rounded-xl">{{ trial?.active ? 'Trial' : 'Active' }}</span>
           </div>
           <p class="text-blue-600 text-lg font-bold font-['Inter'] mt-1 pb-2 border-b border-slate-200">{{ plan?.name }}</p>
 
@@ -449,11 +446,12 @@
     </defs>
     </svg>
     </p>
-   
   </div>
+  </div>
+  }
   </div>
 
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
     <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
       <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy Policy</a>
       <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of Service</a>

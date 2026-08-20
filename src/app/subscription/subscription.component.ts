@@ -74,8 +74,9 @@ export class SubscriptionComponent implements OnInit {
           daysRemaining: sub.trialEnd || sub.currentPeriodEnd ? this.daysUntil(sub.trialEnd || sub.currentPeriodEnd) : 0,
         };
 
+        const planName = sub.planName || sub.planCode || this.formatServiceCode(sub.serviceCode);
         this.plan = {
-          name: sub.planName || 'No Active Plan',
+          name: planName || 'No Active Plan',
           type: sub.billingPeriod || (isTrial ? 'Free Trial' : 'Inactive'),
           duration: isTrial ? 'Trial' : (sub.billingPeriod || '-'),
           startDate: sub.currentPeriodStart ? this.formatDate(sub.currentPeriodStart) : '-',
@@ -96,6 +97,14 @@ export class SubscriptionComponent implements OnInit {
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '-';
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  private formatServiceCode(code: string): string {
+    if (!code) return '';
+    return code
+      .split('-')
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
   }
 
   private daysUntil(iso: string): number {
