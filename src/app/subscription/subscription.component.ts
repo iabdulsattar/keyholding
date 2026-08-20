@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { KeyVaultService } from '../core/services/keyvault.service';
-import { AuthService } from '../core/services/auth.service';
+import { SubscriptionService } from '../core/services/subscription.service';
 
 @Component({
   selector: 'app-subscription',
@@ -21,8 +20,7 @@ export class SubscriptionComponent implements OnInit {
   plan: any = null;
 
   constructor(
-    private keyVaultService: KeyVaultService,
-    private authService: AuthService,
+    private subscriptionService: SubscriptionService,
   ) {}
 
   ngOnInit(): void {
@@ -52,20 +50,20 @@ export class SubscriptionComponent implements OnInit {
       return;
     }
 
-    this.keyVaultService.getSubscriptionUsage(orgId).subscribe({
+    this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
       next: (res: any) => {
         this.loading = false;
         const payload = res?.data ?? res ?? {};
-        const sub = payload.subscription ?? {};
+        const sub = payload.subscription ?? payload ?? {};
 
         this.usage = {
-          users: payload.usersWithAccess ?? 0,
+          users: payload.usersWithAccess ?? payload.users ?? 0,
           usersLimit: sub.features?.max_users ?? 10,
           sites: payload.sites ?? 0,
           keys: payload.keys ?? 0,
           jobs: payload.jobs ?? 0,
-          customers: payload.clients ?? 0,
-          storage: payload.storageLocations ?? 0,
+          customers: payload.clients ?? payload.customers ?? 0,
+          storage: payload.storageLocations ?? payload.storage ?? 0,
         };
 
         const isTrial = !!sub.trial && !!sub.active;
@@ -89,31 +87,6 @@ export class SubscriptionComponent implements OnInit {
         this.loading = false;
         this.error = true;
         this.errorMessage = err?.error?.detail || 'Failed to load subscription details.';
-      }
-    });
-
-    this.keyVaultService.getSubscription(orgId).subscribe({
-      next: (res: any) => {
-        const payload = res?.data ?? res ?? {};
-        const sub = payload.subscription ?? payload ?? {};
-        this.plan = {
-          name: sub.planName || this.plan?.name || 'No Active Plan',
-          type: sub.billingPeriod || this.plan?.type || 'Inactive',
-          duration: sub.billingPeriod || this.plan?.duration || '-',
-          startDate: sub.effectiveStart ? this.formatDate(sub.effectiveStart) : (this.plan?.startDate || '-'),
-          endDate: sub.effectiveExpiry ? this.formatDate(sub.effectiveExpiry) : (this.plan?.endDate || '-'),
-          autoConversion: this.plan?.autoConversion || 'No',
-        };
-        const isTrial = !!sub.trial && !!sub.active;
-        this.trial = {
-          active: isTrial,
-          startDate: sub.effectiveStart ? this.formatDate(sub.effectiveStart) : (this.trial?.startDate || '-'),
-          endDate: sub.effectiveExpiry ? this.formatDate(sub.effectiveExpiry) : (this.trial?.endDate || '-'),
-          daysRemaining: sub.effectiveExpiry ? this.daysUntil(sub.effectiveExpiry) : (this.trial?.daysRemaining || 0),
-        };
-      },
-      error: () => {
-        // subscription status is optional if usage already loaded
       }
     });
   }
