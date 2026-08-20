@@ -2,112 +2,170 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
 import {
   Plan,
   CreatePlanRequest,
+  ServiceInfo,
   StartSubscriptionRequest,
   StartSubscriptionResponse,
   ChangePlanRequest,
   ChangePlanResponse,
   CancelSubscriptionRequest,
   CancelSubscriptionResponse,
-  ListSubscriptionsResponse,
   SubscriptionHistoryResponse,
-  SubscriptionCheckResponse
+  SubscriptionCheckResponse,
+  BillingProfile,
+  BillingProfileResponse,
+  BillingInfo,
+  BillingInfoResponse
 } from '../models/subscription.models';
 
 @Injectable({ providedIn: 'root' })
 export class SubscriptionService {
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private auth: AuthService) {}
+
+  private getAuthHeaders(): HttpHeaders | undefined {
+    const token = this.auth.getAccessToken();
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+  }
+
+  private getAccessToken(): string | null {
+    return this.auth.getAccessToken();
+  }
 
   // -------- Plans --------
 
-  // GET /api/v1/subscriptions/plans
-  listPlans(): Observable<Plan[]> {
-    return this.api.get<Plan[]>('/api/v1/subscriptions/plans');
+  listPlans(serviceCode?: string, country?: string): Observable<Plan[]> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (serviceCode) q.set('serviceCode', serviceCode);
+    if (country) q.set('country', country);
+    const query = q.toString();
+    return this.api.get<Plan[]>(`/api/v1/subscriptions/plans${query ? `?${query}` : ''}`, headers);
   }
 
-  // GET /api/v1/subscriptions/plans/{planId}
   getPlan(planId: string): Observable<Plan> {
     return this.api.get<Plan>(`/api/v1/subscriptions/plans/${planId}`);
   }
 
-  // POST /api/v1/subscriptions/plans (ADMIN)
   createPlan(payload: CreatePlanRequest): Observable<Plan> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.getAccessToken() ? { Authorization: `Bearer ${this.getAccessToken()}` } : {})
+    });
     return this.api.post<Plan>('/api/v1/subscriptions/plans', payload, headers);
   }
 
-  // POST /api/v1/subscriptions/plans/{planId}/sync (ADMIN — sync to Stripe)
   syncPlanToStripe(planId: string): Observable<any> {
-    return this.api.post(`/api/v1/subscriptions/plans/${planId}/sync`, {});
+    const headers = this.getAuthHeaders();
+    return this.api.post(`/api/v1/subscriptions/plans/${planId}/sync`, {}, headers);
   }
 
-  // POST /api/v1/subscriptions/plans/{planId}/disable (ADMIN)
   disablePlan(planId: string): Observable<any> {
-    return this.api.post(`/api/v1/subscriptions/plans/${planId}/disable`, {});
+    const headers = this.getAuthHeaders();
+    return this.api.post(`/api/v1/subscriptions/plans/${planId}/disable`, {}, headers);
+  }
+
+  listServices(): Observable<ServiceInfo[]> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<ServiceInfo[]>('/api/v1/subscriptions/services', headers);
   }
 
   // -------- Subscription Lifecycle --------
 
-  // POST /api/v1/subscriptions/organizations/{orgId}/start?orgEmail=&orgName=
   startSubscription(
     orgId: string,
     payload: StartSubscriptionRequest,
-    orgEmail?: string,
-    orgName?: string,
+    serviceCode = 'key-vault',
     token?: string
   ): Observable<StartSubscriptionResponse> {
+    const accessToken = token ?? this.getAccessToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` })
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
     });
-    let query = '';
-    if (orgEmail || orgName) {
-      const params = new URLSearchParams();
-      if (orgEmail) params.set('orgEmail', orgEmail);
-      if (orgName) params.set('orgName', orgName);
-      query = `?${params.toString()}`;
-    }
     return this.api.post<StartSubscriptionResponse>(
-      `/api/v1/subscriptions/organizations/${orgId}/start${query}`,
+      `/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/start`,
       payload,
       headers
     );
   }
 
-  // GET /api/v1/subscriptions/organizations/{orgId}
-  getCurrentSubscription(orgId: string): Observable<ListSubscriptionsResponse> {
-    return this.api.get<ListSubscriptionsResponse>(`/api/v1/subscriptions/organizations/${orgId}`);
+  getSubscription(orgId: string, serviceCode: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}`, headers);
   }
 
-  // PATCH /api/v1/subscriptions/organizations/{orgId}/plan
-  changePlan(orgId: string, payload: ChangePlanRequest, token?: string): Observable<ChangePlanResponse> {
+  changePlan(orgId: string, serviceCode: string, payload: ChangePlanRequest, token?: string): Observable<ChangePlanResponse> {
+    const accessToken = token ?? this.getAccessToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` })
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
     });
-    return this.api.patch<ChangePlanResponse>(`/api/v1/subscriptions/organizations/${orgId}/plan`, payload, headers);
+    return this.api.patch<ChangePlanResponse>(
+      `/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/plan`,
+      payload,
+      headers
+    );
   }
 
-  // POST /api/v1/subscriptions/organizations/{orgId}/cancel
-  cancelSubscription(orgId: string, payload: CancelSubscriptionRequest, token?: string): Observable<CancelSubscriptionResponse> {
+  cancelSubscription(orgId: string, serviceCode: string, payload: CancelSubscriptionRequest, token?: string): Observable<CancelSubscriptionResponse> {
+    const accessToken = token ?? this.getAccessToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` })
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
     });
-    return this.api.post<CancelSubscriptionResponse>(`/api/v1/subscriptions/organizations/${orgId}/cancel`, payload, headers);
+    return this.api.post<CancelSubscriptionResponse>(
+      `/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/cancel`,
+      payload,
+      headers
+    );
   }
 
-  // GET /api/v1/subscriptions/organizations/{orgId}/history
-  getSubscriptionHistory(orgId: string): Observable<SubscriptionHistoryResponse> {
-    return this.api.get<SubscriptionHistoryResponse>(`/api/v1/subscriptions/organizations/${orgId}/history`);
+  getSubscriptionHistory(orgId: string, serviceCode?: string): Observable<SubscriptionHistoryResponse> {
+    const headers = this.getAuthHeaders();
+    const query = serviceCode ? `?serviceCode=${encodeURIComponent(serviceCode)}` : '';
+    return this.api.get<SubscriptionHistoryResponse>(`/api/v1/subscriptions/organizations/${orgId}/history${query}`, headers);
   }
 
   // -------- Subscription Check (gating) --------
 
-  // GET /api/v1/subscriptions/check?organizationId={orgId}
-  checkSubscription(orgId: string): Observable<SubscriptionCheckResponse> {
-    return this.api.get<SubscriptionCheckResponse>(`/api/v1/subscriptions/check?organizationId=${encodeURIComponent(orgId)}`);
+  checkSubscription(orgId: string, serviceCode?: string): Observable<SubscriptionCheckResponse> {
+    const headers = this.getAuthHeaders();
+    const query = serviceCode
+      ? `?organizationId=${encodeURIComponent(orgId)}&serviceCode=${encodeURIComponent(serviceCode)}`
+      : `?organizationId=${encodeURIComponent(orgId)}`;
+    return this.api.get<SubscriptionCheckResponse>(`/api/v1/subscriptions/check${query}`, headers);
+  }
+
+  // -------- Billing Profile --------
+
+  getBillingProfile(orgId: string): Observable<BillingProfileResponse> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<BillingProfileResponse>(`/api/v1/subscriptions/organizations/${orgId}/billing`, headers);
+  }
+
+  saveBillingProfile(orgId: string, payload: BillingProfile): Observable<BillingProfileResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.getAccessToken() ? { Authorization: `Bearer ${this.getAccessToken()}` } : {})
+    });
+    return this.api.put<BillingProfileResponse>(`/api/v1/subscriptions/organizations/${orgId}/billing`, payload, headers);
+  }
+
+  // -------- Billing Info --------
+
+  getBillingInfo(orgId: string): Observable<BillingInfoResponse> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<BillingInfoResponse>(`/api/v1/subscriptions/organizations/${orgId}/billing-info`, headers);
+  }
+
+  saveBillingInfo(orgId: string, payload: BillingInfo): Observable<BillingInfoResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.getAccessToken() ? { Authorization: `Bearer ${this.getAccessToken()}` } : {})
+    });
+    return this.api.put<BillingInfoResponse>(`/api/v1/subscriptions/organizations/${orgId}/billing-info`, payload, headers);
   }
 }
