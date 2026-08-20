@@ -998,13 +998,6 @@ export class KeyVaultService {
     return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/documents/${documentId}`, headers);
   }
 
-  getInternalPermissions(authUserId: string, orgId: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'X-Internal-Secret': '9f2c7b4e1a8d6f3c5b9e2a7d1f4c8e6b3a9d5f2c7e1b8a4d6f9c3e7a2b5d1f8'
-    });
-    return this.api.get<any>(`/api/v1/keyvault/internal/users/${authUserId}/permissions?organizationId=${orgId}`, headers);
-  }
-
   enableService(orgId: string, serviceCode: string, email: string, code: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -1182,6 +1175,25 @@ export class KeyVaultService {
     });
     return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/remove-key`, data, headers);
    }
+
+   getSubscriptionUsage(orgId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/subscription/usage`, headers);
+  }
+
+  getSubscription(orgId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/subscription`, headers);
+  }
+
+  startTrialSubscription(orgId: string, planId: string): Observable<any> {
+    const token = this.auth.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/subscriptions/organizations/${orgId}/services/key-vault/start`, { planId, billingPeriod: 'MONTHLY', useTrial: true }, headers);
+  }
 
    moveKeyToHook(orgId: string, cabinetId: string, hookId: string, data: { targetHookId: string; note?: string }): Observable<any> {
     const headers = new HttpHeaders({

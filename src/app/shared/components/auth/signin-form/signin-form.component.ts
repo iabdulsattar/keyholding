@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { InputFieldComponent } from '../../form/input/input-field.component';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { KeyVaultService } from '../../../../core/services/keyvault.service';
+import { SubscriptionService } from '../../../../core/services/subscription.service';
 import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class SigninFormComponent {
     private permissionService: PermissionService,
     private router: Router,
     private keyVault: KeyVaultService,
+    private subscriptionService: SubscriptionService,
     private toast: ToastService,
   ) {}
 
@@ -289,11 +291,15 @@ export class SigninFormComponent {
     const hasKeyVaultAccess = (this.permissionService.getServiceAccess() ?? []).some(
       (g) => g.serviceCode === 'key-vault'
     );
+    console.log('[Signin] hasKeyVaultAccess=', hasKeyVaultAccess);
 
     const finalizeAndNavigate = () => {
-      this.isLoading = false;
-      this.toast.success('Login successful! Redirecting...');
-      setTimeout(() => this.router.navigate(['/']), 600);
+      console.log('[Signin] finalizeAndNavigate -> startTrialIfNeeded');
+      this.startTrialIfNeeded(() => {
+        this.isLoading = false;
+        this.toast.success('Login successful! Redirecting...');
+        setTimeout(() => this.router.navigate(['/']), 600);
+      });
     };
 
     if (!hasKeyVaultAccess) {
@@ -305,75 +311,48 @@ export class SigninFormComponent {
               ...(this.permissionService.getServiceAccess() ?? []),
               { serviceCode: 'key-vault', wildcard: false, permissions: [], roles: [] }
             ]);
-            this.fetchKeyVaultPermissions(accessToken, finalizeAndNavigate);
+            finalizeAndNavigate();
           },
           error: () => {
             this.permissionService.setServiceAccess([
               ...(this.permissionService.getServiceAccess() ?? []),
               { serviceCode: 'key-vault', wildcard: false, permissions: [], roles: [] }
             ]);
-            this.fetchKeyVaultPermissions(accessToken, finalizeAndNavigate);
+            finalizeAndNavigate();
           }
         });
       } else {
         finalizeAndNavigate();
       }
     } else {
-      this.fetchKeyVaultPermissions(accessToken, finalizeAndNavigate);
+      finalizeAndNavigate();
     }
   }
 
-  private fetchKeyVaultPermissions(accessToken: string, done: () => void): void {
+  private startTrialIfNeeded(done: () => void): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) {
+    console.log('[Signin] startTrialIfNeeded orgId=', orgId, 'subscription_started=', localStorage.getItem('subscription_started'));
+    if (!orgId || localStorage.getItem('subscription_started')) {
+      console.log('[Signin] startTrialIfNeeded skipped');
       done();
       return;
     }
 
-    let authUserId: string | null = null;
-    try {
-      const payload = JSON.parse(atob(accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      authUserId = payload?.sub ?? payload?.user_id ?? payload?.id ?? null;
-    } catch {
-      authUserId = null;
-    }
-
-    if (!authUserId) {
-      this.authService.me(accessToken).subscribe({
-        next: (profile: any) => {
-          authUserId = profile?.id ?? profile?.userId ?? null;
-          this.loadKeyVaultPermissions(orgId, authUserId, done);
-        },
-        error: () => done()
-      });
-      return;
-    }
-
-    this.loadKeyVaultPermissions(orgId, authUserId, done);
-  }
-
-  private loadKeyVaultPermissions(orgId: string, authUserId: string | null, done: () => void): void {
-    if (!authUserId) {
-      done();
-      return;
-    }
-
-    this.keyVault.getInternalPermissions(authUserId, orgId).subscribe({
-      next: (res: any) => {
-        const permissions = res?.permissions ?? [];
-        const wildcard = !!res?.wildcard;
-        const roles = res?.roles ?? [];
-        this.permissionService.setServiceAccess([
-          {
-            serviceCode: 'key-vault',
-            wildcard,
-            permissions,
-            roles
-          }
-        ]);
+    console.log('[Signin] calling startSubscription planId=699c7099-2f5f-438c-8252-abafedc36052');
+    this.subscriptionService.startSubscription(orgId, {
+      planId: '699c7099-2f5f-438c-8252-abafedc36052',
+      billingPeriod: 'MONTHLY',
+      useTrial: true,
+    }).subscribe({
+      next: () => {
+        console.log('[Signin] startSubscription next');
+        localStorage.setItem('subscription_started', 'true');
         done();
       },
-      error: () => done()
+      error: (err) => {
+        console.log('[Signin] startSubscription error', err);
+        done();
+      }
     });
   }
 }
