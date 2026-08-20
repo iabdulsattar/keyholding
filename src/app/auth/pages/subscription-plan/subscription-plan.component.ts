@@ -50,12 +50,7 @@ export class SubscriptionPlanComponent implements OnInit {
   }
 
   get shortNames(): Record<string, string> {
-    return {
-      KV_STARTER: 'Starter',
-      KV_USER_LICENCE: 'User Licence',
-      KV_PROFESSIONAL: 'Professional',
-      KV_BUSINESS: 'Business'
-    };
+    return {};
   }
 
   get planOrder(): string[] {
@@ -97,7 +92,7 @@ export class SubscriptionPlanComponent implements OnInit {
   }
 
   getPlanName(plan: Plan): string {
-    return this.shortNames[plan.code] ?? plan.name ?? plan.code;
+    return plan.name ?? plan.code;
   }
 
   getSubtotal(plan: Plan): number {
@@ -147,18 +142,14 @@ export class SubscriptionPlanComponent implements OnInit {
     this.isFetchingPlans = true;
     this.subscriptionService.listPlans('key-vault').subscribe({
       next: (res: any) => {
-        console.log('[SubscriptionPlan] listPlans raw response:', res);
         const planList = Array.isArray(res) ? res : (res?.data ?? []);
-        console.log('[SubscriptionPlan] normalized plans:', planList);
         this.plans = planList.filter((p: any) => p.active);
-        console.log('[SubscriptionPlan] active plans:', this.plans);
         if (this.plans.length > 0 && !this.selectedPlan) {
           this.selectedPlan = this.plans[0];
         }
         this.isFetchingPlans = false;
       },
-      error: (err) => {
-        console.error('[SubscriptionPlan] listPlans error:', err);
+      error: () => {
         this.plans = this.getFallbackPlans();
         if (this.plans.length > 0 && !this.selectedPlan) {
           this.selectedPlan = this.plans[0];
