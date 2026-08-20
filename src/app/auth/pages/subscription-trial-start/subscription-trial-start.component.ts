@@ -82,8 +82,9 @@ export class SubscriptionTrialStartComponent implements OnInit {
 
   private loadTrialPlan(): void {
     this.subscriptionService.listPlans().subscribe({
-      next: (plans) => {
-        this.trialPlan = plans.find(p => p.trialEligible && p.active) || null;
+      next: (res: any) => {
+        const planList = Array.isArray(res) ? res : (res?.data ?? []);
+        this.trialPlan = planList.find((p: any) => p.trialEligible && p.active) || null;
       },
       error: () => {
         this.errorMessage = 'Failed to load trial details. Please try again.';
