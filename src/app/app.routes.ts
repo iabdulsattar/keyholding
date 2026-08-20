@@ -277,17 +277,17 @@ export const routes: Routes = [
             loadComponent: () => import('./ui-elements/pages/buttons/buttons.component').then(m => m.ButtonsComponent),
             title:'Angular Buttons Dashboard | TailAdmin - Angular Admin Dashboard Template'
           },
-          {
-            path:'images',
-            loadComponent: () => import('./ui-elements/pages/images/images.component').then(m => m.ImagesComponent),
-            title:'Angular Images Dashboard | TailAdmin - Angular Admin Dashboard Template'
-          },
-          {
-            path:'videos',
-            loadComponent: () => import('./ui-elements/pages/videos/videos.component').then(m => m.VideosComponent),
-            title:'Angular Videos Dashboard | TailAdmin - Angular Admin Dashboard Template'
-          },
-      ]
+           {
+             path:'buttons',
+             loadComponent: () => import('./ui-elements/pages/buttons/buttons.component').then(m => m.ButtonsComponent),
+             title:'Angular Buttons Dashboard | TailAdmin - Angular Admin Dashboard Template'
+           },
+           {
+             path:'subscription-plan',
+             loadComponent: () => import('./auth/pages/subscription-plan/subscription-plan.component').then(m => m.SubscriptionPlanComponent),
+             title:'Choose Plan | KeyVault Pro'
+           },
+       ]
   },
   // auth pages
   {
@@ -329,11 +329,6 @@ export const routes: Routes = [
     path:'verification',
     loadComponent: () => import('./auth/pages/verification/verification.component').then(m => m.VerificationComponent),
     title:'Verification | KeyVault Pro'
-  },
-  {
-    path:'subscription-plan',
-    loadComponent: () => import('./auth/pages/subscription-plan/subscription-plan.component').then(m => m.SubscriptionPlanComponent),
-    title:'Choose Plan | KeyVault Pro'
   },
   {
     path:'subscription-trial-start',
