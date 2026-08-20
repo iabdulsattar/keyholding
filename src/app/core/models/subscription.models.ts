@@ -12,6 +12,7 @@ export interface Plan {
   features: Record<string, any>;
   active: boolean;
   sortOrder: number;
+  serviceCode?: string;
   stripePriceIdMonthly?: string;
   stripePriceIdAnnual?: string;
   createdAt?: string;
@@ -33,6 +34,13 @@ export interface CreatePlanRequest {
   sortOrder?: number;
 }
 
+export interface ServiceInfo {
+  code: string;
+  name: string;
+  description?: string;
+  [key: string]: any;
+}
+
 // -------- Subscriptions --------
 export type SubscriptionStatus = 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'CANCELLED' | 'TRIALING' | 'PAST_DUE';
 export type BillingPeriod = 'MONTHLY' | 'ANNUAL';
@@ -40,6 +48,7 @@ export type BillingPeriod = 'MONTHLY' | 'ANNUAL';
 export interface Subscription {
   id: string;
   organizationId: string;
+  serviceCode: string;
   planId: string;
   planCode?: string;
   planName?: string;
@@ -63,6 +72,7 @@ export interface StartSubscriptionRequest {
   billingPeriod: BillingPeriod;
   useTrial?: boolean;
   paymentMethodId?: string;
+  config?: Record<string, any>;
 }
 
 export interface StartSubscriptionResponse {
@@ -73,6 +83,7 @@ export interface StartSubscriptionResponse {
 export interface ChangePlanRequest {
   newPlanId: string;
   billingPeriod: BillingPeriod;
+  config?: Record<string, any>;
 }
 
 export interface ChangePlanResponse {
@@ -90,11 +101,6 @@ export interface CancelSubscriptionResponse {
   [key: string]: any;
 }
 
-export interface ListSubscriptionsResponse {
-  subscriptions: Subscription[];
-  [key: string]: any;
-}
-
 export interface SubscriptionHistoryResponse {
   subscriptions: Subscription[];
   total: number;
@@ -108,5 +114,40 @@ export interface SubscriptionCheckResponse {
   planCode?: string;
   planName?: string;
   features: Record<string, any>;
+  [key: string]: any;
+}
+
+// -------- Billing Profile --------
+export interface BillingProfile {
+  companyName?: string;
+  billingEmail?: string;
+  billingAddress?: string;
+  city?: string;
+  postcode?: string;
+  country?: string;
+  vatNumber?: string;
+  vatRateBps?: number;
+  [key: string]: any;
+}
+
+export interface BillingProfileResponse {
+  profile: BillingProfile;
+  [key: string]: any;
+}
+
+// -------- Billing Info --------
+export interface BillingInfo {
+  companyName?: string;
+  billingEmail?: string;
+  billingAddress?: string;
+  city?: string;
+  postcode?: string;
+  country?: string;
+  vatNumber?: string;
+  [key: string]: any;
+}
+
+export interface BillingInfoResponse {
+  profile: BillingInfo;
   [key: string]: any;
 }
