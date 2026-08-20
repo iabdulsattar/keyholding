@@ -338,9 +338,9 @@ export class SigninFormComponent {
       return;
     }
 
-    console.log('[Signin] calling startSubscription planId=699c7099-2f5f-438c-8252-abafedc36052');
+    console.log('[Signin] calling startSubscription planId=5ab78dd5-96ea-4dcc-9c89-66f9bed45368');
     this.subscriptionService.startSubscription(orgId, {
-      planId: '699c7099-2f5f-438c-8252-abafedc36052',
+      planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
       billingPeriod: 'MONTHLY',
       useTrial: true,
     }).subscribe({
