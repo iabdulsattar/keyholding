@@ -25,6 +25,7 @@ export class SubscriptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSubscription();
+    this.loadUsage();
   }
 
   private getOrgId(): string | null {
@@ -57,13 +58,13 @@ export class SubscriptionComponent implements OnInit {
         const sub = payload.subscription ?? payload ?? {};
 
         this.usage = {
-          users: payload.usersWithAccess ?? payload.users ?? 0,
+          users: 0,
           usersLimit: sub.features?.max_users ?? 10,
-          sites: payload.sites ?? 0,
-          keys: payload.keys ?? 0,
-          jobs: payload.jobs ?? 0,
-          customers: payload.clients ?? payload.customers ?? 0,
-          storage: payload.storageLocations ?? payload.storage ?? 0,
+          sites: 0,
+          keys: 0,
+          jobs: 0,
+          customers: 0,
+          storage: 0,
         };
 
         const isTrial = sub.status === 'TRIAL' || !!sub.trial;
@@ -88,6 +89,29 @@ export class SubscriptionComponent implements OnInit {
         this.loading = false;
         this.error = true;
         this.errorMessage = err?.error?.detail || 'Failed to load subscription details.';
+      }
+    });
+  }
+
+  private loadUsage(): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.subscriptionService.getUsage(orgId, 'key-vault').subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res ?? {};
+        this.usage = {
+          ...this.usage,
+          users: payload.usersWithAccess ?? 0,
+          sites: payload.sites ?? 0,
+          keys: payload.keys ?? 0,
+          jobs: payload.jobs ?? 0,
+          customers: payload.clients ?? payload.customers ?? 0,
+          storage: payload.storageLocations ?? payload.storage ?? 0,
+        };
+      },
+      error: () => {
+        // keep default zeros already set in subscription init
       }
     });
   }
