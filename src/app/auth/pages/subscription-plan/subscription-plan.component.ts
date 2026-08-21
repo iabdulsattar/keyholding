@@ -110,26 +110,33 @@ export class SubscriptionPlanComponent implements OnInit {
   selectPlan(plan: Plan) {
     this.selectedPlan = plan;
     this.errorMessage = '';
+  }
+
+  proceedWithPlan() {
+    if (!this.selectedPlan) {
+      this.errorMessage = 'Please select a plan first.';
+      return;
+    }
 
     const orgId = this.orgId;
     if (!orgId) {
-      this.errorMessage = 'Organization not found. Please sign up again.';
+      this.errorMessage = 'Organization not found. Please contact support.';
       return;
     }
 
     this.isLoading = true;
     this.subscriptionService.startSubscription(orgId, {
-      planId: plan.id,
+      planId: this.selectedPlan.id,
       billingPeriod: 'MONTHLY',
-      useTrial: true,
+      useTrial: false,
     }).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/signin']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err?.error?.detail || 'Failed to start subscription. Please try again.';
+        this.errorMessage = err?.error?.detail || 'Failed to activate plan. Please try again.';
       },
     });
   }

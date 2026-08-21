@@ -227,9 +227,9 @@
           </div>
 
           <button class="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition font-['Inter'] text-sm"
-                  (click)="selectPlan(selectedPlan!)"
+                  (click)="proceedWithPlan()"
                   [disabled]="!selectedPlan || isLoading">
-            {{ isLoading ? 'Starting...' : 'Pay & activate KeyVault' }}
+            {{ isLoading ? 'Activating...' : 'Pay & activate KeyVault' }}
           </button>
 
           <p class="text-[10px] text-slate-400 text-center mt-4 font-['Inter']">

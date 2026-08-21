@@ -275,9 +275,6 @@ export class SigninFormComponent {
         if (sessionOrgs?.length > 0) {
           storeOrg(sessionOrgs[0].id, sessionOrgs[0].name);
         }
-        if (sessionOrgs[0]?.subscription?.active === false) {
-          console.log('Subscription not active — frontend should route to plan-selection page');
-        }
       },
       error: () => {
       }
@@ -293,12 +290,63 @@ export class SigninFormComponent {
     );
     console.log('[Signin] hasKeyVaultAccess=', hasKeyVaultAccess);
 
-    const finalizeAndNavigate = () => {
-      console.log('[Signin] finalizeAndNavigate -> startTrialIfNeeded');
-      this.startTrialIfNeeded(() => {
-        this.isLoading = false;
-        this.toast.success('Login successful! Redirecting...');
-        setTimeout(() => this.router.navigate(['/']), 600);
+    const navigateAfterLogin = (target: string) => {
+      this.isLoading = false;
+      this.toast.success('Login successful! Redirecting...');
+      setTimeout(() => this.router.navigate([target]), 600);
+    };
+
+    const startFreshTrial = (orgId: string, done: () => void) => {
+      if (localStorage.getItem('subscription_started')) {
+        done();
+        return;
+      }
+      this.subscriptionService.startSubscription(orgId, {
+        planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
+        billingPeriod: 'MONTHLY',
+        useTrial: true,
+      }).subscribe({
+        next: () => {
+          localStorage.setItem('subscription_started', 'true');
+          done();
+        },
+        error: () => {
+          done();
+        }
+      });
+    };
+
+    const checkSubscriptionAndNavigate = () => {
+      const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+      if (!orgId) {
+        navigateAfterLogin('/');
+        return;
+      }
+
+      this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
+        next: (res: any) => {
+          const payload = res?.data ?? res ?? {};
+          const sub = payload.subscription ?? payload ?? {};
+          const status = sub?.status?.toUpperCase();
+          
+          if (!status) {
+            startFreshTrial(orgId, () => navigateAfterLogin('/'));
+            return;
+          }
+          
+          const isActive = status === 'ACTIVE' || status === 'TRIALING';
+          const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
+          const isTrialExpired = status === 'TRIALING' && trialEnd && new Date(trialEnd) < new Date();
+          
+          if (!isActive || isTrialExpired) {
+            navigateAfterLogin('/subscription-plan');
+          } else {
+            navigateAfterLogin('/');
+          }
+        },
+        error: () => {
+          navigateAfterLogin('/');
+        }
       });
     };
 
@@ -311,49 +359,23 @@ export class SigninFormComponent {
               ...(this.permissionService.getServiceAccess() ?? []),
               { serviceCode: 'key-vault', wildcard: false, permissions: [], roles: [] }
             ]);
-            finalizeAndNavigate();
+            checkSubscriptionAndNavigate();
           },
           error: () => {
             this.permissionService.setServiceAccess([
               ...(this.permissionService.getServiceAccess() ?? []),
               { serviceCode: 'key-vault', wildcard: false, permissions: [], roles: [] }
             ]);
-            finalizeAndNavigate();
+            checkSubscriptionAndNavigate();
           }
         });
       } else {
-        finalizeAndNavigate();
+        checkSubscriptionAndNavigate();
       }
     } else {
-      finalizeAndNavigate();
+      checkSubscriptionAndNavigate();
     }
   }
 
-  private startTrialIfNeeded(done: () => void): void {
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    console.log('[Signin] startTrialIfNeeded orgId=', orgId, 'subscription_started=', localStorage.getItem('subscription_started'));
-    if (!orgId || localStorage.getItem('subscription_started')) {
-      console.log('[Signin] startTrialIfNeeded skipped');
-      done();
-      return;
-    }
-
-    console.log('[Signin] calling startSubscription planId=5ab78dd5-96ea-4dcc-9c89-66f9bed45368');
-    this.subscriptionService.startSubscription(orgId, {
-      planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
-      billingPeriod: 'MONTHLY',
-      useTrial: true,
-    }).subscribe({
-      next: () => {
-        console.log('[Signin] startSubscription next');
-        localStorage.setItem('subscription_started', 'true');
-        done();
-      },
-      error: (err) => {
-        console.log('[Signin] startSubscription error', err);
-        done();
-      }
-    });
-  }
 }
 
