@@ -27,12 +27,20 @@ export class ToastInterceptor implements HttpInterceptor {
     '/api/v1/auth/logout',
   ];
 
+  private readonly SILENT_GET_PATHS = [
+    '/api/v1/subscriptions/organizations/',
+  ];
+
   private readonly MUTATION_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
   constructor(private toastService: ToastService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (this.isPublicPath(req.url)) {
+      return next.handle(req);
+    }
+
+    if (this.isSilentGetPath(req.url, req.method)) {
       return next.handle(req);
     }
 
@@ -79,6 +87,10 @@ export class ToastInterceptor implements HttpInterceptor {
       return;
     }
 
+    if (err.url && this.isSilentGetPath(err.url, 'GET')) {
+      return;
+    }
+
     const message = this.getErrorMessage(err);
     if (message) {
       this.toastService.error(message);
@@ -119,5 +131,12 @@ export class ToastInterceptor implements HttpInterceptor {
 
   private isPublicPath(url: string): boolean {
     return this.PUBLIC_PATHS.some((path) => url.includes(path));
+  }
+
+  private isSilentGetPath(url: string, method: string): boolean {
+    if (method !== 'GET') {
+      return false;
+    }
+    return this.SILENT_GET_PATHS.some((path) => url.includes(path));
   }
 }

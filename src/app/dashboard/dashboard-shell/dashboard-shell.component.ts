@@ -6,6 +6,7 @@ import { PermissionService } from '../../core/services/permission.service';
 import { ProfileResponse } from '../../core/models/auth.models';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { SubscriptionService } from '../../core/services/subscription.service';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
 
@@ -50,12 +51,7 @@ export class DashboardShellComponent implements OnInit {
     keysInStorageChange: '0%',
     keysIssuedChange: '0%',
   };
-   trial = {
-    active: true,
-    startDate: '07 Aug 2026',
-    endDate: '21 Aug 2026',
-    daysRemaining: 13,
-  };
+  trial: any = null;
 
   alertMetrics = {
     overdueKeys: 0,
@@ -161,11 +157,13 @@ export class DashboardShellComponent implements OnInit {
     private permissionService: PermissionService,
     public sidebarService: SidebarService,
     private keyVaultService: KeyVaultService,
+    private subscriptionService: SubscriptionService,
   ) {}
 
   ngOnInit(): void {
     this.loadGreeting();
     this.loadDashboard();
+    this.loadSubscriptionTrial();
   }
 
   private loadGreeting(): void {
@@ -196,6 +194,22 @@ export class DashboardShellComponent implements OnInit {
     );
   }
 
+  private formatDate(iso: string): string {
+    if (!iso) return '-';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '-';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  private daysUntil(iso: string): number {
+    if (!iso) return 0;
+    const target = new Date(iso);
+    const now = new Date();
+    if (isNaN(target.getTime())) return 0;
+    const diff = Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.max(0, diff);
+  }
+
   private loadDashboard(): void {
     const orgId = this.getOrgId();
     if (!orgId) {
@@ -212,6 +226,36 @@ export class DashboardShellComponent implements OnInit {
       error: () => {
         this.loading = false;
         this.dashboardError = true;
+      }
+    });
+  }
+
+  private loadSubscriptionTrial(): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res ?? {};
+        const sub = payload.subscription ?? payload ?? {};
+        const status = sub?.status?.toUpperCase();
+        const isTrial = status === 'TRIAL' || status === 'TRIALING';
+        const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
+        const isExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
+
+        if (isTrial && !isExpired) {
+          this.trial = {
+            active: true,
+            startDate: sub.trialStart || sub.currentPeriodStart ? this.formatDate(sub.trialStart || sub.currentPeriodStart) : '-',
+            endDate: trialEnd ? this.formatDate(trialEnd) : '-',
+            daysRemaining: trialEnd ? this.daysUntil(trialEnd) : 0,
+          };
+        } else {
+          this.trial = null;
+        }
+      },
+      error: () => {
+        this.trial = null;
       }
     });
   }

@@ -62,6 +62,11 @@ export const routes: Routes = [
             title: 'Complete Your Subscription | KeyVault Pro'
           },
           {
+            path: 'clients',
+            loadComponent: () => import('./clients/clients.component').then(m => m.ClientsComponent),
+            title: 'Clients | KeyVault Pro'
+          },
+          {
             path: 'clients/add-client',
             loadComponent: () => import('./clients/add-client/add-client.component').then(m => m.AddClientComponent),
             title: 'Add New Client | KeyVault Pro'

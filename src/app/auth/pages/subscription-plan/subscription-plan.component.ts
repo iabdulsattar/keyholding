@@ -118,26 +118,18 @@ export class SubscriptionPlanComponent implements OnInit {
       return;
     }
 
-    const orgId = this.orgId;
-    if (!orgId) {
-      this.errorMessage = 'Organization not found. Please contact support.';
-      return;
-    }
+    const planData = btoa(JSON.stringify({
+      id: this.selectedPlan.id,
+      code: this.selectedPlan.code,
+      name: this.selectedPlan.name,
+      monthlyPriceCents: this.selectedPlan.monthlyPriceCents,
+      annualPriceCents: this.selectedPlan.annualPriceCents,
+      currency: this.selectedPlan.currency,
+      description: this.selectedPlan.description,
+    }));
 
-    this.isLoading = true;
-    this.subscriptionService.startSubscription(orgId, {
-      planId: this.selectedPlan.id,
-      billingPeriod: 'MONTHLY',
-      useTrial: false,
-    }).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err?.error?.detail || 'Failed to activate plan. Please try again.';
-      },
+    this.router.navigate(['/subscription/complete'], {
+      queryParams: { plan: planData }
     });
   }
 

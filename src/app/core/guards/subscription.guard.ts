@@ -49,10 +49,12 @@ export const subscriptionGuard: CanActivateFn = (route, state) => {
     map((res: any) => {
       const payload = res?.data ?? res ?? {};
       const sub = payload.subscription ?? payload ?? {};
-      const isActive = ['ACTIVE', 'TRIALING', 'TRIAL', 'PENDING'].includes(sub?.status);
-      const isTrialExpired = (sub?.status === 'TRIALING' || sub?.status === 'TRIAL') && sub?.trialEnd && new Date(sub.trialEnd) < new Date();
+      const isActive = sub?.status === 'ACTIVE';
+      const isTrial = sub?.status === 'TRIALING' || sub?.status === 'TRIAL';
+      const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
+      const isTrialExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
       
-      if (!isActive || isTrialExpired) {
+      if (!isActive && (!isTrial || isTrialExpired)) {
         return router.createUrlTree(['/subscription-plan'], {
           queryParams: { returnUrl: currentUrl },
         });

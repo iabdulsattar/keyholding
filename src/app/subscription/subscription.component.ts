@@ -56,34 +56,7 @@ export class SubscriptionComponent implements OnInit {
         this.loading = false;
         const payload = res?.data ?? res ?? {};
         const sub = payload.subscription ?? payload ?? {};
-
-        this.usage = {
-          users: 0,
-          usersLimit: sub.features?.max_users ?? 10,
-          sites: 0,
-          keys: 0,
-          jobs: 0,
-          customers: 0,
-          storage: 0,
-        };
-
-        const isTrial = sub.status === 'TRIAL' || !!sub.trial;
-        this.trial = {
-          active: isTrial,
-          startDate: sub.trialStart || sub.currentPeriodStart ? this.formatDate(sub.trialStart || sub.currentPeriodStart) : '-',
-          endDate: sub.trialEnd || sub.currentPeriodEnd ? this.formatDate(sub.trialEnd || sub.currentPeriodEnd) : '-',
-          daysRemaining: sub.trialEnd || sub.currentPeriodEnd ? this.daysUntil(sub.trialEnd || sub.currentPeriodEnd) : 0,
-        };
-
-        const planName = sub.planName || sub.planCode || this.formatServiceCode(sub.serviceCode);
-        this.plan = {
-          name: planName || 'No Active Plan',
-          type: sub.billingPeriod || (isTrial ? 'Free Trial' : 'Inactive'),
-          duration: isTrial ? 'Trial' : (sub.billingPeriod || '-'),
-          startDate: sub.currentPeriodStart ? this.formatDate(sub.currentPeriodStart) : '-',
-          endDate: sub.currentPeriodEnd ? this.formatDate(sub.currentPeriodEnd) : '-',
-          autoConversion: isTrial ? 'Yes' : 'No',
-        };
+        this.applySubscriptionData(sub);
       },
       error: (err) => {
         this.loading = false;
@@ -91,6 +64,36 @@ export class SubscriptionComponent implements OnInit {
         this.errorMessage = err?.error?.detail || 'Failed to load subscription details.';
       }
     });
+  }
+
+  private applySubscriptionData(sub: any): void {
+    this.usage = {
+      users: 0,
+      usersLimit: sub.features?.max_users ?? 10,
+      sites: 0,
+      keys: 0,
+      jobs: 0,
+      customers: 0,
+      storage: 0,
+    };
+
+    const isTrial = sub.status === 'TRIAL' || !!sub.trial;
+    this.trial = {
+      active: isTrial,
+      startDate: sub.trialStart || sub.currentPeriodStart ? this.formatDate(sub.trialStart || sub.currentPeriodStart) : '-',
+      endDate: sub.trialEnd || sub.currentPeriodEnd ? this.formatDate(sub.trialEnd || sub.currentPeriodEnd) : '-',
+      daysRemaining: sub.trialEnd || sub.currentPeriodEnd ? this.daysUntil(sub.trialEnd || sub.currentPeriodEnd) : 0,
+    };
+
+    const planName = sub.planName || sub.planCode || this.formatServiceCode(sub.serviceCode);
+    this.plan = {
+      name: planName || 'No Active Plan',
+      type: sub.billingPeriod || (isTrial ? 'Free Trial' : 'Inactive'),
+      duration: isTrial ? 'Trial' : (sub.billingPeriod || '-'),
+      startDate: sub.currentPeriodStart ? this.formatDate(sub.currentPeriodStart) : '-',
+      endDate: sub.currentPeriodEnd ? this.formatDate(sub.currentPeriodEnd) : '-',
+      autoConversion: isTrial ? 'Yes' : 'No',
+    };
   }
 
   private loadUsage(): void {

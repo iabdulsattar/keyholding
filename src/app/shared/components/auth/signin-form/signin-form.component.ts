@@ -297,17 +297,12 @@ export class SigninFormComponent {
     };
 
     const startFreshTrial = (orgId: string, done: () => void) => {
-      if (localStorage.getItem('subscription_started')) {
-        done();
-        return;
-      }
       this.subscriptionService.startSubscription(orgId, {
         planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
         billingPeriod: 'MONTHLY',
         useTrial: true,
       }).subscribe({
         next: () => {
-          localStorage.setItem('subscription_started', 'true');
           done();
         },
         error: () => {
@@ -328,24 +323,25 @@ export class SigninFormComponent {
           const payload = res?.data ?? res ?? {};
           const sub = payload.subscription ?? payload ?? {};
           const status = sub?.status?.toUpperCase();
-          
+
           if (!status) {
             startFreshTrial(orgId, () => navigateAfterLogin('/'));
             return;
           }
-          
-          const isActive = ['ACTIVE', 'TRIALING', 'TRIAL', 'PENDING'].includes(status);
+
+          const isActive = status === 'ACTIVE';
+          const isTrial = status === 'TRIALING' || status === 'TRIAL';
           const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
-          const isTrialExpired = (status === 'TRIALING' || status === 'TRIAL') && trialEnd && new Date(trialEnd) < new Date();
-          
-          if (!isActive || isTrialExpired) {
-            navigateAfterLogin('/subscription-plan');
-          } else {
+          const isTrialExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
+
+          if (isActive || (isTrial && !isTrialExpired)) {
             navigateAfterLogin('/');
+          } else {
+            navigateAfterLogin('/subscription-plan');
           }
         },
         error: () => {
-          navigateAfterLogin('/');
+          startFreshTrial(orgId, () => navigateAfterLogin('/'));
         }
       });
     };

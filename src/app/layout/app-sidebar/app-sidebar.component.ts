@@ -6,6 +6,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { PermissionService } from '../../core/services/permission.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
+import { SubscriptionService } from '../../core/services/subscription.service';
 import { combineLatest, Subscription } from 'rxjs';
 
 type NavItem = {
@@ -97,6 +98,7 @@ export class AppSidebarComponent implements OnInit {
   loading = true;
   isDropdownOpen = false;
   companyName = '';
+  trialExpired = false;
 
   readonly isExpanded$;
   readonly isMobileOpen$;
@@ -112,6 +114,7 @@ export class AppSidebarComponent implements OnInit {
     private authService: AuthService,
     private toastService: ToastService,
     private sanitizer: DomSanitizer,
+    private subscriptionService: SubscriptionService,
   ) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
@@ -121,6 +124,7 @@ export class AppSidebarComponent implements OnInit {
   ngOnInit() {
     this.loadUser();
     this.companyName = this.authService.getOrgName() || '';
+    this.checkTrialStatus();
 
     this.subscription.add(
       this.router.events.subscribe(event => {
@@ -143,6 +147,29 @@ export class AppSidebarComponent implements OnInit {
     this.setActiveMenuFromRoute(this.router.url);
   }
 
+  private checkTrialStatus(): void {
+    const orgId = localStorage.getItem('org_id') || localStorage.getItem('organizationId');
+    if (!orgId) return;
+
+    this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res ?? {};
+        const sub = payload.subscription ?? payload ?? {};
+        const status = sub?.status?.toUpperCase();
+        const isTrial = status === 'TRIAL' || status === 'TRIALING';
+        const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
+        const isExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
+        
+        this.trialExpired = isExpired;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.trialExpired = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
@@ -163,6 +190,9 @@ export class AppSidebarComponent implements OnInit {
   }
 
   isNavVisible(item: NavItem): boolean {
+    if (this.trialExpired) {
+      return item.name === 'Subscription';
+    }
     if (!item.permissions || item.permissions.length === 0) return true;
     return this.permissions.hasAnyPermission(item.permissions);
   }

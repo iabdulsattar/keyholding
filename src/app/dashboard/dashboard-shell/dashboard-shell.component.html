@@ -80,7 +80,8 @@
 </div>
 
 
- <!-- Trial banner -->
+  @if (trial?.active) {
+  <!-- Trial banner -->
   <div class="bg-white rounded-lg shadow-xs p-5 sm:p-6 mb-4">
     <div class="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-8">
       <div class="flex items-start gap-4 flex-1 min-w-0">
@@ -123,6 +124,7 @@
       </div>
     </div>
   </div>
+  }
 
       <!-- ROW 1: UPPER STRATEGIC METRICS -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 gap-3 md:gap-4 xl:gap-4 2xl:gap-5">
