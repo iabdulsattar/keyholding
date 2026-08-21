@@ -334,9 +334,9 @@ export class SigninFormComponent {
             return;
           }
           
-          const isActive = status === 'ACTIVE' || status === 'TRIALING';
+          const isActive = ['ACTIVE', 'TRIALING', 'TRIAL', 'PENDING'].includes(status);
           const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
-          const isTrialExpired = status === 'TRIALING' && trialEnd && new Date(trialEnd) < new Date();
+          const isTrialExpired = (status === 'TRIALING' || status === 'TRIAL') && trialEnd && new Date(trialEnd) < new Date();
           
           if (!isActive || isTrialExpired) {
             navigateAfterLogin('/subscription-plan');
