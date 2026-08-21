@@ -18,7 +18,8 @@ import {
   BillingProfile,
   BillingProfileResponse,
   BillingInfo,
-  BillingInfoResponse
+  BillingInfoResponse,
+  UsageResponse
 } from '../models/subscription.models';
 
 @Injectable({ providedIn: 'root' })
@@ -95,6 +96,11 @@ export class SubscriptionService {
   getSubscription(orgId: string, serviceCode: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.get<any>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}`, headers);
+  }
+
+  getUsage(orgId: string, serviceCode: string): Observable<UsageResponse> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<UsageResponse>(`/api/v1/keyvault/organizations/${orgId}/subscription/usage`, headers);
   }
 
   changePlan(orgId: string, serviceCode: string, payload: ChangePlanRequest, token?: string): Observable<ChangePlanResponse> {

@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { ProfileResponse } from '../../core/models/auth.models';
-import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
@@ -13,7 +12,7 @@ import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '.
 @Component({
   selector: 'app-dashboard-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, SafeHtmlPipe, AppChart, LineChartDashboardComponent],
+  imports: [CommonModule, RouterModule, AppChart, LineChartDashboardComponent],
   templateUrl: './dashboard-shell.component.html',
   styles: `
     @keyframes wave {

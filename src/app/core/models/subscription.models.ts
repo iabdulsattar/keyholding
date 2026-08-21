@@ -135,6 +135,17 @@ export interface BillingProfileResponse {
   [key: string]: any;
 }
 
+// -------- Usage --------
+export interface UsageResponse {
+  usersWithAccess: number;
+  sites: number;
+  keys: number;
+  jobs: number;
+  clients: number;
+  storageLocations: number;
+  [key: string]: any;
+}
+
 // -------- Billing Info --------
 export interface BillingInfo {
   companyName?: string;

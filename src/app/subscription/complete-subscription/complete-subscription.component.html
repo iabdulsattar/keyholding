@@ -93,20 +93,35 @@
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Company Name <span
                 class="text-red-500">*</span></label>
             <input type="text" placeholder="Sentinel Technologies Ltd"
-              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+              [formControl]="f.companyName"
+              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]"
+              [class.border-red-400]="f.companyName.invalid && f.companyName.touched" />
+            @if (f.companyName.invalid && f.companyName.touched) {
+              <p class="text-red-500 text-xs mt-1">Company name is required</p>
+            }
           </div>
           <div>
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Billing Email <span
                 class="text-red-500">*</span></label>
             <input type="email" placeholder="accounts@sentineltech.co.uk"
-              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+              [formControl]="f.billingEmail"
+              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]"
+              [class.border-red-400]="f.billingEmail.invalid && f.billingEmail.touched" />
+            @if (f.billingEmail.invalid && f.billingEmail.touched) {
+              <p class="text-red-500 text-xs mt-1">Please enter a valid email address</p>
+            }
           </div>
 
           <div class="sm:col-span-2">
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Billing Address <span
                 class="text-red-500">*</span></label>
             <input type="text" placeholder="10 Sentinel House, Enterprise Park"
-              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+              [formControl]="f.billingAddress"
+              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]"
+              [class.border-red-400]="f.billingAddress.invalid && f.billingAddress.touched" />
+            @if (f.billingAddress.invalid && f.billingAddress.touched) {
+              <p class="text-red-500 text-xs mt-1">Billing address is required</p>
+            }
           </div>
 
           <div class="grid grid-cols-3 gap-5 sm:col-span-2">
@@ -114,24 +129,36 @@
               <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">City <span
                   class="text-red-500">*</span></label>
               <input type="text" placeholder="Manchester"
-                class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+                [formControl]="f.city"
+                class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]"
+                [class.border-red-400]="f.city.invalid && f.city.touched" />
+              @if (f.city.invalid && f.city.touched) {
+                <p class="text-red-500 text-xs mt-1">City is required</p>
+              }
             </div>
             <div>
               <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Postcode <span
                   class="text-red-500">*</span></label>
               <input type="text" placeholder="M15 4YE"
-                class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+                [formControl]="f.postcode"
+                class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]"
+                [class.border-red-400]="f.postcode.invalid && f.postcode.touched" />
+              @if (f.postcode.invalid && f.postcode.touched) {
+                <p class="text-red-500 text-xs mt-1">Postcode is required</p>
+              }
             </div>
             <div>
               <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Country <span
                   class="text-red-500">*</span></label>
               <div class="relative">
                 <select
-                  class="w-full appearance-none rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5] bg-white">
-                  <option>United Kingdom</option>
-                  <option>United States</option>
-                  <option>Ireland</option>
-                  <option>Australia</option>
+                  [formControl]="f.country"
+                  class="w-full appearance-none rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5] bg-white"
+                  [class.border-red-400]="f.country.invalid && f.country.touched">
+                  <option value="GB">United Kingdom</option>
+                  <option value="US">United States</option>
+                  <option value="IE">Ireland</option>
+                  <option value="AU">Australia</option>
                 </select>
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="w-4 h-4 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none"
@@ -139,14 +166,18 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
+              @if (f.country.invalid && f.country.touched) {
+                <p class="text-red-500 text-xs mt-1">Country is required</p>
+              }
             </div>
           </div>
 
-          <div class="sm:col-span-2 sm:max-w-[calc(50%-0.625rem)]">
-            <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">VAT Number (Optional)</label>
-            <input type="text" value="GB123456789"
-              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
-          </div>
+            <div class="sm:col-span-2 sm:max-w-[calc(50%-0.625rem)]">
+              <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">VAT Number (Optional)</label>
+              <input type="text" value="GB123456789"
+                [formControl]="f.vatNumber"
+                class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+            </div>
         </div>
       </div>
 
@@ -172,58 +203,31 @@
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Card Holder Name <span
                 class="text-red-500">*</span></label>
             <input type="text" placeholder="Faiza Khan"
-              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
+              [formControl]="f.cardHolderName"
+              class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]"
+              [class.border-red-400]="f.cardHolderName.invalid && f.cardHolderName.touched" />
+            @if (f.cardHolderName.invalid && f.cardHolderName.touched) {
+              <p class="text-red-500 text-xs mt-1">Cardholder name is required</p>
+            }
           </div>
           <div>
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Card Number <span
                 class="text-red-500">*</span></label>
-            <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24"
-                stroke="#0F172A" stroke-width="2">
-                <rect x="2" y="5" width="20" height="14" rx="2" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2 10h20" />
-              </svg>
-              <input type="text" placeholder="4242 4242 4242 4242"
-                class="w-full rounded-lg border border-slate-200 pl-10 pr-16 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
-              <span
-                class="absolute right-4 top-1/2 -translate-y-1/2 text-[#3b6df5] font-bold italic text-sm">VISA</span>
-            </div>
+              <div id="stripe-card-number" class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm bg-white min-h-[38px]"></div>
+              @if (cardErrors) {
+                <p class="text-red-500 text-xs mt-1">{{ cardErrors }}</p>
+              }
           </div>
 
           <div>
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Expiry Date <span
                 class="text-red-500">*</span></label>
-            <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24"
-                stroke="#0F172A" stroke-width="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 2v4M8 2v4M3 10h18" />
-              </svg>
-              <input type="text" placeholder="08 / 2028"
-                class="w-full rounded-lg border border-slate-200 pl-10 pr-4 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
-            </div>
+              <div id="stripe-card-expiry" class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm bg-white min-h-[38px]"></div>
           </div>
           <div>
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">CVC <span
                 class="text-red-500">*</span></label>
-            <div class="relative">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24"
-                stroke="#0F172A" stroke-width="2">
-                <rect x="5" y="11" width="14" height="9" rx="2" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0v4" />
-              </svg>
-              <input type="text" placeholder="123"
-                class="w-full rounded-lg border border-slate-200 pl-10 pr-10 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b6df5]/40 focus:border-[#3b6df5]" />
-              <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24"
-                stroke="#0F172A" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01" />
-              </svg>
-            </div>
+              <div id="stripe-card-cvc" class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm bg-white min-h-[38px]"></div>
           </div>
         </div>
 
@@ -260,7 +264,7 @@
       <div class="mt-5 divide-y divide-slate-200">
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">Plan</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">Pro</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ getPlanName() }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">Billing Cycle</span>
@@ -268,15 +272,15 @@
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">Plan price</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">£9.99</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ getPlanPrice().toFixed(2) }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">VAT (20%)</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">£19.98</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ getVat().toFixed(2) }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
-          <span class="text-slate-900 text-xs font-normal font-['Inter']">Subtotal (10 &times; £9.99)</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">£99.90</span>
+          <span class="text-slate-900 text-xs font-normal font-['Inter']">Subtotal (excl. VAT)</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ getPlanPrice().toFixed(2) }}</span>
         </div>
         <div ></div>
 
@@ -288,7 +292,7 @@
           <p class="text-slate-500 text-[10px] font-normal font-['Inter'] mt-0.5">Incl. VAT</p>
         </div>
         <div class="text-right">
-          <p class="text-blue-600 text-xl font-extrabold font-['Inter']">£119.88</p>
+          <p class="text-blue-600 text-xl font-extrabold font-['Inter']">£{{ getTotal().toFixed(2) }}</p>
           <p class="text-slate-500 text-[10px] font-normal font-['Inter'] mt-0.5">Incl. VAT</p>
         </div>
       </div>
@@ -321,9 +325,17 @@
         </div>
       </div>
 
+      @if (errorMessage) {
+        <div class="mb-4 p-3 rounded-lg bg-red-50 border border-red-200">
+          <p class="text-xs sm:text-sm text-red-700">{{ errorMessage }}</p>
+        </div>
+      }
+
       <button
-        class="mt-5 w-full bg-blue-600 rounded-lg transition-colors  text-white text-sm font-bold font-['Inter'] py-3.5">
-        Pay & activate KeyVault
+        class="mt-5 w-full bg-blue-600 rounded-lg transition-colors text-white text-sm font-bold font-['Inter'] py-3.5"
+        (click)="activatePlan()"
+        [disabled]="isLoading">
+        {{ isLoading ? 'Processing...' : 'Pay & activate KeyVault' }}
       </button>
 <div class=" mb-8 sm:mb-0 ">
       <p class=" text-slate-500 text-xs font-normal font-['Inter'] mt-5 flex items-start justify-center mx-auto ">

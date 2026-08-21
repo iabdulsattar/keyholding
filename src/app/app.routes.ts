@@ -1,12 +1,13 @@
 import { Routes, PreloadAllModules } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { permissionGuard } from './core/guards/permission.guard';
+import { subscriptionGuard } from './core/guards/subscription.guard';
 
 export const routes: Routes = [
       {
         path:'',
         loadComponent: () => import('./layout/app-layout/app-layout.component').then(m => m.AppLayoutComponent),
-        canActivate: [authGuard],
+        canActivate: [authGuard, subscriptionGuard],
         children:[
           {
             path: '',
