@@ -22,8 +22,8 @@ export class SubscriptionPlanComponent implements OnInit {
   unitPrice = 9.99;
 
   features = [
-    { name: 'Users', vals: ['10','1 per seat','30','100'] },
-    { name: 'Key Jobs', vals: ['500','Unlimited','2,000','Unlimited'] },
+    { name: 'Users', vals: ['10','50','150','500'] },
+    { name: 'Key Jobs', vals: ['100','300','2,000','2,500'] },
     { name: 'Opening / Closing', vals: [true,true,true,true] },
     { name: 'Loading / Unloading', vals: [true,true,true,true] },
     { name: 'Contractor / Engineer Access', vals: [true,true,true,true] },
