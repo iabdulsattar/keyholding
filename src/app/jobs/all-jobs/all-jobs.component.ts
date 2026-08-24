@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-jobs',
@@ -15,6 +16,8 @@ import { FormsModule } from '@angular/forms';
   `]
 })
 export class AllJobsComponent implements OnInit {
+  constructor(private router: Router) {}
+
   jobs = [
     { id: 'JOB-001248', client: 'Metro Security Services', site: 'Head Office', type: 'Key Collection', officer: 'James Walker', date: '16 May 2024, 09:00 AM', status: 'Scheduled', priority: 'Medium' },
     { id: 'JOB-001247', client: 'Alpha Security Ltd.', site: 'Warehouse - North', type: 'Lock Service', officer: 'Sarah Miller', date: '16 May 2024, 08:00 AM', status: 'In Progress', priority: 'High' },
@@ -49,7 +52,25 @@ export class AllJobsComponent implements OnInit {
 
   typeIcon(type: string): string {
     if (type.includes('Key')) {
-      return `<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM3 21l6.5-6.5"/></svg>`;
+      return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_2296_135)">
+    <path d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_2296_135">
+    <rect width="16" height="16" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>`;
+    }else if (type.includes('Lock')) {
+      return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.6667 6.66667H3.33333C2.59695 6.66667 2 7.26362 2 8V13.3333C2 14.0697 2.59695 14.6667 3.33333 14.6667H12.6667C13.4031 14.6667 14 14.0697 14 13.3333V8C14 7.26362 13.4031 6.66667 12.6667 6.66667Z" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10.6667 6.66667V4.66667C10.6667 3.93029 10.0697 3.33333 9.33333 3.33333H6.66667C5.93029 3.33333 5.33333 3.93029 5.33333 4.66667V6.66667" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+    } else {
+      return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 1V15M1 8H15" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;
     }
     return `<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>`;
   }
@@ -62,7 +83,7 @@ export class AllJobsComponent implements OnInit {
   }
 
   viewJob(jobId: string): void {
-    console.log('View job:', jobId);
+    this.router.navigate(['/jobs', jobId]);
   }
 
   ngOnInit(): void {}

@@ -142,6 +142,11 @@ export const routes: Routes = [
             title: 'Create Job | KeyVault Pro'
           },
           {
+            path: 'jobs/:id',
+            loadComponent: () => import('./jobs/view-job/view-job.component').then(m => m.ViewJobComponent),
+            title: 'Job Details | KeyVault Pro'
+          },
+          {
             path: 'storage/locations',
             loadComponent: () => import('./storage/storage-locations/storage-locations.component').then(m => m.StorageLocationsComponent),
             title: 'Storage Locations | KeyVault Pro'

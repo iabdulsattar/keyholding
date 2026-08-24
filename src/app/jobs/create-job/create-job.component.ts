@@ -7,6 +7,7 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
 
 interface Key {
   id: string;
+  code: string;
   name: string;
   cabinet: string;
   hook: string;
@@ -55,6 +56,10 @@ export class CreateJobComponent implements OnInit {
   showAddChecklistModal = false;
   keys: Key[] = [];
   keysLoading = true;
+  currentPage = 0;
+  pageSize = 6;
+  totalPages = 0;
+  totalElements = 0;
   checklistItems: ChecklistItem[] = [
     { id: '1', text: 'Arrived on site' },
     { id: '2', text: 'Staff/visitors cleared' },
@@ -81,18 +86,34 @@ export class CreateJobComponent implements OnInit {
     return this.keys.filter(k => k.selected);
   }
 
+  get checklistLeft(): ChecklistItem[] {
+    return this.checklistItems.filter((_, i) => i % 2 === 0);
+  }
+
+  get checklistRight(): ChecklistItem[] {
+    return this.checklistItems.filter((_, i) => i % 2 === 1);
+  }
+
+  get startIndex(): number {
+    return this.currentPage * this.pageSize + 1;
+  }
+
+  get endIndex(): number {
+    return Math.min((this.currentPage + 1) * this.pageSize, this.totalElements);
+  }
+
   private getOrgId(): string | null {
     return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
   }
 
-  loadKeys(): void {
+  loadKeys(page = 0): void {
     const orgId = this.getOrgId();
     if (!orgId) {
       this.keysLoading = false;
       return;
     }
 
-    this.keyVault.listKeys(orgId, { page: 0, size: 100 }).subscribe({
+    this.keyVault.listKeys(orgId, { page, size: this.pageSize }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
@@ -100,6 +121,7 @@ export class CreateJobComponent implements OnInit {
           const status = k.status ?? 'IN_STORAGE';
           const mappedStatus = status === 'IN_STORAGE' ? 'Available' : 'Issued';
           return {
+            code: k.keyCode ?? '',
             id: k.id ?? '',
             name: k.name ?? '',
             cabinet: k.storageLocation ?? '',
@@ -110,12 +132,49 @@ export class CreateJobComponent implements OnInit {
             selected: false
           };
         });
+        this.totalElements = res?.meta?.totalElements ?? items.length;
+        this.totalPages = res?.meta?.totalPages ?? Math.max(1, Math.ceil(items.length / this.pageSize));
+        this.currentPage = page;
         this.keysLoading = false;
       },
       error: () => {
         this.keysLoading = false;
       }
     });
+  }
+
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.loadKeys(page);
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 0) {
+      this.loadKeys(this.currentPage - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.loadKeys(this.currentPage + 1);
+    }
+  }
+
+  get pageNumbers(): (number | '...')[] {
+    if (this.totalPages <= 7) {
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    }
+    const pages: (number | '...')[] = [1];
+    if (this.currentPage > 3) pages.push('...');
+    const start = Math.max(2, this.currentPage - 1);
+    const end = Math.min(this.totalPages - 1, this.currentPage + 1);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    if (this.currentPage < this.totalPages - 3) pages.push('...');
+    if (this.totalPages > 1) pages.push(this.totalPages);
+    return pages;
   }
 
   openAddKeysModal(): void {

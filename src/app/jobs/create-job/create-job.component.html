@@ -1,601 +1,939 @@
- <div class=" mx-auto px-4 sm:px-4 lg:px-4 py-6 lg:py-8">
+<div class=" mx-auto px-4 sm:px-4 lg:px-4 py-6 lg:py-8">
 
-      <!-- Page header -->
-      <div class="mb-6">
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Create Job</h1>
-        <p class="text-slate-500 text-sm mt-1">Fill in the details below to create a new job.</p>
-      </div>
+    <!-- Page header -->
+    <div class="mb-6">
+        <h1 class="text-slate-900 text-3xl font-extrabold font-['Inter']">Create Job</h1>
+        <p class="text-slate-600 text-sm font-normal font-['Inter'] mt-1">Fill in the details below to create a new job.
+        </p>
+    </div>
 
-      <!-- Summary cards -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <div class="min-w-0">
-            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Job Type</p>
-            <p class="font-semibold text-slate-800 truncate">Lock Service</p>
-          </div>
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+        <div class="bg-white rounded-md p-6 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.83333 9.1666V5.833C5.83333 4.72784 6.27232 3.66795 7.05372 2.88649C7.83512 2.10502 8.89493 1.666 10 1.666C11.1051 1.666 12.1649 2.10502 12.9463 2.88649C13.7277 3.66795 14.1667 4.72784 14.1667 5.833V9.1666M4.16667 9.1666H15.8333C16.7538 9.1666 17.5 9.91285 17.5 10.8334V16.6672C17.5 17.5877 16.7538 18.334 15.8333 18.334H4.16667C3.24619 18.334 2.5 17.5877 2.5 16.6672V10.8334C2.5 9.91285 3.24619 9.1666 4.16667 9.1666Z"
+                        stroke="#EA580C" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="min-w-0">
+                <p class=" text-slate-500 text-xs font-medium font-['Inter'] uppercase">Job Type</p>
+                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">Lock Service</p>
+            </div>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <div class="min-w-0">
-            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Priority</p>
-            <p class="font-semibold text-slate-800 truncate">High</p>
-          </div>
+        <div class="bg-white rounded-md p-6 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2389_74)">
+                        <path
+                            d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z"
+                            stroke="#EF4444" stroke-width="2" stroke-linecap="round" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_2389_74">
+                            <rect width="20" height="20" fill="white" />
+                        </clipPath>
+                    </defs>
+                </svg>
+            </div>
+            <div class="min-w-0">
+                <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Priority</p>
+                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">High</p>
+            </div>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="8" y1="6" x2="8" y2="6.01"/><line x1="12" y1="6" x2="12" y2="6.01"/><line x1="16" y1="6" x2="16" y2="6.01"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/></svg>
-          </div>
-          <div class="min-w-0">
-            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Site</p>
-            <p class="font-semibold text-slate-800 truncate">Head Office</p>
-          </div>
+        <div class="bg-white rounded-md p-6 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9.99998 8.3332H10.0083M9.99998 11.6668H10.0083M9.99998 4.9996H10.0083M13.333 8.3332H13.3413M13.333 11.6668H13.3413M13.333 4.9996H13.3413M6.66698 8.3332H6.67532M6.66698 11.6668H6.67532M6.66698 4.9996H6.67532M7.50023 18.334V15.8338C7.50023 15.6128 7.58802 15.4008 7.74429 15.2445C7.90055 15.0882 8.11249 15.0004 8.33348 15.0004H11.6665C11.8875 15.0004 12.0994 15.0882 12.2557 15.2445C12.4119 15.4008 12.4997 15.6128 12.4997 15.8338V18.334M5.00048 1.666H14.9995C15.9199 1.666 16.666 2.41225 16.666 3.3328V16.6672C16.666 17.5877 15.9199 18.334 14.9995 18.334H5.00048C4.0801 18.334 3.33398 17.5877 3.33398 16.6672V3.3328C3.33398 2.41225 4.0801 1.666 5.00048 1.666Z"
+                        stroke="#16A34A" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="min-w-0">
+                <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Site</p>
+                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">Head Office</p>
+            </div>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <div class="min-w-0">
-            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Client</p>
-            <p class="font-semibold text-slate-800 truncate">Alpha Security Ltd.</p>
-          </div>
+        <div class="bg-white rounded-md p-6 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M13.3336 2.60661C14.0485 2.79192 14.6816 3.20933 15.1335 3.79333C15.5854 4.37733 15.8306 5.09485 15.8306 5.83327C15.8306 6.5717 15.5854 7.28922 15.1335 7.87322C14.6816 8.45722 14.0485 8.87463 13.3336 9.05994M18.334 17.4999V15.8332C18.3335 15.0947 18.0876 14.3772 17.6351 13.7935C17.1826 13.2098 16.549 12.7929 15.8338 12.6082M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z"
+                        stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="min-w-0">
+                <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Client</p>
+                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">Alpha Security Ltd.</p>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Job Information + side panel -->
-      <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 mb-6">
-        <div class="xl:col-span-2 bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
-          <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-orange-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            Job Information
-          </h2>
+    <!-- Job Information + side panel -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 mb-6">
+        <div class="xl:col-span-2 bg-white rounded-md  p-5 sm:p-6">
+            <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
+                <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M8.49925 1H2.49985C2.10206 1 1.72057 1.15805 1.4393 1.43938C1.15802 1.7207 1 2.10227 1 2.50012V14.5011C1 14.8989 1.15802 15.2805 1.4393 15.5618C1.72057 15.8432 2.10206 16.0012 2.49985 16.0012H11.4989C11.8967 16.0012 12.2782 15.8432 12.5595 15.5618C12.8408 15.2805 12.9988 14.8989 12.9988 14.5011V5.50036M8.49925 1C8.73664 0.999618 8.97176 1.04621 9.19108 1.13709C9.41039 1.22797 9.60956 1.36135 9.77712 1.52954L12.4679 4.22076C12.6365 4.3884 12.7702 4.5878 12.8613 4.80743C12.9525 5.02706 12.9992 5.26257 12.9988 5.50036M8.49925 1V4.7503C8.49925 4.94923 8.57826 5.14001 8.7189 5.28067C8.85953 5.42133 9.05028 5.50036 9.24917 5.50036L12.9988 5.50036M5.49955 6.25042H3.9997M9.9991 9.25066H3.9997M9.9991 12.2509H3.9997"
+                        stroke="#EA580C" stroke-width="2" stroke-linecap="round" />
+                </svg> Job Information
+            </h2>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Job Type <span class="text-rose-500">*</span></label>
-              <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                  <option>Lock Service</option>
-                  <option>Unlock Service</option>
-                  <option>Alarm Response</option>
-                </select>
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <p class="text-xs text-slate-400 mt-1.5">Select the type of job</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Job Type <span
+                            class="text-rose-500">*</span></label>
+                    <div class="relative">
+                        <select
+                            class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                            <option>Lock Service</option>
+                            <option>Unlock Service</option>
+                            <option>Alarm Response</option>
+                        </select>
+                        <svg width="16" height="16" viewBox="0 0 24 24"
+                            class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                            style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1.5">Select the type of job</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Client <span
+                            class="text-rose-500">*</span></label>
+                    <div class="relative">
+                        <select
+                            class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                            <option>Alpha Security Ltd.</option>
+                        </select>
+                        <svg width="16" height="16" viewBox="0 0 24 24"
+                            class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                            style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1.5">Select the client for this job</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Site <span
+                            class="text-rose-500">*</span></label>
+                    <div class="relative">
+                        <select
+                            class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                            <option>Head Office</option>
+                        </select>
+                        <svg width="16" height="16" viewBox="0 0 24 24"
+                            class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                            style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1.5">Select the site where job will take place</p>
+                </div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Client <span class="text-rose-500">*</span></label>
-              <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                  <option>Alpha Security Ltd.</option>
-                </select>
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <p class="text-xs text-slate-400 mt-1.5">Select the client for this job</p>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Site <span class="text-rose-500">*</span></label>
-              <div class="relative">
-                <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                  <option>Head Office</option>
-                </select>
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <p class="text-xs text-slate-400 mt-1.5">Select the site where job will take place</p>
-            </div>
-          </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Job Title <span class="text-rose-500">*</span></label>
-              <input type="text" value="Evening Lock Service" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-              <p class="text-xs text-slate-400 mt-1.5">Enter a short title for this job.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Job Title <span
+                            class="text-rose-500">*</span></label>
+                    <input type="text" value="Evening Lock Service"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    <p class="text-xs text-slate-400 mt-1.5">Enter a short title for this job.</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Reference</label>
+                    <input type="text" placeholder="Enter reference (optional)"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    <p class="text-xs text-slate-400 mt-1.5">Add a reference for this job.</p>
+                </div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1.5">Reference</label>
-              <input type="text" placeholder="Enter reference (optional)" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-              <p class="text-xs text-slate-400 mt-1.5">Add a reference for this job.</p>
-            </div>
-          </div>
 
-          <div class="mt-5">
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
-            <textarea rows="3" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">Perform evening locking and security checks as per site locking procedure. Ensure all areas are secure, alarm is set and keys are returned.</textarea>
-            <p class="text-xs text-slate-400 mt-1.5">Provide a brief description of the job.</p>
-          </div>
+            <div class="mt-5">
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
+                <textarea rows="3"
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">Perform evening locking and security checks as per site locking procedure. Ensure all areas are secure, alarm is set and keys are returned.</textarea>
+                <p class="text-xs text-slate-400 mt-1.5">Provide a brief description of the job.</p>
+            </div>
         </div>
 
         <!-- Side panel -->
         <div class="flex flex-col gap-4 sm:gap-6">
-          <div class="bg-blue-50/70 rounded-xl border border-blue-100 p-5">
-            <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              About Job Types
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 ml-auto text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="18 15 12 9 6 15"/></svg>
-            </h3>
-            <div class="space-y-4">
-              <div class="flex gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500 mt-0.5 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <div>
-                  <p class="text-sm font-semibold text-slate-800">Lock Service</p>
-                  <p class="text-xs text-slate-500 mt-0.5">Secure and lock the premises after hours.</p>
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 mt-0.5 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V9a5 5 0 0 1 9.9-1"/></svg>
-                <div>
-                  <p class="text-sm font-semibold text-slate-800">Unlock Service</p>
-                  <p class="text-xs text-slate-500 mt-0.5">Open the premises and carry out initial safety checks.</p>
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-rose-500 mt-0.5 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" ><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <div>
-                  <p class="text-sm font-semibold text-slate-800">Alarm Response</p>
-                  <p class="text-xs text-slate-500 mt-0.5">Respond to an alarm activation and investigate the cause.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+            <div class="bg-white rounded-md p-5">
+                <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
 
-          <div class="bg-white rounded-xl border border-slate-200 p-5">
-            <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-              What's Next?
-            </h3>
-            <div class="space-y-3">
-              <div class="flex items-center gap-2.5 text-sm text-slate-600">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Assign keys to the job
-              </div>
-              <div class="flex items-center gap-2.5 text-sm text-slate-600">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Add job notes or instructions
-              </div>
-              <div class="flex items-center gap-2.5 text-sm text-slate-600">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Track job progress
-              </div>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M6.8338 9.16732V6.8338M6.8338 4.50028H6.83963M12.6676 6.8338C12.6676 10.0557 10.0557 12.6676 6.8338 12.6676C3.61188 12.6676 1 10.0557 1 6.8338C1 3.61188 3.61188 1 6.8338 1C10.0557 1 12.6676 3.61188 12.6676 6.8338Z"
+                            stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                    </svg> About Job Types
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 8.75L7 5.25L3.5 8.75" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </h3>
+                <hr class="border-slate-100 mb-4">
+                <div class="space-y-4">
+                    <div class="flex gap-3 ">
+                        <div class="flex items-center justify-center shrink-0 w-7 h-7  bg-blue-50 rounded-md">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2389_396)">
+                                    <path
+                                        d="M4.08333 6.41662V4.0831C4.08333 3.30949 4.39062 2.56756 4.93761 2.02054C5.48459 1.47351 6.22645 1.1662 7 1.1662C7.77355 1.1662 8.51541 1.47351 9.06239 2.02054C9.60938 2.56756 9.91667 3.30949 9.91667 4.0831V6.41662M2.91667 6.41662H11.0833C11.7277 6.41662 12.25 6.939 12.25 7.58338V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V7.58338C1.75 6.939 2.27233 6.41662 2.91667 6.41662Z"
+                                        stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2389_396">
+                                        <rect width="14" height="14" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-slate-900 text-xs font-bold font-['Inter']">Lock Service</p>
+                            <p class=" text-slate-600 text-xs font-normal font-['Inter'] leading-4 mt-1">Secure and lock
+                                the premises after hours.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 ">
+                        <div class="flex items-center justify-center shrink-0 w-7 h-7 bg-emerald-50 rounded-md">
+
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2389_405)">
+                                    <path
+                                        d="M6.44084 6.82501V4.72501C6.44084 4.02881 6.76527 3.36113 7.34277 2.86885C7.92027 2.37657 8.70352 2.10001 9.52022 2.10001C10.3369 2.10001 11.1202 2.37657 11.6977 2.86885C12.2752 3.36113 12.5996 4.02881 12.5996 4.72501M7.4847 6.82501H1.74347C1.16696 6.82501 0.69961 7.29511 0.69961 7.87501V12.25C0.69961 12.8299 1.16696 13.3 1.74347 13.3H7.4847C8.0612 13.3 8.52856 12.8299 8.52856 12.25V7.87501C8.52856 7.29511 8.0612 6.82501 7.4847 6.82501Z"
+                                        stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2389_405">
+                                        <rect width="14" height="14" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-slate-900 text-xs font-bold font-['Inter']">Unlock Service</p>
+                            <p class=" text-slate-600 text-xs font-normal font-['Inter'] leading-4 mt-1">Open the
+                                premises and carry out initial safety checks.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 ">
+                        <div class="flex items-center justify-center shrink-0 w-7 h-7 bg-red-50 rounded-md">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2389_412)">
+                                    <path
+                                        d="M6.99984 5.24958V7.58292M6.99984 9.91625H7.00567M12.6759 10.4997L8.00925 2.33305C7.90749 2.1535 7.75993 2.00416 7.58162 1.90025C7.40331 1.79635 7.20062 1.74161 6.99425 1.74161C6.78787 1.74161 6.58519 1.79635 6.40688 1.90025C6.22856 2.00416 6.081 2.1535 5.97925 2.33305L1.31258 10.4997C1.20973 10.6778 1.1558 10.88 1.15625 11.0857C1.15671 11.2914 1.21153 11.4933 1.31517 11.6709C1.41881 11.8486 1.56758 11.9957 1.7464 12.0974C1.92522 12.199 2.12774 12.2516 2.33341 12.2497H11.6667C11.8714 12.2495 12.0725 12.1954 12.2497 12.093C12.4269 11.9905 12.574 11.8432 12.6762 11.6659C12.7785 11.4885 12.8323 11.2874 12.8322 11.0827C12.8322 10.8781 12.7783 10.677 12.6759 10.4997Z"
+                                        stroke="#EF4444" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2389_412">
+                                        <rect width="14" height="14" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-slate-900 text-xs font-bold font-['Inter']">Alarm Response</p>
+                            <p class=" text-slate-600 text-xs font-normal font-['Inter'] leading-4 mt-1">Respond to an
+                                alarm activation and investigate the cause.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <div class="bg-white rounded-md p-5">
+                <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    What's Next?
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5 text-sm text-slate-600">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_2389_424)">
+                                <path
+                                    d="M14.5331 6.66678C14.8376 8.16098 14.6206 9.7144 13.9183 11.068C13.2161 12.4216 12.071 13.4935 10.6741 14.105C9.27718 14.7165 7.71284 14.8306 6.24196 14.4284C4.77107 14.0261 3.48255 13.1317 2.59127 11.8944C1.7 10.6571 1.25984 9.15161 1.3442 7.62904C1.42856 6.10647 2.03234 4.65884 3.05486 3.52756C4.07737 2.39628 5.45681 1.64974 6.96313 1.41242C8.46946 1.1751 10.0116 1.46136 11.3324 2.22345M5.99935 7.33313L7.99935 9.33313L14.666 2.66646"
+                                    stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_2389_424">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg> Assign keys to the job
+                    </div>
+                    <div class="flex items-center gap-2.5 text-sm text-slate-600">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_2389_424)">
+                                <path
+                                    d="M14.5331 6.66678C14.8376 8.16098 14.6206 9.7144 13.9183 11.068C13.2161 12.4216 12.071 13.4935 10.6741 14.105C9.27718 14.7165 7.71284 14.8306 6.24196 14.4284C4.77107 14.0261 3.48255 13.1317 2.59127 11.8944C1.7 10.6571 1.25984 9.15161 1.3442 7.62904C1.42856 6.10647 2.03234 4.65884 3.05486 3.52756C4.07737 2.39628 5.45681 1.64974 6.96313 1.41242C8.46946 1.1751 10.0116 1.46136 11.3324 2.22345M5.99935 7.33313L7.99935 9.33313L14.666 2.66646"
+                                    stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_2389_424">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg> Add job notes or instructions
+                    </div>
+                    <div class="flex items-center gap-2.5 text-sm text-slate-600">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_2389_424)">
+                                <path
+                                    d="M14.5331 6.66678C14.8376 8.16098 14.6206 9.7144 13.9183 11.068C13.2161 12.4216 12.071 13.4935 10.6741 14.105C9.27718 14.7165 7.71284 14.8306 6.24196 14.4284C4.77107 14.0261 3.48255 13.1317 2.59127 11.8944C1.7 10.6571 1.25984 9.15161 1.3442 7.62904C1.42856 6.10647 2.03234 4.65884 3.05486 3.52756C4.07737 2.39628 5.45681 1.64974 6.96313 1.41242C8.46946 1.1751 10.0116 1.46136 11.3324 2.22345M5.99935 7.33313L7.99935 9.33313L14.666 2.66646"
+                                    stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_2389_424">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        Track job progress
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Schedule & Assignment -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+    <!-- Schedule & Assignment -->
+    <div class="bg-white rounded-md  p-5 sm:p-6 mb-6">
         <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
-          <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-rose-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Schedule &amp; Assignment
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M6 1.49939V4.49963M12 1.49939V4.49963M2.25 7.49987H15.75M3.75 2.99951H14.25C15.0784 2.99951 15.75 3.67114 15.75 4.49963V15.0005C15.75 15.829 15.0784 16.5006 14.25 16.5006H3.75C2.92157 16.5006 2.25 15.829 2.25 15.0005V4.49963C2.25 3.67114 2.92157 2.99951 3.75 2.99951Z"
+                    stroke="#EF4444" stroke-width="2" stroke-linecap="round" />
+            </svg> Schedule &amp; Assignment
         </h2>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Date <span class="text-rose-500">*</span></label>
-            <div class="relative">
-              <input type="text" value="15 May 2024" class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" ><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Date <span
+                        class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <input type="text" value="15 May 2024"
+                        class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">Select the date.</p>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">Select the date.</p>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Start Time <span class="text-rose-500">*</span></label>
-            <div class="relative">
-              <input type="text" value="18:30" class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Start Time <span
+                        class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <input type="text" value="18:30"
+                        class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">Start time.</p>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">Start time.</p>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">End Time <span class="text-rose-500">*</span></label>
-            <div class="relative">
-              <input type="text" value="20:00" class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">End Time <span
+                        class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <input type="text" value="20:00"
+                        class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">End time.</p>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">End time.</p>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Duration</label>
-            <input type="text" value="02:00" disabled class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-500" />
-            <p class="text-xs text-slate-400 mt-1.5">Auto-calculated.</p>
-          </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Duration</label>
+                <input type="text" value="02:00" disabled
+                    class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-500" />
+                <p class="text-xs text-slate-400 mt-1.5">Auto-calculated.</p>
+            </div>
         </div>
 
         <h3 class="flex items-center gap-2 font-semibold text-slate-900 mt-7 mb-4 text-sm">
-          <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-indigo-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Assignment
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.6664 14V12.6667C12.6664 11.9594 12.3854 11.2811 11.8853 10.781C11.3851 10.281 10.7068 10 9.99946 10H5.999C5.29168 10 4.61332 10.281 4.11317 10.781C3.61301 11.2811 3.33203 11.9594 3.33203 12.6667V14M10.6662 4.66667C10.6662 6.13943 9.47216 7.33333 7.99923 7.33333C6.5263 7.33333 5.33226 6.13943 5.33226 4.66667C5.33226 3.19391 6.5263 2 7.99923 2C9.47216 2 10.6662 3.19391 10.6662 4.66667Z"
+                    stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" />
+            </svg> Assignment
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Officer <span class="text-rose-500">*</span></label>
-            <div class="relative">
-              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                <option>James Walker</option>
-              </select>
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Officer <span
+                        class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <select
+                        class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                        <option>James Walker</option>
+                    </select>
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">Assign an officer to this job.</p>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">Assign an officer to this job.</p>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Priority <span class="text-rose-500">*</span></label>
-            <div class="relative">
-              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                <option>Medium</option>
-                <option>High</option>
-                <option>Low</option>
-              </select>
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Priority <span
+                        class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <select
+                        class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                        <option>Medium</option>
+                        <option>High</option>
+                        <option>Low</option>
+                    </select>
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">Set the priority level.</p>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">Set the priority level.</p>
-          </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Required Keys -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+    <!-- Required Keys -->
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
         <div class="flex items-center justify-between gap-3 mb-1">
-          <h2 class="flex items-center gap-2 font-bold text-slate-900">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-blue-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
-            Required Keys
-          </h2>
-          <button (click)="openAddKeysModal()" class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 text-brand-blue text-sm font-medium px-3.5 py-2 hover:bg-blue-100 shrink-0">
-            <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add Keys
-          </button>
+            <h2 class="flex items-center gap-2 font-bold text-slate-900">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M11.625 5.62439L13.35 7.34939C13.4902 7.48681 13.6787 7.56378 13.875 7.56378C14.0713 7.56378 14.2598 7.48681 14.4 7.34939L15.975 5.77439C16.1124 5.63419 16.1894 5.4457 16.1894 5.24939C16.1894 5.05308 16.1124 4.86459 15.975 4.72439L14.25 2.99939M15.7499 1.49939L8.54993 8.69939M9.75 11.6244C9.75 13.9026 7.90317 15.7494 5.625 15.7494C3.34683 15.7494 1.5 13.9026 1.5 11.6244C1.5 9.34622 3.34683 7.49939 5.625 7.49939C7.90317 7.49939 9.75 9.34622 9.75 11.6244Z"
+                        stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                </svg> Required Keys
+            </h2>
+            <button (click)="openAddKeysModal()"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 text-brand-blue text-sm font-medium px-3.5 py-2 hover:bg-blue-100 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4"
+                    style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Keys
+            </button>
         </div>
         <p class="text-sm text-slate-500 mb-5">Select the keys that are required for this job.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          @for (key of selectedKeys; track key.id) {
-            <div class="rounded-lg border border-slate-200 p-4">
-              <div class="flex items-start justify-between gap-2">
-                <p class="flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
-                  <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
-                  {{ key.id }}
-                </p>
-                <div class="flex items-center gap-2 text-slate-400 shrink-0">
-                  <button aria-label="Edit key"><svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 hover:text-slate-600" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
-                  <button (click)="removeKey(key)" aria-label="Remove key"><svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-rose-400 hover:text-rose-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+            @for (key of selectedKeys; track key.id) {
+            <div class="rounded-md border border-slate-200 p-4">
+                <div class="flex items-start justify-between gap-2">
+                    <p class="flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.332 4.99943L11.8654 6.53276C11.99 6.65492 12.1575 6.72334 12.332 6.72334C12.5065 6.72334 12.6741 6.65492 12.7987 6.53276L14.1987 5.13276C14.3208 5.00814 14.3893 4.8406 14.3893 4.6661C14.3893 4.4916 14.3208 4.32405 14.1987 4.19943L12.6654 2.6661M13.9986 1.33276L7.59863 7.73276M8.66536 10.3328C8.66536 12.3578 7.02374 13.9994 4.9987 13.9994C2.97365 13.9994 1.33203 12.3578 1.33203 10.3328C1.33203 8.30772 2.97365 6.6661 4.9987 6.6661C7.02374 6.6661 8.66536 8.30772 8.66536 10.3328Z"
+                                stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                        </svg> {{ key.code }}
+                    </p>
+                    <div class="flex items-center gap-2 text-slate-400 shrink-0">
+                        <button aria-label="Edit key"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2389_228)">
+                                    <path
+                                        d="M12.8336 2.81079C12.8336 3.24689 12.6602 3.6651 12.3518 3.97343L4.56536 11.7602C4.43012 11.895 4.26385 11.9946 4.08115 12.0501L1.54168 12.8201C1.49125 12.8353 1.43766 12.8365 1.38659 12.8237C1.33552 12.8108 1.28888 12.7844 1.25162 12.7472C1.21435 12.71 1.18785 12.6634 1.17493 12.6124C1.16201 12.5613 1.16315 12.5077 1.17823 12.4573L1.94888 9.91866C2.00495 9.73581 2.10512 9.56955 2.24057 9.43451L10.0264 1.64772C10.3349 1.33939 10.7532 1.16621 11.1893 1.16626C11.6255 1.16631 12.0437 1.33961 12.3521 1.64802C12.6605 1.95642 12.8337 2.37468 12.8336 2.81079Z"
+                                        stroke="#2563EB" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2389_228">
+                                        <rect width="14" height="14" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg></button>
+                        <button (click)="removeKey(key)" aria-label="Remove key"> <svg width="14" height="14"
+                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.28919 5.52391 1.16626 5.83333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978"
+                                    stroke="#EF4444" stroke-linecap="round" />
+                            </svg></button>
+                    </div>
                 </div>
-              </div>
-              <p class="font-semibold text-slate-800 mt-1.5">{{ key.name }}</p>
-              <p class="text-xs text-slate-400 mt-0.5">{{ key.site }} Vault</p>
-              <div class="flex gap-2 mt-2.5">
-                <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.cabinet }}</span>
-                <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.hook }}</span>
-              </div>
+                <p class="font-semibold text-slate-800 mt-1.5">{{ key.name }}</p>
+                <p class="text-xs text-slate-400 mt-0.5">{{ key.site }} Vault</p>
+                <div class="flex gap-2 mt-2.5">
+                    <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.cabinet
+                        }}</span>
+                    <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.hook
+                        }}</span>
+                </div>
             </div>
-          } @empty {
-            <p class="text-sm text-slate-400 col-span-full">No keys added yet. Click "Add Keys" to select keys for this job.</p>
-          }
+            } @empty {
+            <p class="text-sm text-slate-400 col-span-full">No keys added yet. Click "Add Keys" to select keys for this
+                job.</p>
+            }
         </div>
-      </div>
+    </div>
 
-      <!-- Lock Service Checklist -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+    <!-- Lock Service Checklist -->
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
         <div class="flex items-center justify-between gap-3 mb-1">
-          <h2 class="flex items-center gap-2 font-bold text-slate-900">
-            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-emerald-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Lock Service Checklist
-          </h2>
-          <button (click)="openAddChecklistModal()" class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 text-brand-blue text-sm font-medium px-3.5 py-2 hover:bg-blue-100 shrink-0">
-            <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add Checklist Item
-          </button>
+            <h2 class="flex items-center gap-2 font-bold text-slate-900">
+               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.75 7.992V14.25C15.75 14.6478 15.592 15.0294 15.3107 15.3107C15.0294 15.592 14.6478 15.75 14.25 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H13.008M6.75 8.25L9 10.5L16.5 3" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+                Lock Service Checklist
+            </h2>
+            <button (click)="openAddChecklistModal()"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 text-brand-blue text-sm font-medium px-3.5 py-2 hover:bg-blue-100 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4"
+                    style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Checklist Item
+            </button>
         </div>
         <p class="text-sm text-slate-500 mb-5">Define the checklist items the officer must complete.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-1">
-          <ul class="divide-y divide-slate-100">
-            @for (item of checklistItems; track item.id) {
-              <li class="flex items-center justify-between py-2.5 text-sm text-slate-700">
-                {{ item.text }}
-                <button (click)="removeChecklistItem(item.id)" aria-label="Remove item" class="text-rose-400 hover:text-rose-500">
-                  <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                </button>
-              </li>
-            }
-          </ul>
+            <ul class="divide-y divide-slate-100">
+                @for (item of checklistLeft; track item.id) {
+                <li class="flex items-center justify-between py-2.5 text-sm text-slate-700">
+                    {{ item.text }}
+                    <button (click)="removeChecklistItem(item.id)" aria-label="Remove item"
+                        class="text-rose-400 hover:text-rose-500">
+                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.72681 5.33333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978" stroke="#EF4444" stroke-linecap="round"/>
+    </svg>
+                    </button>
+                </li>
+                }
+            </ul>
+            <ul class="divide-y divide-slate-100">
+                @for (item of checklistRight; track item.id) {
+                <li class="flex items-center justify-between py-2.5 text-sm text-slate-700">
+                    {{ item.text }}
+                    <button (click)="removeChecklistItem(item.id)" aria-label="Remove item"
+                        class="text-rose-400 hover:text-rose-500">
+                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.72681 5.33333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978" stroke="#EF4444" stroke-linecap="round"/>
+    </svg>
+                    </button>
+                </li>
+                }
+            </ul>
         </div>
 
-        <div class="mt-4 rounded-lg bg-blue-50 border border-blue-100 px-4 py-3 flex gap-2.5">
-          <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500 shrink-0 mt-0.5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <p class="text-sm text-blue-700">Officers will mark each item as Completed, Not Completed or N/A in the mobile application. Officers can also add images and notes to all checklist items.</p>
+        <div class="mt-4 rounded-md bg-blue-50 border border-blue-100 px-4 py-3 flex gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500 shrink-0 mt-0.5"
+                style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+            <p class="text-sm text-blue-700">Officers will mark each item as Completed, Not Completed or N/A in the
+                mobile application. Officers can also add images and notes to all checklist items.</p>
         </div>
-      </div>
+    </div>
 
-      <!-- Notifications & Escalation -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+    <!-- Notifications & Escalation -->
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
         <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
-          <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-amber-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          Notifications &amp; Escalation
+             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.70006 15.7506C7.83172 15.9786 8.02108 16.168 8.24911 16.2996C8.47713 16.4313 8.73579 16.5006 8.99909 16.5006C9.26239 16.5006 9.52105 16.4313 9.74907 16.2996C9.9771 16.168 10.1665 15.9786 10.2981 15.7506M2.44596 11.4947C2.34798 11.6021 2.28332 11.7357 2.25984 11.8792C2.23637 12.0226 2.25509 12.1698 2.31373 12.3029C2.37237 12.4359 2.46841 12.549 2.59015 12.6284C2.71189 12.7079 2.8541 12.7502 2.99947 12.7503H14.9997C15.1451 12.7504 15.2873 12.7082 15.4091 12.6289C15.5309 12.5496 15.6271 12.4366 15.6859 12.3037C15.7447 12.1707 15.7636 12.0236 15.7403 11.8801C15.717 11.7366 15.6525 11.603 15.5547 11.4955C14.5572 10.4671 13.4997 9.3743 13.4997 5.99977C13.4997 4.80619 13.0256 3.66151 12.1816 2.81752C11.3377 1.97354 10.1931 1.49939 8.99959 1.49939C7.80609 1.49939 6.66148 1.97354 5.81755 2.81752C4.97361 3.66151 4.4995 4.80619 4.4995 5.99977C4.4995 9.3743 3.44123 10.4671 2.44596 11.4947Z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+            Notifications &amp; Escalation
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify on Job Completion</label>
-            <div class="relative">
-              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                <option>Selected Contacts (2)</option>
-              </select>
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify on Job Completion</label>
+                <div class="relative">
+                    <select
+                        class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                        <option>Selected Contacts (2)</option>
+                    </select>
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">Contacts will be notified based on job outcome.</p>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">Contacts will be notified based on job outcome.</p>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify if Job Not Completed</label>
-            <div class="relative">
-              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                <option>Selected Contacts (2)</option>
-              </select>
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify if Job Not Completed</label>
+                <div class="relative">
+                    <select
+                        class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                        <option>Selected Contacts (2)</option>
+                    </select>
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Additional Notes / Instructions -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+    <!-- Additional Notes / Instructions -->
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
         <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
-          <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-orange-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Additional Notes / Instructions
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-orange-500"
+                style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+            </svg>
+            Additional Notes / Instructions
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Instruction Attachments</label>
-            <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 text-brand-blue text-sm font-medium px-4 py-2 hover:bg-slate-50">
-              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              Upload Files
-            </button>
-            <p class="text-xs text-slate-400 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1.5">Additional Notes</label>
-            <textarea rows="3" placeholder="Enter any additional notes or instructions for the officer..." class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></textarea>
-            <p class="text-xs text-slate-400 mt-1.5 text-right">55/500</p>
-          </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Instruction Attachments</label>
+                <button
+                    class="inline-flex items-center gap-2 rounded-lg border border-slate-300 text-brand-blue text-sm font-medium px-4 py-2 hover:bg-slate-50">
+                    <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4"
+                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    Upload Files
+                </button>
+                <p class="text-xs text-slate-400 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Additional Notes</label>
+                <textarea rows="3" placeholder="Enter any additional notes or instructions for the officer..."
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></textarea>
+                <p class="text-xs text-slate-400 mt-1.5 text-right">55/500</p>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Footer actions -->
-      <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pb-4">
-        <button class="w-full sm:w-auto rounded-lg border border-slate-300 text-slate-700 font-medium px-5 py-2.5 hover:bg-slate-50">Cancel</button>
-        <button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-brand-blue text-white font-medium px-5 py-2.5 hover:bg-blue-600">
-          <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v6h6"/></svg>
-          Create Job
+    <!-- Footer actions -->
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pb-4">
+        <button
+            class="w-full sm:w-auto rounded-lg border border-slate-300 text-slate-700 font-medium px-5 py-2.5 hover:bg-slate-50">Cancel</button>
+        <button
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-brand-blue text-white font-medium px-5 py-2.5 hover:bg-blue-600">
+            <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4"
+                style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M9 3v6h6" />
+            </svg>
+            Create Job
         </button>
-      </div>
+    </div>
 
-      <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500 pb-8">
+    <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500 pb-8">
         <a href="#" class="hover:text-brand-blue">Privacy Policy</a>
         <a href="#" class="hover:text-brand-blue">Terms of Service</a>
         <a href="#" class="hover:text-brand-blue">Support</a>
-      </div>
     </div>
+</div>
 
-    @if (showAddKeysModal) {
-      <div class="fixed inset-0 z-40 flex items-start lg:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 lg:p-6 overflow-y-auto">
-        <div class="bg-white w-full h-full lg:h-auto lg:max-h-[90vh] lg:rounded-2xl lg:max-w-5xl shadow-2xl flex flex-col">
+@if (showAddKeysModal) {
+<div
+    class="fixed inset-0 z-40 flex items-start lg:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 lg:p-6 overflow-y-auto">
+    <div class="bg-white w-full h-full lg:h-auto lg:max-h-[90vh] lg:rounded-2xl lg:max-w-5xl shadow-2xl flex flex-col">
 
-          <!-- Header -->
-          <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-4 border-b border-slate-100 shrink-0">
+        <!-- Header -->
+        <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-4 border-b border-slate-100 shrink-0">
             <div>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Add Required Keys</h2>
-              <p class="mt-1 text-sm text-slate-500">Search and select the keys required for this job.</p>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Add Required Keys</h2>
+                <p class="mt-1 text-sm text-slate-500">Search and select the keys required for this job.</p>
             </div>
-            <button (click)="closeAddKeysModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0" aria-label="Close">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            <button (click)="closeAddKeysModal()"
+                class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0"
+                aria-label="Close">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
-          </div>
+        </div>
 
-          <!-- Body -->
-          <div class="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
+        <!-- Body -->
+        <div class="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
 
             <!-- Left: search + table -->
             <div class="flex-1 min-w-0 flex flex-col px-5 sm:px-8 py-5 overflow-y-auto">
 
-              <!-- Filters -->
-              <div class="flex flex-col sm:flex-row gap-3 mb-5 shrink-0">
-                <div class="relative flex-1">
-                  <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-                  <input type="text" placeholder="Search by key name, key ID, tag or description…"
-                    class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+                <!-- Filters -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-5 shrink-0">
+                    <div class="relative flex-1">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7" />
+                            <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" placeholder="Search by key name, key ID, tag or description…"
+                            class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+                    </div>
+                    <select
+                        class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                        <option>All Sites</option>
+                        <option>Head Office</option>
+                        <option>Warehouse 1</option>
+                    </select>
+                    <select
+                        class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                        <option>All Statuses</option>
+                        <option>Available</option>
+                        <option>Issued</option>
+                    </select>
                 </div>
-                <select class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
-                  <option>All Sites</option>
-                  <option>Head Office</option>
-                  <option>Warehouse 1</option>
-                </select>
-                <select class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
-                  <option>All Statuses</option>
-                  <option>Available</option>
-                  <option>Issued</option>
-                </select>
-              </div>
 
-              <!-- Table (desktop) -->
-              <div class="hidden md:block border border-slate-200 rounded-xl overflow-hidden">
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-slate-50 text-left text-slate-600">
-                      <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" /></th>
-                      <th class="px-2 py-3 font-semibold">Key Details</th>
-                      <th class="px-4 py-3 font-semibold">Site</th>
-                      <th class="px-4 py-3 font-semibold">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-100">
+                <!-- Table (desktop) -->
+                <div class="hidden md:block border border-slate-200 rounded-xl overflow-hidden">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-left text-slate-600">
+                                <th class="w-10 px-4 py-3"><input type="checkbox"
+                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" /></th>
+                                <th class="px-2 py-3 font-semibold">Key Details</th>
+                                <th class="px-4 py-3 font-semibold">Site</th>
+                                <th class="px-4 py-3 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @for (key of keys; track key.id) {
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-4 py-4 align-top">
+                                    <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)"
+                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                                </td>
+                                <td class="px-2 py-4">
+                                    <div class="flex items-start gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
+                                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+                                        </div>
+                                        <div>
+                                            <div class="text-blue-600 font-semibold text-sm">{{ key.code }}</div>
+                                            <div class="text-slate-900 font-medium">{{ key.name }}</div>
+                                            <div class="mt-1 flex gap-2">
+                                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{
+                                                    key.cabinet }}</span>
+                                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{
+                                                    key.hook }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 align-top">
+                                    <div class="text-slate-900 font-medium">{{ key.site }}</div>
+                                    <div class="text-slate-400 text-sm">{{ key.room }}</div>
+                                </td>
+                                <td class="px-4 py-4 align-top">
+                                    <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold"
+                                        [class.bg-emerald-50]="key.status === 'Available'"
+                                        [class.text-emerald-700]="key.status === 'Available'"
+                                        [class.bg-amber-50]="key.status === 'Issued'"
+                                        [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Cards (mobile) -->
+                <div class="md:hidden space-y-3">
                     @for (key of keys; track key.id) {
-                      <tr class="hover:bg-slate-50 transition">
-                        <td class="px-4 py-4 align-top">
-                          <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
-                        </td>
-                        <td class="px-2 py-4">
-                          <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
-                              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
+                    <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4 cursor-pointer">
+                        <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)"
+                            class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z"
+                                    stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="text-blue-600 font-semibold text-sm">{{ key.code }}</div>
+                                <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold"
+                                    [class.bg-emerald-50]="key.status === 'Available'"
+                                    [class.text-emerald-700]="key.status === 'Available'"
+                                    [class.bg-amber-50]="key.status === 'Issued'"
+                                    [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
                             </div>
-                            <div>
-                              <div class="text-blue-600 font-semibold text-sm">{{ key.id }}</div>
-                              <div class="text-slate-900 font-medium">{{ key.name }}</div>
-                              <div class="mt-1 flex gap-2">
-                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet }}</span>
-                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook }}</span>
-                              </div>
+                            <div class="text-slate-900 font-medium">{{ key.name }}</div>
+                            <div class="mt-1 flex gap-2 flex-wrap">
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet
+                                    }}</span>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook
+                                    }}</span>
                             </div>
-                          </div>
-                        </td>
-                        <td class="px-4 py-4 align-top">
-                          <div class="text-slate-900 font-medium">{{ key.site }}</div>
-                          <div class="text-slate-400 text-sm">{{ key.room }}</div>
-                        </td>
-                        <td class="px-4 py-4 align-top">
-                          <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold" [class.bg-emerald-50]="key.status === 'Available'" [class.text-emerald-700]="key.status === 'Available'" [class.bg-amber-50]="key.status === 'Issued'" [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
-                        </td>
-                      </tr>
+                            <div class="mt-1 text-sm text-slate-500">{{ key.site }} · {{ key.room }}</div>
+                        </div>
+                    </label>
                     }
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Cards (mobile) -->
-              <div class="md:hidden space-y-3">
-                @for (key of keys; track key.id) {
-                  <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4 cursor-pointer">
-                    <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)" class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
-                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <div class="flex items-center justify-between gap-2">
-                        <div class="text-blue-600 font-semibold text-sm">{{ key.id }}</div>
-                        <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold" [class.bg-emerald-50]="key.status === 'Available'" [class.text-emerald-700]="key.status === 'Available'" [class.bg-amber-50]="key.status === 'Issued'" [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
-                      </div>
-                      <div class="text-slate-900 font-medium">{{ key.name }}</div>
-                      <div class="mt-1 flex gap-2 flex-wrap">
-                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet }}</span>
-                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook }}</span>
-                      </div>
-                      <div class="mt-1 text-sm text-slate-500">{{ key.site }} · {{ key.room }}</div>
-                    </div>
-                  </label>
-                }
-              </div>
-
-              <!-- Pagination -->
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 mt-2 shrink-0">
-                <p class="text-sm text-slate-500">Showing <span class="font-medium text-slate-700">1</span> to <span class="font-medium text-slate-700">6</span> of <span class="font-medium text-slate-700">132</span> keys</p>
-                <div class="flex items-center gap-1">
-                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                  </button>
-                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-blue-500 text-blue-600 font-semibold bg-blue-50">1</button>
-                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">2</button>
-                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">3</button>
-                  <span class="px-1 text-slate-400">…</span>
-                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">22</button>
-                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                  </button>
                 </div>
-              </div>
+
+                <!-- Pagination -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 mt-2 shrink-0">
+                    <p class="text-sm text-slate-500">Showing <span class="font-medium text-slate-700">{{ startIndex }}</span> to <span
+                            class="font-medium text-slate-700">{{ endIndex }}</span> of <span
+                            class="font-medium text-slate-700">{{ totalElements }}</span> keys</p>
+                    <div class="flex items-center gap-1">
+                        <button (click)="prevPage()" [disabled]="currentPage === 0"
+                            class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        @for (p of pageNumbers; track p) {
+                            @if (p === '...') {
+                                <span class="px-1 text-slate-400">…</span>
+                            } @else {
+                                <button (click)="goToPage(p - 1)"
+                                    class="w-8 h-8 grid place-items-center rounded-lg border text-blue-600 font-semibold"
+                                    [class.border-blue-500]="currentPage === p - 1"
+                                    [class.bg-blue-50]="currentPage === p - 1"
+                                    [class.border-slate-200]="currentPage !== p - 1"
+                                    [class.text-slate-600]="currentPage !== p - 1"
+                                    [class.hover:bg-slate-50]="currentPage !== p - 1">{{ p }}</button>
+                            }
+                        }
+                        <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1"
+                            class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Right: selected keys panel -->
-            <div class="lg:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-slate-100 bg-slate-50/60 px-5 sm:px-8 lg:px-6 py-5 flex flex-col overflow-y-auto max-h-64 lg:max-h-none">
-              <div class="flex items-center justify-between mb-3 shrink-0">
-                <h3 class="font-semibold text-slate-900">Selected Keys ({{ selectedKeys.length }})</h3>
-                <button (click)="clearAllKeys()" class="text-sm font-medium text-blue-600 hover:text-blue-700">Clear All</button>
-              </div>
-              <div class="space-y-3 flex-1">
-                @for (key of selectedKeys; track key.id) {
-                  <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-start gap-3">
-                    <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0 mt-0.5">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
+            <div
+                class="lg:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-slate-100 bg-slate-50/60 px-5 sm:px-8 lg:px-6 py-5 flex flex-col overflow-y-auto max-h-64 lg:max-h-none">
+                <div class="flex items-center justify-between mb-3 shrink-0">
+                    <h3 class="font-semibold text-slate-900">Selected Keys ({{ selectedKeys.length }})</h3>
+                    <button (click)="clearAllKeys()" class="text-sm font-medium text-blue-600 hover:text-blue-700">Clear
+                        All</button>
+                </div>
+                <div class="space-y-3 flex-1">
+                    @for (key of selectedKeys; track key.id) {
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-start gap-3">
+                        <div
+                            class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0 mt-0.5">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z"
+                                    stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-blue-600 font-semibold text-sm">{{ key.code }}</div>
+                            <div class="text-slate-900 font-medium text-sm">{{ key.name }}</div>
+                            <div class="mt-1 flex gap-2">
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet
+                                    }}</span>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook
+                                    }}</span>
+                            </div>
+                        </div>
+                        <button (click)="removeKey(key)" class="text-slate-400 hover:text-slate-600 shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
-                    <div class="flex-1 min-w-0">
-                      <div class="text-blue-600 font-semibold text-sm">{{ key.id }}</div>
-                      <div class="text-slate-900 font-medium text-sm">{{ key.name }}</div>
-                      <div class="mt-1 flex gap-2">
-                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet }}</span>
-                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook }}</span>
-                      </div>
-                    </div>
-                    <button (click)="removeKey(key)" class="text-slate-400 hover:text-slate-600 shrink-0">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                  </div>
-                }
-              </div>
-              @if (selectedKeys.length === 0) {
+                    }
+                </div>
+                @if (selectedKeys.length === 0) {
                 <p class="text-sm text-slate-400 py-6 text-center">No keys selected yet.</p>
-              }
+                }
             </div>
-          </div>
+        </div>
 
-          <!-- Footer -->
-          <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
-            <div class="text-sm font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-center sm:text-left" [class.hidden]="selectedKeys.length === 0">
-              {{ selectedKeys.length }} keys selected
+        <!-- Footer -->
+        <div
+            class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
+            <div class="text-sm font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-center sm:text-left"
+                [class.hidden]="selectedKeys.length === 0">
+                {{ selectedKeys.length }} keys selected
             </div>
             <div class="flex gap-3 sm:ml-auto">
-              <button (click)="closeAddKeysModal()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">Cancel</button>
-              <button (click)="closeAddKeysModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
-                Add Selected Keys
-              </button>
+                <button (click)="closeAddKeysModal()"
+                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">Cancel</button>
+                <button (click)="closeAddKeysModal()"
+                    class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5" />
+                    </svg>
+                    Add Selected Keys
+                </button>
             </div>
-          </div>
         </div>
-      </div>
-    }
+    </div>
+</div>
+}
 
-    @if (showAddChecklistModal) {
-      <div class="fixed inset-0 z-40 flex items-start sm:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 sm:p-6 overflow-y-auto">
-        <div class="bg-white w-full sm:max-w-lg sm:rounded-2xl shadow-2xl flex flex-col h-full sm:h-auto">
+@if (showAddChecklistModal) {
+<div
+    class="fixed inset-0 z-40 flex items-start sm:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 sm:p-6 overflow-y-auto">
+    <div class="bg-white w-full sm:max-w-lg sm:rounded-2xl shadow-2xl flex flex-col h-full sm:h-auto">
 
-          <!-- Header -->
-          <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-1 shrink-0">
+        <!-- Header -->
+        <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-1 shrink-0">
             <div>
-              <h2 class="text-lg sm:text-xl font-bold text-slate-900">Add Checklist Item</h2>
-              <p class="mt-1 text-sm text-slate-500">Enter the checklist item that officer must complete.</p>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-900">Add Checklist Item</h2>
+                <p class="mt-1 text-sm text-slate-500">Enter the checklist item that officer must complete.</p>
             </div>
-            <button (click)="closeAddChecklistModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0" aria-label="Close">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
+            <button (click)="closeAddChecklistModal()"
+                class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0"
+                aria-label="Close">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
-          </div>
+        </div>
 
-          <!-- Body -->
-          <div class="flex-1 px-5 sm:px-8 py-5 overflow-y-auto">
+        <!-- Body -->
+        <div class="flex-1 px-5 sm:px-8 py-5 overflow-y-auto">
             <label for="checklist-item" class="block text-sm font-semibold text-slate-800 mb-2">
-              Checklist Item <span class="text-red-500">*</span>
+                Checklist Item <span class="text-red-500">*</span>
             </label>
             <div class="relative">
-              <textarea
-                id="checklist-item"
-                maxlength="500"
-                placeholder="Enter Checklist item here…"
-                [(ngModel)]="newChecklistItem"
-                class="w-full h-40 sm:h-48 resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500"
-              ></textarea>
-              <span class="absolute bottom-3 right-4 text-xs text-slate-400">{{ newChecklistItem.length }}/500</span>
+                <textarea id="checklist-item" maxlength="500" placeholder="Enter Checklist item here…"
+                    [(ngModel)]="newChecklistItem"
+                    class="w-full h-40 sm:h-48 resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500"></textarea>
+                <span class="absolute bottom-3 right-4 text-xs text-slate-400">{{ newChecklistItem.length }}/500</span>
             </div>
-          </div>
-
-          <!-- Footer -->
-          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
-            <button (click)="closeAddChecklistModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">
-              Cancel
-            </button>
-            <button (click)="addChecklistItem()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
-              Add item
-            </button>
-          </div>
-
         </div>
-      </div>
-    }
+
+        <!-- Footer -->
+        <div
+            class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
+            <button (click)="closeAddChecklistModal()"
+                class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">
+                Cancel
+            </button>
+            <button (click)="addChecklistItem()"
+                class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+                Add item
+            </button>
+        </div>
+
+    </div>
+</div>
+}

@@ -1,0 +1,521 @@
+
+
+
+      <!-- Breadcrumb + back button -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <nav class="flex items-center flex-wrap gap-1 text-sm">
+          <a href="#" class="text-blue-600 font-medium hover:underline">Job Management</a>
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          <a href="#" class="text-blue-600 font-medium hover:underline">Jobs</a>
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          <span class="text-slate-500">Job Details</span>
+        </nav>
+        <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to Jobs
+        </button>
+      </div>
+
+      <!-- Title -->
+      <div class="flex flex-wrap items-center gap-3 mb-1">
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">Lock Job</h2>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Completed
+        </span>
+      </div>
+      <div class="flex items-center gap-2 mb-6">
+        <a href="#" class="text-blue-600 font-semibold text-sm hover:underline">JOB-000128</a>
+        <button class="text-slate-400 hover:text-slate-600" title="Copy Job ID">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+
+        <!-- Client Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">Client</p>
+              <a href="#" class="text-blue-600 font-semibold hover:underline block truncate">Alpha Security Ltd.</a>
+            </div>
+          </div>
+          <div class="mt-5">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">Site</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Head Office</a>
+          </div>
+          <div class="mt-5">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Address</p>
+            <div class="flex items-start gap-1.5 text-slate-700">
+              <svg class="w-4 h-4 mt-0.5 shrink-0 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <p class="text-sm leading-snug">25 Fenchurch Street, London, EC3M 3AY, UK</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Officer Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <div>
+            <p class="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Officer
+            </p>
+            <p class="text-lg font-bold text-slate-900">James Walker</p>
+          </div>
+          <div class="mt-5">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Priority</p>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-600 text-sm font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+              High
+            </span>
+          </div>
+          <div class="mt-5">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Created By</p>
+            <p class="text-slate-900 font-semibold">Faiza Ahmed</p>
+          </div>
+        </div>
+
+        <!-- Status Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <div>
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Status</p>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              Completed
+            </span>
+          </div>
+          <div class="mt-5">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Created On</p>
+            <div class="flex items-center gap-1.5 text-slate-800 font-semibold text-sm">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              16 May 2024, 02:10 PM
+            </div>
+          </div>
+          <div class="mt-5">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Completed On</p>
+            <div class="flex items-center gap-1.5 text-slate-800 font-semibold text-sm">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              16 May 2024, 02:45 PM
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xl font-extrabold text-slate-900">30 min</p>
+            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Duration</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xl font-extrabold text-slate-900">1</p>
+            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Officer Assigned</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.5 12.5 19 4"/><path d="M17 6l2 2"/><path d="M14 9l2 2"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xl font-extrabold text-slate-900">4</p>
+            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Keys Used</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xl font-extrabold text-slate-900">12</p>
+            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Checklist Items</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bg-white rounded-t-2xl border border-slate-200 border-b-0 px-2 sm:px-6 pt-2 overflow-x-auto">
+        <div class="flex gap-2 sm:gap-6 min-w-max">
+          @for (tab of tabs; track tab.id) {
+            <button (click)="setActiveTab(tab.id)" class="flex items-center gap-2 px-3 sm:px-1 py-4 border-b-2 font-semibold text-sm whitespace-nowrap" [class.border-blue-600]="activeTab === tab.id" [class.text-blue-600]="activeTab === tab.id" [class.border-transparent]="activeTab !== tab.id" [class.text-slate-500]="activeTab !== tab.id" [class.hover:text-slate-700]="activeTab !== tab.id">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" [innerHTML]="tab.icon"></svg>
+              {{ tab.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Tab content -->
+      <div class="bg-white rounded-b-2xl border border-slate-200 p-5 sm:p-7 shadow-sm mb-6">
+        @if (activeTab === 'summary') {
+          <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-5">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            Job Information
+          </h3>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4">
+            <dl class="divide-y divide-slate-100">
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Job Type</dt>
+                <dd class="text-sm font-semibold text-slate-900">Lock Job</dd>
+              </div>
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Job Title</dt>
+                <dd class="text-sm font-bold text-slate-900">Lock - Head Office</dd>
+              </div>
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Job ID</dt>
+                <dd class="text-sm font-semibold text-slate-900">{{ jobId || 'JOB-000128' }}</dd>
+              </div>
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Reference</dt>
+                <dd class="text-sm font-semibold text-slate-900">LCK-HO-160524</dd>
+              </div>
+            </dl>
+            <dl class="lg:pl-10 lg:border-l border-slate-100 divide-y divide-slate-100">
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Client</dt>
+                <dd class="text-sm font-semibold text-blue-600">Alpha Security Ltd.</dd>
+              </div>
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Site</dt>
+                <dd class="text-sm font-semibold text-blue-600">Head Office</dd>
+              </div>
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Created By</dt>
+                <dd class="text-sm font-semibold text-slate-900">Faiza Ahmed</dd>
+              </div>
+              <div class="grid grid-cols-2 py-2.5 gap-2">
+                <dt class="text-sm text-slate-500">Created On</dt>
+                <dd class="text-sm font-semibold text-slate-900">16 May 2024, 02:10 PM</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="mt-6 pt-6 border-t border-slate-100">
+            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-2">Description</p>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Attend site and secure the premises by locking all access points.<br />
+              Ensure alarm is set, building is secure and keys are stored as per procedure.
+            </p>
+          </div>
+
+          <!-- Schedule + Assignment -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 mb-5">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Schedule
+              </h3>
+              <dl class="divide-y divide-slate-100">
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Scheduled Date</dt>
+                  <dd class="text-sm font-bold text-slate-900">16 May 2024</dd>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Start Time</dt>
+                  <dd class="text-sm font-bold text-slate-900">02:15 PM</dd>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">End Time</dt>
+                  <dd class="text-sm font-bold text-slate-900">02:45 PM</dd>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Duration</dt>
+                  <dd class="text-sm font-bold text-slate-900">30 min</dd>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Repeat</dt>
+                  <dd class="text-sm font-bold text-slate-900">One Time</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 mb-5">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Assignment
+              </h3>
+              <dl class="divide-y divide-slate-100">
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Officer</dt>
+                  <dd class="text-sm font-bold text-blue-600">James Walker</dd>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Priority</dt>
+                  <dd>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-600 text-xs font-semibold">
+                      <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                      High
+                    </span>
+                  </dd>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <dt class="text-sm text-slate-500">Status</dt>
+                  <dd>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                      Completed
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        }
+
+        @if (activeTab === 'keys') {
+          <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-1">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.5 12.5 19 4"/><path d="M17 6l2 2"/><path d="M14 9l2 2"/></svg>
+            Required Keys
+          </h3>
+          <p class="text-sm text-slate-500 mb-5">These are the keys required and used for this job.</p>
+
+          <!-- Keys table -->
+          <div class="overflow-x-auto -mx-5 sm:mx-0 rounded-xl border border-slate-100">
+            <table class="w-full min-w-[820px] text-sm">
+              <thead>
+                <tr class="bg-slate-50 text-left">
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Key ID</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Key Name</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Storage Location</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Cabinet</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Hook</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Status</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap text-center">Used</th>
+                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap text-center">Returned</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                @for (key of requiredKeys; track key.id) {
+                  <tr class="hover:bg-slate-50/60 transition">
+                    <td class="px-5 py-4"><a href="#" class="text-blue-600 font-semibold hover:underline whitespace-nowrap">{{ key.id }}</a></td>
+                    <td class="px-5 py-4 text-slate-800 whitespace-nowrap">{{ key.name }}</td>
+                    <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ key.storageLocation }}</td>
+                    <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ key.cabinet }}</td>
+                    <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ key.hook }}</td>
+                    <td class="px-5 py-4"><span class="inline-flex px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 text-xs font-semibold whitespace-nowrap">{{ key.status }}</span></td>
+                    <td class="px-5 py-4 text-center">
+                      @if (key.used) {
+                        <svg class="w-4 h-4 text-slate-400 inline" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      }
+                    </td>
+                    <td class="px-5 py-4 text-center">
+                      @if (key.returned) {
+                        <svg class="w-4 h-4 text-slate-400 inline" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs text-slate-400 mt-2 sm:hidden">Swipe left to see more columns →</p>
+
+          <!-- Key Usage Summary -->
+          <div class="mt-6 rounded-2xl border border-slate-200 p-5 sm:p-6">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+              <div class="flex items-start gap-3 max-w-md">
+                <svg class="w-5 h-5 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div>
+                  <h4 class="font-bold text-slate-900">Key Usage Summary</h4>
+                  <p class="text-sm text-slate-500 mt-0.5">4 of 4 required keys were used and returned.</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="bg-amber-50 rounded-xl px-4 py-2.5 min-w-[110px]">
+                  <p class="text-xs font-semibold text-amber-700">Issued</p>
+                  <p class="text-xl font-extrabold text-amber-600">4</p>
+                </div>
+                <div class="bg-blue-50 rounded-xl px-4 py-2.5 min-w-[110px]">
+                  <p class="text-xs font-semibold text-blue-700">Used</p>
+                  <p class="text-xl font-extrabold text-blue-600">4</p>
+                </div>
+                <div class="bg-emerald-50 rounded-xl px-4 py-2.5 min-w-[110px]">
+                  <p class="text-xs font-semibold text-emerald-700">Returned</p>
+                  <p class="text-xl font-extrabold text-emerald-600">4</p>
+                </div>
+                <div class="bg-rose-50 rounded-xl px-4 py-2.5 min-w-[110px]">
+                  <p class="text-xs font-semibold text-rose-700">Not Returned</p>
+                  <p class="text-xl font-extrabold text-rose-600">4</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (activeTab === 'checklist') {
+          <div id="panel-checklist" class="tab-panel">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-6 pb-4 flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h3 class="flex items-center gap-2 text-lg font-bold">
+                    <svg class="w-[18px] h-[18px] text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Checklist
+                  </h3>
+                  <p class="text-sm text-slate-500 mt-0.5">Review the checklist items, responses and evidence captured for this job.</p>
+                </div>
+                <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">12/12 Completed</span>
+              </div>
+
+              <!-- Desktop table -->
+              <div class="hidden md:block overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-slate-50 text-left text-slate-500 text-xs uppercase tracking-wide">
+                      <th class="px-6 py-3 font-semibold w-16">#</th>
+                      <th class="px-6 py-3 font-semibold">Checklist</th>
+                      <th class="px-6 py-3 font-semibold">Response</th>
+                      <th class="px-6 py-3 font-semibold">Notes</th>
+                      <th class="px-6 py-3 font-semibold">Images</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    @for (item of checklistItems; track item.id) {
+                      <tr class="hover:bg-slate-50/60 transition">
+                        <td class="px-6 py-4 text-slate-500">{{ item.id }}</td>
+                        <td class="px-6 py-4 text-slate-800 font-medium">{{ item.text }}</td>
+                        <td class="px-6 py-4">
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            {{ item.response }}
+                          </span>
+                        </td>
+                        <td class="px-6 py-4 text-slate-600">{{ item.notes }}</td>
+                        <td class="px-6 py-4 text-slate-600">{{ item.images }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Mobile cards -->
+              <div class="md:hidden divide-y divide-slate-100">
+                @for (item of checklistItems; track item.id) {
+                  <div class="p-4">
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-slate-400">#{{ item.id }}</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
+                          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                          {{ item.response }}
+                        </span>
+                      </div>
+                    </div>
+                    <p class="text-sm font-medium text-slate-800 mt-1">{{ item.text }}</p>
+                    <p class="text-xs text-slate-500 mt-1">Notes: {{ item.notes }}</p>
+                    <p class="text-xs text-slate-500">Images: {{ item.images }}</p>
+                  </div>
+                }
+              </div>
+
+              <div class="flex items-center gap-2 px-6 py-5 border-t border-slate-100 text-sm text-slate-600">
+                <svg class="w-[18px] h-[18px] text-blue-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                All checklist items are mandatory and have been completed
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (activeTab === 'escalation') {
+          <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-1">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Escalations &amp; Notifications
+          </h3>
+          <p class="text-sm text-slate-500 mb-6">View the notification contacts configured for this job.</p>
+
+          @if (escalationCompletionEnabled) {
+            <div class="mb-8">
+              <div class="flex items-center gap-2 mb-3">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>
+                <h4 class="font-bold text-slate-900">Notify on Job Completion</h4>
+              </div>
+
+              <div class="overflow-x-auto rounded-xl border border-slate-100">
+                <table class="w-full min-w-[560px] text-sm">
+                  <thead>
+                    <tr class="bg-emerald-50 text-left">
+                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Name</th>
+                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Role</th>
+                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    @for (contact of escalationContacts.completion; track contact.email) {
+                      <tr class="hover:bg-slate-50/60 transition">
+                        <td class="px-5 py-4">
+                          <div class="flex items-center gap-2 text-slate-800 font-medium whitespace-nowrap">
+                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            {{ contact.name }}
+                          </div>
+                        </td>
+                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.role }}</td>
+                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.email }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+
+          @if (escalationNotCompletedEnabled) {
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <h4 class="font-bold text-slate-900">Notify on Job Completion</h4>
+              </div>
+
+              <div class="overflow-x-auto rounded-xl border border-slate-100">
+                <table class="w-full min-w-[560px] text-sm">
+                  <thead>
+                    <tr class="bg-rose-50 text-left">
+                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Name</th>
+                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Role</th>
+                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    @for (contact of escalationContacts.notCompleted; track contact.email) {
+                      <tr class="hover:bg-slate-50/60 transition">
+                        <td class="px-5 py-4">
+                          <div class="flex items-center gap-2 text-slate-800 font-medium whitespace-nowrap">
+                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            {{ contact.name }}
+                          </div>
+                        </td>
+                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.role }}</td>
+                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.email }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-400">
+        <p>© 2026 KeyVault Pro. All rights reserved.</p>
+        <div class="flex items-center gap-5">
+          <a href="#" class="hover:text-slate-600">Privacy Policy</a>
+          <a href="#" class="hover:text-slate-600">Terms of Service</a>
+          <a href="#" class="hover:text-slate-600">Support</a>
+        </div>
+      </div>
+
+    
