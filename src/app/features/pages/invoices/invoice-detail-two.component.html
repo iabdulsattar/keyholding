@@ -1,131 +1,567 @@
 <div class="min-h-[calc(100vh-16px)] flex flex-col p-3 sm:p-4">
-  <div class="flex-1 max-w-5xl mx-auto w-full">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-6">
-      <div>
-        <h2 class="text-slate-900 text-2xl font-extrabold font-['Inter']">Invoice Details</h2>
-        <p class="text-slate-600 text-sm font-normal font-['Inter'] mt-1">View invoice details and billing information.</p>
-      </div>
-      <div class="flex gap-2">
-        <button class="inline-flex items-center gap-2 rounded-lg border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 hover:bg-slate-50">
-          <svg width="16" height="16" viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
-          Pay Now
-        </button>
-        <button class="inline-flex items-center gap-2 rounded-lg border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 hover:bg-slate-50">
-          <svg width="16" height="16" viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </button>
-      </div>
+
+  <div class="flex-1">
+  
+  <div class="flex sm:justify-end mb-1">  
+  <div class="w-40 h-8 relative">
+  <div class="w-28 h-8 left-[-20px] top-0 absolute bg-white rounded-md shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)]">
+    <div data-svg-wrapper class="left-[14px] top-[9px] absolute">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2004_483)">
+      <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2004_483">
+      <rect width="14" height="14" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
     </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-      <div class="lg:col-span-2 space-y-4 sm:space-y-6">
-        <div class="bg-white rounded-md border border-slate-200 p-5 sm:p-6">
-          <div class="flex items-start justify-between gap-3 mb-4">
-            <div>
-              <h3 class="text-slate-900 text-sm font-bold font-['Inter']">Invoice {{ invoice.number }}</h3>
-              <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-0.5">{{ invoice.description }}</p>
-            </div>
-            <span class="inline-flex px-3 py-1 rounded-md text-xs font-bold font-['Inter'] {{ statusStyles[invoice.status] }}">{{ invoice.status }}</span>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Invoice Date</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.date }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Due Date</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.dueDate }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Payment Date</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.paymentDate }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-md border border-slate-200 p-5 sm:p-6">
-          <h3 class="text-slate-900 text-sm font-bold font-['Inter'] mb-4">Billing Summary</h3>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-slate-600">Subtotal</span>
-              <span class="text-slate-900 font-semibold">{{ invoice.subtotal }}</span>
-            </div>
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-slate-600">VAT (20%)</span>
-              <span class="text-slate-900 font-semibold">{{ invoice.vat }}</span>
-            </div>
-            <div class="border-t border-slate-100 pt-3 flex items-center justify-between text-sm">
-              <span class="text-slate-900 font-bold">Total</span>
-              <span class="text-slate-900 font-extrabold">{{ invoice.total }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-md border border-slate-200 p-5 sm:p-6">
-          <h3 class="text-slate-900 text-sm font-bold font-['Inter'] mb-4">Plan Details</h3>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Plan</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.planDetails.name }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Price</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.planDetails.price }}{{ invoice.planDetails.period }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Sites</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.planDetails.sites }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Keys</p>
-              <p class="text-slate-900 text-sm font-semibold font-['Inter'] mt-0.5">{{ invoice.planDetails.keys }}</p>
-            </div>
-          </div>
-          <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-3">{{ invoice.planDetails.description }}</p>
-        </div>
-      </div>
-
-      <div class="space-y-4 sm:space-y-6">
-        <div class="bg-white rounded-md border border-slate-200 p-5">
-          <h3 class="text-slate-900 text-sm font-bold font-['Inter'] mb-4">Billing Contact</h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Company</p>
-              <p class="text-slate-900 font-semibold font-['Inter'] mt-0.5">{{ invoice.companyName }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Email</p>
-              <p class="text-slate-900 font-semibold font-['Inter'] mt-0.5">{{ invoice.billingEmail }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Address</p>
-              <p class="text-slate-900 font-semibold font-['Inter'] mt-0.5">{{ invoice.billingAddress }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-md border border-slate-200 p-5">
-          <h3 class="text-slate-900 text-sm font-bold font-['Inter'] mb-4">Payment Method</h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Method</p>
-              <p class="text-slate-900 font-semibold font-['Inter'] mt-0.5">{{ invoice.paymentMethod }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Billing Cycle</p>
-              <p class="text-slate-900 font-semibold font-['Inter'] mt-0.5">{{ invoice.billingCycle }}</p>
-            </div>
-            <div>
-              <p class="text-slate-500 text-xs font-medium font-['Inter']">Next Billing Date</p>
-              <p class="text-slate-900 font-semibold font-['Inter'] mt-0.5">{{ invoice.nextBillingDate }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
-      <a routerLink="/invoices" class="text-blue-600 text-xs font-semibold font-['Inter'] hover:underline">Back to Invoices</a>
+    <div class="left-[36px] top-[8px] absolute justify-start text-slate-900 text-xs font-medium font-['Inter']">Today</div>
+    <div data-svg-wrapper class="left-[82px] top-[9px] absolute">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </div>
   </div>
+  <div data-svg-wrapper class="left-[114px] top-[-8px] absolute">
+    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g filter="url(#filter0_d_2004_488)">
+    <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges"/>
+    <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_2004_488)"/>
+    </g>
+    <defs>
+    <filter id="filter0_d_2004_488" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="1"/>
+    <feGaussianBlur stdDeviation="1.5"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2004_488"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2004_488" result="shape"/>
+    </filter>
+    <pattern id="pattern0_2004_488" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_2004_488" transform="scale(0.00195312)"/>
+    </pattern>
+    <image id="image0_2004_488" width="512" height="512" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+    </defs>
+    </svg>
+  </div>
+  </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-4">
+  <div>
+    <h2 class=" text-slate-900 text-3xl font-extrabold font-['Inter']">Invoice Details</h2>
+    <p class=" text-slate-600 text-sm font-normal font-['Inter'] mt-1">View invoice information, billing details and payment history.</p>
+  </div>
+ 
+  <div class="flex flex-col sm:flex-row gap-3  ">
+    <button class="order-2 sm:order-1 flex items-center justify-center gap-2 border-1 border-blue-600 bg-white text-blue-600 rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-50 transition">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 10V2M11.3333 6.66667L8 10L4.66667 6.66667M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Download PDF
+    </button>
+    <button class="order-1 sm:order-2 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-700 transition shadow-sm">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14.2372 1.10026L6.94321 8.39267M9.35791 14.1252C9.38324 14.1883 9.42728 14.2422 9.48411 14.2796C9.54093 14.3169 9.60784 14.336 9.67583 14.3343C9.74383 14.3325 9.80967 14.3101 9.86451 14.2698C9.91935 14.2296 9.96057 14.1735 9.98263 14.1092L14.3163 1.44298C14.3377 1.38391 14.3417 1.31999 14.3281 1.25869C14.3144 1.19739 14.2836 1.14126 14.2391 1.09685C14.1947 1.05244 14.1386 1.02159 14.0773 1.00793C14.016 0.994258 13.952 0.998329 13.893 1.01966L1.22522 5.35285C1.16088 5.37491 1.10483 5.41612 1.06459 5.47096C1.02435 5.52579 1.00185 5.59162 1.00011 5.65961C0.998368 5.7276 1.01747 5.79449 1.05485 5.85131C1.09223 5.90813 1.14609 5.95216 1.20922 5.97749L6.49634 8.09742C6.66348 8.16433 6.81533 8.26438 6.94275 8.39156C7.07017 8.51873 7.17051 8.67039 7.23773 8.83739L9.35791 14.1252Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Send Invoice
+    </button>
+  </div>
+
+  </div>
+  <!-- Content grid -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 ">
+
+    <!-- Left column -->
+    <div class="xl:col-span-8 space-y-4">
+
+      <!-- Invoice summary card -->
+      <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="h-12 w-12 rounded-xl bg-blue-50 grid place-items-center shrink-0">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 1.99921H6.00078C5.4704 1.99921 4.96174 2.20994 4.5867 2.58504C4.21167 2.96015 4.00098 3.46889 4.00098 3.99937V20.0006C4.00098 20.5311 4.21167 21.0399 4.5867 21.415C4.96174 21.7901 5.4704 22.0008 6.00078 22.0008H17.9996C18.53 22.0008 19.0386 21.7901 19.4136 21.415C19.7887 21.0399 19.9994 20.5311 19.9994 20.0006V7.99969M14 1.99921C14.3165 1.9987 14.63 2.06082 14.9224 2.18199C15.2148 2.30317 15.4804 2.48101 15.7038 2.70527L19.2914 6.29355C19.5163 6.51708 19.6946 6.78294 19.8161 7.07578C19.9376 7.36862 19.9999 7.68263 19.9994 7.99969M14 1.99921V6.99961C14 7.26484 14.1053 7.51922 14.2928 7.70677C14.4804 7.89432 14.7347 7.99969 14.9999 7.99969L19.9994 7.99969M10.0004 8.99977H8.00058M15.9998 13.0001H8.00058M15.9998 17.0004H8.00058" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-slate-500 text-[10px] font-medium font-['Inter'] mb-1">Invoice Number</p>
+              <div class="flex flex-wrap items-center gap-2 mb-1">
+                <h3 class="text-base font-extrabold text-slate-900 font-['Inter']">{{ invoice.number }}</h3>
+                <span class="inline-flex items-center gap-1 bg-green-100 text-emerald-500 text-xs font-semibold font-['Inter'] px-2.5 py-1 rounded-md">
+                  <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  {{ invoice.status }}
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 font-medium font-['Inter']">{{ invoice.description }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 sm:flex sm:items-center gap-4 sm:gap-8 sm:ml-auto pt-4 sm:pt-0 border-t sm:border-t-0 border-slate-200 ">
+            <div class="sm:border-l border-slate-200 sm:pl-4">
+              <p class="text-[10px] font-medium text-slate-500 font-['Inter'] mb-1">Invoice Date</p>
+              <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2273_1283)">
+  <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2273_1283">
+  <rect width="14" height="14" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+                {{ invoice.date }}
+              </p>
+            </div>
+            <div class="sm:border-l border-slate-200 sm:pl-4">             
+              <p class="text-[10px] font-medium text-slate-500 font-['Inter'] mb-1">Due Date</p>
+              <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2273_1283)">
+  <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2273_1283">
+  <rect width="14" height="14" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+                {{ invoice.dueDate }}
+              </p>
+            </div>
+            <div class="sm:border-l border-slate-200 sm:pl-4">             
+              <p class="text-[10px] font-medium text-slate-500 font-['Inter'] mb-1">Payment Date</p>
+              <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2273_1283)">
+  <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2273_1283">
+  <rect width="14" height="14" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+                {{ invoice.paymentDate }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice items -->
+      <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
+        <h3 class="text-base font-bold text-slate-900 font-['Inter'] mb-4">Invoice Items</h3>
+
+        <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">
+          <table class="w-full min-w-[560px] text-sm">
+            <thead>
+              <tr class="bg-slate-50 rounded-lg text-slate-900 text-xs font-semibold font-['Inter']">
+                <th class="text-left font-medium py-2 px-2">Item Description</th>
+                <th class="text-left font-medium py-2 px-2">Plan</th>
+                <th class="text-right text-left font-medium py-2 px-2">Unit Price</th>
+                <th class="text-right font-medium py-2 px-2">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-200">
+                <td class="py-3 px-2 align-center">
+                  <p class="font-bold text-slate-900 text-sm font-['Inter']">KeyVault</p>
+                  <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-0.5">Monthly access to KeyVault platform</p>
+                </td>
+                <td class="py-3 px-2 align-center text-slate-900 text-xs font-semibold font-['Inter'] whitespace-nowrap">{{ invoice.plan }}</td>
+                <td class="py-3 px-2 align-center text-slate-900 text-xs font-semibold font-['Inter'] text-right whitespace-nowrap">{{ invoice.unitPrice }}</td>
+                <td class="py-3 px-2 align-center text-slate-900 text-xs font-semibold font-['Inter'] text-right whitespace-nowrap">{{ invoice.amount }}</td>
+              </tr>
+
+              <tr class="">
+                <td class="pt-3 px-2 align-center"></td>
+                <td class="pt-3 px-2 align-center"></td>
+                <td class="pt-3 px-2 align-center text-right text-slate-600 text-xs font-semibold font-['Inter']">Subtotal</td>
+                <td class="pt-3 px-2 align-center text-right text-slate-900 text-xs font-semibold font-['Inter']">{{ invoice.subtotal }}</td>
+                
+              </tr>
+              <tr class="border-b border-slate-200">
+                <td class="py-3 px-2 align-center"></td>
+                <td class="py-3 px-2 align-center"></td>
+                <td class="py-3 px-2 align-center text-right text-slate-600 text-xs font-semibold font-['Inter']">VAT (20%)</td>
+                <td class="py-3 px-2 align-center text-right text-slate-900 text-xs font-semibold font-['Inter']">{{ invoice.vat }}</td>
+                
+              </tr>
+              <tr class="">
+                <td class="py-3 px-2 align-center"></td>
+                <td class="py-3 px-2 align-center"></td>
+                <td class="py-3 px-2 align-center text-center text-slate-900 text-sm font-bold font-['Inter']">Total</td>
+                <td class="py-3 px-2 align-center text-right text-blue-600 text-xl font-extrabold font-['Inter']">{{ invoice.total }}</td>
+                
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+
+        
+      </div>
+
+      <!-- Plan details -->
+      <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
+        <h3 class="text-base font-bold text-slate-900 font-['Inter'] mb-4">Plan Details</h3>
+
+        <div class=" grid grid-cols-1 xl:grid-cols-12 gap-4">
+
+          <div class="col-span-6 xl:border-r border-slate-200 xl:pr-4">
+          <div class="bg-slate-50 rounded-xl px-5 py-6 flex gap-4 items-center">
+            <div class="h-10 w-10 rounded-full bg-blue-100 grid place-items-center mb-3 shrink-0">
+              <svg class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div>
+            <p class="text-base font-bold text-slate-900 font-['Inter']">{{ invoice.planDetails.name }}</p>
+            <p class="mb-1"><span class="text-lg font-extrabold text-blue-600 font-['Inter']">{{ invoice.planDetails.price }}</span><span class="text-slate-600 text-xs font-medium font-['Inter']">{{ invoice.planDetails.period }}</span></p>
+            <p class="text-xs text-slate-500 font-normal font-['Inter']">{{ invoice.planDetails.description }}</p>
+            </div>
+          </div>
+          </div>
+
+          <div class="col-span-6">
+          <div>
+            <div class="flex items-center pb-2">            
+            <div class="flex items-center gap-3 w-[130px]">
+              <div class="h-6 w-6 rounded-md bg-blue-50 grid place-items-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.00018 5.83324H7.00602M7.00018 8.16676H7.00602M7.00018 3.49972H7.00602M9.33328 5.83324H9.33912M9.33328 8.16676H9.33912M9.33328 3.49972H9.33912M4.66708 5.83324H4.67292M4.66708 8.16676H4.67292M4.66708 3.49972H4.67292M5.25036 12.8338V11.0837C5.25036 10.9289 5.31181 10.7806 5.4212 10.6711C5.53058 10.5617 5.67894 10.5003 5.83363 10.5003H8.16673C8.32143 10.5003 8.46979 10.5617 8.57917 10.6711C8.68856 10.7806 8.75001 10.9289 8.75001 11.0837V12.8338M3.50053 1.1662H10.4998C11.1441 1.1662 11.6664 1.68857 11.6664 2.33296V11.667C11.6664 12.3114 11.1441 12.8338 10.4998 12.8338H3.50053C2.85627 12.8338 2.33398 12.3114 2.33398 11.667V2.33296C2.33398 1.68857 2.85627 1.1662 3.50053 1.1662Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900 text-xs font-['Inter'] leading-tight">{{ invoice.planDetails.sites }}</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-medium font-['Inter']">Sites included</p>
+                
+            </div>
+            </div>
+
+            <div class="flex items-center pb-2">                        
+            <div class="flex items-center gap-3 w-[130px]">
+              <div class="h-6 w-6 rounded-md bg-blue-50 grid place-items-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_2264_1099)">
+                <path d="M9.04102 4.37453L10.3827 5.7162C10.4917 5.82308 10.6383 5.88295 10.791 5.88295C10.9437 5.88295 11.0903 5.82308 11.1993 5.7162L12.4243 4.4912C12.5312 4.38216 12.5911 4.23555 12.5911 4.08287C12.5911 3.93018 12.5312 3.78357 12.4243 3.67453L11.0827 2.33287M12.2493 1.1662L6.64929 6.7662M7.58268 9.0412C7.58268 10.8131 6.14626 12.2495 4.37435 12.2495C2.60244 12.2495 1.16602 10.8131 1.16602 9.0412C1.16602 7.26928 2.60244 5.83287 4.37435 5.83287C6.14626 5.83287 7.58268 7.26928 7.58268 9.0412Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_2264_1099">
+                <rect width="14" height="14" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900 text-xs font-['Inter'] leading-tight">{{ invoice.planDetails.keys }}</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-medium font-['Inter']">Key sets included</p>
+                
+            </div>
+            </div>
+
+            <div class="flex items-center pb-2">            
+            
+            <div class="flex items-center gap-3 w-[130px]">
+              <div class="h-6 w-6 rounded-md bg-blue-50 grid place-items-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_2264_1105)">
+                <path d="M9.33334 12.25V11.0833C9.33334 10.4645 9.08748 9.871 8.64986 9.43342C8.21224 8.99583 7.6187 8.75 6.99982 8.75H3.49954C2.88065 8.75 2.28711 8.99583 1.84949 9.43342C1.41187 9.871 1.16602 10.4645 1.16602 11.0833V12.25M9.33334 1.82463C9.83373 1.95434 10.2769 2.24653 10.5933 2.65533C10.9096 3.06413 11.0813 3.56639 11.0813 4.08329C11.0813 4.60019 10.9096 5.10246 10.5933 5.51126C10.2769 5.92005 9.83373 6.21224 9.33334 6.34196M12.8336 12.2499V11.0833C12.8332 10.5663 12.6611 10.064 12.3444 9.65545C12.0276 9.24685 11.5841 8.95501 11.0835 8.82576M7.5832 4.08333C7.5832 5.372 6.53844 6.41667 5.24968 6.41667C3.96091 6.41667 2.91616 5.372 2.91616 4.08333C2.91616 2.79467 3.96091 1.75 5.24968 1.75C6.53844 1.75 7.5832 2.79467 7.5832 4.08333Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_2264_1105">
+                <rect width="14" height="14" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900 text-xs font-['Inter'] leading-tight">{{ invoice.planDetails.users }}</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-medium font-['Inter']">Users</p>
+                
+            </div>
+            </div>
+
+            <div class="flex items-center pb-2">                        
+            <div class="flex items-center gap-3 w-[130px]">
+              <div class="h-6 w-6 rounded-md bg-blue-50 grid place-items-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.33334 11.6662V2.33287C9.33334 2.02345 9.21041 1.7267 8.9916 1.50791C8.77279 1.28911 8.47602 1.1662 8.16658 1.1662H5.83306C5.52361 1.1662 5.22684 1.28911 5.00803 1.50791C4.78922 1.7267 4.6663 2.02345 4.6663 2.33287V11.6662M2.33278 3.49953H11.6669C12.3112 3.49953 12.8336 4.02187 12.8336 4.6662V10.4995C12.8336 11.1439 12.3112 11.6662 11.6669 11.6662H2.33278C1.68839 11.6662 1.16602 11.1439 1.16602 10.4995V4.6662C1.16602 4.02187 1.68839 3.49953 2.33278 3.49953Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900 text-xs font-['Inter'] leading-tight">{{ invoice.planDetails.jobs }}</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-medium font-['Inter']">Key jobs</p>
+                
+            </div>
+            </div>
+
+            <div class="flex items-start">            
+            
+            <div class="flex items-center gap-3 w-[130px]">
+              <div class="h-6 w-6 rounded-md bg-blue-50 grid place-items-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.25036 6.99972L6.41691 8.16643L8.75001 5.83302M11.6664 7.58334C11.6664 10.5001 9.62492 11.9585 7.1985 12.8043C7.07144 12.8474 6.93342 12.8453 6.8077 12.7985C4.37545 11.9585 2.33398 10.5001 2.33398 7.58334V3.49987C2.33398 3.34516 2.39544 3.19678 2.50482 3.08738C2.61421 2.97798 2.76257 2.91652 2.91726 2.91652C4.08381 2.91652 5.542 2.21649 6.55689 1.3298C6.68046 1.22421 6.83766 1.1662 7.00018 1.1662C7.16271 1.1662 7.3199 1.22421 7.44347 1.3298C8.4642 2.22233 9.91656 2.91652 11.0831 2.91652C11.2378 2.91652 11.3862 2.97798 11.4955 3.08738C11.6049 3.19678 11.6664 3.34516 11.6664 3.49987V7.58334Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900 text-xs font-['Inter'] leading-tight">{{ invoice.planDetails.features }}</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-medium font-['Inter']">Included</p>
+                
+            </div>
+            </div>
+          
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice notes -->
+      <div class="bg-white rounded-md shadow-xs p-5 sm:p-6 flex items-start gap-3">
+        <div class="h-9 w-9 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2264_1125)">
+  <path d="M8.00021 10.6669V8.00003M8.00021 5.33314H8.00688M14.6674 8.00003C14.6674 11.6822 11.6824 14.6672 8.00021 14.6672C4.31801 14.6672 1.33301 11.6822 1.33301 8.00003C1.33301 4.31783 4.31801 1.33282 8.00021 1.33282C11.6824 1.33282 14.6674 4.31783 14.6674 8.00003Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2264_1125">
+  <rect width="16" height="16" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+        </div>
+        <div>
+          <p class="font-bold text-slate-900 text-xs font-['Inter'] mb-0.5">Invoice Notes</p>
+          <p class="text-xs text-slate-500 font-medium font-['Inter']">This is a system generated invoice. For any queries, please contact our support team.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right column -->
+    <div class="xl:col-span-4 space-y-4">
+
+      <!-- Billing information -->
+      <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="text-base font-bold text-slate-900 font-['Inter']">Billing Information</h3>
+          <button class="flex items-center gap-1.5 border border-slate-200 rounded-md bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 font-['Inter'] hover:bg-slate-50 transition">
+            Edit
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2264_1135)">
+  <path d="M7.50058 2.49958L9.50076 4.49954M10.5878 3.40575C10.8522 3.14147 11.0008 2.783 11.0008 2.4092C11.0008 2.0354 10.8524 1.67689 10.5881 1.41254C10.3238 1.14819 9.96525 0.99965 9.59141 0.999603C9.21757 0.999556 8.85902 1.148 8.59464 1.41229L1.92105 8.08667C1.80495 8.20242 1.71909 8.34493 1.67103 8.50166L1.01047 10.6776C0.997545 10.7209 0.996569 10.7668 1.00764 10.8105C1.01872 10.8543 1.04143 10.8942 1.07337 10.9261C1.10531 10.958 1.14529 10.9807 1.18906 10.9917C1.23284 11.0027 1.27877 11.0016 1.322 10.9886L3.49869 10.3286C3.65529 10.281 3.7978 10.1957 3.91373 10.0801L10.5878 3.40575Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2264_1135">
+  <rect width="12" height="12" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-start">
+          <div class="flex items-center shrink-0 gap-3 w-[160px]">
+            <div class="h-8 w-8 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.99979 6.66655H8.00646M7.99979 9.33343H8.00646M7.99979 3.99967H8.00646M10.6662 6.66655H10.6729M10.6662 9.33343H10.6729M10.6662 3.99967H10.6729M5.33339 6.66655H5.34006M5.33339 9.33343H5.34006M5.33339 3.99967H5.34006M5.99999 14.6672V12.667C5.99999 12.4902 6.07022 12.3206 6.19523 12.1956C6.32025 12.0706 6.4898 12.0003 6.66659 12.0003H9.33299C9.50979 12.0003 9.67934 12.0706 9.80435 12.1956C9.92936 12.3206 9.99959 12.4902 9.99959 12.667V14.6672M4.00019 1.33279H11.9994C12.7357 1.33279 13.3326 1.9298 13.3326 2.66623V13.3338C13.3326 14.0702 12.7357 14.6672 11.9994 14.6672H4.00019C3.26389 14.6672 2.66699 14.0702 2.66699 13.3338V2.66623C2.66699 1.9298 3.26389 1.33279 4.00019 1.33279Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-slate-500 font-semibold font-['Inter'] mb-0.5">Company Name</p>
+              
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-slate-900 font-['Inter'] mt-2">{{ invoice.companyName }}</p>
+
+          </div>
+          </div>
+
+          <div class="flex items-start">
+          
+          <div class="flex items-center shrink-0 gap-3 w-[160px]">
+            <div class="h-8 w-8 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.6674 4.66701L8.67293 8.48462C8.46951 8.60275 8.23845 8.66498 8.00321 8.66498C7.76797 8.66498 7.53691 8.60275 7.33349 8.48462L1.33301 4.66701M2.66645 2.66721H13.334C14.0704 2.66721 14.6674 3.2641 14.6674 4.00041V11.9996C14.6674 12.7359 14.0704 13.3328 13.334 13.3328H2.66645C1.93001 13.3328 1.33301 12.7359 1.33301 11.9996V4.00041C1.33301 3.2641 1.93001 2.66721 2.66645 2.66721Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-slate-500 font-semibold font-['Inter'] mb-0.5">Billing Email</p>
+              
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-slate-900 font-['Inter'] mt-2 break-all">{{ invoice.billingEmail }}</p>
+              
+          </div>
+          </div>
+
+          <div class="flex items-start">
+          
+          <div class="flex items-center shrink-0 gap-3 w-[160px]">
+           <div class="h-8 w-8 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.40042 14.5333C9.6403 13.4626 13.3326 9.99559 13.3326 6.66662C13.3326 5.252 12.7707 3.89532 11.7707 2.89504C10.7706 1.89475 9.41414 1.33279 7.99979 1.33279C6.58545 1.33279 5.22903 1.89475 4.22893 2.89504C3.22884 3.89532 2.66699 5.252 2.66699 6.66662C2.66699 9.99559 6.35929 13.4626 7.59917 14.5333C7.71467 14.6202 7.85527 14.6672 7.99979 14.6672C8.14431 14.6672 8.28491 14.6202 8.40042 14.5333Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-slate-500 font-semibold font-['Inter'] mb-0.5">Billing Address</p>
+              
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-slate-900 font-['Inter'] mt-2">{{ invoice.billingAddress }}</p>
+              
+          </div>
+          </div>
+
+          <div class="border-t border-slate-200 pt-5 space-y-4">
+
+            <div class="flex items-start">
+          
+            <div class="flex items-center shrink-0 gap-3 w-[160px]">
+            <div class="h-8 w-8 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 8C2 6.4087 2.63214 4.88258 3.75736 3.75736C4.88258 2.63214 6.4087 2 8 2C9.67737 2.00631 11.2874 2.66082 12.4933 3.82667L14 5.33333M10.6667 5.33333H14V2M14 8C14 9.5913 13.3679 11.1174 12.2426 12.2426C11.1174 13.3679 9.5913 14 8 14C6.32263 13.9937 4.71265 13.3392 3.50667 12.1733L2 10.6667M2 14V10.6667H5.33333" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs text-slate-500 font-semibold font-['Inter'] mb-0.5">Billing Cycle</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-900 font-['Inter'] mt-2">{{ invoice.billingCycle }}</p>
+                
+            </div>
+            </div>
+
+            <div class="flex items-start">
+          
+            <div class="flex items-center shrink-0 gap-3 w-[160px]">
+            <div class="h-8 w-8 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.33333 1.33279V3.99967M10.6667 1.33279V3.99967M2 6.66655H14M3.33333 2.66623H12.6667C13.403 2.66623 14 3.26324 14 3.99967V13.3338C14 14.0702 13.403 14.6672 12.6667 14.6672H3.33333C2.59695 14.6672 2 14.0702 2 13.3338V3.99967C2 3.26324 2.59695 2.66623 3.33333 2.66623Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs text-slate-500 font-semibold font-['Inter'] mb-0.5">Next Billing Date</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-900 font-['Inter'] mt-2">{{ invoice.nextBillingDate }}</p>
+                
+            </div>
+            </div>
+
+            <div class="flex items-start">
+          
+            <div class="flex items-center shrink-0 gap-3 w-[160px]">
+            <div class="h-8 w-8 rounded-lg bg-blue-50 grid place-items-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1.33301 6.66654H14.6674M2.66645 3.33282H13.334C14.0704 3.33282 14.6674 3.92985 14.6674 4.66631V11.3337C14.6674 12.0702 14.0704 12.6672 13.334 12.6672H2.66645C1.93001 12.6672 1.33301 12.0702 1.33301 11.3337V4.66631C1.33301 3.92985 1.93001 3.33282 2.66645 3.33282Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs text-slate-500 font-semibold font-['Inter'] mb-0.5">Payment Method</p>
+                
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center mt-2 gap-1.5">
+                  <span class="text-blue-700 font-extrabold italic text-xs">VISA</span>
+                  <span class="tracking-widest text-slate-400">••••</span> 4242
+                </p>
+                
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment summary -->
+      <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
+        <h3 class="text-base font-bold text-slate-900 font-['Inter'] mb-4">Payment Summary</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between">
+            <span class="text-slate-900 text-xs font-normal font-['Inter']">Subtotal (excl. VAT)</span>
+            <span class="font-semibold text-slate-900 text-xs font-['Inter']">{{ invoice.subtotal }}</span>
+          </div>
+          <div class="flex justify-between pb-3 border-b border-slate-200">
+            <span class="text-slate-900 text-xs font-normal font-['Inter']">VAT (20%)</span>
+            <span class="font-semibold text-slate-900 text-xs font-['Inter']">{{ invoice.vat }}</span>
+          </div>
+          <div class="flex justify-between items-center pt-1">
+            <span class="text-slate-900 font-bold text-sm font-['Inter']">Total</span>
+            <span class="text-blue-600 font-extrabold text-xl font-['Inter']">{{ invoice.total }}</span>
+          </div>
+        </div>
+
+        
+
+        
+      </div>
+
+    </div>
+  </div>
+
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+    <p class="text-slate-500 text-[10.26px] font-normal font-['Inter'] flex items-center gap-1">Need help? Contact
+      our <a href="#" class="text-blue-600 text-[10.26px] font-semibold font-['Inter'] underline">support team</a>
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <rect width="15" height="15" fill="url(#pattern0_2130_627)" />
+        <defs>
+          <pattern id="pattern0_2130_627" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_2130_627" transform="scale(0.00195312)" />
+          </pattern>
+          <image id="image0_2130_627" width="512" height="512" preserveAspectRatio="none"
+            xlink:href="data:image/png;base64,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" />
+        </defs>
+      </svg>
+    </p>
+  </div>
+  </div>
+
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+    <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
+        Policy</a>
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
+        Service</a>
+
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
+    </div>
+
+  </div>
+
 </div>

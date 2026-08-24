@@ -149,39 +149,37 @@
     </button>
   </div>
 
-   @if (loading) {
-     <div class="flex items-center justify-center py-12">
-       <p class="text-slate-500 text-sm">Loading invoices...</p>
-     </div>
-   }
+    @if (error) {
+      <div class="bg-red-50 border border-red-100 text-red-700 rounded-md px-4 py-3 mb-4 text-sm">
+        {{ error }}
+      </div>
+    }
 
-   @if (error) {
-     <div class="bg-red-50 border border-red-100 text-red-700 rounded-md px-4 py-3 mb-4 text-sm">
-       {{ error }}
-     </div>
-   }
-
-   <!-- Desktop table -->
-   <div class="hidden md:block bg-white rounded-md border border-slate-200 overflow-hidden">
-    <div class="overflow-x-auto no-scrollbar">
-      <table class="w-full min-w-[820px] ">
-        <thead>
-          <tr class="bg-slate-50 border-b border-slate-200">
-            <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Invoice No.</th>
-            <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Date</th>
-              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Description</th>
-              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Amount</th>
-            <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Status</th>
-            <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Action</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-200 h-[650px]">
-          @if (filteredInvoices.length === 0) {
-            <tr>
-              <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">No invoices found.</td>
-            </tr>
-          } @else {
-            @for (inv of filteredInvoices; track inv.no) {
+    <!-- Desktop table -->
+    <div class="hidden md:block bg-white rounded-md border border-slate-200 overflow-hidden">
+     <div class="overflow-x-auto no-scrollbar">
+       <table class="w-full min-w-[820px] ">
+         <thead>
+           <tr class="bg-slate-50 border-b border-slate-200">
+             <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Invoice No.</th>
+             <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Date</th>
+               <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Description</th>
+               <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Amount</th>
+             <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Status</th>
+             <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Action</th>
+           </tr>
+         </thead>
+         <tbody class="divide-y divide-slate-200 h-[650px]">
+           @if (loading) {
+             <tr>
+               <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">Loading invoices...</td>
+             </tr>
+           } @else if (filteredInvoices.length === 0) {
+             <tr>
+               <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">No invoices found.</td>
+             </tr>
+           } @else {
+             @for (inv of filteredInvoices; track inv.no) {
             <tr class="hover:bg-slate-50/60 transition">
               <td class="px-6 py-4 text-slate-500 text-xs font-semibold font-['Inter'] whitespace-nowrap">{{ inv.no }}</td>
               <td class="px-4 py-4 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ inv.date }}</td>
@@ -241,7 +239,11 @@
 
   <!-- Mobile cards -->
   <div class="md:hidden space-y-3">
-    @if (filteredInvoices.length === 0) {
+    @if (loading) {
+      <div class="bg-white rounded-2xl border border-slate-200 px-6 py-12 text-center">
+        <p class="text-slate-500 text-sm">Loading invoices...</p>
+      </div>
+    } @else if (filteredInvoices.length === 0) {
       <div class="bg-white rounded-2xl border border-slate-200 px-6 py-12 text-center">
         <p class="text-slate-500 text-sm">No invoices found.</p>
       </div>
