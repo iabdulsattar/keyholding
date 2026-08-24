@@ -92,7 +92,8 @@ export class SubscriptionPlanComponent implements OnInit {
   }
 
   getPlanName(plan: Plan): string {
-    return plan.name ?? plan.code;
+    const raw = plan.name ?? plan.code;
+    return raw.replace(/^KeyVault Pro\s+/i, '').trim();
   }
 
   getSubtotal(plan: Plan): number {
@@ -143,16 +144,14 @@ export class SubscriptionPlanComponent implements OnInit {
       next: (res: any) => {
         const planList = Array.isArray(res) ? res : (res?.data ?? []);
         this.plans = planList.filter((p: any) => p.active);
-        if (this.plans.length > 0 && !this.selectedPlan) {
-          this.selectedPlan = this.plans[0];
-        }
+        const professional = this.plans.find(p => p.code === 'KV_PROFESSIONAL');
+        this.selectedPlan = professional || this.plans[0] || null;
         this.isFetchingPlans = false;
       },
       error: () => {
         this.plans = this.getFallbackPlans();
-        if (this.plans.length > 0 && !this.selectedPlan) {
-          this.selectedPlan = this.plans[0];
-        }
+        const professional = this.plans.find(p => p.code === 'KV_PROFESSIONAL');
+        this.selectedPlan = professional || this.plans[0] || null;
         this.isFetchingPlans = false;
         this.errorMessage = '';
       },
@@ -161,10 +160,10 @@ export class SubscriptionPlanComponent implements OnInit {
 
   private getFallbackPlans(): Plan[] {
     return [
-      { id: '1', code: 'KV_STARTER', name: 'KeyVault Pro Starter', monthlyPriceCents: 4900, annualPriceCents: 49000, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 10, serviceCode: 'key-vault' },
-      { id: '2', code: 'KV_USER_LICENCE', name: 'KeyVault Pro User Licence', monthlyPriceCents: 999, annualPriceCents: 8290, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 15, serviceCode: 'key-vault' },
-      { id: '3', code: 'KV_PROFESSIONAL', name: 'KeyVault Pro Professional', monthlyPriceCents: 12900, annualPriceCents: 129000, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 20, serviceCode: 'key-vault' },
-      { id: '4', code: 'KV_BUSINESS', name: 'KeyVault Pro Business', monthlyPriceCents: 24900, annualPriceCents: 249000, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 30, serviceCode: 'key-vault' },
+      { id: '1', code: 'KV_STARTER', name: 'Starter', monthlyPriceCents: 4900, annualPriceCents: 49000, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 10, serviceCode: 'key-vault' },
+      { id: '2', code: 'KV_USER_LICENCE', name: 'User Licence', monthlyPriceCents: 999, annualPriceCents: 8290, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 15, serviceCode: 'key-vault' },
+      { id: '3', code: 'KV_PROFESSIONAL', name: 'Professional', monthlyPriceCents: 12900, annualPriceCents: 129000, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 20, serviceCode: 'key-vault' },
+      { id: '4', code: 'KV_BUSINESS', name: 'Business', monthlyPriceCents: 24900, annualPriceCents: 249000, currency: 'GBP', trialEligible: false, features: {}, active: true, sortOrder: 30, serviceCode: 'key-vault' },
     ];
   }
 }

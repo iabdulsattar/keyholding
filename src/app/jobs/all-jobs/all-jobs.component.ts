@@ -31,10 +31,9 @@ export class AllJobsComponent implements OnInit {
   statusClass(status: string): string {
     const map: Record<string, string> = {
       'Scheduled': 'bg-indigo-50 text-indigo-600',
-      'In Progress': 'bg-orange-50 text-orange-500',
+      'In Progress': 'bg-amber-50 text-amber-600',
       'Completed': 'bg-emerald-50 text-emerald-600',
-      'Overdue': 'bg-red-50 text-red-500',
-      'Cancelled': 'bg-slate-100 text-slate-500',
+      'Overdue': 'bg-red-50 text-red-600',
     };
     return map[status] || 'bg-slate-100 text-slate-500';
   }

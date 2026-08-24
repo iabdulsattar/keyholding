@@ -209,12 +209,11 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
       });
     };
 
-    const startSubscriptionCall = (paymentMethodId: string) => {
-      return this.subscriptionService.startSubscription(orgId, {
-        planId: this.plan.id,
+    const planCall = (paymentMethodId: string) => {
+      return this.subscriptionService.changePlan(orgId, 'key-vault', {
+        newPlanId: this.plan.id,
         billingPeriod: 'MONTHLY',
-        useTrial: false,
-        paymentMethodId: paymentMethodId
+        config: { paymentMethodId }
       });
     };
 
@@ -236,59 +235,23 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
         this.cardErrors = result.error.message || 'Card validation failed.';
         this.errorMessage = 'Payment failed. Please check your card details.';
       } else {
-        this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
-          next: (res: any) => {
-            const payload = res?.data ?? res ?? {};
-            const sub = payload.subscription ?? payload ?? {};
-            const status = sub?.status?.toUpperCase();
-            const hasActiveSubscription = ['ACTIVE', 'TRIALING', 'TRIAL', 'PENDING'].includes(status);
-
-            const subscriptionCall = hasActiveSubscription
-              ? this.subscriptionService.changePlan(orgId, 'key-vault', {
-                  newPlanId: this.plan.id,
-                  billingPeriod: 'MONTHLY',
-                  config: { paymentMethodId: result.paymentMethod.id }
-                })
-              : startSubscriptionCall(result.paymentMethod.id);
-
-            subscriptionCall.subscribe({
+        planCall(result.paymentMethod.id).subscribe({
+          next: (planRes) => {
+            console.log('Plan subscription success:', planRes);
+            saveBillingInfoCall().subscribe({
               next: () => {
-                saveBillingInfoCall().subscribe({
-                  next: () => {
-                    this.isLoading = false;
-                    window.location.href = '/';
-                  },
-                  error: () => {
-                    this.isLoading = false;
-                    window.location.href = '/';
-                  }
-                });
-              },
-              error: (err) => {
                 this.isLoading = false;
-                this.errorMessage = err?.error?.detail || 'Payment failed. Please try again.';
+                window.location.href = '/';
+              },
+              error: () => {
+                this.isLoading = false;
+                window.location.href = '/';
               }
             });
           },
-          error: () => {
-            startSubscriptionCall(result.paymentMethod.id).subscribe({
-              next: () => {
-                saveBillingInfoCall().subscribe({
-                  next: () => {
-                    this.isLoading = false;
-                    window.location.href = '/';
-                  },
-                  error: () => {
-                    this.isLoading = false;
-                    window.location.href = '/';
-                  }
-                });
-              },
-              error: (err) => {
-                this.isLoading = false;
-                this.errorMessage = err?.error?.detail || 'Payment failed. Please try again.';
-              }
-            });
+          error: (err: any) => {
+            this.isLoading = false;
+            this.errorMessage = err?.error?.message || 'Payment failed. Please try again.';
           }
         });
       }

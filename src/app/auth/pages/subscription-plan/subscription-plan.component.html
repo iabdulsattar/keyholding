@@ -231,7 +231,7 @@
       <div class="mt-5 divide-y divide-slate-200">
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">Plan</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">Pro</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ selectedPlan ? getPlanName(selectedPlan) : '-' }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">Billing Cycle</span>
@@ -239,15 +239,15 @@
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">Plan price</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">£9.99</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ (selectedPlan ? getPlanPrice(selectedPlan) : 0) | number:'1.2-2' }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
           <span class="text-slate-900 text-xs font-normal font-['Inter']">VAT (20%)</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">£19.98</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ (selectedPlan ? (getPlanPrice(selectedPlan) * 0.2) : 0) | number:'1.2-2' }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
-          <span class="text-slate-900 text-xs font-normal font-['Inter']">Subtotal (10 &times; £9.99)</span>
-          <span class="text-slate-900 text-xs font-medium font-['Inter']">£99.90</span>
+          <span class="text-slate-900 text-xs font-normal font-['Inter']">Subtotal ({{ selectedPlan ? getPlanSites(selectedPlan) : 0 }} &times; £{{ (selectedPlan ? getPlanPrice(selectedPlan) : 0) | number:'1.2-2' }})</span>
+          <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ (selectedPlan ? getSubtotal(selectedPlan) : 0) | number:'1.2-2' }}</span>
         </div>
         <div ></div>
 
@@ -259,7 +259,7 @@
           <p class="text-slate-500 text-[10px] font-normal font-['Inter'] mt-0.5">Incl. VAT</p>
         </div>
         <div class="text-right">
-          <p class="text-blue-600 text-xl font-extrabold font-['Inter']">£119.88</p>
+          <p class="text-blue-600 text-xl font-extrabold font-['Inter']">£{{ (selectedPlan ? getTotal(selectedPlan) : 0) | number:'1.2-2' }}</p>
           <p class="text-slate-500 text-[10px] font-normal font-['Inter'] mt-0.5">Incl. VAT</p>
         </div>
       </div>
@@ -293,6 +293,7 @@
       </div>
 
       <button
+        (click)="proceedWithPlan()"
         class="mt-5 w-full bg-blue-600 rounded-lg transition-colors  text-white text-sm font-bold font-['Inter'] py-3.5">
         Pay & activate KeyVault
       </button>

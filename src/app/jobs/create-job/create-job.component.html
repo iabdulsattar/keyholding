@@ -1,0 +1,601 @@
+ <div class=" mx-auto px-4 sm:px-4 lg:px-4 py-6 lg:py-8">
+
+      <!-- Page header -->
+      <div class="mb-6">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Create Job</h1>
+        <p class="text-slate-500 text-sm mt-1">Fill in the details below to create a new job.</p>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Job Type</p>
+            <p class="font-semibold text-slate-800 truncate">Lock Service</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Priority</p>
+            <p class="font-semibold text-slate-800 truncate">High</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="8" y1="6" x2="8" y2="6.01"/><line x1="12" y1="6" x2="12" y2="6.01"/><line x1="16" y1="6" x2="16" y2="6.01"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Site</p>
+            <p class="font-semibold text-slate-800 truncate">Head Office</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Client</p>
+            <p class="font-semibold text-slate-800 truncate">Alpha Security Ltd.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Information + side panel -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 mb-6">
+        <div class="xl:col-span-2 bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
+          <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-orange-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Job Information
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Job Type <span class="text-rose-500">*</span></label>
+              <div class="relative">
+                <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                  <option>Lock Service</option>
+                  <option>Unlock Service</option>
+                  <option>Alarm Response</option>
+                </select>
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="text-xs text-slate-400 mt-1.5">Select the type of job</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Client <span class="text-rose-500">*</span></label>
+              <div class="relative">
+                <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                  <option>Alpha Security Ltd.</option>
+                </select>
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="text-xs text-slate-400 mt-1.5">Select the client for this job</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Site <span class="text-rose-500">*</span></label>
+              <div class="relative">
+                <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                  <option>Head Office</option>
+                </select>
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="text-xs text-slate-400 mt-1.5">Select the site where job will take place</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Job Title <span class="text-rose-500">*</span></label>
+              <input type="text" value="Evening Lock Service" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+              <p class="text-xs text-slate-400 mt-1.5">Enter a short title for this job.</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Reference</label>
+              <input type="text" placeholder="Enter reference (optional)" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+              <p class="text-xs text-slate-400 mt-1.5">Add a reference for this job.</p>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
+            <textarea rows="3" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">Perform evening locking and security checks as per site locking procedure. Ensure all areas are secure, alarm is set and keys are returned.</textarea>
+            <p class="text-xs text-slate-400 mt-1.5">Provide a brief description of the job.</p>
+          </div>
+        </div>
+
+        <!-- Side panel -->
+        <div class="flex flex-col gap-4 sm:gap-6">
+          <div class="bg-blue-50/70 rounded-xl border border-blue-100 p-5">
+            <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              About Job Types
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 ml-auto text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="18 15 12 9 6 15"/></svg>
+            </h3>
+            <div class="space-y-4">
+              <div class="flex gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500 mt-0.5 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Lock Service</p>
+                  <p class="text-xs text-slate-500 mt-0.5">Secure and lock the premises after hours.</p>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 mt-0.5 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V9a5 5 0 0 1 9.9-1"/></svg>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Unlock Service</p>
+                  <p class="text-xs text-slate-500 mt-0.5">Open the premises and carry out initial safety checks.</p>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-rose-500 mt-0.5 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" ><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Alarm Response</p>
+                  <p class="text-xs text-slate-500 mt-0.5">Respond to an alarm activation and investigate the cause.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 p-5">
+            <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              What's Next?
+            </h3>
+            <div class="space-y-3">
+              <div class="flex items-center gap-2.5 text-sm text-slate-600">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Assign keys to the job
+              </div>
+              <div class="flex items-center gap-2.5 text-sm text-slate-600">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Add job notes or instructions
+              </div>
+              <div class="flex items-center gap-2.5 text-sm text-slate-600">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-emerald-500 shrink-0" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Track job progress
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule & Assignment -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+        <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-rose-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Schedule &amp; Assignment
+        </h2>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Date <span class="text-rose-500">*</span></label>
+            <div class="relative">
+              <input type="text" value="15 May 2024" class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" ><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-1.5">Select the date.</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Start Time <span class="text-rose-500">*</span></label>
+            <div class="relative">
+              <input type="text" value="18:30" class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-1.5">Start time.</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">End Time <span class="text-rose-500">*</span></label>
+            <div class="relative">
+              <input type="text" value="20:00" class="w-full rounded-lg border border-slate-300 pl-3 pr-9 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-1.5">End time.</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Duration</label>
+            <input type="text" value="02:00" disabled class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-500" />
+            <p class="text-xs text-slate-400 mt-1.5">Auto-calculated.</p>
+          </div>
+        </div>
+
+        <h3 class="flex items-center gap-2 font-semibold text-slate-900 mt-7 mb-4 text-sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-indigo-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Assignment
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Officer <span class="text-rose-500">*</span></label>
+            <div class="relative">
+              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                <option>James Walker</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-1.5">Assign an officer to this job.</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Priority <span class="text-rose-500">*</span></label>
+            <div class="relative">
+              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                <option>Medium</option>
+                <option>High</option>
+                <option>Low</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-1.5">Set the priority level.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Required Keys -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+        <div class="flex items-center justify-between gap-3 mb-1">
+          <h2 class="flex items-center gap-2 font-bold text-slate-900">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-blue-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+            Required Keys
+          </h2>
+          <button (click)="openAddKeysModal()" class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 text-brand-blue text-sm font-medium px-3.5 py-2 hover:bg-blue-100 shrink-0">
+            <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Keys
+          </button>
+        </div>
+        <p class="text-sm text-slate-500 mb-5">Select the keys that are required for this job.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          @for (key of selectedKeys; track key.id) {
+            <div class="rounded-lg border border-slate-200 p-4">
+              <div class="flex items-start justify-between gap-2">
+                <p class="flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
+                  <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+                  {{ key.id }}
+                </p>
+                <div class="flex items-center gap-2 text-slate-400 shrink-0">
+                  <button aria-label="Edit key"><svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 hover:text-slate-600" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
+                  <button (click)="removeKey(key)" aria-label="Remove key"><svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-rose-400 hover:text-rose-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+              </div>
+              <p class="font-semibold text-slate-800 mt-1.5">{{ key.name }}</p>
+              <p class="text-xs text-slate-400 mt-0.5">{{ key.site }} Vault</p>
+              <div class="flex gap-2 mt-2.5">
+                <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.cabinet }}</span>
+                <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.hook }}</span>
+              </div>
+            </div>
+          } @empty {
+            <p class="text-sm text-slate-400 col-span-full">No keys added yet. Click "Add Keys" to select keys for this job.</p>
+          }
+        </div>
+      </div>
+
+      <!-- Lock Service Checklist -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+        <div class="flex items-center justify-between gap-3 mb-1">
+          <h2 class="flex items-center gap-2 font-bold text-slate-900">
+            <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-emerald-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Lock Service Checklist
+          </h2>
+          <button (click)="openAddChecklistModal()" class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 text-brand-blue text-sm font-medium px-3.5 py-2 hover:bg-blue-100 shrink-0">
+            <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Checklist Item
+          </button>
+        </div>
+        <p class="text-sm text-slate-500 mb-5">Define the checklist items the officer must complete.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-1">
+          <ul class="divide-y divide-slate-100">
+            @for (item of checklistItems; track item.id) {
+              <li class="flex items-center justify-between py-2.5 text-sm text-slate-700">
+                {{ item.text }}
+                <button (click)="removeChecklistItem(item.id)" aria-label="Remove item" class="text-rose-400 hover:text-rose-500">
+                  <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div class="mt-4 rounded-lg bg-blue-50 border border-blue-100 px-4 py-3 flex gap-2.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 text-blue-500 shrink-0 mt-0.5" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <p class="text-sm text-blue-700">Officers will mark each item as Completed, Not Completed or N/A in the mobile application. Officers can also add images and notes to all checklist items.</p>
+        </div>
+      </div>
+
+      <!-- Notifications & Escalation -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+        <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-amber-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Notifications &amp; Escalation
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify on Job Completion</label>
+            <div class="relative">
+              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                <option>Selected Contacts (2)</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-1.5">Contacts will be notified based on job outcome.</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Notify if Job Not Completed</label>
+            <div class="relative">
+              <select class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                <option>Selected Contacts (2)</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Notes / Instructions -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
+        <h2 class="flex items-center gap-2 font-bold text-slate-900 mb-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" class="icon w-5 h-5 text-orange-500" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Additional Notes / Instructions
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Instruction Attachments</label>
+            <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 text-brand-blue text-sm font-medium px-4 py-2 hover:bg-slate-50">
+              <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Files
+            </button>
+            <p class="text-xs text-slate-400 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Additional Notes</label>
+            <textarea rows="3" placeholder="Enter any additional notes or instructions for the officer..." class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></textarea>
+            <p class="text-xs text-slate-400 mt-1.5 text-right">55/500</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer actions -->
+      <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pb-4">
+        <button class="w-full sm:w-auto rounded-lg border border-slate-300 text-slate-700 font-medium px-5 py-2.5 hover:bg-slate-50">Cancel</button>
+        <button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-brand-blue text-white font-medium px-5 py-2.5 hover:bg-blue-600">
+          <svg width="16" height="16" viewBox="0 0 24 24" class="icon w-4 h-4" style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v6h6"/></svg>
+          Create Job
+        </button>
+      </div>
+
+      <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500 pb-8">
+        <a href="#" class="hover:text-brand-blue">Privacy Policy</a>
+        <a href="#" class="hover:text-brand-blue">Terms of Service</a>
+        <a href="#" class="hover:text-brand-blue">Support</a>
+      </div>
+    </div>
+
+    @if (showAddKeysModal) {
+      <div class="fixed inset-0 z-40 flex items-start lg:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 lg:p-6 overflow-y-auto">
+        <div class="bg-white w-full h-full lg:h-auto lg:max-h-[90vh] lg:rounded-2xl lg:max-w-5xl shadow-2xl flex flex-col">
+
+          <!-- Header -->
+          <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-4 border-b border-slate-100 shrink-0">
+            <div>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Add Required Keys</h2>
+              <p class="mt-1 text-sm text-slate-500">Search and select the keys required for this job.</p>
+            </div>
+            <button (click)="closeAddKeysModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0" aria-label="Close">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
+
+            <!-- Left: search + table -->
+            <div class="flex-1 min-w-0 flex flex-col px-5 sm:px-8 py-5 overflow-y-auto">
+
+              <!-- Filters -->
+              <div class="flex flex-col sm:flex-row gap-3 mb-5 shrink-0">
+                <div class="relative flex-1">
+                  <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+                  <input type="text" placeholder="Search by key name, key ID, tag or description…"
+                    class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+                </div>
+                <select class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                  <option>All Sites</option>
+                  <option>Head Office</option>
+                  <option>Warehouse 1</option>
+                </select>
+                <select class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                  <option>All Statuses</option>
+                  <option>Available</option>
+                  <option>Issued</option>
+                </select>
+              </div>
+
+              <!-- Table (desktop) -->
+              <div class="hidden md:block border border-slate-200 rounded-xl overflow-hidden">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-slate-50 text-left text-slate-600">
+                      <th class="w-10 px-4 py-3"><input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" /></th>
+                      <th class="px-2 py-3 font-semibold">Key Details</th>
+                      <th class="px-4 py-3 font-semibold">Site</th>
+                      <th class="px-4 py-3 font-semibold">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    @for (key of keys; track key.id) {
+                      <tr class="hover:bg-slate-50 transition">
+                        <td class="px-4 py-4 align-top">
+                          <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                        </td>
+                        <td class="px-2 py-4">
+                          <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
+                            </div>
+                            <div>
+                              <div class="text-blue-600 font-semibold text-sm">{{ key.id }}</div>
+                              <div class="text-slate-900 font-medium">{{ key.name }}</div>
+                              <div class="mt-1 flex gap-2">
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet }}</span>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="px-4 py-4 align-top">
+                          <div class="text-slate-900 font-medium">{{ key.site }}</div>
+                          <div class="text-slate-400 text-sm">{{ key.room }}</div>
+                        </td>
+                        <td class="px-4 py-4 align-top">
+                          <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold" [class.bg-emerald-50]="key.status === 'Available'" [class.text-emerald-700]="key.status === 'Available'" [class.bg-amber-50]="key.status === 'Issued'" [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Cards (mobile) -->
+              <div class="md:hidden space-y-3">
+                @for (key of keys; track key.id) {
+                  <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4 cursor-pointer">
+                    <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)" class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between gap-2">
+                        <div class="text-blue-600 font-semibold text-sm">{{ key.id }}</div>
+                        <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold" [class.bg-emerald-50]="key.status === 'Available'" [class.text-emerald-700]="key.status === 'Available'" [class.bg-amber-50]="key.status === 'Issued'" [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
+                      </div>
+                      <div class="text-slate-900 font-medium">{{ key.name }}</div>
+                      <div class="mt-1 flex gap-2 flex-wrap">
+                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet }}</span>
+                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook }}</span>
+                      </div>
+                      <div class="mt-1 text-sm text-slate-500">{{ key.site }} · {{ key.room }}</div>
+                    </div>
+                  </label>
+                }
+              </div>
+
+              <!-- Pagination -->
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 mt-2 shrink-0">
+                <p class="text-sm text-slate-500">Showing <span class="font-medium text-slate-700">1</span> to <span class="font-medium text-slate-700">6</span> of <span class="font-medium text-slate-700">132</span> keys</p>
+                <div class="flex items-center gap-1">
+                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-blue-500 text-blue-600 font-semibold bg-blue-50">1</button>
+                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">2</button>
+                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">3</button>
+                  <span class="px-1 text-slate-400">…</span>
+                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">22</button>
+                  <button class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: selected keys panel -->
+            <div class="lg:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-slate-100 bg-slate-50/60 px-5 sm:px-8 lg:px-6 py-5 flex flex-col overflow-y-auto max-h-64 lg:max-h-none">
+              <div class="flex items-center justify-between mb-3 shrink-0">
+                <h3 class="font-semibold text-slate-900">Selected Keys ({{ selectedKeys.length }})</h3>
+                <button (click)="clearAllKeys()" class="text-sm font-medium text-blue-600 hover:text-blue-700">Clear All</button>
+              </div>
+              <div class="space-y-3 flex-1">
+                @for (key of selectedKeys; track key.id) {
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-start gap-3">
+                    <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0 mt-0.5">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-blue-600 font-semibold text-sm">{{ key.id }}</div>
+                      <div class="text-slate-900 font-medium text-sm">{{ key.name }}</div>
+                      <div class="mt-1 flex gap-2">
+                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet }}</span>
+                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.hook }}</span>
+                      </div>
+                    </div>
+                    <button (click)="removeKey(key)" class="text-slate-400 hover:text-slate-600 shrink-0">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+                }
+              </div>
+              @if (selectedKeys.length === 0) {
+                <p class="text-sm text-slate-400 py-6 text-center">No keys selected yet.</p>
+              }
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
+            <div class="text-sm font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-center sm:text-left" [class.hidden]="selectedKeys.length === 0">
+              {{ selectedKeys.length }} keys selected
+            </div>
+            <div class="flex gap-3 sm:ml-auto">
+              <button (click)="closeAddKeysModal()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">Cancel</button>
+              <button (click)="closeAddKeysModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5"/></svg>
+                Add Selected Keys
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (showAddChecklistModal) {
+      <div class="fixed inset-0 z-40 flex items-start sm:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 sm:p-6 overflow-y-auto">
+        <div class="bg-white w-full sm:max-w-lg sm:rounded-2xl shadow-2xl flex flex-col h-full sm:h-auto">
+
+          <!-- Header -->
+          <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-1 shrink-0">
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold text-slate-900">Add Checklist Item</h2>
+              <p class="mt-1 text-sm text-slate-500">Enter the checklist item that officer must complete.</p>
+            </div>
+            <button (click)="closeAddChecklistModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0" aria-label="Close">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="flex-1 px-5 sm:px-8 py-5 overflow-y-auto">
+            <label for="checklist-item" class="block text-sm font-semibold text-slate-800 mb-2">
+              Checklist Item <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <textarea
+                id="checklist-item"
+                maxlength="500"
+                placeholder="Enter Checklist item here…"
+                [(ngModel)]="newChecklistItem"
+                class="w-full h-40 sm:h-48 resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500"
+              ></textarea>
+              <span class="absolute bottom-3 right-4 text-xs text-slate-400">{{ newChecklistItem.length }}/500</span>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
+            <button (click)="closeAddChecklistModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">
+              Cancel
+            </button>
+            <button (click)="addChecklistItem()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+              Add item
+            </button>
+          </div>
+
+        </div>
+      </div>
+    }
