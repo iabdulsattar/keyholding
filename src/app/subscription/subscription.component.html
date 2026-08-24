@@ -311,7 +311,7 @@
         <div class="bg-white rounded-md shadow-xs p-4 h-full">
           <h3 class="text-slate-900 text-base font-bold font-['Inter'] mb-4">Subscription Summary</h3>
 
-          <div class="bg-slate-100 rounded-md shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)] p-4">
+          <div class="rounded-md ">
             <div class="flex items-center justify-between">
               <p class="text-slate-500 text-xs font-semibold font-['Inter'] uppercase">CURRENT PLAN</p>
               <span class="text-xs font-semibold text-green-700 font-['Inter'] bg-green-100 px-2 py-0.5 rounded-xl">{{
@@ -320,28 +320,28 @@
             <p class="text-blue-600 text-lg font-bold font-['Inter'] mt-1 pb-2 border-b border-slate-200">{{
               plan?.name }}</p>
 
-            <div class="mt-4 space-y-3">
-              <div class="flex items-center justify-between text-sm">
+            <div class=" divide-y divide-slate-200">
+              <div class="flex items-center justify-between text-sm py-2.5">
                 <span class=" text-slate-900 text-xs font-normal font-['Inter']">Plan Type</span>
-                <span class="text-slate-900 text-xs font-semibold font-['Inter']">{{ plan?.type }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.type }}</span>
               </div>
-              <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center justify-between text-sm py-2.5">
                 <span class=" text-slate-900 text-xs font-normal font-['Inter']">Trial Duration</span>
-                <span class="text-slate-900 text-xs font-semibold font-['Inter']">{{ plan?.duration }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.duration }}</span>
               </div>
-              <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center justify-between text-sm py-2.5">
                 <span class=" text-slate-900 text-xs font-normal font-['Inter']">Trial Start Date</span>
-                <span class="text-slate-900 text-xs font-semibold font-['Inter']">{{ plan?.startDate }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.startDate }}</span>
               </div>
-              <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center justify-between text-sm py-2.5">
                 <span class=" text-slate-900 text-xs font-normal font-['Inter']">Trial End Date</span>
-                <span class="text-slate-900 text-xs font-semibold font-['Inter']">{{ plan?.endDate }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.endDate }}</span>
               </div>
-              <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center justify-between text-sm py-2.5">
                 <span class="text-slate-900 text-xs font-normal font-['Inter'] flex items-center gap-1">
                   Auto Conversion
                 </span>
-                <span class="text-slate-900 text-xs font-semibold font-['Inter'] flex items-center gap-1">{{
+                <span class="text-slate-900 text-xs font-medium font-['Inter'] flex items-center gap-1">{{
                   plan?.autoConversion }}
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_2130_529)">
@@ -360,7 +360,7 @@
             </div>
           </div>
 
-          <div class="mt-6">
+          <div class="mt-4">
             <p class="text-slate-900 text-sm font-bold font-['Inter']">What happens next?</p>
             <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-1">When your trial ends, you'll need an
               active
