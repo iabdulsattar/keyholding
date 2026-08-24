@@ -57,6 +57,11 @@ export const routes: Routes = [
             title: 'Invoices | KeyVault Pro'
           },
           {
+            path: 'invoice-detail-two',
+            loadComponent: () => import('./features/pages/invoices/invoice-detail-two.component').then(m => m.InvoiceDetailTwoComponent),
+            title: 'Invoices | KeyVault Pro'
+          },
+          {
             path: 'subscription',
             loadComponent: () => import('./subscription/subscription.component').then(m => m.SubscriptionComponent),
             title: 'Subscription & Trial | KeyVault Pro'
