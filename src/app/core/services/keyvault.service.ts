@@ -1404,5 +1404,3 @@ export class KeyVaultService {
       return this.api.getBlob(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/attachments/${attachmentId}/download`, headers);
     }
   }
-}
-}

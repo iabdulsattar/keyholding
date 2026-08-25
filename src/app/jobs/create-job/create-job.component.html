@@ -87,10 +87,12 @@
                             class="text-rose-500">*</span></label>
                     <div class="relative">
                         <select
+                            [(ngModel)]="selectedJobType"
                             class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                            <option>Lock Service</option>
-                            <option>Unlock Service</option>
-                            <option>Alarm Response</option>
+                            <option value="">Select job type</option>
+                            @for (jt of jobTypeOptions; track jt.value) {
+                                <option [value]="jt.value">{{ jt.label }}</option>
+                            }
                         </select>
                         <svg width="16" height="16" viewBox="0 0 24 24"
                             class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
@@ -131,13 +133,13 @@
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Job Title <span
                             class="text-rose-500">*</span></label>
-                    <input type="text" placeholder="Evening Lock Service"
+                    <input type="text" [(ngModel)]="job.title" placeholder="Evening Lock Service"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
                     <p class="text-xs text-slate-400 mt-1.5">Enter a short title for this job.</p>
                 </div>
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Reference</label>
-                    <input type="text" placeholder="Enter reference (optional)"
+                    <input type="text" [(ngModel)]="job.reference" placeholder="Enter reference (optional)"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
                     <p class="text-xs text-slate-400 mt-1.5">Add a reference for this job.</p>
                 </div>
@@ -145,7 +147,7 @@
 
             <div class="mt-5">
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Description</label>
-                <textarea rows="3"
+                <textarea rows="3" [(ngModel)]="job.description"
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">Perform evening locking and security checks as per site locking procedure. Ensure all areas are secure, alarm is set and keys are returned.</textarea>
                 <p class="text-xs text-slate-400 mt-1.5">Provide a brief description of the job.</p>
             </div>
@@ -352,9 +354,13 @@
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Officer <span
                         class="text-rose-500">*</span></label>
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="job.officer"
                         class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                        <option value="">Select officer</option>
                         <option>James Walker</option>
+                        <option>Sarah Miller</option>
+                        <option>David Johnson</option>
+                        <option>Michael Brown</option>
                     </select>
                     <svg width="16" height="16" viewBox="0 0 24 24"
                         class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
@@ -368,11 +374,12 @@
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Priority <span
                         class="text-rose-500">*</span></label>
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="job.priority"
                         class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
+                        <option>Low</option>
                         <option>Medium</option>
                         <option>High</option>
-                        <option>Low</option>
+                        <option>Critical</option>
                     </select>
                     <svg width="16" height="16" viewBox="0 0 24 24"
                         class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
@@ -597,7 +604,7 @@
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Additional Notes</label>
-                <textarea rows="3" placeholder="Enter any additional notes or instructions for the officer..."
+                <textarea rows="3" [(ngModel)]="job.notes" placeholder="Enter any additional notes or instructions for the officer..."
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></textarea>
                 <p class="text-xs text-slate-400 mt-1.5 text-right">55/500</p>
             </div>
@@ -608,17 +615,18 @@
     <div class="flex flex-col sm:flex-row sm:justify-end gap-3 pb-4">
         <button
             class="w-full sm:w-auto rounded-lg border border-slate-300 text-slate-700 font-medium px-10 py-2.5 hover:bg-slate-50">Cancel</button>
-         <button class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 rounded-md text-white text-sm font-semibold font-['Inter'] transition ">
- <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g clip-path="url(#clip0_2389_439)">
-  <path d="M10.6661 13.3328V2.6661C10.6661 2.31248 10.5256 1.97334 10.2756 1.72329C10.0255 1.47324 9.68632 1.33276 9.33267 1.33276H6.66579C6.31214 1.33276 5.97298 1.47324 5.72291 1.72329C5.47284 1.97334 5.33235 2.31248 5.33235 2.6661V13.3328M2.66547 3.99943H13.333C14.0694 3.99943 14.6664 4.59638 14.6664 5.33276V11.9994C14.6664 12.7358 14.0694 13.3328 13.333 13.3328H2.66547C1.92903 13.3328 1.33203 12.7358 1.33203 11.9994V5.33276C1.33203 4.59638 1.92903 3.99943 2.66547 3.99943Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
-  </g>
-  <defs>
-  <clipPath id="clip0_2389_439">
-  <rect width="16" height="16" fill="white"/>
-  </clipPath>
-  </defs>
-  </svg>Create Job        </button>
+         <button (click)="createJob()" [disabled]="saving"
+             class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 rounded-md text-white text-sm font-semibold font-['Inter'] transition hover:bg-blue-700 disabled:opacity-70">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <g clip-path="url(#clip0_2389_439)">
+   <path d="M10.6661 13.3328V2.6661C10.6661 2.31248 10.5256 1.97334 10.2756 1.72329C10.0255 1.47324 9.68632 1.33276 9.33267 1.33276H6.66579C6.31214 1.33276 5.97298 1.47324 5.72291 1.72329C5.47284 1.97334 5.33235 2.31248 5.33235 2.6661V13.3328M2.66547 3.99943H13.333C14.0694 3.99943 14.6664 4.59638 14.6664 5.33276V11.9994C14.6664 12.7358 14.0694 13.3328 13.333 13.3328H2.66547C1.92903 13.3328 1.33203 12.7358 1.33203 11.9994V5.33276C1.33203 4.59638 1.92903 3.99943 2.66547 3.99943Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+   </g>
+   <defs>
+   <clipPath id="clip0_2389_439">
+   <rect width="16" height="16" fill="white"/>
+   </clipPath>
+   </defs>
+   </svg>{{ saving ? 'Creating...' : 'Create Job' }}        </button>
     </div>
 
      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
