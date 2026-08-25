@@ -1,16 +1,21 @@
+<div class="min-h-[calc(100vh-16px)] flex flex-col p-3 sm:p-4">
 
-
-
+  <div class="flex-1">
+  
       <!-- Breadcrumb + back button -->
       <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
         <nav class="flex items-center flex-wrap gap-1 text-sm">
-          <a href="#" class="text-blue-600 font-medium hover:underline">Job Management</a>
-          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          <a href="#" class="text-blue-600 font-medium hover:underline">Jobs</a>
-          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          <span class="text-slate-500">Job Details</span>
+          <a href="#" class="text-blue-600 text-xs font-['Inter'] font-semibold hover:underline">Job Management</a>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 9L7.5 6L4.5 3" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <a href="#" class="text-blue-600 text-xs font-['Inter'] font-semibold hover:underline">Jobs</a>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 9L7.5 6L4.5 3" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="text-slate-500 text-xs font-medium font-['Inter']">Job Details</span>
         </nav>
-        <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">
+        <button class="flex items-center gap-2 px-4 py-2 rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-900 font-['Inter'] hover:bg-slate-100 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Back to Jobs
         </button>
@@ -18,88 +23,123 @@
 
       <!-- Title -->
       <div class="flex flex-wrap items-center gap-3 mb-1">
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">Lock Job</h2>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <h2 class="text-3xl font-extrabold font-['Inter'] tracking-tight text-slate-900">Lock Job</h2>
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-[100px] bg-green-100 text-green-700 text-xs font-bold font-['Inter']">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.9094 6.60153C12.1149 7.61011 11.9684 8.65867 11.4944 9.57233C11.0204 10.486 10.2475 11.2095 9.30457 11.6223C8.36165 12.0351 7.30572 12.1121 6.31288 11.8406C5.32003 11.5691 4.45028 10.9654 3.84867 10.1302C3.24706 9.29498 2.94995 8.27878 3.00689 7.25105C3.06384 6.22332 3.47139 5.24617 4.16159 4.48256C4.85178 3.71895 5.7829 3.21503 6.79967 3.05484C7.81644 2.89465 8.85739 3.08787 9.74894 3.60228M6.14912 7.05131L7.49912 8.40131L11.9991 3.90132" stroke="#10B981" stroke-linecap="round"/>
+          </svg>
           Completed
         </span>
       </div>
       <div class="flex items-center gap-2 mb-6">
-        <a href="#" class="text-blue-600 font-semibold text-sm hover:underline">JOB-000128</a>
-        <button class="text-slate-400 hover:text-slate-600" title="Copy Job ID">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        </button>
+        <a href="#" class="text-blue-600 font-bold text-sm font-['Inter'] hover:underline">JOB-000128</a>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_2416_1230)">
+        <path d="M2.33278 9.33352C1.69106 9.33352 1.16602 8.80848 1.16602 8.16676V2.33296C1.16602 1.69124 1.69106 1.1662 2.33278 1.1662H8.16658C8.80829 1.1662 9.33334 1.69124 9.33334 2.33296M5.83306 4.66648H11.6669C12.3112 4.66648 12.8336 5.18886 12.8336 5.83324V11.667C12.8336 12.3114 12.3112 12.8338 11.6669 12.8338H5.83306C5.18867 12.8338 4.6663 12.3114 4.6663 11.667V5.83324C4.6663 5.18886 5.18867 4.66648 5.83306 4.66648Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_2416_1230">
+        <rect width="14" height="14" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
       </div>
 
       <!-- Info Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
 
         <!-- Client Card -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="bg-white rounded-md p-6 shadow-xs">
           <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 24V21.6667C22 20.429 21.5184 19.242 20.6611 18.3668C19.8038 17.4917 18.641 17 17.4286 17H10.5714C9.35901 17 8.19625 17.4917 7.33894 18.3668C6.48163 19.242 6 20.429 6 21.6667V24M18.5714 7.66667C18.5714 10.244 16.5247 12.3333 14 12.3333C11.4753 12.3333 9.42857 10.244 9.42857 7.66667C9.42857 5.08934 11.4753 3 14 3C16.5247 3 18.5714 5.08934 18.5714 7.66667Z" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              </svg>
             </div>
             <div class="min-w-0">
-              <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">Client</p>
-              <a href="#" class="text-blue-600 font-semibold hover:underline block truncate">Alpha Security Ltd.</a>
+              <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Client</p>
+              <a href="#" class="text-blue-600 text-xs font-['Inter'] font-bold hover:underline block truncate">Alpha Security Ltd.</a>
+
+              <div class="mt-5">
+              <p class=" text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Site</p>
+              <a href="#" class="text-blue-600 text-xs font-['Inter'] font-bold hover:underline block ">Head Office</a>
+              </div>
+
+              <div class="mt-5">
+              <p class=" text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Address</p>
+              <div class="flex items-start gap-1.5 text-slate-900">
+                <svg class="w-3.5 h-3.5 mt-0 shrink-0 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <p class="text-xs font-normal font-['Inter'] leading-snug">25 Fenchurch Street, London, EC3M 3AY, UK</p>
+              </div>
+              </div>
+            
             </div>
           </div>
-          <div class="mt-5">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">Site</p>
-            <a href="#" class="text-blue-600 font-semibold hover:underline">Head Office</a>
-          </div>
-          <div class="mt-5">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Address</p>
-            <div class="flex items-start gap-1.5 text-slate-700">
-              <svg class="w-4 h-4 mt-0.5 shrink-0 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <p class="text-sm leading-snug">25 Fenchurch Street, London, EC3M 3AY, UK</p>
-            </div>
-          </div>
+          
         </div>
 
         <!-- Officer Card -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="bg-white rounded-md p-6 shadow-xs">
           <div>
-            <p class="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <p class="flex items-center gap-1.5 text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.0836 12.25V11.0833C11.0836 10.4645 10.8378 9.871 10.4001 9.43342C9.96249 8.99583 9.36893 8.75 8.75002 8.75H5.24962C4.63071 8.75 4.03715 8.99583 3.59951 9.43342C3.16188 9.871 2.91602 10.4645 2.91602 11.0833V12.25M9.33342 4.08333C9.33342 5.372 8.28863 6.41667 6.99982 6.41667C5.711 6.41667 4.66622 5.372 4.66622 4.08333C4.66622 2.79467 5.711 1.75 6.99982 1.75C8.28863 1.75 9.33342 2.79467 9.33342 4.08333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+              </svg>
               Officer
             </p>
-            <p class="text-lg font-bold text-slate-900">James Walker</p>
+            <p class="text-sm font-bold text-slate-900 font-['Inter']">James Walker</p>
           </div>
           <div class="mt-5">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Priority</p>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-600 text-sm font-semibold">
-              <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Priority</p>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] bg-red-100 text-red-700 text-xs font-bold font-['Inter']">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-700"></span>
               High
             </span>
           </div>
           <div class="mt-5">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Created By</p>
-            <p class="text-slate-900 font-semibold">Faiza Ahmed</p>
+            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Created By</p>
+            <p class="text-slate-900 text-sm font-bold font-['Inter']">Faiza Ahmed</p>
           </div>
         </div>
 
         <!-- Status Card -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="bg-white rounded-md p-6 shadow-xs">
           <div>
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Status</p>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Status</p>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] bg-green-100 text-green-700 text-xs font-bold font-['Inter']">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
               Completed
             </span>
           </div>
           <div class="mt-5">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Created On</p>
-            <div class="flex items-center gap-1.5 text-slate-800 font-semibold text-sm">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Created On</p>
+            <div class="flex items-center gap-1.5 text-slate-900 font-semibold text-xs font-['Inter']">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2416_1277)">
+      <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2416_1277">
+      <rect width="14" height="14" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
               16 May 2024, 02:10 PM
             </div>
           </div>
           <div class="mt-5">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-1.5">Completed On</p>
-            <div class="flex items-center gap-1.5 text-slate-800 font-semibold text-sm">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Completed On</p>
+            <div class="flex items-center gap-1.5 text-slate-900 font-semibold text-xs font-['Inter']">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2416_1277)">
+      <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2416_1277">
+      <rect width="14" height="14" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
               16 May 2024, 02:45 PM
             </div>
           </div>
@@ -107,50 +147,58 @@
       </div>
 
       <!-- Stats Row -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
-          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div class="grid grid-cols-2 lg:grid-cols-4 mb-4 bg-white rounded-md shadow-xs">
+        <div class="my-5 ml-5 flex items-center gap-4 lg:border-r border-slate-200">
+          <div class="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 4.99958V9.99998L13.3336 11.6668M18.334 9.99998C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 9.99998C1.66602 5.39724 5.39727 1.66599 10 1.66599C14.6028 1.66599 18.334 5.39724 18.334 9.99998Z" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-xl font-extrabold text-slate-900">30 min</p>
-            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Duration</p>
+            <p class="text-base font-bold font-['Inter'] text-slate-900">30 min</p>
+            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Duration</p>
           </div>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
-          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="my-5 ml-5 flex items-center gap-4 lg:border-r border-slate-200">
+          <div class="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.834 17.5V15.8333C15.834 14.9493 15.4828 14.1014 14.8576 13.4763C14.2324 12.8512 13.3845 12.5 12.5003 12.5H7.49973C6.61557 12.5 5.76763 12.8512 5.14244 13.4763C4.51725 14.1014 4.16602 14.9493 4.16602 15.8333V17.5M13.3337 5.83333C13.3337 7.67428 11.8412 9.16667 10 9.16667C8.15886 9.16667 6.6663 7.67428 6.6663 5.83333C6.6663 3.99238 8.15886 2.5 10 2.5C11.8412 2.5 13.3337 3.99238 13.3337 5.83333Z" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-xl font-extrabold text-slate-900">1</p>
-            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Officer Assigned</p>
+            <p class="text-base font-bold font-['Inter'] text-slate-900">1</p>
+            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Officer Assigned</p>
           </div>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
-          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.5 12.5 19 4"/><path d="M17 6l2 2"/><path d="M14 9l2 2"/></svg>
+        <div class="my-5 ml-5 flex items-center gap-4 lg:border-r border-slate-200">
+          <div class="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.916 6.24932L14.8327 8.16599C14.9885 8.31867 15.1979 8.4042 15.416 8.4042C15.6341 8.4042 15.8436 8.31867 15.9994 8.16599L17.7493 6.41598C17.902 6.26021 17.9876 6.05078 17.9876 5.83265C17.9876 5.61452 17.902 5.40509 17.7493 5.24932L15.8327 3.33265M17.4993 1.66599L9.49927 9.66599M10.8327 12.916C10.8327 15.4473 8.78065 17.4993 6.24935 17.4993C3.71804 17.4993 1.66602 15.4473 1.66602 12.916C1.66602 10.3847 3.71804 8.33265 6.24935 8.33265C8.78065 8.33265 10.8327 10.3847 10.8327 12.916Z" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-xl font-extrabold text-slate-900">4</p>
-            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Keys Used</p>
+            <p class="text-base font-bold font-['Inter'] text-slate-900">4</p>
+            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Keys Used</p>
           </div>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
-          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <div class="my-5 ml-5 flex items-center gap-4 ">
+          <div class="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.5 8.88V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H14.4533M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-xl font-extrabold text-slate-900">12</p>
-            <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase truncate">Checklist Items</p>
+            <p class="text-base font-bold font-['Inter'] text-slate-900">12</p>
+            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Checklist Items</p>
           </div>
         </div>
       </div>
 
       <!-- Tabs -->
-      <div class="bg-white rounded-t-2xl border border-slate-200 border-b-0 px-2 sm:px-6 pt-2 overflow-x-auto">
-        <div class="flex gap-2 sm:gap-6 min-w-max">
+      <div class="bg-white rounded-md shadow-xs mb-4 px-2 sm:px-6 pt-2 overflow-x-auto">
+        <div class="flex justify-between gap-2 sm:gap-6 min-w-max">
           @for (tab of tabs; track tab.id) {
-            <button (click)="setActiveTab(tab.id)" class="flex items-center gap-2 px-3 sm:px-1 py-4 border-b-2 font-semibold text-sm whitespace-nowrap" [class.border-blue-600]="activeTab === tab.id" [class.text-blue-600]="activeTab === tab.id" [class.border-transparent]="activeTab !== tab.id" [class.text-slate-500]="activeTab !== tab.id" [class.hover:text-slate-700]="activeTab !== tab.id">
+            <button (click)="setActiveTab(tab.id)" class="flex items-center gap-2 px-3 sm:px-1 py-4 border-b-2 font-semibold text-sm font-['Inter'] whitespace-nowrap" [class.border-blue-600]="activeTab === tab.id" [class.text-blue-600]="activeTab === tab.id" [class.border-transparent]="activeTab !== tab.id" [class.text-slate-900]="activeTab !== tab.id" [class.hover:text-slate-700]="activeTab !== tab.id">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" [innerHTML]="tab.icon"></svg>
               {{ tab.label }}
             </button>
@@ -159,115 +207,137 @@
       </div>
 
       <!-- Tab content -->
-      <div class="bg-white rounded-b-2xl border border-slate-200 p-5 sm:p-7 shadow-sm mb-6">
+      <div class="">
         @if (activeTab === 'summary') {
-          <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-5">
-            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          <h3 class="flex items-center gap-2 text-base font-['Inter'] font-bold text-slate-900 mb-5">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_2416_1345)">
+    <path d="M7.99923 10.6669V8.00003M7.99923 5.33314H8.0059M14.6664 8.00003C14.6664 11.6822 11.6814 14.6672 7.99923 14.6672C4.31704 14.6672 1.33203 11.6822 1.33203 8.00003C1.33203 4.31783 4.31704 1.33282 7.99923 1.33282C11.6814 1.33282 14.6664 4.31783 14.6664 8.00003Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_2416_1345">
+    <rect width="16" height="16" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
+    
             Job Information
           </h3>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4">
-            <dl class="divide-y divide-slate-100">
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Job Type</dt>
-                <dd class="text-sm font-semibold text-slate-900">Lock Job</dd>
+            <dl class="">
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job Type</dt>
+                <dd class="text-xs font-semibold text-slate-900 font-['Inter'] ">Lock Job</dd>
               </div>
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Job Title</dt>
-                <dd class="text-sm font-bold text-slate-900">Lock - Head Office</dd>
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job Title</dt>
+                <dd class="text-xs font-bold text-slate-900 font-['Inter']">Lock - Head Office</dd>
               </div>
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Job ID</dt>
-                <dd class="text-sm font-semibold text-slate-900">{{ jobId || 'JOB-000128' }}</dd>
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job ID</dt>
+                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">{{ jobId || 'JOB-000128' }}</dd>
               </div>
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Reference</dt>
-                <dd class="text-sm font-semibold text-slate-900">LCK-HO-160524</dd>
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Reference</dt>
+                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">LCK-HO-160524</dd>
               </div>
             </dl>
-            <dl class="lg:pl-10 lg:border-l border-slate-100 divide-y divide-slate-100">
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Client</dt>
-                <dd class="text-sm font-semibold text-blue-600">Alpha Security Ltd.</dd>
+            <dl class="lg:pl-10 lg:border-l border-slate-200 ">
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Client</dt>
+                <dd class="text-xs font-semibold text-blue-600 font-['Inter']">Alpha Security Ltd.</dd>
               </div>
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Site</dt>
-                <dd class="text-sm font-semibold text-blue-600">Head Office</dd>
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Site</dt>
+                <dd class="text-xs font-semibold text-blue-600 font-['Inter']">Head Office</dd>
               </div>
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Created By</dt>
-                <dd class="text-sm font-semibold text-slate-900">Faiza Ahmed</dd>
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Created By</dt>
+                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">Faiza Ahmed</dd>
               </div>
-              <div class="grid grid-cols-2 py-2.5 gap-2">
-                <dt class="text-sm text-slate-500">Created On</dt>
-                <dd class="text-sm font-semibold text-slate-900">16 May 2024, 02:10 PM</dd>
+              <div class="grid grid-cols-2 py-2 gap-2">
+                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Created On</dt>
+                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">16 May 2024, 02:10 PM</dd>
               </div>
             </dl>
           </div>
 
-          <div class="mt-6 pt-6 border-t border-slate-100">
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase mb-2">Description</p>
-            <p class="text-sm text-slate-700 leading-relaxed">
+          <div class="mt-6 pt-6 border-t border-slate-200">
+            <p class="text-xs font-bold font-['Inter'] tracking-wide text-slate-500 uppercase mb-2">Description</p>
+            <p class="text-xs font-normal font-['Inter'] text-slate-900 leading-relaxed">
               Attend site and secure the premises by locking all access points.<br />
               Ensure alarm is set, building is secure and keys are stored as per procedure.
             </p>
           </div>
-
+          </div>
           <!-- Schedule + Assignment -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 mb-5">
-                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div class="bg-white rounded-md p-6 shadow-xs">
+              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-5">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2416_1383)">
+      <path d="M5.33333 1.33282V3.9997M10.6667 1.33282V3.9997M2 6.66658H14M3.33333 2.66626H12.6667C13.403 2.66626 14 3.26327 14 3.9997V13.3338C14 14.0702 13.403 14.6672 12.6667 14.6672H3.33333C2.59695 14.6672 2 14.0702 2 13.3338V3.9997C2 3.26327 2.59695 2.66626 3.33333 2.66626Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2416_1383">
+      <rect width="16" height="16" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
                 Schedule
               </h3>
-              <dl class="divide-y divide-slate-100">
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Scheduled Date</dt>
-                  <dd class="text-sm font-bold text-slate-900">16 May 2024</dd>
+              <dl class="">
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Scheduled Date</dt>
+                  <dd class="text-xs font-semibold font-['Inter'] text-slate-900">16 May 2024</dd>
                 </div>
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Start Time</dt>
-                  <dd class="text-sm font-bold text-slate-900">02:15 PM</dd>
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Start Time</dt>
+                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">02:15 PM</dd>
                 </div>
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">End Time</dt>
-                  <dd class="text-sm font-bold text-slate-900">02:45 PM</dd>
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">End Time</dt>
+                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">02:45 PM</dd>
                 </div>
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Duration</dt>
-                  <dd class="text-sm font-bold text-slate-900">30 min</dd>
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Duration</dt>
+                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">30 min</dd>
                 </div>
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Repeat</dt>
-                  <dd class="text-sm font-bold text-slate-900">One Time</dd>
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Repeat</dt>
+                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">One Time</dd>
                 </div>
               </dl>
             </div>
 
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 mb-5">
-                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div class="bg-white rounded-md p-6 shadow-xs">
+              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-5">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.6664 14V12.6667C12.6664 11.9594 12.3854 11.2811 11.8853 10.781C11.3851 10.281 10.7068 10 9.99946 10H5.999C5.29168 10 4.61332 10.281 4.11317 10.781C3.61301 11.2811 3.33203 11.9594 3.33203 12.6667V14M10.6662 4.66667C10.6662 6.13943 9.47216 7.33333 7.99923 7.33333C6.5263 7.33333 5.33226 6.13943 5.33226 4.66667C5.33226 3.19391 6.5263 2 7.99923 2C9.47216 2 10.6662 3.19391 10.6662 4.66667Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+      </svg>
                 Assignment
               </h3>
-              <dl class="divide-y divide-slate-100">
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Officer</dt>
-                  <dd class="text-sm font-bold text-blue-600">James Walker</dd>
+              <dl class="">
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Officer</dt>
+                  <dd class="text-xs font-semibold font-['Inter'] text-blue-600">James Walker</dd>
                 </div>
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Priority</dt>
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter'] py-1">Priority</dt>
                   <dd>
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-600 text-xs font-semibold">
-                      <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] bg-red-100 text-red-700 text-xs font-bold font-['Inter']">
+                      <span class="w-1.5 h-1.5 rounded-full bg-red-700"></span>
                       High
                     </span>
                   </dd>
                 </div>
-                <div class="flex items-center justify-between py-2.5">
-                  <dt class="text-sm text-slate-500">Status</dt>
+                <div class="grid grid-cols-2 py-2 gap-2">
+                  <dt class="text-xs text-slate-500 font-medium font-['Inter'] py-0.5">Status</dt>
                   <dd>
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] bg-green-100 text-green-700 text-xs font-bold font-['Inter']">
+                      <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
                       Completed
                     </span>
                   </dd>
@@ -278,6 +348,8 @@
         }
 
         @if (activeTab === 'keys') {
+          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          
           <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-1">
             <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.5 12.5 19 4"/><path d="M17 6l2 2"/><path d="M14 9l2 2"/></svg>
             Required Keys
@@ -355,9 +427,12 @@
               </div>
             </div>
           </div>
+          </div>
         }
 
         @if (activeTab === 'checklist') {
+          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          
           <div id="panel-checklist" class="tab-panel">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               <div class="p-6 pb-4 flex flex-wrap items-start justify-between gap-3">
@@ -427,9 +502,12 @@
               </div>
             </div>
           </div>
+          </div>
         }
 
         @if (activeTab === 'escalation') {
+          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          
           <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-1">
             <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             Escalations &amp; Notifications
@@ -505,17 +583,22 @@
               </div>
             </div>
           }
+          </div>
         }
       </div>
+  </div>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+    <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
+        Policy</a>
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
+        Service</a>
 
-      <!-- Footer -->
-      <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-400">
-        <p>© 2026 KeyVault Pro. All rights reserved.</p>
-        <div class="flex items-center gap-5">
-          <a href="#" class="hover:text-slate-600">Privacy Policy</a>
-          <a href="#" class="hover:text-slate-600">Terms of Service</a>
-          <a href="#" class="hover:text-slate-600">Support</a>
-        </div>
-      </div>
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
+    </div>
+
+  </div>
+
+</div>      
 
     
