@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 export class InvoiceDetailTwoComponent {
   invoice = {
     number: 'INV-2026-00045',
-    status: 'Paid',
+    status: 'Not Paid',
     description: 'Monthly Subscription (Enterprise)',
     date: '01 Jul 2026',
     dueDate: '03 Jul 2026',

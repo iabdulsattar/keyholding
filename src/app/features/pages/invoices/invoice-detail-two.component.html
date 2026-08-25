@@ -93,8 +93,10 @@
               <p class="text-slate-500 text-[10px] font-medium font-['Inter'] mb-1">Invoice Number</p>
               <div class="flex flex-wrap items-center gap-2 mb-1">
                 <h3 class="text-base font-extrabold text-slate-900 font-['Inter']">{{ invoice.number }}</h3>
-                <span class="inline-flex items-center gap-1 bg-green-100 text-emerald-500 text-xs font-semibold font-['Inter'] px-2.5 py-1 rounded-md">
-                  <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span class="inline-flex items-center gap-1 bg-rose-100 text-red-500 text-xs font-semibold font-['Inter'] px-2.5 py-1 rounded-md">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.35 3.65L3.65 6.35M3.65 3.65L6.35 6.35M9.5 5C9.5 7.48528 7.48528 9.5 5 9.5C2.51472 9.5 0.5 7.48528 0.5 5C0.5 2.51472 2.51472 0.5 5 0.5C7.48528 0.5 9.5 2.51472 9.5 5Z" stroke="#EF4444" stroke-linecap="round"/>
+    </svg>
                   {{ invoice.status }}
                 </span>
               </div>
@@ -121,17 +123,18 @@
             </div>
             <div class="sm:border-l border-slate-200 sm:pl-4">             
               <p class="text-[10px] font-medium text-slate-500 font-['Inter'] mb-1">Due Date</p>
-              <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center gap-1.5">
+              <p class="text-xs font-semibold text-red-500 font-['Inter'] flex items-center gap-1.5">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g clip-path="url(#clip0_2273_1283)">
-  <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
-  </g>
-  <defs>
-  <clipPath id="clip0_2273_1283">
-  <rect width="14" height="14" fill="white"/>
-  </clipPath>
-  </defs>
-  </svg>
+    <g clip-path="url(#clip0_2273_1534)">
+    <rect width="14" height="14" fill="white"/>
+    <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_2273_1534">
+    <rect width="14" height="14" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
                 {{ invoice.dueDate }}
               </p>
             </div>
@@ -150,6 +153,26 @@
   </svg>
                 {{ invoice.paymentDate }}
               </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-orange-50 rounded-md py-2 pr-2 pl-3 mt-4">
+          <div class="flex justify-between items-center gap-2">
+            <div class="flex gap-2">
+              <div>
+                <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.67839 5.00911V7.67578M7.67839 10.3424H7.68505M14.1653 11.0093L8.832 1.67593C8.71571 1.47073 8.54707 1.30006 8.34328 1.18131C8.13949 1.06256 7.90786 1 7.672 1C7.43614 1 7.2045 1.06256 7.00071 1.18131C6.79693 1.30006 6.62829 1.47073 6.512 1.67593L1.17866 11.0093C1.06112 11.2128 0.999483 11.4439 1 11.6789C1.00052 11.914 1.06318 12.1448 1.18163 12.3478C1.30007 12.5509 1.4701 12.719 1.67446 12.8352C1.87883 12.9513 2.11027 13.0114 2.34533 13.0093H13.012C13.2459 13.009 13.4757 12.9472 13.6782 12.8301C13.8807 12.713 14.0488 12.5447 14.1657 12.342C14.2825 12.1394 14.344 11.9095 14.344 11.6756C14.3439 11.4417 14.2823 11.2119 14.1653 11.0093Z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="text-amber-500 text-[10px] font-medium font-['Inter']">
+                Payment is due. Please complete the payment to avoid the interruption of the service.
+              </div>
+            </div>
+            <div>
+              <button class="order-1 sm:order-2 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg px-4 py-2 text-xs font-semibold font-['Inter'] hover:bg-blue-700 transition shadow-sm">      
+      Pay Now
+    </button>
             </div>
           </div>
         </div>
@@ -522,11 +545,28 @@
           </div>
           <div class="flex justify-between items-center pt-1">
             <span class="text-slate-900 font-bold text-sm font-['Inter']">Total</span>
-            <span class="text-blue-600 font-extrabold text-xl font-['Inter']">{{ invoice.total }}</span>
+            <span class="text-red-500 font-extrabold text-xl font-['Inter']">{{ invoice.total }}</span>
           </div>
         </div>
 
-        
+      <button
+        class="mt-5 w-full bg-red-500 rounded-lg transition-colors text-white text-sm font-bold font-['Inter'] py-3.5">
+        Pay Now
+      </button>
+      
+      <div class=" mb-8 sm:mb-0 ">
+      <p class=" text-slate-500 text-xs font-normal font-['Inter'] mt-5 flex items-start justify-center mx-auto ">
+        <svg width="28" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="16" height="16" fill="white"/>
+    <path d="M6.17007 10.9751C8.24986 10.2501 9.99969 9.00006 9.99969 6.49998V2.99986C9.99969 2.86725 9.94701 2.74007 9.85326 2.6463C9.7595 2.55253 9.63233 2.49985 9.49974 2.49985C8.49984 2.49985 7.25496 1.90483 6.38005 1.1398C6.27413 1.0493 6.1394 0.999573 6.00009 0.999573C5.86078 0.999573 5.72604 1.0493 5.62013 1.1398C4.75021 1.89983 3.50034 2.49985 2.50044 2.49985C2.36784 2.49985 2.24068 2.55253 2.14692 2.6463C2.05316 2.74007 2.00049 2.86725 2.00049 2.99986V6.49998C2.00049 9.00006 3.75031 10.2501 5.8351 10.9701C5.94286 11.0103 6.06116 11.012 6.17007 10.9751Z" stroke="#64748B" stroke-linecap="round"/>
+    <path d="M3.85693 6.00001L5.14265 7.71429L8.14265 4.71429" stroke="#64748B" stroke-linecap="round"/>
+    </svg>
+        <span>
+          Secure payment powered by Stripe
+        </span>
+      </p>
+      </div>
+
 
         
       </div>
