@@ -52,9 +52,9 @@ export const routes: Routes = [
             title: 'Invoices | KeyVault Pro'
           },
           {
-            path: 'invoice-detail',
+            path: 'invoice-detail/:invoiceId',
             loadComponent: () => import('./features/pages/invoices/invoice-detail.component').then(m => m.InvoiceDetailComponent),
-            title: 'Invoices | KeyVault Pro'
+            title: 'Invoice Details | KeyVault Pro'
           },
           {
             path: 'invoice-detail-two',

@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionService } from '../../../core/services/subscription.service';
-import { Subscription, SubscriptionHistoryResponse } from '../../../core/models/subscription.models';
+import { Invoice, InvoiceListResponse } from '../../../core/models/subscription.models';
 
 interface InvoiceRow {
+  id: string;
   no: string;
   date: string;
   desc: string;
   amount: string;
   status: string;
+  paymentStatus?: string;
 }
 
 @Component({
@@ -31,6 +33,8 @@ export class InvoicesComponent implements OnInit {
     Paid: 'bg-emerald-50 text-emerald-600',
     Pending: 'bg-amber-50 text-amber-600',
     Overdue: 'bg-red-50 text-red-600',
+    Open: 'bg-blue-50 text-blue-600',
+    Void: 'bg-slate-100 text-slate-600',
   };
 
   constructor(private subscriptionService: SubscriptionService) {}
@@ -41,7 +45,7 @@ export class InvoicesComponent implements OnInit {
 
   get totalInvoices() { return this.invoices.length; }
   get paidInvoices() { return this.invoices.filter(i => i.status === 'Paid').length; }
-  get pendingInvoices() { return this.invoices.filter(i => i.status === 'Pending').length; }
+  get pendingInvoices() { return this.invoices.filter(i => i.status === 'Pending' || i.status === 'Open').length; }
   get overdueInvoices() { return this.invoices.filter(i => i.status === 'Overdue').length; }
 
   get filteredInvoices(): InvoiceRow[] {
@@ -77,10 +81,13 @@ export class InvoicesComponent implements OnInit {
       return;
     }
 
-    this.subscriptionService.getSubscriptionHistory(orgId, this.getServiceCode()).subscribe({
-      next: (res: SubscriptionHistoryResponse) => {
-        const subs = res?.subscriptions ?? [];
-        this.invoices = subs.map((sub: Subscription) => this.mapSubscription(sub));
+    this.subscriptionService.listInvoices(orgId, this.getServiceCode(), {
+      page: 0,
+      size: 20,
+    //  sort: 'createdAt,desc'
+    }).subscribe({
+      next: (res: InvoiceListResponse) => {
+        this.invoices = (res?.invoices ?? []).map((inv: Invoice) => this.mapInvoice(inv));
         this.loading = false;
       },
       error: (err: any) => {
@@ -91,32 +98,45 @@ export class InvoicesComponent implements OnInit {
     });
   }
 
-  private mapSubscription(sub: Subscription): InvoiceRow {
-    const date = sub.startDate ? new Date(sub.startDate) : sub.createdAt ? new Date(sub.createdAt) : null;
+  private mapInvoice(inv: Invoice): InvoiceRow {
+    const date = inv.createdAt ? new Date(inv.createdAt) : null;
     const dateStr = date ? date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
 
+    const amount = inv.amountCents != null
+      ? `${(inv.amountCents / 100).toFixed(2)} ${inv.currency || 'GBP'}`
+      : '—';
+
     const statusMap: Record<string, string> = {
-      'ACTIVE': 'Paid',
-      'TRIALING': 'Pending',
+      'PAID': 'Paid',
+      'paid': 'Paid',
+      'OPEN': 'Pending',
+      'open': 'Pending',
       'PENDING': 'Pending',
-      'PAST_DUE': 'Overdue',
-      'CANCELLED': 'Overdue',
-      'INACTIVE': 'Overdue',
+      'pending': 'Pending',
+      'OVERDUE': 'Overdue',
+      'overdue': 'Overdue',
+      'VOID': 'Void',
+      'void': 'Void',
+      'CANCELLED': 'Void',
+      'cancelled': 'Void',
     };
 
-    const invoiceStatus = statusMap[sub.status] || 'Pending';
-    const billingPeriod = sub.billingPeriod === 'ANNUAL' ? 'Annual' : 'Monthly';
-    const desc = sub.planName ? `${sub.planName} (${billingPeriod})` : `${billingPeriod} subscription`;
-
-    const year = date ? date.getFullYear().toString() : '0000';
-    const idPart = (sub.id || '').slice(0, 5).toUpperCase();
+    const invoiceStatus = statusMap[inv.status] || inv.status || 'Pending';
+    const billingPeriod = inv.billingPeriod === 'ANNUAL' ? 'Annual' : 'Monthly';
+    const desc = inv.planName ? `${inv.planName} (${billingPeriod})` : (inv.description || `${billingPeriod} subscription`);
 
     return {
-      no: `INV-${year}-${idPart}`,
+      id: inv.id,
+      no: inv.invoiceNumber || `INV-${date ? date.getFullYear() : '0000'}-${(inv.id || '').slice(0, 5).toUpperCase()}`,
       date: dateStr,
       desc: desc,
-      amount: '—',
+      amount: amount,
       status: invoiceStatus,
+      paymentStatus: inv.paymentStatus,
     };
+  }
+
+  viewInvoice(invoiceId: string): void {
+    // router navigation handled in template via [routerLink]
   }
 }

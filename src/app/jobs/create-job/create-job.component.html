@@ -85,21 +85,24 @@
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Job Type <span
                             class="text-rose-500">*</span></label>
-                    <div class="relative">
-                        <select
-                            [(ngModel)]="selectedJobType"
-                            class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                            <option value="">Select job type</option>
-                            @for (jt of jobTypeOptions; track jt.value) {
-                                <option [value]="jt.value">{{ jt.label }}</option>
-                            }
-                        </select>
-                        <svg width="16" height="16" viewBox="0 0 24 24"
-                            class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                            style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
-                            <polyline points="6 9 12 15 18 9" />
-                        </svg>
+                    <div class="flex items-center gap-2">
+                        <app-rich-select
+                            [options]="jobTypeOptions"
+                            [value]="selectedJobType"
+                            (valueChange)="onJobTypeChange($event)"
+                            placeholder="Select job type"
+                            panelWidth="wide"
+                            class="flex-1"
+                            >
+                        </app-rich-select>
+                        <button (click)="openAddJobTypeModal()" aria-label="Add job type"
+                            class="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
                     </div>
+                    @if (submitted && errors.jobType) {
+                        <p class="text-xs text-rose-500 mt-1">{{ errors.jobType }}</p>
+                    }
                     <p class="text-xs text-slate-400 mt-1.5">Select the type of job</p>
                 </div>
                 <div>
@@ -107,12 +110,18 @@
                             class="text-rose-500">*</span></label>
                     <app-rich-select
                         [options]="clientOptions"
-                        [(value)]="selectedClient"
+                        [value]="selectedClient"
                         (valueChange)="onClientChange($event)"
                         placeholder="Select client"
                         panelWidth="wide"
-                        class="w-full">
+                        class="w-full"
+                        [class.border-rose-500]="submitted && errors.client"
+                        [class.ring-1]="submitted && errors.client"
+                        [class.ring-rose-500/20]="submitted && errors.client">
                     </app-rich-select>
+                    @if (submitted && errors.client) {
+                        <p class="text-xs text-rose-500 mt-1">{{ errors.client }}</p>
+                    }
                     <p class="text-xs text-slate-400 mt-1.5">Select the client for this job</p>
                 </div>
                 <div>
@@ -120,11 +129,18 @@
                             class="text-rose-500">*</span></label>
                     <app-rich-select
                         [options]="siteOptions"
-                        [(value)]="selectedSite"
+                        [value]="selectedSite"
+                        (valueChange)="selectedSite = $event"
                         placeholder="Select site"
                         panelWidth="wide"
-                        class="w-full">
+                        class="w-full"
+                        [class.border-rose-500]="submitted && errors.site"
+                        [class.ring-1]="submitted && errors.site"
+                        [class.ring-rose-500/20]="submitted && errors.site">
                     </app-rich-select>
+                    @if (submitted && errors.site) {
+                        <p class="text-xs text-rose-500 mt-1">{{ errors.site }}</p>
+                    }
                     <p class="text-xs text-slate-400 mt-1.5">Select the site where job will take place</p>
                 </div>
             </div>
@@ -134,7 +150,13 @@
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Job Title <span
                             class="text-rose-500">*</span></label>
                     <input type="text" [(ngModel)]="job.title" placeholder="Evening Lock Service"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                        class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"
+                        [class.border-rose-500]="submitted && errors.title"
+                        [class.ring-1]="submitted && errors.title"
+                        [class.ring-rose-500/20]="submitted && errors.title" />
+                    @if (submitted && errors.title) {
+                        <p class="text-xs text-rose-500 mt-1">{{ errors.title }}</p>
+                    }
                     <p class="text-xs text-slate-400 mt-1.5">Enter a short title for this job.</p>
                 </div>
                 <div>
@@ -308,35 +330,56 @@
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Date <span
                         class="text-rose-500">*</span></label>
                 <app-date-picker
+                    id="job-date"
                     [defaultDate]="job.date"
                     placeholder="Select date"
-                    (dateChange)="onDateChange($event)">
+                    (dateChange)="onDateChange($event)"
+                    [class.border-rose-500]="submitted && errors.date"
+                    [class.ring-1]="submitted && errors.date"
+                    [class.ring-rose-500/20]="submitted && errors.date">
                 </app-date-picker>
+                @if (submitted && errors.date) {
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.date }}</p>
+                }
                 <p class="text-xs text-slate-400 mt-1.5">Select the date.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Start Time <span
                         class="text-rose-500">*</span></label>
                 <app-time-picker
+                    id="job-start-time"
                     [defaultTime]="job.startTime"
                     placeholder="Select start time"
-                    (timeChange)="onStartTimeChange($event)">
+                    (timeChange)="onStartTimeChange($event)"
+                    [class.border-rose-500]="submitted && errors.startTime"
+                    [class.ring-1]="submitted && errors.startTime"
+                    [class.ring-rose-500/20]="submitted && errors.startTime">
                 </app-time-picker>
+                @if (submitted && errors.startTime) {
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.startTime }}</p>
+                }
                 <p class="text-xs text-slate-400 mt-1.5">Start time.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">End Time <span
                         class="text-rose-500">*</span></label>
                 <app-time-picker
+                    id="job-end-time"
                     [defaultTime]="job.endTime"
                     placeholder="Select end time"
-                    (timeChange)="onEndTimeChange($event)">
+                    (timeChange)="onEndTimeChange($event)"
+                    [class.border-rose-500]="submitted && errors.endTime"
+                    [class.ring-1]="submitted && errors.endTime"
+                    [class.ring-rose-500/20]="submitted && errors.endTime">
                 </app-time-picker>
+                @if (submitted && errors.endTime) {
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.endTime }}</p>
+                }
                 <p class="text-xs text-slate-400 mt-1.5">End time.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Duration</label>
-                <input type="text" value="02:00" disabled
+                <input type="text" [value]="job.duration" disabled
                     class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-500" />
                 <p class="text-xs text-slate-400 mt-1.5">Auto-calculated.</p>
             </div>
@@ -353,40 +396,32 @@
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Officer <span
                         class="text-rose-500">*</span></label>
-                <div class="relative">
-                    <select [(ngModel)]="job.officer"
-                        class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                        <option value="">Select officer</option>
-                        <option>James Walker</option>
-                        <option>Sarah Miller</option>
-                        <option>David Johnson</option>
-                        <option>Michael Brown</option>
-                    </select>
-                    <svg width="16" height="16" viewBox="0 0 24 24"
-                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </div>
+                    <app-rich-select
+                        [options]="officerOptions"
+                        [value]="job.officer"
+                        (valueChange)="job.officer = $event"
+                        placeholder="Select officer"
+                        panelWidth="wide"
+                        class="w-full"
+                        [class.border-rose-500]="submitted && errors.officer"
+                        [class.ring-1]="submitted && errors.officer"
+                        [class.ring-rose-500/20]="submitted && errors.officer">
+                    </app-rich-select>
+                    @if (submitted && errors.officer) {
+                        <p class="text-xs text-rose-500 mt-1">{{ errors.officer }}</p>
+                    }
                 <p class="text-xs text-slate-400 mt-1.5">Assign an officer to this job.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Priority <span
                         class="text-rose-500">*</span></label>
-                <div class="relative">
-                    <select [(ngModel)]="job.priority"
-                        class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">
-                        <option>Low</option>
-                        <option>Medium</option>
-                        <option>High</option>
-                        <option>Critical</option>
-                    </select>
-                    <svg width="16" height="16" viewBox="0 0 24 24"
-                        class="icon w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                        style="stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </div>
+                    <app-rich-select
+                        [options]="priorityOptions"
+                        [(value)]="job.priority"
+                        placeholder="Select priority"
+                        panelWidth="wide"
+                        class="w-full">
+                    </app-rich-select>
                 <p class="text-xs text-slate-400 mt-1.5">Set the priority level.</p>
             </div>
         </div>
@@ -931,6 +966,56 @@
             <button (click)="addChecklistItem()"
                 class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
                 Add item
+            </button>
+         </div>
+
+    </div>
+</div>
+}
+
+@if (showAddJobTypeModal) {
+<div
+    class="fixed inset-0 z-40 flex items-start sm:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 sm:p-6 overflow-y-auto">
+    <div class="bg-white w-full sm:max-w-lg sm:rounded-2xl shadow-2xl flex flex-col h-full sm:h-auto">
+
+        <!-- Header -->
+        <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-1 shrink-0">
+            <div>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-900">New Job Type</h2>
+                <p class="mt-1 text-sm text-slate-500">Create a new job type for this organization.</p>
+            </div>
+            <button (click)="closeAddJobTypeModal()"
+                class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0"
+                aria-label="Close">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="flex-1 px-5 sm:px-8 py-5 overflow-y-auto">
+            <label for="job-type-name" class="block text-sm font-semibold text-slate-800 mb-2">
+                Job Type Name <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+                <input id="job-type-name" type="text" maxlength="100" placeholder="e.g. Lock Service"
+                    [(ngModel)]="newJobTypeName"
+                    class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+                <span class="absolute bottom-3 right-4 text-xs text-slate-400">{{ newJobTypeName.length }}/100</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div
+            class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
+            <button (click)="closeAddJobTypeModal()"
+                class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">
+                Cancel
+            </button>
+            <button (click)="createJobType()"
+                class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+                Create Job Type
             </button>
         </div>
 

@@ -116,16 +116,43 @@
         <!-- Tabs -->
     <div class="flex flex-wrap gap-1 mt-6 -mb-5 border-t border-slate-100 pt-4 sm:pt-0 sm:border-t-0 sm:mt-5">
       <div class="flex flex-wrap gap-6 border-b border-slate-100 w-full text-sm font-medium overflow-x-auto">
-        <a href="#" class="pb-3 border-b-2 border-brand-600 text-brand-600 whitespace-nowrap">Overview</a>
-        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Hooks (20)</a>
-        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Keys (14)</a>
-        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Activity Log</a>
-        <a href="#" class="pb-3 text-slate-500 hover:text-slate-700 whitespace-nowrap">Documents</a>
+        <a  (click)="setActiveTab('overview')" class="pb-3 border-b-2 whitespace-nowrap transition"
+           [class.border-brand-600]="activeTab === 'overview'"
+           [class.text-brand-600]="activeTab === 'overview'"
+           [class.border-transparent]="activeTab !== 'overview'"
+           [class.text-slate-500]="activeTab !== 'overview'"
+           [class.hover:text-slate-700]="activeTab !== 'overview'">Overview</a>
+        <a  (click)="setActiveTab('hooks')" class="pb-3 border-b-2 whitespace-nowrap transition"
+           [class.border-brand-600]="activeTab === 'hooks'"
+           [class.text-brand-600]="activeTab === 'hooks'"
+           [class.border-transparent]="activeTab !== 'hooks'"
+           [class.text-slate-500]="activeTab !== 'hooks'"
+           [class.hover:text-slate-700]="activeTab !== 'hooks'">Hooks (20)</a>
+        <a  (click)="setActiveTab('keys')" class="pb-3 border-b-2 whitespace-nowrap transition"
+           [class.border-brand-600]="activeTab === 'keys'"
+           [class.text-brand-600]="activeTab === 'keys'"
+           [class.border-transparent]="activeTab !== 'keys'"
+           [class.text-slate-500]="activeTab !== 'keys'"
+           [class.hover:text-slate-700]="activeTab !== 'keys'">Keys (14)</a>
+        <a  (click)="setActiveTab('activity')" class="pb-3 border-b-2 whitespace-nowrap transition"
+           [class.border-brand-600]="activeTab === 'activity'"
+           [class.text-brand-600]="activeTab === 'activity'"
+           [class.border-transparent]="activeTab !== 'activity'"
+           [class.text-slate-500]="activeTab !== 'activity'"
+           [class.hover:text-slate-700]="activeTab !== 'activity'">Activity Log</a>
+        <a  (click)="setActiveTab('documents')" class="pb-3 border-b-2 whitespace-nowrap transition"
+           [class.border-brand-600]="activeTab === 'documents'"
+           [class.text-brand-600]="activeTab === 'documents'"
+           [class.border-transparent]="activeTab !== 'documents'"
+           [class.text-slate-500]="activeTab !== 'documents'"
+           [class.hover:text-slate-700]="activeTab !== 'documents'">Documents</a>
       </div>
     </div>
-        <!-- Cabinet Information -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-          <h2 class="text-sm font-bold text-slate-800 mb-5">Cabinet Information</h2>
+
+    @if (activeTab === 'overview') {
+      <!-- Cabinet Information -->
+      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
+        <h2 class="text-sm font-bold text-slate-800 mb-5">Cabinet Information</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
             <div class="flex justify-between md:justify-start md:gap-4">
               <dt class="text-slate-400 w-32 shrink-0">Cabinet Code</dt>
@@ -201,7 +228,35 @@
             </span>
           </div>
         </div>
-     
+    }
+
+    @if (activeTab === 'hooks') {
+      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
+        <h2 class="text-sm font-bold text-slate-800 mb-4">Hooks</h2>
+        <p class="text-sm text-slate-500">Hook list will be displayed here.</p>
+      </div>
+    }
+
+    @if (activeTab === 'keys') {
+      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
+        <h2 class="text-sm font-bold text-slate-800 mb-4">Keys</h2>
+        <p class="text-sm text-slate-500">Keys stored in this cabinet will be displayed here.</p>
+      </div>
+    }
+
+    @if (activeTab === 'activity') {
+      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
+        <h2 class="text-sm font-bold text-slate-800 mb-4">Activity Log</h2>
+        <p class="text-sm text-slate-500">Activity log for this cabinet will be displayed here.</p>
+      </div>
+    }
+
+    @if (activeTab === 'documents') {
+      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
+        <h2 class="text-sm font-bold text-slate-800 mb-4">Documents</h2>
+        <p class="text-sm text-slate-500">Documents for this cabinet will be displayed here.</p>
+      </div>
+    }
 
       </div>
 

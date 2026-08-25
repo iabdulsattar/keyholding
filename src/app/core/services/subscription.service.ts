@@ -19,7 +19,10 @@ import {
   BillingProfileResponse,
   BillingInfo,
   BillingInfoResponse,
-  UsageResponse
+  UsageResponse,
+  Invoice,
+  InvoiceListResponse,
+  InvoiceDetailResponse
 } from '../models/subscription.models';
 
 @Injectable({ providedIn: 'root' })
@@ -173,5 +176,41 @@ export class SubscriptionService {
       ...(this.getAccessToken() ? { Authorization: `Bearer ${this.getAccessToken()}` } : {})
     });
     return this.api.put<BillingInfoResponse>(`/api/v1/subscriptions/organizations/${orgId}/billing-info`, payload, headers);
+  }
+
+  // -------- Invoices --------
+
+  listInvoices(
+    orgId: string,
+    serviceCode = 'key-vault',
+    params?: {
+      from?: string;
+      to?: string;
+      status?: string;
+      paymentStatus?: string;
+      q?: string;
+      page?: number;
+      size?: number;
+      // sort?: string;
+    }
+  ): Observable<InvoiceListResponse> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    q.set('serviceCode', serviceCode);
+    if (params?.from) q.set('from', params.from);
+    if (params?.to) q.set('to', params.to);
+    if (params?.status) q.set('status', params.status);
+    if (params?.paymentStatus) q.set('paymentStatus', params.paymentStatus);
+    if (params?.q) q.set('q', params.q);
+    if (params?.page !== undefined) q.set('page', String(params.page));
+    if (params?.size !== undefined) q.set('size', String(params.size));
+   // if (params?.sort) q.set('sort', params.sort);
+    const query = q.toString();
+    return this.api.get<InvoiceListResponse>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/invoices?${query}`, headers);
+  }
+
+  getInvoiceDetail(orgId: string, invoiceId: string): Observable<InvoiceDetailResponse> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<InvoiceDetailResponse>(`/api/v1/subscriptions/organizations/${orgId}/invoices/${invoiceId}`, headers);
   }
 }
