@@ -4,6 +4,11 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { ClientService } from '../../core/services/client.service';
+import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
+import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
+import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
 
 interface Key {
   id: string;
@@ -22,10 +27,15 @@ interface ChecklistItem {
   text: string;
 }
 
+interface JobTypeOption {
+  id: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-create-job',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, DatePickerComponent, TimePickerComponent],
   templateUrl: './create-job.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -35,20 +45,20 @@ interface ChecklistItem {
 })
 export class CreateJobComponent implements OnInit {
   job = {
-    type: 'Lock Service',
-    client: 'Alpha Security Ltd.',
-    site: 'Head Office',
-    title: 'Evening Lock Service',
+    type: '',
+    client: '',
+    site: '',
+    title: '',
     reference: '',
-    description: 'Perform evening locking and security checks as per site locking procedure. Ensure all areas are secure, alarm is set and keys are returned.',
-    date: '15 May 2024',
-    startTime: '18:30',
-    endTime: '20:00',
-    duration: '02:00',
-    officer: 'James Walker',
+    description: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    duration: '',
+    officer: '',
     priority: 'Medium',
-    notifyCompletion: 'Selected Contacts (2)',
-    notifyNotCompleted: 'Selected Contacts (2)',
+    notifyCompletion: '',
+    notifyNotCompleted: '',
     notes: ''
   };
 
@@ -60,26 +70,23 @@ export class CreateJobComponent implements OnInit {
   pageSize = 6;
   totalPages = 0;
   totalElements = 0;
-  checklistItems: ChecklistItem[] = [
-    { id: '1', text: 'Arrived on site' },
-    { id: '2', text: 'Staff/visitors cleared' },
-    { id: '3', text: 'Internal walkthrough completed' },
-    { id: '4', text: 'Windows checked' },
-    { id: '5', text: 'Internal doors checked' },
-    { id: '6', text: 'External doors checked' },
-    { id: '7', text: 'Fire exits checked' },
-    { id: '8', text: 'Lights/equipment checked as instructed' },
-    { id: '9', text: 'Alarm set' },
-    { id: '10', text: 'Premises secured' },
-    { id: '11', text: 'Keys returned/secured' },
-    { id: '12', text: 'Officer departed site' },
-  ];
+  checklistItems: ChecklistItem[] = [];
   newChecklistItem = '';
 
-  constructor(private router: Router, private keyVault: KeyVaultService) {}
+  clientOptions: RichSelectOption[] = [];
+  siteOptions: RichSelectOption[] = [];
+  jobTypeOptions: JobTypeOption[] = [];
+  selectedClient = '';
+  selectedSite = '';
+  selectedJobType = '';
+  saving = false;
+
+  constructor(private router: Router, private keyVault: KeyVaultService, private clientService: ClientService) {}
 
   ngOnInit(): void {
+    this.loadJobTypes();
     this.loadKeys();
+    this.loadClients();
   }
 
   get selectedKeys(): Key[] {
@@ -102,8 +109,57 @@ export class CreateJobComponent implements OnInit {
     return Math.min((this.currentPage + 1) * this.pageSize, this.totalElements);
   }
 
+  private toRichOptions(items: any[], labelKey = 'name', valueKey = 'id'): RichSelectOption[] {
+    return items.map((item: any) => ({
+      value: item[valueKey] || '',
+      label: item[labelKey] || ''
+    }));
+  }
+
   private getOrgId(): string | null {
     return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+  }
+
+  private loadJobTypes(): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+    this.keyVault.listJobTypes(orgId, false).subscribe((res: any) => {
+      const items = res?.data?.items ?? res?.items ?? res?.data ?? res ?? [];
+      this.jobTypeOptions = this.toRichOptions(items);
+    });
+  }
+
+  private loadClients(): void {
+    this.clientService.listClients({ page: 0, size: 200 }).subscribe((result: any) => {
+      this.clientOptions = this.toRichOptions(result.items);
+    });
+  }
+
+  private loadSites(clientId: string): void {
+    if (!clientId) {
+      this.siteOptions = [];
+      return;
+    }
+    this.clientService.getSitesByClient(clientId).subscribe((sites: any[]) => {
+      this.siteOptions = this.toRichOptions(sites);
+    });
+  }
+
+  onClientChange(clientId: string): void {
+    this.selectedSite = '';
+    this.loadSites(clientId);
+  }
+
+  onDateChange(event: any): void {
+    this.job.date = event?.dateStr || this.job.date;
+  }
+
+  onStartTimeChange(time: string): void {
+    this.job.startTime = time || this.job.startTime;
+  }
+
+  onEndTimeChange(time: string): void {
+    this.job.endTime = time || this.job.endTime;
   }
 
   loadKeys(page = 0): void {
@@ -223,7 +279,54 @@ export class CreateJobComponent implements OnInit {
   }
 
   createJob(): void {
-    console.log('Creating job:', this.job);
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    const payload: any = {
+      jobTypeId: this.selectedJobType || this.job.type,
+      title: this.job.title,
+      clientId: this.selectedClient || this.job.client,
+      siteId: this.selectedSite || this.job.site,
+      reference: this.job.reference || undefined,
+      description: this.job.description || undefined,
+      scheduledDate: this.job.date || undefined,
+      startTime: this.job.startTime || undefined,
+      endTime: this.job.endTime || undefined,
+      officerUserId: this.job.officer || undefined,
+      priority: this.mapPriority(this.job.priority),
+      keyIds: this.selectedKeys.map(k => k.id),
+      checklistItems: this.checklistItems.map(ci => ci.id),
+      notifyOnCompletion: [],
+      notifyOnNotCompleted: [],
+      additionalNotes: this.job.notes || undefined
+    };
+
+    this.saving = true;
+    this.keyVault.createJob(orgId, payload).subscribe({
+      next: (res: any) => {
+        this.saving = false;
+        const createdId = res?.data?.id ?? res?.id;
+        if (createdId) {
+          this.router.navigate(['/jobs', createdId]);
+        } else {
+          this.router.navigate(['/jobs']);
+        }
+      },
+      error: (err) => {
+        console.error('Failed to create job', err);
+        this.saving = false;
+      }
+    });
+  }
+
+  private mapPriority(priority: string): string {
+    const map: Record<string, string> = {
+      'Low': 'LOW',
+      'Medium': 'MEDIUM',
+      'High': 'HIGH',
+      'Critical': 'CRITICAL'
+    };
+    return map[priority] || 'MEDIUM';
   }
 
   goBack(): void {

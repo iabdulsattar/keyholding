@@ -329,6 +329,65 @@ export interface KeyVaultRole {
   [key: string]: any;
 }
 
+export interface JobType {
+  id?: string;
+  name: string;
+  description?: string;
+  iconKey?: string;
+  sortOrder?: number;
+  active?: boolean;
+  [key: string]: any;
+}
+
+export interface ChecklistItem {
+  id?: string;
+  jobTypeId?: string;
+  title: string;
+  sortOrder?: number;
+  active?: boolean;
+  [key: string]: any;
+}
+
+export interface Job {
+  id?: string;
+  jobCode?: string;
+  jobTypeId?: string;
+  title: string;
+  reference?: string;
+  description?: string;
+  clientId?: string;
+  siteId?: string;
+  scheduledDate?: string;
+  startTime?: string;
+  endTime?: string;
+  officerUserId?: string;
+  priority?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  status?: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'OVERDUE' | 'CANCELLED';
+  keyIds?: string[];
+  checklistItems?: string[];
+  notifyOnCompletion?: string[];
+  notifyOnNotCompleted?: string[];
+  additionalNotes?: string;
+  createdByUserId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+export interface JobAttachment {
+  id?: string;
+  jobId?: string;
+  fileName?: string;
+  contentType?: string;
+  sizeBytes?: number;
+  storagePath?: string;
+  publicUrl?: string;
+  uploadedByUserId?: string;
+  uploadedByUserName?: string;
+  createdAt?: string;
+  [key: string]: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -1195,11 +1254,155 @@ export class KeyVaultService {
     return this.api.post<any>(`/api/v1/subscriptions/organizations/${orgId}/services/key-vault/start`, { planId, billingPeriod: 'MONTHLY', useTrial: true }, headers);
   }
 
-   moveKeyToHook(orgId: string, cabinetId: string, hookId: string, data: { targetHookId: string; note?: string }): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
-    });
-    return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/move-key`, data, headers);
-   }
+    moveKeyToHook(orgId: string, cabinetId: string, hookId: string, data: { targetHookId: string; note?: string }): Observable<any> {
+     const headers = new HttpHeaders({
+       'Content-Type': 'application/json',
+       ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+     });
+     return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/move-key`, data, headers);
+    }
+
+    // Job Types
+    listJobTypes(orgId: string, includeInactive = false): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = includeInactive ? '?includeInactive=true' : '?includeInactive=false';
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types${q}`, headers);
+    }
+
+    createJobType(orgId: string, jobType: JobType): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types`, jobType, headers);
+    }
+
+    updateJobType(orgId: string, jobTypeId: string, jobType: Partial<JobType>): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.patch<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types/${jobTypeId}`, jobType, headers);
+    }
+
+    deleteJobType(orgId: string, jobTypeId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types/${jobTypeId}`, headers);
+    }
+
+    // Checklist Templates
+    listJobChecklist(orgId: string, jobTypeId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types/${jobTypeId}/checklist`, headers);
+    }
+
+    addChecklistItem(orgId: string, jobTypeId: string, item: { title: string; sortOrder?: number }): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types/${jobTypeId}/checklist`, item, headers);
+    }
+
+    updateChecklistItem(orgId: string, checklistItemId: string, item: Partial<ChecklistItem>): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.patch<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/checklist/${checklistItemId}`, item, headers);
+    }
+
+    deleteChecklistItem(orgId: string, checklistItemId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/checklist/${checklistItemId}`, headers);
+    }
+
+    // Jobs
+    listJobs(orgId: string, params?: { q?: string; clientId?: string; siteId?: string; officerId?: string; jobTypeId?: string; status?: string; page?: number; size?: number }): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      if (params?.q) q.set('q', params.q);
+      if (params?.clientId) q.set('clientId', params.clientId);
+      if (params?.siteId) q.set('siteId', params.siteId);
+      if (params?.officerId) q.set('officerId', params.officerId);
+      if (params?.jobTypeId) q.set('jobTypeId', params.jobTypeId);
+      if (params?.status) q.set('status', params.status);
+      q.set('page', String(params?.page ?? 0));
+      q.set('size', String(params?.size ?? 20));
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs${query ? `?${query}` : ''}`, headers);
+    }
+
+    getJobStats(orgId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/stats`, headers);
+    }
+
+    getJobKeyAvailability(orgId: string, keyIds: string[], excludeJobId?: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      q.set('keyIds', keyIds.join(','));
+      if (excludeJobId) q.set('excludeJobId', excludeJobId);
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/key-availability?${query}`, headers);
+    }
+
+    createJob(orgId: string, job: Job): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs`, job, headers);
+    }
+
+    getJob(orgId: string, jobId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}`, headers);
+    }
+
+    updateJob(orgId: string, jobId: string, job: Partial<Job>): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.patch<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}`, job, headers);
+    }
+
+    updateJobStatus(orgId: string, jobId: string, data: { status: string; note?: string }): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/status`, data, headers);
+    }
+
+    deleteJob(orgId: string, jobId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}`, headers);
+    }
+
+    // Job Attachments
+    listJobAttachments(orgId: string, jobId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/attachments`, headers);
+    }
+
+    uploadJobAttachment(orgId: string, jobId: string, file: File): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const fd = new FormData();
+      fd.append('file', file, file.name);
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/attachments`, fd, headers);
+    }
+
+    deleteJobAttachment(orgId: string, jobId: string, attachmentId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/attachments/${attachmentId}`, headers);
+    }
+
+    downloadJobAttachmentBlob(orgId: string, jobId: string, attachmentId: string): Observable<Blob> {
+      const headers = this.getAuthHeaders();
+      return this.api.getBlob(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/attachments/${attachmentId}/download`, headers);
+    }
+  }
+}
 }
