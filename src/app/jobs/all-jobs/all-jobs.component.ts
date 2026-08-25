@@ -212,5 +212,4 @@ export class AllJobsComponent implements OnInit {
     return pages;
   }
 
-  ngOnInit(): void {}
 }

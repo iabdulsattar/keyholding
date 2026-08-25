@@ -75,7 +75,7 @@ export class CreateJobComponent implements OnInit {
 
   clientOptions: RichSelectOption[] = [];
   siteOptions: RichSelectOption[] = [];
-  jobTypeOptions: JobTypeOption[] = [];
+  jobTypeOptions: RichSelectOption[] = [];
   selectedClient = '';
   selectedSite = '';
   selectedJobType = '';
