@@ -64,6 +64,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
   cabinet: Cabinet | null = null;
   loading = true;
   error = '';
+  activeTab = 'overview';
 
   isDeactivateModalOpen = false;
   isReactivateModalOpen = false;
@@ -96,6 +97,10 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
         icons.createIcons();
       }
     }, 0);
+  }
+
+  setActiveTab(tabId: string): void {
+    this.activeTab = tabId;
   }
 
   private loadCabinet(): void {

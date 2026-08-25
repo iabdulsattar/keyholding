@@ -146,6 +146,42 @@ export interface UsageResponse {
   [key: string]: any;
 }
 
+// -------- Invoices --------
+export interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  status: string;
+  paymentStatus?: string;
+  amountCents: number;
+  currency: string;
+  createdAt: string;
+  dueDate?: string;
+  paidAt?: string;
+  planName?: string;
+  billingPeriod?: string;
+  description?: string;
+  subtotalCents?: number;
+  vatCents?: number;
+  totalCents?: number;
+  vatRateBps?: number;
+  [key: string]: any;
+}
+
+export interface InvoiceListResponse {
+  invoices: Invoice[];
+  total: number;
+  page: number;
+  size: number;
+  [key: string]: any;
+}
+
+export interface InvoiceDetailResponse {
+  invoice: Invoice;
+  billingInfo?: BillingInfo;
+  plan?: Plan;
+  [key: string]: any;
+}
+
 // -------- Billing Info --------
 export interface BillingInfo {
   companyName?: string;
