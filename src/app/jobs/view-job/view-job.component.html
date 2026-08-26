@@ -446,27 +446,30 @@
           <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
           
           <div id="panel-checklist" class="tab-panel">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <div class="p-6 pb-4 flex flex-wrap items-start justify-between gap-3">
+            <div class=" overflow-hidden">
+              <div class=" pb-4 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h3 class="flex items-center gap-2 text-lg font-bold">
-                    <svg class="w-[18px] h-[18px] text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Checklist
+                  <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter']">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.75 7.992V14.25C15.75 14.6478 15.592 15.0294 15.3107 15.3107C15.0294 15.592 14.6478 15.75 14.25 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H13.008M6.75 8.25L9 10.5L16.5 3" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Checklist
                   </h3>
-                  <p class="text-sm text-slate-500 mt-0.5">Review the checklist items, responses and evidence captured for this job.</p>
+                  <p class="text-xs text-slate-600 font-normal font-['Inter'] mt-0.5">Review the checklist items, responses and evidence captured for this job.</p>
                 </div>
-                <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">12/12 Completed</span>
+                <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold font-['Inter'] px-3 py-1.5 rounded-md whitespace-nowrap">12/12 Completed</span>
               </div>
 
               <!-- Desktop table -->
               <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-sm">
                   <thead>
-                    <tr class="bg-slate-50 text-left text-slate-500 text-xs uppercase tracking-wide">
-                      <th class="px-6 py-3 font-semibold w-16">#</th>
-                      <th class="px-6 py-3 font-semibold">Checklist</th>
-                      <th class="px-6 py-3 font-semibold">Response</th>
-                      <th class="px-6 py-3 font-semibold">Notes</th>
-                      <th class="px-6 py-3 font-semibold">Images</th>
+                    <tr class="bg-slate-50 text-left text-slate-900 text-xs font-['Inter'] border-b border-slate-200 tracking-wide">
+                      <th class="px-6 py-3 font-bold w-16">#</th>
+                      <th class="px-6 py-3 font-bold">Checklist</th>
+                      <th class="px-6 py-3 font-bold">Response</th>
+                      <th class="px-6 py-3 font-bold">Notes</th>
+                      <th class="px-6 py-3 font-bold">Images</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-100">
@@ -508,8 +511,18 @@
                 }
               </div>
 
-              <div class="flex items-center gap-2 px-6 py-5 border-t border-slate-100 text-sm text-slate-600">
-                <svg class="w-[18px] h-[18px] text-blue-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <div class="flex items-center gap-2 py-5 text-xs text-slate-900 font-normal font-['Inter']">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2420_2230)">
+  <rect width="16" height="16" fill="#F4F6FA"/>
+  <path d="M7.99923 10.6668V7.99996M7.99923 5.33308H8.0059M14.6664 7.99996C14.6664 11.6822 11.6814 14.6672 7.99923 14.6672C4.31704 14.6672 1.33203 11.6822 1.33203 7.99996C1.33203 4.31777 4.31704 1.33276 7.99923 1.33276C11.6814 1.33276 14.6664 4.31777 14.6664 7.99996Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2420_2230">
+  <rect width="16" height="16" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
                 All checklist items are mandatory and have been completed
               </div>
             </div>
