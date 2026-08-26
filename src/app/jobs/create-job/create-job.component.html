@@ -624,9 +624,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Instruction Attachments</label>
-                <input type="file" class="hidden" (change)="onFileSelect($event)" #fileInput>
-                <button (click)="fileInput.click()"
-                    class="inline-flex items-center gap-2 bg-slate-50 rounded-md outline outline-1 outline-offset-[-1px] outline-slate-200 text-blue-600 text-xs font-semibold font-['Inter'] px-4 py-2 hover:bg-slate-100 transition">
+                <label class="inline-flex items-center gap-2 bg-slate-50 rounded-md outline outline-1 outline-offset-[-1px] outline-slate-200 text-blue-600 text-xs font-semibold font-['Inter'] px-4 py-2 hover:bg-slate-100 transition cursor-pointer">
+                    <input type="file" class="hidden" (change)="onFileSelect($event)">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_2389_377)">
                             <path d="M7 1.75V8.75M4.08333 4.66667L7 1.75L9.91667 4.66667M12.25 8.75V11.0833C12.25 11.3928 12.1271 11.6895 11.9083 11.9083C11.6895 12.1271 11.75 12.25 11.0833 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V8.75" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
@@ -638,7 +637,7 @@
                         </defs>
                     </svg>
                     Upload Files
-                </button>
+                </label>
                 <p class="text-xs text-slate-400 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
                 @if (attachmentError) {
                     <p class="text-xs text-rose-600 mt-2">{{ attachmentError }}</p>
