@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { ClientService } from '../../core/services/client.service';
 import { UserService } from '../../core/services/user.service';
+import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
@@ -93,10 +94,15 @@ export class CreateJobComponent implements OnInit {
   selectedJobType = '';
   saving = false;
 
+  selectedFiles: File[] = [];
+  attachmentPreviews: { file: File; url: string }[] = [];
+  attachmentError = '';
+  private readonly MAX_FILE_SIZE = 25 * 1024 * 1024;
+
   errors: any = {};
   submitted = false;
 
-  constructor(private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private userService: UserService) {}
+  constructor(private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private userService: UserService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.loadJobTypes();
@@ -255,6 +261,67 @@ export class CreateJobComponent implements OnInit {
     if (period === 'PM' && hours !== 12) hours += 12;
     if (period === 'AM' && hours === 12) hours = 0;
     return `${hours.toString().padStart(2, '0')}:${minutes}`;
+  }
+
+  onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    if (file.size > this.MAX_FILE_SIZE) {
+      this.toast.error('File size exceeds 25MB limit.');
+      input.value = '';
+      return;
+    }
+    this.selectedFiles.push(file);
+    const reader = new FileReader();
+    reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string });
+    reader.readAsDataURL(file);
+    this.attachmentError = '';
+    input.value = '';
+  }
+
+  removeAttachment(index: number): void {
+    this.selectedFiles.splice(index, 1);
+    const url = this.attachmentPreviews[index]?.url;
+    this.attachmentPreviews.splice(index, 1);
+    if (url && url.startsWith('blob:')) URL.revokeObjectURL(url);
+  }
+
+  isImage(type = ''): boolean {
+    return type.toLowerCase().startsWith('image/');
+  }
+
+  formatSize(bytes = 0): string {
+    if (!bytes) return '-';
+    const mb = bytes / (1024 * 1024);
+    return mb >= 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
+  }
+
+  private uploadJobAttachments(orgId: string, jobId: string): void {
+    if (!this.selectedFiles.length) {
+      this.toast.success('Job created successfully!');
+      this.router.navigate(['/jobs']);
+      return;
+    }
+    let pending = this.selectedFiles.length;
+    this.selectedFiles.forEach(file => {
+      this.keyVault.uploadJobAttachment(orgId, jobId, file).subscribe({
+        next: () => {
+          pending--;
+          if (pending <= 0) {
+            this.toast.success('Job created successfully with attachments!');
+            this.router.navigate(['/jobs']);
+          }
+        },
+        error: () => {
+          pending--;
+          if (pending <= 0) {
+            this.toast.success('Job created, but some attachments failed to upload.');
+            this.router.navigate(['/jobs']);
+          }
+        }
+      });
+    });
   }
 
   loadKeys(page = 0): void {
@@ -466,17 +533,18 @@ export class CreateJobComponent implements OnInit {
     this.saving = true;
     this.keyVault.createJob(orgId, payload).subscribe({
       next: (res: any) => {
-        this.saving = false;
         const createdId = res?.data?.id ?? res?.id;
         if (createdId) {
-          this.router.navigate(['/jobs', createdId]);
+          this.uploadJobAttachments(orgId, createdId);
         } else {
-          this.router.navigate(['/jobs']);
+          this.saving = false;
+          this.toast.error('Failed to create job');
         }
       },
       error: (err) => {
         console.error('Failed to create job', err);
         this.saving = false;
+        this.toast.error('Failed to create job');
       }
     });
   }

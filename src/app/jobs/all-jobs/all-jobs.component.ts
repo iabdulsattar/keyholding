@@ -4,11 +4,13 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
+import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-all-jobs',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './all-jobs.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -20,6 +22,7 @@ export class AllJobsComponent implements OnInit {
   jobs: any[] = [];
   stats: any = {};
   loading = false;
+  Math = Math;
 
   filters = {
     q: '',
@@ -28,6 +31,18 @@ export class AllJobsComponent implements OnInit {
     jobTypeId: '',
     status: ''
   };
+
+  clientOptions: RichSelectOption[] = [];
+  siteOptions: RichSelectOption[] = [];
+  jobTypeOptions: RichSelectOption[] = [];
+  statusOptions: RichSelectOption[] = [
+    { value: '', label: 'All Statuses' },
+    { value: 'SCHEDULED', label: 'Scheduled' },
+    { value: 'IN_PROGRESS', label: 'In Progress' },
+    { value: 'COMPLETED', label: 'Completed' },
+    { value: 'OVERDUE', label: 'Overdue' },
+    { value: 'CANCELLED', label: 'Cancelled' }
+  ];
 
   pagination = {
     page: 0,
@@ -41,10 +56,38 @@ export class AllJobsComponent implements OnInit {
   ngOnInit(): void {
     this.loadJobs();
     this.loadStats();
+    this.loadFilterOptions();
   }
 
   private getOrgId(): string | null {
     return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+  }
+
+  private toRichOptions(items: any[], labelKey = 'name', valueKey = 'id'): RichSelectOption[] {
+    return items.map((item: any) => ({
+      value: item[valueKey] || '',
+      label: item[labelKey] || ''
+    }));
+  }
+
+  private loadFilterOptions(): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.keyVault.listClients(orgId, { page: 0, size: 200 }).subscribe((res: any) => {
+      const items = res?.data?.items ?? res?.items ?? res?.data ?? res ?? [];
+      this.clientOptions = this.toRichOptions(items);
+    });
+
+    this.keyVault.listAllSites(orgId, { page: 0, size: 200 }).subscribe((res: any) => {
+      const items = res?.data?.items ?? res?.items ?? res?.data ?? res ?? [];
+      this.siteOptions = this.toRichOptions(items);
+    });
+
+    this.keyVault.listJobTypes(orgId, false).subscribe((res: any) => {
+      const items = res?.data?.items ?? res?.items ?? res?.data ?? res ?? [];
+      this.jobTypeOptions = this.toRichOptions(items);
+    });
   }
 
   loadJobs(page = 0): void {

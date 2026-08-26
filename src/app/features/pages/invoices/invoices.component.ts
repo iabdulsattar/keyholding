@@ -28,6 +28,8 @@ export class InvoicesComponent implements OnInit {
   error = '';
   searchQuery = '';
   statusFilter = 'All Status';
+  dateFrom = '';
+  dateTo = '';
 
   statusStyles: Record<string, string> = {
     Paid: 'bg-emerald-50 text-emerald-600',
@@ -71,6 +73,21 @@ export class InvoicesComponent implements OnInit {
     return 'key-vault';
   }
 
+  private mapStatusToApi(status: string): { status?: string; paymentStatus?: string } {
+    switch (status) {
+      case 'Paid':
+        return { paymentStatus: 'PAID' };
+      case 'Pending':
+        return { paymentStatus: 'PENDING' };
+      case 'Overdue':
+        return { paymentStatus: 'OVERDUE' };
+      case 'Void':
+        return { status: 'VOID' };
+      default:
+        return {};
+    }
+  }
+
   loadInvoices(): void {
     this.loading = true;
     this.error = '';
@@ -81,10 +98,15 @@ export class InvoicesComponent implements OnInit {
       return;
     }
 
+    const apiStatus = this.mapStatusToApi(this.statusFilter);
     this.subscriptionService.listInvoices(orgId, this.getServiceCode(), {
+      from: this.dateFrom ? `${this.dateFrom}T00:00:00Z` : undefined,
+      to: this.dateTo ? `${this.dateTo}T23:59:59Z` : undefined,
+      status: apiStatus.status,
+      paymentStatus: apiStatus.paymentStatus,
+      q: this.searchQuery || undefined,
       page: 0,
       size: 20,
-    //  sort: 'createdAt,desc'
     }).subscribe({
       next: (res: InvoiceListResponse) => {
         this.invoices = (res?.invoices ?? []).map((inv: Invoice) => this.mapInvoice(inv));

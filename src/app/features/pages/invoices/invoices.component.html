@@ -154,7 +154,13 @@
     <!-- Desktop table -->
     <div class="hidden md:block bg-white rounded-md border border-slate-200 overflow-hidden">
      <div class="overflow-x-auto no-scrollbar">
-       <table class="w-full min-w-[820px] ">
+      @if (filteredInvoices.length === 0) {
+       <table class="w-full min-w-[520px] ">
+       }else{
+
+               <table class="w-full  ">
+
+       }
          <thead>
            <tr class="bg-slate-50 border-b border-slate-200">
              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Invoice No.</th>
