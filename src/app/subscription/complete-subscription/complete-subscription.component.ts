@@ -37,7 +37,8 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private subscriptionService: SubscriptionService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.billingForm = this.fb.group({
       companyName: ['', [Validators.required, Validators.minLength(2)]],
@@ -241,11 +242,11 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
             saveBillingInfoCall().subscribe({
               next: () => {
                 this.isLoading = false;
-                window.location.href = '/';
+                this.router.navigate(['/invoice']);
               },
               error: () => {
                 this.isLoading = false;
-                window.location.href = '/';
+                this.router.navigate(['/invoice']);
               }
             });
           },
