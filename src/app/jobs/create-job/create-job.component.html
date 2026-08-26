@@ -262,7 +262,7 @@
                 </div>
             </div>
 
-            <div class=" px-5">
+            <div class="pb-5 px-5">
                 <hr class="border-slate-200 mb-4">
                 
                 <h3 class="flex items-center gap-2 text-slate-900 text-xs font-bold font-['Inter'] mb-4">
@@ -319,7 +319,7 @@
     </div>
 
     <!-- Schedule & Assignment -->
-    <div class="bg-white rounded-md  p-5 sm:p-6 mb-6">
+    <div class="bg-white rounded-md  p-5 sm:p-6 mb-4">
         <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter'] mb-5">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -344,7 +344,7 @@
                 @if (submitted && errors.date) {
                     <p class="text-xs text-rose-500 mt-1">{{ errors.date }}</p>
                 }
-                <p class="text-xs text-slate-400 mt-1.5">Select the date.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Select the date.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Start Time <span
@@ -361,7 +361,7 @@
                 @if (submitted && errors.startTime) {
                     <p class="text-xs text-rose-500 mt-1">{{ errors.startTime }}</p>
                 }
-                <p class="text-xs text-slate-400 mt-1.5">Start time.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Start time.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">End Time <span
@@ -378,13 +378,13 @@
                 @if (submitted && errors.endTime) {
                     <p class="text-xs text-rose-500 mt-1">{{ errors.endTime }}</p>
                 }
-                <p class="text-xs text-slate-400 mt-1.5">End time.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">End time.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Duration</label>
                 <input type="text" [value]="job.duration" disabled
                     class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-500" />
-                <p class="text-xs text-slate-400 mt-1.5">Auto-calculated.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Auto-calculated.</p>
             </div>
         </div>
 
@@ -413,7 +413,7 @@
                     @if (submitted && errors.officer) {
                         <p class="text-xs text-rose-500 mt-1">{{ errors.officer }}</p>
                     }
-                <p class="text-xs text-slate-400 mt-1.5">Assign an officer to this job.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Assign an officer to this job.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Priority <span
@@ -425,13 +425,13 @@
                         panelWidth="wide"
                         class="w-full">
                     </app-rich-select>
-                <p class="text-xs text-slate-400 mt-1.5">Set the priority level.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Set the priority level.</p>
             </div>
         </div>
     </div>
 
     <!-- Required Keys -->
-    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
         <div class="flex items-center justify-between gap-3 mb-1">
             <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter']">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -456,7 +456,7 @@
             @for (key of selectedKeys; track key.id) {
             <div class="rounded-md border border-slate-200 p-4">
                 <div class="flex items-start justify-between gap-2">
-                    <p class="flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
+                    <p class="flex items-center gap-1.5 text-xs font-bold text-blue-600 font-['Inter']">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M10.332 4.99943L11.8654 6.53276C11.99 6.65492 12.1575 6.72334 12.332 6.72334C12.5065 6.72334 12.6741 6.65492 12.7987 6.53276L14.1987 5.13276C14.3208 5.00814 14.3893 4.8406 14.3893 4.6661C14.3893 4.4916 14.3208 4.32405 14.1987 4.19943L12.6654 2.6661M13.9986 1.33276L7.59863 7.73276M8.66536 10.3328C8.66536 12.3578 7.02374 13.9994 4.9987 13.9994C2.97365 13.9994 1.33203 12.3578 1.33203 10.3328C1.33203 8.30772 2.97365 6.6661 4.9987 6.6661C7.02374 6.6661 8.66536 8.30772 8.66536 10.3328Z"
@@ -485,8 +485,8 @@
                             </svg></button>
                     </div>
                 </div>
-                <p class="font-semibold text-slate-800 mt-1.5">{{ key.name }}</p>
-                <p class="text-xs text-slate-400 mt-0.5">{{ key.site }} Vault</p>
+                <p class="font-semibold text-slate-900 text-xs font-['Inter'] mt-1.5">{{ key.name }}</p>
+                <p class="text-xs text-slate-500 font-['Inter'] mt-2">{{ key.site }} Vault</p>
                 <div class="flex gap-2 mt-2.5">
                     <span class="text-[11px] font-medium bg-slate-100 text-slate-600 rounded px-2 py-0.5">{{ key.cabinet
                         }}</span>
@@ -502,7 +502,7 @@
     </div>
 
     <!-- Lock Service Checklist -->
-    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
         <div class="flex items-center justify-between gap-3 mb-1">
             <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter']">
                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -520,7 +520,7 @@
                 Add Checklist Item
             </button>
         </div>
-        <p class="text-sm text-slate-500 mb-5">Define the checklist items the officer must complete.</p>
+        <p class="text-xs text-slate-600 font-['Inter'] mb-5">Define the checklist items the officer must complete.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-1">
             <ul class="divide-y divide-slate-100">
@@ -551,7 +551,7 @@
             </ul>
         </div>
 
-        <div class="mt-4 rounded-md bg-blue-50 border border-blue-100 px-4 py-3 flex gap-2.5">
+        <div class="mt-4 rounded-md bg-blue-50 border border-blue-100 px-4 py-3 flex items-center gap-2.5">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_2389_337)">
   <path d="M7.99923 10.6668V7.99996M7.99923 5.33308H8.0059M14.6664 7.99996C14.6664 11.6822 11.6814 14.6672 7.99923 14.6672C4.31704 14.6672 1.33203 11.6822 1.33203 7.99996C1.33203 4.31777 4.31704 1.33276 7.99923 1.33276C11.6814 1.33276 14.6664 4.31777 14.6664 7.99996Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
@@ -568,7 +568,7 @@
     </div>
 
     <!-- Notifications & Escalation -->
-    <div class="bg-white rounded-md p-5 sm:p-6 mb-6">
+    <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
         <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter'] mb-5">
              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M7.70006 15.7506C7.83172 15.9786 8.02108 16.168 8.24911 16.2996C8.47713 16.4313 8.73579 16.5006 8.99909 16.5006C9.26239 16.5006 9.52105 16.4313 9.74907 16.2996C9.9771 16.168 10.1665 15.9786 10.2981 15.7506M2.44596 11.4947C2.34798 11.6021 2.28332 11.7357 2.25984 11.8792C2.23637 12.0226 2.25509 12.1698 2.31373 12.3029C2.37237 12.4359 2.46841 12.549 2.59015 12.6284C2.71189 12.7079 2.8541 12.7502 2.99947 12.7503H14.9997C15.1451 12.7504 15.2873 12.7082 15.4091 12.6289C15.5309 12.5496 15.6271 12.4366 15.6859 12.3037C15.7447 12.1707 15.7636 12.0236 15.7403 11.8801C15.717 11.7366 15.6525 11.603 15.5547 11.4955C14.5572 10.4671 13.4997 9.3743 13.4997 5.99977C13.4997 4.80619 13.0256 3.66151 12.1816 2.81752C11.3377 1.97354 10.1931 1.49939 8.99959 1.49939C7.80609 1.49939 6.66148 1.97354 5.81755 2.81752C4.97361 3.66151 4.4995 4.80619 4.4995 5.99977C4.4995 9.3743 3.44123 10.4671 2.44596 11.4947Z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
@@ -589,7 +589,7 @@
                         <polyline points="6 9 12 15 18 9" />
                     </svg>
                 </div>
-                <p class="text-xs text-slate-400 mt-1.5">Contacts will be notified based on job outcome.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Contacts will be notified based on job outcome.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Notify if Job Not Completed</label>
@@ -638,7 +638,7 @@
                     </svg>
                     Upload Files
                 </label>
-                <p class="text-xs text-slate-400 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
+                <p class="text-[9px] text-slate-500 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
                 @if (attachmentError) {
                     <p class="text-xs text-rose-600 mt-2">{{ attachmentError }}</p>
                 }
@@ -681,7 +681,7 @@
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Additional Notes</label>
                 <textarea rows="3" [(ngModel)]="job.notes" placeholder="Enter any additional notes or instructions for the officer..."
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></textarea>
-                <p class="text-xs text-slate-400 mt-1.5 text-right">55/500</p>
+                <p class="text-[9px] text-slate-500 mt-1.5 ">55/500</p>
             </div>
         </div>
     </div>
@@ -689,7 +689,7 @@
     <!-- Footer actions -->
     <div class="flex flex-col sm:flex-row sm:justify-end gap-3 pb-4">
         <button
-            class="w-full sm:w-auto rounded-lg border border-slate-300 text-slate-700 font-medium px-10 py-2.5 hover:bg-slate-50">Cancel</button>
+            class="w-full sm:w-auto bg-white rounded-md border border-slate-200 text-slate-600 text-sm font-semibold font-['Inter'] px-10 py-2.5 hover:bg-slate-50">Cancel</button>
          <button (click)="createJob()" [disabled]="saving"
              class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 rounded-md text-white text-sm font-semibold font-['Inter'] transition hover:bg-blue-700 disabled:opacity-70">
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
