@@ -455,7 +455,7 @@
                     </svg>
                     Checklist
                   </h3>
-                  <p class="text-xs text-slate-600 font-normal font-['Inter'] mt-0.5">Review the checklist items, responses and evidence captured for this job.</p>
+                  <p class="pl-6.5 text-xs text-slate-600 font-normal font-['Inter'] mt-0.5">Review the checklist items, responses and evidence captured for this job.</p>
                 </div>
                 <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold font-['Inter'] px-3 py-1.5 rounded-md whitespace-nowrap">12/12 Completed</span>
               </div>
@@ -511,7 +511,7 @@
                 }
               </div>
 
-              <div class="flex items-center gap-2 py-5 text-xs text-slate-900 font-normal font-['Inter']">
+              <div class="flex items-center gap-2 pl-6.5 py-5 text-xs text-slate-900 font-normal font-['Inter']">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_2420_2230)">
   <rect width="16" height="16" fill="#F4F6FA"/>
@@ -533,39 +533,52 @@
         @if (activeTab === 'escalation') {
           <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
           
-          <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-1">
-            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-1">
+            <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.668 16V14.3333C12.668 13.4493 12.3168 12.6014 11.6916 11.9763C11.0664 11.3512 10.2184 11 9.33429 11H4.33371C3.44956 11 2.60161 11.3512 1.97642 11.9763C1.35123 12.6014 1 13.4493 1 14.3333V16M10.1677 4.33333C10.1677 6.17428 8.67516 7.66667 6.834 7.66667C4.99284 7.66667 3.50029 6.17428 3.50029 4.33333C3.50029 2.49238 4.99284 1 6.834 1C8.67516 1 10.1677 2.49238 10.1677 4.33333Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+  </svg>
             Escalations &amp; Notifications
           </h3>
-          <p class="text-sm text-slate-500 mb-6">View the notification contacts configured for this job.</p>
+          <p class="pl-5.5 text-xs text-slate-600 font-normal font-['Inter'] mb-4">View the notification contacts configured for this job.</p>
 
           @if (escalationCompletionEnabled) {
-            <div class="mb-8">
-              <div class="flex items-center gap-2 mb-3">
-                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>
-                <h4 class="font-bold text-slate-900">Notify on Job Completion</h4>
+            <div class="mb-5">
+              <div class="flex items-center gap-2 mb-4 pl-5.5">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2440_2432)">
+  <path d="M14.5331 6.66678C14.8376 8.16098 14.6206 9.7144 13.9183 11.068C13.2161 12.4216 12.071 13.4935 10.6741 14.105C9.27718 14.7165 7.71284 14.8306 6.24196 14.4284C4.77107 14.0261 3.48255 13.1317 2.59127 11.8944C1.7 10.6571 1.25984 9.15161 1.3442 7.62904C1.42856 6.10647 2.03234 4.65884 3.05486 3.52756C4.07737 2.39628 5.45681 1.64974 6.96313 1.41242C8.46946 1.1751 10.0116 1.46136 11.3324 2.22345M5.99935 7.33313L7.99935 9.33313L14.666 2.66646" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2440_2432">
+  <rect width="16" height="16" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+                <h4 class="font-bold text-slate-900 text-xs font-['Inter']">Notify on Job Completion</h4>
               </div>
 
-              <div class="overflow-x-auto rounded-xl border border-slate-100">
+              <div class="overflow-x-auto rounded-md border border-slate-200">
                 <table class="w-full min-w-[560px] text-sm">
                   <thead>
-                    <tr class="bg-emerald-50 text-left">
-                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Name</th>
-                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Role</th>
-                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Email</th>
+                    <tr class="bg-green-50 text-left border-b border-slate-200">
+                      <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Name</th>
+                      <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Role</th>
+                      <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Email</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-100">
+                  <tbody class="divide-y divide-slate-200">
                     @for (contact of escalationContacts.completion; track contact.email) {
                       <tr class="hover:bg-slate-50/60 transition">
                         <td class="px-5 py-4">
-                          <div class="flex items-center gap-2 text-slate-800 font-medium whitespace-nowrap">
-                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                          <div class="flex items-center gap-2 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">
+                            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11 13V11.6667C11 10.9594 10.699 10.2811 10.1632 9.78105C9.62734 9.28095 8.90062 9 8.14286 9H3.85714C3.09938 9 2.37266 9.28095 1.83684 9.78105C1.30102 10.2811 1 10.9594 1 11.6667V13M8.85714 3.66667C8.85714 5.13943 7.57796 6.33333 6 6.33333C4.42204 6.33333 3.14286 5.13943 3.14286 3.66667C3.14286 2.19391 4.42204 1 6 1C7.57796 1 8.85714 2.19391 8.85714 3.66667Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+  </svg>
                             {{ contact.name }}
                           </div>
                         </td>
-                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.role }}</td>
-                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.email }}</td>
+                        <td class="px-5 py-4 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.role }}</td>
+                        <td class="px-5 py-4 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.email }}</td>
                       </tr>
                     }
                   </tbody>
@@ -576,31 +589,35 @@
 
           @if (escalationNotCompletedEnabled) {
             <div>
-              <div class="flex items-center gap-2 mb-3">
-                <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                <h4 class="font-bold text-slate-900">Notify on Job Completion</h4>
+              <div class="flex items-center gap-2 mb-4 pl-5.5">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11.4 6.6L6.6 11.4M6.6 6.6L11.4 11.4M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+                <h4 class="font-semibold text-slate-900 text-xs font-['Inter']">Notify on Job Completion</h4>
               </div>
 
-              <div class="overflow-x-auto rounded-xl border border-slate-100">
+              <div class="overflow-x-auto rounded-md border border-slate-200">
                 <table class="w-full min-w-[560px] text-sm">
                   <thead>
-                    <tr class="bg-rose-50 text-left">
-                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Name</th>
-                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Role</th>
-                      <th class="px-5 py-3 font-semibold text-slate-700 whitespace-nowrap">Email</th>
+                    <tr class="bg-red-50 text-left border-b border-slate-200">
+                      <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Name</th>
+                      <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Role</th>
+                      <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Email</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-100">
+                  <tbody class="divide-y divide-slate-200">
                     @for (contact of escalationContacts.notCompleted; track contact.email) {
                       <tr class="hover:bg-slate-50/60 transition">
                         <td class="px-5 py-4">
-                          <div class="flex items-center gap-2 text-slate-800 font-medium whitespace-nowrap">
-                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                          <div class="flex items-center gap-2 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">
+                            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11 13V11.6667C11 10.9594 10.699 10.2811 10.1632 9.78105C9.62734 9.28095 8.90062 9 8.14286 9H3.85714C3.09938 9 2.37266 9.28095 1.83684 9.78105C1.30102 10.2811 1 10.9594 1 11.6667V13M8.85714 3.66667C8.85714 5.13943 7.57796 6.33333 6 6.33333C4.42204 6.33333 3.14286 5.13943 3.14286 3.66667C3.14286 2.19391 4.42204 1 6 1C7.57796 1 8.85714 2.19391 8.85714 3.66667Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+  </svg>
                             {{ contact.name }}
                           </div>
                         </td>
-                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.role }}</td>
-                        <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ contact.email }}</td>
+                        <td class="px-5 py-4 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.role }}</td>
+                        <td class="px-5 py-4 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.email }}</td>
                       </tr>
                     }
                   </tbody>
