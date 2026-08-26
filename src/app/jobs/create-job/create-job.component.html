@@ -1,4 +1,4 @@
-<div class=" mx-auto px-4 sm:px-4 lg:px-4 py-6 lg:py-8">
+<div class=" mx-auto px-4 sm:px-4 lg:px-4 py-4 ">
 
     <!-- Page header -->
     <div class="mb-6">
@@ -8,7 +8,7 @@
     </div>
 
     <!-- Summary cards -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -19,7 +19,7 @@
             </div>
             <div class="min-w-0">
                 <p class=" text-slate-500 text-xs font-medium font-['Inter'] uppercase">Job Type</p>
-                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">Lock Service</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">Lock Service</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
@@ -39,7 +39,7 @@
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Priority</p>
-                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">High</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">High</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
@@ -52,7 +52,7 @@
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Site</p>
-                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">Head Office</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">Head Office</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
@@ -65,13 +65,13 @@
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Client</p>
-                <p class="text-slate-900 text-sm font-bold font-['Inter'] ">Alpha Security Ltd.</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">Alpha Security Ltd.</p>
             </div>
         </div>
     </div>
 
     <!-- Job Information + side panel -->
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 mb-6">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-4">
         <div class="xl:col-span-2 bg-white rounded-md  p-5 sm:p-6">
             <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter'] mb-5">
                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,15 +95,15 @@
                             class="flex-1"
                             >
                         </app-rich-select>
-                        <button (click)="openAddJobTypeModal()" aria-label="Add job type"
+                        <!-- <button (click)="openAddJobTypeModal()" aria-label="Add job type"
                             class="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
+                        </button> -->
                     </div>
                     @if (submitted && errors.jobType) {
                         <p class="text-xs text-rose-500 mt-1">{{ errors.jobType }}</p>
                     }
-                    <p class="text-xs text-slate-400 mt-1.5">Select the type of job</p>
+                    <p class="text-[9px] text-slate-500  mt-1.5">Select the type of job</p>
                 </div>
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Client <span
@@ -122,7 +122,7 @@
                     @if (submitted && errors.client) {
                         <p class="text-xs text-rose-500 mt-1">{{ errors.client }}</p>
                     }
-                    <p class="text-xs text-slate-400 mt-1.5">Select the client for this job</p>
+                    <p class="text-[9px] text-slate-500 mt-1.5">Select the client for this job</p>
                 </div>
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Site <span
@@ -141,7 +141,7 @@
                     @if (submitted && errors.site) {
                         <p class="text-xs text-rose-500 mt-1">{{ errors.site }}</p>
                     }
-                    <p class="text-xs text-slate-400 mt-1.5">Select the site where job will take place</p>
+                    <p class="text-[9px] text-slate-500 mt-1.5">Select the site where job will take place</p>
                 </div>
             </div>
 
@@ -157,13 +157,13 @@
                     @if (submitted && errors.title) {
                         <p class="text-xs text-rose-500 mt-1">{{ errors.title }}</p>
                     }
-                    <p class="text-xs text-slate-400 mt-1.5">Enter a short title for this job.</p>
+                    <p class="text-[9px] text-slate-500 mt-1.5">Enter a short title for this job.</p>
                 </div>
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Reference</label>
                     <input type="text" [(ngModel)]="job.reference" placeholder="Enter reference (optional)"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-                    <p class="text-xs text-slate-400 mt-1.5">Add a reference for this job.</p>
+                    <p class="text-[9px] text-slate-500 mt-1.5">Add a reference for this job.</p>
                 </div>
             </div>
 
@@ -171,25 +171,26 @@
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Description</label>
                 <textarea rows="3" [(ngModel)]="job.description"
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue">Perform evening locking and security checks as per site locking procedure. Ensure all areas are secure, alarm is set and keys are returned.</textarea>
-                <p class="text-xs text-slate-400 mt-1.5">Provide a brief description of the job.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Provide a brief description of the job.</p>
             </div>
         </div>
 
         <!-- Side panel -->
-        <div class="flex flex-col gap-4 sm:gap-6">
-            <div class="bg-white rounded-md p-5">
-                <h3 class="flex items-center gap-2 font-bold text-slate-900 mb-4 text-sm">
-
+        <div class="flex flex-col gap-4 bg-white rounded-md">
+            <div class="px-5 pt-5">
+                <h3 class="flex items-center justify-between gap-2 font-bold text-slate-900 mb-4 text-xs">
+                    <div class="flex items-center gap-2">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M6.8338 9.16732V6.8338M6.8338 4.50028H6.83963M12.6676 6.8338C12.6676 10.0557 10.0557 12.6676 6.8338 12.6676C3.61188 12.6676 1 10.0557 1 6.8338C1 3.61188 3.61188 1 6.8338 1C10.0557 1 12.6676 3.61188 12.6676 6.8338Z"
                             stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
                     </svg> About Job Types
+                    </div>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10.5 8.75L7 5.25L3.5 8.75" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
                     </svg>
                 </h3>
-                <hr class="border-slate-100 mb-4">
+                <hr class="border-slate-200 mb-4">
                 <div class="space-y-4">
                     <div class="flex gap-3 ">
                         <div class="flex items-center justify-center shrink-0 w-7 h-7  bg-blue-50 rounded-md">
@@ -261,7 +262,9 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-md p-5">
+            <div class=" px-5">
+                <hr class="border-slate-200 mb-4">
+                
                 <h3 class="flex items-center gap-2 text-slate-900 text-xs font-bold font-['Inter'] mb-4">
                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                     What's Next?
