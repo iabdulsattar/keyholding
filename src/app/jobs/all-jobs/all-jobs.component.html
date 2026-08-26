@@ -1,5 +1,5 @@
-<div class="min-h-[calc(100vh-48px)] text-gray-900">
-  <div class="flex-1 flex flex-col min-w-0">
+<div class="min-h-[calc(100vh-48px)] flex flex-col text-gray-900">
+  <div class="flex-1 min-w-0">
 
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -8,18 +8,18 @@
         <p class="text-slate-600 text-sm font-normal font-['Inter'] mt-1">View and manage all jobs across all clients</p>
       </div>
       <div class="flex">
-        <button routerLink="/jobs/create-job" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold font-['Inter'] text-sm px-5 py-2.5 rounded-l-lg shadow-sm transition">
+        <button routerLink="/jobs/create-job" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold font-['Inter'] text-sm px-5 py-2.5 rounded-l-md shadow-sm transition">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
           Create Job
         </button>
-        <button class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-3 rounded-r-lg border-l border-blue-500/60 shadow-sm transition">
+        <button class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-3 rounded-r-md border-l border-blue-500/60 shadow-sm transition">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
         </button>
       </div>
     </div>
 
     <!-- Stat cards -->
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6">
+    <div class="grid grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-4 mb-4">
 
       <div class="bg-white rounded-md  px-6 py-8 flex items-center gap-3 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)]  ">
         <div class="h-12 w-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <div class="col-span-2 lg:col-span-1 bg-white rounded-md  px-6 py-8 flex items-center gap-3 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)]  ">
+      <div class="col-span-2 xl:col-span-1 bg-white rounded-md  px-6 py-8 flex items-center gap-3 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)]  ">
         <div class="h-12 w-12 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 8.99927V12.9993M12 16.9993H12.01M21.7304 17.9995L13.7304 3.99949C13.556 3.6917 13.303 3.43568 12.9973 3.25756C12.6917 3.07944 12.3442 2.9856 11.9904 2.9856C11.6366 2.9856 11.2892 3.07944 10.9835 3.25756C10.6778 3.43568 10.4249 3.6917 10.2504 3.99949L2.25042 17.9995C2.0741 18.3049 1.98165 18.6514 1.98243 19.004C1.98321 19.3566 2.0772 19.7027 2.25486 20.0073C2.43253 20.3119 2.68757 20.5641 2.99411 20.7383C3.30066 20.9126 3.64783 21.0027 4.00042 20.9995H20.0004C20.3513 20.9991 20.6959 20.9065 20.9997 20.7308C21.3035 20.5551 21.5556 20.3026 21.7309 19.9986C21.9062 19.6946 21.9985 19.3499 21.9984 18.999C21.9983 18.6481 21.9059 18.3034 21.7304 17.9995Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
@@ -80,25 +80,31 @@
     </div>
 
     <!-- Filters -->
-    <div class=" p-3 sm:p-4 mb-4 flex flex-col lg:flex-row gap-3">
+    <div class=" mb-4 gap-3 grid grid-cols-1 lg:grid-cols-12">
+      <div class="col-span-6">
       <div class="relative flex-1 min-w-0">
-        <svg class="h-4 w-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
+        <svg class="h-4 w-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
         <input type="text" placeholder="Search jobs by Job ID, client, site, officer..."
-          class="w-full pl-9 pr-3 py-2.5 bg-white rounded-md  text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          class="w-full pl-3 pr-3 py-2.5 bg-white shadow-xs rounded-md text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 lg:flex gap-3 shrink-0">
-        <select class="appearance-none bg-white  rounded-md px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="col-span-6">
+      
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 shrink-0">
+        <select class="appearance-none bg-white  rounded-md shadow-xs px-3 py-2.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          
           <option>All Clients</option>
         </select>
-        <select class="appearance-none bg-white  rounded-md px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <select class="appearance-none bg-white  rounded-md shadow-xs px-3 py-2.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option>All Sites</option>
         </select>
-        <select class="appearance-none bg-white  rounded-md px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <select class="appearance-none bg-white  rounded-md shadow-xs px-3 py-2.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option>All Job Types</option>
         </select>
-        <select class="appearance-none bg-white  rounded-md px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <select class="appearance-none bg-white  rounded-md shadow-xs px-3 py-2.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option>All Statuses</option>
         </select>
+      </div>
       </div>
     </div>
 
@@ -196,16 +202,16 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-md px-4 py-3 ">
       <p class="text-slate-500 text-xs font-medium font-['Inter'] order-2 sm:order-1">Showing 1 to 10 of 1,248 jobs</p>
       <div class="flex items-center gap-1.5 order-1 sm:order-2 overflow-x-auto scrollbar-thin">
-        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50">
+        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50">
    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.75 10.5L5.25 7L8.75 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
         </svg>        </button>
-        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-lg bg-blue-600 text-white text-xs font-bold font-['Inter']">1</button>
-        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold  hover:bg-slate-50">2</button>
-        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold  hover:bg-slate-50">3</button>
+        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm bg-blue-600 text-white text-xs font-bold font-['Inter']">1</button>
+        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-600 text-xs font-semibold  hover:bg-slate-50">2</button>
+        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-600 text-xs font-semibold  hover:bg-slate-50">3</button>
         <span class="px-1 text-slate-400">...</span>
-        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold  hover:bg-slate-50">125</button>
-        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 text-xs font-semibold  hover:bg-slate-50">
+        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-600 text-xs font-semibold  hover:bg-slate-50">125</button>
+        <button class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-400 text-xs font-semibold  hover:bg-slate-50">
  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
     </svg>        </button>
@@ -229,6 +235,9 @@
       </svg>
     </p>
   </div>
+  
+  </div>
+
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
     <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
       <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
@@ -241,5 +250,4 @@
 
   </div>
 
-  </div>
 </div>
