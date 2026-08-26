@@ -165,7 +165,12 @@
              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Action</th>
            </tr>
          </thead>
-         <tbody class="divide-y divide-slate-200 h-[650px]">
+        <tbody
+  [class]="filteredInvoices.length === 0
+    ? 'divide-y divide-slate-200 h-[40vh]'
+    : 'divide-y divide-slate-200'"
+>
+
            @if (loading) {
              <tr>
                <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">Loading invoices...</td>
