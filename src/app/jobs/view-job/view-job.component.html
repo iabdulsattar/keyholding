@@ -350,25 +350,27 @@
         @if (activeTab === 'keys') {
           <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
           
-          <h3 class="flex items-center gap-2 text-lg font-bold text-slate-900 mb-1">
-            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.5 12.5 19 4"/><path d="M17 6l2 2"/><path d="M14 9l2 2"/></svg>
+          <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-1">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.332 4.99949L11.8654 6.53282C11.99 6.65498 12.1575 6.7234 12.332 6.7234C12.5065 6.7234 12.6741 6.65498 12.7987 6.53282L14.1987 5.13282C14.3208 5.00821 14.3893 4.84066 14.3893 4.66616C14.3893 4.49166 14.3208 4.32411 14.1987 4.19949L12.6654 2.66616M13.9986 1.33282L7.59863 7.73283M8.66536 10.3328C8.66536 12.3579 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3579 1.33203 10.3328C1.33203 8.30778 2.97365 6.66616 4.9987 6.66616C7.02374 6.66616 8.66536 8.30778 8.66536 10.3328Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+            </svg>
             Required Keys
           </h3>
-          <p class="text-sm text-slate-500 mb-5">These are the keys required and used for this job.</p>
+          <p class="text-xs text-slate-600 font-normal font-['Inter'] mb-5 pl-6">These are the keys required and used for this job.</p>
 
           <!-- Keys table -->
-          <div class="overflow-x-auto -mx-5 sm:mx-0 rounded-xl border border-slate-100">
+          <div class="overflow-x-auto -mx-5 sm:mx-0 ">
             <table class="w-full min-w-[820px] text-sm">
               <thead>
-                <tr class="bg-slate-50 text-left">
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Key ID</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Key Name</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Storage Location</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Cabinet</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Hook</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">Status</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap text-center">Used</th>
-                  <th class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap text-center">Returned</th>
+                <tr class="bg-slate-50 text-left border-b border-slate-200">
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Key ID</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Key Name</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Storage Location</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Cabinet</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Hook</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap">Status</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap text-center">Used</th>
+                  <th class="px-5 py-3 font-bold text-slate-900 text-xs font-['Inter'] whitespace-nowrap text-center">Returned</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100">
@@ -398,31 +400,41 @@
           <p class="text-xs text-slate-400 mt-2 sm:hidden">Swipe left to see more columns →</p>
 
           <!-- Key Usage Summary -->
-          <div class="mt-6 rounded-2xl border border-slate-200 p-5 sm:p-6">
+          <div class="mt-6 rounded-md border border-slate-200 p-5 ">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
               <div class="flex items-start gap-3 max-w-md">
-                <svg class="w-5 h-5 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <svg width="16" height="16" class="mt-0.5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2416_1687)">
+  <rect width="16" height="16" fill="#F4F6FA"/>
+  <path d="M7.99923 10.6669V8.00003M7.99923 5.33314H8.0059M14.6664 8.00003C14.6664 11.6822 11.6814 14.6672 7.99923 14.6672C4.31704 14.6672 1.33203 11.6822 1.33203 8.00003C1.33203 4.31783 4.31704 1.33282 7.99923 1.33282C11.6814 1.33282 14.6664 4.31783 14.6664 8.00003Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2416_1687">
+  <rect width="16" height="16" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
                 <div>
-                  <h4 class="font-bold text-slate-900">Key Usage Summary</h4>
-                  <p class="text-sm text-slate-500 mt-0.5">4 of 4 required keys were used and returned.</p>
+                  <h4 class="font-semibold text-slate-900 text-sm font-['Inter']">Key Usage Summary</h4>
+                  <p class="text-xs text-slate-900 font-normal font-['Inter'] mt-0.5">4 of 4 required keys were used and returned.</p>
                 </div>
               </div>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="bg-amber-50 rounded-xl px-4 py-2.5 min-w-[110px]">
-                  <p class="text-xs font-semibold text-amber-700">Issued</p>
-                  <p class="text-xl font-extrabold text-amber-600">4</p>
+                <div class="bg-orange-100 rounded-md px-4 py-2.5 min-w-[110px]">
+                  <p class="text-[10px] font-semibold text-amber-600 font-['Inter']">Issued</p>
+                  <p class="text-base font-bold text-amber-600 font-['Inter']">4</p>
                 </div>
-                <div class="bg-blue-50 rounded-xl px-4 py-2.5 min-w-[110px]">
-                  <p class="text-xs font-semibold text-blue-700">Used</p>
-                  <p class="text-xl font-extrabold text-blue-600">4</p>
+                <div class="bg-blue-50 rounded-md px-4 py-2.5 min-w-[110px]">
+                  <p class="text-[10px] font-semibold text-blue-600 font-['Inter']">Used</p>
+                  <p class="text-base font-bold text-blue-600 font-['Inter']">4</p>
                 </div>
-                <div class="bg-emerald-50 rounded-xl px-4 py-2.5 min-w-[110px]">
-                  <p class="text-xs font-semibold text-emerald-700">Returned</p>
-                  <p class="text-xl font-extrabold text-emerald-600">4</p>
+                <div class="bg-green-100 rounded-md px-4 py-2.5 min-w-[110px]">
+                  <p class="text-[10px] font-semibold text-green-700 font-['Inter']">Returned</p>
+                  <p class="text-base font-bold text-green-700 font-['Inter']">4</p>
                 </div>
-                <div class="bg-rose-50 rounded-xl px-4 py-2.5 min-w-[110px]">
-                  <p class="text-xs font-semibold text-rose-700">Not Returned</p>
-                  <p class="text-xl font-extrabold text-rose-600">4</p>
+                <div class="bg-red-100 rounded-md px-4 py-2.5 min-w-[110px]">
+                  <p class="text-[10px] font-semibold text-red-500 font-['Inter']">Not Returned</p>
+                  <p class="text-base font-bold text-red-500 font-['Inter']">4</p>
                 </div>
               </div>
             </div>
