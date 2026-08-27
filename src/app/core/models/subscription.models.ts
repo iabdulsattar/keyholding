@@ -84,6 +84,7 @@ export interface ChangePlanRequest {
   newPlanId: string;
   billingPeriod: BillingPeriod;
   config?: Record<string, any>;
+  paymentMethodId?: string;
 }
 
 export interface ChangePlanResponse {
@@ -149,7 +150,8 @@ export interface UsageResponse {
 // -------- Invoices --------
 export interface Invoice {
   id: string;
-  invoiceNumber: string;
+  invoiceNumber?: string;
+  number?: string;
   status: string;
   paymentStatus?: string;
   amountCents: number;
@@ -164,22 +166,30 @@ export interface Invoice {
   vatCents?: number;
   totalCents?: number;
   vatRateBps?: number;
+  subscriptionId?: string;
+  hostedInvoiceUrl?: string;
+  pdfUrl?: string;
+  periodStart?: string;
+  periodEnd?: string;
   [key: string]: any;
 }
 
 export interface InvoiceListResponse {
-  invoices: Invoice[];
-  total: number;
-  page: number;
-  size: number;
-  [key: string]: any;
+  data: Invoice[];
+  meta?: {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+  };
 }
 
 export interface InvoiceDetailResponse {
-  invoice: Invoice;
-  billingInfo?: BillingInfo;
-  plan?: Plan;
-  [key: string]: any;
+  data: Invoice;
+  meta?: {
+    timestamp: string;
+    requestId: string;
+  };
 }
 
 // -------- Billing Info --------

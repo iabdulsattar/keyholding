@@ -59,12 +59,12 @@
   </div>
  
   <div class="flex flex-col sm:flex-row gap-3  ">
-    <button class="order-2 sm:order-1 flex items-center justify-center gap-2 border-1 border-blue-600 bg-white text-blue-600 rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-50 transition">
+    <a href="{{ invoice.pdfUrl }}" class="order-2 sm:order-1 flex items-center justify-center gap-2 border-1 border-blue-600 bg-white text-blue-600 rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-50 transition">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M8 10V2M11.3333 6.66667L8 10L4.66667 6.66667M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
       </svg>
       Download PDF
-    </button>
+    </a>
     <button class="order-1 sm:order-2 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-700 transition shadow-sm">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14.2372 1.10026L6.94321 8.39267M9.35791 14.1252C9.38324 14.1883 9.42728 14.2422 9.48411 14.2796C9.54093 14.3169 9.60784 14.336 9.67583 14.3343C9.74383 14.3325 9.80967 14.3101 9.86451 14.2698C9.91935 14.2296 9.96057 14.1735 9.98263 14.1092L14.3163 1.44298C14.3377 1.38391 14.3417 1.31999 14.3281 1.25869C14.3144 1.19739 14.2836 1.14126 14.2391 1.09685C14.1947 1.05244 14.1386 1.02159 14.0773 1.00793C14.016 0.994258 13.952 0.998329 13.893 1.01966L1.22522 5.35285C1.16088 5.37491 1.10483 5.41612 1.06459 5.47096C1.02435 5.52579 1.00185 5.59162 1.00011 5.65961C0.998368 5.7276 1.01747 5.79449 1.05485 5.85131C1.09223 5.90813 1.14609 5.95216 1.20922 5.97749L6.49634 8.09742C6.66348 8.16433 6.81533 8.26438 6.94275 8.39156C7.07017 8.51873 7.17051 8.67039 7.23773 8.83739L9.35791 14.1252Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -497,9 +497,8 @@
               </div>
             </div>
             <div>
-              <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center mt-2 gap-1.5">
-                  <span class="text-blue-700 font-extrabold italic text-xs">VISA</span>
-                  <span class="tracking-widest text-slate-400">••••</span> 4242
+               <p class="text-xs font-semibold text-slate-900 font-['Inter'] flex items-center mt-2 gap-1.5">
+                  {{ invoice.paymentMethod }}
                 </p>
                 
             </div>

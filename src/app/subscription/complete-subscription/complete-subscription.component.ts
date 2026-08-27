@@ -214,7 +214,8 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
       return this.subscriptionService.changePlan(orgId, 'key-vault', {
         newPlanId: this.plan.id,
         billingPeriod: 'MONTHLY',
-        config: { paymentMethodId }
+        config: { licences: 10 },
+        paymentMethodId
       });
     };
 

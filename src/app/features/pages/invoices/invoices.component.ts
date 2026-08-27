@@ -109,7 +109,7 @@ export class InvoicesComponent implements OnInit {
       size: 20,
     }).subscribe({
       next: (res: InvoiceListResponse) => {
-        this.invoices = (res?.invoices ?? []).map((inv: Invoice) => this.mapInvoice(inv));
+        this.invoices = (res?.data ?? []).map((inv: Invoice) => this.mapInvoice(inv));
         this.loading = false;
       },
       error: (err: any) => {
@@ -128,30 +128,13 @@ export class InvoicesComponent implements OnInit {
       ? `${(inv.amountCents / 100).toFixed(2)} ${inv.currency || 'GBP'}`
       : '—';
 
-    const statusMap: Record<string, string> = {
-      'PAID': 'Paid',
-      'paid': 'Paid',
-      'OPEN': 'Pending',
-      'open': 'Pending',
-      'PENDING': 'Pending',
-      'pending': 'Pending',
-      'OVERDUE': 'Overdue',
-      'overdue': 'Overdue',
-      'VOID': 'Void',
-      'void': 'Void',
-      'CANCELLED': 'Void',
-      'cancelled': 'Void',
-    };
-
-    const invoiceStatus = statusMap[inv.status] || inv.status || 'Pending';
-    const billingPeriod = inv.billingPeriod === 'ANNUAL' ? 'Annual' : 'Monthly';
-    const desc = inv.planName ? `${inv.planName} (${billingPeriod})` : (inv.description || `${billingPeriod} subscription`);
+    const invoiceStatus = inv.paymentStatus === 'PAID' ? 'Paid' : inv.paymentStatus === 'PENDING' ? 'Pending' : inv.paymentStatus === 'OVERDUE' ? 'Overdue' : (inv.status || 'Pending');
 
     return {
       id: inv.id,
-      no: inv.invoiceNumber || `INV-${date ? date.getFullYear() : '0000'}-${(inv.id || '').slice(0, 5).toUpperCase()}`,
+      no: inv.number || `INV-${date ? date.getFullYear() : '0000'}-${(inv.id || '').slice(0, 5).toUpperCase()}`,
       date: dateStr,
-      desc: desc,
+      desc: inv.subscriptionId ? `Subscription ${inv.subscriptionId.slice(0, 8)}` : 'Subscription invoice',
       amount: amount,
       status: invoiceStatus,
       paymentStatus: inv.paymentStatus,

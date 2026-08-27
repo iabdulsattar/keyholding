@@ -56,7 +56,7 @@ export class InvoiceDetailComponent implements OnInit {
 
     this.subscriptionService.getInvoiceDetail(orgId, this.invoiceId).subscribe({
       next: (res: InvoiceDetailResponse) => {
-        this.invoice = this.mapInvoice(res.invoice, res);
+        this.invoice = this.mapInvoice(res.data);
         this.loading = false;
       },
       error: (err: any) => {
@@ -80,8 +80,8 @@ export class InvoiceDetailComponent implements OnInit {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  private mapInvoice(inv: any, res: InvoiceDetailResponse): any {
-    const status = inv.status || 'Pending';
+  private mapInvoice(inv: any): any {
+    const status = inv.paymentStatus || inv.status || 'Pending';
     const billingPeriod = inv.billingPeriod === 'ANNUAL' ? 'Annual' : 'Monthly';
     const desc = inv.planName ? `${inv.planName} (${billingPeriod})` : (inv.description || `${billingPeriod} subscription`);
 
@@ -91,13 +91,16 @@ export class InvoiceDetailComponent implements OnInit {
     const vatRate = inv.vatRateBps ?? (vat && subtotal ? Math.round((vat / subtotal) * 10000) : 0);
     const vatPercent = (vatRate / 100).toFixed(2);
 
-    const billing = res.billingInfo || {};
+    const billing = inv.billing || {};
+
+    const features = inv.planFeatures || {};
+    const formatFeature = (val: any) => val === true ? 'Unlimited' : val === false ? '—' : (val ?? '—');
 
     return {
-      number: inv.invoiceNumber || '—',
+      number: inv.number || inv.invoiceNumber || '—',
       status: status,
       description: desc,
-      date: this.formatDate(inv.createdAt),
+      date: this.formatDate(inv.invoiceDate || inv.createdAt),
       dueDate: this.formatDate(inv.dueDate),
       paymentDate: this.formatDate(inv.paidAt),
       plan: inv.planName || '—',
@@ -110,18 +113,22 @@ export class InvoiceDetailComponent implements OnInit {
       billingEmail: billing.billingEmail || '—',
       billingAddress: [billing.billingAddress, billing.city, billing.postcode, billing.country].filter(Boolean).join(', ') || '—',
       billingCycle: billingPeriod,
-      nextBillingDate: this.formatDate(inv.currentPeriodEnd || inv.endDate),
+      nextBillingDate: this.formatDate(inv.currentPeriodEnd || inv.periodEnd || inv.endDate),
       paymentMethod: inv.paymentMethod || '—',
+      pdfUrl: inv.pdfUrl || '',
       planDetails: {
         name: inv.planName || '—',
-        price: this.formatCurrency(inv.amountCents, inv.currency),
+        price: this.formatCurrency(total, inv.currency),
         period: `/${billingPeriod.toLowerCase()}`,
         description: desc,
-        sites: (res.plan?.features as any)?.['max_sites'] ?? (res.plan?.features as any)?.['sites'] ?? '—',
-        keys: (res.plan?.features as any)?.['max_keys'] ?? (res.plan?.features as any)?.['keys'] ?? '—',
-        users: (res.plan?.features as any)?.['max_users'] ?? (res.plan?.features as any)?.['users'] ?? '—',
-        jobs: (res.plan?.features as any)?.['max_jobs'] ?? (res.plan?.features as any)?.['jobs'] ?? '—',
-        features: res.plan?.features ? Object.values(res.plan.features).join(', ') : '—',
+        sites: formatFeature(features.max_sites),
+        keys: formatFeature(features.unlimited_keys ? 'Unlimited' : features.max_keys),
+        users: formatFeature(features.max_users),
+        jobs: formatFeature(features.max_jobs),
+        features: Object.entries(features)
+          .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
+          .map(([, val]) => formatFeature(val))
+          .join(', ') || '—',
       }
     };
   }
