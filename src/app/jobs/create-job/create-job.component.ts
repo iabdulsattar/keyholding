@@ -129,6 +129,11 @@ export class CreateJobComponent implements OnInit {
     return this.checklistItems.filter((_, i) => i % 2 === 1);
   }
 
+  get checklistHeading(): string {
+    const label = this.selectedJobTypeLabel || 'Job Type';
+    return `${label} Checklist`;
+  }
+
   get startIndex(): number {
     return this.currentPage * this.pageSize + 1;
   }
@@ -542,11 +547,7 @@ export class CreateJobComponent implements OnInit {
   }
 
   removeChecklistItem(id: string): void {
-    const orgId = this.getOrgId();
-    if (!orgId) return;
-    this.keyVault.deleteChecklistItem(orgId, id).subscribe(() => {
-      this.checklistItems = this.checklistItems.filter(item => item.id !== id);
-    });
+    this.checklistItems = this.checklistItems.filter(item => item.id !== id);
   }
 
   private validateForm(): boolean {
