@@ -129,7 +129,8 @@ export class AllJobsComponent implements OnInit {
 
   mapJob(job: any): any {
     return {
-      id: job.jobCode ?? job.id ?? '',
+      id: job.id ?? '',
+      code: job.jobCode ?? '',
       client: job.clientName ?? job.client?.name ?? '',
       site: job.siteName ?? job.site?.name ?? '',
       type: job.jobTypeName ?? job.jobType?.name ?? '',

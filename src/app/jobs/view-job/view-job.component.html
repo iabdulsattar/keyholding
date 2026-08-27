@@ -21,18 +21,16 @@
         </button>
       </div>
 
-      <!-- Title -->
-      <div class="flex flex-wrap items-center gap-3 mb-1">
-        <h2 class="text-3xl font-extrabold font-['Inter'] tracking-tight text-slate-900">Lock Job</h2>
-        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-[100px] bg-green-100 text-green-700 text-xs font-bold font-['Inter']">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.9094 6.60153C12.1149 7.61011 11.9684 8.65867 11.4944 9.57233C11.0204 10.486 10.2475 11.2095 9.30457 11.6223C8.36165 12.0351 7.30572 12.1121 6.31288 11.8406C5.32003 11.5691 4.45028 10.9654 3.84867 10.1302C3.24706 9.29498 2.94995 8.27878 3.00689 7.25105C3.06384 6.22332 3.47139 5.24617 4.16159 4.48256C4.85178 3.71895 5.7829 3.21503 6.79967 3.05484C7.81644 2.89465 8.85739 3.08787 9.74894 3.60228M6.14912 7.05131L7.49912 8.40131L11.9991 3.90132" stroke="#10B981" stroke-linecap="round"/>
-          </svg>
-          Completed
-        </span>
-      </div>
-      <div class="flex items-center gap-2 mb-6">
-        <a href="#" class="text-blue-600 font-bold text-sm font-['Inter'] hover:underline">JOB-000128</a>
+       <!-- Title -->
+       <div class="flex flex-wrap items-center gap-3 mb-1">
+         <h2 class="text-3xl font-extrabold font-['Inter'] tracking-tight text-slate-900">{{ job?.title || 'Job Details' }}</h2>
+         <span class="inline-flex items-center gap-1 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']" [class]="statusClass(job?.status || '')">
+           <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+           {{ job?.status || '—' }}
+         </span>
+       </div>
+       <div class="flex items-center gap-2 mb-6">
+         <a href="#" class="text-blue-600 font-bold text-sm font-['Inter'] hover:underline">{{ job?.code || jobId || '—' }}</a>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_2416_1230)">
         <path d="M2.33278 9.33352C1.69106 9.33352 1.16602 8.80848 1.16602 8.16676V2.33296C1.16602 1.69124 1.69106 1.1662 2.33278 1.1662H8.16658C8.80829 1.1662 9.33334 1.69124 9.33334 2.33296M5.83306 4.66648H11.6669C12.3112 4.66648 12.8336 5.18886 12.8336 5.83324V11.667C12.8336 12.3114 12.3112 12.8338 11.6669 12.8338H5.83306C5.18867 12.8338 4.6663 12.3114 4.6663 11.667V5.83324C4.6663 5.18886 5.18867 4.66648 5.83306 4.66648Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
@@ -48,59 +46,59 @@
       <!-- Info Cards -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
 
-        <!-- Client Card -->
-        <div class="bg-white rounded-md p-6 shadow-xs">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22 24V21.6667C22 20.429 21.5184 19.242 20.6611 18.3668C19.8038 17.4917 18.641 17 17.4286 17H10.5714C9.35901 17 8.19625 17.4917 7.33894 18.3668C6.48163 19.242 6 20.429 6 21.6667V24M18.5714 7.66667C18.5714 10.244 16.5247 12.3333 14 12.3333C11.4753 12.3333 9.42857 10.244 9.42857 7.66667C9.42857 5.08934 11.4753 3 14 3C16.5247 3 18.5714 5.08934 18.5714 7.66667Z" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="min-w-0">
-              <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Client</p>
-              <a href="#" class="text-blue-600 text-xs font-['Inter'] font-bold hover:underline block truncate">Alpha Security Ltd.</a>
+         <!-- Client Card -->
+         <div class="bg-white rounded-md p-6 shadow-xs">
+           <div class="flex items-start gap-4">
+             <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M22 24V21.6667C22 20.429 21.5184 19.242 20.6611 18.3668C19.8038 17.4917 18.641 17 17.4286 17H10.5714C9.35901 17 8.19625 17.4917 7.33894 18.3668C6.48163 19.242 6 20.429 6 21.6667V24M18.5714 7.66667C18.5714 10.244 16.5247 12.3333 14 12.3333C11.4753 12.3333 9.42857 10.244 9.42857 7.66667C9.42857 5.08934 11.4753 3 14 3C16.5247 3 18.5714 5.08934 18.5714 7.66667Z" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+               </svg>
+             </div>
+             <div class="min-w-0">
+               <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Client</p>
+               <a href="#" class="text-blue-600 text-xs font-['Inter'] font-bold hover:underline block truncate">{{ job?.client || '—' }}</a>
 
-              <div class="mt-5">
-              <p class=" text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Site</p>
-              <a href="#" class="text-blue-600 text-xs font-['Inter'] font-bold hover:underline block ">Head Office</a>
-              </div>
+               <div class="mt-5">
+               <p class=" text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Site</p>
+               <a href="#" class="text-blue-600 text-xs font-['Inter'] font-bold hover:underline block ">{{ job?.site || '—' }}</a>
+               </div>
 
-              <div class="mt-5">
-              <p class=" text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Address</p>
-              <div class="flex items-start gap-1.5 text-slate-900">
-                <svg class="w-3.5 h-3.5 mt-0 shrink-0 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <p class="text-xs font-normal font-['Inter'] leading-snug">25 Fenchurch Street, London, EC3M 3AY, UK</p>
-              </div>
-              </div>
-            
-            </div>
-          </div>
-          
-        </div>
+               <div class="mt-5">
+               <p class=" text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Address</p>
+               <div class="flex items-start gap-1.5 text-slate-900">
+                 <svg class="w-3.5 h-3.5 mt-0 shrink-0 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                 <p class="text-xs font-normal font-['Inter'] leading-snug">{{ job?.address || '—' }}</p>
+               </div>
+               </div>
 
-        <!-- Officer Card -->
-        <div class="bg-white rounded-md p-6 shadow-xs">
-          <div>
-            <p class="flex items-center gap-1.5 text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M11.0836 12.25V11.0833C11.0836 10.4645 10.8378 9.871 10.4001 9.43342C9.96249 8.99583 9.36893 8.75 8.75002 8.75H5.24962C4.63071 8.75 4.03715 8.99583 3.59951 9.43342C3.16188 9.871 2.91602 10.4645 2.91602 11.0833V12.25M9.33342 4.08333C9.33342 5.372 8.28863 6.41667 6.99982 6.41667C5.711 6.41667 4.66622 5.372 4.66622 4.08333C4.66622 2.79467 5.711 1.75 6.99982 1.75C8.28863 1.75 9.33342 2.79467 9.33342 4.08333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              Officer
-            </p>
-            <p class="text-sm font-bold text-slate-900 font-['Inter']">James Walker</p>
-          </div>
-          <div class="mt-5">
-            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Priority</p>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] bg-red-100 text-red-700 text-xs font-bold font-['Inter']">
-              <span class="w-1.5 h-1.5 rounded-full bg-red-700"></span>
-              High
-            </span>
-          </div>
-          <div class="mt-5">
-            <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Created By</p>
-            <p class="text-slate-900 text-sm font-bold font-['Inter']">Faiza Ahmed</p>
-          </div>
-        </div>
+             </div>
+           </div>
+
+         </div>
+
+         <!-- Officer Card -->
+         <div class="bg-white rounded-md p-6 shadow-xs">
+           <div>
+             <p class="flex items-center gap-1.5 text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">
+               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M11.0836 12.25V11.0833C11.0836 10.4645 10.8378 9.871 10.4001 9.43342C9.96249 8.99583 9.36893 8.75 8.75002 8.75H5.24962C4.63071 8.75 4.03715 8.99583 3.59951 9.43342C3.16188 9.871 2.91602 10.4645 2.91602 11.0833V12.25M9.33342 4.08333C9.33342 5.372 8.28863 6.41667 6.99982 6.41667C5.711 6.41667 4.66622 5.372 4.66622 4.08333C4.66622 2.79467 5.711 1.75 6.99982 1.75C8.28863 1.75 9.33342 2.79467 9.33342 4.08333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+               </svg>
+               Officer
+             </p>
+             <p class="text-sm font-bold text-slate-900 font-['Inter']">{{ job?.officer || '—' }}</p>
+           </div>
+           <div class="mt-5">
+             <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Priority</p>
+             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']" [class]="priorityClass(job?.priority || '')">
+               <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+               {{ job?.priority || '—' }}
+             </span>
+           </div>
+           <div class="mt-5">
+             <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Created By</p>
+             <p class="text-slate-900 text-sm font-bold font-['Inter']">{{ job?.createdBy || '—' }}</p>
+           </div>
+         </div>
 
         <!-- Status Card -->
         <div class="bg-white rounded-md p-6 shadow-xs">
@@ -155,7 +153,7 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-base font-bold font-['Inter'] text-slate-900">30 min</p>
+             <p class="text-base font-bold font-['Inter'] text-slate-900">{{ job?.tiles?.durationMinutes ?? 0 }} min</p>
             <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Duration</p>
           </div>
         </div>
@@ -166,8 +164,8 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-base font-bold font-['Inter'] text-slate-900">1</p>
-            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Officer Assigned</p>
+             <p class="text-base font-bold font-['Inter'] text-slate-900">{{ job?.tiles?.officerAssigned ?? 1 }}</p>
+             <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Officer Assigned</p>
           </div>
         </div>
         <div class="my-5 ml-5 flex items-center gap-4 lg:border-r border-slate-200">
@@ -177,8 +175,8 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-base font-bold font-['Inter'] text-slate-900">4</p>
-            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Keys Used</p>
+             <p class="text-base font-bold font-['Inter'] text-slate-900">{{ job?.tiles?.keysUsed ?? 0 }}</p>
+             <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Keys Used</p>
           </div>
         </div>
         <div class="my-5 ml-5 flex items-center gap-4 ">
@@ -188,8 +186,8 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <p class="text-base font-bold font-['Inter'] text-slate-900">12</p>
-            <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Checklist Items</p>
+             <p class="text-base font-bold font-['Inter'] text-slate-900">{{ job?.tiles?.checklistItems ?? 0 }}</p>
+             <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Checklist Items</p>
           </div>
         </div>
       </div>
@@ -225,52 +223,51 @@
             Job Information
           </h3>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4">
-            <dl class="">
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job Type</dt>
-                <dd class="text-xs font-semibold text-slate-900 font-['Inter'] ">Lock Job</dd>
-              </div>
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job Title</dt>
-                <dd class="text-xs font-bold text-slate-900 font-['Inter']">Lock - Head Office</dd>
-              </div>
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job ID</dt>
-                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">{{ jobId || 'JOB-000128' }}</dd>
-              </div>
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Reference</dt>
-                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">LCK-HO-160524</dd>
-              </div>
-            </dl>
-            <dl class="lg:pl-10 lg:border-l border-slate-200 ">
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Client</dt>
-                <dd class="text-xs font-semibold text-blue-600 font-['Inter']">Alpha Security Ltd.</dd>
-              </div>
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Site</dt>
-                <dd class="text-xs font-semibold text-blue-600 font-['Inter']">Head Office</dd>
-              </div>
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Created By</dt>
-                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">Faiza Ahmed</dd>
-              </div>
-              <div class="grid grid-cols-2 py-2 gap-2">
-                <dt class="text-xs text-slate-500 font-medium font-['Inter']">Created On</dt>
-                <dd class="text-xs font-semibold text-slate-900 font-['Inter']">16 May 2024, 02:10 PM</dd>
-              </div>
-            </dl>
-          </div>
+           <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4">
+             <dl class="">
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job Type</dt>
+                 <dd class="text-xs font-semibold text-slate-900 font-['Inter'] ">{{ job?.type || '—' }}</dd>
+               </div>
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job Title</dt>
+                 <dd class="text-xs font-bold text-slate-900 font-['Inter']">{{ job?.title || '—' }}</dd>
+               </div>
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Job ID</dt>
+                 <dd class="text-xs font-semibold text-slate-900 font-['Inter']">{{ job?.code || jobId || '—' }}</dd>
+               </div>
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Reference</dt>
+                 <dd class="text-xs font-semibold text-slate-900 font-['Inter']">{{ job?.reference || '—' }}</dd>
+               </div>
+             </dl>
+             <dl class="lg:pl-10 lg:border-l border-slate-200 ">
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Client</dt>
+                 <dd class="text-xs font-semibold text-blue-600 font-['Inter']">{{ job?.client || '—' }}</dd>
+               </div>
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Site</dt>
+                 <dd class="text-xs font-semibold text-blue-600 font-['Inter']">{{ job?.site || '—' }}</dd>
+               </div>
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Created By</dt>
+                 <dd class="text-xs font-semibold text-slate-900 font-['Inter']">{{ job?.createdBy || '—' }}</dd>
+               </div>
+               <div class="grid grid-cols-2 py-2 gap-2">
+                 <dt class="text-xs text-slate-500 font-medium font-['Inter']">Created On</dt>
+                 <dd class="text-xs font-semibold text-slate-900 font-['Inter']">{{ job?.createdAt || '—' }}</dd>
+               </div>
+             </dl>
+           </div>
 
-          <div class="mt-6 pt-6 border-t border-slate-200">
-            <p class="text-xs font-bold font-['Inter'] tracking-wide text-slate-500 uppercase mb-2">Description</p>
-            <p class="text-xs font-normal font-['Inter'] text-slate-900 leading-relaxed">
-              Attend site and secure the premises by locking all access points.<br />
-              Ensure alarm is set, building is secure and keys are stored as per procedure.
-            </p>
-          </div>
+           <div class="mt-6 pt-6 border-t border-slate-200">
+             <p class="text-xs font-bold font-['Inter'] tracking-wide text-slate-500 uppercase mb-2">Description</p>
+             <p class="text-xs font-normal font-['Inter'] text-slate-900 leading-relaxed">
+               {{ job?.description || '—' }}
+             </p>
+           </div>
           </div>
           <!-- Schedule + Assignment -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
@@ -288,64 +285,64 @@
       </svg>
                 Schedule
               </h3>
-              <dl class="">
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Scheduled Date</dt>
-                  <dd class="text-xs font-semibold font-['Inter'] text-slate-900">16 May 2024</dd>
-                </div>
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Start Time</dt>
-                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">02:15 PM</dd>
-                </div>
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">End Time</dt>
-                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">02:45 PM</dd>
-                </div>
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Duration</dt>
-                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">30 min</dd>
-                </div>
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Repeat</dt>
-                  <dd class="text-xs font-semibold font-['Inter']  text-slate-900">One Time</dd>
-                </div>
-              </dl>
-            </div>
+               <dl class="">
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter']">Scheduled Date</dt>
+                   <dd class="text-xs font-semibold font-['Inter'] text-slate-900">{{ job?.scheduledDate || '—' }}</dd>
+                 </div>
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter']">Start Time</dt>
+                   <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ job?.startTime || '—' }}</dd>
+                 </div>
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter']">End Time</dt>
+                   <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ job?.endTime || '—' }}</dd>
+                 </div>
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter']">Duration</dt>
+                   <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ job?.durationMinutes ?? 0 }} min</dd>
+                 </div>
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter']">Repeat</dt>
+                   <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ job?.repeat || '—' }}</dd>
+                 </div>
+               </dl>
+             </div>
 
-            <div class="bg-white rounded-md p-6 shadow-xs">
-              <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-5">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12.6664 14V12.6667C12.6664 11.9594 12.3854 11.2811 11.8853 10.781C11.3851 10.281 10.7068 10 9.99946 10H5.999C5.29168 10 4.61332 10.281 4.11317 10.781C3.61301 11.2811 3.33203 11.9594 3.33203 12.6667V14M10.6662 4.66667C10.6662 6.13943 9.47216 7.33333 7.99923 7.33333C6.5263 7.33333 5.33226 6.13943 5.33226 4.66667C5.33226 3.19391 6.5263 2 7.99923 2C9.47216 2 10.6662 3.19391 10.6662 4.66667Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-                Assignment
-              </h3>
-              <dl class="">
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter']">Officer</dt>
-                  <dd class="text-xs font-semibold font-['Inter'] text-blue-600">James Walker</dd>
-                </div>
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter'] py-1">Priority</dt>
-                  <dd>
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] bg-red-100 text-red-700 text-xs font-bold font-['Inter']">
-                      <span class="w-1.5 h-1.5 rounded-full bg-red-700"></span>
-                      High
-                    </span>
-                  </dd>
-                </div>
-                <div class="grid grid-cols-2 py-2 gap-2">
-                  <dt class="text-xs text-slate-500 font-medium font-['Inter'] py-0.5">Status</dt>
-                  <dd>
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] bg-green-100 text-green-700 text-xs font-bold font-['Inter']">
-                      <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
-                      Completed
-                    </span>
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        }
+             <div class="bg-white rounded-md p-6 shadow-xs">
+               <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-5">
+                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <path d="M12.6664 14V12.6667C12.6664 11.9594 12.3854 11.2811 11.8853 10.781C11.3851 10.281 10.7068 10 9.99946 10H5.999C5.29168 10 4.61332 10.281 4.11317 10.781C3.61301 11.2811 3.33203 11.9594 3.33203 12.6667V14M10.6662 4.66667C10.6662 6.13943 9.47216 7.33333 7.99923 7.33333C6.5263 7.33333 5.33226 6.13943 5.33226 4.66667C5.33226 3.19391 6.5263 2.5 7.99923 2.5C9.47216 2.5 10.6662 3.19391 10.6662 4.66667Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+       </svg>
+                 Assignment
+               </h3>
+               <dl class="">
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter']">Officer</dt>
+                   <dd class="text-xs font-semibold font-['Inter'] text-blue-600">{{ job?.officer || '—' }}</dd>
+                 </div>
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter'] py-1">Priority</dt>
+                   <dd>
+                     <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] text-xs font-bold font-['Inter']" [class]="priorityClass(job?.priority || '')">
+                       <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                       {{ job?.priority || '—' }}
+                     </span>
+                   </dd>
+                 </div>
+                 <div class="grid grid-cols-2 py-2 gap-2">
+                   <dt class="text-xs text-slate-500 font-medium font-['Inter'] py-0.5">Status</dt>
+                   <dd>
+                     <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] text-xs font-bold font-['Inter']" [class]="statusClass(job?.status || '')">
+                       <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                       {{ job?.status || '—' }}
+                     </span>
+                   </dd>
+                 </div>
+               </dl>
+             </div>
+           </div>
+         }
 
         @if (activeTab === 'keys') {
           <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
@@ -414,29 +411,29 @@
   </clipPath>
   </defs>
   </svg>
-                <div>
-                  <h4 class="font-semibold text-slate-900 text-sm font-['Inter']">Key Usage Summary</h4>
-                  <p class="text-xs text-slate-900 font-normal font-['Inter'] mt-0.5">4 of 4 required keys were used and returned.</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="bg-orange-100 rounded-md px-4 py-2.5 min-w-[110px]">
-                  <p class="text-[10px] font-semibold text-amber-600 font-['Inter']">Issued</p>
-                  <p class="text-base font-bold text-amber-600 font-['Inter']">4</p>
-                </div>
-                <div class="bg-blue-50 rounded-md px-4 py-2.5 min-w-[110px]">
-                  <p class="text-[10px] font-semibold text-blue-600 font-['Inter']">Used</p>
-                  <p class="text-base font-bold text-blue-600 font-['Inter']">4</p>
-                </div>
-                <div class="bg-green-100 rounded-md px-4 py-2.5 min-w-[110px]">
-                  <p class="text-[10px] font-semibold text-green-700 font-['Inter']">Returned</p>
-                  <p class="text-base font-bold text-green-700 font-['Inter']">4</p>
-                </div>
-                <div class="bg-red-100 rounded-md px-4 py-2.5 min-w-[110px]">
-                  <p class="text-[10px] font-semibold text-red-500 font-['Inter']">Not Returned</p>
-                  <p class="text-base font-bold text-red-500 font-['Inter']">4</p>
-                </div>
-              </div>
+                 <div>
+                   <h4 class="font-semibold text-slate-900 text-sm font-['Inter']">Key Usage Summary</h4>
+                   <p class="text-xs text-slate-900 font-normal font-['Inter'] mt-0.5">{{ job?.requiredKeys?.summary?.issued ?? 0 }} of {{ job?.requiredKeys?.summary?.issued ?? 0 }} required keys were used and returned.</p>
+                 </div>
+               </div>
+               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                 <div class="bg-orange-100 rounded-md px-4 py-2.5 min-w-[110px]">
+                   <p class="text-[10px] font-semibold text-amber-600 font-['Inter']">Issued</p>
+                   <p class="text-base font-bold text-amber-600 font-['Inter']">{{ job?.requiredKeys?.summary?.issued ?? 0 }}</p>
+                 </div>
+                 <div class="bg-blue-50 rounded-md px-4 py-2.5 min-w-[110px]">
+                   <p class="text-[10px] font-semibold text-blue-600 font-['Inter']">Used</p>
+                   <p class="text-base font-bold text-blue-600 font-['Inter']">{{ job?.requiredKeys?.summary?.used ?? 0 }}</p>
+                 </div>
+                 <div class="bg-green-100 rounded-md px-4 py-2.5 min-w-[110px]">
+                   <p class="text-[10px] font-semibold text-green-700 font-['Inter']">Returned</p>
+                   <p class="text-base font-bold text-green-700 font-['Inter']">{{ job?.requiredKeys?.summary?.returned ?? 0 }}</p>
+                 </div>
+                 <div class="bg-red-100 rounded-md px-4 py-2.5 min-w-[110px]">
+                   <p class="text-[10px] font-semibold text-red-500 font-['Inter']">Not Returned</p>
+                   <p class="text-base font-bold text-red-500 font-['Inter']">{{ job?.requiredKeys?.summary?.notReturned ?? 0 }}</p>
+                 </div>
+               </div>
             </div>
           </div>
           </div>
@@ -457,7 +454,7 @@
                   </h3>
                   <p class="pl-6.5 text-xs text-slate-600 font-normal font-['Inter'] mt-0.5">Review the checklist items, responses and evidence captured for this job.</p>
                 </div>
-                <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold font-['Inter'] px-3 py-1.5 rounded-md whitespace-nowrap">12/12 Completed</span>
+                 <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold font-['Inter'] px-3 py-1.5 rounded-md whitespace-nowrap">{{ job?.checklist?.completed ?? 0 }}/{{ job?.checklist?.total ?? 0 }} Completed</span>
               </div>
 
               <!-- Desktop table -->
@@ -523,7 +520,13 @@
   </clipPath>
   </defs>
   </svg>
-                All checklist items are mandatory and have been completed
+                @if ((job?.checklist?.completed ?? 0) === (job?.checklist?.total ?? 0) && (job?.checklist?.total ?? 0) > 0) {
+                  All checklist items are mandatory and have been completed
+                } @else if ((job?.checklist?.completed ?? 0) === 0) {
+                  No checklist items have been completed yet
+                } @else {
+                  {{ job?.checklist?.completed ?? 0 }} of {{ job?.checklist?.total ?? 0 }} checklist items completed
+                }
               </div>
             </div>
           </div>

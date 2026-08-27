@@ -59,7 +59,7 @@
   </div>
  
   <div class="flex flex-col sm:flex-row gap-3  ">
-    <a href="{{ invoice.pdfUrl }}" class="order-2 sm:order-1 flex items-center justify-center gap-2 border-1 border-blue-600 bg-white text-blue-600 rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-50 transition">
+    <a [href]="invoice.pdfUrl" target="_blank" rel="noopener noreferrer" class="order-2 sm:order-1 flex items-center justify-center gap-2 border-1 border-blue-600 bg-white text-blue-600 rounded-lg px-4 py-2.5 text-xs font-semibold font-['Inter'] hover:bg-blue-50 transition">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M8 10V2M11.3333 6.66667L8 10L4.66667 6.66667M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
       </svg>

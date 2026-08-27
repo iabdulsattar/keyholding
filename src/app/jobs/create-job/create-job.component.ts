@@ -7,6 +7,7 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
 import { ClientService } from '../../core/services/client.service';
 import { UserService } from '../../core/services/user.service';
 import { ToastService } from '../../core/services/toast.service';
+import { MultiSelectComponent, Option as MultiOption } from '../../shared/components/form/multi-select/multi-select.component';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
@@ -38,7 +39,7 @@ interface JobTypeOption {
 @Component({
   selector: 'app-create-job',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, DatePickerComponent, TimePickerComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, MultiSelectComponent, DatePickerComponent, TimePickerComponent],
   templateUrl: './create-job.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -94,8 +95,14 @@ export class CreateJobComponent implements OnInit {
   selectedJobType = '';
   saving = false;
 
+  completionContactOptions: MultiOption[] = [];
+  notCompletedContactOptions: MultiOption[] = [];
+  selectedCompletionContactIds: string[] = [];
+  selectedNotCompletedContactIds: string[] = [];
+  contactsLoading = false;
+
   selectedFiles: File[] = [];
-  attachmentPreviews: { file: File; url: string }[] = [];
+  attachmentPreviews: { file: File; url: string; status: 'pending' | 'uploading' | 'success' | 'error'; message?: string }[] = [];
   attachmentError = '';
   private readonly MAX_FILE_SIZE = 25 * 1024 * 1024;
 
@@ -181,6 +188,32 @@ export class CreateJobComponent implements OnInit {
     });
   }
 
+  private loadContacts(clientId: string): void {
+    if (!clientId) {
+      this.completionContactOptions = [];
+      this.notCompletedContactOptions = [];
+      return;
+    }
+    this.contactsLoading = true;
+    this.clientService.listContacts(clientId, { page: 0, size: 200 }).subscribe({
+      next: (result: any) => {
+        const items = result?.items ?? result?.data ?? result ?? [];
+        const options: MultiOption[] = items.map((item: any) => ({
+          value: item.id ?? '',
+          text: `${item.firstName || ''} ${item.lastName || ''}`.trim() || item.fullName || item.name || 'Contact'
+        }));
+        this.completionContactOptions = [...options];
+        this.notCompletedContactOptions = [...options];
+        this.contactsLoading = false;
+      },
+      error: () => {
+        this.completionContactOptions = [];
+        this.notCompletedContactOptions = [];
+        this.contactsLoading = false;
+      }
+    });
+  }
+
   private loadChecklist(jobTypeId: string): void {
     const orgId = this.getOrgId();
     if (!orgId || !jobTypeId) return;
@@ -203,6 +236,11 @@ export class CreateJobComponent implements OnInit {
     this.selectedClient = clientId;
     this.selectedSite = '';
     this.loadSites(clientId);
+    this.loadContacts(clientId);
+  }
+
+  onSiteChange(siteId: string): void {
+    this.selectedSite = siteId;
   }
 
   onJobTypeChange(jobTypeId: string): void {
@@ -265,17 +303,20 @@ export class CreateJobComponent implements OnInit {
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-    if (file.size > this.MAX_FILE_SIZE) {
-      this.toast.error('File size exceeds 25MB limit.');
-      input.value = '';
-      return;
-    }
-    this.selectedFiles.push(file);
-    const reader = new FileReader();
-    reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string });
-    reader.readAsDataURL(file);
+    const files = input.files;
+    if (!files || !files.length) return;
+
+    Array.from(files).forEach((file: File) => {
+      if (file.size > this.MAX_FILE_SIZE) {
+        this.toast.error(`File "${file.name}" exceeds 25MB limit.`);
+        return;
+      }
+      this.selectedFiles.push(file);
+      const reader = new FileReader();
+      reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string, status: 'pending' });
+      reader.readAsDataURL(file);
+    });
+
     this.attachmentError = '';
     input.value = '';
   }
@@ -299,29 +340,48 @@ export class CreateJobComponent implements OnInit {
 
   private uploadJobAttachments(orgId: string, jobId: string): void {
     if (!this.selectedFiles.length) {
+      this.saving = false;
       this.toast.success('Job created successfully!');
       this.router.navigate(['/jobs']);
       return;
     }
+
     let pending = this.selectedFiles.length;
-    this.selectedFiles.forEach(file => {
+    this.selectedFiles.forEach((file, idx) => {
+      const previewIdx = this.attachmentPreviews.findIndex(p => p.file === file);
+      if (previewIdx >= 0) this.attachmentPreviews[previewIdx].status = 'uploading';
+
       this.keyVault.uploadJobAttachment(orgId, jobId, file).subscribe({
         next: () => {
+          if (previewIdx >= 0) this.attachmentPreviews[previewIdx].status = 'success';
           pending--;
-          if (pending <= 0) {
-            this.toast.success('Job created successfully with attachments!');
-            this.router.navigate(['/jobs']);
-          }
+          this.maybeFinishUpload();
         },
-        error: () => {
-          pending--;
-          if (pending <= 0) {
-            this.toast.success('Job created, but some attachments failed to upload.');
-            this.router.navigate(['/jobs']);
+        error: (err: any) => {
+          if (previewIdx >= 0) {
+            this.attachmentPreviews[previewIdx].status = 'error';
+            this.attachmentPreviews[previewIdx].message = err?.error?.message || 'Upload failed';
           }
+          pending--;
+          this.maybeFinishUpload();
         }
       });
     });
+  }
+
+  private maybeFinishUpload(): void {
+    const hasError = this.attachmentPreviews.some(p => p.status === 'error');
+    const allDone = this.attachmentPreviews.every(p => p.status === 'success' || p.status === 'error');
+
+    if (allDone) {
+      this.saving = false;
+      if (hasError) {
+        this.toast.error('Job created, but some attachments failed to upload.');
+      } else {
+        this.toast.success('Job created successfully with attachments!');
+      }
+      setTimeout(() => this.router.navigate(['/jobs']), 600);
+    }
   }
 
   loadKeys(page = 0): void {
@@ -525,8 +585,8 @@ export class CreateJobComponent implements OnInit {
       priority: this.mapPriority(this.job.priority),
       keyIds: this.selectedKeys.map(k => k.id),
       checklistItems: this.checklistItems.map(ci => ci.id),
-      notifyOnCompletion: [],
-      notifyOnNotCompleted: [],
+      notifyOnCompletion: this.selectedCompletionContactIds,
+      notifyOnNotCompleted: this.selectedNotCompletedContactIds,
       additionalNotes: this.job.notes || undefined
     };
 
