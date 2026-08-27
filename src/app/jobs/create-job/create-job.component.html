@@ -720,59 +720,74 @@
 @if (showAddKeysModal) {
 <div
     class="fixed inset-0 z-40 flex items-start lg:items-center justify-center bg-slate-900/40 backdrop-blur-[1px] p-0 lg:p-6 overflow-y-auto">
-    <div class="bg-white w-full h-full lg:h-auto lg:max-h-[90vh] lg:rounded-2xl lg:max-w-5xl shadow-2xl flex flex-col">
+    <div class="bg-white w-full h-full lg:h-auto lg:max-h-[90vh] rounded-md lg:max-w-5xl shadow-2xl flex flex-col">
 
         <!-- Header -->
-        <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-4 border-b border-slate-100 shrink-0">
+        <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-4 shrink-0">
             <div>
-                <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Add Required Keys</h2>
-                <p class="mt-1 text-sm text-slate-500">Search and select the keys required for this job.</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-['Inter']">Add Required Keys</h2>
+                <p class="mt-1 text-sm text-slate-600 font-normal font-['Inter']">Search and select the keys required for this job.</p>
             </div>
             <button (click)="closeAddKeysModal()"
-                class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition shrink-0"
+                class="text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-sm p-1.5 transition shrink-0"
                 aria-label="Close">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 5L5 15M5 5L15 15" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </button>
         </div>
 
-        <!-- Body -->
-        <div class="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
-
-            <!-- Left: search + table -->
-            <div class="flex-1 min-w-0 flex flex-col px-5 sm:px-8 py-5 overflow-y-auto">
-
-                <!-- Filters -->
-                <div class="flex flex-col sm:flex-row gap-3 mb-5 shrink-0">
+        <!-- Filters -->
+                <div class="grid grid-cols-1 grid-cols-12 gap-3 mb-4 px-8">
+                    <div class="col-span-4">
                     <div class="relative flex-1">
                         <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <circle cx="11" cy="11" r="7" />
                             <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
                         </svg>
+                        <svg width="16" height="16" class="absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
                         <input type="text" placeholder="Search by key name, key ID, tag or description…"
-                            class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+                            class="w-full pl-9 pr-3 py-2.5 rounded-md border border-slate-200 text-xs text-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
                     </div>
+                    </div>
+
+                    <div class="col-span-2">                    
                     <select
-                        class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                        class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
                         <option>All Sites</option>
                         <option>Head Office</option>
                         <option>Warehouse 1</option>
                     </select>
+                    </div>
+
+                    <div class="col-span-2">                    
                     <select
-                        class="rounded-lg border border-slate-200 text-sm text-slate-700 px-3 py-2.5 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                        class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
                         <option>All Statuses</option>
                         <option>Available</option>
                         <option>Issued</option>
                     </select>
+                    </div>
+                    
+                    
                 </div>
 
+        <!-- Body -->
+        <div class="grid grid-cols-1 grid-cols-12 px-8 gap-3 overflow-hidden">
+
+            
+            <!-- Left: search + table -->
+            <div class="col-span-8 overflow-y-auto">
+
+                
                 <!-- Table (desktop) -->
-                <div class="hidden md:block border border-slate-200 rounded-xl overflow-hidden">
+                <div class="hidden md:block border border-slate-200 rounded-md rounded-b-[0px] overflow-hidden">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="bg-slate-50 text-left text-slate-600">
+                            <tr class="bg-slate-50 text-left text-slate-900 text-xs font-['Inter'] border-b border-slate-200">
                                 <th class="w-10 px-4 py-3"><input type="checkbox"
                                         class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" /></th>
                                 <th class="px-2 py-3 font-semibold">Key Details</th>
@@ -780,7 +795,7 @@
                                 <th class="px-4 py-3 font-semibold">Status</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
+                        <tbody class="divide-y divide-slate-200">
                             @for (key of keys; track key.id) {
                             <tr class="hover:bg-slate-50 transition">
                                 <td class="px-4 py-4 align-top">
@@ -790,14 +805,14 @@
                                 <td class="px-2 py-4">
                                     <div class="flex items-start gap-3">
                                         <div
-                                            class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
+                                            class="w-8 h-8 rounded-md bg-blue-100 text-blue-600 grid place-items-center shrink-0">
                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+                                            <path d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                                           </svg>
                                         </div>
                                         <div>
-                                            <div class="text-blue-600 font-semibold text-sm">{{ key.code }}</div>
-                                            <div class="text-slate-900 font-medium">{{ key.name }}</div>
+                                            <div class="text-blue-600 font-bold text-xs font-['Inter']">{{ key.code }}</div>
+                                            <div class="text-slate-900 font-semibold text-xs font-['Inter']">{{ key.name }}</div>
                                             <div class="mt-1 flex gap-2">
                                                 <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{
                                                     key.cabinet }}</span>
@@ -808,15 +823,15 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 align-top">
-                                    <div class="text-slate-900 font-medium">{{ key.site }}</div>
-                                    <div class="text-slate-400 text-sm">{{ key.room }}</div>
+                                    <div class="text-slate-900 text-xs font-semibold font-['Inter']">{{ key.site }}</div>
+                                    <div class="text-slate-500 text-xs font-['Inter']">{{ key.room }}</div>
                                 </td>
                                 <td class="px-4 py-4 align-top">
-                                    <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold"
-                                        [class.bg-emerald-50]="key.status === 'Available'"
-                                        [class.text-emerald-700]="key.status === 'Available'"
-                                        [class.bg-amber-50]="key.status === 'Issued'"
-                                        [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
+                                    <span class="inline-block px-2.5 py-1 rounded-sm text-xs font-semibold font-['Inter']"
+                                        [class.bg-green-100]="key.status === 'Available'"
+                                        [class.text-green-700]="key.status === 'Available'"
+                                        [class.bg-orange-100]="key.status === 'Issued'"
+                                        [class.text-orange-700]="key.status === 'Issued'">{{ key.status }}</span>
                                 </td>
                             </tr>
                             }
@@ -861,24 +876,24 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 mt-2 shrink-0">
-                    <p class="text-sm text-slate-500">Showing <span class="font-medium text-slate-700">{{ startIndex }}</span> to <span
-                            class="font-medium text-slate-700">{{ endIndex }}</span> of <span
-                            class="font-medium text-slate-700">{{ totalElements }}</span> keys</p>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 shrink-0 border border-slate-200 rounded-b-md">
+                    <p class="text-xs text-slate-600 font-['Inter']">Showing <span class="font-semibold text-slate-600">{{ startIndex }}</span> to <span
+                            class="font-semibold text-slate-600">{{ endIndex }}</span> of <span
+                            class="font-semibold text-slate-600">{{ totalElements }}</span> keys</p>
                     <div class="flex items-center gap-1">
                         <button (click)="prevPage()" [disabled]="currentPage === 0"
-                            class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
+                            class="w-8 h-8 grid place-items-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.75 10.5L5.25 7L8.75 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
                         </button>
                         @for (p of pageNumbers; track p) {
                             @if (p === '...') {
                                 <span class="px-1 text-slate-400">…</span>
                             } @else {
                                 <button (click)="goToPage(p - 1)"
-                                    class="w-8 h-8 grid place-items-center rounded-lg border text-blue-600 font-semibold"
-                                    [class.border-blue-500]="currentPage === p - 1"
+                                    class="w-8 h-8 grid place-items-center rounded-sm border text-blue-600 font-medium text-xs font-['Inter']"
+                                    [class.border-blue-600]="currentPage === p - 1"
                                     [class.bg-blue-50]="currentPage === p - 1"
                                     [class.border-slate-200]="currentPage !== p - 1"
                                     [class.text-slate-600]="currentPage !== p - 1"
@@ -886,10 +901,10 @@
                             }
                         }
                         <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1"
-                            class="w-8 h-8 grid place-items-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
+                            class="w-8 h-8 grid place-items-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
                         </button>
                     </div>
                 </div>
@@ -897,27 +912,31 @@
 
             <!-- Right: selected keys panel -->
             <div
-                class="lg:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-slate-100 bg-slate-50/60 px-5 sm:px-8 lg:px-6 py-5 flex flex-col overflow-y-auto max-h-64 lg:max-h-none">
+                class="col-span-4 border border-slate-200 rounded-md px-5 sm:px-8 lg:px-6 py-5 flex flex-col overflow-y-auto relative">
                 <div class="flex items-center justify-between mb-3 shrink-0">
-                    <h3 class="font-semibold text-slate-900">Selected Keys ({{ selectedKeys.length }})</h3>
-                    <button (click)="clearAllKeys()" class="text-sm font-medium text-blue-600 hover:text-blue-700">Clear
+                    <h3 class="font-bold text-slate-900 text-sm font-['Inter']">Selected Keys ({{ selectedKeys.length }})</h3>
+                    <button (click)="clearAllKeys()" class="text-xs font-semibold text-blue-600 font-['Inter'] hover:text-blue-700">Clear
                         All</button>
                 </div>
                 <div class="space-y-3 flex-1">
                     @for (key of selectedKeys; track key.id) {
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-start gap-3">
+                    <div class="bg-white border border-slate-200 rounded-md p-3 flex items-start gap-3">
                         <div
-                            class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0 mt-0.5">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z"
-                                    stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
-                            </svg>
+                            class="w-7 h-7 rounded-sm bg-blue-50 text-blue-600 grid place-items-center shrink-0 mt-0.5">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2416_1082)">
+      <path d="M9.04102 4.37453L10.3827 5.7162C10.4917 5.82308 10.6383 5.88295 10.791 5.88295C10.9437 5.88295 11.0903 5.82308 11.1993 5.7162L12.4243 4.4912C12.5312 4.38216 12.5911 4.23555 12.5911 4.08287C12.5911 3.93018 12.5312 3.78357 12.4243 3.67453L11.0827 2.33287M12.2493 1.1662L6.64929 6.7662M7.58268 9.0412C7.58268 10.8131 6.14626 12.2495 4.37435 12.2495C2.60244 12.2495 1.16602 10.8131 1.16602 9.0412C1.16602 7.26928 2.60244 5.83287 4.37435 5.83287C6.14626 5.83287 7.58268 7.26928 7.58268 9.0412Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2416_1082">
+      <rect width="14" height="14" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="text-blue-600 font-semibold text-sm">{{ key.code }}</div>
-                            <div class="text-slate-900 font-medium text-sm">{{ key.name }}</div>
+                            <div class="text-blue-600 font-bold text-xs font-['Inter']">{{ key.code }}</div>
+                            <div class="text-slate-900 font-semibold text-xs font-['Inter']">{{ key.name }}</div>
                             <div class="mt-1 flex gap-2">
                                 <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ key.cabinet
                                     }}</span>
@@ -926,35 +945,41 @@
                             </div>
                         </div>
                         <button (click)="removeKey(key)" class="text-slate-400 hover:text-slate-600 shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
                         </button>
                     </div>
                     }
                 </div>
                 @if (selectedKeys.length === 0) {
-                <p class="text-sm text-slate-400 py-6 text-center">No keys selected yet.</p>
+                <p class="text-sm text-slate-500 py-6 absolute top-[20px]">No keys selected yet.</p>
                 }
             </div>
         </div>
 
         <!-- Footer -->
         <div
-            class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-8 py-4 border-t border-slate-100 shrink-0">
-            <div class="text-sm font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-center sm:text-left"
+            class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-8 py-4 shrink-0">
+            <div class="text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200 rounded-md px-4 py-2 text-center sm:text-left"
                 [class.hidden]="selectedKeys.length === 0">
                 {{ selectedKeys.length }} keys selected
             </div>
             <div class="flex gap-3 sm:ml-auto">
                 <button (click)="closeAddKeysModal()"
-                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50">Cancel</button>
+                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-md border border-slate-200 text-blue-600 text-sm font-semibold font-['Inter'] hover:bg-slate-50">Cancel</button>
                 <button (click)="closeAddKeysModal()"
-                    class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM8.5 9L2 15.5 4 17.5l1-1 1 1 1.5-1.5-1-1 1.5-1.5" />
-                    </svg>
+                    class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-blue-600 text-white text-sm font-semibold font-['Inter'] hover:bg-blue-700">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2416_1120)">
+      <path d="M10.332 4.99949L11.8654 6.53282C11.99 6.65498 12.1575 6.7234 12.332 6.7234C12.5065 6.7234 12.6741 6.65498 12.7987 6.53282L14.1987 5.13282C14.3208 5.00821 14.3893 4.84066 14.3893 4.66616C14.3893 4.49166 14.3208 4.32411 14.1987 4.19949L12.6654 2.66616M13.9986 1.33282L7.59863 7.73283M8.66536 10.3328C8.66536 12.3579 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3579 1.33203 10.3328C1.33203 8.30778 2.97365 6.66616 4.9987 6.66616C7.02374 6.66616 8.66536 8.30778 8.66536 10.3328Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2416_1120">
+      <rect width="16" height="16" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
                     Add Selected Keys
                 </button>
             </div>
