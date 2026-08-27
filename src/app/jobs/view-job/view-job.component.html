@@ -193,10 +193,10 @@
       </div>
 
       <!-- Tabs -->
-      <div class="bg-white rounded-md shadow-xs mb-4 px-2 sm:px-6 pt-2 overflow-x-auto">
-        <div class="flex justify-between gap-2 sm:gap-6 min-w-max">
+      <div class="bg-white rounded-t-md shadow-xs px-2 sm:px-6 pt-2 overflow-x-auto">
+        <div class="flex gap-2 sm:gap-7 min-w-max">
           @for (tab of tabs; track tab.id) {
-            <button (click)="setActiveTab(tab.id)" class="flex items-center gap-2 px-3 sm:px-1 py-4 border-b-2 font-semibold text-sm font-['Inter'] whitespace-nowrap" [class.border-blue-600]="activeTab === tab.id" [class.text-blue-600]="activeTab === tab.id" [class.border-transparent]="activeTab !== tab.id" [class.text-slate-900]="activeTab !== tab.id" [class.hover:text-slate-700]="activeTab !== tab.id">
+            <button (click)="setActiveTab(tab.id)" class="flex items-center gap-2 px-1 py-4 border-b-2 font-semibold text-sm font-['Inter'] whitespace-nowrap" [class.border-blue-600]="activeTab === tab.id" [class.text-blue-600]="activeTab === tab.id" [class.border-transparent]="activeTab !== tab.id" [class.text-slate-900]="activeTab !== tab.id" [class.hover:text-slate-700]="activeTab !== tab.id">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" [innerHTML]="tab.icon"></svg>
               {{ tab.label }}
             </button>
@@ -207,7 +207,7 @@
       <!-- Tab content -->
       <div class="">
         @if (activeTab === 'summary') {
-          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          <div class="bg-white rounded-b-md p-5 sm:p-7 shadow-xs mb-4">
           <h3 class="flex items-center gap-2 text-base font-['Inter'] font-bold text-slate-900 mb-5">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_2416_1345)">
@@ -345,7 +345,7 @@
          }
 
         @if (activeTab === 'keys') {
-          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          <div class="bg-white rounded-b-md p-5 sm:p-7 shadow-xs mb-4">
           
           <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-1">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -440,7 +440,7 @@
         }
 
         @if (activeTab === 'checklist') {
-          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          <div class="bg-white rounded-b-md p-5 sm:p-7 shadow-xs mb-4">
           
           <div id="panel-checklist" class="tab-panel">
             <div class=" overflow-hidden">
@@ -534,7 +534,7 @@
         }
 
         @if (activeTab === 'escalation') {
-          <div class="bg-white rounded-md p-5 sm:p-7 shadow-xs mb-4">
+          <div class="bg-white rounded-b-md p-5 sm:p-7 shadow-xs mb-4">
           
           <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-1">
             <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
