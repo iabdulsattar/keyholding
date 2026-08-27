@@ -19,53 +19,33 @@
             </div>
             <div class="min-w-0">
                 <p class=" text-slate-500 text-xs font-medium font-['Inter'] uppercase">Job Type</p>
-                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">Lock Service</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">{{ selectedJobTypeLabel }}</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_2389_74)">
-                        <path
-                            d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z"
-                            stroke="#EF4444" stroke-width="2" stroke-linecap="round" />
-                    </g>
-                    <defs>
-                        <clipPath id="clip0_2389_74">
-                            <rect width="20" height="20" fill="white" />
-                        </clipPath>
-                    </defs>
-                </svg>
-            </div>
+<svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-ng-c926343693="" clip-path="url(#clip0_2389_74)"><path _ngcontent-ng-c926343693="" d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round"></path></g><defs _ngcontent-ng-c926343693=""><clipPath _ngcontent-ng-c926343693="" id="clip0_2389_74"><rect _ngcontent-ng-c926343693="" width="20" height="20" fill="white"></rect></clipPath></defs></svg>            </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Priority</p>
-                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">High</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">{{ job.priority || 'Medium' }}</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M9.99998 8.3332H10.0083M9.99998 11.6668H10.0083M9.99998 4.9996H10.0083M13.333 8.3332H13.3413M13.333 11.6668H13.3413M13.333 4.9996H13.3413M6.66698 8.3332H6.67532M6.66698 11.6668H6.67532M6.66698 4.9996H6.67532M7.50023 18.334V15.8338C7.50023 15.6128 7.58802 15.4008 7.74429 15.2445C7.90055 15.0882 8.11249 15.0004 8.33348 15.0004H11.6665C11.8875 15.0004 12.0994 15.0882 12.2557 15.2445C12.4119 15.4008 12.4997 15.6128 12.4997 15.8338V18.334M5.00048 1.666H14.9995C15.9199 1.666 16.666 2.41225 16.666 3.3328V16.6672C16.666 17.5877 15.9199 18.334 14.9995 18.334H5.00048C4.0801 18.334 3.33398 17.5877 3.33398 16.6672V3.3328C3.33398 2.41225 4.0801 1.666 5.00048 1.666Z"
-                        stroke="#16A34A" stroke-width="2" stroke-linecap="round" />
-                </svg>
+               <svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c926343693="" d="M9.99998 8.3332H10.0083M9.99998 11.6668H10.0083M9.99998 4.9996H10.0083M13.333 8.3332H13.3413M13.333 11.6668H13.3413M13.333 4.9996H13.3413M6.66698 8.3332H6.67532M6.66698 11.6668H6.67532M6.66698 4.9996H6.67532M7.50023 18.334V15.8338C7.50023 15.6128 7.58802 15.4008 7.74429 15.2445C7.90055 15.0882 8.11249 15.0004 8.33348 15.0004H11.6665C11.8875 15.0004 12.0994 15.0882 12.2557 15.2445C12.4119 15.4008 12.4997 15.6128 12.4997 15.8338V18.334M5.00048 1.666H14.9995C15.9199 1.666 16.666 2.41225 16.666 3.3328V16.6672C16.666 17.5877 15.9199 18.334 14.9995 18.334H5.00048C4.0801 18.334 3.33398 17.5877 3.33398 16.6672V3.3328C3.33398 2.41225 4.0801 1.666 5.00048 1.666Z" stroke="#16A34A" stroke-width="2" stroke-linecap="round"></path></svg>
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Site</p>
-                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">Head Office</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">{{ selectedSiteLabel }}</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M13.3336 2.60661C14.0485 2.79192 14.6816 3.20933 15.1335 3.79333C15.5854 4.37733 15.8306 5.09485 15.8306 5.83327C15.8306 6.5717 15.5854 7.28922 15.1335 7.87322C14.6816 8.45722 14.0485 8.87463 13.3336 9.05994M18.334 17.4999V15.8332C18.3335 15.0947 18.0876 14.3772 17.6351 13.7935C17.1826 13.2098 16.549 12.7929 15.8338 12.6082M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z"
-                        stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
-                </svg>
+                <svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c926343693="" d="M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M13.3336 2.60661C14.0485 2.79192 14.6816 3.20933 15.1335 3.79333C15.5854 4.37733 15.8306 5.09485 15.8306 5.83327C15.8306 6.5717 15.5854 7.28922 15.1335 7.87322C14.6816 8.45722 14.0485 8.87463 13.3336 9.05994M18.334 17.4999V15.8332C18.3335 15.0947 18.0876 14.3772 17.6351 13.7935C17.1826 13.2098 16.549 12.7929 15.8338 12.6082M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path></svg>
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Client</p>
-                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">Alpha Security Ltd.</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">{{ selectedClientLabel }}</p>
             </div>
         </div>
     </div>
