@@ -156,7 +156,7 @@
       <div class="overflow-x-auto no-scrollbar">
         <table class="w-full min-w-[520px]">
           <thead>
-           <tr class="bg-slate-50 border-b border-slate-200">
+           <tr class=" border-b border-slate-200">
              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Invoice No.</th>
              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Date</th>
                <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Description</th>
@@ -167,7 +167,7 @@
          </thead>
         <tbody
   [class]="filteredInvoices.length === 0
-    ? 'divide-y divide-slate-200 h-[40vh]'
+    ? 'divide-y divide-slate-200 h-[320px]'
     : 'divide-y divide-slate-200'"
 >
 
@@ -220,7 +220,7 @@
         </tbody>
       </table>
     </div>
-    <div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50">
+    <div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 ">
       <p class="text-slate-600 text-xs font-normal font-['Inter']">Showing 1 to 10 of {{ totalInvoices }} Invoices</p>
       <div class="flex items-center gap-2">
         <button class="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50" aria-label="Previous page">
