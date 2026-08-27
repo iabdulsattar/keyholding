@@ -113,7 +113,6 @@ export class CreateJobComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadJobTypes();
-    this.loadKeys();
     this.loadClients();
     this.loadOfficers();
   }
@@ -241,6 +240,7 @@ export class CreateJobComponent implements OnInit {
 
   onSiteChange(siteId: string): void {
     this.selectedSite = siteId;
+    this.loadKeys(0);
   }
 
   onJobTypeChange(jobTypeId: string): void {
@@ -391,7 +391,7 @@ export class CreateJobComponent implements OnInit {
       return;
     }
 
-    this.keyVault.listKeys(orgId, { page, size: this.pageSize }).subscribe({
+    this.keyVault.listKeys(orgId, { page, size: this.pageSize, clientId: this.selectedClient || undefined, siteId: this.selectedSite || undefined }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
@@ -607,6 +607,25 @@ export class CreateJobComponent implements OnInit {
         this.toast.error('Failed to create job');
       }
     });
+  }
+
+  get selectedJobTypeLabel(): string {
+    return this.jobTypeOptions.find(o => o.value === this.selectedJobType)?.label || 'Select job type';
+  }
+
+  get selectedSiteLabel(): string {
+    return this.siteOptions.find(o => o.value === this.selectedSite)?.label || 'Select site';
+  }
+
+  get selectedClientLabel(): string {
+    return this.clientOptions.find(o => o.value === this.selectedClient)?.label || 'Select client';
+  }
+
+  priorityIcon(priority = ''): string {
+    const lower = priority.toLowerCase();
+    if (lower.includes('high') || lower.includes('critical')) return '<path d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
+    if (lower.includes('low')) return '<path d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
+    return '<path d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
   }
 
   private mapPriority(priority: string): string {

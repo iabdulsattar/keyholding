@@ -719,7 +719,10 @@ export class KeyVaultService {
     q.set('page', String(params?.page ?? 0));
     q.set('size', String(params?.size ?? 50));
     const query = q.toString();
-    return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/keys${query ? `?${query}` : ''}`, headers);
+    const base = params?.clientId
+      ? `/api/v1/keyvault/organizations/${orgId}/clients/${params.clientId}/keys`
+      : `/api/v1/keyvault/organizations/${orgId}/keys`;
+    return this.api.get<any>(`${base}${query ? `?${query}` : ''}`, headers);
   }
 
   listAllKeys(orgId: string, params?: { clientId?: string; q?: string; status?: string; page?: number; size?: number }): Observable<any> {
