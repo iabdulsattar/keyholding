@@ -85,7 +85,7 @@
       <div class="relative flex-1 min-w-0">
         <svg class="h-4 w-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
         <input type="text" placeholder="Search jobs by Job ID, client, site, officer..."
-          class="w-full pl-3 pr-3 py-2.5 bg-white shadow-xs rounded-md text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          class="w-full h-11 pl-3 pr-3 py-2.5 bg-white shadow-xs rounded-md text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
       </div>
       </div>
       <div class="col-span-6">
@@ -128,7 +128,7 @@
     </div>
 
     <!-- Table (desktop / tablet) -->
-    <div class="hidden md:block bg-white rounded-md overflow-hidden">
+    <div class="hidden md:block bg-white rounded-t-md overflow-hidden">
       <div class="overflow-x-auto scrollbar-thin">
         <table class="w-full text-sm">
           <thead>
@@ -218,7 +218,7 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-md px-4 py-3 ">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-b-md px-4 py-3 ">
       <p class="text-slate-500 text-xs font-medium font-['Inter'] order-2 sm:order-1">
         Showing {{ pagination.totalElements > 0 ? (pagination.page * pagination.size) + 1 : 0 }} to {{ Math.min((pagination.page + 1) * pagination.size, pagination.totalElements) }} of {{ pagination.totalElements }} jobs
       </p>
