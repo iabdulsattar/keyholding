@@ -28,7 +28,7 @@
       </svg>        </div>
         <div class="min-w-0">
           <p class="text-slate-500 text-xs font-medium font-['Inter']">Total Jobs</p>
-          <p class="text-slate-900 text-xl font-bold font-['Inter']">1,248</p>
+          <p class="text-slate-900 text-xl font-bold font-['Inter']">{{ (stats.totalJobs ?? stats.total ?? 0) | number:'1.0-0' }}</p>
         </div>
       </div>
 
@@ -41,7 +41,7 @@
         </svg>        </div>
         <div class="min-w-0">
           <p class=" text-slate-500 text-xs font-medium font-['Inter']">Scheduled</p>
-          <p class="text-slate-900 text-xl font-bold font-['Inter']">482</p>
+          <p class="text-slate-900 text-xl font-bold font-['Inter']">{{ (stats.scheduled ?? 0) | number:'1.0-0' }}</p>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
       </svg>        </div>
         <div class="min-w-0">
           <p class=" text-slate-500 text-xs font-medium font-['Inter']">In Progress</p>
-          <p class="text-slate-900 text-xl font-bold font-['Inter']">196</p>
+          <p class="text-slate-900 text-xl font-bold font-['Inter']">{{ (stats.inProgress ?? stats.in_progress ?? 0) | number:'1.0-0' }}</p>
         </div>
       </div>
 
@@ -63,7 +63,7 @@
         </svg>        </div>
         <div class="min-w-0">
           <p class=" text-slate-500 text-xs font-medium font-['Inter']">Completed</p>
-          <p class="text-slate-900 text-xl font-bold font-['Inter']">456</p>
+          <p class="text-slate-900 text-xl font-bold font-['Inter']">{{ (stats.completed ?? 0) | number:'1.0-0' }}</p>
         </div>
       </div>
 
@@ -74,7 +74,7 @@
         </svg>        </div>
         <div class="min-w-0">
           <p class=" text-slate-500 text-xs font-medium font-['Inter']">Overdue</p>
-          <p class="text-slate-900 text-xl font-bold font-['Inter']">72</p>
+          <p class="text-slate-900 text-xl font-bold font-['Inter']">{{ (stats.overdue ?? 0) | number:'1.0-0' }}</p>
         </div>
       </div>
     </div>

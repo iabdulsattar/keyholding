@@ -10,12 +10,37 @@
     <!-- Summary cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+
+            <div class="w-10 h-10 rounded-lg  flex items-center justify-center shrink-0"
+                [ngClass]="getJobTypeBgClass()">
+
+                @if(selectedJobTypeLabel == 'Lock Service' || selectedJobTypeLabel === 'Lock Job') {
+
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M5.83333 9.1666V5.833C5.83333 4.72784 6.27232 3.66795 7.05372 2.88649C7.83512 2.10502 8.89493 1.666 10 1.666C11.1051 1.666 12.1649 2.10502 12.9463 2.88649C13.7277 3.66795 14.1667 4.72784 14.1667 5.833V9.1666M4.16667 9.1666H15.8333C16.7538 9.1666 17.5 9.91285 17.5 10.8334V16.6672C17.5 17.5877 16.7538 18.334 15.8333 18.334H4.16667C3.24619 18.334 2.5 17.5877 2.5 16.6672V10.8334C2.5 9.91285 3.24619 9.1666 4.16667 9.1666Z"
                         stroke="#EA580C" stroke-width="2" stroke-linecap="round" />
                 </svg>
+                }
+                @else if(selectedJobTypeLabel == 'Unlock Service' || selectedJobTypeLabel === 'Unlock Job') {
+
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9.20175 9.75V6.75C9.20175 5.75544 9.66523 4.80161 10.4902 4.09835C11.3152 3.39509 12.4342 3 13.6009 3C14.7676 3 15.8865 3.39509 16.7115 4.09835C17.5365 4.80161 18 5.75544 18 6.75M10.693 9.75H2.49123C1.66765 9.75 1 10.4216 1 11.25V17.5C1 18.3284 1.66765 19 2.49123 19H10.693C11.5166 19 12.1842 18.3284 12.1842 17.5V11.25C12.1842 10.4216 11.5166 9.75 10.693 9.75Z"
+                        stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                </svg>
+
+
+                }
+                @else{
+
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.83333 9.1666V5.833C5.83333 4.72784 6.27232 3.66795 7.05372 2.88649C7.83512 2.10502 8.89493 1.666 10 1.666C11.1051 1.666 12.1649 2.10502 12.9463 2.88649C13.7277 3.66795 14.1667 4.72784 14.1667 5.833V9.1666M4.16667 9.1666H15.8333C16.7538 9.1666 17.5 9.91285 17.5 10.8334V16.6672C17.5 17.5877 16.7538 18.334 15.8333 18.334H4.16667C3.24619 18.334 2.5 17.5877 2.5 16.6672V10.8334C2.5 9.91285 3.24619 9.1666 4.16667 9.1666Z"
+                        stroke="#EA580C" stroke-width="2" stroke-linecap="round" />
+                </svg>
+
+                }
             </div>
             <div class="min-w-0">
                 <p class=" text-slate-500 text-xs font-medium font-['Inter'] uppercase">Job Type</p>
@@ -23,16 +48,34 @@
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
-<svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-ng-c926343693="" clip-path="url(#clip0_2389_74)"><path _ngcontent-ng-c926343693="" d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round"></path></g><defs _ngcontent-ng-c926343693=""><clipPath _ngcontent-ng-c926343693="" id="clip0_2389_74"><rect _ngcontent-ng-c926343693="" width="20" height="20" fill="white"></rect></clipPath></defs></svg>            </div>
+            <div class="w-10 h-10 rounded-lg  text-rose-500 flex items-center justify-center shrink-0" [ngClass]="getPriorityBgClass()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2389_74)">
+                        <path
+                            d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z"
+                            [attr.stroke]="getPriorityColor(job.priority)" stroke-width="2" stroke-linecap="round">
+                        </path>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_2389_74">
+                            <rect width="20" height="20" fill="white"></rect>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Priority</p>
-                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">{{ job.priority || 'Medium' }}</p>
+                <p class="text-slate-900 text-xs font-bold font-['Inter'] mt-0.5">{{ job.priority || 'Low' }}</p>
             </div>
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-               <svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c926343693="" d="M9.99998 8.3332H10.0083M9.99998 11.6668H10.0083M9.99998 4.9996H10.0083M13.333 8.3332H13.3413M13.333 11.6668H13.3413M13.333 4.9996H13.3413M6.66698 8.3332H6.67532M6.66698 11.6668H6.67532M6.66698 4.9996H6.67532M7.50023 18.334V15.8338C7.50023 15.6128 7.58802 15.4008 7.74429 15.2445C7.90055 15.0882 8.11249 15.0004 8.33348 15.0004H11.6665C11.8875 15.0004 12.0994 15.0882 12.2557 15.2445C12.4119 15.4008 12.4997 15.6128 12.4997 15.8338V18.334M5.00048 1.666H14.9995C15.9199 1.666 16.666 2.41225 16.666 3.3328V16.6672C16.666 17.5877 15.9199 18.334 14.9995 18.334H5.00048C4.0801 18.334 3.33398 17.5877 3.33398 16.6672V3.3328C3.33398 2.41225 4.0801 1.666 5.00048 1.666Z" stroke="#16A34A" stroke-width="2" stroke-linecap="round"></path></svg>
+                <svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path _ngcontent-ng-c926343693=""
+                        d="M9.99998 8.3332H10.0083M9.99998 11.6668H10.0083M9.99998 4.9996H10.0083M13.333 8.3332H13.3413M13.333 11.6668H13.3413M13.333 4.9996H13.3413M6.66698 8.3332H6.67532M6.66698 11.6668H6.67532M6.66698 4.9996H6.67532M7.50023 18.334V15.8338C7.50023 15.6128 7.58802 15.4008 7.74429 15.2445C7.90055 15.0882 8.11249 15.0004 8.33348 15.0004H11.6665C11.8875 15.0004 12.0994 15.0882 12.2557 15.2445C12.4119 15.4008 12.4997 15.6128 12.4997 15.8338V18.334M5.00048 1.666H14.9995C15.9199 1.666 16.666 2.41225 16.666 3.3328V16.6672C16.666 17.5877 15.9199 18.334 14.9995 18.334H5.00048C4.0801 18.334 3.33398 17.5877 3.33398 16.6672V3.3328C3.33398 2.41225 4.0801 1.666 5.00048 1.666Z"
+                        stroke="#16A34A" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Site</p>
@@ -41,7 +84,12 @@
         </div>
         <div class="bg-white rounded-md p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
-                <svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c926343693="" d="M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M13.3336 2.60661C14.0485 2.79192 14.6816 3.20933 15.1335 3.79333C15.5854 4.37733 15.8306 5.09485 15.8306 5.83327C15.8306 6.5717 15.5854 7.28922 15.1335 7.87322C14.6816 8.45722 14.0485 8.87463 13.3336 9.05994M18.334 17.4999V15.8332C18.3335 15.0947 18.0876 14.3772 17.6351 13.7935C17.1826 13.2098 16.549 12.7929 15.8338 12.6082M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path></svg>
+                <svg _ngcontent-ng-c926343693="" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path _ngcontent-ng-c926343693=""
+                        d="M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M13.3336 2.60661C14.0485 2.79192 14.6816 3.20933 15.1335 3.79333C15.5854 4.37733 15.8306 5.09485 15.8306 5.83327C15.8306 6.5717 15.5854 7.28922 15.1335 7.87322C14.6816 8.45722 14.0485 8.87463 13.3336 9.05994M18.334 17.4999V15.8332C18.3335 15.0947 18.0876 14.3772 17.6351 13.7935C17.1826 13.2098 16.549 12.7929 15.8338 12.6082M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z"
+                        stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
             </div>
             <div class="min-w-0">
                 <p class="text-slate-500 text-xs font-medium font-['Inter'] uppercase">Client</p>
@@ -66,14 +114,9 @@
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Job Type <span
                             class="text-rose-500">*</span></label>
                     <div class="flex items-center gap-2">
-                        <app-rich-select
-                            [options]="jobTypeOptions"
-                            [value]="selectedJobType"
-                            (valueChange)="onJobTypeChange($event)"
-                            placeholder="Select job type"
-                            panelWidth="wide"
-                            class="flex-1"
-                            >
+                        <app-rich-select [options]="jobTypeOptions" [value]="selectedJobType"
+                            (valueChange)="onJobTypeChange($event)" placeholder="Select job type" panelWidth="wide"
+                            class="flex-1">
                         </app-rich-select>
                         <!-- <button (click)="openAddJobTypeModal()" aria-label="Add job type"
                             class="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">
@@ -81,45 +124,34 @@
                         </button> -->
                     </div>
                     @if (submitted && errors.jobType) {
-                        <p class="text-xs text-rose-500 mt-1">{{ errors.jobType }}</p>
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.jobType }}</p>
                     }
                     <p class="text-[9px] text-slate-500  mt-1.5">Select the type of job</p>
                 </div>
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Client <span
                             class="text-rose-500">*</span></label>
-                    <app-rich-select
-                        [options]="clientOptions"
-                        [value]="selectedClient"
-                        (valueChange)="onClientChange($event)"
-                        placeholder="Select client"
-                        panelWidth="wide"
-                        class="w-full"
-                        [class.border-rose-500]="submitted && errors.client"
+                    <app-rich-select [options]="clientOptions" [value]="selectedClient"
+                        (valueChange)="onClientChange($event)" placeholder="Select client" panelWidth="wide"
+                        class="w-full" [class.border-rose-500]="submitted && errors.client"
                         [class.ring-1]="submitted && errors.client"
                         [class.ring-rose-500/20]="submitted && errors.client">
                     </app-rich-select>
                     @if (submitted && errors.client) {
-                        <p class="text-xs text-rose-500 mt-1">{{ errors.client }}</p>
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.client }}</p>
                     }
                     <p class="text-[9px] text-slate-500 mt-1.5">Select the client for this job</p>
                 </div>
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Site <span
                             class="text-rose-500">*</span></label>
-                    <app-rich-select
-                        [options]="siteOptions"
-                        [value]="selectedSite"
-                        (valueChange)="onSiteChange($event)"
-                        placeholder="Select site"
-                        panelWidth="wide"
-                        class="w-full"
-                        [class.border-rose-500]="submitted && errors.site"
-                        [class.ring-1]="submitted && errors.site"
+                    <app-rich-select [options]="siteOptions" [value]="selectedSite" (valueChange)="onSiteChange($event)"
+                        placeholder="Select site" panelWidth="wide" class="w-full"
+                        [class.border-rose-500]="submitted && errors.site" [class.ring-1]="submitted && errors.site"
                         [class.ring-rose-500/20]="submitted && errors.site">
                     </app-rich-select>
                     @if (submitted && errors.site) {
-                        <p class="text-xs text-rose-500 mt-1">{{ errors.site }}</p>
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.site }}</p>
                     }
                     <p class="text-[9px] text-slate-500 mt-1.5">Select the site where job will take place</p>
                 </div>
@@ -131,11 +163,10 @@
                             class="text-rose-500">*</span></label>
                     <input type="text" [(ngModel)]="job.title" placeholder="Evening Lock Service"
                         class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"
-                        [class.border-rose-500]="submitted && errors.title"
-                        [class.ring-1]="submitted && errors.title"
+                        [class.border-rose-500]="submitted && errors.title" [class.ring-1]="submitted && errors.title"
                         [class.ring-rose-500/20]="submitted && errors.title" />
                     @if (submitted && errors.title) {
-                        <p class="text-xs text-rose-500 mt-1">{{ errors.title }}</p>
+                    <p class="text-xs text-rose-500 mt-1">{{ errors.title }}</p>
                     }
                     <p class="text-[9px] text-slate-500 mt-1.5">Enter a short title for this job.</p>
                 </div>
@@ -160,11 +191,11 @@
             <div class="px-5 pt-5">
                 <h3 class="flex items-center justify-between gap-2 font-bold text-slate-900 mb-4 text-xs">
                     <div class="flex items-center gap-2">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M6.8338 9.16732V6.8338M6.8338 4.50028H6.83963M12.6676 6.8338C12.6676 10.0557 10.0557 12.6676 6.8338 12.6676C3.61188 12.6676 1 10.0557 1 6.8338C1 3.61188 3.61188 1 6.8338 1C10.0557 1 12.6676 3.61188 12.6676 6.8338Z"
-                            stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
-                    </svg> About Job Types
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M6.8338 9.16732V6.8338M6.8338 4.50028H6.83963M12.6676 6.8338C12.6676 10.0557 10.0557 12.6676 6.8338 12.6676C3.61188 12.6676 1 10.0557 1 6.8338C1 3.61188 3.61188 1 6.8338 1C10.0557 1 12.6676 3.61188 12.6676 6.8338Z"
+                                stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                        </svg> About Job Types
                     </div>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10.5 8.75L7 5.25L3.5 8.75" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
@@ -244,7 +275,7 @@
 
             <div class="pb-5 px-5">
                 <hr class="border-slate-200 mb-4">
-                
+
                 <h3 class="flex items-center gap-2 text-slate-900 text-xs font-bold font-['Inter'] mb-4">
                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                     What's Next?
@@ -312,51 +343,37 @@
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Date <span
                         class="text-rose-500">*</span></label>
-                <app-date-picker
-                    id="job-date"
-                    [defaultDate]="job.date"
-                    placeholder="Select date"
-                    (dateChange)="onDateChange($event)"
-                    [class.border-rose-500]="submitted && errors.date"
-                    [class.ring-1]="submitted && errors.date"
-                    [class.ring-rose-500/20]="submitted && errors.date">
+                <app-date-picker id="job-date" [defaultDate]="job.date" placeholder="Select date"
+                    (dateChange)="onDateChange($event)" [class.border-rose-500]="submitted && errors.date"
+                    [class.ring-1]="submitted && errors.date" [class.ring-rose-500/20]="submitted && errors.date">
                 </app-date-picker>
                 @if (submitted && errors.date) {
-                    <p class="text-xs text-rose-500 mt-1">{{ errors.date }}</p>
+                <p class="text-xs text-rose-500 mt-1">{{ errors.date }}</p>
                 }
                 <p class="text-[9px] text-slate-500 mt-1.5">Select the date.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Start Time <span
                         class="text-rose-500">*</span></label>
-                <app-time-picker
-                    id="job-start-time"
-                    [defaultTime]="job.startTime"
-                    placeholder="Select start time"
-                    (timeChange)="onStartTimeChange($event)"
-                    [class.border-rose-500]="submitted && errors.startTime"
+                <app-time-picker id="job-start-time" [defaultTime]="job.startTime" placeholder="Select start time"
+                    (timeChange)="onStartTimeChange($event)" [class.border-rose-500]="submitted && errors.startTime"
                     [class.ring-1]="submitted && errors.startTime"
                     [class.ring-rose-500/20]="submitted && errors.startTime">
                 </app-time-picker>
                 @if (submitted && errors.startTime) {
-                    <p class="text-xs text-rose-500 mt-1">{{ errors.startTime }}</p>
+                <p class="text-xs text-rose-500 mt-1">{{ errors.startTime }}</p>
                 }
                 <p class="text-[9px] text-slate-500 mt-1.5">Start time.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">End Time <span
                         class="text-rose-500">*</span></label>
-                <app-time-picker
-                    id="job-end-time"
-                    [defaultTime]="job.endTime"
-                    placeholder="Select end time"
-                    (timeChange)="onEndTimeChange($event)"
-                    [class.border-rose-500]="submitted && errors.endTime"
-                    [class.ring-1]="submitted && errors.endTime"
-                    [class.ring-rose-500/20]="submitted && errors.endTime">
+                <app-time-picker id="job-end-time" [defaultTime]="job.endTime" placeholder="Select end time"
+                    (timeChange)="onEndTimeChange($event)" [class.border-rose-500]="submitted && errors.endTime"
+                    [class.ring-1]="submitted && errors.endTime" [class.ring-rose-500/20]="submitted && errors.endTime">
                 </app-time-picker>
                 @if (submitted && errors.endTime) {
-                    <p class="text-xs text-rose-500 mt-1">{{ errors.endTime }}</p>
+                <p class="text-xs text-rose-500 mt-1">{{ errors.endTime }}</p>
                 }
                 <p class="text-[9px] text-slate-500 mt-1.5">End time.</p>
             </div>
@@ -377,34 +394,24 @@
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Officer <span
-                        class="text-rose-500">*</span></label>
-                    <app-rich-select
-                        [options]="officerOptions"
-                        [value]="job.officer"
-                        (valueChange)="job.officer = $event"
-                        placeholder="Select officer"
-                        panelWidth="wide"
-                        class="w-full"
-                        [class.border-rose-500]="submitted && errors.officer"
-                        [class.ring-1]="submitted && errors.officer"
-                        [class.ring-rose-500/20]="submitted && errors.officer">
-                    </app-rich-select>
-                    @if (submitted && errors.officer) {
-                        <p class="text-xs text-rose-500 mt-1">{{ errors.officer }}</p>
-                    }
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Officer
+                    <span class="text-rose-500">*</span></label>
+                <app-rich-select [options]="officerOptions" [value]="job.officer" (valueChange)="job.officer = $event"
+                    placeholder="Select officer" panelWidth="wide" class="w-full"
+                    [class.border-rose-500]="submitted && errors.officer" [class.ring-1]="submitted && errors.officer"
+                    [class.ring-rose-500/20]="submitted && errors.officer">
+                </app-rich-select>
+                @if (submitted && errors.officer) {
+                <p class="text-xs text-rose-500 mt-1">{{ errors.officer }}</p>
+                }
                 <p class="text-[9px] text-slate-500 mt-1.5">Assign an officer to this job.</p>
             </div>
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Priority <span
-                        class="text-rose-500">*</span></label>
-                    <app-rich-select
-                        [options]="priorityOptions"
-                        [(value)]="job.priority"
-                        placeholder="Select priority"
-                        panelWidth="wide"
-                        class="w-full">
-                    </app-rich-select>
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Priority
+                    <span class="text-rose-500">*</span></label>
+                <app-rich-select [options]="priorityOptions" [(value)]="job.priority" placeholder="Select priority"
+                    panelWidth="wide" class="w-full">
+                </app-rich-select>
                 <p class="text-[9px] text-slate-500 mt-1.5">Set the priority level.</p>
             </div>
         </div>
@@ -430,7 +437,8 @@
                 Add Keys
             </button>
         </div>
-        <p class="text-slate-600 text-xs font-normal font-['Inter'] mb-5">Select the keys that are required for this job.</p>
+        <p class="text-slate-600 text-xs font-normal font-['Inter'] mb-5">Select the keys that are required for this
+            job.</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @for (key of selectedKeys; track key.id) {
@@ -472,9 +480,24 @@
     <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
         <div class="flex items-center justify-between gap-3 mb-1">
             <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter']">
-               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M15.75 7.992V14.25C15.75 14.6478 15.592 15.0294 15.3107 15.3107C15.0294 15.592 14.6478 15.75 14.25 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H13.008M6.75 8.25L9 10.5L16.5 3" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+
+                @if(checklistHeading == 'Lock Service Checklist"') {
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M15.75 7.992V14.25C15.75 14.6478 15.592 15.0294 15.3107 15.3107C15.0294 15.592 14.6478 15.75 14.25 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H13.008M6.75 8.25L9 10.5L16.5 3"
+                        stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                }
+                @else{
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M15.75 7.992V14.25C15.75 14.6478 15.592 15.0294 15.3107 15.3107C15.0294 15.592 14.6478 15.75 14.25 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H13.008M6.75 8.25L9 10.5L16.5 3"
+                        stroke="#EA580C" stroke-width="2" stroke-linecap="round" />
+                </svg>
+
+
+                }
+
                 {{ checklistHeading }}
             </h2>
             <button (click)="openAddChecklistModal()"
@@ -496,9 +519,11 @@
                     {{ item.text }}
                     <button (click)="removeChecklistItem(item.id)" aria-label="Remove item"
                         class="text-rose-400 hover:text-rose-500">
-                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.72681 5.33333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978" stroke="#EF4444" stroke-linecap="round"/>
-    </svg>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.72681 5.33333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978"
+                                stroke="#EF4444" stroke-linecap="round" />
+                        </svg>
                     </button>
                 </li>
                 }
@@ -509,9 +534,11 @@
                     {{ item.text }}
                     <button (click)="removeChecklistItem(item.id)" aria-label="Remove item"
                         class="text-rose-400 hover:text-rose-500">
-                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.72681 5.33333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978" stroke="#EF4444" stroke-linecap="round"/>
-    </svg>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M5.83333 6.41668V9.91696M8.16667 6.41668V9.91696M11.0833 3.49978V11.6671C11.0833 11.9765 10.9604 12.2733 10.7416 12.4921C10.5228 12.7109 10.2261 12.8339 9.91667 12.8339H4.08333C3.77391 12.8339 3.47717 12.7109 3.25838 12.4921C3.03958 12.2733 2.91667 11.9765 2.91667 11.6671V3.49978M1.75 3.49978H12.25M4.66667 3.49978V2.33302C4.66667 2.02358 4.78958 1.72681 5.00838 1.508C5.22717 1.72681 5.33333 1.16626H8.16667C8.47609 1.16626 8.77283 1.28919 8.99162 1.508C9.21042 1.72681 9.33333 2.02358 9.33333 2.33302V3.49978"
+                                stroke="#EF4444" stroke-linecap="round" />
+                        </svg>
                     </button>
                 </li>
                 }
@@ -520,16 +547,19 @@
 
         <div class="mt-4 rounded-md bg-blue-50 border border-blue-100 px-4 py-3 flex items-center gap-2.5">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g clip-path="url(#clip0_2389_337)">
-  <path d="M7.99923 10.6668V7.99996M7.99923 5.33308H8.0059M14.6664 7.99996C14.6664 11.6822 11.6814 14.6672 7.99923 14.6672C4.31704 14.6672 1.33203 11.6822 1.33203 7.99996C1.33203 4.31777 4.31704 1.33276 7.99923 1.33276C11.6814 1.33276 14.6664 4.31777 14.6664 7.99996Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-  </g>
-  <defs>
-  <clipPath id="clip0_2389_337">
-  <rect width="16" height="16" fill="white"/>
-  </clipPath>
-  </defs>
-  </svg>
-            <p class="text-blue-600 text-xs font-normal font-['Inter'] max-w-2xl">Officers will mark each item as Completed, Not Completed or N/A in the
+                <g clip-path="url(#clip0_2389_337)">
+                    <path
+                        d="M7.99923 10.6668V7.99996M7.99923 5.33308H8.0059M14.6664 7.99996C14.6664 11.6822 11.6814 14.6672 7.99923 14.6672C4.31704 14.6672 1.33203 11.6822 1.33203 7.99996C1.33203 4.31777 4.31704 1.33276 7.99923 1.33276C11.6814 1.33276 14.6664 4.31777 14.6664 7.99996Z"
+                        stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <defs>
+                    <clipPath id="clip0_2389_337">
+                        <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <p class="text-blue-600 text-xs font-normal font-['Inter'] max-w-2xl">Officers will mark each item as
+                Completed, Not Completed or N/A in the
                 mobile application. Officers can also add images and notes to all checklist items.</p>
         </div>
     </div>
@@ -537,31 +567,29 @@
     <!-- Notifications & Escalation -->
     <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
         <h2 class="flex items-center gap-2 text-slate-900 text-sm font-bold font-['Inter'] mb-5">
-             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M7.70006 15.7506C7.83172 15.9786 8.02108 16.168 8.24911 16.2996C8.47713 16.4313 8.73579 16.5006 8.99909 16.5006C9.26239 16.5006 9.52105 16.4313 9.74907 16.2996C9.9771 16.168 10.1665 15.9786 10.2981 15.7506M2.44596 11.4947C2.34798 11.6021 2.28332 11.7357 2.25984 11.8792C2.23637 12.0226 2.25509 12.1698 2.31373 12.3029C2.37237 12.4359 2.46841 12.549 2.59015 12.6284C2.71189 12.7079 2.8541 12.7502 2.99947 12.7503H14.9997C15.1451 12.7504 15.2873 12.7082 15.4091 12.6289C15.5309 12.5496 15.6271 12.4366 15.6859 12.3037C15.7447 12.1707 15.7636 12.0236 15.7403 11.8801C15.717 11.7366 15.6525 11.603 15.5547 11.4955C14.5572 10.4671 13.4997 9.3743 13.4997 5.99977C13.4997 4.80619 13.0256 3.66151 12.1816 2.81752C11.3377 1.97354 10.1931 1.49939 8.99959 1.49939C7.80609 1.49939 6.66148 1.97354 5.81755 2.81752C4.97361 3.66151 4.4995 4.80619 4.4995 5.99977C4.4995 9.3743 3.44123 10.4671 2.44596 11.4947Z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
-    </svg>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.70006 15.7506C7.83172 15.9786 8.02108 16.168 8.24911 16.2996C8.47713 16.4313 8.73579 16.5006 8.99909 16.5006C9.26239 16.5006 9.52105 16.4313 9.74907 16.2996C9.9771 16.168 10.1665 15.9786 10.2981 15.7506M2.44596 11.4947C2.34798 11.6021 2.28332 11.7357 2.25984 11.8792C2.23637 12.0226 2.25509 12.1698 2.31373 12.3029C2.37237 12.4359 2.46841 12.549 2.59015 12.6284C2.71189 12.7079 2.8541 12.7502 2.99947 12.7503H14.9997C15.1451 12.7504 15.2873 12.7082 15.4091 12.6289C15.5309 12.5496 15.6271 12.4366 15.6859 12.3037C15.7447 12.1707 15.7636 12.0236 15.7403 11.8801C15.717 11.7366 15.6525 11.603 15.5547 11.4955C14.5572 10.4671 13.4997 9.3743 13.4997 5.99977C13.4997 4.80619 13.0256 3.66151 12.1816 2.81752C11.3377 1.97354 10.1931 1.49939 8.99959 1.49939C7.80609 1.49939 6.66148 1.97354 5.81755 2.81752C4.97361 3.66151 4.4995 4.80619 4.4995 5.99977C4.4995 9.3743 3.44123 10.4671 2.44596 11.4947Z"
+                    stroke="#F59E0B" stroke-width="2" stroke-linecap="round" />
+            </svg>
             Notifications &amp; Escalation
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Notify on Job Completion</label>
-                <app-multi-select
-                    [options]="completionContactOptions"
-                    [defaultSelected]="selectedCompletionContactIds"
-                    [disabled]="contactsLoading"
-                    (selectionChange)="selectedCompletionContactIds = $event"
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Notify on
+                    Job Completion</label>
+                <app-multi-select [options]="completionContactOptions" [defaultSelected]="selectedCompletionContactIds"
+                    [disabled]="contactsLoading" (selectionChange)="selectedCompletionContactIds = $event"
                     placeholder="Select contacts">
                 </app-multi-select>
                 <p class="text-[9px] text-slate-500 mt-1.5">Contacts will be notified based on job outcome.</p>
             </div>
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Notify if Job Not Completed</label>
-                <app-multi-select
-                    [options]="notCompletedContactOptions"
-                    [defaultSelected]="selectedNotCompletedContactIds"
-                    [disabled]="contactsLoading"
-                    (selectionChange)="selectedNotCompletedContactIds = $event"
-                    placeholder="Select contacts">
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Notify if
+                    Job Not Completed</label>
+                <app-multi-select [options]="notCompletedContactOptions"
+                    [defaultSelected]="selectedNotCompletedContactIds" [disabled]="contactsLoading"
+                    (selectionChange)="selectedNotCompletedContactIds = $event" placeholder="Select contacts">
                 </app-multi-select>
             </div>
         </div>
@@ -582,72 +610,91 @@
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Instruction Attachments</label>
-                <label class="inline-flex items-center gap-2 bg-slate-50 rounded-md outline outline-1 outline-offset-[-1px] outline-slate-200 text-blue-600 text-xs font-semibold font-['Inter'] px-4 py-2 hover:bg-slate-100 transition cursor-pointer">
+                <label
+                    class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Instruction
+                    Attachments</label>
+                <label
+                    class="inline-flex items-center gap-2 bg-slate-50 rounded-md outline outline-1 outline-offset-[-1px] outline-slate-200 text-blue-600 text-xs font-semibold font-['Inter'] px-4 py-2 hover:bg-slate-100 transition cursor-pointer">
                     <input type="file" class="hidden" (change)="onFileSelect($event)" multiple>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_2389_377)">
-                            <path d="M7 1.75V8.75M4.08333 4.66667L7 1.75L9.91667 4.66667M12.25 8.75V11.0833C12.25 11.3928 12.1271 11.6895 11.9083 11.9083C11.6895 12.1271 11.75 12.25 11.0833 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V8.75" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                            <path
+                                d="M7 1.75V8.75M4.08333 4.66667L7 1.75L9.91667 4.66667M12.25 8.75V11.0833C12.25 11.3928 12.1271 11.6895 11.9083 11.9083C11.6895 12.1271 11.75 12.25 11.0833 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V8.75"
+                                stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
                         </g>
                         <defs>
                             <clipPath id="clip0_2389_377">
-                                <rect width="14" height="14" fill="white"/>
+                                <rect width="14" height="14" fill="white" />
                             </clipPath>
                         </defs>
                     </svg>
                     Upload Files
                 </label>
-                <p class="text-[9px] text-slate-500 mt-2">Upload job instructions, locking procedure, floor plans, etc.</p>
+                <p class="text-[9px] text-slate-500 mt-2">Upload job instructions, locking procedure, floor plans, etc.
+                </p>
                 @if (attachmentError) {
-                    <p class="text-xs text-rose-600 mt-2">{{ attachmentError }}</p>
+                <p class="text-xs text-rose-600 mt-2">{{ attachmentError }}</p>
                 }
                 @if (attachmentPreviews.length) {
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-3">
-                        @for (item of attachmentPreviews; track $index) {
-                            <div class="border border-slate-200 rounded-lg p-2 flex items-start gap-3 bg-white">
-                                <div class="w-12 h-12 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
-                                    @if (isImage(item.file.type)) {
-                                        <img [src]="item.url" alt="{{ item.file.name }}" class="w-full h-full object-cover">
-                                    } @else {
-                                        <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" class="w-8 h-10">
-                                            <rect width="100" height="70" fill="#f1f2f5"/>
-                                            <g stroke="#c7cbd4" stroke-width="1" fill="none">
-                                                <rect x="10" y="8" width="80" height="54"/>
-                                                <line x1="10" y1="28" x2="90" y2="28"/>
-                                                <line x1="35" y1="8" x2="35" y2="62"/>
-                                                <line x1="60" y1="8" x2="60" y2="62"/>
-                                            </g>
-                                            <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <circle cx="32" cy="24" r="2.5" fill="#e8434c"/>
-                                            <circle cx="62" cy="24" r="2.5" fill="#e8434c"/>
-                                        </svg>
-                                    }
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-xs font-medium text-slate-700 truncate">{{ item.file.name }}</div>
-                                    <div class="text-[11px] text-slate-400">{{ formatSize(item.file.size) }}</div>
-                                    @if (item.status === 'uploading') {
-                                        <div class="text-[11px] text-blue-600 mt-0.5">Uploading...</div>
-                                    } @else if (item.status === 'success') {
-                                        <div class="text-[11px] text-emerald-600 mt-0.5">Uploaded</div>
-                                    } @else if (item.status === 'error') {
-                                        <div class="text-[11px] text-rose-600 mt-0.5">{{ item.message || 'Failed' }}</div>
-                                    }
-                                </div>
-                                @if (item.status !== 'uploading') {
-                                    <button type="button" (click)="removeAttachment($index)" class="text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md p-1 transition shrink-0" aria-label="Remove attachment">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                    </button>
-                                }
-                            </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-3">
+                    @for (item of attachmentPreviews; track $index) {
+                    <div class="border border-slate-200 rounded-lg p-2 flex items-start gap-3 bg-white">
+                        <div
+                            class="w-12 h-12 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
+                            @if (isImage(item.file.type)) {
+                            <img [src]="item.url" alt="{{ item.file.name }}" class="w-full h-full object-cover">
+                            } @else {
+                            <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" class="w-8 h-10">
+                                <rect width="100" height="70" fill="#f1f2f5" />
+                                <g stroke="#c7cbd4" stroke-width="1" fill="none">
+                                    <rect x="10" y="8" width="80" height="54" />
+                                    <line x1="10" y1="28" x2="90" y2="28" />
+                                    <line x1="35" y1="8" x2="35" y2="62" />
+                                    <line x1="60" y1="8" x2="60" y2="62" />
+                                </g>
+                                <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="32" cy="24" r="2.5" fill="#e8434c" />
+                                <circle cx="62" cy="24" r="2.5" fill="#e8434c" />
+                            </svg>
+                            }
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-medium text-slate-700 truncate">{{ item.file.name }}</div>
+                            <div class="text-[11px] text-slate-400">{{ formatSize(item.file.size) }}</div>
+                            @if (item.status === 'uploading') {
+                            <div class="text-[11px] text-blue-600 mt-0.5">Uploading...</div>
+                            } @else if (item.status === 'success') {
+                            <div class="text-[11px] text-emerald-600 mt-0.5">Uploaded</div>
+                            } @else if (item.status === 'error') {
+                            <div class="text-[11px] text-rose-600 mt-0.5">{{ item.message || 'Failed' }}</div>
+                            }
+                        </div>
+                        @if (item.status !== 'uploading') {
+                        <button type="button" (click)="removeAttachment($index)"
+                            class="text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md p-1 transition shrink-0"
+                            aria-label="Remove attachment">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                        </button>
                         }
                     </div>
+                    }
+                </div>
                 }
             </div>
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Additional Notes</label>
-                <textarea rows="3" [(ngModel)]="job.notes" placeholder="Enter any additional notes or instructions for the officer..."
+                <label
+                    class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Additional
+                    Notes</label>
+                <textarea rows="3" [(ngModel)]="job.notes"
+                    placeholder="Enter any additional notes or instructions for the officer..."
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></textarea>
                 <p class="text-[9px] text-slate-500 mt-1.5 ">55/500</p>
             </div>
@@ -658,31 +705,33 @@
     <div class="flex flex-col sm:flex-row sm:justify-end gap-3 pb-4">
         <button
             class="w-full sm:w-auto bg-white rounded-md border border-slate-200 text-slate-600 text-sm font-semibold font-['Inter'] px-10 py-2.5 hover:bg-slate-50">Cancel</button>
-         <button (click)="createJob()" [disabled]="saving"
-             class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 rounded-md text-white text-sm font-semibold font-['Inter'] transition hover:bg-blue-700 disabled:opacity-70">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-   <g clip-path="url(#clip0_2389_439)">
-   <path d="M10.6661 13.3328V2.6661C10.6661 2.31248 10.5256 1.97334 10.2756 1.72329C10.0255 1.47324 9.68632 1.33276 9.33267 1.33276H6.66579C6.31214 1.33276 5.97298 1.47324 5.72291 1.72329C5.47284 1.97334 5.33235 2.31248 5.33235 2.6661V13.3328M2.66547 3.99943H13.333C14.0694 3.99943 14.6664 4.59638 14.6664 5.33276V11.9994C14.6664 12.7358 14.0694 13.3328 13.333 13.3328H2.66547C1.92903 13.3328 1.33203 12.7358 1.33203 11.9994V5.33276C1.33203 4.59638 1.92903 3.99943 2.66547 3.99943Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
-   </g>
-   <defs>
-   <clipPath id="clip0_2389_439">
-   <rect width="16" height="16" fill="white"/>
-   </clipPath>
-   </defs>
-   </svg>{{ saving ? 'Creating...' : 'Create Job' }}        </button>
+        <button (click)="createJob()" [disabled]="saving"
+            class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 rounded-md text-white text-sm font-semibold font-['Inter'] transition hover:bg-blue-700 disabled:opacity-70">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_2389_439)">
+                    <path
+                        d="M10.6661 13.3328V2.6661C10.6661 2.31248 10.5256 1.97334 10.2756 1.72329C10.0255 1.47324 9.68632 1.33276 9.33267 1.33276H6.66579C6.31214 1.33276 5.97298 1.47324 5.72291 1.72329C5.47284 1.97334 5.33235 2.31248 5.33235 2.6661V13.3328M2.66547 3.99943H13.333C14.0694 3.99943 14.6664 4.59638 14.6664 5.33276V11.9994C14.6664 12.7358 14.0694 13.3328 13.333 13.3328H2.66547C1.92903 13.3328 1.33203 12.7358 1.33203 11.9994V5.33276C1.33203 4.59638 1.92903 3.99943 2.66547 3.99943Z"
+                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <defs>
+                    <clipPath id="clip0_2389_439">
+                        <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>{{ saving ? 'Creating...' : 'Create Job' }} </button>
     </div>
 
-     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
-    <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
-      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
-        Policy</a>
-      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
-        Service</a>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+        <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
+            <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
+                Policy</a>
+            <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
+                Service</a>
 
-      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
+            <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
+        </div>
+
     </div>
-
-  </div>
 </div>
 
 @if (showAddKeysModal) {
@@ -694,68 +743,73 @@
         <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-4 shrink-0">
             <div>
                 <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-['Inter']">Add Required Keys</h2>
-                <p class="mt-1 text-sm text-slate-600 font-normal font-['Inter']">Search and select the keys required for this job.</p>
+                <p class="mt-1 text-sm text-slate-600 font-normal font-['Inter']">Search and select the keys required
+                    for this job.</p>
             </div>
             <button (click)="closeAddKeysModal()"
                 class="text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-sm p-1.5 transition shrink-0"
                 aria-label="Close">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 5L5 15M5 5L15 15" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M15 5L5 15M5 5L15 15" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
                 </svg>
             </button>
         </div>
 
         <!-- Filters -->
-                <div class="grid grid-cols-1 grid-cols-12 gap-3 mb-4 px-8">
-                    <div class="col-span-4">
-                    <div class="relative flex-1">
-                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
-                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <circle cx="11" cy="11" r="7" />
-                            <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
-                        </svg>
-                        <svg width="16" height="16" class="absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        <input type="text" placeholder="Search by key name, key ID, tag or description…"
-                            class="w-full pl-9 pr-3 py-2.5 rounded-md border border-slate-200 text-xs text-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
-                    </div>
-                    </div>
-
-                    <div class="col-span-2">                    
-                    <select
-                        class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
-                        <option>All Sites</option>
-                        <option>Head Office</option>
-                        <option>Warehouse 1</option>
-                    </select>
-                    </div>
-
-                    <div class="col-span-2">                    
-                    <select
-                        class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
-                        <option>All Statuses</option>
-                        <option>Available</option>
-                        <option>Issued</option>
-                    </select>
-                    </div>
-                    
-                    
+        <div class="grid grid-cols-1 grid-cols-12 gap-3 mb-4 px-8">
+            <div class="col-span-4">
+                <div class="relative flex-1">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7" />
+                        <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
+                    </svg>
+                    <svg width="16" height="16" class="absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 16 16"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z"
+                            stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input type="text" placeholder="Search by key name, key ID, tag or description…"
+                        class="w-full pl-9 pr-3 py-2.5 rounded-md border border-slate-200 text-xs text-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
                 </div>
+            </div>
+
+            <div class="col-span-2">
+                <select
+                    class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                    <option>All Sites</option>
+                    <option>Head Office</option>
+                    <option>Warehouse 1</option>
+                </select>
+            </div>
+
+            <div class="col-span-2">
+                <select
+                    class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                    <option>All Statuses</option>
+                    <option>Available</option>
+                    <option>Issued</option>
+                </select>
+            </div>
+
+
+        </div>
 
         <!-- Body -->
         <div class="grid grid-cols-1 grid-cols-12 px-8 gap-3 overflow-hidden">
 
-            
+
             <!-- Left: search + table -->
             <div class="col-span-8 overflow-y-auto">
 
-                
+
                 <!-- Table (desktop) -->
                 <div class="hidden md:block border border-slate-200 rounded-md rounded-b-[0px] overflow-hidden">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="bg-slate-50 text-left text-slate-900 text-xs font-['Inter'] border-b border-slate-200">
+                            <tr
+                                class="bg-slate-50 text-left text-slate-900 text-xs font-['Inter'] border-b border-slate-200">
                                 <th class="w-10 px-4 py-3"><input type="checkbox"
                                         class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" /></th>
                                 <th class="px-2 py-3 font-semibold">Key Details</th>
@@ -774,13 +828,18 @@
                                     <div class="flex items-start gap-3">
                                         <div
                                             class="w-8 h-8 rounded-md bg-blue-100 text-blue-600 grid place-items-center shrink-0">
-                                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-                                           </svg>
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z"
+                                                    stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                                            </svg>
                                         </div>
                                         <div>
-                                            <div class="text-blue-600 font-bold text-xs font-['Inter']">{{ key.code }}</div>
-                                            <div class="text-slate-900 font-semibold text-xs font-['Inter']">{{ key.name }}</div>
+                                            <div class="text-blue-600 font-bold text-xs font-['Inter']">{{ key.code }}
+                                            </div>
+                                            <div class="text-slate-900 font-semibold text-xs font-['Inter']">{{ key.name
+                                                }}</div>
                                             <div class="mt-1 flex gap-2">
                                                 <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{
                                                     key.cabinet }}</span>
@@ -791,11 +850,13 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 align-top">
-                                    <div class="text-slate-900 text-xs font-semibold font-['Inter']">{{ key.site }}</div>
+                                    <div class="text-slate-900 text-xs font-semibold font-['Inter']">{{ key.site }}
+                                    </div>
                                     <div class="text-slate-500 text-xs font-['Inter']">{{ key.room }}</div>
                                 </td>
                                 <td class="px-4 py-4 align-top">
-                                    <span class="inline-block px-2.5 py-1 rounded-sm text-xs font-semibold font-['Inter']"
+                                    <span
+                                        class="inline-block px-2.5 py-1 rounded-sm text-xs font-semibold font-['Inter']"
                                         [class.bg-green-100]="key.status === 'Available'"
                                         [class.text-green-700]="key.status === 'Available'"
                                         [class.bg-orange-100]="key.status === 'Issued'"
@@ -844,35 +905,40 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 shrink-0 border border-slate-200 rounded-b-md">
-                    <p class="text-xs text-slate-600 font-['Inter']">Showing <span class="font-semibold text-slate-600">{{ startIndex }}</span> to <span
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 shrink-0 border border-slate-200 rounded-b-md">
+                    <p class="text-xs text-slate-600 font-['Inter']">Showing <span
+                            class="font-semibold text-slate-600">{{ startIndex }}</span> to <span
                             class="font-semibold text-slate-600">{{ endIndex }}</span> of <span
                             class="font-semibold text-slate-600">{{ totalElements }}</span> keys</p>
                     <div class="flex items-center gap-1">
                         <button (click)="prevPage()" [disabled]="currentPage === 0"
                             class="w-8 h-8 grid place-items-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8.75 10.5L5.25 7L8.75 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.75 10.5L5.25 7L8.75 3.5" stroke="#64748B" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
                         </button>
                         @for (p of pageNumbers; track p) {
-                            @if (p === '...') {
-                                <span class="px-1 text-slate-400">…</span>
-                            } @else {
-                                <button (click)="goToPage(p - 1)"
-                                    class="w-8 h-8 grid place-items-center rounded-sm border text-blue-600 font-medium text-xs font-['Inter']"
-                                    [class.border-blue-600]="currentPage === p - 1"
-                                    [class.bg-blue-50]="currentPage === p - 1"
-                                    [class.border-slate-200]="currentPage !== p - 1"
-                                    [class.text-slate-600]="currentPage !== p - 1"
-                                    [class.hover:bg-slate-50]="currentPage !== p - 1">{{ p }}</button>
-                            }
+                        @if (p === '...') {
+                        <span class="px-1 text-slate-400">…</span>
+                        } @else {
+                        <button (click)="goToPage(p - 1)"
+                            class="w-8 h-8 grid place-items-center rounded-sm border text-blue-600 font-medium text-xs font-['Inter']"
+                            [class.border-blue-600]="currentPage === p - 1" [class.bg-blue-50]="currentPage === p - 1"
+                            [class.border-slate-200]="currentPage !== p - 1"
+                            [class.text-slate-600]="currentPage !== p - 1"
+                            [class.hover:bg-slate-50]="currentPage !== p - 1">{{ p }}</button>
+                        }
                         }
                         <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1"
                             class="w-8 h-8 grid place-items-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -882,8 +948,10 @@
             <div
                 class="col-span-4 border border-slate-200 rounded-md px-5 sm:px-8 lg:px-6 py-5 flex flex-col overflow-y-auto relative">
                 <div class="flex items-center justify-between mb-3 shrink-0">
-                    <h3 class="font-bold text-slate-900 text-sm font-['Inter']">Selected Keys ({{ selectedKeys.length }})</h3>
-                    <button (click)="clearAllKeys()" class="text-xs font-semibold text-blue-600 font-['Inter'] hover:text-blue-700">Clear
+                    <h3 class="font-bold text-slate-900 text-sm font-['Inter']">Selected Keys ({{ selectedKeys.length
+                        }})</h3>
+                    <button (click)="clearAllKeys()"
+                        class="text-xs font-semibold text-blue-600 font-['Inter'] hover:text-blue-700">Clear
                         All</button>
                 </div>
                 <div class="space-y-3 flex-1">
@@ -891,16 +959,19 @@
                     <div class="bg-white border border-slate-200 rounded-md p-3 flex items-start gap-3">
                         <div
                             class="w-7 h-7 rounded-sm bg-blue-50 text-blue-600 grid place-items-center shrink-0 mt-0.5">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_2416_1082)">
-      <path d="M9.04102 4.37453L10.3827 5.7162C10.4917 5.82308 10.6383 5.88295 10.791 5.88295C10.9437 5.88295 11.0903 5.82308 11.1993 5.7162L12.4243 4.4912C12.5312 4.38216 12.5911 4.23555 12.5911 4.08287C12.5911 3.93018 12.5312 3.78357 12.4243 3.67453L11.0827 2.33287M12.2493 1.1662L6.64929 6.7662M7.58268 9.0412C7.58268 10.8131 6.14626 12.2495 4.37435 12.2495C2.60244 12.2495 1.16602 10.8131 1.16602 9.0412C1.16602 7.26928 2.60244 5.83287 4.37435 5.83287C6.14626 5.83287 7.58268 7.26928 7.58268 9.0412Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
-      </g>
-      <defs>
-      <clipPath id="clip0_2416_1082">
-      <rect width="14" height="14" fill="white"/>
-      </clipPath>
-      </defs>
-      </svg>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2416_1082)">
+                                    <path
+                                        d="M9.04102 4.37453L10.3827 5.7162C10.4917 5.82308 10.6383 5.88295 10.791 5.88295C10.9437 5.88295 11.0903 5.82308 11.1993 5.7162L12.4243 4.4912C12.5312 4.38216 12.5911 4.23555 12.5911 4.08287C12.5911 3.93018 12.5312 3.78357 12.4243 3.67453L11.0827 2.33287M12.2493 1.1662L6.64929 6.7662M7.58268 9.0412C7.58268 10.8131 6.14626 12.2495 4.37435 12.2495C2.60244 12.2495 1.16602 10.8131 1.16602 9.0412C1.16602 7.26928 2.60244 5.83287 4.37435 5.83287C6.14626 5.83287 7.58268 7.26928 7.58268 9.0412Z"
+                                        stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2416_1082">
+                                        <rect width="14" height="14" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="text-blue-600 font-bold text-xs font-['Inter']">{{ key.code }}</div>
@@ -913,9 +984,11 @@
                             </div>
                         </div>
                         <button (click)="removeKey(key)" class="text-slate-400 hover:text-slate-600 shrink-0">
-                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5" stroke="#64748B" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
                         </button>
                     </div>
                     }
@@ -939,15 +1012,17 @@
                 <button (click)="closeAddKeysModal()"
                     class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-blue-600 text-white text-sm font-semibold font-['Inter'] hover:bg-blue-700">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_2416_1120)">
-      <path d="M10.332 4.99949L11.8654 6.53282C11.99 6.65498 12.1575 6.7234 12.332 6.7234C12.5065 6.7234 12.6741 6.65498 12.7987 6.53282L14.1987 5.13282C14.3208 5.00821 14.3893 4.84066 14.3893 4.66616C14.3893 4.49166 14.3208 4.32411 14.1987 4.19949L12.6654 2.66616M13.9986 1.33282L7.59863 7.73283M8.66536 10.3328C8.66536 12.3579 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3579 1.33203 10.3328C1.33203 8.30778 2.97365 6.66616 4.9987 6.66616C7.02374 6.66616 8.66536 8.30778 8.66536 10.3328Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
-      </g>
-      <defs>
-      <clipPath id="clip0_2416_1120">
-      <rect width="16" height="16" fill="white"/>
-      </clipPath>
-      </defs>
-      </svg>
+                        <g clip-path="url(#clip0_2416_1120)">
+                            <path
+                                d="M10.332 4.99949L11.8654 6.53282C11.99 6.65498 12.1575 6.7234 12.332 6.7234C12.5065 6.7234 12.6741 6.65498 12.7987 6.53282L14.1987 5.13282C14.3208 5.00821 14.3893 4.84066 14.3893 4.66616C14.3893 4.49166 14.3208 4.32411 14.1987 4.19949L12.6654 2.66616M13.9986 1.33282L7.59863 7.73283M8.66536 10.3328C8.66536 12.3579 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3579 1.33203 10.3328C1.33203 8.30778 2.97365 6.66616 4.9987 6.66616C7.02374 6.66616 8.66536 8.30778 8.66536 10.3328Z"
+                                stroke="white" stroke-width="2" stroke-linecap="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_2416_1120">
+                                <rect width="16" height="16" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
                     Add Selected Keys
                 </button>
             </div>
@@ -965,13 +1040,14 @@
         <div class="flex items-start justify-between px-5 sm:px-8 pt-6 pb-1 shrink-0">
             <div>
                 <h2 class="text-base font-bold text-slate-900 font-['Inter']">Add Checklist Item</h2>
-                <p class="mt-1 text-xs text-slate-600 font-normal font-['Inter']">Enter the checklist item that officer must complete.</p>
+                <p class="mt-1 text-xs text-slate-600 font-normal font-['Inter']">Enter the checklist item that officer
+                    must complete.</p>
             </div>
             <button (click)="closeAddChecklistModal()"
                 class="bg-slate-50 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md p-1.5 transition shrink-0"
                 aria-label="Close">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 5L5 15M5 5L15 15" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M15 5L5 15M5 5L15 15" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
                 </svg>
             </button>
         </div>
@@ -985,13 +1061,13 @@
                 <textarea id="checklist-item" maxlength="500" placeholder="Enter Checklist item here…"
                     [(ngModel)]="newChecklistItem"
                     class="w-full h-40 sm:h-48 resize-none rounded-md border border-slate-200 px-4 py-3 text-xs text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500"></textarea>
-                <span class="absolute bottom-3 right-4 text-[9px] text-slate-500">{{ newChecklistItem.length }}/500</span>
+                <span class="absolute bottom-3 right-4 text-[9px] text-slate-500">{{ newChecklistItem.length
+                    }}/500</span>
             </div>
         </div>
 
         <!-- Footer -->
-        <div
-            class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 sm:px-8 py-4 shrink-0">
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 sm:px-8 py-4 shrink-0">
             <button (click)="closeAddChecklistModal()"
                 class="w-full sm:w-auto px-5 py-2.5 rounded-md border border-slate-200 text-slate-600 text-sm font-semibold font-['Inter'] hover:bg-slate-50">
                 Cancel
@@ -1000,7 +1076,7 @@
                 class="w-full sm:w-auto px-5 py-2.5 rounded-md bg-blue-600 text-white text-sm font-semibold font-['Inter'] hover:bg-blue-700">
                 Add item
             </button>
-         </div>
+        </div>
 
     </div>
 </div>

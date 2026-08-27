@@ -60,7 +60,7 @@ export class CreateJobComponent implements OnInit {
     endTime: '',
     duration: '',
     officer: '',
-    priority: 'Medium',
+    priority: 'Low',
     notifyCompletion: '',
     notifyNotCompleted: '',
     notes: ''
@@ -252,6 +252,38 @@ export class CreateJobComponent implements OnInit {
     this.selectedJobType = jobTypeId;
     this.checklistItems = [];
     this.loadChecklist(jobTypeId);
+  }
+
+  getJobTypeBgClass(): string {
+  if (
+    this.selectedJobTypeLabel === 'Lock Service' ||
+    this.selectedJobTypeLabel === 'Lock Job'
+  ) {
+    return 'bg-orange-50';
+  }
+
+  if (
+    this.selectedJobTypeLabel === 'Unlock Service' ||
+    this.selectedJobTypeLabel === 'Unlock Job'
+  ) {
+    return 'bg-emerald-50';
+  }
+
+  return 'bg-gray-50';
+}
+
+  getPriorityBgClass(): string {
+    const value = this.priorityOptions.find(p => p.value === this.job.priority)?.value;
+    if (value === 'Low') {
+      return 'bg-emerald-50';
+    }
+    if (value === 'Medium') {
+      return 'bg-orange-50';
+    }
+    if (value === 'High') {
+      return 'bg-rose-50';
+    }
+    return 'bg-gray-50';
   }
 
   onDateChange(event: any): void {
@@ -622,12 +654,21 @@ export class CreateJobComponent implements OnInit {
     return this.clientOptions.find(o => o.value === this.selectedClient)?.label || 'Select client';
   }
 
-  priorityIcon(priority = ''): string {
-    const lower = priority.toLowerCase();
-    if (lower.includes('high') || lower.includes('critical')) return '<path d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
-    if (lower.includes('low')) return '<path d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
-    return '<path d="M10 6.6664V10M10 13.3336H10.0083M18.334 10C18.334 14.6027 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6027 1.66602 10C1.66602 5.39726 5.39727 1.666 10 1.666C14.6028 1.666 18.334 5.39726 18.334 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
+ getPriorityColor(priority: string): string {
+  switch (priority) {
+    case 'Low':
+      return '#22C55E';
+
+    case 'Medium':
+      return '#F59E0B';
+
+    case 'High':
+      return '#EF4444';
+
+    default:
+      return '#6B7280';
   }
+}
 
   private mapPriority(priority: string): string {
     const map: Record<string, string> = {
@@ -636,7 +677,7 @@ export class CreateJobComponent implements OnInit {
       'High': 'HIGH',
       'Critical': 'CRITICAL'
     };
-    return map[priority] || 'MEDIUM';
+    return map[priority] || 'LOW';
   }
 
   goBack(): void {

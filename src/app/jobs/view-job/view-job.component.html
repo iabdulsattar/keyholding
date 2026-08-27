@@ -238,11 +238,11 @@
           [class.border-transparent]="activeTab !== tab.id" [class.text-slate-900]="activeTab !== tab.id"
           [class.hover:text-slate-700]="activeTab !== tab.id">
           @if(tab.label == 'Job Summary') {
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" [class.stroke-blue-600]="activeTab === tab.id" [class.stroke-slate-900]="activeTab !== tab.id">
             <g clip-path="url(#clip0_2416_1327)">
               <path
                 d="M9.33397 1.3328H4.00117C3.64758 1.3328 3.30848 1.47328 3.05845 1.72335C2.80843 1.97342 2.66797 2.31259 2.66797 2.66624V13.3338C2.66797 13.6874 2.80843 14.0266 3.05845 14.2766C3.30848 14.5267 3.64758 14.6672 4.00117 14.6672H12.0004C12.354 14.6672 12.6931 14.5267 12.9431 14.2766C13.1931 14.0266 13.3336 13.6874 13.3336 13.3338V5.33312M9.33397 1.3328C9.54498 1.33245 9.75398 1.37387 9.94893 1.45465C10.1439 1.53544 10.3209 1.65399 10.4699 1.8035L12.8616 4.19569C13.0115 4.34471 13.1304 4.52195 13.2114 4.71717C13.2924 4.9124 13.3339 5.12174 13.3336 5.33312M9.33397 1.3328V4.66639C9.33397 4.84322 9.4042 5.0128 9.52921 5.13784C9.65422 5.26287 9.82377 5.33311 10.0006 5.33311L13.3336 5.33312M6.66757 5.99983H5.33437M10.6672 8.66671H5.33437M10.6672 11.3336H5.33437"
-                stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+                stroke-width="2" stroke-linecap="round" />
             </g>
             <defs>
               <clipPath id="clip0_2416_1327">
@@ -252,24 +252,24 @@
           </svg>
           }
           @else if(tab.label === 'Checklist') {
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" [class.stroke-blue-600]="activeTab === tab.id" [class.stroke-slate-900]="activeTab !== tab.id">
             <path
               d="M14 7.104V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H11.5627M6 7.33333L8 9.33333L14.6667 2.66667"
-              stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+              stroke-width="2" stroke-linecap="round" />
           </svg>
           }
           @else if(tab.label === 'Escalation') {
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" [class.stroke-blue-600]="activeTab === tab.id" [class.stroke-slate-900]="activeTab !== tab.id">
             <path
               d="M8.00065 5.99953V8.6662M8.00065 11.3329H8.00732M14.4876 11.9997L9.15426 2.66635C9.03797 2.46115 8.86933 2.29047 8.66555 2.17173C8.46176 2.05298 8.23012 1.99042 7.99426 1.99042C7.7584 1.99042 7.52677 2.05298 7.32298 2.17173C7.11919 2.29047 6.95055 2.46115 6.83426 2.66635L1.50093 11.9997C1.38338 12.2033 1.32175 12.4343 1.32227 12.6694C1.32279 12.9044 1.38545 13.1352 1.50389 13.3382C1.62234 13.5413 1.79236 13.7094 1.99673 13.8256C2.20109 13.9417 2.43253 14.0018 2.6676 13.9997H13.3343C13.5682 13.9994 13.7979 13.9377 14.0005 13.8205C14.203 13.7034 14.3711 13.5351 14.4879 13.3324C14.6048 13.1298 14.6663 12.8999 14.6662 12.666C14.6662 12.4321 14.6046 12.2023 14.4876 11.9997Z"
-              stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+              stroke-width="2" stroke-linecap="round" />
           </svg>
           }@else if(tab.label === 'Required Keys') {
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" [class.stroke-blue-600]="activeTab === tab.id" [class.stroke-slate-900]="activeTab !== tab.id">
             <g clip-path="url(#clip0_2416_1331)">
               <path
                 d="M10.332 4.99946L11.8654 6.53279C11.99 6.65495 12.1575 6.72337 12.332 6.72337C12.5065 6.72337 12.6741 6.65495 12.7987 6.53279L14.1987 5.13279C14.3208 5.00817 14.3893 4.84063 14.3893 4.66613C14.3893 4.49163 14.3208 4.32408 14.1987 4.19946L12.6654 2.66613M13.9986 1.33279L7.59863 7.73279M8.66536 10.3328C8.66536 12.3578 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3578 1.33203 10.3328C1.33203 8.30775 2.97365 6.66613 4.9987 6.66613C7.02374 6.66613 8.66536 8.30775 8.66536 10.3328Z"
-                stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+                stroke-width="2" stroke-linecap="round" />
             </g>
             <defs>
               <clipPath id="clip0_2416_1331">
