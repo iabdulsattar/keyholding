@@ -1,35 +1,15 @@
-<div class="min-h-[calc(100vh-16px)] flex flex-col p-3 sm:p-4">
+<div class="min-h-[calc(100vh-48px)] flex flex-col p-3 sm:p-4">
 
   <div class="flex-1">
     
     <!-- Header -->
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-6">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
     <div>
       <h2 class=" text-slate-900 text-2xl font-extrabold font-['Inter']">Invoices</h2>
       <p class=" text-slate-600 text-sm font-normal font-['Inter'] mt-1">View, download and manage all your invoices and billing history.</p>
     </div>
 
     <div class="w-40 h-8 relative">
-  <div class="w-28 h-8 left-[-20px] top-0 absolute bg-white rounded-md shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)]">
-    <div data-svg-wrapper class="left-[14px] top-[9px] absolute">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_2004_483)">
-      <path d="M4.66667 1.1662V3.49972M9.33333 1.1662V3.49972M1.75 5.83324H12.25M2.91667 2.33296H11.0833C11.7277 2.33296 12.25 2.85534 12.25 3.49972V11.667C12.25 12.3114 11.7277 12.8338 11.0833 12.8338H2.91667C2.27233 12.8338 1.75 12.3114 1.75 11.667V3.49972C1.75 2.85534 2.27233 2.33296 2.91667 2.33296Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-      </g>
-      <defs>
-      <clipPath id="clip0_2004_483">
-      <rect width="14" height="14" fill="white"/>
-      </clipPath>
-      </defs>
-      </svg>
-    </div>
-    <div class="left-[36px] top-[8px] absolute justify-start text-slate-900 text-xs font-medium font-['Inter']">Today</div>
-    <div data-svg-wrapper class="left-[82px] top-[9px] absolute">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </div>
   <div data-svg-wrapper class="left-[114px] top-[-8px] absolute">
     <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g filter="url(#filter0_d_2004_488)">
@@ -141,12 +121,7 @@
         <path d="M3 4.5L6 7.5L9 4.5" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </div>
-    <button class="flex items-center justify-center gap-2 px-4 py-3 rounded-md text-xs font-semibold font-['Inter'] text-slate-900 hover:bg-slate-50 whitespace-nowrap">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6.66667 5.33333H9.33333M8 14V8M8 5.33333V2M11.3333 10.6667H14M12.6667 8V2M12.6667 14V10.6667M2 9.33333H4.66667M3.33333 6.66667V2M3.33333 14V9.33333" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      Filters
-    </button>
+    
   </div>
 
 
@@ -162,7 +137,7 @@
                <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Description</th>
                <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Amount</th>
              <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-4 py-4 whitespace-nowrap">Status</th>
-             <th class="text-left text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Action</th>
+             <th class="text-right text-slate-900 text-xs font-bold font-['Inter'] px-6 py-4 whitespace-nowrap">Action</th>
            </tr>
          </thead>
         <tbody
@@ -190,7 +165,7 @@
                 <span class="inline-flex px-3 py-1  rounded-md text-xs font-bold font-['Inter'] {{ statusStyles[inv.status] }}">{{ inv.status }}</span>
               </td>
               <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center justify-end gap-2">
                    <button [routerLink]="['/invoice-detail', inv.id]" class="w-8 h-8 rounded-md border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50" [attr.aria-label]="'View invoice ' + inv.no">
  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <rect width="12" height="12" fill="url(#pattern0_2264_800)"/>
