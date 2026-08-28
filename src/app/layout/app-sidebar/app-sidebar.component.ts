@@ -68,6 +68,15 @@ export class AppSidebarComponent implements OnInit {
       path: "/officers",
     },
     {
+      icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 013-3.87m5-3.13a4 4 0 100-8 4 4 0 000 8zm6 3.13a4 4 0 00-3-3.87"/></svg>`,
+      name: "Users",
+      subItems: [
+        { name: "Users", path: "/user-management" },
+        { name: "Roles", path: "/roles" },
+        { name: "Permissions", path: "/permissions" },
+      ],
+    },
+    {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`,
       name: "Subscription",
       subItems: [

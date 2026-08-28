@@ -11,7 +11,7 @@ import { SendInviteModalComponent } from './send-invite-modal/send-invite-modal.
 import { DeactivateUserModalComponent } from './deactivate-user-modal/deactivate-user-modal.component';
 import { ReactivateUserModalComponent } from './reactivate-user-modal/reactivate-user-modal.component';
 import { ResendCredentialsModalComponent } from './resend-credentials-modal/resend-credentials-modal.component';
-import { UsersTableComponent, TableUser } from '../shared/components/users/users-table/users-table.component';
+import { TableUser } from '../shared/components/users/users-table/users-table.component';
 import { RolesTableComponent } from '../shared/components/roles/roles-table/roles-table.component';
 import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
 
@@ -78,13 +78,15 @@ import { ActivityItem } from '../shared/components/ui/activity-timeline/activity
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, UsersTableComponent, RolesTableComponent, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, RolesTableComponent, RichSelectComponent],
   templateUrl: './user-management.component.html',
   styles: ``
 })
 export class UserManagementComponent implements OnInit {
   activeTab = 0;
   searchQuery = '';
+  filterRole = '';
+  filterStatus = '';
   private searchDebounce: any;
   loading = false;
   errorMessage = '';
@@ -100,6 +102,48 @@ export class UserManagementComponent implements OnInit {
   showResendModal = false;
   resendTargetUser: TableUser | null = null;
   currentUserId: string | null = null;
+
+  get roleOptions(): RichSelectOption[] {
+    const roles = this.users.flatMap(u => u.roles || []);
+    return Array.from(new Set(roles)).sort().map(role => ({ value: role, label: role }));
+  }
+
+  get statusOptions(): { value: string; label: string }[] {
+    return [
+      { value: '', label: 'All Status' },
+      { value: 'Accepted', label: 'Accepted' },
+      { value: 'Pending', label: 'Pending' },
+      { value: 'Expired', label: 'Expired' },
+    ];
+  }
+
+  get filteredUsers(): User[] {
+    const q = this.searchQuery.trim().toLowerCase();
+    return this.users.filter(u => {
+      const matchesQuery = !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || (u.roles || []).some(r => r.toLowerCase().includes(q));
+      const matchesRole = !this.filterRole || (u.roles || []).includes(this.filterRole);
+      const matchesStatus = !this.filterStatus || u.invite === this.filterStatus;
+      return matchesQuery && matchesRole && matchesStatus;
+    });
+  }
+
+  get paginatedUsers(): User[] {
+    const start = this.currentPage * this.pageSize;
+    return this.filteredUsers.slice(start, start + this.pageSize);
+  }
+
+  get totalFilteredElements(): number {
+    return this.filteredUsers.length;
+  }
+
+  get totalFilteredPages(): number {
+    return Math.max(1, Math.ceil(this.totalFilteredElements / this.pageSize));
+  }
+
+  onFilterChange(): void {
+    this.currentPage = 0;
+    this.loadUsers();
+  }
 
   activities: ActivityItem[] = [];
   activitiesLoading = false;
@@ -434,7 +478,10 @@ export class UserManagementComponent implements OnInit {
       return;
     }
 
-    this.userService.listUsers(orgId, { page: this.currentPage, size: this.pageSize, q: this.searchQuery.trim() || undefined }).subscribe({
+    const hasFilters = !!(this.searchQuery.trim() || this.filterRole || this.filterStatus);
+    const size = hasFilters ? 200 : this.pageSize;
+
+    this.userService.listUsers(orgId, { page: 0, size, q: this.searchQuery.trim() || undefined }).subscribe({
       next: (res) => {
         const payload = res?.['data'] ?? res;
         const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? [];
@@ -458,21 +505,9 @@ export class UserManagementComponent implements OnInit {
           joined: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
         }));
 
-        if (Array.isArray(payload)) {
-          this.totalElements = this.users.length;
-          this.totalPages = 1;
-        } else {
-          this.meta = {
-            page: payload.page ?? this.currentPage,
-            size: payload.size ?? this.pageSize,
-            totalElements: payload.totalElements ?? this.users.length,
-            totalPages: payload.totalPages ?? 1,
-          };
-          this.currentPage = Number(this.meta.page);
-          this.pageSize = Number(this.meta.size);
-          this.totalElements = Number(this.meta.totalElements);
-          this.totalPages = Number(this.meta.totalPages);
-        }
+        this.totalElements = this.users.length;
+        this.totalPages = Math.max(1, Math.ceil(this.users.length / this.pageSize));
+        this.currentPage = Math.min(this.currentPage, this.totalPages - 1);
 
         this.selectedUser = this.selectedUser && this.users.some(user => user.email === this.selectedUser?.email)
           ? this.selectedUser
@@ -653,9 +688,30 @@ export class UserManagementComponent implements OnInit {
     return `Showing ${start} to ${end} of ${this.totalElements} users`;
   }
 
-  onTableRowClick(user: TableUser): void {
-    const found = this.users.find((u) => u.id === user.id);
-    if (found) this.selectUser(found);
+  onTableRowClick(user: User): void {
+    this.selectUser(user);
+  }
+
+  viewUser(user: User): void {
+    this.selectUser(user);
+  }
+
+  deleteUser(user: User): void {
+    if (!user.id) return;
+    if (!confirm(`Are you sure you want to deactivate ${user.name}?`)) return;
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+    this.userService.deactivateUser(orgId, user.id).subscribe({
+      next: () => {
+        this.users = this.users.map(u => u.id === user.id ? { ...u, status: 'Inactive' } : u);
+        if (this.selectedUser?.id === user.id) {
+          this.selectedUser = { ...this.selectedUser, status: 'Inactive' } as User;
+        }
+      },
+      error: () => {
+        this.errorMessage = 'Failed to deactivate user.';
+      }
+    });
   }
 
   onTablePageChange(page: number): void {
