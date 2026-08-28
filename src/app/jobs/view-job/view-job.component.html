@@ -287,7 +287,7 @@
     <!-- Tab content -->
     <div class="">
       @if (activeTab === 'summary') {
-      <div class="bg-white rounded-b-md p-5 sm:p-7 shadow-xs mb-4">
+      <div class="bg-white p-5 sm:p-7 shadow-xs ">
         <h3 class="flex items-center gap-2 text-base font-['Inter'] font-bold text-slate-900 mb-5">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_2416_1345)">
@@ -344,7 +344,7 @@
           </dl>
         </div>
 
-        <div class="mt-6 pt-6 border-t border-slate-200">
+        <div class="mt-6 py-6 border-y border-slate-200">
           <p class="text-xs font-bold font-['Inter'] tracking-wide text-slate-500 uppercase mb-2">Description</p>
           <p class="text-xs font-normal font-['Inter'] text-slate-900 leading-relaxed">
             {{ job?.description || '—' }}
@@ -352,8 +352,8 @@
         </div>
       </div>
       <!-- Schedule + Assignment -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
-        <div class="bg-white rounded-md p-6 shadow-xs">
+      <div class="grid grid-cols-1 lg:grid-cols-2 bg-white rounded-b-md gap-x-10 pb-7">
+        <div class=" px-6 ">
           <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-5">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_2416_1383)">
@@ -393,7 +393,7 @@
           </dl>
         </div>
 
-        <div class="bg-white rounded-md p-6 shadow-xs">
+        <div class=" px-6 lg:border-l border-slate-200">
           <h3 class="flex items-center gap-2 text-base font-bold text-slate-900 font-['Inter'] mb-5">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
