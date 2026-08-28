@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SubscriptionService } from '../core/services/subscription.service';
+import { Plan } from '../core/models/subscription.models';
 
 @Component({
   selector: 'app-subscription',
@@ -18,6 +19,8 @@ export class SubscriptionComponent implements OnInit {
   trial: any = null;
   usage: any = null;
   plan: any = null;
+  planDetails: Plan | null = null;
+  serviceCode = '';
 
   constructor(
     private subscriptionService: SubscriptionService,
@@ -67,6 +70,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   private applySubscriptionData(sub: any): void {
+    this.serviceCode = sub.serviceCode || '';
     this.usage = {
       users: 0,
       usersLimit: sub.features?.max_users ?? 10,
@@ -77,7 +81,8 @@ export class SubscriptionComponent implements OnInit {
       storage: 0,
     };
 
-    const isTrial = sub.status === 'TRIAL' || !!sub.trial;
+    const status = sub.status?.toUpperCase();
+    const isTrial = status === 'TRIAL' || status === 'TRIALING';
     this.trial = {
       active: isTrial,
       startDate: sub.trialStart || sub.currentPeriodStart ? this.formatDate(sub.trialStart || sub.currentPeriodStart) : '-',
@@ -88,12 +93,25 @@ export class SubscriptionComponent implements OnInit {
     const planName = sub.planName || sub.planCode || this.formatServiceCode(sub.serviceCode);
     this.plan = {
       name: planName || 'No Active Plan',
-      type: sub.billingPeriod || (isTrial ? 'Free Trial' : 'Inactive'),
+      type: isTrial ? (sub.billingPeriod || 'Free Trial') : planName,
       duration: isTrial ? 'Trial' : (sub.billingPeriod || '-'),
       startDate: sub.currentPeriodStart ? this.formatDate(sub.currentPeriodStart) : '-',
       endDate: sub.currentPeriodEnd ? this.formatDate(sub.currentPeriodEnd) : '-',
-      autoConversion: isTrial ? 'Yes' : 'No',
+      autoConversion: isTrial ? 'Yes' : (sub.cancelAtPeriodEnd ? 'No' : 'Yes'),
     };
+
+    if (!isTrial && sub.planId) {
+      this.subscriptionService.getPlan(sub.planId).subscribe({
+        next: (res: any) => {
+          this.planDetails = res ?? null;
+        },
+        error: () => {
+          this.planDetails = null;
+        }
+      });
+    } else {
+      this.planDetails = null;
+    }
   }
 
   private loadUsage(): void {
@@ -124,6 +142,10 @@ export class SubscriptionComponent implements OnInit {
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '-';
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  get serviceCodeLabel(): string {
+    return this.formatServiceCode(this.serviceCode);
   }
 
   private formatServiceCode(code: string): string {

@@ -104,8 +104,8 @@ export class InvoiceDetailComponent implements OnInit {
       dueDate: this.formatDate(inv.dueDate),
       paymentDate: this.formatDate(inv.paidAt),
       plan: inv.planName || '—',
-      unitPrice: this.formatCurrency(inv.amountCents, inv.currency),
-      amount: this.formatCurrency(inv.amountCents, inv.currency),
+      unitPrice: this.formatCurrency(subtotal, inv.currency),
+      amount: this.formatCurrency(subtotal, inv.currency),
       subtotal: this.formatCurrency(subtotal, inv.currency),
       vat: this.formatCurrency(vat, inv.currency),
       total: this.formatCurrency(total, inv.currency),
@@ -121,14 +121,16 @@ export class InvoiceDetailComponent implements OnInit {
         price: this.formatCurrency(total, inv.currency),
         period: `/${billingPeriod.toLowerCase()}`,
         description: desc,
-        sites: formatFeature(features.max_sites),
+        sites: formatFeature(features.max_sites === -1 ? 'Unlimited' : features.max_sites),
         keys: formatFeature(features.unlimited_keys ? 'Unlimited' : features.max_keys),
         users: formatFeature(features.max_users),
-        jobs: formatFeature(features.max_jobs),
-        features: Object.entries(features)
-          .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
-          .map(([, val]) => formatFeature(val))
-          .join(', ') || '—',
+        jobs: formatFeature(features.max_jobs === -1 ? 'Unlimited' : features.max_jobs),
+        features: Object.entries(features).some(([, val]) => val === -1)
+          ? 'All Enterprise Features'
+          : Object.entries(features)
+              .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
+              .map(([, val]) => formatFeature(val))
+              .join(', ') || '—',
       }
     };
   }

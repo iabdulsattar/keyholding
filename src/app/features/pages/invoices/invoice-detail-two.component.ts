@@ -115,14 +115,16 @@ export class InvoiceDetailTwoComponent implements OnInit {
         price: this.formatCurrency(inv.amountCents, inv.currency),
         period: `/${billingPeriod.toLowerCase()}`,
         description: desc,
-        sites: formatFeature(features.max_sites),
+        sites: formatFeature(features.max_sites === -1 ? 'Unlimited' : features.max_sites),
         keys: formatFeature(features.unlimited_keys ? 'Unlimited' : features.max_keys),
         users: formatFeature(features.max_users),
-        jobs: formatFeature(features.max_jobs),
-        features: Object.entries(features)
-          .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
-          .map(([, val]) => formatFeature(val))
-          .join(', ') || '—',
+        jobs: formatFeature(features.max_jobs === -1 ? 'Unlimited' : features.max_jobs),
+        features: Object.entries(features).some(([, val]) => val === -1)
+          ? 'All Enterprise Features'
+          : Object.entries(features)
+              .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
+              .map(([, val]) => formatFeature(val))
+              .join(', ') || '—',
       }
     };
   }

@@ -69,7 +69,7 @@
     </div>
 
 
-
+  @if (trial?.active) {
     <!-- Trial banner -->
     <div class="bg-white rounded-md shadow-xs p-5 sm:p-6 mb-4">
       <div class="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-8">
@@ -119,7 +119,7 @@
         </div>
       </div>
     </div>
-
+  }
 
     <!-- Usage + Summary -->
     <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
@@ -318,28 +318,28 @@
                 trial?.active ? 'Trial' : 'Active' }}</span>
             </div>
             <p class="text-blue-600 text-lg font-bold font-['Inter'] mt-1 pb-2 border-b border-slate-200">{{
-              plan?.name }}</p>
+              trial?.active ? plan?.name : serviceCodeLabel }}</p>
 
             <div class=" divide-y divide-slate-200">
               <div class="flex items-center justify-between text-sm py-2.5">
-                <span class=" text-slate-900 text-xs font-normal font-['Inter']">Plan Type</span>
-                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.type }}</span>
+                <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Plan Type' : 'Plan' }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ trial?.active ? plan?.type : planDetails?.name || plan?.name }}</span>
               </div>
               <div class="flex items-center justify-between text-sm py-2.5">
-                <span class=" text-slate-900 text-xs font-normal font-['Inter']">Trial Duration</span>
+                <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Trial Duration' : 'Billing Period' }}</span>
                 <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.duration }}</span>
               </div>
               <div class="flex items-center justify-between text-sm py-2.5">
-                <span class=" text-slate-900 text-xs font-normal font-['Inter']">Trial Start Date</span>
+                <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Trial Start Date' : 'Start Date' }}</span>
                 <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.startDate }}</span>
               </div>
               <div class="flex items-center justify-between text-sm py-2.5">
-                <span class=" text-slate-900 text-xs font-normal font-['Inter']">Trial End Date</span>
+                <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Trial End Date' : 'End Date' }}</span>
                 <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.endDate }}</span>
               </div>
               <div class="flex items-center justify-between text-sm py-2.5">
                 <span class="text-slate-900 text-xs font-normal font-['Inter'] flex items-center gap-1">
-                  Auto Conversion
+                  {{ trial?.active ? 'Auto Conversion' : 'Auto Renew' }}
                 </span>
                 <span class="text-slate-900 text-xs font-medium font-['Inter'] flex items-center gap-1">{{
                   plan?.autoConversion }}
@@ -362,10 +362,15 @@
 
           <div class="mt-4">
             <p class="text-slate-900 text-sm font-bold font-['Inter']">What happens next?</p>
-            <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-1">When your trial ends, you'll need an
-              active
-              subscription to continue
-              using KeyVault.</p>
+            @if (trial?.active) {
+              <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-1">When your trial ends, you'll need an
+                active
+                subscription to continue
+                using KeyVault.</p>
+            } @else {
+              <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-1">Your subscription will auto-renew based on your
+                current billing period.</p>
+            }
 
             <ul class="mt-4 space-y-3">
               <li class="flex items-start gap-2.5">
