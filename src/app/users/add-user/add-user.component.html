@@ -1,261 +1,570 @@
-<main class="flex-1 ">
+<main class="flex-1 min-w-0">
+  <div class=" mx-auto px-4 sm:px-4 lg:px-4 py-4 sm:py-4">
 
-  <!-- Header -->
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-    <div>
-      <h1 class="text-2xl font-bold text-slate-900">{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
-      <div class="flex items-center gap-1.5 text-sm mt-1">
-        <a routerLink="/user-management" class="text-indigo-600 font-medium hover:underline">Users</a>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        <span class="text-slate-500">{{ isEditMode ? 'Edit User' : 'Add User' }}</span>
-      </div>
+    <!-- Top bar -->
+    <div class="flex items-center justify-between mb-6">
+      <nav class="flex items-center gap-2 text-sm">
+        <a routerLink="/user-management" class="text-blue-600 text-xs font-semibold font-['Inter']">User Management</a>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 9L7.5 6L4.5 3" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+        </svg> <span class="text-slate-500 text-xs font-semibold font-['Inter']">{{ isEditMode ? 'Edit User' : 'Add
+          User' }}</span>
+      </nav>
+      <button
+        class="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0 lg:hidden">
+        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g filter="url(#filter0_d_2638_365)">
+            <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges" />
+            <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_2638_365)" />
+          </g>
+          <defs>
+            <filter id="filter0_d_2638_365" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+              <feOffset dy="1" />
+              <feGaussianBlur stdDeviation="1.5" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2638_365" />
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2638_365" result="shape" />
+            </filter>
+            <pattern id="pattern0_2638_365" patternContentUnits="objectBoundingBox" width="1" height="1">
+              <use xlink:href="#image0_2638_365" transform="scale(0.00195312)" />
+            </pattern>
+            <image id="image0_2638_365" width="512" height="512" preserveAspectRatio="none"
+              xlink:href="data:image/png;base64,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" />
+          </defs>
+        </svg> </button>
     </div>
-    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-      <a routerLink="/user-management" class="flex items-center justify-center gap-2 border border-indigo-200 text-indigo-700 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-indigo-50 w-full sm:w-auto">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back to Users
-      </a>
-    </div>
-  </div>
 
-  <!-- Body -->
-  <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
+    <h1 class="text-slate-900 text-2xl font-bold font-['Inter']">{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
+    <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-2">Manage users, roles, permissions and access within
+      KeyVault.</p>
 
-    <!-- Form card -->
-    <div class="flex-1 bg-white rounded-xl border border-slate-200 p-8">
+    @if (!isEditMode) {
+    <div class="mt-8">
+      <h2 class="text-slate-900 text-sm font-semibold font-['Inter']">How would you like to add a user?</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+        <button (click)="activeTab = 0" class="text-left flex items-start gap-4 p-5 rounded-md border-2 transition"
+          [class.border-blue-500]="activeTab === 0" [class.bg-blue-50/60]="activeTab === 0"
+          [class.ring-1]="activeTab === 0" [class.ring-blue-100]="activeTab === 0"
+          [class.border-slate-200]="activeTab !== 0" [class.bg-white]="activeTab !== 0"
+          [class.hover:border-slate-300]="activeTab !== 0">
+          <span class="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
+            [class.bg-blue-50]="activeTab === 0" [class.border]="activeTab === 0"
+            [class.border-blue-200]="activeTab === 0" [class.bg-slate-100]="activeTab !== 0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M15.8338 6.66667V11.6667M18.334 9.16667H13.3336M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z"
+                stroke="#1A56DB" stroke-width="2" stroke-linecap="round" />
+            </svg> </span>
+          <span>
+            <span class="block font-semibold text-slate-900">Create New User</span>
+            <span class="block text-sm text-slate-500 mt-0.5">Add a completely new user to KeyVault.</span>
+          </span>
+        </button>
 
-      <!-- Section title -->
-      <div class="flex items-start gap-3 mb-8">
-        <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        </div>
-        <div>
-          <h2 class="font-semibold text-slate-900">{{ isEditMode ? 'Edit User Information' : 'User Information' }}</h2>
-          <p class="text-sm text-slate-500">{{ isEditMode ? 'Update the details of this user.' : 'Enter the basic details of the new user.' }}</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-3 gap-6">
-
-        <!-- Profile picture -->
-        <div class="col-span-1">
-          <label class="block text-sm font-semibold text-slate-800 mb-2">Profile Picture <span class="font-normal text-slate-400">(Optional)</span></label>
-
-          @if (profileImage) {
-            <div class="border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center py-6 px-4 text-center">
-              <img [src]="profileImage" class="w-24 h-24 rounded-full object-cover mb-3" />
-              <button type="button" (click)="removePhoto()" class="text-xs text-red-600 hover:text-red-700 font-medium">Remove photo</button>
-            </div>
-          } @else {
-            <div class="border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center py-8 px-4 text-center cursor-pointer hover:border-indigo-300 transition-colors" (click)="fileInput.click()">
-              <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mb-3">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-              </div>
-              <p class="text-sm font-semibold text-slate-800">Upload Photo</p>
-              <p class="text-xs text-slate-400 mt-0.5">PNG, JPG up to 2MB</p>
-            </div>
-            <div class="flex items-center gap-3 my-3">
-              <div class="h-px bg-slate-200 flex-1"></div>
-              <span class="text-xs text-slate-400">OR</span>
-              <div class="h-px bg-slate-200 flex-1"></div>
-            </div>
-            <button type="button" (click)="openCamera()" class="w-full flex items-center justify-center gap-2 border border-slate-200 text-slate-700 font-medium text-sm py-2.5 rounded-lg hover:bg-slate-50">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Take Photo
-            </button>
-          }
-
-          <input type="file" #fileInput accept="image/png,image/jpeg,image/jpg" (change)="onFileSelected($event)" class="hidden" />
-        </div>
-
-        <!-- Right form fields -->
-        <div class="col-span-2 grid grid-cols-2 gap-x-6 gap-y-5">
-
-          <div>
-            <label class="block text-sm font-semibold" [class.text-rose-600]="touched.has('form.firstName') && !form.firstName.trim()" [class.text-slate-800]="!(touched.has('form.firstName') && !form.firstName.trim())">First Name <span class="text-red-500">*</span></label>
-            <div [class.border-rose-500]="touched.has('form.firstName') && !form.firstName.trim()" class="rounded-lg border border-slate-200 transition">
-              <div class="relative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <input type="text" [(ngModel)]="form.firstName" name="form.firstName" (blur)="markTouched('form.firstName')" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-              </div>
-            </div>
-            @if (touched.has('form.firstName') && !form.firstName.trim()) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold" [class.text-rose-600]="touched.has('form.lastName') && !form.lastName.trim()" [class.text-slate-800]="!(touched.has('form.lastName') && !form.lastName.trim())">Last Name <span class="text-red-500">*</span></label>
-            <div [class.border-rose-500]="touched.has('form.lastName') && !form.lastName.trim()" class="rounded-lg border border-slate-200 transition">
-              <div class="relative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <input type="text" [(ngModel)]="form.lastName" name="form.lastName" (blur)="markTouched('form.lastName')" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-              </div>
-            </div>
-            @if (touched.has('form.lastName') && !form.lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold" [class.text-rose-600]="touched.has('form.email') && !form.email.trim()" [class.text-slate-800]="!(touched.has('form.email') && !form.email.trim())">Email Address <span class="text-red-500">*</span></label>
-            <div [class.border-rose-500]="touched.has('form.email') && !form.email.trim()" class="rounded-lg border border-slate-200 transition">
-              <div class="relative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                <input type="email" [(ngModel)]="form.email" name="form.email" (blur)="markTouched('form.email')" [readonly]="isEditMode" class="w-full pl-9 pr-3 py-2.5 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" [class.bg-slate-50]="isEditMode" />
-              </div>
-            </div>
-            @if (touched.has('form.email') && !form.email.trim()) { <p class="text-xs text-rose-600 mt-1">Email is required</p> }
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Role <span class="text-red-500">*</span></label>
-            <app-multi-select
-              [options]="roleOptions"
-              [defaultSelected]="form.roleIds"
-              [disabled]="loadingRoles"
-              (selectionChange)="form.roleIds = $event"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Department <span class="font-normal text-slate-400">(Optional)</span></label>
-            <app-rich-select [options]="departmentOptions" [(value)]="form.department" placeholder="Select department" class="w-full"></app-rich-select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Phone Number <span class="font-normal text-slate-400">(Optional)</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-              <input type="text" [(ngModel)]="form.phoneNumber" name="form.phoneNumber" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Job Title <span class="font-normal text-slate-400">(Optional)</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><circle cx="8" cy="10" r="1.5" fill="currentColor" stroke="none"></circle><path d="M14 13h4"></path><path d="M14 17h4"></path><path d="M8 17h.01"></path></svg>
-              <input type="text" [(ngModel)]="form.jobTitle" name="form.jobTitle" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-800 mb-1.5">Location <span class="font-normal text-slate-400">(Optional)</span></label>
-            <div class="relative">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"><path d="M20 10c0 6-12 13-12 13S4 16 4 10a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              <input type="text" [(ngModel)]="form.location" name="form.location" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="h-px bg-slate-200 my-8"></div>
-
-      <!-- Access section -->
-      <div>
-        <label class="block text-sm font-semibold text-slate-800">User will use <span class="text-red-500">*</span></label>
-        <p class="text-sm text-slate-500 mb-4">Select where the user will access the system.</p>
-
-        <div class="space-y-4">
-          <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="form.canAccessWeb" name="form.canAccessWeb" class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
-            <div>
-              <p class="text-sm font-semibold text-slate-800">Web Application</p>
-              <p class="text-sm text-slate-500">User can access the system from the web.</p>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="form.canAccessMobile" name="form.canAccessMobile" class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
-            <div>
-              <p class="text-sm font-semibold text-slate-800">Mobile Application</p>
-              <p class="text-sm text-slate-500">User can access the system from the mobile app.</p>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <div class="h-px bg-slate-200 my-8"></div>
-
-      @if (errorMessage) {
-        <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 mb-6">{{ errorMessage }}</div>
-      }
-      @if (successMessage) {
-        <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 mb-6">{{ successMessage }}</div>
-      }
-
-      <div class="flex justify-end gap-3">
-        <a routerLink="/user-management" class="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 inline-flex items-center">Cancel</a>
-        <button (click)="submit()" [disabled]="saving || !canSaveUser" class="px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 disabled:opacity-70">
-          {{ isEditMode ? (saving ? 'Saving...' : 'Save Changes') : (saving ? 'Creating...' : 'Create User') }}
+        <button (click)="activeTab = 1; loadExistingUsers()"
+          class="text-left flex items-start gap-4 p-5 rounded-md border-2 transition"
+          [class.border-blue-500]="activeTab === 1" [class.bg-blue-50/60]="activeTab === 1"
+          [class.ring-1]="activeTab === 1" [class.ring-blue-100]="activeTab === 1"
+          [class.border-slate-200]="activeTab !== 1" [class.bg-white]="activeTab !== 1"
+          [class.hover:border-slate-300]="activeTab !== 1">
+          <span class="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
+            [class.bg-emerald-50]="activeTab === 1" [class.border]="activeTab === 1"
+            [class.border-emerald-200]="activeTab === 1" [class.bg-slate-100]="activeTab !== 1">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.3336 9.16667L15.0004 10.8333L18.334 7.5M13.3336 17.5V15.8333C13.3336 14.9493 12.9824 14.1014 12.3572 13.4763C11.7321 12.8512 10.8841 12.5 10 12.5H4.99962C4.11549 12.5 3.26758 12.8512 2.6424 13.4763C2.01723 14.1014 1.66602 14.9493 1.66602 15.8333V17.5M10.8334 5.83333C10.8334 7.67428 9.34091 9.16667 7.49982 9.16667C5.65872 9.16667 4.16622 7.67428 4.16622 5.83333C4.16622 3.99238 5.65872 2.5 7.49982 2.5C9.34091 2.5 10.8334 3.99238 10.8334 5.83333Z"
+                stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+            </svg> </span>
+          <span>
+            <span class="block font-semibold text-slate-900">Activate Existing User</span>
+            <span class="block text-sm text-slate-500 mt-0.5">Activate a user who already exists in our system.</span>
+          </span>
         </button>
       </div>
-
     </div>
+    }
 
-    <!-- Sidebar info card -->
-    <div class="w-full lg:w-80 shrink-0">
-      <div class="bg-indigo-50 rounded-xl border border-indigo-100 p-4 sm:p-6">
-        <div class="flex items-start gap-3 mb-4">
-          <div class="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-          </div>
+    @if (isEditMode || activeTab === 0) {
+
+    <!-- Form + sidebar info -->
+    <div class="mt-6 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6 items-start">
+
+      <!-- Form card -->
+      <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-8">
+
+        <div class="flex items-center gap-3 mb-1">
+          <span class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M14.2506 15.75V14.25C14.2506 13.4544 13.9345 12.6913 13.3718 12.1287C12.8091 11.5661 12.046 11.25 11.2502 11.25H6.74973C5.95399 11.25 5.19084 11.5661 4.62817 12.1287C4.0655 12.6913 3.74939 13.4544 3.74939 14.25V15.75M12.0003 5.25C12.0003 6.90685 10.657 8.25 8.99999 8.25C7.34295 8.25 5.99965 6.90685 5.99965 5.25C5.99965 3.59315 7.34295 2.25 8.99999 2.25C10.657 2.25 12.0003 3.59315 12.0003 5.25Z"
+                stroke="#1A56DB" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
           <div>
-            <h3 class="font-semibold text-slate-900">{{ isEditMode ? 'About Editing Users' : 'About Adding Users' }}</h3>
-            <p class="text-sm text-slate-600 mt-0.5">{{ isEditMode ? 'Update user details and access settings.' : 'Add new users to the system and assign appropriate roles and permissions.' }}</p>
+            <h3 class="text-slate-900 text-base font-bold font-['Inter']">{{ isEditMode ? 'Edit User Information' :
+              'User
+              Information' }}</h3>
+          </div>
+        </div>
+        <p class="text-sm text-slate-500 ml-[52px] -mt-1 mb-6">{{ isEditMode ? 'Update the details of this user.' :
+          'Enter the basic details of the new user.' }}</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-[180px_1fr_1fr] gap-6">
+          <!-- Profile picture -->
+          <div>
+            <label class="block text-slate-900 text-xs font-semibold font-['Inter' mb-2">Profile Picture <span
+                class="text-slate-500 text-xs font-normal font-['Inter']">(Optional)</span></label>
+            @if (profileImage) {
+            <div
+              class="border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center py-6 px-4 text-center">
+              <img [src]="profileImage" class="w-24 h-24 rounded-full object-cover mb-3" />
+              <button type="button" (click)="removePhoto()"
+                class="text-xs text-red-600 hover:text-red-700 font-medium">Remove photo</button>
+            </div>
+            } @else {
+            <div
+              class="bg-slate-50 rounded-lg border-2 border-slate-200 border-dashed  flex flex-col items-center justify-center py-8 px-4 text-center cursor-pointer hover:border-blue-400 transition"
+              (click)="fileInput.click()">
+              <span class="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center mb-2">
+                <svg class="w-4.5 h-4.5 text-blue-600" fill="none" stroke="#1A56DB" stroke-width="1.8"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <circle cx="12" cy="13" r="3.5" />
+                </svg>
+              </span>
+              <span class="text-blue-700 text-xs font-bold font-['Inter']">Upload Photo</span>
+              <span class=" text-slate-500 text-[10px] font-normal font-['Inter'] mt-0.5">PNG, JPG up to 2MB</span>
+            </div>
+            <button type="button" (click)="openCamera()"
+              class="text-blue-700 text-[10px] font-semibold font-['Inter'] mt-2 block mx-auto">Take Photo</button>
+            }
+
+            <input type="file" #fileInput accept="image/png,image/jpeg,image/jpg" (change)="onFileSelected($event)"
+              class="hidden" />
+          </div>
+
+          <!-- Full name -->
+          <div>
+            <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2">Full Name <span
+                class="text-red-500">*</span></label>
+            <div class="relative">
+           
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.6672 14V12.6667C12.6672 11.9594 12.3862 11.2811 11.886 10.781C11.3859 10.281 10.7075 10 10.0002 10H5.99974C5.29241 10 4.61406 10.281 4.1139 10.781C3.61375 11.2811 3.33276 11.9594 3.33276 12.6667V14M10.6669 4.66667C10.6669 6.13943 9.47289 7.33333 7.99996 7.33333C6.52704 7.33333 5.33299 6.13943 5.33299 4.66667C5.33299 3.19391 6.52704 2 7.99996 2C9.47289 2 10.6669 3.19391 10.6669 4.66667Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+              <input type="text" [(ngModel)]="form.firstName" name="form.firstName"
+                (blur)="markTouched('form.firstName')"
+                class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+           <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2 mt-4">Phone Number</label>
+            <div class="relative">
+                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"  width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_2638_498)">
+          <path d="M9.66122 11.0865C9.51422 11.1232 9.35909 11.1088 9.2214 11.0455C7.36953 10.1367 5.87091 8.63993 4.95972 6.7892C4.89224 6.65077 4.87476 6.49325 4.91024 6.3434C4.94573 6.19354 5.032 6.06059 5.1544 5.96713L5.46643 5.73312C5.63204 5.60891 5.76645 5.44785 5.85903 5.2627C5.95161 5.07754 5.9998 4.87337 5.9998 4.66636V2.6662C5.9998 2.31255 5.85932 1.97339 5.60925 1.72332C5.35918 1.47325 5.02001 1.33276 4.66636 1.33276H2.6662C2.31255 1.33276 1.97339 1.47325 1.72332 1.72332C1.47325 1.97339 1.33276 2.31255 1.33276 2.6662C1.33276 5.84906 2.59715 8.90155 4.84776 11.1522C7.09838 13.4028 10.1509 14.6672 13.3337 14.6672C13.6874 14.6672 14.0265 14.5267 14.2766 14.2766C14.5267 14.0265 14.6672 13.6874 14.6672 13.3337V11.3336C14.6672 10.9799 14.5267 10.6407 14.2766 10.3907C14.0265 10.1406 13.6874 10.0001 13.3337 10.0001H11.3336C11.1266 10.0001 10.9224 10.0483 10.7372 10.1409C10.5521 10.2335 10.391 10.3679 10.2668 10.5335L10.0301 10.8435C9.93834 10.9641 9.80823 11.0498 9.66122 11.0865Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_2638_498">
+          <rect width="16" height="16" fill="white"/>
+          </clipPath>
+          </defs>
+          </svg>
+              <input type="text" [(ngModel)]="form.phoneNumber" name="form.phoneNumber"
+                class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+           
+          </div>
+
+          <!-- Email + Employee ID -->
+          <div>
+            <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2">Email Address <span
+                class="text-red-500">*</span></label>
+            <div class="relative">
+             
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"  width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.6672 4.66704L8.67268 8.48465C8.46926 8.60278 8.23821 8.66501 8.00296 8.66501C7.76772 8.66501 7.53666 8.60278 7.33324 8.48465L1.33276 4.66704M2.6662 2.66724H13.3337C14.0702 2.66724 14.6672 3.26413 14.6672 4.00044V11.9996C14.6672 12.7359 14.0702 13.3328 13.3337 13.3328H2.6662C1.92977 13.3328 1.33276 12.7359 1.33276 11.9996V4.00044C1.33276 3.26413 1.92977 2.66724 2.6662 2.66724Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+              <input type="email" [(ngModel)]="form.email" name="form.email" (blur)="markTouched('form.email')"
+                [readonly]="isEditMode"
+                class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                [class.bg-slate-50]="isEditMode" />
+            </div>
+
+            <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2 mt-6">Employee ID</label>
+            <div class="relative">
+              
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10.6668 6.66648H12.0003M10.6668 9.33345H12.0003M4.11293 9.99991C4.25037 9.60921 4.5057 9.2708 4.84367 9.03141C5.18164 8.79202 5.58559 8.66345 5.99975 8.66345C6.41391 8.66345 6.81786 8.79202 7.15583 9.03141C7.4938 9.2708 7.74913 9.60921 7.88657 9.99991M7.33324 7.33322C7.33324 8.06968 6.73624 8.66671 5.9998 8.66671C5.26337 8.66671 4.66636 8.06968 4.66636 7.33322C4.66636 6.59676 5.26337 5.99974 5.9998 5.99974C6.73624 5.99974 7.33324 6.59676 7.33324 7.33322ZM2.6662 3.33276H13.3337C14.0702 3.33276 14.6672 3.92979 14.6672 4.66625V11.3337C14.6672 12.0701 14.0702 12.6672 13.3337 12.6672H2.6662C1.92977 12.6672 1.33276 12.0701 1.33276 11.3337V4.66625C1.33276 3.92979 1.92977 3.33276 2.6662 3.33276Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+              <input type="text" value="EMP-2025-00089" disabled
+                class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-500 bg-slate-50" />
+            </div>
+            <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-1.5 flex items-start gap-1">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_2638_511)">
+                  <path
+                    d="M5.99991 8.00007V5.99991M5.99991 3.99975H6.00491M11.0003 5.99991C11.0003 8.76156 8.76156 11.0003 5.99991 11.0003C3.23827 11.0003 0.999512 8.76156 0.999512 5.99991C0.999512 3.23827 3.23827 0.999512 5.99991 0.999512C8.76156 0.999512 11.0003 3.23827 11.0003 5.99991Z"
+                    stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_2638_511">
+                    <rect width="12" height="12" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              Employee ID is auto-generated and unique for each user.
+            </p>
           </div>
         </div>
 
-        <p class="text-sm font-semibold text-slate-800 mb-4">{{ isEditMode ? 'What can you do?' : 'What happens next?' }}</p>
+        <hr class="border-slate-200 my-7" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2">Role <span
+                class="text-red-500">*</span></label>
+            <app-multi-select [options]="roleOptions" [defaultSelected]="form.roleIds" [disabled]="loadingRoles"
+              (selectionChange)="form.roleIds = $event" />
+          </div>
+          <div>
+            <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2">Department</label>
+            <div class="relative">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
+                stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 21V7l9-4 9 4v14M9 21v-6h6v6M9 10h.01M9 14h.01M15 10h.01M15 14h.01" />
+              </svg>
+              <app-rich-select [options]="departmentOptions" [(value)]="form.department" placeholder="Select department"
+                class="w-full"></app-rich-select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-slate-200 my-7" />
+
+        <div>
+          <h4 class="text-slate-900 text-xs font-semibold font-['Inter']">System Access</h4>
+          <p class="text-slate-500 text-xs font-normal font-['Inter'] mt-0.5 mb-4">Select where the user will access the
+            system.</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+           <label
+  class="relative flex items-start gap-3 p-4 rounded-xl border border-blue-200 bg-blue-50/70 cursor-pointer">
+
+  <input
+    type="checkbox"
+    [(ngModel)]="form.canAccessWeb"
+    name="form.canAccessWeb"
+    class="mt-0.5 w-4 h-4 shrink-0 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+  />
+
+  <!-- Icon -->
+  <svg
+    class="w-5 h-5 shrink-0 mt-0.5 text-slate-500"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" />
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"
+    />
+  </svg>
+
+  <!-- Text -->
+  <div class="flex flex-col gap-1 text-left">
+    <span class="text-slate-900 text-xs font-semibold font-['Inter']">
+      Web Application
+    </span>
+
+    <span class="text-slate-500 text-[10px] font-normal font-['Inter']">
+      User can access the system from the web.
+    </span>
+  </div>
+
+</label>
+
+<!-- Mobile Application -->
+<label
+  class="relative flex items-start gap-3 p-4 rounded-xl border border-blue-200 bg-blue-50/70 cursor-pointer">
+
+  <input
+    type="checkbox"
+    [(ngModel)]="form.canAccessMobile"
+    name="form.canAccessMobile"
+    class="mt-0.5 w-4 h-4 shrink-0 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+  />
+
+  <!-- Icon -->
+  <svg
+    class="w-5 h-5 shrink-0 mt-0.5 text-slate-500"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    viewBox="0 0 24 24">
+    <rect x="7" y="2" width="10" height="20" rx="2" />
+    <path stroke-linecap="round" d="M11 18h2" />
+  </svg>
+
+  <!-- Text -->
+  <div class="flex flex-col gap-1 text-left">
+    <span class="text-slate-900 text-xs font-semibold font-['Inter']">
+      Mobile Application
+    </span>
+
+    <span class="text-slate-500 text-[10px] font-normal font-['Inter']">
+      User can access the system from the mobile app.
+    </span>
+  </div>
+
+</label>
+
+
+<!-- Both Web & Mobile -->
+<label
+  class="relative flex items-start gap-3 p-4 rounded-xl border border-blue-200 bg-blue-50/70 cursor-pointer">
+
+  <input
+    type="checkbox"
+    [(ngModel)]="form.canAccessBoth"
+    name="form.canAccessBoth"
+    class="mt-0.5 w-4 h-4 shrink-0 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+  />
+
+  <!-- Icon -->
+  <svg
+    class="w-5 h-5 shrink-0 mt-0.5 text-slate-500"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    viewBox="0 0 24 24">
+    <rect x="2" y="4" width="14" height="10" rx="1.5" />
+    <path stroke-linecap="round" d="M6 18h6" />
+    <rect x="17" y="7" width="5" height="9" rx="1" />
+  </svg>
+
+  <!-- Text -->
+  <div class="flex flex-col gap-1 text-left">
+    <span class="text-slate-900 text-xs font-semibold font-['Inter']">
+      Both Web &amp; Mobile
+    </span>
+
+    <span class="text-slate-500 text-[10px] font-normal font-['Inter']">
+      User can access the system from both web and mobile.
+    </span>
+  </div>
+
+</label>
+
+          </div>
+        </div>
+
+        <hr class="border-slate-200 my-7" />
+
+        @if (errorMessage) {
+        <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 mb-6">{{ errorMessage }}
+        </div>
+        }
+        @if (successMessage) {
+        <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 mb-6">{{
+          successMessage }}</div>
+        }
+
+        <div class="flex items-center justify-end gap-3">
+          <a routerLink="/user-management"
+            class="px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 inline-flex items-center">Cancel</a>
+          <button (click)="submit()" [disabled]="saving || !canSaveUser"
+            class="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 disabled:opacity-70">
+            {{ isEditMode ? (saving ? 'Saving...' : 'Save Changes') : (saving ? 'Creating...' : 'Create User') }}
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Side info panel -->
+      <div class="bg-blue-50/60 border border-blue-100 rounded-xl p-5 sm:p-6 xl:sticky xl:top-6">
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8"
+            viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8h.01M11 12h1v4h1" />
+          </svg>
+          <div>
+            <h4 class="font-semibold text-slate-900">{{ isEditMode ? 'About Editing Users' : 'About Adding Users' }}
+            </h4>
+            <p class="text-sm text-slate-600 mt-1">{{ isEditMode ? 'Update user details and access settings.' : 'Add new
+              users to the system and assign appropriate roles and permissions.' }}</p>
+          </div>
+        </div>
+
+        <h5 class="font-semibold text-slate-900 mt-6 mb-4">{{ isEditMode ? 'What can you do?' : 'What happens next?' }}
+        </h5>
 
         <div class="space-y-5">
           <div class="flex items-start gap-3">
-            <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-            </div>
+            <span class="w-8 h-8 rounded-lg bg-white border border-blue-100 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+              </svg>
+            </span>
             <div>
-              <p class="text-sm font-semibold text-slate-800">{{ isEditMode ? 'Update user details.' : 'An email invitation will be sent to the user.' }}</p>
-              <p class="text-sm text-slate-500 mt-0.5">{{ isEditMode ? 'Changes will be saved immediately.' : 'The user can set their password and access the system.' }}</p>
+              <p class="text-sm font-semibold text-slate-900">{{ isEditMode ? 'Update user details.' : 'An email
+                invitation will be sent to the user.' }}</p>
+              <p class="text-sm text-slate-500 mt-0.5">{{ isEditMode ? 'Changes will be saved immediately.' : 'The user
+                can set their password and access the system.' }}</p>
             </div>
           </div>
 
           <div class="flex items-start gap-3">
-            <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
+            <span class="w-8 h-8 rounded-lg bg-white border border-blue-100 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </span>
             <div>
-              <p class="text-sm font-semibold text-slate-800">Access will be based on role and permissions.</p>
+              <p class="text-sm font-semibold text-slate-900">Access will be based on role and permissions.</p>
               <p class="text-sm text-slate-500 mt-0.5">You can update role and permissions anytime.</p>
             </div>
           </div>
 
           <div class="flex items-start gap-3">
-            <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            </div>
+            <span class="w-8 h-8 rounded-lg bg-white border border-blue-100 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8"
+                viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1" />
+              </svg>
+            </span>
             <div>
-              <p class="text-sm font-semibold text-slate-800">{{ isEditMode ? 'Changes take effect immediately.' : 'The new user will appear in the user list.' }}</p>
-              <p class="text-sm text-slate-500 mt-0.5">{{ isEditMode ? 'The user may need to refresh their session.' : 'You can manage their account from the users section.' }}</p>
+              <p class="text-sm font-semibold text-slate-900">{{ isEditMode ? 'Changes take effect immediately.' : 'The
+                new user will appear in the user list.' }}</p>
+              <p class="text-sm text-slate-500 mt-0.5">{{ isEditMode ? 'The user may need to refresh their session.' :
+                'You can manage their account from the users section.' }}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
+    } @if (!isEditMode && activeTab === 1) {
+    <!-- Activate Existing User -->
+    <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 mt-6">
+      <h3 class="font-bold text-slate-900 text-2xl">Activate Existing User</h3>
+      <p class="text-slate-500 mt-2">Select a user who already exists in our system but does not have access to
+        KeyVault.</p>
+      <p class="text-slate-500 mt-1">You will be able to assign a KeyVault Pro role in the next step.</p>
+
+      <!-- Search + refresh -->
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <svg class="w-4.5 h-4.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+            stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path stroke-linecap="round" d="M21 21l-3.5-3.5" />
+          </svg>
+          <input type="text" [(ngModel)]="activateSearchQuery" (ngModelChange)="onActivateSearch()"
+            placeholder="Search by name or email..."
+            class="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+        </div>
+        <button (click)="loadExistingUsers()"
+          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 4v5h5M20 20v-5h-5M4.5 9a7.5 7.5 0 0113-4.5L20 7M19.5 15a7.5 7.5 0 01-13 4.5L4 17" />
+          </svg>
+          Refresh
+        </button>
+      </div>
+
+      <!-- Info banner -->
+      <div class="mt-5 flex items-center gap-2.5 bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
+        <svg class="w-4.5 h-4.5 text-blue-600 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8"
+          viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8h.01M11 12h1v4h1" />
+        </svg>
+        <span class="text-sm text-slate-700">Showing users who do not have access to KeyVault.</span>
+      </div>
+
+      <!-- Table -->
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full min-w-[560px]">
+          <thead>
+            <tr class="border-b border-slate-200 text-left">
+              <th class="pb-3 font-semibold text-slate-700 text-sm">User</th>
+              <th class="pb-3 font-semibold text-slate-700 text-sm hidden sm:table-cell">Email Address</th>
+              <th class="pb-3 font-semibold text-slate-700 text-sm text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            @for (user of existingUsers; track user.id) {
+            <tr>
+              <td class="py-4">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-semibold"
+                    [class]="user.bgColor">{{ user.initials }}</span>
+                  <div>
+                    <p class="font-semibold text-slate-900 text-sm">{{ user.name }}</p>
+                    <p class="text-xs text-slate-500 sm:hidden">{{ user.email }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 text-slate-600 text-sm hidden sm:table-cell">{{ user.email }}</td>
+              <td class="py-4 text-right">
+                <button (click)="importUser(user)" [disabled]="activatingUserId === user.id"
+                  class="px-4 py-1.5 rounded-lg border border-blue-500 text-blue-600 text-sm font-semibold hover:bg-blue-50 transition disabled:opacity-70">
+                  {{ activatingUserId === user.id ? 'Importing...' : 'Import' }}
+                </button>
+              </td>
+            </tr>
+            }
+            @empty {
+            <tr>
+              <td colspan="3" class="px-6 py-10 text-center text-sm text-slate-500">No users found.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
   </div>
 
   @if (showCamera) {
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div class="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 overflow-hidden">
-        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200">
-          <h3 class="text-sm font-semibold text-slate-900">Take Photo</h3>
-          <button type="button" (click)="stopCamera()" class="text-slate-400 hover:text-slate-600">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-        </div>
-        <div class="p-4">
-          <video #videoElement autoplay playsinline class="w-full rounded-lg bg-black"></video>
-        </div>
-        <div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-slate-200">
-          <button type="button" (click)="stopCamera()" class="px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
-          <button type="button" (click)="capturePhoto()" class="px-4 py-2 rounded-lg bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700">Capture</button>
-        </div>
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 overflow-hidden">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+        <h3 class="text-sm font-semibold text-slate-900">Take Photo</h3>
+        <button type="button" (click)="stopCamera()" class="text-slate-400 hover:text-slate-600">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <video #videoElement autoplay playsinline class="w-full rounded-lg bg-black"></video>
+      </div>
+      <div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-slate-200">
+        <button type="button" (click)="stopCamera()"
+          class="px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
+        <button type="button" (click)="capturePhoto()"
+          class="px-4 py-2 rounded-lg bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700">Capture</button>
       </div>
     </div>
+  </div>
   }
 </main>

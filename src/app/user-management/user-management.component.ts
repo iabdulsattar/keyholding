@@ -689,11 +689,11 @@ export class UserManagementComponent implements OnInit {
   }
 
   onTableRowClick(user: User): void {
-    this.selectUser(user);
+    this.router.navigate(['/users/view-user', user.id]);
   }
 
   viewUser(user: User): void {
-    this.selectUser(user);
+    this.router.navigate(['/users/view-user', user.id]);
   }
 
   deleteUser(user: User): void {

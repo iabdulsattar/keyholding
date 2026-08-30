@@ -47,6 +47,12 @@ export class AddUserComponent implements OnInit {
   userKeycloakId: string | null = null;
   touched = new Set<string>();
   submitted = false;
+  activeTab = 0;
+  activateSearchQuery = '';
+  activatingUserId: string | null = null;
+
+  existingUsers: any[] = [];
+  loadingExistingUsers = false;
 
   form = {
     firstName: '',
@@ -58,6 +64,7 @@ export class AddUserComponent implements OnInit {
     location: '',
     canAccessWeb: true,
     canAccessMobile: true,
+    canAccessBoth: false,
     serviceCode: 'edob',
     roleIds: [] as string[],
   };
@@ -145,6 +152,71 @@ export class AddUserComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.stopCamera();
+  }
+
+  loadExistingUsers(): void {
+    this.loadingExistingUsers = true;
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.loadingExistingUsers = false;
+      return;
+    }
+
+    this.userService.listUsers(orgId, { q: this.activateSearchQuery.trim() || undefined }).subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res;
+        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? [];
+        this.existingUsers = items.map((item: any, index: number) => ({
+          id: item.id,
+          name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
+          email: item.email || '-',
+          initials: this.getInitialsForUser(item),
+          bgColor: this.getAvatarColor(item.name || item.email || index),
+          status: item.invitationStatus || 'Not Invited',
+        }));
+        this.loadingExistingUsers = false;
+      },
+      error: () => {
+        this.existingUsers = [];
+        this.loadingExistingUsers = false;
+      }
+    });
+  }
+
+  onActivateSearch(): void {
+    this.loadExistingUsers();
+  }
+
+  importUser(user: any): void {
+    if (!user?.id) return;
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.activatingUserId = user.id;
+    this.userService.sendInvitation(orgId, user.id).subscribe({
+      next: () => {
+        this.activatingUserId = null;
+        this.successMessage = `Invitation sent to ${user.name}.`;
+        this.loadExistingUsers();
+      },
+      error: () => {
+        this.activatingUserId = null;
+        this.errorMessage = `Failed to send invitation to ${user.name}.`;
+      }
+    });
+  }
+
+  private getInitialsForUser(user: any): string {
+    const first = (user.firstName || '').charAt(0);
+    const last = (user.lastName || '').charAt(0);
+    return (first + last).toUpperCase() || 'U';
+  }
+
+  private getAvatarColor(name: string): string {
+    const colors = ['bg-blue-100 text-blue-700', 'bg-emerald-100 text-emerald-700', 'bg-amber-100 text-amber-700', 'bg-rose-100 text-rose-700', 'bg-violet-100 text-violet-700', 'bg-sky-100 text-sky-700'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
   }
 
   private getOrgId(): string | null {
