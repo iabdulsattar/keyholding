@@ -468,60 +468,72 @@
     </div>
     } @if (!isEditMode && activeTab === 1) {
     <!-- Activate Existing User -->
-    <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 mt-6">
-      <h3 class="font-bold text-slate-900 text-2xl">Activate Existing User</h3>
-      <p class="text-slate-500 mt-2">Select a user who already exists in our system but does not have access to
+    <div class="mt-4 grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
+ 
+    <div class="col-span-1 xl:col-span-8">         
+    <div class="bg-white rounded-md shadow-xs p-6 sm:p-8">
+      <h3 class="font-bold text-slate-900 text-lg">Activate Existing User</h3>
+      <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-2">Select a user who already exists in our system but does not have access to
         KeyVault.</p>
-      <p class="text-slate-500 mt-1">You will be able to assign a KeyVault Pro role in the next step.</p>
+      <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-1">You will be able to assign a KeyVault Pro role in the next step.</p>
 
       <!-- Search + refresh -->
-      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+      <div class="mt-5 grid lg:grid-cols-12 gap-3">
+        <div class="col-span-6">
         <div class="relative flex-1">
-          <svg class="w-4.5 h-4.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
-            stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="7" />
-            <path stroke-linecap="round" d="M21 21l-3.5-3.5" />
+          <svg width="16" height="16" class="absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
           </svg>
           <input type="text" [(ngModel)]="activateSearchQuery" (ngModelChange)="onActivateSearch()"
             placeholder="Search by name or email..."
-            class="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            class="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
+        </div>
+        <div class="col-span-6">
+        <div class="flex justify-end">  
         <button (click)="loadExistingUsers()"
-          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shrink-0">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M4 4v5h5M20 20v-5h-5M4.5 9a7.5 7.5 0 0113-4.5L20 7M19.5 15a7.5 7.5 0 01-13 4.5L4 17" />
-          </svg>
+          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition shrink-0">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.25 7C12.25 8.03835 11.9421 9.05339 11.3652 9.91674C10.7883 10.7801 9.9684 11.453 9.00909 11.8504C8.04978 12.2477 6.99418 12.3517 5.97578 12.1491C4.95738 11.9466 4.02192 11.4465 3.28769 10.7123C2.55347 9.97809 2.05345 9.04262 1.85088 8.02422C1.64831 7.00582 1.75227 5.95022 2.14963 4.99091C2.54699 4.0316 3.2199 3.21166 4.08326 2.63478C4.94662 2.05791 5.96165 1.75 7 1.75C8.47 1.75 9.87584 2.33333 10.9317 3.34833L12.25 4.66667M9.33333 4.66667H12.25L12.25 1.75" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+    </svg>
           Refresh
         </button>
+        </div>
+        </div>
       </div>
 
       <!-- Info banner -->
-      <div class="mt-5 flex items-center gap-2.5 bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
-        <svg class="w-4.5 h-4.5 text-blue-600 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8"
-          viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8h.01M11 12h1v4h1" />
-        </svg>
-        <span class="text-sm text-slate-700">Showing users who do not have access to KeyVault.</span>
+      <div class="mt-4 flex items-center gap-2.5 bg-blue-50 rounded-lg px-3.5 py-3">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2641_870)">
+  <path d="M8.00021 10.6668V7.99996M8.00021 5.33308H8.00688M14.6674 7.99996C14.6674 11.6822 11.6824 14.6672 8.00021 14.6672C4.31801 14.6672 1.33301 11.6822 1.33301 7.99996C1.33301 4.31777 4.31801 1.33276 8.00021 1.33276C11.6824 1.33276 14.6674 4.31777 14.6674 7.99996Z" stroke="#1A56DB" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2641_870">
+  <rect width="16" height="16" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+        <span class="text-xs text-slate-900 font-medium">Showing users who do not have access to KeyVault.</span>
       </div>
 
       <!-- Table -->
-      <div class="mt-5 overflow-x-auto">
-        <table class="w-full min-w-[560px]">
+      <div class="mt-4 border border-slate-200 rounded-md">
+      <div class=" overflow-x-auto">
+        <table class="w-full min-w-[560px] ">
           <thead>
             <tr class="border-b border-slate-200 text-left">
-              <th class="pb-3 font-semibold text-slate-700 text-sm">User</th>
-              <th class="pb-3 font-semibold text-slate-700 text-sm hidden sm:table-cell">Email Address</th>
-              <th class="pb-3 font-semibold text-slate-700 text-sm text-right">Action</th>
+              <th class="py-3 px-5 font-semibold text-slate-900 text-xs">User</th>
+              <th class="py-3 px-5 font-semibold text-slate-900 text-xs hidden sm:table-cell">Email Address</th>
+              <th class="py-3 px-5 font-semibold text-slate-900 text-xs text-right">Action</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-100">
+          <tbody class="divide-y divide-slate-200">
             @for (user of existingUsers; track user.id) {
             <tr>
-              <td class="py-4">
+              <td class="py-3 px-5">
                 <div class="flex items-center gap-3">
-                  <span class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-semibold"
+                  <span class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-xs font-bold"
                     [class]="user.bgColor">{{ user.initials }}</span>
                   <div>
                     <p class="font-semibold text-slate-900 text-sm">{{ user.name }}</p>
@@ -529,10 +541,10 @@
                   </div>
                 </div>
               </td>
-              <td class="py-4 text-slate-600 text-sm hidden sm:table-cell">{{ user.email }}</td>
-              <td class="py-4 text-right">
+              <td class="py-3 px-5 text-slate-500 text-sm font-normal hidden sm:table-cell">{{ user.email }}</td>
+              <td class="py-3 px-5 text-right">
                 <button (click)="importUser(user)" [disabled]="activatingUserId === user.id"
-                  class="px-4 py-1.5 rounded-lg border border-blue-500 text-blue-600 text-sm font-semibold hover:bg-blue-50 transition disabled:opacity-70">
+                  class="px-4 py-1.5 rounded-md border border-blue-700 text-blue-700 text-xs font-semibold hover:bg-blue-50 transition disabled:opacity-70">
                   {{ activatingUserId === user.id ? 'Importing...' : 'Import' }}
                 </button>
               </td>
@@ -546,6 +558,82 @@
           </tbody>
         </table>
       </div>
+      
+      </div>
+
+    </div>
+    </div>
+
+    <!-- Side info panel -->
+      <div class="col-span-1 xl:col-span-4 bg-white rounded-md shadow-xs"> 
+      <div class="p-5 ">
+        <div class="flex items-start gap-3 bg-blue-50 rounded-xl p-4">
+          <svg width="16" height="16" class="shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2641_949)">
+  <path d="M6.05995 5.99953C6.2167 5.55394 6.52609 5.1782 6.93332 4.93887C7.34056 4.69953 7.81935 4.61205 8.28491 4.6919C8.75047 4.77176 9.17274 5.0138 9.47694 5.37517C9.78114 5.73653 9.94763 6.1939 9.94693 6.66625C9.94693 7.99969 7.94677 8.66641 7.94677 8.66641M8.00021 11.3336H8.00688M14.6674 7.99996C14.6674 11.6822 11.6824 14.6672 8.00021 14.6672C4.31801 14.6672 1.33301 11.6822 1.33301 7.99996C1.33301 4.31777 4.31801 1.33276 8.00021 1.33276C11.6824 1.33276 14.6674 4.31777 14.6674 7.99996Z" stroke="#1A56DB" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2641_949">
+  <rect width="16" height="16" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+          <div>
+            <h4 class="font-bold text-slate-900 text-sm">About Activating Users
+            </h4>
+            <p class="text-xs text-slate-900 font-normal mt-1">You are viewing users who exist in our system but do not have access to KeyVault Pro yet. Select a user and assign a KeyVault Pro role to activate them.
+            </p>
+          </div>
+        </div>
+
+        <h5 class="font-bold text-slate-900 text-sm mt-6 mb-4">What happens next?
+        </h5>
+
+        <div class="space-y-5">
+          <div class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14.2507 15.75V14.25C14.2507 13.4544 13.9346 12.6913 13.3719 12.1287C12.8093 11.5661 12.0461 11.25 11.2504 11.25H6.74985C5.95411 11.25 5.19097 11.5661 4.62829 12.1287C4.06562 12.6913 3.74951 13.4544 3.74951 14.25V15.75M12.0005 5.25C12.0005 6.90685 10.6572 8.25 9.00011 8.25C7.34307 8.25 5.99977 6.90685 5.99977 5.25C5.99977 3.59315 7.34307 2.25 9.00011 2.25C10.6572 2.25 12.0005 3.59315 12.0005 5.25Z" stroke="#1A56DB" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+            </span>
+            <div>
+              <p class="text-xs font-bold text-slate-900">Select a user              
+              </p>
+              <p class="text-xs text-slate-500 font-normal mt-0.5">Choose a user from the list to activate for KeyVault Pro.              
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.00024 7.99965L7.33344 9.33302L9.99984 6.66627M13.3328 8.66663C13.3328 12.0001 10.9997 13.6668 8.22668 14.6335C8.08147 14.6827 7.92374 14.6804 7.78006 14.6268C5.00034 13.6668 2.66724 12.0001 2.66724 8.66663V3.99982C2.66724 3.823 2.73747 3.65343 2.86248 3.5284C2.98749 3.40337 3.15704 3.33313 3.33384 3.33313C4.66704 3.33313 6.33354 2.5331 7.49342 1.51974C7.63464 1.39906 7.81429 1.33276 8.00004 1.33276C8.18578 1.33276 8.36543 1.39906 8.50665 1.51974C9.6732 2.53977 11.333 3.33313 12.6662 3.33313C12.843 3.33313 13.0126 3.40337 13.1376 3.5284C13.2626 3.65343 13.3328 3.823 13.3328 3.99982V8.66663Z" stroke="#1A56DB" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+            </span>
+            <div>
+              <p class="text-xs font-bold text-slate-900">Assign a role
+              </p>
+              <p class="text-xs text-slate-500 font-normal mt-0.5">Assign an appropriate KeyVault Pro role to the selected user.
+
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.0004 8.25L13.5005 9.75L16.5007 6.75M12.0004 15.75V14.25C12.0004 13.4544 11.6843 12.6913 11.1216 12.1287C10.5589 11.5661 9.79582 11.25 9.00011 11.25H4.49975C3.70404 11.25 2.94092 11.5661 2.37826 12.1287C1.81561 12.6913 1.49951 13.4544 1.49951 14.25V15.75M9.75017 5.25C9.75017 6.90685 8.40692 8.25 6.74993 8.25C5.09294 8.25 3.74969 6.90685 3.74969 5.25C3.74969 3.59315 5.09294 2.25 6.74993 2.25C8.40692 2.25 9.75017 3.59315 9.75017 5.25Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+            </span>
+            <div>
+              <p class="text-xs font-bold text-slate-900">User activated</p>
+              <p class="text-xs text-slate-500 font-normal mt-0.5">The user will be activated and can access KeyVault Pro based on the assigned role.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
     </div>
     }
   </div>
