@@ -111,7 +111,7 @@ export class ViewUserComponent implements OnInit {
 
   get statusClass(): string {
     if (!this.user) return 'bg-slate-100 text-slate-600';
-    return this.user.status?.toLowerCase() === 'inactive' ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700';
+    return this.user.status?.toLowerCase() === 'inactive' ? 'bg-slate-100 text-slate-600' : 'bg-green-100 text-emerald-500';
   }
 
   get statusText(): string {
