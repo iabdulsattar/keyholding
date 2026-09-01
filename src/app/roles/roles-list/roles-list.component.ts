@@ -173,7 +173,7 @@ export class RolesListComponent implements OnInit {
   }
 
   getRoleColor(index: number): string {
-    const colors = ['bg-brand-100 text-brand-600', 'bg-emerald-50 text-emerald-500', 'bg-orange-50 text-orange-500', 'bg-violet-100 text-violet-600', 'bg-rose-50 text-rose-500', 'bg-sky-50 text-sky-500'];
+    const colors = ['bg-indigo-50 text-indigo-600', 'bg-emerald-50 text-emerald-500', 'bg-orange-50 text-orange-500', 'bg-violet-100 text-violet-600', 'bg-rose-50 text-rose-500', 'bg-sky-50 text-sky-500'];
     return colors[index % colors.length];
   }
 
