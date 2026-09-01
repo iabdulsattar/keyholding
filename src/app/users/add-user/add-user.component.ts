@@ -59,6 +59,54 @@ export class AddUserComponent implements OnInit {
   selectedRoleId = '';
   assigningRole = false;
 
+  existingUsersPage = 0;
+  existingUsersPageSize = 10;
+  existingUsersTotal = 0;
+  existingUsersTotalPages = 1;
+
+  get existingUsersShowingText(): string {
+    if (this.existingUsersTotal === 0) return 'Showing 0 users';
+    const start = this.existingUsersPage * this.existingUsersPageSize + 1;
+    const end = Math.min((this.existingUsersPage + 1) * this.existingUsersPageSize, this.existingUsersTotal);
+    return `Showing ${start} to ${end} of ${this.existingUsersTotal} users`;
+  }
+
+  get existingUsersPageNumbers(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.existingUsersTotalPages;
+    const current = this.existingUsersPage;
+
+    if (total <= 9) {
+      for (let i = 0; i < total; i++) pages.push(i);
+      return pages;
+    }
+
+    pages.push(0);
+
+    let start: number;
+    let end: number;
+
+    if (current <= 2) {
+      start = 1;
+      end = 4;
+    } else if (current >= total - 3) {
+      start = total - 5;
+      end = total - 2;
+    } else {
+      start = current - 2;
+      end = current + 2;
+    }
+
+    if (start > 1) pages.push('...');
+
+    for (let i = start; i <= end; i++) pages.push(i);
+
+    if (end < total - 2) pages.push('...');
+
+    pages.push(total - 1);
+    return pages;
+  }
+
   form = {
     firstName: '',
     lastName: '',
@@ -170,10 +218,14 @@ export class AddUserComponent implements OnInit {
       return;
     }
 
-    this.userService.listUsers(orgId, { q: this.activateSearchQuery.trim() || undefined }).subscribe({
+    this.userService.listUsers(orgId, {
+      q: this.activateSearchQuery.trim() || undefined,
+      page: this.existingUsersPage,
+      size: this.existingUsersPageSize,
+    }).subscribe({
       next: (res: any) => {
         const payload = res?.data ?? res;
-        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? [];
+        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? payload?.data ?? [];
         this.existingUsers = items.map((item: any, index: number) => ({
           id: item.id,
           name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
@@ -182,6 +234,9 @@ export class AddUserComponent implements OnInit {
           bgColor: this.getAvatarColor(item.name || item.email || index),
           status: item.invitationStatus || 'Not Invited',
         }));
+        const meta = res?.meta ?? res;
+        this.existingUsersTotal = meta?.totalElements ?? this.existingUsers.length;
+        this.existingUsersTotalPages = meta?.totalPages ?? 1;
         this.loadingExistingUsers = false;
       },
       error: () => {
@@ -191,7 +246,13 @@ export class AddUserComponent implements OnInit {
     });
   }
 
+  onExistingUsersPageChange(page: number): void {
+    this.existingUsersPage = page;
+    this.loadExistingUsers();
+  }
+
   onActivateSearch(): void {
+    this.existingUsersPage = 1;
     this.loadExistingUsers();
   }
 

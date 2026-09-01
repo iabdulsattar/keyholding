@@ -556,12 +556,41 @@
             </tr>
             }
           </tbody>
-        </table>
-      </div>
-      
+         </table>
       </div>
 
-    </div>
+      <!-- Footer / pagination -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-slate-200">
+            <p class="text-xs text-slate-500 font-medium font-['Inter']">{{ showingText }}</p>
+            <div class="flex items-center gap-1.5">
+              <button (click)="onTablePageChange(currentPage - 1)" [disabled]="currentPage === 0"
+                class="w-9 h-9 rounded-md border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-slate-50 disabled:opacity-50">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.5 9L4.5 6L7.5 3" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+              </button>
+              @for (page of pageNumbers; track page) {
+              @if (page === '...') {
+              <span class="w-9 h-9 flex items-center justify-center text-slate-400">...</span>
+              } @else {
+              <button (click)="onTablePageChange(page)"
+                class="w-9 h-9 rounded-md border flex items-center justify-center text-xs font-semibold"
+                [class.border-blue-700]="page === currentPage" [class.text-blue-700]="page === currentPage"
+                [class.border-slate-200]="page !== currentPage" [class.text-slate-600]="page !== currentPage"
+                [class.hover:bg-slate-50]="page !== currentPage">
+                {{ page + 1 }}
+              </button>
+              }
+              }
+              <button (click)="onTablePageChange(currentPage + 1)" [disabled]="currentPage >= totalFilteredPages - 1"
+                class="w-9 h-9 rounded-md border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-slate-50 disabled:opacity-50">
+                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.5 9L7.5 6L4.5 3" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+              </button>
+            </div>
+          </div>
+        }
     </div>
 
     <!-- Side info panel -->
@@ -631,14 +660,13 @@
             </div>
           </div>
         </div>
-      </div>
-      </div>
+       </div>
+       </div>
 
-    </div>
-    }
-  </div>
+     </div>
+   </div>
 
-  @if (showAssignRoleModal) {
+   @if (showAssignRoleModal) {
   <div class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[92vh] sm:max-h-[88vh] flex flex-col shadow-2xl">
 
