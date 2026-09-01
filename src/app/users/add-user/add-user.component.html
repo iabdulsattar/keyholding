@@ -755,11 +755,17 @@
 
         <div class="mt-6">
           <label class="block text-sm font-bold text-slate-900">Select Role <span class="text-rose-500">*</span></label>
-          <app-rich-select [options]="roleRichOptions" [(value)]="selectedRoleId" placeholder="Choose a role"
-            class="w-full mt-2.5"></app-rich-select>
+          <app-rich-select [options]="roleRichOptions" [(value)]="selectedRoleId" (valueChange)="onRoleChange()" placeholder="Choose a role" class="w-full mt-2.5"></app-rich-select>
         </div>
 
-        @if (selectedRole) {
+        @if (loadingRoleDetails) {
+        <div class="flex items-center justify-center py-6 mt-5">
+          <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+          <span class="ml-2 text-sm text-slate-500">Loading role details...</span>
+        </div>
+        }
+
+        @if (selectedRoleDetails && !loadingRoleDetails) {
         <div class="bg-slate-50 rounded-xl p-5 mt-5">
           <div class="flex items-start gap-3">
             <div class="h-9 w-9 rounded-lg bg-white text-blue-600 flex items-center justify-center shrink-0 shadow-sm">
@@ -769,16 +775,16 @@
               </svg>
             </div>
             <div>
-              <p class="font-bold text-slate-900">{{ selectedRole.name }}</p>
-              <p class="text-sm text-slate-500 mt-0.5">{{ selectedRole.description || 'No description available.' }}
+              <p class="font-bold text-slate-900">{{ selectedRoleDetails.name }}</p>
+              <p class="text-sm text-slate-500 mt-0.5">{{ selectedRoleDetails.description || 'No description available.' }}
               </p>
             </div>
           </div>
 
-          @if (selectedRole.permissions?.length) {
+          @if (selectedRoleDetails.permissions?.length) {
           <p class="text-sm font-semibold text-slate-800 mt-5">This role is allowed to:</p>
           <div class="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 mt-3">
-            @for (perm of selectedRole.permissions; track perm) {
+            @for (perm of selectedRoleDetails.permissions; track perm) {
             <div class="flex items-center gap-2 text-sm text-slate-700">
               <svg class="h-4 w-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 stroke-width="2.5">

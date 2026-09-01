@@ -57,6 +57,8 @@ export class AddUserComponent implements OnInit {
   showAssignRoleModal = false;
   selectedUserForRole: any = null;
   selectedRoleId = '';
+  selectedRoleDetails: any = null;
+  loadingRoleDetails = false;
   assigningRole = false;
 
   existingUsersPage = 0;
@@ -267,6 +269,32 @@ export class AddUserComponent implements OnInit {
     this.showAssignRoleModal = false;
     this.selectedUserForRole = null;
     this.selectedRoleId = '';
+    this.selectedRoleDetails = null;
+  }
+
+  onRoleChange(): void {
+    if (!this.selectedRoleId) {
+      this.selectedRoleDetails = null;
+      return;
+    }
+    this.loadRoleDetails(this.selectedRoleId);
+  }
+
+  loadRoleDetails(roleId: string): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.loadingRoleDetails = true;
+    this.keyVault.getRole(orgId, roleId).subscribe({
+      next: (res: any) => {
+        this.selectedRoleDetails = res?.data ?? res;
+        this.loadingRoleDetails = false;
+      },
+      error: () => {
+        this.selectedRoleDetails = null;
+        this.loadingRoleDetails = false;
+      }
+    });
   }
 
   assignRole(): void {
