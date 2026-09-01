@@ -1,0 +1,232 @@
+<main class="flex-1 min-w-0">
+  <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-8">
+
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Roles</h2>
+        <p class="text-slate-500 mt-1">Manage and configure user roles and their permissions.</p>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        @if (canManageRoles) {
+          <button routerLink="/roles/add-role" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm shadow-blue-600/20 transition-colors">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            Add Role
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-start justify-between">
+        <div>
+          <p class="text-sm text-slate-500">Total Roles</p>
+          <p class="text-4xl font-extrabold mt-2 text-slate-900">{{ totalRoles }}</p>
+        </div>
+        <div class="h-12 w-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-start justify-between">
+        <div>
+          <p class="text-sm text-slate-500">Active Roles</p>
+          <p class="text-4xl font-extrabold mt-2 text-slate-900">{{ activeRoles }}</p>
+        </div>
+        <div class="h-12 w-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-start justify-between sm:col-span-2 xl:col-span-1">
+        <div>
+          <p class="text-sm text-slate-500">Inactive Roles</p>
+          <p class="text-4xl font-extrabold mt-2 text-slate-900">{{ inactiveRoles }}</p>
+        </div>
+        <div class="h-12 w-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 shrink-0">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975M15 9.75a3 3 0 11-6 0 3 3 0 016 0zm5.25 6.75l-3-3m0 3l3-3"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+      <div class="relative flex-1">
+        <svg class="h-5 w-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search by role name or description..." class="w-full bg-white border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+      </div>
+      <select [(ngModel)]="filterStatus" (ngModelChange)="onFilterChange()" class="bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 sm:w-40 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+        <option value="">All Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    @if (loading) {
+      <div class="mt-6 flex items-center justify-center py-16">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span class="ml-3 text-sm text-slate-500">Loading roles...</span>
+      </div>
+    } @else if (errorMessage) {
+      <div class="mt-6 bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-600">{{ errorMessage }}</div>
+    } @else {
+      <div class="hidden md:block mt-6 bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-100 text-left text-slate-500">
+                <th class="px-6 py-4 font-semibold">Role</th>
+                <th class="px-6 py-4 font-semibold">Description</th>
+                <th class="px-6 py-4 font-semibold">Permissions</th>
+                <th class="px-6 py-4 font-semibold">Status</th>
+                <th class="px-6 py-4 font-semibold">Users</th>
+                <th class="px-6 py-4 font-semibold text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @for (role of paginatedRoles; track role.id; let i = $index) {
+                <tr class="hover:bg-slate-50/60 transition-colors">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="h-9 w-9 rounded-lg flex items-center justify-center shrink-0" [class]="getRoleColor(i)">
+                        <span class="text-xs font-bold">{{ getInitials(role.name) }}</span>
+                      </div>
+                      <span class="font-semibold text-slate-900 whitespace-nowrap">{{ role.name }}</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-slate-500 max-w-xs truncate">{{ role.description || '—' }}</td>
+                  <td class="px-6 py-4">
+                    <span class="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">
+                      {{ role.permissions?.length || 0 }} Permissions
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    @if (role.active) {
+                      <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-600 text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+                      </span>
+                    } @else {
+                      <span class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>Inactive
+                      </span>
+                    }
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 whitespace-nowrap">
+                      <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                      {{ role.userCount || 0 }} User{{ (role.userCount || 0) === 1 ? '' : 's' }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center justify-end gap-1">
+                      <button (click)="viewRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50" aria-label="View">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      </button>
+                      @if (canManageRoles) {
+                        <button (click)="editRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50" aria-label="Edit">
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+                        </button>
+                        @if (role.active) {
+                          <button (click)="deactivateRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-orange-500 hover:bg-slate-50" aria-label="Deactivate">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                          </button>
+                        } @else {
+                          <button (click)="reactivateRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-emerald-500 hover:bg-slate-50" aria-label="Reactivate">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                          </button>
+                        }
+                        <button (click)="deleteRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-50" aria-label="Delete">
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                        </button>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              }
+              @empty {
+                <tr>
+                  <td colspan="6" class="px-6 py-10 text-center text-sm text-slate-500">No roles found.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-6 py-4 border-t border-slate-100 text-sm text-slate-500">
+          <span>Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ currentPage * pageSize > filteredRoles.length ? filteredRoles.length : currentPage * pageSize }} of {{ filteredRoles.length }} roles</span>
+          <div class="flex items-center gap-1">
+            <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1" class="h-8 w-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+            </button>
+            @for (page of [].constructor(totalPages); let i = $index; track i) {
+              <button (click)="currentPage = i + 1" class="h-8 w-8 flex items-center justify-center rounded-lg border text-sm font-semibold" [class.border-blue-500]="currentPage === i + 1" [class.text-blue-600]="currentPage === i + 1" [class.border-slate-200]="currentPage !== i + 1" [class.text-slate-500]="currentPage !== i + 1" [class.hover:bg-slate-50]="currentPage !== i + 1">{{ i + 1 }}</button>
+            }
+            <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages" class="h-8 w-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:hidden mt-6 space-y-3">
+        @for (role of paginatedRoles; track role.id; let i = $index) {
+          <div class="bg-white rounded-2xl border border-slate-200 p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="h-10 w-10 rounded-lg flex items-center justify-center shrink-0" [class]="getRoleColor(i)">
+                  <span class="text-xs font-bold">{{ getInitials(role.name) }}</span>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-semibold text-slate-900 truncate">{{ role.name }}</p>
+                  <p class="text-sm text-slate-500 truncate">{{ role.description || 'No description' }}</p>
+                </div>
+              </div>
+              @if (role.active) {
+                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-600 text-xs font-semibold px-2.5 py-1 rounded-full shrink-0">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+                </span>
+              } @else {
+                <span class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-full shrink-0">
+                  <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>Inactive
+                </span>
+              }
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap">{{ role.permissions?.length || 0 }} Permissions</span>
+                <span class="inline-flex items-center gap-1 text-xs text-slate-500 whitespace-nowrap">
+                  <svg class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                  {{ role.userCount || 0 }}
+                </span>
+              </div>
+              <div class="flex items-center gap-1">
+                <button (click)="viewRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50" aria-label="View">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
+                @if (canManageRoles) {
+                  <button (click)="editRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50" aria-label="Edit">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+                  </button>
+                  <button (click)="deleteRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-50" aria-label="Delete">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+        @empty {
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No roles found.</div>
+        }
+      </div>
+      <div class="md:hidden mt-4 flex items-center justify-between text-sm text-slate-500">
+        <span>1 to {{ paginatedRoles.length }} of {{ filteredRoles.length }} roles</span>
+        <div class="flex items-center gap-1">
+          <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1" class="h-8 w-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 disabled:opacity-50" aria-label="Previous page">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+          </button>
+          <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages" class="h-8 w-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 disabled:opacity-50" aria-label="Next page">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</main>

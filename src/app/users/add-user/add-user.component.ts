@@ -54,6 +54,11 @@ export class AddUserComponent implements OnInit {
   existingUsers: any[] = [];
   loadingExistingUsers = false;
 
+  showAssignRoleModal = false;
+  selectedUserForRole: any = null;
+  selectedRoleId = '';
+  assigningRole = false;
+
   form = {
     firstName: '',
     lastName: '',
@@ -72,6 +77,7 @@ export class AddUserComponent implements OnInit {
   roles: Role[] = [];
   loadingRoles = false;
   roleOptions: MultiOption[] = [];
+  roleRichOptions: RichSelectOption[] = [];
 
   departmentOptions: RichSelectOption[] = [
     { value: '', label: 'Select department' },
@@ -140,11 +146,13 @@ export class AddUserComponent implements OnInit {
         }
         this.roles = roles;
         this.roleOptions = roles.filter(r => r.active).map(r => ({ value: String(r.id), text: r.name }));
+        this.roleRichOptions = roles.filter(r => r.active).map(r => ({ value: String(r.id), label: r.name, description: r.description || '' }));
         this.loadingRoles = false;
       },
       error: () => {
         this.roles = [];
         this.roleOptions = [];
+        this.roleRichOptions = [];
         this.loadingRoles = false;
       }
     });
@@ -189,21 +197,49 @@ export class AddUserComponent implements OnInit {
 
   importUser(user: any): void {
     if (!user?.id) return;
+    this.selectedUserForRole = user;
+    this.selectedRoleId = '';
+    this.showAssignRoleModal = true;
+  }
+
+  closeAssignRoleModal(): void {
+    this.showAssignRoleModal = false;
+    this.selectedUserForRole = null;
+    this.selectedRoleId = '';
+  }
+
+  assignRole(): void {
+    if (!this.selectedUserForRole?.id || !this.selectedRoleId) return;
     const orgId = this.getOrgId();
     if (!orgId) return;
 
-    this.activatingUserId = user.id;
-    this.userService.sendInvitation(orgId, user.id).subscribe({
+    this.assigningRole = true;
+    const roleIds = [this.selectedRoleId];
+    this.keyVault.assignRolesToUser(orgId, this.selectedUserForRole.id, roleIds).subscribe({
       next: () => {
-        this.activatingUserId = null;
-        this.successMessage = `Invitation sent to ${user.name}.`;
-        this.loadExistingUsers();
+        this.userService.sendInvitation(orgId, this.selectedUserForRole.id).subscribe({
+          next: () => {
+            this.assigningRole = false;
+            this.showAssignRoleModal = false;
+            this.selectedUserForRole = null;
+            this.successMessage = `Role assigned and invitation sent.`;
+            this.loadExistingUsers();
+          },
+          error: () => {
+            this.assigningRole = false;
+            this.errorMessage = `Failed to send invitation.`;
+          }
+        });
       },
       error: () => {
-        this.activatingUserId = null;
-        this.errorMessage = `Failed to send invitation to ${user.name}.`;
+        this.assigningRole = false;
+        this.errorMessage = `Failed to assign role.`;
       }
     });
+  }
+
+  get selectedRole(): Role | undefined {
+    return this.roles.find(r => String(r.id) === this.selectedRoleId);
   }
 
   private getInitialsForUser(user: any): string {

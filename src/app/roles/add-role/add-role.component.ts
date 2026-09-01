@@ -50,6 +50,7 @@ interface Permission {
 interface PermissionGroup {
   title: string;
   permissions: Permission[];
+  open?: boolean;
 }
 
 @Component({
@@ -163,13 +164,14 @@ export class AddRoleComponent implements OnInit {
         expanded: false,
       });
     }
-    return Array.from(map.entries()).map(([title, permissions]) => ({ title, permissions }));
+    return Array.from(map.entries()).map(([title, permissions]) => ({ title, permissions, open: true }));
   }
 
   private defaultGroups(): PermissionGroup[] {
     return [
       {
         title: 'Reports & Export',
+        open: true,
         permissions: [
           { key: 'report.view', name: 'View Reports', description: 'View system reports.', checked: false, expanded: false },
           { key: 'report.export', name: 'Export Data', description: 'Export reports and data to file.', checked: false, expanded: false },
