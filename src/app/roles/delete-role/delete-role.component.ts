@@ -20,6 +20,8 @@ interface Role {
   userCount?: number;
   createdAt?: string;
   updatedAt?: string;
+  createdByUserName?: string;
+  updatedByUserName?: string;
   [key: string]: any;
 }
 
@@ -104,9 +106,9 @@ export class DeleteRoleComponent implements OnInit {
     if (!this.orgId || !this.roleId) return;
     this.keyVault.getRole(this.orgId, this.roleId).subscribe({
       next: (data: any) => {
-        this.role = data;
+        this.role = data?.data ?? data;
         this.loading = false;
-        if (!data) {
+        if (!this.role) {
           this.toastService.error('Role details are empty.');
         }
       },
@@ -122,9 +124,7 @@ export class DeleteRoleComponent implements OnInit {
     this.userService.listUsers(this.orgId, { page: 0, size: 100 }).subscribe({
       next: (data: any) => {
         const users = data?.content ?? data ?? [];
-        const assigned = users.filter((u: any) =>
-          (u.roleIds || []).includes(this.roleId),
-        );
+        const assigned = users.filter((u: any) => this.userHasRole(u, this.roleId!));
         this.totalUsers = assigned.length;
         this.users = assigned.map((u: any, i: number) => this.mapUser(u, i));
       },
@@ -136,6 +136,13 @@ export class DeleteRoleComponent implements OnInit {
         this.usersLoading = false;
       },
     });
+  }
+
+  private userHasRole(u: any, roleId: string): boolean {
+    const topLevel = (u.roleIds || []).includes(roleId);
+    const fromService = (u.serviceAccess || [])
+      .some((s: any) => (s.roleIds || []).includes(roleId));
+    return topLevel || fromService;
   }
 
   private mapUser(u: OrgUser, index: number): AssignedUser {

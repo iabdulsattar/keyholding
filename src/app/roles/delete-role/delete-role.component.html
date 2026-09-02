@@ -64,14 +64,14 @@
           <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M5 20a7 7 0 0 1 14 0"/></svg>
           <div>
             <dt class="text-[13px] font-bold text-[#1e2044]">Last Updated By</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ currentUserName }}</dd>
+            <dd class="mt-0.5 text-[13px] text-slate-500">{{ role.updatedByUserName || currentUserName }}</dd>
           </div>
         </div>
         <div class="flex gap-3">
           <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M5 20a7 7 0 0 1 14 0"/></svg>
           <div>
             <dt class="text-[13px] font-bold text-[#1e2044]">Created By</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ currentUserName }}</dd>
+            <dd class="mt-0.5 text-[13px] text-slate-500">{{ role.createdByUserName || currentUserName }}</dd>
           </div>
         </div>
         <div class="flex gap-3">
