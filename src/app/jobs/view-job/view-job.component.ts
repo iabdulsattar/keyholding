@@ -206,6 +206,13 @@ export class ViewJobComponent implements OnInit {
     }
   }
 
+  formatDuration(minutes: number | undefined | null): string {
+    const mins = minutes ?? 0;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${h}h ${m}m`;
+  }
+
   statusClass(status: string): string {
     const map: Record<string, string> = {
       'SCHEDULED': 'bg-indigo-50 text-indigo-600',

@@ -36,6 +36,7 @@ interface User {
   name: string;
   email: string;
   roles: string[];
+  roleIds: string[];
   status: 'Active' | 'Inactive';
   invite: 'Accepted' | 'Pending' | 'Expired' | 'Not Invited';
   inviteSub: string;
@@ -489,7 +490,8 @@ export class UserManagementComponent implements OnInit {
           id: item.userId || item.id,
           name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
           email: item.email || '-',
-          roles: this.resolveRoleNames(item.roleIds || []),
+          roleIds: item.roleIds || [],
+          roles: [],
           status: (item.status || '').toLowerCase() === 'inactive' ? 'Inactive' : 'Active',
           invite: item.invitationStatus || 'Not Invited',
           inviteSub: item.grantedAt ? new Date(item.grantedAt).toLocaleString() : '-',
@@ -517,6 +519,7 @@ export class UserManagementComponent implements OnInit {
         }
         this.loading = false;
         this.loadStats();
+        this.resolveUserRoleNames();
       },
       error: () => {
         this.loading = false;
@@ -552,6 +555,7 @@ export class UserManagementComponent implements OnInit {
         this.roles = Array.isArray(payload) ? payload : [];
         this.rolesTotal = this.roles.length;
         this.rolesLoading = false;
+        this.resolveUserRoleNames();
       },
       error: () => {
         this.roles = [];
@@ -1007,6 +1011,13 @@ export class UserManagementComponent implements OnInit {
     return roleIds
       .map(id => this.roles.find(r => String(r.id) === String(id))?.name)
       .filter((name): name is string => !!name);
+  }
+
+  private resolveUserRoleNames(): void {
+    this.users = this.users.map(user => ({
+      ...user,
+      roles: this.resolveRoleNames(user.roleIds),
+    }));
   }
 
   private getEntityName(details: string): string {

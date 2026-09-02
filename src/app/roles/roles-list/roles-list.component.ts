@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface Role {
   id: string;
@@ -24,7 +25,7 @@ interface Role {
 @Component({
   selector: 'app-roles-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
   templateUrl: './roles-list.component.html',
   styles: ``
 })
@@ -42,6 +43,12 @@ export class RolesListComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
+
+  statusOptions: RichSelectOption[] = [
+    { value: '', label: 'by Role' },
+    { value: 'active', label: 'Active' },
+    { value: 'inactive', label: 'Inactive' }
+  ];
 
   constructor(
     private keyVault: KeyVaultService,

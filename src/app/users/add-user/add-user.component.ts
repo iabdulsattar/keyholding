@@ -529,7 +529,7 @@ export class AddUserComponent implements OnInit {
         location: this.form.location.trim() || undefined,
         canAccessWeb: this.form.canAccessWeb,
         canAccessMobile: this.form.canAccessMobile,
-        serviceCode: this.form.serviceCode || 'edob',
+        serviceCode: this.form.serviceCode || 'key-vault',
         roleIds: this.form.roleIds.length ? this.form.roleIds : undefined,
         sendInvite: true,
       };

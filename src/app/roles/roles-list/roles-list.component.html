@@ -112,12 +112,8 @@
   </svg>
         <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search by role name or description..." class="w-full bg-white rounded-md shadow-xs pl-11 pr-4 py-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
       </div>
-      <div class="col-span-1 col-span-2">
-      <select [(ngModel)]="filterStatus" (ngModelChange)="onFilterChange()" class="bg-white border border-slate-200 rounded-md px-4 py-3 text-sm font-medium text-slate-700 sm:w-40 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
-        <option value="">by Role</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-      </select>
+      <div class="col-span-1 col-span-2 sm:w-40">
+        <app-rich-select [options]="statusOptions" [(value)]="filterStatus" (valueChange)="onFilterChange()" placeholder="by Role"></app-rich-select>
       </div>
     </div>
 

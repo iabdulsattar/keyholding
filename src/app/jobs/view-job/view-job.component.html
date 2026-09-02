@@ -146,7 +146,7 @@
                 </clipPath>
               </defs>
             </svg>
-            16 May 2024, 02:10 PM
+            {{ job?.createdAt || '—' }}
           </div>
         </div>
         <div class="mt-5">
@@ -164,7 +164,7 @@
                 </clipPath>
               </defs>
             </svg>
-            16 May 2024, 02:45 PM
+            {{ job?.completedOn || '—' }}
           </div>
         </div>
       </div>
@@ -180,10 +180,10 @@
               stroke="#3B82F6" stroke-width="2" stroke-linecap="round" />
           </svg>
         </div>
-        <div class="min-w-0">
-          <p class="text-base font-bold font-['Inter'] text-slate-900">{{ job?.tiles?.durationMinutes ?? 0 }} min</p>
-          <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Duration</p>
-        </div>
+         <div class="min-w-0">
+           <p class="text-base font-bold font-['Inter'] text-slate-900">{{ formatDuration(job?.tiles?.durationMinutes) }}</p>
+           <p class="text-xs text-slate-500 font-normal font-['Inter'] tracking-wide uppercase truncate">Duration</p>
+         </div>
       </div>
       <div class="my-5 ml-5 flex items-center gap-4 lg:border-r border-slate-200">
         <div class="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
