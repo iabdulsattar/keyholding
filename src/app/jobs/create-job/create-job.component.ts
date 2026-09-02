@@ -594,6 +594,7 @@ export class CreateJobComponent implements OnInit {
     if (!this.job.startTime) this.errors['startTime'] = 'Start time is required';
     if (!this.job.endTime) this.errors['endTime'] = 'End time is required';
     if (!this.job.officer) this.errors['officer'] = 'Officer is required';
+    if (this.selectedKeys.length === 0) this.errors['keys'] = 'At least one key is required';
 
     return Object.keys(this.errors).length === 0;
   }

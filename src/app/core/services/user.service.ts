@@ -93,6 +93,21 @@ export class UserService {
     );
   }
 
+  listUserstoImport(orgId: string, options: ListUsersParams = {}): Observable<PagedUsers> {
+    let params = new HttpParams();
+    if (options.q) params = params.set('q', options.q);
+    if (options.status) params = params.set('status', options.status);
+    if (options.page != null) params = params.set('page', String(options.page));
+    if (options.size != null) params = params.set('size', String(options.size));
+     params = params.set('serviceCode', 'key-vault');
+
+    const query = params.toString();
+    const path = `${this.base(orgId)}/users${query ? `?${query}` : ''}`;
+    return this.api.get<ApiWrapper<PagedUsers>>(path, this.authHeaders()).pipe(
+      map(res => res.data)
+    );
+  }
+
   // 13.2 GET /api/v1/users/organizations/{orgId}/users/stats
   getStats(orgId: string): Observable<UserStats> {
     return this.api.get<any>(`${this.base(orgId)}/users/stats`, this.authHeaders()).pipe(

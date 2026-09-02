@@ -440,6 +440,10 @@
         <p class="text-slate-600 text-xs font-normal font-['Inter'] mb-5">Select the keys that are required for this
             job.</p>
 
+        @if (errors['keys'] && submitted) {
+        <p class="text-rose-500 text-xs font-medium mb-3">{{ errors['keys'] }}</p>
+        }
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @for (key of selectedKeys; track key.id) {
             <div class="rounded-md border border-slate-200 p-4">

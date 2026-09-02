@@ -110,8 +110,7 @@ export class AddUserComponent implements OnInit {
   }
 
   form = {
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
     phoneNumber: '',
     department: '',
@@ -159,8 +158,7 @@ export class AddUserComponent implements OnInit {
 
   get informationInvalid(): boolean {
     return this.submitted && (
-      !this.form.firstName.trim() ||
-      !this.form.lastName.trim() ||
+      !this.form.fullName.trim() ||
       !this.form.email.trim()
     );
   }
@@ -220,7 +218,7 @@ export class AddUserComponent implements OnInit {
       return;
     }
 
-    this.userService.listUsers(orgId, {
+    this.userService.listUserstoImport(orgId, {
       q: this.activateSearchQuery.trim() || undefined,
       page: this.existingUsersPage,
       size: this.existingUsersPageSize,
@@ -230,7 +228,7 @@ export class AddUserComponent implements OnInit {
         const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? payload?.data ?? [];
         this.existingUsers = items.map((item: any, index: number) => ({
           id: item.id,
-          name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
+          name: item.fullName || item.name || `${item.firstName || ''} ${item.lastName || ''}`.trim() || 'Unknown',
           email: item.email || '-',
           initials: this.getInitialsForUser(item),
           bgColor: this.getAvatarColor(item.name || item.email || index),
@@ -304,25 +302,20 @@ export class AddUserComponent implements OnInit {
 
     this.assigningRole = true;
     const roleIds = [this.selectedRoleId];
-    this.keyVault.assignRolesToUser(orgId, this.selectedUserForRole.id, roleIds).subscribe({
+
+    this.keyVault.assignUserToKeyVault(orgId, this.selectedUserForRole.id, roleIds).subscribe({
       next: () => {
-        this.userService.sendInvitation(orgId, this.selectedUserForRole.id).subscribe({
-          next: () => {
-            this.assigningRole = false;
-            this.showAssignRoleModal = false;
-            this.selectedUserForRole = null;
-            this.successMessage = `Role assigned and invitation sent.`;
-            this.loadExistingUsers();
-          },
-          error: () => {
-            this.assigningRole = false;
-            this.errorMessage = `Failed to send invitation.`;
-          }
-        });
+        this.assigningRole = false;
+        this.showAssignRoleModal = false;
+        this.selectedUserForRole = null;
+        this.selectedRoleId = '';
+        this.selectedRoleDetails = null;
+        this.successMessage = 'User activated for KeyVault successfully.';
+        this.loadExistingUsers();
       },
       error: () => {
         this.assigningRole = false;
-        this.errorMessage = `Failed to assign role.`;
+        this.errorMessage = 'Failed to activate user for KeyVault.';
       }
     });
   }
@@ -364,8 +357,7 @@ export class AddUserComponent implements OnInit {
 
     this.userService.getUserDetail(orgId, id).subscribe({
       next: (user: ServiceUser) => {
-        this.form.firstName = user.firstName || '';
-        this.form.lastName = user.lastName || '';
+        this.form.fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
         this.form.email = user.email || '';
         this.form.phoneNumber = user.phoneNumber || '';
         this.form.department = user.department || '';
@@ -464,14 +456,17 @@ export class AddUserComponent implements OnInit {
     }
 
     this.submitted = true;
-    this.touched.add('form.firstName');
-    this.touched.add('form.lastName');
+    this.touched.add('form.fullName');
     this.touched.add('form.email');
 
-    if (!this.form.firstName.trim() || !this.form.lastName.trim() || !this.form.email.trim()) {
+    if (!this.form.fullName.trim() || !this.form.email.trim()) {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
+
+    const nameParts = this.form.fullName.trim().split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
 
     this.saving = true;
     this.errorMessage = '';
@@ -485,8 +480,8 @@ export class AddUserComponent implements OnInit {
 
     if (this.isEditMode && this.userId) {
       const payload: UpdateUserRequest = {
-        firstName: this.form.firstName.trim(),
-        lastName: this.form.lastName.trim(),
+        firstName,
+        lastName,
         phoneNumber: this.form.phoneNumber.trim() || undefined,
         department: this.form.department.trim() || undefined,
         jobTitle: this.form.jobTitle.trim() || undefined,
@@ -525,8 +520,8 @@ export class AddUserComponent implements OnInit {
       });
     } else {
       const payload: CreateUserRequest = {
-        firstName: this.form.firstName.trim(),
-        lastName: this.form.lastName.trim(),
+        firstName,
+        lastName,
         email: this.form.email.trim(),
         phoneNumber: this.form.phoneNumber.trim() || undefined,
         department: this.form.department.trim() || undefined,

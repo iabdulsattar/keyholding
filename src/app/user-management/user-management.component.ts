@@ -447,8 +447,8 @@ export class UserManagementComponent implements OnInit {
       next: (id) => (this.currentUserId = id),
       error: () => (this.currentUserId = null),
     });
+    this.loadRoles();
     this.loadUsers();
-    this.loadStats();
   }
 
   setActiveTab(index: number): void {
@@ -481,28 +481,28 @@ export class UserManagementComponent implements OnInit {
     const hasFilters = !!(this.searchQuery.trim() || this.filterRole || this.filterStatus);
     const size = hasFilters ? 200 : this.pageSize;
 
-    this.userService.listUsers(orgId, { page: 0, size, q: this.searchQuery.trim() || undefined }).subscribe({
+    this.keyVault.listKeyVaultUsers(orgId, { page: 0, size, q: this.searchQuery.trim() || undefined }).subscribe({
       next: (res) => {
         const payload = res?.['data'] ?? res;
-        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? [];
+        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? payload?.data ?? [];
         this.users = items.map((item: any, index: number) => ({
-          id: item.id,
+          id: item.userId || item.id,
           name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
           email: item.email || '-',
-          roles: (item.roles || []).map((r: any) => r.name).filter(Boolean),
+          roles: this.resolveRoleNames(item.roleIds || []),
           status: (item.status || '').toLowerCase() === 'inactive' ? 'Inactive' : 'Active',
           invite: item.invitationStatus || 'Not Invited',
-          inviteSub: item.invitationUpdatedAt ? new Date(item.invitationUpdatedAt).toLocaleString() : '-',
-          lastLogin: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleString() : '-',
-          lastTime: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleTimeString() : '-',
-          created: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-',
-           img: (index % 37) + 1,
-          resend: item.invitationStatus === 'Pending',
+          inviteSub: item.grantedAt ? new Date(item.grantedAt).toLocaleString() : '-',
+          lastLogin: '-',
+          lastTime: '-',
+          created: '-',
+          img: (index % 37) + 1,
+          resend: false,
           department: item.department || ['Operations', 'Security', 'Compliance', 'HR'][index % 4],
           phone: item.phoneNumber || ['+91 98765 43210', '+91 98765 12345', '+91 99456 12345', '+91 99876 00000'][index % 4],
           location: item.location || ['Head Office', 'North Gate', 'Control Room', 'Central Hub'][index % 4],
           employeeId: item.employeeId || `EMP-${String(12 + index).padStart(5, '0')}`,
-          joined: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
+          joined: item.grantedAt ? new Date(item.grantedAt).toLocaleString() : '-',
         }));
 
         this.totalElements = this.users.length;
@@ -516,26 +516,28 @@ export class UserManagementComponent implements OnInit {
           this.showDetail = false;
         }
         this.loading = false;
+        this.loadStats();
       },
       error: () => {
         this.loading = false;
+        this.loadStats();
         this.errorMessage = 'Unable to load users right now.';
       },
     });
   }
 
   loadStats(): void {
-    const orgId = this.getOrgId();
-    if (!orgId) return;
-
-    this.userService.getStats(orgId).subscribe({
-      next: (res) => {
-        this.stats = res?.['data'] ?? res;
-      },
-      error: () => {
-        this.stats = null;
-      },
-    });
+    const total = this.users.length;
+    const active = this.users.filter(u => u.status === 'Active').length;
+    const inactive = total - active;
+    this.stats = {
+      total,
+      totalUsers: total,
+      active,
+      activeUsers: active,
+      inactive,
+      inactiveUsers: inactive,
+    };
   }
 
   loadRoles(): void {
@@ -998,6 +1000,13 @@ export class UserManagementComponent implements OnInit {
     let hash = 0;
     for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
     return colors[Math.abs(hash) % colors.length];
+  }
+
+  private resolveRoleNames(roleIds: string[]): string[] {
+    if (!roleIds.length) return [];
+    return roleIds
+      .map(id => this.roles.find(r => String(r.id) === String(id))?.name)
+      .filter((name): name is string => !!name);
   }
 
   private getEntityName(details: string): string {

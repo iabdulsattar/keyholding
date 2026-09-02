@@ -1068,6 +1068,39 @@ export class KeyVaultService {
     return this.api.post<any>(`/api/v1/users/organizations/${orgId}/services/${serviceCode}/enable`, { email, code }, headers);
   }
 
+  assignUserToKeyVault(orgId: string, userId: string, roleIds: string[]): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+    });
+    return this.api.post<any>(`/api/v1/users/organizations/${orgId}/services/key-vault/users/${userId}`, { roleIds }, headers);
+  }
+
+  removeUserFromKeyVault(orgId: string, userId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.delete<any>(`/api/v1/users/organizations/${orgId}/services/key-vault/users/${userId}`, headers);
+  }
+
+  listKeyVaultUsers(orgId: string, params?: { page?: number; size?: number; q?: string }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const q = new URLSearchParams();
+    if (params?.page !== undefined) q.set('page', String(params.page));
+    if (params?.size !== undefined) q.set('size', String(params.size));
+    if (params?.q) q.set('q', params.q);
+    const query = q.toString();
+    return this.api.get<any>(`/api/v1/users/organizations/${orgId}/services/key-vault/users${query ? `?${query}` : ''}`, headers);
+  }
+
+  checkUserKeyVaultAccess(orgId: string, userId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/users/organizations/${orgId}/services/key-vault/users/${userId}/access`, headers);
+  }
+
+  listEligibleUsers(orgId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<any>(`/api/v1/users/organizations/${orgId}/services/key-vault/eligible-users`, headers);
+  }
+
   // Audit / Activity Log
   listAuditLog(orgId: string, params?: { targetType?: string; targetId?: string; includeRelated?: boolean; page?: number; size?: number }): Observable<any> {
     const headers = this.getAuthHeaders();
