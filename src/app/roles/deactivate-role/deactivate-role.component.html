@@ -1,28 +1,46 @@
-<main class="flex-1 pb-20 " style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+<main class="flex-1 pb-4 " >
 
   <!-- Top bar -->
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between gap-4">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between gap-4">
     <div>
-      <a routerLink="/roles/view-role" [queryParams]="{ id: roleId }" class="inline-flex items-center gap-2 text-[13px] font-semibold text-[#1e2044] hover:text-[#6d4aee]">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <a routerLink="/roles/view-role" [queryParams]="{ id: roleId }" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-500">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="16" height="16" fill="#F4F6FA"/>
+        <path d="M8.00021 3.33301L3.33301 8.00021L8.00021 12.6674M3.33301 8.00021H12.6674" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        
         Back to Roles
       </a>
-      <h1 class="mt-3 text-xl sm:text-[28px] font-extrabold tracking-tight text-[#1e2044]">Deactivate Role</h1>
-      <p class="mt-1 text-[13px] text-slate-500">You are about to deactivate the following role.</p>
+      <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Deactivate Role</h1>
+      <p class="mt-1 text-sm text-slate-500 font-normal">You are about to deactivate the following role.</p>
     </div>
-    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-1">
-      <button aria-label="Notifications" class="relative w-10 h-10 rounded-full flex items-center justify-center text-[#1e2044] hover:bg-white">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17H9m6 0h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5m6 0v1a3 3 0 1 1-6 0v-1"/></svg>
-        <span class="absolute -top-0.5 right-0 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-[#f5f5f9]">3</span>
-      </button>
-      <button aria-label="Help" class="w-10 h-10 rounded-full flex items-center justify-center text-[#1e2044] hover:bg-white">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M9.5 9a2.5 2.5 0 1 1 3.4 2.33c-.7.28-1.4.87-1.4 1.62V13.5"/><circle cx="11.5" cy="16.5" r="0.5" fill="currentColor"/></svg>
-      </button>
-      <button (click)="viewRole()" class="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-[#7c5cf4]/40 bg-white text-[#6d4aee] text-[13.5px] font-semibold hover:bg-[#f3f1fd] w-full sm:w-auto">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-        View Role
-      </button>
-    </div>
+<div class=" ">
+  <div data-svg-wrapper class="">
+    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g filter="url(#filter0_d_2004_488)">
+    <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges"/>
+    <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_2004_488)"/>
+    </g>
+    <defs>
+    <filter id="filter0_d_2004_488" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="1"/>
+    <feGaussianBlur stdDeviation="1.5"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2004_488"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2004_488" result="shape"/>
+    </filter>
+    <pattern id="pattern0_2004_488" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_2004_488" transform="scale(0.00195312)"/>
+    </pattern>
+    <image id="image0_2004_488" width="512" height="512" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+    </defs>
+    </svg>
+  </div>
+</div>
+     
   </div>
 
   @if (loading) {
@@ -32,110 +50,192 @@
   } @else if (role) {
 
   <!-- Role summary card -->
-  <section class="mt-6 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] gap-px bg-slate-200/70 rounded-2xl overflow-hidden border border-slate-200/70 shadow-card">
-    <div class="bg-white p-4 sm:p-6">
+   <section class="mt-5 grid grid-cols-1 xl:grid-cols-12 bg-white rounded-md overflow-hidden shadow-xs">
+    <div class="col-span-1 xl:col-span-4 bg-white pr-4 m-6 xl:border-r border-slate-200">    
       <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-full bg-[#f3f1fd] flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-[#6d4aee]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3 4.5 6v5c0 4.6 3.2 8.6 7.5 10 4.3-1.4 7.5-5.4 7.5-10V6L12 3z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9.5 12 1.8 1.8L14.8 10"/></svg>
+        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.3401 21.9501C16.4997 20.5001 19.9994 18 19.9994 12.9998V5.9996C19.9994 5.73438 19.894 5.48002 19.7065 5.29247C19.519 5.10493 19.2647 4.99957 18.9995 4.99957C16.9997 4.99957 14.5099 3.80953 12.7601 2.27948C12.5483 2.09847 12.2788 1.99902 12.0002 1.99902C11.7216 1.99902 11.4521 2.09847 11.2403 2.27948C9.50043 3.79953 7.00068 4.99957 5.00088 4.99957C4.73569 4.99957 4.48136 5.10493 4.29384 5.29247C4.10632 5.48002 4.00098 5.73438 4.00098 5.9996V12.9998C4.00098 18 7.50063 20.5001 11.6702 21.9401C11.8857 22.0204 12.1223 22.0239 12.3401 21.9501Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
         <div>
           <div class="flex items-center gap-2.5 flex-wrap">
-            <h2 class="text-lg font-bold text-[#1e2044]">{{ role.name }}</h2>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[11px] font-semibold">{{ role.active ? 'Active' : 'Inactive' }}</span>
+            <h2 class="text-lg font-bold text-slate-900">{{ role.name }}</h2>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-green-50 text-green-600 text-xs font-semibold              ">{{ role.active ? 'Active' : 'Inactive' }}</span>
           </div>
-          <p class="mt-1.5 text-[13px] text-slate-500">{{ role.description || 'No description provided.' }}</p>
+          <p class="mt-1.5 text-xs text-slate-500">{{ role.description || 'No description provided.' }}</p>
         </div>
       </div>
     </div>
-    <div class="bg-white p-4 sm:p-6">
-      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-        <div class="flex gap-3">
-          <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h11M4 7l3-3M4 7l3 3M20 17H9m11 0-3-3m3 3-3 3"/></svg>
+
+    <div class="col-span-1 xl:col-span-4 bg-white pr-4 m-6 xl:border-r border-slate-200">
+      <div class="flex gap-3">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2803_244)">
+      <path d="M9.00042 7.49996C8.60256 7.49996 8.22099 7.658 7.93966 7.93933C7.65833 8.22065 7.50027 8.60221 7.50027 9.00007C7.50027 9.76512 7.42527 10.8827 7.30526 12.0003M10.5004 9.84022C10.5004 11.6253 10.5004 14.6256 9.75032 16.5007M12.9682 15.7656C13.0582 15.3155 13.2907 14.0404 13.3432 13.5004M1.49951 9.00007C1.49951 7.42583 1.99484 5.8915 2.91533 4.61442C3.83583 3.33733 5.13482 2.38223 6.62831 1.88442C8.12179 1.3866 9.73406 1.3713 11.2367 1.84069C12.7394 2.31007 14.0563 3.24035 15.0008 4.49973M1.49951 12.0003H1.50701M16.3508 12.0003C16.5008 10.5002 16.4491 7.98449 16.3508 7.49996M3.74973 14.6255C4.12477 13.5004 4.49981 11.2502 4.49981 9.00007C4.49905 8.48918 4.58529 7.98189 4.75483 7.49996M6.48779 16.5006C6.64531 16.0056 6.82533 15.5105 6.91533 15.0005M6.75003 5.09973C7.43439 4.70463 8.21073 4.49668 9.00097 4.4968C9.7912 4.49693 10.5675 4.70513 11.2517 5.10046C11.936 5.49578 12.504 6.06431 12.8988 6.74885C13.2936 7.43338 13.5012 8.20981 13.5007 9.00002V10.5001" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2803_244">
+      <rect width="18" height="18" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
           <div>
-            <dt class="text-[13px] font-bold text-[#1e2044]">Role ID</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ role.code || role.id }}</dd>
+            <dt class="text-xs font-semibold text-slate-500 uppercase
+            
+            ">Role ID</dt>
+            <dd class="mt-0.5 text-xs text-slate-700 font-semibold mb-3
+            
+            ">{{ role.code || role.id }}</dd>
           </div>
         </div>
-        <div class="flex gap-3">
-          <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M5 20a7 7 0 0 1 14 0"/></svg>
+      
+      <div class="flex gap-3">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14.2507 15.75V14.25C14.2507 13.4544 13.9346 12.6913 13.3719 12.1287C12.8093 11.5661 12.0461 11.25 11.2504 11.25H6.74985C5.95411 11.25 5.19097 11.5661 4.62829 12.1287C4.06562 12.6913 3.74951 13.4544 3.74951 14.25V15.75M12.0005 5.25C12.0005 6.90685 10.6572 8.25 9.00011 8.25C7.34307 8.25 5.99977 6.90685 5.99977 5.25C5.99977 3.59315 7.34307 2.25 9.00011 2.25C10.6572 2.25 12.0005 3.59315 12.0005 5.25Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+  </svg>
           <div>
-            <dt class="text-[13px] font-bold text-[#1e2044]">Last Updated By</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ currentUserName }}</dd>
+            <dt class="text-xs font-semibold text-slate-500 uppercase
+            
+            ">Created By</dt>
+            <dd class="mt-0.5 text-xs text-slate-700 font-semibold mb-3
+            
+            ">{{ currentUserName }}</dd>
           </div>
         </div>
-        <div class="flex gap-3">
-          <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M5 20a7 7 0 0 1 14 0"/></svg>
+      
+      <div class="flex gap-3">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 1.49951V4.49975M12 1.49951V4.49975M2.25 7.49999H15.75M3.75 2.99963H14.25C15.0784 2.99963 15.75 3.67126 15.75 4.49975V15.0006C15.75 15.8291 15.0784 16.5007 14.25 16.5007H3.75C2.92157 16.5007 2.25 15.8291 2.25 15.0006V4.49975C2.25 3.67126 2.92157 2.99963 3.75 2.99963Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+  </svg>
           <div>
-            <dt class="text-[13px] font-bold text-[#1e2044]">Created By</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ currentUserName }}</dd>
+            <dt class="text-xs font-semibold text-slate-500 uppercase
+            
+            ">Created On</dt>
+            <dd class="mt-0.5 text-xs text-slate-700 font-semibold mb-0
+            
+            ">{{ formatDateTime(role.createdAt) }}</dd>
           </div>
         </div>
-        <div class="flex gap-3">
-          <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
-          <div>
-            <dt class="text-[13px] font-bold text-[#1e2044]">Last Updated On</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ formatDateTime(role.updatedAt) }}</dd>
-          </div>
-        </div>
-        <div class="flex gap-3">
-          <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path stroke-linecap="round" d="M8 3v4M16 3v4M4 10h16"/></svg>
-          <div>
-            <dt class="text-[13px] font-bold text-[#1e2044]">Created On</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ formatDateTime(role.createdAt) }}</dd>
-          </div>
-        </div>
-        <div class="flex gap-3">
-          <svg class="w-[18px] h-[18px] text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path stroke-linecap="round" d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path stroke-linecap="round" d="M16 5.5a3.5 3.5 0 0 1 0 6M17.5 14a5.5 5.5 0 0 1 3 5"/></svg>
-          <div>
-            <dt class="text-[13px] font-bold text-[#1e2044]">Users Assigned</dt>
-            <dd class="mt-0.5 text-[13px] text-slate-500">{{ role.userCount || totalUsers }} Users</dd>
-          </div>
-        </div>
-      </dl>
+          
     </div>
+
+    <div class="col-span-1 xl:col-span-4 bg-white pr-4 m-6 ">
+      <div class="flex gap-3">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.0004 8.25L13.5005 9.75L16.5007 6.75M12.0004 15.75V14.25C12.0004 13.4544 11.6843 12.6913 11.1216 12.1287C10.5589 11.5661 9.79582 11.25 9.00011 11.25H4.49975C3.70404 11.25 2.94092 11.5661 2.37826 12.1287C1.81561 12.6913 1.49951 13.4544 1.49951 14.25V15.75M9.75017 5.25C9.75017 6.90685 8.40692 8.25 6.74993 8.25C5.09294 8.25 3.74969 6.90685 3.74969 5.25C3.74969 3.59315 5.09294 2.25 6.74993 2.25C8.40692 2.25 9.75017 3.59315 9.75017 5.25Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+          <div>
+            <dt class="text-xs font-semibold text-slate-500 uppercase
+            
+            ">Last Updated By</dt>
+            <dd class="mt-0.5 text-xs text-slate-700 font-semibold mb-3
+            
+            ">{{ currentUserName }}</dd>
+          </div>
+        </div>
+      
+      <div class="flex gap-3">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_2803_122)">
+  <path d="M9.00011 4.49975V9.00011L12.0004 10.5002M16.5007 9.00011C16.5007 13.1426 13.1426 16.5007 9.00011 16.5007C4.85764 16.5007 1.49951 13.1426 1.49951 9.00011C1.49951 4.85764 4.85764 1.49951 9.00011 1.49951C13.1426 1.49951 16.5007 4.85764 16.5007 9.00011Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_2803_122">
+  <rect width="18" height="18" fill="white"/>
+  </clipPath>
+  </defs>
+  </svg>
+          <div>
+            <dt class="text-xs font-semibold text-slate-500 uppercase
+            
+            ">Last Updated On</dt>
+            <dd class="mt-0.5 text-xs text-slate-700 font-semibold mb-3
+            
+            ">{{ formatDateTime(role.updatedAt) }}</dd>
+          </div>
+        </div>
+      
+      <div class="flex gap-3">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.0004 15.75V14.25C12.0004 13.4544 11.6843 12.6913 11.1216 12.1287C10.5589 11.5661 9.79582 11.25 9.00011 11.25H4.49975C3.70404 11.25 2.94092 11.5661 2.37826 12.1287C1.81561 12.6913 1.49951 13.4544 1.49951 14.25V15.75M12.0004 2.34595C12.6437 2.51272 13.2135 2.8884 13.6202 3.41399C14.027 3.93959 14.2477 4.58536 14.2477 5.24995C14.2477 5.91453 14.027 6.5603 13.6202 7.0859C13.2135 7.6115 12.6437 7.98717 12.0004 8.15395M16.5007 15.7499V14.2499C16.5002 13.5852 16.279 12.9395 15.8717 12.4141C15.4644 11.8888 14.8942 11.5136 14.2505 11.3474M9.75017 5.25C9.75017 6.90685 8.40692 8.25 6.74993 8.25C5.09294 8.25 3.74969 6.90685 3.74969 5.25C3.74969 3.59315 5.09294 2.25 6.74993 2.25C8.40692 2.25 9.75017 3.59315 9.75017 5.25Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+          <div>
+            <dt class="text-xs font-semibold text-slate-500 uppercase
+            
+            ">Users Assigned</dt>
+            <dd class="mt-0.5 text-xs text-slate-700 font-semibold mb-0
+            
+            ">{{ role.userCount || totalUsers }} Users</dd>
+          </div>
+        </div>
+          
+    </div>
+
+    
   </section>
 
   <!-- Two-column body -->
-  <div class="mt-6 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-4 sm:gap-6 items-stretch">
+  <div class="mt-4 grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
 
-    <div class="space-y-6 min-w-0">
+    <div class="space-y-4 min-w-0 col-span-1 xl:col-span-8">
 
       <!-- Warning banner -->
-      <section class="rounded-2xl border border-amber-300/70 bg-orange-50/70 p-6">
+      <section class="rounded-md border border-orange-100 bg-orange-50 p-6">
         <div class="flex gap-4">
-          <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
-            <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.3 4.3 2.9 17a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0z"/><path stroke-linecap="round" d="M12 9.5v4"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor" stroke="none"/></svg>
+          <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M11.0002 8.24935V11.916M11.0002 15.5827H11.0093M19.9197 16.4996L12.5864 3.66622C12.4265 3.38408 12.1946 3.14939 11.9144 2.98612C11.6342 2.82284 11.3157 2.73682 10.9914 2.73682C10.6671 2.73682 10.3486 2.82284 10.0684 2.98612C9.78816 3.14939 9.55628 3.38408 9.39638 3.66622L2.06305 16.4996C1.90142 16.7795 1.81667 17.0971 1.81739 17.4204C1.8181 17.7436 1.90426 18.0609 2.06712 18.3401C2.22998 18.6193 2.46376 18.8504 2.74477 19.0101C3.02577 19.1699 3.344 19.2525 3.66721 19.2496H18.3339C18.6555 19.2492 18.9714 19.1643 19.2499 19.0032C19.5283 18.8422 19.7595 18.6107 19.9202 18.3321C20.0809 18.0534 20.1654 17.7374 20.1653 17.4158C20.1653 17.0941 20.0805 16.7781 19.9197 16.4996Z" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
+    </svg>
           </div>
           <div class="text-[13.5px] leading-relaxed">
-            <h3 class="text-[15px] font-bold text-[#1e2044]">Are you sure you want to deactivate this role?</h3>
-            <p class="mt-2 text-slate-600">Deactivating this role will prevent it from being assigned to new users, but existing users will retain the role and their current access.</p>
-            <p class="mt-3 font-bold text-[#1e2044]">Please note:</p>
+            <h3 class="text-base font-bold text-slate-900
+            
+            ">Are you sure you want to deactivate this role?</h3>
+            <p class="mt-2 text-slate-600 text-xs
+            
+            ">Deactivating this role will prevent it from being assigned to new users, but existing users will retain the role and their current access.</p>
+            <p class="mt-3 font-bold text-slate-900 text-xs 
+            
+            ">Please note:</p>
             <ul class="mt-1.5 space-y-1.5">
-              <li class="flex gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-[7px] shrink-0"></span><span class="text-slate-600">This role is currently assigned to <span class="text-amber-600 font-semibold">{{ role.userCount || totalUsers }} users</span>.</span></li>
-              <li class="flex gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-[7px] shrink-0"></span><span class="text-slate-600">Users will continue to have access based on this role until it is reactivated.</span></li>
-              <li class="flex gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-[7px] shrink-0"></span><span class="text-slate-600">You can reactivate this role at any time.</span></li>
+              <li class="flex gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-orange-600 mt-[4px] shrink-0"></span><span class="text-slate-600 text-xs
+                
+                ">This role is currently assigned to <span class="text-orange-600 font-bold">{{ role.userCount || totalUsers }} users</span>.</span></li>
+              <li class="flex gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-orange-600 mt-[4px] shrink-0"></span><span class="text-slate-600 text-xs">Users will continue to have access based on this role until it is reactivated.</span></li>
+              <li class="flex gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-orange-600 mt-[4px] shrink-0"></span><span class="text-slate-600 text-xs">You can reactivate this role at any time.</span></li>
             </ul>
           </div>
         </div>
       </section>
 
       <!-- Users table -->
-      <section class="rounded-2xl bg-white border border-slate-200/70 shadow-card overflow-hidden">
+      <section class="rounded-md bg-white shadow-xs overflow-hidden">
         <div class="flex flex-wrap items-center justify-between gap-4 px-6 pt-5 pb-4">
           <div>
-            <h3 class="text-[15px] font-bold text-[#1e2044]">Users Assigned to this Role ({{ role.userCount || totalUsers }})</h3>
-            <p class="mt-0.5 text-[12.5px] text-slate-500">These users will retain their current access.</p>
+            <h3 class="text-base font-bold text-slate-900
+            
+            ">Users Assigned to this Role ({{ role.userCount || totalUsers }})</h3>
+            <p class="mt-0.5 text-xs text-slate-500
+            
+            ">You must reassign or remove all users from this role before you can delete it.</p>
           </div>
-          <!-- <button (click)="viewRole()" class="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-[#7c5cf4]/40 bg-white text-[#6d4aee] text-[13px] font-semibold hover:bg-[#f3f1fd]">
+          <button (click)="viewRole()" class="inline-flex items-center gap-2 h-9 px-4 rounded-md border border-blue-600 bg-white text-blue-600 text-xs font-semibold hover:bg-[#f3f1fd]
+          
+          ">
             View All Users
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.91602 6.99982H11.0836M6.99982 11.0836L11.0836 6.99982L6.99982 2.91602" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  </svg>
           </button>
-           -->
+           
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto px-6 mb-12">
           <table class="w-full text-[13px]">
             <thead>
-              <tr class="bg-slate-50 text-left text-slate-500">
+              <tr class="bg-slate-50 text-left text-slate-900 text-xs border border-slate-200
+              
+              ">
                 <th class="font-semibold px-6 py-3">User</th>
                 <th class="font-semibold px-4 py-3">Email</th>
                 <th class="font-semibold px-4 py-3">Department</th>
@@ -165,42 +265,33 @@
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="5" class="px-6 py-10 text-center text-slate-400">No users are assigned to this role.</td>
+                  <td colspan="5" class="px-6 py-6 text-center text-slate-400">No users are assigned to this role.</td>
                 </tr>
               }
             </tbody>
           </table>
         </div>
-        <!-- Table footer -->
-        <div class="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-t border-slate-100">
-          <p class="text-[12.5px] text-slate-500">Showing {{ rangeStart }} to {{ rangeEnd }} of {{ totalUsers }} users</p>
-          <nav class="flex items-center gap-1.5 text-[12.5px]" aria-label="Pagination">
-            @for (p of visiblePages; track $index) {
-              @if (p === '...') {
-                <span class="w-8 h-8 flex items-center justify-center text-slate-400">…</span>
-              } @else {
-                <button (click)="changePage(p)" [attr.aria-current]="page === p ? 'page' : null" [class]="page === p ? 'w-8 h-8 rounded-lg border border-[#7c5cf4]/50 bg-[#f3f1fd] text-[#6d4aee] font-semibold' : 'w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-50'">{{ p }}</button>
-              }
-            }
-            <button aria-label="Next page" (click)="changePage(page + 1)" [disabled]="page >= totalPages" class="w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-50 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
-            </button>
-          </nav>
-        </div>
+        
       </section>
     </div>
 
     <!-- Info panel -->
-    <aside class="rounded-2xl bg-white border border-slate-200/70 shadow-card p-6">
-      <h3 class="text-[15px] font-bold text-[#1e2044]">What happens when role is deactivated?</h3>
+    <aside class="rounded-md bg-white shadow-xs p-6 col-span-1 xl:col-span-4">
+      <h3 class="text-base font-bold text-slate-900
+      
+      ">What happens when role is deactivated?</h3>
       <ul class="mt-6 space-y-6">
         <li class="flex gap-4">
           <span class="w-11 h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
             <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path stroke-linecap="round" d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path stroke-linecap="round" d="M17 8h5M19.5 5.5v5"/></svg>
           </span>
           <div>
-            <p class="text-[13.5px] font-bold text-[#1e2044]">Role cannot be assigned</p>
-            <p class="mt-1 text-[12.5px] leading-relaxed text-slate-500">This role will not be available when adding or editing users.</p>
+            <p class="text-sm font-semibold text-slate-900
+            
+            ">Role cannot be assigned</p>
+            <p class="mt-1 text-xs leading-relaxed text-slate-500
+              
+            ">This role will not be available when adding or editing users.</p>
           </div>
         </li>
         <li class="flex gap-4">
@@ -208,8 +299,12 @@
             <svg class="w-5 h-5 text-[#6d4aee]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path stroke-linecap="round" d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path stroke-linecap="round" d="M16 5.5a3.5 3.5 0 0 1 0 6M17.5 14a5.5 5.5 0 0 1 3 5"/></svg>
           </span>
           <div>
-            <p class="text-[13.5px] font-bold text-[#1e2044]">Existing access unchanged</p>
-            <p class="mt-1 text-[12.5px] leading-relaxed text-slate-500">Users who already have this role will retain their current permissions.</p>
+            <p class="text-sm font-semibold text-slate-900
+            
+            ">Existing access unchanged</p>
+            <p class="mt-1 text-xs leading-relaxed text-slate-500
+              
+            ">Users who already have this role will retain their current permissions.</p>
           </div>
         </li>
         <li class="flex gap-4">
@@ -217,8 +312,12 @@
             <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3 4.5 6v5c0 4.6 3.2 8.6 7.5 10 4.3-1.4 7.5-5.4 7.5-10V6L12 3z"/><path stroke-linecap="round" d="M12 8.5v3.5l2.2 1.5"/></svg>
           </span>
           <div>
-            <p class="text-[13.5px] font-bold text-[#1e2044]">Can be reactivated anytime</p>
-            <p class="mt-1 text-[12.5px] leading-relaxed text-slate-500">You can reactivate this role and it will be available for assignment again.</p>
+            <p class="text-sm font-semibold text-slate-900
+            
+            ">Can be reactivated anytime</p>
+            <p class="mt-1 text-xs leading-relaxed text-slate-500
+              
+            ">You can reactivate this role and it will be available for assignment again.</p>
           </div>
         </li>
         <li class="flex gap-4">
@@ -226,8 +325,12 @@
             <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
           </span>
           <div>
-            <p class="text-[13.5px] font-bold text-[#1e2044]">Audit trail maintained</p>
-            <p class="mt-1 text-[12.5px] leading-relaxed text-slate-500">This action will be logged in the audit trail.</p>
+            <p class="text-sm font-semibold text-slate-900
+            
+            ">Audit trail maintained</p>
+            <p class="mt-1 text-xs leading-relaxed text-slate-500
+              
+            ">This action will be logged in the audit trail.</p>
           </div>
         </li>
       </ul>
@@ -241,10 +344,15 @@
 <app-deactivate-role-modal [role]="role" [orgId]="orgId || ''" [isOpen]="showConfirmModal" (close)="onModalClose()" (confirm)="deactivate()" />
 
 <!-- Sticky footer actions -->
-<footer class="sticky bottom-0 bg-white/95 backdrop-blur border-t border-slate-200/70">
-  <div class="flex justify-end gap-3 px-6 lg:px-8 py-4">
-    <button (click)="cancel()" class="h-10 px-6 rounded-lg border border-slate-200 bg-white text-[13.5px] font-semibold text-[#1e2044] hover:bg-slate-50">Cancel</button>
-    <button (click)="openConfirm()" [disabled]="deactivating" class="h-10 px-6 rounded-lg bg-red-500 text-white text-[13.5px] font-semibold hover:bg-red-600 shadow-sm shadow-red-500/30 disabled:opacity-60 disabled:cursor-not-allowed">
+<footer class="
+">
+  <div class="flex justify-end gap-3 pl-6 lg:pl-8 py-4">
+    <button (click)="cancel()" class="h-10 px-6 rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50
+    
+    ">Cancel</button>
+    <button (click)="openConfirm()" [disabled]="deactivating" class="inline-flex items-center gap-2 h-10 px-6 rounded-md bg-red-600 text-white text-xs font-semibold hover:bg-red-600 shadow-sm shadow-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed
+    
+    ">
       Deactivate Role
     </button>
   </div>
