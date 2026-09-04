@@ -166,7 +166,7 @@ export class ViewRoleComponent implements OnInit {
       const perms = g.permissions || [];
       const title = g.group;
       const grantedCount = perms.filter(p => this.isPermissionGranted(p.code)).length;
-      const badgeClass = grantedCount === perms.length ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-700';
+      const badgeClass = grantedCount === perms.length ? 'bg-emerald-50 text-emerald-500' : 'bg-gray-50 text-gray-700';
       const badgeText = `${grantedCount} / ${perms.length} Granted`;
       return {
         title,
