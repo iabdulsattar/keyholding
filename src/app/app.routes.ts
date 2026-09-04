@@ -238,6 +238,12 @@ export const routes: Routes = [
             title: 'User Management | KeyVault Pro'
           },
           {
+            path: 'permissions',
+            loadComponent: () => import('./permissions/permissions.component').then(m => m.PermissionsComponent),
+            canActivate: [authGuard, permissionGuard('admin.users.manage', 'admin.roles.manage')],
+            title: 'Permissions | KeyVault Pro'
+          },
+          {
             path: 'users/add-user',
             loadComponent: () => import('./users/add-user/add-user.component').then(m => m.AddUserComponent),
             canActivate: [authGuard, permissionGuard('admin.users.manage')],
