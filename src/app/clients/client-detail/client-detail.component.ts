@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ClientService, Client, KeyRecord, SiteRecord, EmergencyContact } from '../../core/services/client.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 import { FormatEventTypePipe } from '../../shared/pipe/format-event-type.pipe';
 import { DeactivateClientModalComponent } from '../deactivate-client-modal/deactivate-client-modal.component';
 import { ActivateClientModalComponent } from '../activate-client-modal/activate-client-modal.component';
@@ -92,9 +93,20 @@ showDeactivateClientModal = false;
   emergencyContactNameToToggle = '';
   currentEmergencyContactStatus = '';
 
-  siteDonutSegments: { color: string; offset: number; length: number }[] = [];
+   siteDonutSegments: { color: string; offset: number; length: number }[] = [];
 
-   // Document state
+   // Jobs state
+   jobs: any[] = [];
+   jobStats: any = null;
+  jobsLoading = false;
+  jobsSearch = '';
+  jobsPage = 1;
+  jobsRowsPerPage = 10;
+  jobsRowsPerPageOptions: number[] = [10, 25, 50, 100];
+  jobsTotalElements = 0;
+  jobsTotalPagesFromApi = 0;
+
+    // Document state
   documents: any[] = [];
   filteredDocuments: any[] = [];
   documentStats: any = null;
@@ -179,21 +191,21 @@ showDeactivateClientModal = false;
   activitiesSearch = '';
   activitiesLoading = false;
 
-   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService) {}
+   constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private keyVault: KeyVaultService) {}
 
-   ngOnInit(): void {
-     this.clientId = this.route.snapshot.paramMap.get('id') || '';
-     this.loadClient();
-     this.loadKeys();
-     this.loadSites();
-     this.loadClientStats();
-     this.loadSiteStats();
-     this.loadDocuments();
-     this.loadDocumentStats();
-     this.loadContacts();
-     this.loadEmergencyContacts();
-     this.loadActivities();
-   }
+  ngOnInit(): void {
+    this.clientId = this.route.snapshot.paramMap.get('id') || '';
+    this.loadClient();
+    this.loadKeys();
+    this.loadSites();
+    this.loadClientStats();
+    this.loadSiteStats();
+    this.loadDocuments();
+    this.loadDocumentStats();
+    this.loadContacts();
+    this.loadEmergencyContacts();
+    this.loadActivities();
+  }
 
   private loadDocuments(): void {
     if (!this.clientId) return;
@@ -932,6 +944,185 @@ viewEmergencyContact(contactId: string): void {
     });
   }
 
+  private loadJobs(): void {
+    if (!this.clientId) return;
+    this.jobsLoading = true;
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.jobs = [];
+      this.jobsLoading = false;
+      return;
+    }
+    const q = this.jobsSearch || undefined;
+    this.keyVault.listJobs(orgId, {
+      clientId: this.clientId,
+      q,
+      page: this.jobsPage - 1,
+      size: this.jobsRowsPerPage
+    }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.jobs = items.map((job: any) => ({
+          id: job.id ?? '',
+          code: job.jobCode ?? '',
+          site: job.siteName ?? job.site?.name ?? '',
+          type: job.jobTypeName ?? job.jobType?.name ?? '',
+          officer: job.officerName ?? job.officer?.fullName ?? '',
+          date: this.formatJobDate(job.scheduledDate, job.startTime),
+          status: job.status ?? 'SCHEDULED',
+          priority: job.priority ?? 'MEDIUM',
+          raw: job
+        }));
+        this.jobsTotalElements = data.totalElements ?? data.total ?? items.length;
+        this.jobsTotalPagesFromApi = data.totalPages ?? Math.max(1, Math.ceil(this.jobsTotalElements / this.jobsRowsPerPage));
+        this.jobsLoading = false;
+      },
+      error: () => {
+        this.jobs = [];
+        this.jobsLoading = false;
+      }
+    });
+  }
+
+  private loadJobStats(): void {
+    if (!this.clientId) return;
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+    this.keyVault.getJobStats(orgId).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        this.jobStats = data;
+      },
+      error: () => {
+        this.jobStats = null;
+      }
+    });
+  }
+
+  formatJobDate(scheduledDate?: string, startTime?: string): string {
+    if (!scheduledDate) return '';
+    try {
+      const date = new Date(scheduledDate);
+      const day = date.getDate();
+      const month = date.toLocaleString('en-GB', { month: 'short' });
+      const year = date.getFullYear();
+      let timeStr = '';
+      if (startTime) {
+        const [hours, minutes] = startTime.split(':');
+        const h = parseInt(hours, 10);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        timeStr = `, ${h12}:${minutes} ${ampm}`;
+      }
+      return `${day} ${month} ${year}${timeStr}`;
+    } catch {
+      return scheduledDate || '';
+    }
+  }
+
+  onJobsSearch(): void {
+    this.jobsPage = 1;
+    this.loadJobs();
+  }
+
+  jobStatusClass(status: string): string {
+    const map: Record<string, string> = {
+      'SCHEDULED': 'bg-purple-50 text-purple-600',
+      'IN_PROGRESS': 'bg-orange-50 text-orange-500',
+      'COMPLETED': 'bg-green-50 text-green-600',
+      'OVERDUE': 'bg-red-50 text-red-500',
+      'CANCELLED': 'bg-slate-100 text-slate-500'
+    };
+    return map[status] || 'bg-slate-100 text-slate-500';
+  }
+
+  jobPriorityClass(priority: string): string {
+    const map: Record<string, string> = {
+      'HIGH': 'text-red-500',
+      'MEDIUM': 'text-orange-500',
+      'LOW': 'text-green-500',
+      'CRITICAL': 'text-rose-600'
+    };
+    return map[priority] || 'text-slate-500';
+  }
+
+  jobsPreviousPage(): void {
+    if (this.jobsPage > 1) this.jobsPage--;
+  }
+
+  jobsNextPage(): void {
+    this.jobsPage++;
+  }
+
+  jobsGoToPage(page: number): void {
+    if (page >= 1) {
+      this.jobsPage = page;
+      this.loadJobs();
+    }
+  }
+
+  onJobsRowsPerPageChange(size: string): void {
+    this.jobsRowsPerPage = parseInt(size, 10) || 10;
+    this.jobsPage = 1;
+    this.loadJobs();
+  }
+
+  get jobsTotal(): number {
+    return this.jobsTotalElements || this.jobs.length;
+  }
+
+  get jobsScheduled(): number {
+    return this.jobs.filter(j => j.status === 'SCHEDULED').length;
+  }
+
+  get jobsInProgress(): number {
+    return this.jobs.filter(j => j.status === 'IN_PROGRESS').length;
+  }
+
+  get jobsCompleted(): number {
+    return this.jobs.filter(j => j.status === 'COMPLETED').length;
+  }
+
+  get jobsOverdue(): number {
+    return this.jobs.filter(j => j.status === 'OVERDUE').length;
+  }
+
+  get jobsCancelled(): number {
+    return this.jobs.filter(j => j.status === 'CANCELLED').length;
+  }
+
+  get jobsShowingStart(): number {
+    if (this.jobs.length === 0) return 0;
+    return (this.jobsPage - 1) * this.jobsRowsPerPage + 1;
+  }
+
+  get jobsShowingEnd(): number {
+    return Math.min(this.jobsPage * this.jobsRowsPerPage, this.jobs.length);
+  }
+
+  get jobsTotalPages(): number {
+    return Math.max(1, this.jobsTotalPagesFromApi || Math.ceil(this.jobs.length / this.jobsRowsPerPage));
+  }
+
+  get jobsVisiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.jobsTotalPages;
+    const current = this.jobsPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
   get sitesPaginated(): SiteRecord[] {
     const start = (this.sitesPage - 1) * this.sitesRowsPerPage;
     return this.filteredSites.slice(start, start + this.sitesRowsPerPage);
@@ -1069,7 +1260,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get totalJobs(): number {
-    return this.sites.reduce((sum, site) => sum + (site.totalJobs || 0), 0);
+    return this.jobsTotal;
   }
 
   get keyStatusStats(): { status: string; count: number; color: string; pct: number }[] {
@@ -1239,6 +1430,8 @@ viewEmergencyContact(contactId: string): void {
     this.activeTab = tab;
     if (tab === 'activity') {
       this.loadActivities();
+    } else if (tab === 'jobs') {
+      this.loadJobs();
     }
     setTimeout(() => {
       const icons = (window as any).lucide;
