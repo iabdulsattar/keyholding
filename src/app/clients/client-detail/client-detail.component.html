@@ -728,10 +728,10 @@
                <p class="text-sm text-slate-500">View and manage all jobs for this client.</p>
              </div>
              <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-               <div class="relative">
-                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
-                 <input type="text" placeholder="Search jobs by job ID, site, officer..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
-               </div>
+                <div class="relative">
+                  <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
+                  <input type="text" placeholder="Search jobs by job ID, site, officer..." [(ngModel)]="jobsSearch" (ngModelChange)="onJobsSearch()" class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+                </div>
                <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 10h12M10 16h4"/></svg>
                  Filters
@@ -756,56 +756,56 @@
                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ totalJobs }}</div>
               </div>
             </div>
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-              </div>
-              <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Scheduled</div>
+             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
+                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+               </div>
+               <div>
+                 <div class="text-xs text-slate-500 pb-[2px]">Scheduled</div>
 
-                <div class="text-lg font-bold text-slate-900 leading-tight">156</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
-              </div>
-              <div>
-                <div class="text-xs text-slate-500 pb-[2px]">In Progress</div>
+                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsScheduled }}</div>
+               </div>
+             </div>
+             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+               </div>
+               <div>
+                 <div class="text-xs text-slate-500 pb-[2px]">In Progress</div>
 
-                <div class="text-lg font-bold text-slate-900 leading-tight">28</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
-              </div>
-              <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Completed</div>
+                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsInProgress }}</div>
+               </div>
+             </div>
+             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
+               </div>
+               <div>
+                 <div class="text-xs text-slate-500 pb-[2px]">Completed</div>
 
-                <div class="text-lg font-bold text-slate-900 leading-tight">132</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
-              </div>
-              <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Overdue</div>
+                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsCompleted }}</div>
+               </div>
+             </div>
+             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+               </div>
+               <div>
+                 <div class="text-xs text-slate-500 pb-[2px]">Overdue</div>
 
-                <div class="text-lg font-bold text-slate-900 leading-tight">18</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 9l6 6M15 9l-6 6"/></svg>
-              </div>
-              <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Cancelled</div>
+                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsOverdue }}</div>
+               </div>
+             </div>
+             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 9l6 6M15 9l-6 6"/></svg>
+               </div>
+               <div>
+                 <div class="text-xs text-slate-500 pb-[2px]">Cancelled</div>
 
-                <div class="text-lg font-bold text-slate-900 leading-tight">8</div>
-              </div>
-            </div>
+                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsCancelled }}</div>
+               </div>
+             </div>
           </div>
 
           <!-- Jobs table -->
@@ -814,139 +814,65 @@
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
                   <tr class="border-b border-slate-200 text-left text-slate-500">
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job ID <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Site <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job Type <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Officer <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Scheduled Date &amp; Time <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Status <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Priority <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span></th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job ID </th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Site </th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job Type </th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Officer </th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Scheduled Date &amp; Time </th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Status </th>
+                    <th class="px-5 py-3 font-medium whitespace-nowrap">Priority </th>
                     <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000342</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Head Office</div><div class="text-xs text-slate-400">25 Fenchurch Street, London</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-6 6"/></svg>Key Collection</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">James Walker</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">16 May 2024, 09:00 AM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-purple-50 text-purple-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Scheduled</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Medium</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000341</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Warehouse - North</div><div class="text-xs text-slate-400">Unit 4, North Industrial Estate</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Lock Service</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Sarah Miller</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">16 May 2024, 08:00 AM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">In Progress</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-md">High</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000340</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Retail Store - Central</div><div class="text-xs text-slate-400">45 Oxford Street, London</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Unlock Service</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">David Johnson</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 04:30 PM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Completed</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md">Low</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000339</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Data Center</div><div class="text-xs text-slate-400">1 Tech Park, London</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-6 6"/></svg>Key Drop Off</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Michael Brown</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 03:00 PM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Completed</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Medium</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000338</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Head Office</div><div class="text-xs text-slate-400">25 Fenchurch Street, London</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Lock Service</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">James Walker</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">15 May 2024, 11:00 AM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Overdue</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-md">High</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000337</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Branch Office - South</div><div class="text-xs text-slate-400">78 High Street, London</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>Unlock Service</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">Sarah Miller</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">14 May 2024, 02:00 PM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-slate-100 text-slate-500 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Cancelled</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-md">Low</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">JOB-000336</td>
-                    <td class="px-5 py-3.5"><div class="font-medium text-slate-800">Warehouse - West</div><div class="text-xs text-slate-400">Unit 12, West Industrial Estate</div></td>
-                    <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-6 6"/></svg>Key Collection</span></td>
-                    <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">David Johnson</td>
-                    <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">14 May 2024, 09:00 AM</td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-purple-50 text-purple-600 text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap">Scheduled</span></td>
-                    <td class="px-5 py-3.5"><span class="inline-block bg-orange-50 text-orange-500 text-xs font-semibold px-2.5 py-1 rounded-md">Medium</span></td>
-                    <td class="px-5 py-3.5 text-right">
-                      <div class="flex items-center justify-end gap-3 text-slate-400">
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                      </div>
-                    </td>
-                  </tr>
+                  @if (jobsLoading) {
+                    <tr>
+                      <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading jobs...</td>
+                    </tr>
+                  } @else {
+                    @if (jobs.length === 0) {
+                      <tr>
+                        <td colspan="8" class="px-5 py-8 text-center text-slate-400">No jobs found for this client.</td>
+                      </tr>
+                    } @else {
+                      @for (job of jobs; track job.id) {
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">{{ job.code }}</td>
+                          <td class="px-5 py-3.5"><div class="font-medium text-slate-800">{{ job.site }}</div></td>
+                          <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600">{{ job.type }}</span></td>
+                          <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">{{ job.officer }}</td>
+                          <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ job.date }}</td>
+                          <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap" [ngClass]="jobStatusClass(job.status)">{{ job.status }}</span></td>
+                          <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md" [ngClass]="jobPriorityClass(job.priority)">{{ job.priority }}</span></td>
+                          <td class="px-5 py-3.5 text-right">
+                            <div class="flex items-center justify-end gap-3 text-slate-400">
+                              <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                              <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    }
+                  }
                 </tbody>
               </table>
             </div>
 
             <!-- Pagination -->
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
-              <div class="text-sm text-slate-500">Showing 1 to 5 of {{ totalJobs }} jobs</div>
+              <div class="text-sm text-slate-500">Showing {{ jobsShowingStart }} to {{ jobsShowingEnd }} of {{ jobsTotal }} jobs</div>
               <div class="flex items-center gap-1">
-                <button class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50" aria-label="Previous page">
+                <button (click)="jobsPreviousPage()" [disabled]="jobsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                <button class="w-8 h-8 flex items-center justify-center rounded-md bg-blue-600 text-white text-sm font-medium">1</button>
-                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">2</button>
-                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">3</button>
-                <span class="px-1 text-slate-400 text-sm">&#8230;</span>
-                <button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">35</button>
-                <button class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50" aria-label="Next page">
+                @for (p of jobsVisiblePages; track p) {
+                  @if (p === '...') {
+                    <span class="px-1 text-slate-400 text-sm">...</span>
+                  } @else {
+                    <button (click)="jobsGoToPage(p)" [class.bg-blue-600]="jobsPage === p" [class.text-white]="jobsPage === p" [class.border-slate-200]="jobsPage !== p" [class.text-slate-600]="jobsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md border text-sm font-medium hover:bg-slate-50">{{ p  }}</button>
+                  }
+                }
+                <button (click)="jobsNextPage()" [disabled]="jobsPage >= jobsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                 </button>
               </div>

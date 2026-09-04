@@ -122,8 +122,18 @@
     </svg>
               Edit User
             </button>
-            <button (click)="disableUser()" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-50 border border-red-500 text-red-500 text-sm font-semibold hover:bg-red-50 transition">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            @if (user?.status?.toLowerCase() === 'inactive') {
+              <button (click)="openReactivateModal()" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-50 border border-emerald-600 text-emerald-600 text-sm font-semibold hover:bg-emerald-50 transition">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11.5 7.5a4.5 4.5 0 01-9 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M7 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M5.5 7.5L7 9l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Reactivate User
+              </button>
+            } @else {
+              <button (click)="openDeactivateModal()" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-50 border border-red-500 text-red-500 text-sm font-semibold hover:bg-red-50 transition">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_2645_109)">
     <path d="M12.8336 1.16626L1.16602 12.8339" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
     </g>
@@ -133,8 +143,9 @@
     </clipPath>
     </defs>
     </svg>
-              Disable User
-            </button>
+                Deactivate User
+              </button>
+            }
           }
         </div>
       </div>
@@ -313,6 +324,15 @@
       
       
     </div>
+    }
+
+    @if (showDeactivateModal && user) {
+    <app-deactivate-user-modal [user]="user" [orgId]="getOrgId() || ''" (close)="closeDeactivateModal()"
+      (deactivated)="onUserDeactivated()" />
+    }
+    @if (showReactivateModal && user) {
+    <app-reactivate-user-modal [user]="user" [orgId]="getOrgId() || ''" (close)="closeReactivateModal()"
+      (reactivated)="onUserReactivated()" />
     }
   </div>
 </main>

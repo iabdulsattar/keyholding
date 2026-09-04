@@ -7,11 +7,13 @@ import { AuthService } from '../../core/services/auth.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { ServiceUser } from '../../core/models/user.models';
+import { DeactivateUserModalComponent } from '../../user-management/deactivate-user-modal/deactivate-user-modal.component';
+import { ReactivateUserModalComponent } from '../../user-management/reactivate-user-modal/reactivate-user-modal.component';
 
 @Component({
   selector: 'app-view-user',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, DeactivateUserModalComponent, ReactivateUserModalComponent],
   templateUrl: './view-user.component.html',
   styles: ``
 })
@@ -21,11 +23,13 @@ export class ViewUserComponent implements OnInit {
   user: ServiceUser | null = null;
   userId: string | null = null;
   isEditMode = false;
+  showDeactivateModal = false;
+  showReactivateModal = false;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router,
+    public router: Router,
     private route: ActivatedRoute,
     private permissionService: PermissionService
   ) {}
@@ -44,7 +48,7 @@ export class ViewUserComponent implements OnInit {
     }
   }
 
-  private getOrgId(): string | null {
+  public getOrgId(): string | null {
     const remember = localStorage.getItem('remember_device');
     if (remember === 'true') {
       return localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
@@ -79,22 +83,34 @@ export class ViewUserComponent implements OnInit {
     this.router.navigate(['/users/add-user'], { queryParams: { id: this.user.id } });
   }
 
-  disableUser(): void {
-    if (!this.user?.id) return;
-    const orgId = this.getOrgId();
-    if (!orgId) return;
-    if (!confirm(`Are you sure you want to disable ${this.fullName}?`)) return;
+  openDeactivateModal(): void {
+    this.showDeactivateModal = true;
+  }
 
-    this.userService.deactivateUser(orgId, this.user.id).subscribe({
-      next: () => {
-        if (this.user) {
-          this.user = { ...this.user, status: 'Inactive' } as any;
-        }
-      },
-      error: () => {
-        this.errorMessage = 'Failed to disable user.';
-      }
-    });
+  closeDeactivateModal(): void {
+    this.showDeactivateModal = false;
+  }
+
+  onUserDeactivated(): void {
+    this.showDeactivateModal = false;
+    if (this.user) {
+      this.user = { ...this.user, status: 'INACTIVE' } as unknown as ServiceUser;
+    }
+  }
+
+  openReactivateModal(): void {
+    this.showReactivateModal = true;
+  }
+
+  closeReactivateModal(): void {
+    this.showReactivateModal = false;
+  }
+
+  onUserReactivated(): void {
+    this.showReactivateModal = false;
+    if (this.user) {
+      this.user = { ...this.user, status: 'ACTIVE' } as unknown as ServiceUser;
+    }
   }
 
   get fullName(): string {

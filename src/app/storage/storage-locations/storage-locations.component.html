@@ -1,306 +1,251 @@
 <div class="min-h-screen w-full font-sans text-slate-900">
-  <div class="mx-auto ">
+  <div class="mx-auto">
     <!-- Header -->
-    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-start justify-between gap-4">
       <div>
-        <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Storage Locations</h1>
-        <div class="mt-1 flex items-center gap-1.5 text-xs text-slate-700 sm:text-sm">
-          <span>Home</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-          <span>Storage Management</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-          <span class="text-slate-500">Storage Locations</span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Storage Locations</h1>
+        <p class="text-sm text-slate-500 mt-2 max-w-2xl">
+          Storage locations represent the physical places where keys are kept. Each cabinet can have multiple cabinets, and each cabinet contains multiple hooks or slots for keys.
+        </p>
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
+        <div class="h-12 w-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+          <svg class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div>
+          <div class="text-sm text-slate-400">Total Locations</div>
+          <div class="text-2xl font-bold text-slate-900 leading-tight">{{ totalLocations }}</div>
+          <div class="text-xs text-slate-400">All storage locations</div>
         </div>
       </div>
-      <div class="flex items-center gap-2 sm:gap-3">
-    
-        <a routerLink="/storage/locations/add" class="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-3 text-sm font-medium text-white hover:bg-blue-700">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-          <span class="whitespace-nowrap">Add Storage Location</span>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
+        <div class="h-12 w-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+          <svg class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div>
+          <div class="text-sm text-slate-400">Active Locations</div>
+          <div class="text-2xl font-bold text-slate-900 leading-tight">{{ activeLocations }}</div>
+          <div class="text-xs text-slate-400">Currently active</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
+        <div class="h-12 w-12 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+          <svg class="h-6 w-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a4 4 0 100 8 4 4 0 000-8zM5.5 21a6.5 6.5 0 0113 0"/><path stroke-linecap="round" stroke-linejoin="round" d="M14.121 9.879a3 3 0 104.243 4.242"/></svg>
+        </div>
+        <div>
+          <div class="text-sm text-slate-400">Under Maintenance</div>
+          <div class="text-2xl font-bold text-slate-900 leading-tight">{{ maintenanceLocations }}</div>
+          <div class="text-xs text-slate-400">Temporarily unavailable</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 flex items-center gap-4">
+        <div class="h-12 w-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+          <svg class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.008M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div>
+          <div class="text-sm text-slate-400">Inactive Locations</div>
+          <div class="text-2xl font-bold text-slate-900 leading-tight">{{ inactiveLocations }}</div>
+          <div class="text-xs text-slate-400">Not in use</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search + Add -->
+    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between mt-6">
+      <div class="relative w-full sm:max-w-sm">
+        <svg class="h-4 w-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5A6.5 6.5 0 114 10.5a6.5 6.5 0 0113 0z"/></svg>
+        <input
+          type="text"
+          placeholder="Search storage locations..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          [disabled]="loading"
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:opacity-50"
+        />
+      </div>
+      <div class="flex items-center gap-2">
+        <select
+          [(ngModel)]="activeFilter"
+          (change)="onStatusFilterChange()"
+          [disabled]="loading"
+          class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:opacity-50"
+        >
+          <option>All Statuses</option>
+          <option>Active</option>
+          <option>Under Maintenance</option>
+          <option>Inactive</option>
+        </select>
+        <a routerLink="/storage/locations/add" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shrink-0">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Add Storage Location
         </a>
       </div>
     </div>
 
-    <!-- Summary cards -->
-    <div class="mb-4 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
-        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin text-blue-500"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <div>
-          <p class="text-sm text-slate-800 font-medium">Total Locations</p>
-          <p class="text-2xl font-bold text-slate-900">{{ totalLocations }}</p>
-          <p class="text-xs text-slate-400">All storage locations</p>
-        </div>
-      </div>
-
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
-        <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check text-emerald-500"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-        </div>
-        <div>
-          <p class="text-sm text-slate-800 font-medium">Active Locations</p>
-          <p class="text-2xl font-bold text-slate-900">{{ activeLocations }}</p>
-          <p class="text-xs text-slate-400">Currently active</p>
-        </div>
-      </div>
-
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
-        <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench-icon lucide-wrench text-amber-500"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
-        </div>
-        <div>
-          <p class="text-sm text-slate-800 font-medium">Under Maintenance</p>
-          <p class="text-2xl font-bold text-slate-900">{{ maintenanceLocations }}</p>
-          <p class="text-xs text-slate-400">Temporarily unavailable</p>
-        </div>
-      </div>
-
-      <div class="bg-white border border-slate-100 rounded-lg p-5 flex items-start gap-4">
-        <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x text-rose-500"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-        </div>
-        <div>
-          <p class="text-sm text-slate-800 font-medium">Inactive Locations</p>
-          <p class="text-2xl font-bold text-slate-900">{{ inactiveLocations }}</p>
-          <p class="text-xs text-slate-400">Not in use</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Table card -->
-    <div class="rounded-lg border border-slate-100 bg-white">
-      <!-- Toolbar -->
-      <div class="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div class="relative w-full sm:max-w-xs">
-          <i data-lucide="search" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"></i>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
-          <input
-            type="text"
-            placeholder="Search storage locations..."
-            [(ngModel)]="searchTerm"
-            (input)="onSearch()"
-            [disabled]="loading"
-            class="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
-          />
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <select
-            [(ngModel)]="activeFilter"
-            (change)="onStatusFilterChange()"
-            [disabled]="loading"
-            class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <option>All Statuses</option>
-            <option>Active</option>
-            <option>Under Maintenance</option>
-            <option>Inactive</option>
-          </select>
-          <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-funnel-icon lucide-funnel"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></svg>
-            Filter
-          </button>
-     
-        </div>
-      </div>
-
-      <!-- Desktop table -->
-      <div class="hidden overflow-x-auto lg:block">
-        <table class="w-full min-w-[900px] text-left text-sm">
+    <!-- Table (desktop) -->
+    <div class="hidden md:block bg-white rounded-2xl border border-slate-200 mt-6 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
           <thead>
-            <tr class="border-b border-slate-100 text-xs tracking-wide text-slate-800 bg-[#fafbfc]">
-              <th class="px-5 py-3 font-medium">Location Name</th>
-              <th class="px-5 py-3 font-medium">Site / Building</th>
-              <th class="px-5 py-3 font-medium">Address</th>
-              <th class="px-5 py-3 font-medium">Responsible Person</th>
-              <th class="px-5 py-3 font-medium">Status</th>
-              <th class="px-5 py-3 font-medium">Total Cabinets</th>
-              <th class="px-5 py-3 font-medium">Total Hooks / Slots</th>
-              <th class="px-5 py-3 font-medium ">Actions</th>
+            <tr class="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide border-b border-slate-100">
+              <th class="px-6 py-4">Location Name</th>
+              <th class="px-4 py-4">Site / Building</th>
+              <th class="px-4 py-4">Address</th>
+              <th class="px-4 py-4">Responsible Person</th>
+              <th class="px-4 py-4">Status</th>
+              <th class="px-4 py-4 text-right">Total Cabinets</th>
+              <th class="px-4 py-4 text-right">Total Hooks / Slots</th>
+              <th class="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="divide-y divide-slate-100">
             @if (loading) {
               <tr>
                 <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading storage locations...</td>
               </tr>
-             } @else {
-               @if (filteredLocations.length === 0) {
-                 <tr>
-                   <td colspan="8" class="px-5 py-8 text-center text-slate-400">No storage locations found.</td>
-                 </tr>
-               } @else {
-                 @for (location of filteredLocations; track location.id) {
-                 <tr class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
-               <td class="px-5 py-4">
-                 <div class="flex items-center gap-3">
-                   <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building2-icon lucide-building-2 text-blue-500"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
-                   </div>
-                   <div>
-                     <div class="font-medium text-slate-800">{{ location.name }}</div>
-                     <div class="text-xs text-slate-400">{{ location.code }}</div>
-                   </div>
-                 </div>
-               </td>
-               <td class="px-5 py-4 text-slate-500">{{ location.siteName }}</td>
-               <td class="px-5 py-4 text-slate-500">{{ location.address }}</td>
-               <td class="px-5 py-4">
-                 <div class="text-slate-700">{{ location.responsiblePerson }}</div>
-                 <div class="text-xs text-slate-400">{{ location.responsiblePersonTitle }}</div>
-               </td>
-               <td class="px-5 py-4">
-                 <span
-                   class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium"
-                   [ngClass]="locationStatusClass(getLocationStatus(location))"
-                 >
-                   <span
-                     class="h-1.5 w-1.5 rounded-full"
-                     [ngClass]="getLocationStatusDot(location)"
-                   ></span>
-                   {{ getLocationStatus(location) }}
-                 </span>
-               </td>
-               <td class="px-5 py-4 text-slate-600">{{ location.totalCabinets }}</td>
-               <td class="px-5 py-4 text-slate-600">{{ location.totalHooks }}</td>
-               <td class="px-5 py-4 ">
-                 <div class="flex items-center gap-1">
-                   <button
-                     (click)="viewLocation(location)"
-                     class="flex items-center justify-center rounded-lg border-slate-200 p-1.5 text-slate-500 hover:bg-slate-50 hover:text-slate-600"
-                     title="View details"
-                   >
-                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
-                   </button>
-                   
-                   <button class="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                   </button>
-                 </div>
-               </td>
-             </tr>
+            } @else {
+              @if (storageLocations.length === 0) {
+                <tr>
+                  <td colspan="8" class="px-5 py-8 text-center text-slate-400">No storage locations found.</td>
+                </tr>
+              } @else {
+                @for (location of storageLocations; track location.id) {
+                  <tr class="hover:bg-slate-50/60">
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-3">
+                        <div class="h-9 w-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                          <svg class="h-4.5 w-4.5 text-blue-500" style="height:18px;width:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4v18M13 21V9l6 3v9M9 9v.01M9 12v.01M9 15v.01"/></svg>
+                        </div>
+                        <div class="min-w-0">
+                          <div class="font-semibold text-slate-800 truncate">{{ location.name }}</div>
+                          <div class="text-xs text-slate-400">{{ location.code }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-4 text-slate-600 whitespace-nowrap">{{ location.siteName }}</td>
+                    <td class="px-4 py-4 text-slate-600 max-w-xs">{{ location.address }}</td>
+                    <td class="px-4 py-4">
+                      <div class="font-medium text-slate-700">{{ location.responsiblePerson }}</div>
+                      <div class="text-xs text-slate-400">{{ location.responsiblePersonTitle || '' }}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold" [ngClass]="locationStatusClass(getLocationStatus(location))">
+                        <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getLocationStatusDot(location)"></span>
+                        {{ getLocationStatus(location) }}
+                      </span>
+                    </td>
+                    <td class="px-4 py-4 text-right text-slate-700">{{ location.totalCabinets }}</td>
+                    <td class="px-4 py-4 text-right text-slate-700">{{ location.totalHooks }}</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center justify-end gap-1">
+                        <button (click)="viewLocation(location)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600" title="View details">
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </button>
+                        <button class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600" title="Edit">
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
+                        </button>
+                        <button class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600" title="Delete">
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
               }
             }
-          }
-              </tbody>
-            </table>
-          </div>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-      <!-- Mobile / tablet cards -->
-      <div *ngFor="let location of filteredLocations" class="divide-y divide-slate-50 lg:hidden">
-        <div class="p-4">
-          <div class="flex items-start justify-between gap-3">
-            <div class="flex items-start gap-3">
-              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                <i data-lucide="building-2" class="h-4 w-4 text-blue-500"></i>
-              </div>
-              <div>
-                <div class="font-medium text-slate-800">{{ location.name }}</div>
-                <div class="text-xs text-slate-400">{{ location.code }}</div>
-              </div>
+    <!-- Cards (mobile) -->
+    <div class="md:hidden space-y-3 mt-6" *ngFor="let location of storageLocations">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+              <svg class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4v18M13 21V9l6 3v9M9 9v.01M9 12v.01M9 15v.01"/></svg>
             </div>
-            <div class="flex items-center gap-1">
-              <button
-                (click)="viewLocation(location)"
-                class="flex items-center justify-center rounded-lg border border-slate-200 p-1.5 text-slate-500 hover:bg-slate-50 hover:text-slate-600"
-                title="View details"
-              >
-                <i data-lucide="eye" class="h-4 w-4"></i>
-              </button>
-              <button class="rounded-md p-1.5 text-slate-400 hover:bg-slate-100">
-                <i data-lucide="more-vertical" class="h-4 w-4"></i>
-              </button>
+            <div class="min-w-0">
+              <div class="font-semibold text-slate-800 truncate">{{ location.name }}</div>
+              <div class="text-xs text-slate-400">{{ location.code }} · {{ location.siteName }}</div>
             </div>
           </div>
-          <div class="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-            <div>
-              <div class="text-slate-400">Site / Building</div>
-              <div class="text-blue-500">{{ location.siteName }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Status</div>
-              <span
-                class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium"
-                [ngClass]="locationStatusClass(getLocationStatus(location))"
-              >
-                <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getLocationStatusDot(location)"></span>
-                {{ getLocationStatus(location) }}
-              </span>
-            </div>
-            <div class="col-span-2">
-              <div class="text-slate-400">Address</div>
-              <div class="text-slate-600">{{ location.address }}</div>
-            </div>
-            <div class="col-span-2">
-              <div class="text-slate-400">Responsible Person</div>
-              <div class="text-slate-700">
-                {{ location.responsiblePerson }}
-                <span class="text-slate-400">� {{ location.responsiblePersonTitle }}</span>
-              </div>
-            </div>
-            <div>
-              <div class="text-slate-400">Cabinets</div>
-              <div class="text-slate-600">{{ location.totalCabinets }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Hooks / Slots</div>
-              <div class="text-slate-600">{{ location.totalHooks }}</div>
-            </div>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold shrink-0" [ngClass]="locationStatusClass(getLocationStatus(location))">
+            <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getLocationStatusDot(location)"></span>
+            {{ getLocationStatus(location) }}
+          </span>
+        </div>
+        <div class="text-sm text-slate-500 mt-3">{{ location.address }}</div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+          <div>
+            <div class="text-sm font-medium text-slate-700">{{ location.responsiblePerson }}</div>
+            <div class="text-xs text-slate-400">{{ location.responsiblePersonTitle || '' }}</div>
+          </div>
+          <div class="text-right text-xs text-slate-400">
+            <div>{{ location.totalCabinets }} cabinets</div>
+            <div>{{ location.totalHooks }} hooks/slots</div>
           </div>
         </div>
-      </div>
-
-      <!-- Empty state -->
-      <div *ngIf="filteredLocations.length === 0" class="p-8 text-center lg:hidden">
-        <i data-lucide="map-pin-off" class="h-10 w-10 text-slate-300 mx-auto mb-3"></i>
-        <p class="text-slate-500 font-medium">No storage locations found.</p>
-        <p class="text-xs text-slate-400 mt-1">There are no storage locations to display at this time.</p>
-      </div>
-
-      <!-- Pagination -->
-      <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-3">
-          <span class="text-slate-700">Showing {{ startIndex }} to {{ endIndex }} of {{ totalItems }} locations</span>
-          <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }} / page</option>
-          </select>
-        </div>
-        <div class="flex items-center gap-2">
-          <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+        <div class="flex items-center justify-end gap-1 mt-2">
+          <button (click)="viewLocation(location)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </button>
-          @for (p of visiblePages; track p) {
-            @if (p === '...') {
-              <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
-            } @else {
-              <button (click)="goToPage(p)" [class.bg-blue-600]="currentPage === p" [class.text-white]="currentPage === p" [class.border-slate-200]="currentPage !== p" [class.text-slate-500]="currentPage !== p" class="flex h-8 w-8 items-center justify-center rounded-lg border font-medium hover:bg-slate-50">
-                {{ p + 1 }}
-              </button>
-            }
-          }
-          <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+          <button class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
+          </button>
+          <button class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
           </button>
         </div>
       </div>
     </div>
 
+    <!-- Pagination -->
+    <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between mt-6">
+      <div class="flex items-center gap-3">
+        <span class="text-slate-700">Showing {{ startIndex }} to {{ endIndex }} of {{ totalItems }} locations</span>
+        <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }} / page</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        @for (p of visiblePages; track p) {
+          @if (p === '...') {
+            <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
+          } @else {
+            <button (click)="goToPage(p)" [class.bg-blue-600]="currentPage === p" [class.text-white]="currentPage === p" [class.border-slate-200]="currentPage !== p" [class.text-slate-500]="currentPage !== p" class="flex h-8 w-8 items-center justify-center rounded-lg border font-medium hover:bg-slate-50">
+              {{ p + 1 }}
+            </button>
+          }
+        }
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
     <!-- Footer info banner -->
-    <div class="mt-5 flex flex-col gap-5 rounded-lg border border-blue-100 bg-blue-50/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-10 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-blue-500 mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-        
+        <svg class="h-5 w-5 text-slate-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <div>
-          <div class="font-medium text-blue-500">About Storage Locations</div>
-          <div class="mt-0.5 text-sm text-slate-700">
+          <div class="font-medium text-slate-700">About Storage Locations</div>
+          <div class="mt-0.5 text-sm text-slate-500">
             Storage locations represent the physical places where keys are kept. Each location can have multiple cabinets, and each cabinet contains multiple hooks or slots for keys.
           </div>
         </div>
       </div>
-      <button class="flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg>
-        View Storage List
-      </button>
     </div>
   </div>
 </div>

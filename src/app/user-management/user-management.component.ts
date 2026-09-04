@@ -413,20 +413,8 @@ export class UserManagementComponent implements OnInit {
 
   deleteUser(user: User): void {
     if (!user.id) return;
-    if (!confirm(`Are you sure you want to deactivate ${user.name}?`)) return;
-    const orgId = this.getOrgId();
-    if (!orgId) return;
-    this.userService.deactivateUser(orgId, user.id).subscribe({
-      next: () => {
-        this.users = this.users.map(u => u.id === user.id ? { ...u, status: 'Inactive' } : u);
-        if (this.selectedUser?.id === user.id) {
-          this.selectedUser = { ...this.selectedUser, status: 'Inactive' } as User;
-        }
-      },
-      error: () => {
-        this.errorMessage = 'Failed to deactivate user.';
-      }
-    });
+    this.selectedUser = user;
+    this.openDeactivateModal();
   }
 
   onTablePageChange(page: number): void {
