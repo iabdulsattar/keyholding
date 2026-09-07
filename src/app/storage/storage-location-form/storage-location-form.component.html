@@ -12,202 +12,242 @@
 <div class="min-h-screen w-full font-sans text-slate-900">
   <div class="mx-auto ">
     <!-- Header -->
-    <div class="mb-5 pb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200">
+    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between ">
       <div>
-        <div class="flex gap-2">
-          <button class="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100" (click)="onCancel()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-          </button>
-          <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">{{ editMode ? 'Edit Storage Location' : 'Add Storage Location' }}</h1>
+        <div class=" flex flex-wrap items-center gap-1.5 text-xs font-medium text-slate-400 ">
+          <span class="text-blue-600">Storage Management</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-blue-600">Storage Locations</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-slate-600">{{ editMode ? 'Edit Storage Location' : 'Add Storage Location' }}</span>
         </div>
-        <p class="mt-1 text-sm text-slate-700">
+        
+        <div class="flex gap-2 mt-3">
+          <h1 class="text-3xl font-extrabold text-slate-900 ">{{ editMode ? 'Edit Storage Location' : 'Add Storage Location' }}</h1>
+        </div>
+        <p class="mt-1 text-sm text-slate-600">
           {{ editMode ? 'Update the storage location details below.' : 'Create a new storage location where cabinets and keys will be stored.' }}
         </p>
         
-        <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-400 sm:text-sm">
-          <span class="text-blue-500">Home</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-          <span class="text-blue-500">Storage Management</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-          <span class="text-blue-500">Storage Locations</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-          <span class="text-slate-500">{{ editMode ? 'Edit Storage Location' : 'Add Storage Location' }}</span>
-        </div>
+        
       </div>
       <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-        <!-- <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-          <span class="hidden sm:inline">Help</span>
-        </button>
-         -->
-        <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-blue-600 hover:bg-slate-50" (click)="onCancel()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-          Back to List
-        </button>
+<div data-svg-wrapper class="">
+    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g filter="url(#filter0_d_2004_488)">
+    <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges"/>
+    <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_2004_488)"/>
+    </g>
+    <defs>
+    <filter id="filter0_d_2004_488" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="1"/>
+    <feGaussianBlur stdDeviation="1.5"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2004_488"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2004_488" result="shape"/>
+    </filter>
+    <pattern id="pattern0_2004_488" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_2004_488" transform="scale(0.00195312)"/>
+    </pattern>
+    <image id="image0_2004_488" width="512" height="512" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+    </defs>
+    </svg>
+  </div>        
       </div>
     </div>
 
     <!-- Main grid: form + sidebar -->
-    <div class="grid grid-cols-1 gap-5 lg:grid-cols-3 ">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 ">
       <!-- Form card -->
-      <div class="rounded-lg border border-slate-100 bg-white p-4 sm:p-6 lg:col-span-2">
+      <div class="rounded-md shadow-xs bg-white p-4 sm:p-6 lg:col-span-2">
         <h2 class="mb-4 text-base font-bold text-slate-900">Location Information</h2>
-        <form (ngSubmit)="onSave()" class="space-y-6">
+        <form (ngSubmit)="onSave()" class="space-y-5">
           <!-- Location Name / Location Code -->
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Location Name <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-xs font-semibold text-slate-900"> Location Name <span class="text-red-500">*</span> </label>
               <input type="text" placeholder="Enter storage location name" required
-                class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!locationNameInvalid" [class.border-rose-400]="locationNameInvalid"
                 [(ngModel)]="locationName" name="locationName" />
               <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="locationNameInvalid">Location name is required.</p>
-              <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!locationNameInvalid">A unique and easy to identify name for this location.</p>
+              <p class="mt-1.5 text-xs text-slate-600 font-normal" *ngIf="!locationNameInvalid">A unique and easy to identify name for this location.</p>
             </div>
             <div>
-              <label class="mb-1.5 flex items-center gap-1 text-sm font-semibold text-slate-700">
+              <label class="mb-1.5 flex items-center gap-1 text-xs font-semibold text-slate-900">
                 Location Code
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-slate-400"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_2879_1428)">
+    <path d="M5.99991 8.00007V5.99991M5.99991 3.99975H6.00491M11.0003 5.99991C11.0003 8.76156 8.76156 11.0003 5.99991 11.0003C3.23827 11.0003 0.999512 8.76156 0.999512 5.99991C0.999512 3.23827 3.23827 0.999512 5.99991 0.999512C8.76156 0.999512 11.0003 3.23827 11.0003 5.99991Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_2879_1428">
+    <rect width="12" height="12" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
               </label>
               <div class="relative">
                 <input type="text" [placeholder]="editMode ? (locationCode || 'Auto-generated') : 'Auto-generated'" [value]="editMode ? locationCode : ''" name="locationCode" disabled
-                  class="w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-400 placeholder:text-slate-400" />
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock-icon lucide-lock pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  class="w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm text-slate-400 placeholder:text-slate-900" />
+                
+                <svg width="14" height="14" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_2879_1433)">
+    <path d="M4.08333 6.41644V4.08292C4.08333 3.30931 4.39062 2.56738 4.93761 2.02036C5.48459 1.47333 6.22645 1.16602 7 1.16602C7.77355 1.16602 8.51541 1.47333 9.06239 2.02036C9.60938 2.56738 9.91667 3.30931 9.91667 4.08292V6.41644M2.91667 6.41644H11.0833C11.7277 6.41644 12.25 6.93881 12.25 7.5832V11.6669C12.25 12.3112 11.7277 12.8336 11.0833 12.8336H2.91667C2.27233 12.8336 1.75 12.3112 1.75 11.6669V7.5832C1.75 6.93881 2.27233 6.41644 2.91667 6.41644Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_2879_1433">
+    <rect width="14" height="14" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
               </div>
-              <p class="mt-1.5 text-xs text-slate-500 font-medium">A unique code will be generated automatically after saving.</p>
+              <p class="mt-1.5 text-xs text-slate-600 font-normal">A unique code will be generated automatically after saving.</p>
             </div>
           </div>
 
           <!-- Site / Building / Location Type -->
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Site / Building <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-xs font-semibold text-slate-900"> Site / Building <span class="text-red-500">*</span> </label>
               <app-rich-select [options]="siteBuildingOptions" [(value)]="siteId" placeholder="Select site or building (if applicable)" class="w-full" [class.border-rose-400]="siteIdInvalid"></app-rich-select>
               <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="siteIdInvalid">Site or building is required.</p>
-              <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!siteIdInvalid">Select the site or building this storage location belongs to.</p>
+              <p class="mt-1.5 text-xs text-slate-600 font-normal" *ngIf="!siteIdInvalid">Select the site or building this storage location belongs to.</p>
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Location Type <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-xs font-semibold text-slate-900"> Location Type <span class="text-rose-500">*</span> </label>
               <app-rich-select [options]="locationTypeOptions" [(value)]="locationType" placeholder="Select location type" class="w-full" [class.border-rose-400]="locationTypeInvalid"></app-rich-select>
               <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="locationTypeInvalid">Location type is required.</p>
-              <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!locationTypeInvalid">e.g., Safe Room, Store Room, Mobile Unit, Branch Office</p>
+              <p class="mt-1.5 text-xs text-slate-600 font-normal" *ngIf="!locationTypeInvalid">e.g., Safe Room, Store Room, Mobile Unit, Branch Office</p>
             </div>
           </div>
 
           <!-- Address -->
           <div>
-            <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Address <span class="text-rose-500">*</span> </label>
-            <textarea rows="2" placeholder="Enter complete address" required
-              class="w-full resize-none rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            <label class="mb-1.5 block text-xs font-semibold text-slate-900"> Address <span class="text-red-500">*</span> </label>
+            <textarea rows="1" placeholder="Enter complete address" required
+              class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
               [class.border-slate-200]="!addressInvalid" [class.border-rose-400]="addressInvalid"
               [(ngModel)]="address" name="address"></textarea>
             <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="addressInvalid">Address is required.</p>
-            <p class="mt-1.5 text-xs text-slate-500 font-medium" *ngIf="!addressInvalid">Full physical address of the storage location.</p>
+            <p class="mt-1.5 text-xs text-slate-600 font-normal" *ngIf="!addressInvalid">Full physical address of the storage location.</p>
           </div>
 
           <!-- City / Postcode / Country -->
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
             <div>
-              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> City <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-xs font-semibold text-slate-900"> City <span class="text-red-500">*</span> </label>
               <input type="text" placeholder="Enter city" required
-                class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!cityInvalid" [class.border-rose-400]="cityInvalid"
                 [(ngModel)]="city" name="city" />
               <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="cityInvalid">City is required.</p>
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Postcode / ZIP <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-xs font-semibold text-slate-900"> Postcode / ZIP <span class="text-red-500">*</span> </label>
               <input type="text" placeholder="Enter postcode or ZIP" required
-                class="w-full rounded-lg border px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!postcodeInvalid" [class.border-rose-400]="postcodeInvalid"
                 [(ngModel)]="postcode" name="postcode" />
               <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="postcodeInvalid">Postcode / ZIP is required.</p>
             </div>
             <div>
-              <label class="mb-1.5 block text-sm font-semibold text-slate-700"> Country <span class="text-rose-500">*</span> </label>
+              <label class="mb-1.5 block text-xs font-semibold text-slate-900"> Country <span class="text-red-500">*</span> </label>
               <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" class="w-full" [class.border-rose-400]="countryInvalid"></app-rich-select>
               <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="countryInvalid">Country is required.</p>
             </div>
           </div>
 
-          <hr class="border-slate-100" />
-
+          
           <!-- Additional Information -->
           <div>
-            <h3 class="mb-5 text-base font-bold text-slate-900">Additional Information</h3>
+            <h3 class="mb-4 text-base font-bold text-slate-900">Additional Information</h3>
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
-                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Responsible Person</label>
+                <label class="mb-1.5 block text-xs font-semibold text-slate-900">Responsible Person</label>
                 <input type="text" placeholder="Enter responsible person name (optional)"
                   class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="responsiblePerson" name="responsiblePerson" />
-                <p class="mt-1.5 text-xs text-slate-500 font-medium">Person responsible for this location.</p>
+                <p class="mt-1.5 text-xs text-slate-600 font-normal">Person responsible for this location.</p>
               </div>
               <div>
-                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Contact Number</label>
+                <label class="mb-1.5 block text-xs font-semibold text-slate-900">Contact Number</label>
                 <input type="text" placeholder="Enter contact number (optional)"
                   class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="contactNumber" name="contactNumber" />
-                <p class="mt-1.5 text-xs text-slate-500 font-medium">Contact number for this location.</p>
+                <p class="mt-1.5 text-xs text-slate-600 font-normal">Contact number for this location.</p>
               </div>
             </div>
             <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
-                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Access Instructions</label>
-                <textarea rows="2" placeholder="Enter access instructions"
+                <label class="mb-1.5 block text-xs font-semibold text-slate-900">Access Instructions</label>
+                <textarea rows="1" placeholder="Enter access instructions"
                   class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="accessInstructions" name="accessInstructions"></textarea>
-                <p class="mt-1.5 text-xs text-slate-500 font-medium">Instructions for accessing this storage location.</p>
+                <p class="mt-1.5 text-xs text-slate-600 font-normal">Instructions for accessing this storage location.</p>
               </div>
               <div>
-                <label class="mb-1.5 block text-sm font-semibold text-slate-700">Description</label>
-                <textarea rows="2" placeholder="Enter description (optional)"
+                <label class="mb-1.5 block text-xs font-semibold text-slate-900">Description</label>
+                <textarea rows="1" placeholder="Enter description (optional)"
                   class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   [(ngModel)]="description" name="description"></textarea>
-                <p class="mt-1.5 text-xs text-slate-500 font-medium">Additional notes about this location.</p>
+                <p class="mt-1.5 text-xs text-slate-600 font-normal">Additional notes about this location.</p>
               </div>
             </div>
           </div>
 
           <!-- Status -->
           <div>
-            <label class="mb-2 block text-sm font-semibold text-slate-700"> Status <span class="text-rose-500">*</span> </label>
+            <label class="mb-2 block text-xs font-semibold text-slate-900"> Status <span class="text-red-500">*</span> </label>
             <p class="mt-1.5 text-xs text-rose-500 font-medium" *ngIf="statusInvalid">Status is required.</p>
-            <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
-              <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="status" value="ACTIVE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600" />
-                <span class="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">
-                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Active
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              <label class="flex items-start gap-2 text-sm">
+                <input type="radio" name="status" value="ACTIVE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600 mt-1" />
+                <div class="flex flex-col">   
+                <span class="inline-flex items-center gap-1.5 rounded-md bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-700 w-fit">
+                  Active
                 </span>
-                <span class="text-xs text-slate-500 font-medium">Location is available for use</span>
+                <span class="text-xs text-slate-600 font-normal mt-1">Location is available for use</span>
+                </div>
               </label>
-              <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="status" value="UNDER_MAINTENANCE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600" />
-                <span class="inline-flex items-center gap-1.5 rounded-md bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-600">
-                  <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span> Under Maintenance
+              <label class="flex items-start gap-2 text-sm">
+                <input type="radio" name="status" value="UNDER_MAINTENANCE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600 mt-1" />
+                <div class="flex flex-col">
+   
+                <span class="inline-flex items-center gap-1.5 rounded-md bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700 w-fit">
+                  Under Maintenance
                 </span>
-                <span class="text-xs text-slate-500 font-medium">Temporarily unavailable</span>
+                <span class="text-xs text-slate-600 font-normal mt-1">Temporarily unavailable</span>
+                </div>
               </label>
-              <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="status" value="INACTIVE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600" />
-                <span class="inline-flex items-center gap-1.5 rounded-md bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-600">
-                  <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span> Inactive
+              <label class="flex items-start gap-2 text-sm">
+                <input type="radio" name="status" value="INACTIVE" [(ngModel)]="status" class="h-4 w-4 accent-blue-600 mt-1" />
+                <div class="flex flex-col">
+   
+                <span class="inline-flex items-center gap-1.5 rounded-md bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700 w-fit">
+                  Inactive
                 </span>
-                <span class="text-xs text-slate-500 font-medium">Location is not in use</span>
+                <span class="text-xs text-slate-600 font-normal mt-1">Location is not in use</span>
+                </div>
               </label>
             </div>
           </div>
 
-          <hr class="border-slate-100" />
+          <hr class="border-slate-200" />
           <!-- Actions -->
           <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <button type="button" (click)="onCancel()"
-              class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50">
+              class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">
               Cancel
             </button>
             <button type="submit" [disabled]="saving"
-              class="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-50">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+              class="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M11.3333 14V9.33333C11.3333 9.15652 11.2631 8.98695 11.1381 8.86193C11.013 8.7369 10.8435 8.66667 10.6667 8.66667H5.33333C5.15652 8.66667 4.98695 8.7369 4.86193 8.86193C4.7369 8.98695 4.66667 9.15652 4.66667 9.33333V14M4.66667 2V4.66667C4.66667 4.84348 4.7369 5.01305 4.86193 5.13807C4.98695 5.2631 5.15652 5.33333 5.33333 5.33333H10M10.1333 2C10.485 2.00501 10.8205 2.14878 11.0667 2.4L13.6 4.93333C13.8512 5.17951 13.995 5.51497 14 5.86667V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H10.1333Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>
               {{ saving ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Update Storage Location' : 'Save Storage Location') }}
             </button>
           </div>
@@ -215,56 +255,76 @@
       </div>
 
       <!-- Sidebar -->
-      <div class="space-y-5 ">
+      <div class="space-y-4 bg-white p-5 rounded-md shadow-xs">
         <!-- About -->
-        <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
+        <div class="rounded-md shadow-xs bg-blue-50 p-5">
           <div class="flex items-center gap-2">
-            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600">
+            <div class=" ">
               <!-- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-white"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> -->
               <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" width="14" height="14" class="text-white">!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.<path d="M48 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM0 192c0-17.7 14.3-32 32-32l64 0c17.7 0 32 14.3 32 32l0 256 32 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 512c-17.7 0-32-14.3-32-32s14.3-32 32-32l32 0 0-224-32 0c-17.7 0-32-14.3-32-32z"/></svg>  -->
-               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="14" height="14"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="rgb(255, 255, 255)" d="M272 112C272 85.5 293.5 64 320 64C346.5 64 368 85.5 368 112C368 138.5 346.5 160 320 160C293.5 160 272 138.5 272 112zM224 256C224 238.3 238.3 224 256 224L320 224C337.7 224 352 238.3 352 256L352 512L384 512C401.7 512 416 526.3 416 544C416 561.7 401.7 576 384 576L256 576C238.3 576 224 561.7 224 544C224 526.3 238.3 512 256 512L288 512L288 288L256 288C238.3 288 224 273.7 224 256z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_3036_1495)">
+    <path d="M9.00011 12.0004V9.00011M9.00011 5.99987H9.00761M16.5007 9.00011C16.5007 13.1426 13.1426 16.5007 9.00011 16.5007C4.85764 16.5007 1.49951 13.1426 1.49951 9.00011C1.49951 4.85764 4.85764 1.49951 9.00011 1.49951C13.1426 1.49951 16.5007 4.85764 16.5007 9.00011Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_3036_1495">
+    <rect width="18" height="18" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg> 
             </div>
             <h3 class="text-sm font-bold text-slate-900">About Storage Locations</h3>
           </div>
-          <p class="mt-3 text-sm text-slate-600"> Storage locations are physical places where key cabinets are installed. You can add multiple cabinets and hooks/slots inside each location. </p>
-          <p class="mt-3 text-sm font-semibold text-slate-700">Examples:</p>
-          <ul class="mt-2 space-y-1.5 text-sm text-slate-600">
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Head Office Safe Room </li>
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Security Control Room </li>
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Manchester Branch Store </li>
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-500"></span>Mobile Key Van </li>
+          <p class="mt-3 text-xs text-slate-600"> Storage locations are physical places where key cabinets are installed. You can add multiple cabinets and hooks/slots inside each location. </p>
+          <p class="mt-3 text-xs font-bold text-slate-900">Examples:</p>
+          <ul class="mt-2 space-y-1.5 text-xs text-slate-600">
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span>Head Office Safe Room </li>
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span>Security Control Room </li>
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span>Manchester Branch Store </li>
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span>Mobile Key Van </li>
           </ul>
         </div>
 
         <!-- What's Next -->
-        <div class="rounded-lg border border-blue-100 bg-blue-50/60 p-5">
+        <div class="rounded-md shadow-xs bg-green-50 p-5">
           <div class="flex items-center gap-2">
-            <div class="flex h-6 w-6 items-center justify-center rounded-full bg-[#15874D]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-white"><path d="M20 6 9 17l-5-5"/></svg>
+            <div class=" ">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_3036_1516)">
+    <path d="M16.3502 7.50011C16.6927 9.18109 16.4486 10.9287 15.6586 12.4515C14.8686 13.9742 13.5804 15.1802 12.0088 15.8681C10.4373 16.5561 8.67743 16.6845 7.02269 16.2319C5.36794 15.7793 3.91836 14.7732 2.91567 13.3812C1.91298 11.9892 1.41781 10.2955 1.51271 8.58265C1.60762 6.86977 2.28687 5.24118 3.4372 3.96849C4.58753 2.6958 6.1394 1.85594 7.83401 1.58895C9.52863 1.32197 11.2636 1.64401 12.7495 2.50136M6.74976 8.24976L8.99976 10.4998L16.4998 2.99976" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_3036_1516">
+    <rect width="18" height="18" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
             </div>
             <h3 class="text-sm font-bold text-slate-900">What's Next?</h3>
           </div>
-          <p class="mt-3 text-sm text-slate-600">
+          <p class="mt-3 text-xs text-slate-600">
             {{ editMode ? 'After updating this storage location, you can:' : 'After creating a storage location, you can:' }}
           </p>
-          <ul class="mt-3 space-y-2.5 text-sm text-slate-600">
-            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#15874D] text-xs font-semibold text-white">1</span> {{ editMode ? 'Manage cabinets in this location' : 'Add cabinets to this location' }} </li>
-            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#15874D] text-xs font-semibold text-white">2</span> Generate hooks/slots in cabinets </li>
-            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#15874D] text-xs font-semibold text-white">3</span> Assign keys to hooks/slots </li>
+          <ul class="mt-3 space-y-2.5 text-xs text-slate-600">
+            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">1</span> {{ editMode ? 'Manage cabinets in this location' : 'Add cabinets to this location' }} </li>
+            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">2</span> Generate hooks/slots in cabinets </li>
+            <li class="flex items-center gap-2.5"> <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">3</span> Assign keys to hooks/slots </li>
           </ul>
         </div>
 
         <!-- Important Notes -->
-        <div class="rounded-lg border border-amber-100 bg-[#FFF9EC] p-5">
+        <div class="rounded-md shadow-xs bg-amber-50 p-5">
           <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert text-amber-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 6.74951V9.74951M9 12.7495H9.0075M16.2978 13.4997L10.2978 2.99968C10.167 2.76883 9.97727 2.57682 9.74801 2.44323C9.51875 2.30964 9.25815 2.23926 8.99281 2.23926C8.72747 2.23926 8.46688 2.30964 8.23762 2.44323C8.00836 2.57682 7.81864 2.76883 7.68781 2.99968L1.68781 13.4997C1.55558 13.7287 1.48623 13.9886 1.48682 14.2531C1.48741 14.5175 1.5579 14.7771 1.69115 15.0055C1.8244 15.234 2.01567 15.4231 2.24558 15.5538C2.4755 15.6845 2.73587 15.7521 3.00031 15.7497H15.0003C15.2635 15.7494 15.522 15.6799 15.7498 15.5481C15.9776 15.4164 16.1667 15.227 16.2982 14.999C16.4297 14.771 16.4988 14.5125 16.4988 14.2493C16.4987 13.9861 16.4294 13.7276 16.2978 13.4997Z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
             <h3 class="text-sm font-bold text-slate-900">Important Notes</h3>
           </div>
-          <ul class="mt-3 space-y-2 text-sm text-slate-600">
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500"></span> All fields marked with <span class="mx-1 text-rose-500">*</span> are required. </li>
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500"></span> Location code is auto-generated and must be unique. </li>
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500"></span> You can add cabinets {{ editMode ? 'in' : 'after saving' }} this location. </li>
-            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500"></span> Deactivated locations cannot be deleted if they contain cabinets, hooks or keys. </li>
+          <ul class="mt-3 space-y-2 text-xs text-slate-600">
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span> All fields marked with * are required. </li>
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span> Location code is auto-generated and must be unique. </li>
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span> You can add cabinets {{ editMode ? 'in' : 'after saving' }} this location. </li>
+            <li class="flex items-start gap-2"> <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-600"></span> Deactivated locations cannot be deleted if they contain cabinets, hooks or keys. </li>
           </ul>
         </div>
       </div>
