@@ -252,7 +252,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   locationStatusClass(status: string): string {
     const s = (status || '').toUpperCase();
     if (s === 'ACTIVE') {
-      return 'bg-emerald-50 text-emerald-600';
+      return 'bg-emerald-100 text-emerald-800';
     }
     if (s === 'INACTIVE') {
       return 'bg-rose-50 text-rose-600';
@@ -271,7 +271,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
 
   getLocationStatusDot(loc: any): string {
     const s = (this.getLocationStatus(loc) || '').toUpperCase();
-    if (s === 'ACTIVE') return 'bg-emerald-500';
+    if (s === 'ACTIVE') return 'bg-emerald-600';
     if (s === 'INACTIVE') return 'bg-rose-500';
     if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') return 'bg-amber-500';
     return 'bg-slate-400';
