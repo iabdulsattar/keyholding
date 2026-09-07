@@ -131,7 +131,10 @@
             <thead>
               <tr class="border-b border-slate-200 text-left text-slate-900 text-xs">
                 <th class="px-6 py-4 font-semibold">Role</th>
+                <th class="px-6 py-4 font-semibold">Code</th>
                 <th class="px-6 py-4 font-semibold">Description</th>
+                <th class="px-6 py-4 font-semibold">Source</th>
+                <th class="px-6 py-4 font-semibold">Created</th>
                 <th class="px-6 py-4 font-semibold">Permissions</th>
                 <th class="px-6 py-4 font-semibold">Status</th>
                 <th class="px-6 py-4 font-semibold">Users</th>
@@ -151,8 +154,14 @@
                   </td>
                   <td class="px-6 py-4 text-slate-500 text-sm">{{ role.description || '—' }}</td>
                   <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide" [class.bg-indigo-50]="role.source === 'SYSTEM'" [class.text-indigo-600]="role.source === 'SYSTEM'" [class.bg-slate-100]="role.source !== 'SYSTEM'" [class.text-slate-600]="role.source !== 'SYSTEM'">
+                      {{ role.source || 'USER' }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-slate-500 text-sm whitespace-nowrap">{{ role.createdAt ? (role.createdAt | date:'MMM d, y') : '—' }}</td>
+                  <td class="px-6 py-4">
                     <span class="inline-block bg-indigo-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-md whitespace-nowrap">
-                      {{ role.permissions?.length || 0 }} Permissions
+                      {{ role.permissionCount ?? (role.permissions?.length || 0) }} Permissions
                     </span>
                   </td>
                   <td class="px-6 py-4">
@@ -181,18 +190,20 @@
 
                       </button>
 
-                      <button (click)="editRole(role)" class="h-6 w-6 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50" aria-label="Edit">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12.5911 2.39781C12.5911 2.84138 12.4148 3.26676 12.1011 3.58038L4.18217 11.5006C4.04462 11.6377 3.87552 11.739 3.68972 11.7955L1.10703 12.5787C1.05574 12.5941 1.00124 12.5953 0.949303 12.5823C0.897365 12.5692 0.849931 12.5423 0.812033 12.5045C0.774134 12.4667 0.747185 12.4193 0.734045 12.3674C0.720904 12.3154 0.722062 12.2609 0.737396 12.2096L1.52116 9.6275C1.57819 9.44151 1.68006 9.2724 1.81782 9.13504L9.73616 1.21481C10.0498 0.901198 10.4753 0.725042 10.9188 0.725098C11.3624 0.725153 11.7878 0.901416 12.1014 1.21511C12.415 1.5288 12.5912 1.95423 12.5911 2.39781Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
-  </svg>
-                      </button>
-                        
-                        <button (click)="deleteRole(role)" class="h-6 w-6 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-50" aria-label="Delete">
-                          <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M4.87492 6.06116V9.61854M7.24631 6.06116V9.61854M10.2106 3.09668V11.3972C10.2106 11.7117 10.0856 12.0133 9.86327 12.2357C9.64091 12.4581 9.33933 12.583 9.02486 12.583H3.09637C2.7819 12.583 2.48032 12.4581 2.25796 12.2357C2.03559 12.0133 1.91067 11.7117 1.91067 11.3972V3.09668M0.724976 3.09668H11.3963M3.68922 3.09668V1.91089C3.68922 1.5964 3.81414 1.29479 4.0365 1.07241C4.25886 0.850029 4.56045 0.725098 4.87492 0.725098H7.24631C7.56078 0.725098 7.86237 0.850029 8.08473 1.07241C8.30709 1.29479 8.43201 1.5964 8.43201 1.91089V3.09668" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
-  </svg>
+                      @if (canManageRoles) {
+                        <button (click)="editRole(role)" [disabled]="role.source === 'SYSTEM'" class="h-6 w-6 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400" [attr.aria-label]="role.source === 'SYSTEM' ? 'Edit (locked: system role)' : 'Edit'">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.5911 2.39781C12.5911 2.84138 12.4148 3.26676 12.1011 3.58038L4.18217 11.5006C4.04462 11.6377 3.87552 11.739 3.68972 11.7955L1.10703 12.5787C1.05574 12.5941 1.00124 12.5953 0.949303 12.5823C0.897365 12.5692 0.849931 12.5423 0.812033 12.5045C0.774134 12.4667 0.747185 12.4193 0.734045 12.3674C0.720904 12.3154 0.722062 12.2609 0.737396 12.2096L1.52116 9.6275C1.57819 9.44151 1.68006 9.2724 1.81782 9.13504L9.73616 1.21481C10.0498 0.901198 10.4753 0.725042 10.9188 0.725098C11.3624 0.725153 11.7878 0.901416 12.1014 1.21511C12.415 1.5288 12.5912 1.95423 12.5911 2.39781Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+    </svg>
                         </button>
-                      
+
+                        <button (click)="deleteRole(role)" [disabled]="role.source === 'SYSTEM'" class="h-6 w-6 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400" [attr.aria-label]="role.source === 'SYSTEM' ? 'Delete (locked: system role)' : 'Delete'">
+                          <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.87492 6.06116V9.61854M7.24631 6.06116V9.61854M10.2106 3.09668V11.3972C10.2106 11.7117 10.0856 12.0133 9.86327 12.2357C9.64091 12.4581 9.33933 12.583 9.02486 12.583H3.09637C2.7819 12.583 2.48032 12.4581 2.25796 12.2357C2.03559 12.0133 1.91067 11.7117 1.91067 11.3972V3.09668M0.724976 3.09668H11.3963M3.68922 3.09668V1.91089C3.68922 1.5964 3.81414 1.29479 4.0365 1.07241C4.25886 0.850029 4.56045 0.725098 4.87492 0.725098H7.24631C7.56078 0.725098 7.86237 0.850029 8.08473 1.07241C8.30709 1.29479 8.43201 1.5964 8.43201 1.91089V3.09668" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+    </svg>
+                        </button>
+                      }
+
                     </div>
                   </td>
                 </tr>
@@ -263,10 +274,10 @@
                   <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </button>
                 @if (canManageRoles) {
-                  <button (click)="editRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50" aria-label="Edit">
+                  <button (click)="editRole(role)" [disabled]="role.source === 'SYSTEM'" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400" aria-label="Edit">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
                   </button>
-                  <button (click)="deleteRole(role)" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-50" aria-label="Delete">
+                  <button (click)="deleteRole(role)" [disabled]="role.source === 'SYSTEM'" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400" aria-label="Delete">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
                   </button>
                 }

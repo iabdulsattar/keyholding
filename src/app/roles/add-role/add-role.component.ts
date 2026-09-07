@@ -213,7 +213,7 @@ export class AddRoleComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/user-management']);
+    this.router.navigate(['/roles']);
   }
 
   saveRole(): void {
@@ -251,7 +251,7 @@ export class AddRoleComponent implements OnInit {
       this.keyVault.updateRole(orgId, this.roleId, updatePayload).subscribe({
         next: () => {
           this.saving = false;
-          this.router.navigate(['/user-management']);
+          this.router.navigate(['/roles']);
         },
         error: () => {
           this.saving = false;
@@ -262,7 +262,7 @@ export class AddRoleComponent implements OnInit {
       this.keyVault.createRole(orgId, payload).subscribe({
         next: () => {
           this.saving = false;
-          this.router.navigate(['/user-management']);
+          this.router.navigate(['/roles']);
         },
         error: () => {
           this.saving = false;

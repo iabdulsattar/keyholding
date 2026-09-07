@@ -103,7 +103,10 @@ export class SubscriptionComponent implements OnInit {
     if (!isTrial && sub.planId) {
       this.subscriptionService.getPlan(sub.planId).subscribe({
         next: (res: any) => {
-          this.planDetails = res ?? null;
+          this.planDetails = res?.data ?? null;
+          if (this.planDetails?.name) {
+            this.plan = { ...this.plan, name: this.planDetails.name };
+          }
         },
         error: () => {
           this.planDetails = null;

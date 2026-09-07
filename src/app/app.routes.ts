@@ -276,19 +276,19 @@ export const routes: Routes = [
           {
             path: 'roles/deactivate-role',
             loadComponent: () => import('./roles/deactivate-role/deactivate-role.component').then(m => m.DeactivateRoleComponent),
-            canActivate: [authGuard, permissionGuard('role.deactivate')],
+            canActivate: [authGuard, permissionGuard('admin.roles.manage')],
             title: 'Deactivate Role | KeyVault Pro'
           },
           {
             path: 'roles/reactivate-role',
             loadComponent: () => import('./roles/reactivate-role/reactivate-role.component').then(m => m.ReactivateRoleComponent),
-            canActivate: [authGuard, permissionGuard('role.reactivate')],
+            canActivate: [authGuard, permissionGuard('admin.roles.manage')],
             title: 'Reactivate Role | KeyVault Pro'
           },
           {
             path: 'roles/delete-role',
             loadComponent: () => import('./roles/delete-role/delete-role.component').then(m => m.DeleteRoleComponent),
-            canActivate: [authGuard, permissionGuard('role.delete')],
+            canActivate: [authGuard, permissionGuard('admin.roles.manage')],
             title: 'Delete Role | KeyVault Pro'
           },
           {

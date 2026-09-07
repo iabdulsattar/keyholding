@@ -29,6 +29,8 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
   stripe: any = null;
   cardElement: any = null;
   cardErrors: string = '';
+  cardExpiryErrors: string = '';
+  cardCvcErrors: string = '';
   private destroy$ = new Subscription();
 
   @ViewChild('cardNumber', { static: false }) cardNumberRef!: ElementRef;
@@ -125,6 +127,12 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
 
         cardNumber.on('change', (event: any) => {
           this.cardErrors = event.error ? event.error.message : '';
+        });
+        cardExpiry.on('change', (event: any) => {
+          this.cardExpiryErrors = event.error ? event.error.message : '';
+        });
+        cardCvc.on('change', (event: any) => {
+          this.cardCvcErrors = event.error ? event.error.message : '';
         });
       }, 100);
 
@@ -234,8 +242,7 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
     const handlePaymentResult = (result: any) => {
       if (result.error) {
         this.isLoading = false;
-        this.cardErrors = result.error.message || 'Card validation failed.';
-        this.errorMessage = 'Payment failed. Please check your card details.';
+        this.errorMessage = result.error.message || 'Card validation failed. Please check your card details.';
       } else {
         planCall(result.paymentMethod.id).subscribe({
           next: (planRes) => {

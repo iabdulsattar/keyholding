@@ -62,11 +62,7 @@ export class AppSidebarComponent implements OnInit {
         { name: "Hook List", path: "/storage/locations/cabinets/view/1/hooks", queryParams: { all: 'true' } },
       ],
     },
-    {
-      icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 21v-2a4 4 0 0 1 4-4h1"/><circle cx="10" cy="7" r="3.5"/><path d="M15.5 21v-1.5a3.5 3.5 0 0 0-2-3.16"/><path d="M14 4.2a3.5 3.5 0 0 1 0 6.6"/></svg>`,
-      name: "Officers",
-      path: "/officers",
-    },
+   
     {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 013-3.87m5-3.13a4 4 0 100-8 4 4 0 000 8zm6 3.13a4 4 0 00-3-3.87"/></svg>`,
       name: "Users",
@@ -84,11 +80,7 @@ export class AppSidebarComponent implements OnInit {
         { name: "Invoices", path: "/invoice" },
       ],
     },
-    {
-      icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06.06a1.65 1.65 0 0 0 .33-1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-      name: "Settings",
-      path: "/settings",
-    },
+   
   ];
 
   othersItems: NavItem[] = [];

@@ -411,10 +411,28 @@ export class UserManagementComponent implements OnInit {
     this.router.navigate(['/users/view-user', user.id]);
   }
 
-  deleteUser(user: User): void {
-    if (!user.id) return;
+  editUser(user?: User): void {
+    const target = user || this.selectedUser;
+    if (!target?.id) return;
+    this.router.navigate(['/users/add-user'], { queryParams: { id: target.id } });
+  }
+
+  deactivateUser(user: User): void {
+    if (!user?.id) return;
     this.selectedUser = user;
-    this.openDeactivateModal();
+    this.showDeactivateModal = true;
+  }
+
+  reactivateUser(user: User): void {
+    if (!user?.id) return;
+    this.selectedUser = user;
+    this.showReactivateModal = true;
+  }
+
+  deleteUser(user: User): void {
+    if (!user?.id) return;
+    this.selectedUser = user;
+    this.showDeactivateModal = true;
   }
 
   onTablePageChange(page: number): void {
@@ -524,11 +542,6 @@ export class UserManagementComponent implements OnInit {
     if (this.selectedUser) {
       this.selectedUser = { ...this.selectedUser, invite: 'Pending', inviteSub: new Date().toLocaleString() } as User;
     }
-  }
-
-  editUser(): void {
-    if (!this.selectedUser?.id) return;
-    this.router.navigate(['/users/add-user'], { queryParams: { id: this.selectedUser.id } });
   }
 
   onRoleRowClick(role: Role): void {

@@ -201,11 +201,11 @@ export class ReactivateRoleComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/roles/view-role'], { queryParams: { id: this.roleId } });
+    this.router.navigate(['/roles']);
   }
 
   viewRole(): void {
-    this.router.navigate(['/roles/view-role'], { queryParams: { id: this.roleId } });
+    this.router.navigate(['/roles']);
   }
 
   cancel(): void {
@@ -227,7 +227,7 @@ export class ReactivateRoleComponent implements OnInit {
       next: () => {
         this.reactivating = false;
         this.toastService.success('Role reactivated successfully.');
-        this.router.navigate(['/roles/view-role'], { queryParams: { id: this.roleId } });
+        this.router.navigate(['/roles']);
       },
       error: () => {
         this.reactivating = false;

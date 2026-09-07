@@ -211,11 +211,11 @@ export class DeleteRoleComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/roles/view-role'], { queryParams: { id: this.roleId } });
+    this.router.navigate(['/roles']);
   }
 
   viewRole(): void {
-    this.router.navigate(['/roles/view-role'], { queryParams: { id: this.roleId } });
+    this.router.navigate(['/roles']);
   }
 
   cancel(): void {
@@ -237,7 +237,7 @@ export class DeleteRoleComponent implements OnInit {
       next: () => {
         this.deleting = false;
         this.toastService.success('Role deleted successfully.');
-        this.router.navigate(['/user-management']);
+        this.router.navigate(['/roles']);
       },
       error: () => {
         this.deleting = false;

@@ -619,7 +619,7 @@
                     Attachments</label>
                 <label
                     class="inline-flex items-center gap-2 bg-slate-50 rounded-md outline outline-1 outline-offset-[-1px] outline-slate-200 text-blue-600 text-xs font-semibold font-['Inter'] px-4 py-2 hover:bg-slate-100 transition cursor-pointer">
-                    <input type="file" class="hidden" (change)="onFileSelect($event)" multiple>
+                    <input type="file" class="hidden" (change)="onFileSelect($event)" accept="image/*,.pdf">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_2389_377)">
                             <path
@@ -707,7 +707,7 @@
 
     <!-- Footer actions -->
     <div class="flex flex-col sm:flex-row sm:justify-end gap-3 pb-4">
-        <button
+        <button (click)="goBack()"
             class="w-full sm:w-auto bg-white rounded-md border border-slate-200 text-slate-600 text-sm font-semibold font-['Inter'] px-10 py-2.5 hover:bg-slate-50">Cancel</button>
         <button (click)="createJob()" [disabled]="saving"
             class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 rounded-md text-white text-sm font-semibold font-['Inter'] transition hover:bg-blue-700 disabled:opacity-70">
@@ -1013,12 +1013,12 @@
             <div class="flex gap-3 sm:ml-auto">
                 <button (click)="closeAddKeysModal()"
                     class="flex-1 sm:flex-none px-5 py-2.5 rounded-md border border-slate-200 text-blue-600 text-sm font-semibold font-['Inter'] hover:bg-slate-50">Cancel</button>
-                <button (click)="closeAddKeysModal()"
-                    class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-blue-600 text-white text-sm font-semibold font-['Inter'] hover:bg-blue-700">
+                <button (click)="confirmAddKeys()" [disabled]="selectedKeys.length === 0"
+                    class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-blue-600 text-white text-sm font-semibold font-['Inter'] hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_2416_1120)">
                             <path
-                                d="M10.332 4.99949L11.8654 6.53282C11.99 6.65498 12.1575 6.7234 12.332 6.7234C12.5065 6.7234 12.6741 6.65498 12.7987 6.53282L14.1987 5.13282C14.3208 5.00821 14.3893 4.84066 14.3893 4.66616C14.3893 4.49166 14.3208 4.32411 14.1987 4.19949L12.6654 2.66616M13.9986 1.33282L7.59863 7.73283M8.66536 10.3328C8.66536 12.3579 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3579 1.33203 10.3328C1.33203 8.30778 2.97365 6.66616 4.9987 6.66616C7.02374 6.66616 8.66536 8.30778 8.66536 10.3328Z"
+                                d="M10.332 4.99949L11.8654 6.53282C11.99 6.65498 12.1575 6.7234 12.332 6.7234C12.5065 6.7234 12.6741 6.65498 12.7987 6.53282C12.7987 6.53282 12.7987 6.53282 12.7987 6.53282L14.1987 5.13282C14.3208 5.00821 14.3893 4.84066 14.3893 4.66616C14.3893 4.49166 14.3208 4.32411 14.3893 4.19949L12.6654 2.66616M13.9986 1.33282L7.59863 7.73283M8.66536 10.3328C8.66536 12.3579 7.02374 13.9995 4.9987 13.9995C2.97365 13.9995 1.33203 12.3579 1.33203 10.3328C1.33203 8.30778 2.97365 6.66616 8.66536 10.3328Z"
                                 stroke="white" stroke-width="2" stroke-linecap="round" />
                         </g>
                         <defs>
@@ -1030,6 +1030,9 @@
                     Add Selected Keys
                 </button>
             </div>
+            @if (keysModalSubmitted && keysModalError) {
+            <p class="text-xs text-rose-500 font-medium">{{ keysModalError }}</p>
+            }
         </div>
     </div>
 </div>

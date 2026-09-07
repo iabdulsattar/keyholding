@@ -108,6 +108,8 @@ export class CreateJobComponent implements OnInit {
 
   errors: any = {};
   submitted = false;
+  keysModalSubmitted = false;
+  keysModalError = '';
 
   constructor(private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private userService: UserService, private toast: ToastService) {}
 
@@ -343,16 +345,24 @@ export class CreateJobComponent implements OnInit {
     const files = input.files;
     if (!files || !files.length) return;
 
-    Array.from(files).forEach((file: File) => {
-      if (file.size > this.MAX_FILE_SIZE) {
-        this.toast.error(`File "${file.name}" exceeds 25MB limit.`);
-        return;
-      }
-      this.selectedFiles.push(file);
-      const reader = new FileReader();
-      reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string, status: 'pending' });
-      reader.readAsDataURL(file);
-    });
+    const file = files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      this.attachmentError = 'Only image and PDF files are allowed.';
+      input.value = '';
+      return;
+    }
+
+    if (this.selectedFiles.length >= 1) {
+      this.attachmentError = 'Only one file is allowed.';
+      input.value = '';
+      return;
+    }
+
+    this.selectedFiles.push(file);
+    const reader = new FileReader();
+    reader.onload = () => this.attachmentPreviews.push({ file, url: reader.result as string, status: 'pending' });
+    reader.readAsDataURL(file);
 
     this.attachmentError = '';
     input.value = '';
@@ -498,6 +508,17 @@ export class CreateJobComponent implements OnInit {
 
   closeAddKeysModal(): void {
     this.showAddKeysModal = false;
+    this.keysModalSubmitted = false;
+    this.keysModalError = '';
+  }
+
+  confirmAddKeys(): void {
+    this.keysModalSubmitted = true;
+    if (this.selectedKeys.length === 0) {
+      this.keysModalError = 'Please select at least one key';
+      return;
+    }
+    this.closeAddKeysModal();
   }
 
   toggleKeySelection(key: Key): void {

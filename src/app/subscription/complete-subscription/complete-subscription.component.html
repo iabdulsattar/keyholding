@@ -223,11 +223,17 @@
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">Expiry Date <span
                 class="text-red-500">*</span></label>
               <div id="stripe-card-expiry" class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm bg-white min-h-[38px]"></div>
+              @if (cardExpiryErrors) {
+                <p class="text-red-500 text-xs mt-1">{{ cardExpiryErrors }}</p>
+              }
           </div>
           <div>
             <label class="block text-slate-600 text-xs font-semibold font-['Inter'] mb-1.5">CVC <span
                 class="text-red-500">*</span></label>
               <div id="stripe-card-cvc" class="w-full rounded-lg border border-slate-200 px-4 py-2 text-slate-800 text-sm bg-white min-h-[38px]"></div>
+              @if (cardCvcErrors) {
+                <p class="text-red-500 text-xs mt-1">{{ cardCvcErrors }}</p>
+              }
           </div>
         </div>
 
