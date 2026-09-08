@@ -58,6 +58,12 @@ export class HookListComponent implements OnInit, AfterViewInit {
   totalPages = 0;
   totalItems = 0;
 
+  filterSearch = '';
+  filterStatus = '';
+  filterAssigned = '';
+  filterCabinet = '';
+  filterStorageLocation = '';
+
   private allHooksRaw: any[] = [];
 
   readonly statusStyles: Record<string, string> = {
@@ -154,7 +160,13 @@ export class HookListComponent implements OnInit, AfterViewInit {
 
     if (this.showAllHooks) {
       const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
-      this.keyVault.listAllCabinetHooks(orgId, { assigned: 'ALL', page: this.currentPage, size: effectivePageSize }).subscribe({
+      this.keyVault.listAllCabinetHooks(orgId, {
+        assigned: 'ALL',
+        page: this.currentPage,
+        size: effectivePageSize,
+        q: this.filterSearch || undefined,
+        status: this.filterStatus || undefined,
+      }).subscribe({
         next: (res: any) => {
           const payload = res?.data ?? res ?? {};
           const meta = res?.meta ?? {};
@@ -191,7 +203,12 @@ export class HookListComponent implements OnInit, AfterViewInit {
     }
 
     const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
-    this.keyVault.listHooks(orgId, this.cabinetId, { page: this.currentPage, size: effectivePageSize }).subscribe({
+    this.keyVault.listHooks(orgId, this.cabinetId, {
+      page: this.currentPage,
+      size: effectivePageSize,
+      q: this.filterSearch || undefined,
+      status: this.filterStatus || undefined,
+    }).subscribe({
       next: (res: any) => {
         const payload = res?.data ?? res ?? {};
         const meta = res?.meta ?? {};
@@ -399,5 +416,22 @@ export class HookListComponent implements OnInit, AfterViewInit {
     const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
     const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
+  }
+
+  applyFilters(): void {
+    this.currentPage = 0;
+    this.loadHooks();
+  }
+
+  onFilterSearchChange(): void {
+    this.applyFilters();
+  }
+
+  onFilterStatusChange(): void {
+    this.applyFilters();
+  }
+
+  onFilterAssignedChange(): void {
+    this.applyFilters();
   }
 }
