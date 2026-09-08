@@ -16,6 +16,7 @@
         <span class="text-slate-500 text-xs font-medium font-['Inter']">Job Details</span>
       </nav>
       <button
+        routerLink="/jobs"
         class="flex items-center gap-2 px-4 py-2 rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-900 font-['Inter'] hover:bg-slate-100 transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <line x1="19" y1="12" x2="5" y2="12" />
@@ -126,9 +127,10 @@
         <div>
           <p class="text-xs font-medium font-['Inter'] tracking-wide text-slate-500 uppercase mb-1.5">Status</p>
           <span
-            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] bg-green-100 text-green-700 text-xs font-bold font-['Inter']">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
-            Completed
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']"
+            [class]="statusClass(job?.status || '')">
+            <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+            {{ job?.status || '—' }}
           </span>
         </div>
         <div class="mt-5">
