@@ -384,7 +384,7 @@
             </div>
             <div class="grid grid-cols-2 py-2 gap-2">
               <dt class="text-xs text-slate-500 font-medium font-['Inter']">Duration</dt>
-              <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ job?.durationMinutes ?? 0 }} min</dd>
+              <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ formatDuration(job?.durationMinutes) }}</dd>
             </div>
             <div class="grid grid-cols-2 py-2 gap-2">
               <dt class="text-xs text-slate-500 font-medium font-['Inter']">Repeat</dt>
