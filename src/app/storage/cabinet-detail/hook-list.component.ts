@@ -66,7 +66,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
   filterStorageLocation = '';
 
   readonly statusFilterOptions: RichSelectOption[] = [
-    { value: '', label: 'All Status' },
+    { value: '', label: 'Status' },
     { value: 'KEY_HOOKED', label: 'Key Hooked' },
     { value: 'AVAILABLE_FOR_KEY', label: 'Available for Key' },
     { value: 'KEY_IN_USE', label: 'Key In Use' },
@@ -74,7 +74,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
   ];
 
   readonly assignedFilterOptions: RichSelectOption[] = [
-    { value: '', label: 'All' },
+    { value: '', label: 'Storage Locations' },
     { value: 'ASSIGNED', label: 'Assigned' },
     { value: 'UNASSIGNED', label: 'Unassigned' },
   ];
