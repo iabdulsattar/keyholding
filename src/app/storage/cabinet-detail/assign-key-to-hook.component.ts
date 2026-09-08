@@ -201,6 +201,14 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
     this.isKeyDropdownOpen = false;
   }
 
+  selectKeyById(keyId: string): void {
+    if (!keyId) {
+      this.selectedKey = null;
+      return;
+    }
+    this.selectedKey = this.availableKeys.find(k => k.id === keyId) || null;
+  }
+
   updateNoteCount(): void {
     this.noteCount = this.assignmentNote.length;
   }
@@ -246,5 +254,9 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/storage/locations/cabinets/view', this.cabinetId, 'hooks']);
       }
     });
+  }
+
+  trackByHookNo(index: number, hook: AvailableHook): string {
+    return hook.hookId;
   }
 }
