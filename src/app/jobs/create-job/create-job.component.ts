@@ -194,19 +194,19 @@ export class CreateJobComponent implements OnInit {
     });
   }
 
-  private loadContacts(clientId: string): void {
+  private loadEmergencyContacts(clientId: string): void {
     if (!clientId) {
       this.completionContactOptions = [];
       this.notCompletedContactOptions = [];
       return;
     }
     this.contactsLoading = true;
-    this.clientService.listContacts(clientId, { page: 0, size: 200 }).subscribe({
+    this.clientService.listEmergencyContacts(clientId, { page: 0, size: 200 }).subscribe({
       next: (result: any) => {
         const items = result?.items ?? result?.data ?? result ?? [];
         const options: MultiOption[] = items.map((item: any) => ({
           value: item.id ?? '',
-          text: `${item.firstName || ''} ${item.lastName || ''}`.trim() || item.fullName || item.name || 'Contact'
+          text: `${item.firstName || ''} ${item.lastName || ''}`.trim() || item.fullName || item.name || 'Emergency Contact'
         }));
         this.completionContactOptions = [...options];
         this.notCompletedContactOptions = [...options];
@@ -242,7 +242,7 @@ export class CreateJobComponent implements OnInit {
     this.selectedClient = clientId;
     this.selectedSite = '';
     this.loadSites(clientId);
-    this.loadContacts(clientId);
+    this.loadEmergencyContacts(clientId);
   }
 
   onSiteChange(siteId: string): void {

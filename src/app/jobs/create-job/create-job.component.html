@@ -584,16 +584,16 @@
                     Job Completion</label>
                 <app-multi-select [options]="completionContactOptions" [defaultSelected]="selectedCompletionContactIds"
                     [disabled]="contactsLoading" (selectionChange)="selectedCompletionContactIds = $event"
-                    placeholder="Select contacts">
+                    placeholder="Select emergency contacts">
                 </app-multi-select>
-                <p class="text-[9px] text-slate-500 mt-1.5">Contacts will be notified based on job outcome.</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Emergency contacts will be notified based on job outcome.</p>
             </div>
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] text-slate-700 mb-1.5">Notify if
                     Job Not Completed</label>
                 <app-multi-select [options]="notCompletedContactOptions"
                     [defaultSelected]="selectedNotCompletedContactIds" [disabled]="contactsLoading"
-                    (selectionChange)="selectedNotCompletedContactIds = $event" placeholder="Select contacts">
+                    (selectionChange)="selectedNotCompletedContactIds = $event" placeholder="Select emergency contacts">
                 </app-multi-select>
             </div>
         </div>
