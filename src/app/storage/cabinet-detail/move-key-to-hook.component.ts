@@ -222,6 +222,11 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
     return !this.selectedNewHookId;
   }
 
+  get selectedNewHook(): AvailableHook | undefined {
+    if (!this.selectedNewHookId) return undefined;
+    return this.availableHooks.find(h => h.hookId === this.selectedNewHookId);
+  }
+
   updateNoteCount(): void {
     this.noteCount = this.moveNote.length;
   }
