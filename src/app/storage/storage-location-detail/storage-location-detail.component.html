@@ -23,35 +23,38 @@
     <div class="">
 
       <!-- Header -->
-      <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <div class="flex items-start gap-3">
-            <button (click)="onBack()" class=" rounded-lg py-1.5 px-1 text-slate-500 hover:bg-slate-100">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          <div>
+            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-blue-600 font-medium">
+              <span>Storage Management</span>
+              <span class="text-slate-400">›</span>
+            
+              <span>Storage Locations</span>
+              <span class="text-slate-400">›</span>
+            
+              <span class="text-slate-600">{{ location.name }}</span>
+            </div>
+          </div>
 
-            </button>
-            <h1 class="text-xl font-bold text-slate-900 sm:text-2xl">Storage Location Detail</h1>
+          <div class="flex items-start gap-3 mt-3">
+            <h1 class="text-3xl font-extrabold text-slate-900 ">Storage Location Detail</h1>
             
           </div>
           <div>
-            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-blue-500 sm:text-sm">
-              <span>Home</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>            
-              <span>Storage Management</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>            
-              <span>Storage Locations</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>            
-              <span class="text-slate-500">{{ location.name }}</span>
-            </div>
-          </div>
+          <p class="text-sm text-slate-600 mt-1">Update the storage location details below.
+          </p>
+          
+        </div>
+        
         </div>
         <div class="flex flex-wrap items-center gap-2 sm:gap-3">
         
-          <a [routerLink]="['/storage/locations/edit', location.id]" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+          <a [routerLink]="['/storage/locations/edit', location.id]" class="flex items-center gap-1.5 rounded-lg border border-blue-600 px-3 py-3 text-sm font-semibold text-blue-600 ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil text-blue-600"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
             Edit
           </a>
-          <a *ngIf="location.isActive" [routerLink]="['/storage/locations/deactivate', location.id]" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+          <a *ngIf="location.isActive" [routerLink]="['/storage/locations/deactivate', location.id]" class="flex items-center gap-1.5 rounded-lg border border-blue-600 px-3 py-3 text-sm font-semibold text-blue-600 ">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-power-icon lucide-power"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
             Deactivate
           </a>
