@@ -45,24 +45,21 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 text-sm lg:w-96 flex-shrink-0">
-        <div>
-          <div class="text-slate-500">Cabinet Code</div>
-          <div class="font-semibold text-slate-800">{{ cabinet?.code || '—' }}</div>
+    <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="text-lg font-bold text-slate-900">{{ cabinet?.name || 'Cabinet Detail' }}</h2>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+              [ngClass]="cabinet?.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">
+              {{ cabinet?.status || 'Active' }}
+            </span>
+          </div>
+          <dl class="mt-2 space-y-1 text-sm">
+            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Cabinet Code</dt><dd class="text-slate-800 font-medium">{{ cabinet?.code || '—' }}</dd></div>
+            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Cabinet Type</dt><dd class="text-slate-800 font-medium">{{ cabinet?.type || '—' }}</dd></div>
+            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Location</dt><dd><a [routerLink]="['/storage/locations/cabinets/view', cabinetId]" class="text-blue-600 font-medium hover:underline">{{ cabinet?.storageLocation || '—' }}</a></dd></div>
+            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Floor / Area</dt><dd class="text-slate-800 font-medium">{{ cabinet?.floor || '—' }}</dd></div>
+          </dl>
         </div>
-        <div>
-          <div class="text-slate-500">Cabinet Type</div>
-          <div class="font-semibold text-slate-800">{{ cabinet?.type || '—' }}</div>
-        </div>
-        <div>
-          <div class="text-slate-500">Location</div>
-          <a [routerLink]="['/storage/locations/cabinets/view', cabinetId]" class="font-semibold text-blue-600 hover:underline">{{ cabinet?.storageLocation || '—' }}</a>
-        </div>
-        <div>
-          <div class="text-slate-500">Floor / Area</div>
-          <div class="font-semibold text-slate-800">{{ cabinet?.floor || '—' }}</div>
-        </div>
-      </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 lg:gap-6 lg:flex-1 lg:justify-items-end border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 lg:pt-0 lg:pl-6">
         <div class="text-center lg:text-right">
