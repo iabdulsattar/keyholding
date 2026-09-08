@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface HookRow {
   no: string;
@@ -33,7 +34,7 @@ interface HookStats {
 @Component({
   selector: 'app-hook-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './hook-list.component.html',
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
@@ -63,6 +64,24 @@ export class HookListComponent implements OnInit, AfterViewInit {
   filterAssigned = '';
   filterCabinet = '';
   filterStorageLocation = '';
+
+  readonly statusFilterOptions: RichSelectOption[] = [
+    { value: '', label: 'All Status' },
+    { value: 'KEY_HOOKED', label: 'Key Hooked' },
+    { value: 'AVAILABLE_FOR_KEY', label: 'Available for Key' },
+    { value: 'KEY_IN_USE', label: 'Key In Use' },
+    { value: 'HOOK_DAMAGED', label: 'Hook Damaged' },
+  ];
+
+  readonly assignedFilterOptions: RichSelectOption[] = [
+    { value: '', label: 'All' },
+    { value: 'ASSIGNED', label: 'Assigned' },
+    { value: 'UNASSIGNED', label: 'Unassigned' },
+  ];
+
+  readonly cabinetFilterOptions: RichSelectOption[] = [
+    { value: '', label: 'All Cabinets' },
+  ];
 
   private allHooksRaw: any[] = [];
 
@@ -173,7 +192,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
           this.allHooksRaw = payload.content ?? payload.items ?? payload.data ?? payload ?? [];
           this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
           this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
-          this.currentPage = Number(meta.page ?? meta.number ?? payload.page ?? payload.number ?? this.currentPage ?? 0);
+          this.currentPage = Number(meta.page ?? meta.number ?? payload.page ?? payload.number ?? (this.currentPage + 1)) - 1;
           this.totalItems = Number(meta.totalElements ?? meta.total ?? payload.totalElements ?? payload.total ?? this.allHooksRaw.length);
           this.totalPages = Number(meta.totalPages ?? payload.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
           if (this.pageSize !== 'All') {
@@ -215,7 +234,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
         this.allHooksRaw = payload.content ?? payload.items ?? payload.data ?? payload ?? [];
         this.rows = this.allHooksRaw.map(h => this.normalizeHookRow(h));
         this.hooks = this.allHooksRaw.map(h => this.normalizeGridHook(h));
-        this.currentPage = Number(meta.page ?? meta.number ?? payload.page ?? payload.number ?? this.currentPage ?? 0);
+        this.currentPage = Number(meta.page ?? meta.number ?? payload.page ?? payload.number ?? (this.currentPage + 1)) - 1;
         this.totalItems = Number(meta.totalElements ?? meta.total ?? payload.totalElements ?? payload.total ?? this.allHooksRaw.length);
         this.totalPages = Number(meta.totalPages ?? payload.totalPages ?? Math.max(1, Math.ceil(this.totalItems / effectivePageSize)));
         if (this.pageSize !== 'All') {
