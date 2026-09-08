@@ -119,7 +119,7 @@ export class AddUserComponent implements OnInit {
     canAccessWeb: true,
     canAccessMobile: true,
     canAccessBoth: false,
-    serviceCode: 'edob',
+    serviceCode: 'key-vault',
     roleIds: [] as string[],
   };
 
