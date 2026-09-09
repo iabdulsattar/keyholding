@@ -69,6 +69,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
   isDeactivateModalOpen = false;
   isReactivateModalOpen = false;
   isMoreMenuOpen = false;
+  rawHooks: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -116,9 +117,12 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     this.keyVault.getCabinet(orgId, this.cabinetId).subscribe({
       next: (res: any) => {
         const item = res?.data ?? res ?? {};
-        const totalHooks = item.numberOfHooks || item.totalHooks || item.hookCount || item.hooks || 0;
-        const usedHooks = item.usedHooks || item.keysHooked || 0;
-        const availHooks = item.availableHooks !== undefined ? item.availableHooks : (totalHooks - usedHooks);
+        this.rawHooks = item.hooks || [];
+        const totalHooks = item.numberOfHooks || item.totalHooks || item.hookCount || this.rawHooks.length || 0;
+        const usedHooks = this.rawHooks.length > 0
+          ? this.rawHooks.filter((h: any) => h.status === 'KEY_HOOKED').length
+          : (item.usedHooks || item.keysHooked || 0);
+        const availHooks = totalHooks - usedHooks;
         let status = item.status || 'ACTIVE';
         const active = item.active !== undefined ? item.active : (status === 'Active' || status === 'ACTIVE');
         if (status === 'ACTIVE' || status === 'Active') status = 'Active';
@@ -140,7 +144,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
           installedOn: item.installedOn || item.installedDate || '',
           installedBy: item.installedBy || '',
           lastUpdated: item.updatedDate || item.updatedAt || '',
-          lastUpdatedBy: item.updatedBy || item.lastUpdatedBy || '',
+          lastUpdatedBy: item.updatedByUserName || item.updatedBy || item.lastUpdatedBy || '',
           responsiblePerson: item.responsiblePerson || '',
           cctvMonitored: item.cctvMonitored ?? false,
           alarmSystem: item.alarmSystem ?? false,
@@ -183,6 +187,13 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
 
   get hooks(): Hook[] {
     if (!this.cabinet) return [];
+    if (this.rawHooks.length > 0) {
+      return this.rawHooks.map((h: any) => ({
+        num: h.hookNo || h.num || 0,
+        used: h.status === 'KEY_HOOKED',
+        status: h.status,
+      }));
+    }
     const usedSet = new Set<number>();
     for (let i = 1; i <= this.cabinet.usedHooks; i++) {
       usedSet.add(i);
