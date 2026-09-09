@@ -252,7 +252,12 @@ export class AddUserComponent implements OnInit {
   }
 
   onActivateSearch(): void {
-    this.existingUsersPage = 1;
+    this.existingUsersPage = 0;
+    this.loadExistingUsers();
+  }
+
+  refreshExistingUsers(): void {
+    this.existingUsersPage = 0;
     this.loadExistingUsers();
   }
 
