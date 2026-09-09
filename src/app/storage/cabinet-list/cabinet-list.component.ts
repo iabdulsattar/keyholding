@@ -42,15 +42,16 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   totalItems = 0;
 
   statusFilterOptions: RichSelectOption[] = [
-    { value: 'All Statuses', label: 'All Statuses' },
+    { value: 'All Statuses', label: 'Status' },
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' },
   ];
 
   get activeTypeFilterOptions(): RichSelectOption[] {
-    return [{ value: 'All Types', label: 'All Types' }, ...this.allTypes.map(t => ({ value: t, label: t }))];
+    return [{ value: 'All Types', label: 'Cabinet Type' }, ...this.allTypes.map(t => ({ value: t, label: t }))];
   }
 
+  
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 
   ngOnInit(): void {
