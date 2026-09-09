@@ -1,453 +1,380 @@
-<div class="min-h-screen w-full bg-slate-50 font-sans text-slate-900" *ngIf="loading; else loaded">
-  <div class="mx-auto ">
-    <div class="animate-pulse space-y-4">
-      <div class="h-8 w-48 rounded bg-slate-200"></div>
-      <div class="h-4 w-64 rounded bg-slate-200"></div>
-      <div class="h-96 rounded-2xl bg-slate-200"></div>
-    </div>
+<div class="min-h-screen w-full bg-gray-50 font-sans text-slate-900" *ngIf="loading; else loaded">
+  <div class="animate-pulse space-y-4">
+    <div class="h-8 w-48 rounded bg-slate-200"></div>
+    <div class="h-4 w-64 rounded bg-slate-200"></div>
+    <div class="h-96 rounded-2xl bg-slate-200"></div>
   </div>
 </div>
 
 <ng-template #loaded>
-  <div *ngIf="error" class="mx-auto ">
-    <div class="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
-      <i data-lucide="alert-circle" class="h-6 w-6 text-rose-500 mx-auto mb-2"></i>
-      <p class="text-rose-700">{{ error }}</p>
-      <button (click)="onBack()" class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-        Back to Storage Locations
-      </button>
-    </div>
+  <div *ngIf="error" class="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
+    <i data-lucide="alert-circle" class="h-6 w-6 text-rose-500 mx-auto mb-2"></i>
+    <p class="text-rose-700">{{ error }}</p>
+    <button (click)="onBack()" class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+      Back to Storage Locations
+    </button>
   </div>
 
   <div *ngIf="location" class="min-h-screen w-full font-sans text-slate-900">
-    <div class="">
 
-      <!-- Header -->
-      <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <div>
-            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-blue-600 font-medium">
-              <span>Storage Management</span>
-              <span class="text-slate-400">›</span>
-            
-              <span>Storage Locations</span>
-              <span class="text-slate-400">›</span>
-            
-              <span class="text-slate-600">{{ location.name }}</span>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3 mt-3">
-            <h1 class="text-3xl font-extrabold text-slate-900 ">Storage Location Detail</h1>
-            
-          </div>
-          <div>
-          <p class="text-sm text-slate-600 mt-1">Update the storage location details below.
-          </p>
-          
-        </div>
-        
-        </div>
-        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-        
-          <a [routerLink]="['/storage/locations/edit', location.id]" class="flex items-center gap-1.5 rounded-lg border border-blue-600 px-3 py-3 text-sm font-semibold text-blue-600 ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil text-blue-600"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
-            Edit
-          </a>
-          <a *ngIf="location.isActive" [routerLink]="['/storage/locations/deactivate', location.id]" class="flex items-center gap-1.5 rounded-lg border border-blue-600 px-3 py-3 text-sm font-semibold text-blue-600 ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-power-icon lucide-power"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
-            Deactivate
-          </a>
-          <a *ngIf="!location.isActive" [routerLink]="['/storage/locations/reactivate', location.id]" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw-icon lucide-rotate-cw"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-            Reactivate
-          </a>
-          <button class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            More
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-        </div>
+    <!-- Breadcrumb + actions -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <nav class="text-sm flex flex-wrap items-center gap-1">
+        <a href="#" class="text-blue-600 font-medium hover:underline">Storage Management</a>
+        <span class="text-gray-400 mx-1">&gt;</span>
+        <a [routerLink]="['/storage/locations']" class="text-blue-600 font-medium hover:underline">Storage Locations</a>
+        <span class="text-gray-400 mx-1">&gt;</span>
+        <span class="text-gray-500">{{ location.name }}</span>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a [routerLink]="['/storage/locations/edit', location.id]" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-blue-50">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          Edit
+        </a>
+        <a *ngIf="location.isActive" [routerLink]="['/storage/locations/deactivate', location.id]" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-blue-50">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v10"/><path stroke-linecap="round" d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg>
+          Deactivate
+        </a>
+        <a *ngIf="!location.isActive" [routerLink]="['/storage/locations/reactivate', location.id]" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 text-sm font-semibold hover:bg-slate-50">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-9 9 9 9 0 0 1 9-9zM12 7v5l3 3"/></svg>
+          Reactivate
+        </a>
+        <button class="p-2.5 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+        </button>
       </div>
+    </div>
 
-      <!-- Header card -->
-      <div class="mb-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:mb-6 sm:p-6">
-        <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr_1fr] gap-6 lg:gap-0">
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">Storage Location Details</h1>
+    <p class="text-gray-500 mt-1 mb-6">Update the storage location details below.</p>
 
-          <!-- Identity -->
-          <div class="flex items-start gap-4 lg:pr-6">
-            <div class="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center shrink-0">
-              <i data-lucide="building-2" class="text-indigo-500 w-7 h-7"></i>
-            </div>
-            <div class="min-w-0">
-              <div class="flex items-center gap-2 flex-wrap">
-                <h2 class="text-lg font-bold text-slate-900">{{ location.name }}</h2>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                      [ngClass]="location.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'">
-                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-rose-500'"></span>
-                  {{ location.status }}
-                </span>
-              </div>
-              <div class="flex items-center gap-1.5 text-sm text-slate-500 mt-1.5">
-                <span class="font-medium">{{ location.code }}</span>
-                <i data-lucide="copy" class="w-3.5 h-3.5 cursor-pointer hover:text-slate-700" (click)="copyCode()"></i>
-              </div>
-              <div class="flex items-start gap-1.5 text-sm text-slate-500 mt-2">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
-                <span>{{ location.address }}</span>
-              </div>
-            </div>
+    <!-- Header card -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-6">
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-6 xl:gap-8 items-start">
+
+        <!-- Identity -->
+        <div class="flex items-start gap-4 lg:pr-2">
+          <div class="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="building-2" class="text-indigo-500 w-7 h-7"></i>
           </div>
-
-          <!-- Site info -->
-          <dl class="flex flex-col gap-y-3 text-sm lg:px-6 lg:border-l lg:border-slate-100">
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Site / Building</dt>
-              <dd class="font-semibold text-slate-800">{{ location.siteName }}</dd>
-            </div>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Location Type</dt>
-              <dd class="font-semibold text-slate-800">{{ location.locationType || '—' }}</dd>
-            </div>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Responsible Person</dt>
-              <dd class="font-semibold text-indigo-600">{{ location.responsiblePerson }}</dd>
-              <dd class="text-slate-400 text-xs w-full sm:ml-32">{{ location.responsiblePersonTitle }}</dd>
-            </div>
-          </dl>
-
-          <!-- Contact / meta -->
-          <dl class="flex flex-col gap-y-3 text-sm lg:pl-6 lg:border-l lg:border-slate-100">
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Contact Number</dt>
-              <dd class="font-semibold text-slate-800">{{ location.contactNumber }}</dd>
-            </div>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Status</dt>
-              <dd class="font-semibold flex items-center gap-1"
-                  [ngClass]="location.isActive ? 'text-emerald-600' : 'text-rose-600'">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="text-lg font-bold text-slate-900">{{ location.name }}</h2>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                    [ngClass]="location.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'">
                 <span class="w-1.5 h-1.5 rounded-full" [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-rose-500'"></span>
                 {{ location.status }}
-              </dd>
+              </span>
             </div>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created By</dt>
-              <dd class="font-semibold text-slate-800">{{ location.createdBy }}</dd>
+            <div class="flex items-center gap-1.5 text-sm text-slate-500 mt-1.5">
+              <span class="font-medium">{{ location.code }}</span>
+              <i data-lucide="copy" class="w-3.5 h-3.5 cursor-pointer hover:text-slate-700" (click)="copyCode()"></i>
             </div>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created On</dt>
-              <dd class="font-semibold text-slate-800">{{ formatDate(location.createdDate) }}</dd>
+            <div class="flex items-start gap-1.5 text-sm text-slate-500 mt-2">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
+              <span>{{ location.address }}</span>
             </div>
-          </dl>
+          </div>
         </div>
+
+        <div class="hidden xl:block w-px bg-gray-100 h-full"></div>
+
+        <!-- Site info -->
+        <dl class="flex flex-col gap-y-3 text-sm">
+          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Site / Building</dt>
+            <dd class="font-semibold text-slate-800">{{ location.siteName }}</dd>
+          </div>
+          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Location Type</dt>
+            <dd class="font-semibold text-slate-800">{{ location.locationType || '—' }}</dd>
+          </div>
+          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Responsible Person</dt>
+            <dd class="font-semibold text-indigo-600">{{ location.responsiblePerson }}</dd>
+            <dd class="text-slate-400 text-xs w-full sm:ml-32">{{ location.responsiblePersonTitle }}</dd>
+          </div>
+        </dl>
+
+        <div class="hidden xl:block w-px bg-gray-100 h-full"></div>
+
+        <!-- Contact / meta -->
+        <dl class="flex flex-col gap-y-3 text-sm">
+          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Contact Number</dt>
+            <dd class="font-semibold text-slate-800">{{ location.contactNumber }}</dd>
+          </div>
+          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created By</dt>
+            <dd class="font-semibold text-slate-800">{{ location.createdBy }}</dd>
+          </div>
+          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created On</dt>
+            <dd class="font-semibold text-slate-800">{{ formatDate(location.createdDate) }}</dd>
+          </div>
+        </dl>
+
       </div>
+    </div>
 
     <!-- Stat cards row -->
-  <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
 
-      <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6 lg:[&:nth-child(5)]:border-r-0">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
           <i data-lucide="archive" class="w-5 h-5 text-indigo-500"></i>
         </div>
         <div class="min-w-0">
-          <div class="text-sm text-slate-500">Total Cabinets</div>
-          <div class="text-xl font-bold text-slate-900 mt-0.5">6</div>
-          <a href="#" class="text-sm text-indigo-600 font-medium hover:underline">View Cabinets &rarr;</a>
+          <div class="text-sm text-gray-500">Total Cabinets</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.totalCabinets }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+            View Cabinets
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
-      <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
           <i data-lucide="anchor" class="w-5 h-5 text-emerald-500"></i>
         </div>
         <div class="min-w-0">
-          <div class="text-sm text-slate-500">Total Hooks / Slots</div>
-          <div class="text-xl font-bold text-slate-900 mt-0.5">248</div>
-          <a href="#" class="text-sm text-indigo-600 font-medium hover:underline">View Hooks &rarr;</a>
+          <div class="text-sm text-gray-500">Total Hooks / Slots</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.totalHooks }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+            View Hooks
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
-      <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
           <i data-lucide="key" class="w-5 h-5 text-purple-500"></i>
         </div>
         <div class="min-w-0">
-          <div class="text-sm text-slate-500">Keys in Storage</div>
-          <div class="text-xl font-bold text-slate-900 mt-0.5">186</div>
-          <a href="#" class="text-sm text-indigo-600 font-medium hover:underline">View Keys &rarr;</a>
+          <div class="text-sm text-gray-500">Keys in Storage</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.keysInStorage }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+            View Keys
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
-      <div class="flex items-start gap-3 lg:border-r lg:border-slate-100 lg:pr-6">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
           <i data-lucide="wrench" class="w-5 h-5 text-amber-500"></i>
         </div>
         <div class="min-w-0">
-          <div class="text-sm text-slate-500">Available Hooks</div>
-          <div class="text-xl font-bold text-slate-900 mt-0.5">62</div>
-          <a href="#" class="text-sm text-indigo-600 font-medium hover:underline">View Hooks &rarr;</a>
+          <div class="text-sm text-gray-500">Available Hooks</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.availableHooks }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+            View Hooks
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
-      <div class="flex items-start gap-3 col-span-2 sm:col-span-1">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3 col-span-2 sm:col-span-1">
         <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
           <i data-lucide="triangle-alert" class="w-5 h-5 text-red-500"></i>
         </div>
         <div class="min-w-0">
-          <div class="text-sm text-slate-500">Out of Order Hooks</div>
-          <div class="text-xl font-bold text-slate-900 mt-0.5">0</div>
-          <a href="#" class="text-sm text-indigo-600 font-medium hover:underline">View Hooks &rarr;</a>
+          <div class="text-sm text-gray-500">Out of Order Hooks</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.outOfOrderHooks }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+            View Hooks
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
     </div>
-  </div>
 
-      <!-- Tabs -->
-      <div class="mb-4 mt-4 overflow-x-auto border-b border-slate-200 sm:mb-6">
-        <div class="flex min-w-max gap-6 px-1 text-sm font-medium">
-          <button class="whitespace-nowrap border-b-2 border-blue-600 pb-3 text-blue-600">Location Information</button>
-          <button class="whitespace-nowrap border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600">Access &amp; Notes</button>
-          <button class="whitespace-nowrap border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600">Activity Log</button>
-          <button class="whitespace-nowrap border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600">Documents</button>
+    <!-- Location Information -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-6">
+      <h3 class="text-lg font-bold text-gray-900 mb-5">Location Information</h3>
+      <div class="grid grid-cols-1 gap-x-10 gap-y-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Location Code</dt>
+          <dd class="text-gray-900 font-medium">{{ location.code }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Responsible Person</dt>
+          <dd class="text-blue-600 font-medium hover:underline"><a href="#" class="hover:underline">{{ location.responsiblePerson }}</a></dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Location Name</dt>
+          <dd class="text-gray-900 font-medium">{{ location.name }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Contact Number</dt>
+          <dd class="text-gray-900 font-medium">{{ location.contactNumber }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Site / Building</dt>
+          <dd class="text-gray-900 font-medium">{{ location.siteName }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Status</dt>
+          <dd class="text-emerald-600 font-semibold inline-flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+          </dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Location Type</dt>
+          <dd class="text-gray-900 font-medium">{{ location.locationType || '—' }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Created By</dt>
+          <dd class="text-gray-900 font-medium">{{ location.createdBy }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Address</dt>
+          <dd class="text-gray-900 font-medium">{{ location.address }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Created On</dt>
+          <dd class="text-gray-900 font-medium">{{ formatDate(location.createdDate) }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">City</dt>
+          <dd class="text-gray-900 font-medium">{{ location.city }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Last Updated By</dt>
+          <dd class="text-gray-900 font-medium">{{ location.updatedBy }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Postcode / ZIP</dt>
+          <dd class="text-gray-900 font-medium">{{ location.postcode }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Last Updated On</dt>
+          <dd class="text-gray-900 font-medium">{{ formatDate(location.updatedDate) }}</dd>
+        </div>
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-gray-400 w-40 flex-shrink-0">Country</dt>
+          <dd class="text-gray-900 font-medium">{{ location.country }}</dd>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cabinets in this location -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+        <h3 class="text-lg font-bold text-gray-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
+        <button class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Add Cabinet
+        </button>
+      </div>
+
+      <!-- Desktop table -->
+      <div class="hidden overflow-x-auto lg:block">
+        <table class="w-full min-w-[820px] text-sm">
+          <thead>
+            <tr class="text-left text-gray-500 border-b border-gray-100">
+              <th class="font-semibold pb-3 pr-4">Cabinet Code</th>
+              <th class="font-semibold pb-3 pr-4">Cabinet Name</th>
+              <th class="font-semibold pb-3 pr-4">Cabinet Type</th>
+              <th class="font-semibold pb-3 pr-4">Capacity (Hooks)</th>
+              <th class="font-semibold pb-3 pr-4">Hooks / Slots</th>
+              <th class="font-semibold pb-3 pr-4">Keys in Storage</th>
+              <th class="font-semibold pb-3 pr-4">Status</th>
+              <th class="font-semibold pb-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cabinet of cabinetsPaginated"
+                class="hover:bg-gray-50/60">
+              <td class="py-4 pr-4"><a [routerLink]="['/storage/locations/cabinets/view', cabinet.id]" class="text-blue-600 font-semibold hover:underline">{{ cabinet.code }}</a></td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinet.name }}</td>
+              <td class="py-4 pr-4 text-gray-600">{{ cabinet.type }}</td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinet.capacity }}</td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinet.hooks }}</td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinet.keysInStorage }}</td>
+              <td class="py-4 pr-4">
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Active
+                </span>
+              </td>
+              <td class="py-4">
+                <div class="flex items-center justify-end gap-2">
+                  <button class="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
+                  <button class="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11.5a.5.5 0 1 0 0 1 .5.5.5.5 0 0 0 0-1v0a.5.5 0 0 0-.5.5h0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v.01M12 11v4"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile cards -->
+      <div *ngFor="let cabinet of cabinetsPaginated" class="divide-y divide-gray-50 lg:hidden">
+        <div class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-medium text-blue-600">{{ cabinet.code }}</div>
+              <div class="text-sm text-slate-700">{{ cabinet.name }}</div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+            </span>
+          </div>
+          <div class="mt-3 grid grid-cols-2 gap-y-2 text-xs">
+            <div><span class="text-slate-400">Type:</span> <span class="text-slate-600">{{ cabinet.type }}</span></div>
+            <div><span class="text-slate-400">Capacity:</span> <span class="text-slate-600">{{ cabinet.capacity }}</span></div>
+            <div><span class="text-slate-400">Hooks/Slots:</span> <span class="text-slate-600">{{ cabinet.hooks }}</span></div>
+            <div><span class="text-slate-400">Keys:</span> <span class="text-slate-600">{{ cabinet.keysInStorage }}</span></div>
+          </div>
+          <button class="mt-3 w-full rounded-lg border border-slate-200 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
         </div>
       </div>
 
-      <!-- Info + Quick Actions -->
-      <div class="mb-4 grid grid-cols-1 gap-4 sm:mb-6 lg:grid-cols-3 lg:gap-6">
-
-        <!-- Location Information -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:col-span-2">
-          <h3 class="mb-4 text-sm font-bold text-slate-900">Location Information</h3>
-          <div class="grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
-            <div>
-              <div class="text-slate-400">Location Code</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.code }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Responsible Person</div>
-              <div class="mt-0.5 font-medium text-blue-500">{{ location.responsiblePerson }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Location Name</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.name }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Contact Number</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.contactNumber }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Site / Building</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.siteName }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Status</div>
-              <div class="mt-0.5 inline-flex items-center gap-1.5 font-medium"
-                   [ngClass]="getStatusClass(location.status)">
-                <span class="h-1.5 w-1.5 rounded-full"
-                      [ngClass]="getStatusDotClass(location.status)"></span>
-                {{ location.status }}
-              </div>
-            </div>
-            <div>
-              <div class="text-slate-400">Location Type</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.locationType || '—' }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Created By</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.createdBy }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Address</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.address }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Created On</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ formatDate(location.createdDate) }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">City</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.city }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Last Updated By</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.updatedBy }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Postcode / ZIP</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.postcode }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Last Updated On</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ formatDate(location.updatedDate) }}</div>
-            </div>
-            <div>
-              <div class="text-slate-400">Country</div>
-              <div class="mt-0.5 font-medium text-slate-700">{{ location.country }}</div>
-            </div>
-            <div>
-              <div class="font-semibold text-slate-700">CCTV Monitored</div>
-            </div>
-            <div>
-              <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location.cctvMonitored ? 'Yes' : 'No' }}</span>
-            </div>
-            <div>
-              <div class="font-semibold text-slate-700">Alarm System</div>
-            </div>
-            <div>
-              <span class="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600">{{ location.alarmSystem ? 'Yes' : 'No' }}</span>
-            </div>
-          </div>
+      <!-- Pagination -->
+      <div class="flex flex-col gap-3 border-t border-gray-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-slate-700">Showing {{ cabinetsShowingStart }} to {{ cabinetsShowingEnd }} of {{ location.cabinets?.length }} cabinets</span>
+          <select [(ngModel)]="cabinetsRowsPerPage" (ngModelChange)="onCabinetsRowsPerPageChange($event)" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option *ngFor="let size of cabinetsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
+          </select>
         </div>
-
-        <!-- Quick Actions -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-          <h3 class="mb-4 text-sm font-bold text-slate-900">Quick Actions</h3>
-          <div class="space-y-4">
-            <a routerLink="/storage/locations/add" class="flex items-start gap-3 group">
-              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                <i data-lucide="archive" class="h-4 w-4 text-blue-500"></i>
-              </div>
-              <div>
-                <div class="text-sm font-medium text-blue-600 group-hover:underline">Add Cabinet</div>
-                <div class="text-xs text-slate-400">Add a new cabinet to this location</div>
-              </div>
-            </a>
-            <a href="#" class="flex items-start gap-3 group">
-              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                <i data-lucide="archive" class="h-4 w-4 text-blue-500"></i>
-              </div>
-              <div>
-                <div class="text-sm font-medium text-blue-600 group-hover:underline">View Cabinets</div>
-                <div class="text-xs text-slate-400">Manage cabinets in this location</div>
-              </div>
-            </a>
-            <a href="#" class="flex items-start gap-3 group">
-              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                <i data-lucide="anchor" class="h-4 w-4 text-blue-500"></i>
-              </div>
-              <div>
-                <div class="text-sm font-medium text-blue-600 group-hover:underline">View Hooks / Slots</div>
-                <div class="text-xs text-slate-400">View and manage hooks or slots</div>
-              </div>
-            </a>
-            <a href="#" class="flex items-start gap-3 group">
-              <div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                <i data-lucide="printer" class="h-4 w-4 text-blue-500"></i>
-              </div>
-              <div>
-                <div class="text-sm font-medium text-blue-600 group-hover:underline">Print Location Details</div>
-                <div class="text-xs text-slate-400">Download or print this location information</div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cabinets table card -->
-      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between">
-          <h3 class="text-sm font-bold text-slate-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
-          <button class="flex items-center justify-center gap-1.5 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700">
-            <i data-lucide="plus" class="h-4 w-4"></i>
-            Add Cabinet
+        <div class="flex items-center gap-1">
+          <button (click)="cabinetsPreviousPage()" [disabled]="cabinetsPage === 1" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          @for (p of cabinetsVisiblePages; track p) {
+            @if (p === '...') {
+              <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
+            } @else {
+              <button (click)="cabinetsGoToPage(p)"
+                [class.bg-blue-600]="cabinetsPage === p"
+                [class.text-white]="cabinetsPage === p"
+                [class.border-slate-200]="cabinetsPage !== p"
+                [class.text-slate-500]="cabinetsPage !== p"
+                class="flex h-8 w-8 items-center justify-center rounded-lg border font-medium hover:bg-slate-50">
+                {{ p }}
+              </button>
+            }
+          }
+          <button (click)="cabinetsGoToPage(cabinetsTotalPages)"
+            class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">{{ cabinetsTotalPages }}</button>
+          <button (click)="cabinetsNextPage()" [disabled]="cabinetsPage >= cabinetsTotalPages" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </button>
         </div>
+      </div>
+    </div>
 
-        <!-- Desktop table -->
-        <div class="hidden overflow-x-auto lg:block">
-          <table class="w-full min-w-[800px] text-left text-sm">
-            <thead>
-              <tr class="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
-                <th class="px-5 py-3 font-medium">Cabinet Code</th>
-                <th class="px-5 py-3 font-medium">Cabinet Name</th>
-                <th class="px-5 py-3 font-medium">Cabinet Type</th>
-                <th class="px-5 py-3 font-medium">Capacity (Hooks)</th>
-                <th class="px-5 py-3 font-medium">Hooks / Slots</th>
-                <th class="px-5 py-3 font-medium">Keys in Storage</th>
-                <th class="px-5 py-3 font-medium">Status</th>
-                <th class="px-5 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let cabinet of cabinetsPaginated"
-                  class="border-b border-slate-50 last:border-0 hover:bg-slate-50/60">
-                <td class="px-5 py-4 font-medium text-blue-500">{{ cabinet.code }}</td>
-                <td class="px-5 py-4 text-slate-700">{{ cabinet.name }}</td>
-                <td class="px-5 py-4 text-slate-500">{{ cabinet.type }}</td>
-                <td class="px-5 py-4 text-slate-600">{{ cabinet.capacity }}</td>
-                <td class="px-5 py-4 text-slate-600">{{ cabinet.hooks }}</td>
-                <td class="px-5 py-4 text-slate-600">{{ cabinet.keysInStorage }}</td>
-                <td class="px-5 py-4">
-                  <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-600">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
-                  </span>
-                </td>
-                <td class="px-5 py-4">
-                  <div class="flex items-center justify-end gap-2">
-                    <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
-                    <button class="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
-                      <i data-lucide="more-vertical" class="h-4 w-4"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <footer class="flex flex-col sm:flex-row items-center justify-end gap-4 text-sm text-gray-500 mt-10 mb-6">
+      <a href="#" class="hover:text-gray-700">Privacy Policy</a>
+      <a href="#" class="hover:text-gray-700">Terms of Service</a>
+      <a href="#" class="hover:text-gray-700">Support</a>
+    </footer>
 
-        <!-- Mobile cards -->
-        <div *ngFor="let cabinet of cabinetsPaginated" class="divide-y divide-slate-50 lg:hidden">
-          <div class="p-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <div class="font-medium text-blue-500">{{ cabinet.code }}</div>
-                <div class="text-sm text-slate-700">{{ cabinet.name }}</div>
-              </div>
-              <span class="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
-              </span>
-            </div>
-            <div class="mt-3 grid grid-cols-2 gap-y-2 text-xs">
-              <div><span class="text-slate-400">Type:</span> <span class="text-slate-600">{{ cabinet.type }}</span></div>
-              <div><span class="text-slate-400">Capacity:</span> <span class="text-slate-600">{{ cabinet.capacity }}</span></div>
-              <div><span class="text-slate-400">Hooks/Slots:</span> <span class="text-slate-600">{{ cabinet.hooks }}</span></div>
-              <div><span class="text-slate-400">Keys:</span> <span class="text-slate-600">{{ cabinet.keysInStorage }}</span></div>
-            </div>
-            <button class="mt-3 w-full rounded-lg border border-slate-200 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
-          </div>
-        </div>
-
-         <!-- Pagination -->
-         <div class="flex flex-col gap-3 border-t border-slate-100 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-           <div class="flex items-center gap-3">
-             <span class="text-slate-700">Showing {{ cabinetsShowingStart }} to {{ cabinetsShowingEnd }} of {{ location.cabinets?.length }} cabinets</span>
-             <select [(ngModel)]="cabinetsRowsPerPage" (ngModelChange)="onCabinetsRowsPerPageChange($event)" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-               <option *ngFor="let size of cabinetsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
-             </select>
-           </div>
-           <div class="flex items-center gap-1">
-             <button (click)="cabinetsPreviousPage()" [disabled]="cabinetsPage === 1" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
-             </button>
-             @for (p of cabinetsVisiblePages; track p) {
-               @if (p === '...') {
-                 <span class="flex h-8 w-8 items-center justify-center text-slate-400">...</span>
-               } @else {
-                 <button (click)="cabinetsGoToPage(p)" [class.bg-blue-600]="cabinetsPage === p" [class.text-white]="cabinetsPage === p" [class.border-slate-200]="cabinetsPage !== p" [class.text-slate-500]="cabinetsPage !== p" class="flex h-8 w-8 items-center justify-center rounded-lg border font-medium hover:bg-slate-50">
-                   {{ p }}
-                 </button>
-               }
-             }
-             <button (click)="cabinetsGoToPage(cabinetsTotalPages)" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">{{ cabinetsTotalPages }}</button>
-             <button (click)="cabinetsNextPage()" [disabled]="cabinetsPage >= cabinetsTotalPages" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
-               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-             </button>
-           </div>
-         </div>
-         </div>
-       </div>
-
-     </div>
+  </div>
 </ng-template>
