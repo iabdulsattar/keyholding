@@ -121,12 +121,11 @@ export class DeleteRoleComponent implements OnInit {
 
   private loadUsers(): void {
     if (!this.orgId || !this.roleId) return;
-    this.userService.listUsers(this.orgId, { page: 0, size: 100 }).subscribe({
+    this.userService.listUsers(this.orgId, { page: 0, size: 100, roleId: this.roleId }).subscribe({
       next: (data: any) => {
         const users = data?.content ?? data ?? [];
-        const assigned = users.filter((u: any) => this.userHasRole(u, this.roleId!));
-        this.totalUsers = assigned.length;
-        this.users = assigned.map((u: any, i: number) => this.mapUser(u, i));
+        this.totalUsers = users.length;
+        this.users = users.map((u: any, i: number) => this.mapUser(u, i));
       },
       error: () => {
         this.users = [];
@@ -136,13 +135,6 @@ export class DeleteRoleComponent implements OnInit {
         this.usersLoading = false;
       },
     });
-  }
-
-  private userHasRole(u: any, roleId: string): boolean {
-    const topLevel = (u.roleIds || []).includes(roleId);
-    const fromService = (u.serviceAccess || [])
-      .some((s: any) => (s.roleIds || []).includes(roleId));
-    return topLevel || fromService;
   }
 
   private mapUser(u: OrgUser, index: number): AssignedUser {
@@ -214,8 +206,8 @@ export class DeleteRoleComponent implements OnInit {
     this.router.navigate(['/roles']);
   }
 
-  viewRole(): void {
-    this.router.navigate(['/roles']);
+  viewAllUsers(): void {
+    this.router.navigate(['/user-management'], { queryParams: { roleId: this.roleId } });
   }
 
   cancel(): void {

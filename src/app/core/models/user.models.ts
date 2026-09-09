@@ -55,6 +55,7 @@ export interface ListUsersParams {
   status?: UserStatus;
   page?: number;
   size?: number;
+  roleId?: string;
 }
 
 export interface PagedUsers {

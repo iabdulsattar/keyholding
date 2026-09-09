@@ -72,6 +72,10 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
           cctvMonitored: item.cctvMonitored ?? true,
           alarmSystem: item.alarmSystem ?? true,
           cabinets: item.cabinets || [],
+          createdBy: item.createdByUserName || item.createdBy || '',
+          createdDate: item.createdAt || item.createdDate || '',
+          updatedBy: item.updatedByUserName || item.updatedBy || '',
+          updatedDate: item.updatedAt || item.updatedDate || '',
         };
         this.loading = false;
         this.createIcons();
@@ -110,9 +114,9 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
       availableHooks: 62,
       outOfOrderHooks: 0,
       cabinets: [
-        { code: 'CAB-A01', name: 'Cabinet A', type: 'Steel Key Cabinet', capacity: 50, hooks: 50, keysInStorage: 41 },
-        { code: 'CAB-A02', name: 'Cabinet B', type: 'Steel Key Cabinet', capacity: 50, hooks: 50, keysInStorage: 37 },
-        { code: 'CAB-A03', name: 'Cabinet C', type: 'Electronic Key Cabinet', capacity: 60, hooks: 60, keysInStorage: 49 },
+        { id: '1', code: 'CAB-A01', name: 'Cabinet A', type: 'Steel Key Cabinet', capacity: 50, hooks: 50, keysInStorage: 41 },
+        { id: '2', code: 'CAB-A02', name: 'Cabinet B', type: 'Steel Key Cabinet', capacity: 50, hooks: 50, keysInStorage: 37 },
+        { id: '3', code: 'CAB-A03', name: 'Cabinet C', type: 'Electronic Key Cabinet', capacity: 60, hooks: 60, keysInStorage: 49 },
       ],
     };
   }

@@ -78,12 +78,13 @@ export class UserService {
   // ==================== Users ====================
 
   // 13.1 GET /api/v1/users/organizations/{orgId}/users
-  listUsers(orgId: string, options: ListUsersParams = {}): Observable<PagedUsers> {
+   listUsers(orgId: string, options: ListUsersParams = {}): Observable<PagedUsers> {
     let params = new HttpParams();
     if (options.q) params = params.set('q', options.q);
     if (options.status) params = params.set('status', options.status);
     if (options.page != null) params = params.set('page', String(options.page));
     if (options.size != null) params = params.set('size', String(options.size));
+    if (options.roleId) params = params.set('roleId', options.roleId);
     params = params.set('serviceCode', 'key-vault');
 
     const query = params.toString();
