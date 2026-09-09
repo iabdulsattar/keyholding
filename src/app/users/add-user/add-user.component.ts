@@ -156,6 +156,14 @@ export class AddUserComponent implements OnInit {
     return this.permissionService.hasPermission('admin.users.manage');
   }
 
+  get isAdministrator(): boolean {
+    if (!this.isEditMode) return false;
+    return (this.form.roleIds || []).some(rid => {
+      const role = this.roles.find(r => String(r.id) === String(rid));
+      return role?.name?.toLowerCase() === 'administrator';
+    });
+  }
+
   get informationInvalid(): boolean {
     return this.submitted && (
       !this.form.fullName.trim() ||

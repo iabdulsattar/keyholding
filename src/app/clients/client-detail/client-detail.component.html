@@ -573,7 +573,6 @@
                      <th class="py-3 px-4">Site Code</th>
                      <th class="py-3 px-4">Site Name</th>
                      <th class="py-3 px-4">Site Type</th>
-                     <th class="py-3 px-4">Address</th>
                      <th class="py-3 px-4">Primary Contact</th>
                      <th class="py-3 px-4">Status</th>
                      <th class="py-3 px-4 text-center">Keys</th>
@@ -590,7 +589,6 @@
                       <td class="py-3.5 px-4">
                         <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + site.typeColor + '-50 text-' + site.typeColor + '-700 border border-' + site.typeColor + '-100'">{{ site.siteType }}</span>
                       </td>
-                      <td class="py-3.5 px-4 text-xs max-w-xs truncate text-slate-500" [title]="site.address">{{ site.address }}</td>
                       <td class="py-3.5 px-4 text-slate-600 font-medium">{{ site.primaryContactName }}</td>
                       <td class="py-3.5 px-4">
                         <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (site.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600')"> {{ site.status }}</span>

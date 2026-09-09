@@ -193,6 +193,40 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     }));
   }
 
+  get donutBlue(): string {
+    if (!this.cabinet) return '0 251.3';
+    const pct = (this.cabinet.availHooks / this.cabinet.totalHooks) * 100;
+    const circumference = 2 * Math.PI * 40;
+    const dashOffset = circumference * (1 - pct / 100);
+    return `${circumference * pct / 100} ${circumference}`;
+  }
+
+  get donutGreen(): string {
+    if (!this.cabinet) return '0 251.3';
+    const pct = (this.cabinet.usedHooks / this.cabinet.totalHooks) * 100;
+    const circumference = 2 * Math.PI * 40;
+    return `${circumference * pct / 100} ${circumference}`;
+  }
+
+  get donutGreenOffset(): string {
+    if (!this.cabinet) return '0';
+    const pct = (this.cabinet.availHooks / this.cabinet.totalHooks) * 100;
+    const circumference = 2 * Math.PI * 40;
+    return `-${circumference * pct / 100}`;
+  }
+
+  get donutYellow(): string {
+    const circumference = 2 * Math.PI * 40;
+    return `0 ${circumference}`;
+  }
+
+  get donutYellowOffset(): string {
+    if (!this.cabinet) return '0';
+    const pct = ((this.cabinet.availHooks + this.cabinet.usedHooks) / this.cabinet.totalHooks) * 100;
+    const circumference = 2 * Math.PI * 40;
+    return `-${circumference * pct / 100}`;
+  }
+
   openDeactivateModal(): void {
     this.isDeactivateModalOpen = true;
     this.isMoreMenuOpen = false;

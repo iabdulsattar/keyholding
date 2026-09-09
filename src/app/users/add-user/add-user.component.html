@@ -254,7 +254,7 @@
           <div>
             <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-2">Role <span
                 class="text-red-500">*</span></label>
-            <app-multi-select [options]="roleOptions" [defaultSelected]="form.roleIds" [disabled]="loadingRoles"
+            <app-multi-select [options]="roleOptions" [defaultSelected]="form.roleIds" [disabled]="loadingRoles || isAdministrator"
               (selectionChange)="form.roleIds = $event" />
           </div>
           <div>

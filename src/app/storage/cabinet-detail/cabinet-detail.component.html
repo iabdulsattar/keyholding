@@ -1,356 +1,341 @@
-<div class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900" *ngIf="loading; else loaded">
-  <div class="">
-    <div class="animate-pulse space-y-4">
-      <div class="h-8 w-48 rounded bg-slate-200"></div>
-      <div class="h-4 w-64 rounded bg-slate-200"></div>
-      <div class="h-96 rounded-2xl bg-slate-200"></div>
-    </div>
+<div class="min-h-screen w-full bg-gray-50 font-sans text-slate-900" *ngIf="loading; else loaded">
+  <div class="animate-pulse space-y-4">
+    <div class="h-8 w-48 rounded bg-slate-200"></div>
+    <div class="h-4 w-64 rounded bg-slate-200"></div>
+    <div class="h-96 rounded-2xl bg-slate-200"></div>
   </div>
 </div>
 
 <ng-template #loaded>
-<div *ngIf="error && !cabinet" class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900">
-  <div class="">
-    <div class="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
-      <i data-lucide="alert-circle" class="h-6 w-6 text-rose-500 mx-auto mb-2"></i>
-      <p class="text-rose-700">{{ error }}</p>
-      <button (click)="onBack()" class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-        Back to Cabinets
-      </button>
-    </div>
+<div *ngIf="error && !cabinet" class="min-h-screen w-full bg-gray-50 font-sans text-slate-900">
+  <div class="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
+    <i data-lucide="alert-circle" class="h-6 w-6 text-rose-500 mx-auto mb-2"></i>
+    <p class="text-rose-700">{{ error }}</p>
+    <button (click)="onBack()" class="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+      Back to Cabinets
+    </button>
   </div>
 </div>
 
-<div *ngIf="cabinet" class="min-h-screen w-full bg-[#f6f7fb] font-sans text-slate-900">
-  <div class="">
+<div *ngIf="cabinet" class="min-h-screen w-full bg-gray-50 font-sans text-slate-900">
 
-    <!-- Breadcrumb -->
-    <div class="flex flex-wrap items-center gap-1.5 text-sm text-blue-600 mb-4">
-      <a href="#" class="hover:underline">Storage Management</a>
-      <span class="text-slate-400">›</span>
-      <a href="#" class="hover:underline">Storage Locations</a>
-      <span class="text-slate-400">›</span>
-      <a [routerLink]="['/storage/locations/cabinets']" class="hover:underline">Cabinets</a>
-      <span class="text-slate-400">›</span>
-      <span class="text-slate-500">Cabinet Detail</span>
-    </div>
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-1.5 text-sm text-blue-600 mb-4">
+    <a href="#" class="hover:underline">Storage Management</a>
+    <span class="text-gray-400">/</span>
+    <a [routerLink]="['/storage/locations/cabinets']" class="hover:underline">Cabinets</a>
+    <span class="text-gray-400">/</span>
+    <span class="text-gray-500">Cabinet Detail</span>
+  </nav>
 
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
-      <div>
-        <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Cabinet Detail</h1>
-        <p class="text-sm text-slate-400 mt-0.5">View complete information about this cabinet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-2.5 shrink-0 relative">
-        <a [routerLink]="['/storage/locations/cabinets']" class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-slate-50 whitespace-nowrap">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-          Back to Cabinets
-        </a>
-        <a [routerLink]="['/storage/locations/cabinets/edit', cabinet.id]" class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 border border-slate-200 rounded-lg px-3.5 py-2 hover:bg-slate-50 whitespace-nowrap">
-          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-          Edit Cabinet
-        </a>
-     
-      </div>
-    </div>
+  <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">Cabinet Detail</h1>
+  <p class="text-gray-500 mt-1 mb-6">View complete information about this cabinet.</p>
 
-    <!-- Summary card -->
-    <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 mb-5">
-      <div class="flex flex-col xl:flex-row xl:items-center gap-6">
-        <div class="flex items-start gap-4 flex-1 min-w-0">
-          <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-            <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="1.5"/><circle cx="9.5" cy="12" r="0.6" fill="currentColor"/><circle cx="14.5" cy="12" r="0.6" fill="currentColor"/></svg>
-          </div>
-          <div class="min-w-0">
-            <div class="flex flex-wrap items-center gap-2">
-              <h2 class="text-base font-semibold text-slate-800">{{ cabinet.name }}</h2>
-              <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium"
-                    [ngClass]="getStatusClass(cabinet.status)">
-                <span class="h-1.5 w-1.5 rounded-full"
-                      [ngClass]="cabinet.active ? 'bg-emerald-500' : 'bg-slate-400'"></span>
-                {{ cabinet.status }}
-              </span>
-            </div>
-            <div class="flex flex-wrap items-center gap-2 mt-1.5">
-              <span class="text-xs font-medium bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full">{{ cabinet.code }}</span>
-              <span class="text-xs font-medium bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full">{{ cabinet.type }}</span>
-            </div>
-            <p class="flex items-center gap-1.5 text-sm text-slate-500 mt-2" *ngIf="cabinet.storageLocation">
-              <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
-              {{ cabinet.storageLocation }}
-            </p>
-            <p class="flex items-center gap-1.5 text-sm text-slate-500 mt-1" *ngIf="cabinet.floor">
-              <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
-              {{ cabinet.floor }}
-            </p>
-          </div>
+  <!-- Summary card -->
+  <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-6">
+    <div class="flex flex-col xl:flex-row xl:items-center gap-6">
+      <div class="flex items-start gap-4 flex-1 min-w-0">
+        <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+          <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="1.5"/><circle cx="9.5" cy="12" r="0.6" fill="currentColor"/><circle cx="14.5" cy="12" r="0.6" fill="currentColor"/></svg>
         </div>
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="text-xl font-bold text-gray-900">{{ cabinet.name }}</h2>
+            <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              {{ cabinet.status }}
+            </span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 mt-1.5">
+            <span class="text-xs font-medium bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full">{{ cabinet.code }}</span>
+            <span class="text-xs font-medium bg-gray-100 text-gray-500 px-2.5 py-0.5 rounded-full">{{ cabinet.type }}</span>
+          </div>
+          <p class="flex items-center gap-1.5 text-sm text-gray-500 mt-2" *ngIf="cabinet.storageLocation">
+            <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+            {{ cabinet.storageLocation }}
+          </p>
+          <p class="flex items-center gap-1.5 text-sm text-gray-500 mt-1" *ngIf="cabinet.floor">
+            <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
+            {{ cabinet.floor }}
+          </p>
+        </div>
+      </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-4 xl:border-l xl:border-slate-200 xl:pl-6">
-          <div class="text-center">
-            <p class="text-xs text-slate-400 mb-1">Total Hooks</p>
-            <p class="text-lg font-bold text-slate-800">{{ cabinet.totalHooks }}</p>
-          </div>
-          <div class="text-center">
-            <p class="text-xs text-slate-400 mb-1">Used Hooks</p>
-            <p class="text-lg font-bold text-slate-800">{{ cabinet.usedHooks }}</p>
-          </div>
-          <div class="text-center">
-            <p class="text-xs text-slate-400 mb-1">Available Hooks</p>
-            <p class="text-lg font-bold text-slate-800">{{ cabinet.availHooks }}</p>
-          </div>
-          <div class="text-center">
-            <p class="text-xs text-slate-400 mb-1">Keys Stored</p>
-            <p class="text-lg font-bold text-slate-800">{{ cabinet.usedHooks }}</p>
-          </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-4 xl:border-l xl:border-gray-200 xl:pl-6">
+        <div>
+          <div class="text-xs font-semibold tracking-wide text-gray-400">TOTAL HOOKS</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ cabinet.totalHooks }}</div>
+        </div>
+        <div>
+          <div class="text-xs font-semibold tracking-wide text-gray-400">USED HOOKS</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ cabinet.usedHooks }}</div>
+        </div>
+        <div>
+          <div class="text-xs font-semibold tracking-wide text-gray-400">AVAILABLE</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ cabinet.availHooks }}</div>
+        </div>
+        <div>
+          <div class="text-xs font-semibold tracking-wide text-gray-400">KEYS STORED</div>
+          <div class="text-2xl font-bold text-gray-900 mt-1">{{ cabinet.usedHooks }}</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Main grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <!-- Tabs -->
+  <div class="border-b border-gray-200 mb-6">
+    <nav class="flex gap-8 text-sm">
+      <button (click)="setActiveTab('overview')"
+        [class.border-blue-600]="activeTab === 'overview'"
+        [class.text-blue-600]="activeTab === 'overview'"
+        [class.border-transparent]="activeTab !== 'overview'"
+        [class.text-gray-500]="activeTab !== 'overview'"
+        class="pb-3 border-b-2 font-semibold transition-colors">Overview</button>
+      <button (click)="setActiveTab('hooks')"
+        [class.border-blue-600]="activeTab === 'hooks'"
+        [class.text-blue-600]="activeTab === 'hooks'"
+        [class.border-transparent]="activeTab !== 'hooks'"
+        [class.text-gray-500]="activeTab !== 'hooks'"
+        class="pb-3 border-b-2 font-semibold transition-colors">Hooks ({{ cabinet.totalHooks }})</button>
+      <button (click)="setActiveTab('keys')"
+        [class.border-blue-600]="activeTab === 'keys'"
+        [class.text-blue-600]="activeTab === 'keys'"
+        [class.border-transparent]="activeTab !== 'keys'"
+        [class.text-gray-500]="activeTab !== 'keys'"
+        class="pb-3 border-b-2 font-semibold transition-colors">Keys ({{ cabinet.usedHooks }})</button>
+      <button (click)="setActiveTab('activity')"
+        [class.border-blue-600]="activeTab === 'activity'"
+        [class.text-blue-600]="activeTab === 'activity'"
+        [class.border-transparent]="activeTab !== 'activity'"
+        [class.text-gray-500]="activeTab !== 'activity'"
+        class="pb-3 border-b-2 font-semibold transition-colors">Activity Log</button>
+      <button (click)="setActiveTab('documents')"
+        [class.border-blue-600]="activeTab === 'documents'"
+        [class.text-blue-600]="activeTab === 'documents'"
+        [class.border-transparent]="activeTab !== 'documents'"
+        [class.text-gray-500]="activeTab !== 'documents'"
+        class="pb-3 border-b-2 font-semibold transition-colors">Documents</button>
+    </nav>
+  </div>
 
-      <!-- LEFT / MAIN COLUMN -->
-      <div class="lg:col-span-2 flex flex-col gap-5">
-   <!-- Tabs -->
-        <!-- Tabs -->
-    <div class="flex flex-wrap gap-1 mt-6 -mb-5 border-t border-slate-100 pt-4 sm:pt-0 sm:border-t-0 sm:mt-5">
-      <div class="flex flex-wrap gap-6 border-b border-slate-100 w-full text-sm font-medium overflow-x-auto">
-        <a  (click)="setActiveTab('overview')" class="pb-3 border-b-2 whitespace-nowrap transition"
-           [class.border-brand-600]="activeTab === 'overview'"
-           [class.text-brand-600]="activeTab === 'overview'"
-           [class.border-transparent]="activeTab !== 'overview'"
-           [class.text-slate-500]="activeTab !== 'overview'"
-           [class.hover:text-slate-700]="activeTab !== 'overview'">Overview</a>
-        <a  (click)="setActiveTab('hooks')" class="pb-3 border-b-2 whitespace-nowrap transition"
-           [class.border-brand-600]="activeTab === 'hooks'"
-           [class.text-brand-600]="activeTab === 'hooks'"
-           [class.border-transparent]="activeTab !== 'hooks'"
-           [class.text-slate-500]="activeTab !== 'hooks'"
-           [class.hover:text-slate-700]="activeTab !== 'hooks'">Hooks (20)</a>
-        <a  (click)="setActiveTab('keys')" class="pb-3 border-b-2 whitespace-nowrap transition"
-           [class.border-brand-600]="activeTab === 'keys'"
-           [class.text-brand-600]="activeTab === 'keys'"
-           [class.border-transparent]="activeTab !== 'keys'"
-           [class.text-slate-500]="activeTab !== 'keys'"
-           [class.hover:text-slate-700]="activeTab !== 'keys'">Keys (14)</a>
-        <a  (click)="setActiveTab('activity')" class="pb-3 border-b-2 whitespace-nowrap transition"
-           [class.border-brand-600]="activeTab === 'activity'"
-           [class.text-brand-600]="activeTab === 'activity'"
-           [class.border-transparent]="activeTab !== 'activity'"
-           [class.text-slate-500]="activeTab !== 'activity'"
-           [class.hover:text-slate-700]="activeTab !== 'activity'">Activity Log</a>
-        <a  (click)="setActiveTab('documents')" class="pb-3 border-b-2 whitespace-nowrap transition"
-           [class.border-brand-600]="activeTab === 'documents'"
-           [class.text-brand-600]="activeTab === 'documents'"
-           [class.border-transparent]="activeTab !== 'documents'"
-           [class.text-slate-500]="activeTab !== 'documents'"
-           [class.hover:text-slate-700]="activeTab !== 'documents'">Documents</a>
-      </div>
-    </div>
+  <div class="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6">
 
-    @if (activeTab === 'overview') {
-      <!-- Cabinet Information -->
-      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-        <h2 class="text-sm font-bold text-slate-800 mb-5">Cabinet Information</h2>
+    <!-- LEFT / MAIN COLUMN -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'">
+
+        <!-- Cabinet Information -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Cabinet Information</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
             <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Cabinet Code</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.code }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Cabinet Code</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.code }}</dd>
             </div>
             <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Security Level</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.type }}</dd>
-            </div>
-
-            <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Cabinet Name</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.name }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Security Level</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.type }}</dd>
             </div>
             <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Number of Hooks</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.totalHooks }}</dd>
-            </div>
-
-            <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Cabinet Type</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.type }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Cabinet Name</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.name }}</dd>
             </div>
             <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Used Hooks</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.usedHooks }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Number of Hooks</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.totalHooks }}</dd>
             </div>
-
+            <div class="flex justify-between md:justify-start md:gap-4">
+              <dt class="text-gray-400 w-32 shrink-0">Cabinet Type</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.type }}</dd>
+            </div>
+            <div class="flex justify-between md:justify-start md:gap-4">
+              <dt class="text-gray-400 w-32 shrink-0">Used Hooks</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.usedHooks }}</dd>
+            </div>
             <div class="flex justify-between md:justify-start md:gap-4" *ngIf="cabinet.storageLocation">
-              <dt class="text-slate-400 w-32 shrink-0">Storage Location</dt>
+              <dt class="text-gray-400 w-32 shrink-0">Storage Location</dt>
               <dd class="font-semibold text-blue-600">{{ cabinet.storageLocation }}</dd>
             </div>
             <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Available Hooks</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.availHooks }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Available Hooks</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.availHooks }}</dd>
             </div>
-
             <div class="flex justify-between md:justify-start md:gap-4" *ngIf="cabinet.floor">
-              <dt class="text-slate-400 w-32 shrink-0">Floor / Area</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.floor }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Floor / Area</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.floor }}</dd>
             </div>
             <div class="flex justify-between md:justify-start md:gap-4">
-              <dt class="text-slate-400 w-32 shrink-0">Installed On</dt>
-              <dd class="font-semibold text-slate-800">{{ formatDate(cabinet.installedOn) }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Installed On</dt>
+              <dd class="font-semibold text-gray-900">{{ formatDate(cabinet.installedOn) }}</dd>
             </div>
-
             <div class="flex justify-between md:justify-start md:gap-4 md:col-span-2" *ngIf="cabinet.description">
-              <dt class="text-slate-400 w-32 shrink-0">Description</dt>
-              <dd class="font-semibold text-slate-800">{{ cabinet.description }}</dd>
+              <dt class="text-gray-400 w-32 shrink-0">Description</dt>
+              <dd class="font-semibold text-gray-900">{{ cabinet.description }}</dd>
             </div>
             <div class="flex justify-between md:justify-start md:gap-4 md:col-span-2">
-              <dt class="text-slate-400 w-32 shrink-0">Last Updated</dt>
-              <dd class="font-semibold text-slate-800">{{ formatDate(cabinet.lastUpdated) }}<br><span class="text-xs text-slate-400 font-normal">by {{ cabinet.lastUpdatedBy || '—' }}</span></dd>
+              <dt class="text-gray-400 w-32 shrink-0">Last Updated</dt>
+              <dd class="font-semibold text-gray-900">{{ formatDate(cabinet.lastUpdated) }}<br><span class="text-xs text-gray-400 font-normal">by {{ cabinet.lastUpdatedBy || '—' }}</span></dd>
             </div>
           </div>
         </div>
 
         <!-- Hook Layout -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-          <h2 class="text-sm font-bold text-slate-800 mb-5">Hook Layout ({{ cabinet.totalHooks }} Total Hooks)</h2>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Hook Layout ({{ cabinet.totalHooks }} Total Hooks)</h3>
           <div class="grid grid-cols-5 sm:grid-cols-10 gap-2.5 sm:gap-3 mb-4">
-            <div *ngFor="let h of hooks" class="flex flex-col items-center gap-1.5 border border-slate-200 rounded-lg py-3">
-              <span class="w-4 h-4 rounded-full inline-block" [ngClass]="h.used ? 'bg-blue-600' : 'border-2 border-emerald-500'"></span>
-              <span class="text-xs text-slate-500">{{ h.num }}</span>
-            </div>
+            <ng-container *ngFor="let h of hooks">
+              <div class="flex flex-col items-center gap-1.5 border border-gray-200 rounded-lg py-3">
+                <span class="w-4 h-4 rounded-full inline-block" [ngClass]="h.used ? 'bg-blue-600' : 'border-2 border-emerald-500'"></span>
+                <span class="text-xs text-gray-500">{{ h.num }}</span>
+              </div>
+            </ng-container>
           </div>
-          <div class="flex flex-wrap items-center gap-5 text-xs text-slate-500">
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>Used ({{ cabinet.usedHooks }})</span>
+          <div class="flex flex-wrap items-center gap-5 text-xs text-gray-500">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>Assigned ({{ cabinet.usedHooks }})</span>
             <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full border-2 border-emerald-500 inline-block"></span>Available ({{ cabinet.availHooks }})</span>
-            <span class="flex items-center gap-1.5 text-slate-400">
+            <span class="flex items-center gap-1.5 text-gray-400">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 8h.01M11 12h1v4h1"/></svg>
               Click on Hooks tab to view full details
             </span>
           </div>
         </div>
-    }
-
-    @if (activeTab === 'hooks') {
-      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-        <h2 class="text-sm font-bold text-slate-800 mb-4">Hooks</h2>
-        <p class="text-sm text-slate-500">Hook list will be displayed here.</p>
-      </div>
-    }
-
-    @if (activeTab === 'keys') {
-      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-        <h2 class="text-sm font-bold text-slate-800 mb-4">Keys</h2>
-        <p class="text-sm text-slate-500">Keys stored in this cabinet will be displayed here.</p>
-      </div>
-    }
-
-    @if (activeTab === 'activity') {
-      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-        <h2 class="text-sm font-bold text-slate-800 mb-4">Activity Log</h2>
-        <p class="text-sm text-slate-500">Activity log for this cabinet will be displayed here.</p>
-      </div>
-    }
-
-    @if (activeTab === 'documents') {
-      <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-        <h2 class="text-sm font-bold text-slate-800 mb-4">Documents</h2>
-        <p class="text-sm text-slate-500">Documents for this cabinet will be displayed here.</p>
-      </div>
-    }
-
       </div>
 
-      <!-- RIGHT / SIDEBAR -->
-      <div class="flex flex-col gap-5">
-
-        <!-- Quick Actions -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-          <h2 class="text-sm font-bold text-slate-800 mb-4">Quick Actions</h2>
-          <div class="flex flex-col divide-y divide-slate-100">
-            <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'assign-key']" class="flex items-center justify-between py-3 group">
-              <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
-                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
-                Assign Key to Hook
-              </span>
-              <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
-            </a>
-            <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'hooks']" class="flex items-center justify-between py-3 group">
-              <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
-                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
-                View Hook List
-              </span>
-              <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
-            </a>
-            <button (click)="cabinet.active ? openDeactivateModal() : openReactivateModal()" class="flex items-center justify-between py-3 group">
-              <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
-                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m10 0v4H7v-4m10 0H7m0-9V4a1 1 0 011-1h8a1 1 0 011 1v4H7z"/></svg>
-                {{ cabinet.active ? 'Deactivate Cabinet' : 'Reactivate Cabinet' }}
-              </span>
-              <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Access & Security -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-          <h2 class="text-sm font-bold text-slate-800 mb-4">Access &amp; Security</h2>
-          <dl class="space-y-3.5 text-sm">
-            <div class="flex items-center justify-between">
-              <dt class="text-slate-500">CCTV Monitored</dt>
-              <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">{{ cabinet.cctvMonitored ? 'Yes' : 'No' }}</span></dd>
-            </div>
-            <div class="flex items-center justify-between">
-              <dt class="text-slate-500">Alarm System</dt>
-              <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">{{ cabinet.alarmSystem ? 'Yes' : 'No' }}</span></dd>
-            </div>
-            <div class="flex items-start justify-between gap-2">
-              <dt class="text-slate-500 shrink-0">Last Access</dt>
-              <dd class="font-medium text-slate-800 text-right">{{ formatDate(cabinet.lastUpdated) }}<br><span class="text-xs text-slate-400 font-normal">by {{ cabinet.lastUpdatedBy || '—' }}</span></dd>
-            </div>
-          </dl>
-        </div>
-
-        <!-- Key Statistics -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6">
-          <h2 class="text-sm font-bold text-slate-800 mb-4">Key Statistics</h2>
-          <div class="flex items-center gap-6">
-            <div class="donut">
-              <div class="donut-label">
-                <p class="text-lg font-bold text-slate-800 leading-none">{{ cabinet.usedHooks }}</p>
-                <p class="text-[10px] text-slate-400 mt-0.5">Total Keys</p>
-              </div>
-            </div>
-            <div class="flex flex-col gap-2 text-sm">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0 inline-block"></span>
-                <span class="text-slate-500">In Storage</span>
-                <span class="font-semibold text-slate-800 ml-auto pl-4">{{ cabinet.availHooks }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 inline-block"></span>
-                <span class="text-slate-500">Issued</span>
-                <span class="font-semibold text-slate-800 ml-auto pl-4">{{ cabinet.usedHooks }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0 inline-block"></span>
-                <span class="text-slate-500">Overdue</span>
-                <span class="font-semibold text-slate-800 ml-auto pl-4">0</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 inline-block"></span>
-                <span class="text-slate-500">Lost / Damaged</span>
-                <span class="font-semibold text-slate-800 ml-auto pl-4">0</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <!-- Hooks Tab -->
+      <div *ngIf="activeTab === 'hooks'" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Hooks</h3>
+        <p class="text-sm text-gray-500">Hook list will be displayed here.</p>
       </div>
+
+      <!-- Keys Tab -->
+      <div *ngIf="activeTab === 'keys'" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Keys</h3>
+        <p class="text-sm text-gray-500">Keys stored in this cabinet will be displayed here.</p>
+      </div>
+
+      <!-- Activity Tab -->
+      <div *ngIf="activeTab === 'activity'" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Activity Log</h3>
+        <p class="text-sm text-gray-500">Activity log for this cabinet will be displayed here.</p>
+      </div>
+
+      <!-- Documents Tab -->
+      <div *ngIf="activeTab === 'documents'" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Documents</h3>
+        <p class="text-sm text-gray-500">Documents for this cabinet will be displayed here.</p>
+      </div>
+
     </div>
 
-   </div>
+    <!-- RIGHT / SIDEBAR -->
+    <div class="flex flex-col gap-6">
 
-   <app-deactivate-cabinet-modal *ngIf="isDeactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeDeactivateModal()" (confirmed)="onCabinetDeactivated()" />
-   <app-reactivate-cabinet-modal *ngIf="isReactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeReactivateModal()" (confirmed)="onCabinetReactivated()" />
- </div>
+      <!-- Quick Actions -->
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+        <div class="flex flex-col divide-y divide-gray-100">
+          <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'assign-key']" class="flex items-center justify-between py-3 group">
+            <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/></svg>
+              Assign Key to Hook
+            </span>
+            <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
+          </a>
+          <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'hooks']" class="flex items-center justify-between py-3 group">
+            <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
+              View Hook List
+            </span>
+            <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
+          </a>
+          <button (click)="cabinet.active ? openDeactivateModal() : openReactivateModal()" class="flex items-center justify-between py-3 group">
+            <span class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m10 0v4H7v-4m10 0H7m0-9V4a1 1 0 011-1h8a1 1 0 011 1v4H7z"/></svg>
+              {{ cabinet.active ? 'Deactivate Cabinet' : 'Reactivate Cabinet' }}
+            </span>
+            <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7v-6z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Access & Security -->
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Access & Security</h3>
+        <dl class="space-y-3.5 text-sm">
+          <div class="flex items-center justify-between">
+            <dt class="text-gray-500">CCTV Monitored</dt>
+            <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">{{ cabinet.cctvMonitored ? 'Yes' : 'No' }}</span></dd>
+          </div>
+          <div class="flex items-center justify-between">
+            <dt class="text-gray-500">Alarm System</dt>
+            <dd><span class="text-xs font-medium bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">{{ cabinet.alarmSystem ? 'Yes' : 'No' }}</span></dd>
+          </div>
+          <div class="flex items-start justify-between gap-2">
+            <dt class="text-gray-500 shrink-0">Last Access</dt>
+            <dd class="font-medium text-slate-800 text-right">{{ formatDate(cabinet.lastUpdated) }}<br><span class="text-xs text-gray-400 font-normal">by {{ cabinet.lastUpdatedBy || '—' }}</span></dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Key Statistics -->
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-5">Key Statistics</h3>
+        <div class="flex items-center gap-6">
+          <div class="relative w-28 h-28 flex-shrink-0">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="12"/>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#2563eb" stroke-width="12"
+                [attr.stroke-dasharray]="donutBlue" stroke-dashoffset="0" stroke-linecap="butt"/>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="12"
+                [attr.stroke-dasharray]="donutGreen" stroke-linecap="butt"
+                [attr.stroke-dashoffset]="donutGreenOffset"/>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" stroke-width="12"
+                [attr.stroke-dasharray]="donutYellow" stroke-linecap="butt"
+                [attr.stroke-dashoffset]="donutYellowOffset"/>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="text-2xl font-bold text-gray-900">{{ cabinet.usedHooks }}</span>
+              <span class="text-[10px] text-gray-400">Total Keys</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 text-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0 inline-block"></span>
+              <span class="text-gray-500">In Storage</span>
+              <span class="font-semibold text-gray-800 ml-auto pl-4">{{ cabinet.availHooks }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 inline-block"></span>
+              <span class="text-gray-500">Issued</span>
+              <span class="font-semibold text-gray-800 ml-auto pl-4">{{ cabinet.usedHooks }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0 inline-block"></span>
+              <span class="text-gray-500">Overdue</span>
+              <span class="font-semibold text-gray-800 ml-auto pl-4">0</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 inline-block"></span>
+              <span class="text-gray-500">Lost / Damaged</span>
+              <span class="font-semibold text-gray-800 ml-auto pl-4">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="flex flex-col sm:flex-row items-center justify-end gap-4 text-sm text-gray-500 mt-10 mb-6">
+    <a href="#" class="hover:text-gray-700">Privacy Policy</a>
+    <a href="#" class="hover:text-gray-700">Terms of Service</a>
+    <a href="#" class="hover:text-gray-700">Support</a>
+  </footer>
+
+  <app-deactivate-cabinet-modal *ngIf="isDeactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeDeactivateModal()" (confirmed)="onCabinetDeactivated()" />
+  <app-reactivate-cabinet-modal *ngIf="isReactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()" (close)="closeReactivateModal()" (confirmed)="onCabinetReactivated()" />
+</div>
 </ng-template>
