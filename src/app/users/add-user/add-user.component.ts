@@ -370,7 +370,7 @@ export class AddUserComponent implements OnInit {
         this.form.location = user.location || '';
         this.form.canAccessWeb = user.canAccessWeb ?? true;
         this.form.canAccessMobile = user.canAccessMobile ?? true;
-        this.form.roleIds = (user.roleIds || (user.serviceAccess || []).find(s => s.serviceCode === 'edob')?.roleIds || []).map(String);
+        this.form.roleIds = (user.roleIds || (user.serviceAccess || []).find(s => s.serviceCode === 'key-vault')?.roleIds || []).map(String);
         this.profileImage = (user as any).profileImage || null;
         this.userKeycloakId = (user as any).keycloakId || null;
         this.loading = false;
