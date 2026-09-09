@@ -96,17 +96,15 @@
           <div>
             <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial started</p>
             <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial?.startDate }}</p>
-            <p class=" justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">Today</p>
           </div>
           <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
             <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial ends</p>
             <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial?.endDate }}</p>
-            <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">(14 days)</p>
+            <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">{{ trial?.daysRemaining }} days</p>
           </div>
           <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
             <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Days remaining</p>
-            <p class="justify-start text-blue-600 text-base font-bold font-['Inter'] mt-2">{{ trial?.daysRemaining }}
-            </p>
+            <p class="justify-start text-blue-600 text-base font-bold font-['Inter'] mt-2">{{ trial?.daysRemaining }}</p>
             <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">days</p>
           </div>
         </div>
@@ -143,8 +141,7 @@
               <div>
                 <p class="text-slate-900 text-xs font-medium font-['Inter']">Users using KeyVault</p>
                 <p class="text-slate-900 text-2xl font-bold font-['Inter'] mt-2">{{ usage?.users ?? '-' }}</p>
-                <p class=" text-slate-500 text-xs font-normal font-['Inter']">up to {{ usage?.usersLimit ?? '-' }} users
-                  during trial</p>
+                <p class=" text-slate-500 text-xs font-normal font-['Inter']">up to {{ usage?.usersLimitLabel ?? '-' }} during trial</p>
               </div>
             </div>
 

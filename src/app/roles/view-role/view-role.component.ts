@@ -20,6 +20,8 @@ interface Role {
   userCount?: number;
   createdAt?: string;
   updatedAt?: string;
+  createdByUserName?: string;
+  updatedByUserName?: string;
   [key: string]: any;
 }
 
@@ -146,13 +148,41 @@ export class ViewRoleComponent implements OnInit {
       next: (res: any) => {
         this.role = res?.data ?? res;
         this.loading = false;
-        this.updateStats();
+        this.refreshPermissionGrants();
       },
       error: () => {
         this.errorMessage = 'Failed to load role details.';
         this.loading = false;
       }
     });
+  }
+
+  private refreshPermissionGrants(): void {
+    if (this.permissionGroups.length > 0) {
+      this.permissionGroups = this.permissionGroups.map(g => ({
+        ...g,
+        granted: g.items.filter(p => this.isPermissionGranted(p.code)).length,
+        badgeClass: this.getBadgeClass(g.items, g.total),
+        badgeText: `${g.items.filter(p => this.isPermissionGranted(p.code)).length} / ${g.total} Granted`,
+        items: g.items.map(p => ({
+          ...p,
+          granted: this.isPermissionGranted(p.code)
+        }))
+      }));
+    }
+    this.updateStats();
+  }
+
+  private getBadgeClass(items: PermissionView[], total: number): string {
+    const grantedCount = items.filter(p => p.granted).length;
+    const fullyGranted = total > 0 && grantedCount === total;
+    return total === 0
+      ? 'bg-slate-100 text-slate-500'
+      : fullyGranted
+        ? 'bg-emerald-50 text-emerald-600'
+        : grantedCount > 0
+          ? 'bg-blue-50 text-blue-600'
+          : 'bg-slate-100 text-slate-500';
   }
 
   private updateStats(): void {
@@ -232,11 +262,11 @@ export class ViewRoleComponent implements OnInit {
       next: (res: any) => {
         const grouped = res?.data ?? res;
         this.permissionGroups = this.mapPermissionGroups(grouped);
-        this.updateStats();
+        this.refreshPermissionGrants();
       },
       error: () => {
         this.permissionGroups = [];
-        this.updateStats();
+        this.refreshPermissionGrants();
       }
     });
   }
@@ -245,16 +275,10 @@ export class ViewRoleComponent implements OnInit {
     return (grouped || []).map(g => {
       const perms = (g.permissions || []).filter(p => p.active !== false);
       const title = g.group || 'Other';
-      const grantedCount = perms.filter(p => this.isPermissionGranted(p.code)).length;
       const total = perms.length || g.count || 0;
+      const grantedCount = perms.filter(p => this.isPermissionGranted(p.code)).length;
       const fullyGranted = total > 0 && grantedCount === total;
-      const badgeClass = total === 0
-        ? 'bg-slate-100 text-slate-500'
-        : fullyGranted
-          ? 'bg-emerald-50 text-emerald-500'
-          : grantedCount > 0
-            ? 'bg-blue-50 text-blue-600'
-            : 'bg-slate-100 text-slate-500';
+      const badgeClass = this.getBadgeClass(perms.map(p => ({ code: p.code, name: p.name, granted: this.isPermissionGranted(p.code) })), total);
       const badgeText = `${grantedCount} / ${total} Granted`;
       return {
         title,
@@ -277,7 +301,8 @@ export class ViewRoleComponent implements OnInit {
 
   private isPermissionGranted(code: string): boolean {
     if (!this.role?.permissions) return false;
-    const perms = this.role.permissions as string[];
+    const perms = this.role.permissions as any[];
+    if (perms.includes('*')) return true;
     return perms.some(p => p === code);
   }
 

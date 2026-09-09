@@ -100,16 +100,15 @@
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 sm:pl-6 sm:border-l-2 sm:border-slate-200">
-        <div>
-          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial started</p>
-          <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.startDate }}</p>
-          <p class=" justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">Today</p>
-        </div>
-        <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
-          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial ends</p>
-          <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.endDate }}</p>
-          <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">(14 days)</p>
-        </div>
+          <div>
+            <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial started</p>
+            <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.startDate }}</p>
+          </div>
+          <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
+            <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Trial ends</p>
+            <p class="justify-start text-zinc-800 text-base font-bold font-['Inter'] mt-2">{{ trial.endDate }}</p>
+            <p class="justify-start text-slate-700 text-xs font-normal font-['Inter'] mt-2">{{ trial.daysRemaining }} days</p>
+          </div>
         <div class="sm:border-l-2 sm:border-slate-200 sm:pl-8">
           <p class="justify-start text-slate-700 text-xs font-normal font-['Inter']">Days remaining</p>
           <p class="justify-start text-blue-600 text-base font-bold font-['Inter'] mt-2">{{ trial.daysRemaining }}</p>

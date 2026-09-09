@@ -138,7 +138,20 @@ export class ViewUserComponent implements OnInit {
   get roleName(): string {
     if (!this.user) return '—';
     const roles = (this.user as any).roles || [];
-    return roles.map((r: any) => r.name).join(', ') || '—';
+    const roleNames = roles.map((r: any) => r.name);
+    if (roleNames.length > 0) {
+      return roleNames.join(', ');
+    }
+    const serviceRoles = this.serviceAccessRoles;
+    return serviceRoles.length > 0 ? serviceRoles.join(', ') : '—';
+  }
+
+  get serviceAccessRoles(): string[] {
+    if (!this.user?.serviceAccess || this.user.serviceAccess.length === 0) return [];
+    const keyVault = this.user.serviceAccess.find((s: any) => s.serviceCode === 'key-vault');
+    if (!keyVault) return [];
+    const details = (keyVault as any).roleDetails || [];
+    return details.map((d: any) => d.roleName).filter(Boolean);
   }
 
   get departmentName(): string {
@@ -165,7 +178,22 @@ export class ViewUserComponent implements OnInit {
   }
 
   get createdBy(): string {
-    return 'Faiza Ahmed';
+    return (this.user as any).createdByUserName || '—';
+  }
+
+  get updatedAt(): string {
+    if (!this.user?.updatedAt) return '—';
+    return new Date(this.user.updatedAt).toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+  }
+
+  get updatedBy(): string {
+    return (this.user as any).updatedByUserName || '—';
   }
 
   get userType(): string {
@@ -175,6 +203,16 @@ export class ViewUserComponent implements OnInit {
     if (this.user.canAccessMobile !== false) types.push('Mobile');
     if (types.length === 2) types.push('Both');
     return types.join(', ') || '—';
+  }
+
+  get webAppAccess(): boolean {
+    if (!this.user) return false;
+    return this.user.canAccessWeb !== false;
+  }
+
+  get mobileAppAccess(): boolean {
+    if (!this.user) return false;
+    return this.user.canAccessMobile !== false;
   }
 
   get lastLogin(): string {

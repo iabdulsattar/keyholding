@@ -211,6 +211,14 @@
             <dt class="text-slate-600 text-sm font-medium font-['Inter']">Created By</dt>
             <dd class="text-slate-900 font-medium text-sm font-['Inter'] text-right">{{ createdBy }}</dd>
           </div>
+          <div class="flex items-center justify-between py-4">
+            <dt class="text-slate-600 text-sm font-medium font-['Inter']">Updated On</dt>
+            <dd class="text-slate-900 font-medium text-sm font-['Inter'] text-right">{{ updatedAt }}</dd>
+          </div>
+          <div class="flex items-center justify-between py-4">
+            <dt class="text-slate-600 text-sm font-medium font-['Inter']">Updated By</dt>
+            <dd class="text-slate-900 font-medium text-sm font-['Inter'] text-right">{{ updatedBy }}</dd>
+          </div>
         </dl>
       </div>
 
@@ -251,8 +259,9 @@
           <dl class="divide-y divide-slate-200">
             <div class="flex items-center justify-between py-4">
               <dt class="text-slate-600 text-sm font-medium">Web Application</dt>
-              <dd class="flex items-center gap-1.5 text-emerald-500 font-semibold text-sm">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <dd class="flex items-center gap-1.5 font-semibold text-sm" [class]="webAppAccess ? 'text-emerald-500' : 'text-slate-500'">
+                @if (webAppAccess) {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_2645_162)">
     <path d="M14.5336 6.6669C14.838 8.1611 14.6211 9.71452 13.9188 11.0681C13.2166 12.4217 12.0715 13.4936 10.6746 14.1051C9.27767 14.7166 7.71333 14.8308 6.24244 14.4285C4.77156 14.0262 3.48304 13.1318 2.59176 11.8945C1.70049 10.6572 1.26033 9.15173 1.34469 7.62916C1.42905 6.10659 2.03283 4.65896 3.05535 3.52768C4.07786 2.39641 5.4573 1.64986 6.96362 1.41254C8.46995 1.17522 10.0121 1.46148 11.3329 2.22357M5.99984 7.33325L7.99984 9.33325L14.6665 2.66659" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
     </g>
@@ -262,13 +271,19 @@
     </clipPath>
     </defs>
     </svg>
-                Enabled
+                } @else {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.6665 11.3329L11.3332 4.66627M4.6665 4.66724L11.3332 11.3339" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+                }
+                @if (webAppAccess) { Enabled } @else { Disabled }
               </dd>
             </div>
             <div class="flex items-center justify-between py-4">
               <dt class="text-slate-600 text-sm font-medium">Mobile Application</dt>
-              <dd class="flex items-center gap-1.5 text-emerald-500 font-semibold text-sm">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <dd class="flex items-center gap-1.5 font-semibold text-sm" [class]="mobileAppAccess ? 'text-emerald-500' : 'text-slate-500'">
+                @if (mobileAppAccess) {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_2645_162)">
     <path d="M14.5336 6.6669C14.838 8.1611 14.6211 9.71452 13.9188 11.0681C13.2166 12.4217 12.0715 13.4936 10.6746 14.1051C9.27767 14.7166 7.71333 14.8308 6.24244 14.4285C4.77156 14.0262 3.48304 13.1318 2.59176 11.8945C1.70049 10.6572 1.26033 9.15173 1.34469 7.62916C1.42905 6.10659 2.03283 4.65896 3.05535 3.52768C4.07786 2.39641 5.4573 1.64986 6.96362 1.41254C8.46995 1.17522 10.0121 1.46148 11.3329 2.22357M5.99984 7.33325L7.99984 9.33325L14.6665 2.66659" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
     </g>
@@ -278,13 +293,19 @@
     </clipPath>
     </defs>
     </svg>
-                Enabled
+                } @else {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.6665 11.3329L11.3332 4.66627M4.6665 4.66724L11.3332 11.3339" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+                }
+                @if (mobileAppAccess) { Enabled } @else { Disabled }
               </dd>
             </div>
             <div class="flex items-center justify-between py-4">
               <dt class="text-slate-600 text-sm font-medium">Both Web &amp; Mobile</dt>
-              <dd class="flex items-center gap-1.5 text-emerald-500 font-semibold text-sm">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <dd class="flex items-center gap-1.5 font-semibold text-sm" [class]="(webAppAccess && mobileAppAccess) ? 'text-emerald-500' : 'text-slate-500'">
+                @if (webAppAccess && mobileAppAccess) {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_2645_162)">
     <path d="M14.5336 6.6669C14.838 8.1611 14.6211 9.71452 13.9188 11.0681C13.2166 12.4217 12.0715 13.4936 10.6746 14.1051C9.27767 14.7166 7.71333 14.8308 6.24244 14.4285C4.77156 14.0262 3.48304 13.1318 2.59176 11.8945C1.70049 10.6572 1.26033 9.15173 1.34469 7.62916C1.42905 6.10659 2.03283 4.65896 3.05535 3.52768C4.07786 2.39641 5.4573 1.64986 6.96362 1.41254C8.46995 1.17522 10.0121 1.46148 11.3329 2.22357M5.99984 7.33325L7.99984 9.33325L14.6665 2.66659" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
     </g>
@@ -294,7 +315,12 @@
     </clipPath>
     </defs>
     </svg>
-                Enabled
+                } @else {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.6665 11.3329L11.3332 4.66627M4.6665 4.66724L11.3332 11.3339" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+                }
+                @if (webAppAccess && mobileAppAccess) { Enabled } @else { Disabled }
               </dd>
             </div>
             <div class="flex items-center justify-between py-4">

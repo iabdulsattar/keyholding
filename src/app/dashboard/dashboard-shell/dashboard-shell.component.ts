@@ -238,15 +238,16 @@ export class DashboardShellComponent implements OnInit {
       next: (res: any) => {
         const payload = res?.data ?? res ?? {};
         const sub = payload.subscription ?? payload ?? {};
-        const status = sub?.status?.toUpperCase();
-        const isTrial = status === 'TRIAL' || status === 'TRIALING';
-        const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
+
+        const isTrial = sub?.trial === true || sub?.status?.toUpperCase() === 'TRIAL' || sub?.status?.toUpperCase() === 'TRIALING';
+        const trialEnd = sub?.effectiveExpiry || sub?.trialEnd || sub?.currentPeriodEnd;
         const isExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
 
         if (isTrial && !isExpired) {
+          const startDate = sub?.startDate || sub?.trialStart || sub?.currentPeriodStart;
           this.trial = {
             active: true,
-            startDate: sub.trialStart || sub.currentPeriodStart ? this.formatDate(sub.trialStart || sub.currentPeriodStart) : '-',
+            startDate: startDate ? this.formatDate(startDate) : '-',
             endDate: trialEnd ? this.formatDate(trialEnd) : '-',
             daysRemaining: trialEnd ? this.daysUntil(trialEnd) : 0,
           };

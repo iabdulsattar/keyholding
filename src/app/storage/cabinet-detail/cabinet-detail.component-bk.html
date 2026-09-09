@@ -172,7 +172,7 @@
           </dl>
 
           <div class="w-full md:w-56 flex-shrink-0 mt-6 md:mt-0">
-            <img src="https://images.unsplash.com/photo-1580983561371-7f4b242d8ec0?w=400&q=80" alt="Key cabinet" class="w-full h-48 object-cover rounded-xl border border-gray-200 bg-gray-100" />
+            <img src="/images/cabinet-photo.png" alt="Key cabinet" class="w-full h-48 object-cover rounded-xl border border-gray-200 bg-gray-100" />
           </div>
         </div>
       </div>
@@ -209,17 +209,17 @@
       <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
         <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
         <div class="space-y-2">
-          <button class="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:bg-gray-50 text-left">
+          <button [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'assign-key']" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:bg-gray-50 text-left">
             <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 8v8M8 12h8"/></svg>
             <span class="flex-1 text-sm font-medium text-gray-800">Add Key to Hook</span>
             <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </button>
-          <button class="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:bg-gray-50 text-left">
+          <button [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'move-key']" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:bg-gray-50 text-left">
             <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4M16 17H4m0 0l4 4m-4-4l4-4"/></svg>
             <span class="flex-1 text-sm font-medium text-gray-800">Move Key to Another Hook</span>
             <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </button>
-          <button class="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:bg-gray-50 text-left">
+          <button [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'remove-key']" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:bg-gray-50 text-left">
             <svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M9 9l6 6M15 9l-6 6"/></svg>
             <span class="flex-1 text-sm font-medium text-gray-800">Remove Key from the Hook</span>
             <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
