@@ -1607,6 +1607,24 @@ viewEmergencyContact(contactId: string): void {
     this.router.navigate(['/sites/view-site', siteId], { queryParams: { returnUrl: '/clients/' + this.clientId } });
   }
 
+  editSite(siteId: string): void {
+    this.router.navigate(['/sites/add-site'], { queryParams: { clientId: this.clientId, editId: siteId, returnUrl: '/clients/' + this.clientId } });
+  }
+
+  deleteSite(siteId: string): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+    if (confirm('Are you sure you want to delete this site?')) {
+      this.clientService.deleteSite(orgId, siteId).subscribe({
+        next: () => {
+          this.loadSites();
+          this.loadSiteStats();
+        },
+        error: () => {}
+      });
+    }
+  }
+
   toggleSelectAllRows(masterCheckbox: HTMLInputElement): void {
     const rowCheckboxes = document.querySelectorAll('.row-checkbox');
     rowCheckboxes.forEach(cb => {

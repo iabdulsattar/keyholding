@@ -133,10 +133,10 @@
 
       <!-- VIEW CONTEXT NAVIGATION TABS BAR -->
       <div class="border-b border-slate-200 mb-6">
-        <nav class="flex w-full text-sm overflow-x-auto no-scrollbar">
+        <nav class="flex  text-sm overflow-x-auto no-scrollbar">
           <button (click)="switchTab('overview')" [class]="activeTab === 'overview' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Overview</button>
+           <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Sites ({{ sites.length }})</button>
           <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Keys ({{ totalKeys }})</button>
-          <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Sites ({{ sites.length }})</button>
           <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Jobs ({{ totalJobs }})</button>
            <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Activity Log ({{ activities.length }})</button>
           <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Documents ({{ totalDocuments }})</button>
@@ -316,7 +316,7 @@
       }
           @else if (activeTab === 'keys') {
           <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
-            <div class="xl:col-span-8 space-y-4">
+            <div class="xl:col-span-12 space-y-4">
              <div class="bg-white rounded-lg border border-slate-100 overflow-hidden ">
            
            <div class="overflow-x-auto custom-scrollbar">
@@ -326,34 +326,34 @@
                   <th class="py-3.5 pl-5 pr-3 w-10">
                     <input type="checkbox" id="selectAllRows" (change)="toggleSelectAllRows($event.target)" class="accent-blue-600 rounded cursor-pointer">
                   </th>
-                  <th class="py-3.5 px-3">Key ID</th>
-                  <th class="py-3.5 px-3">Key Name</th>
-                  <th class="py-3.5 px-3">Key Type</th>
-                  <th class="py-3.5 px-3">Site</th>
-                  <th class="py-3.5 px-3">Status</th>
-                  <th class="py-3.5 px-3 hidden sm:table-cell">Storage Location</th>
-                  <th class="py-3.5 px-3 hidden md:table-cell">Assigned To</th>
-                  <th class="py-3.5 px-3 hidden lg:table-cell">Last Movement</th>
-                  <th class="py-3.5 pr-5 pl-3 text-center w-24">Actions</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key ID</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key Name</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key Type</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Status</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase hidden sm:table-cell">Storage Location</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase hidden md:table-cell">Assigned To</th>
+                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase hidden lg:table-cell">Last Movement</th>
+                  <th class="py-3.5 pr-5 pl-3 text-center w-24 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 text-sm">
                 @for (key of keysPaginated; track key.id) {
                 <tr class="hover:bg-slate-50/70 transition duration-150">
                   <td class="py-3.5 pl-5 pr-3"><input type="checkbox" class="row-checkbox accent-blue-600 rounded cursor-pointer" (change)="onRowCheckboxChange($event)"></td>
-                  <td class="py-3.5 px-3 font-semibold hover:underline cursor-pointer flex items-center gap-2">
+                  <td class="py-3.5 px-3  text-xs font-semibold font-['Inter'] cursor-pointer flex items-center gap-2">
                     <span class="text-blue-600">{{ key.keyCode }}</span>                    
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code-icon lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
                   </td>
                   <td class="py-3.5 px-3">
                     <div class="flex items-center gap-2">
-                      <span class="text-slate-900">{{ key.name }}</span>
+                      <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ key.name }}</span>
                     </div>
                   </td>
                   <td class="py-3.5 px-3">
                     <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + key.typeColor + '-50 text-' + key.typeColor + '-700 border border-' + key.typeColor + '-100'">{{ key.type }}</span>
                   </td>
-                  <td class="py-3.5 px-3 text-slate-600">{{ key.siteName }}</td>
+                  <td class="py-3.5 px-3 text-slate-600 text-xs font-normal font-['Inter']">{{ key.siteName }}</td>
                   <td class="py-3.5 px-3">
                     <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (key.status === 'In Use' || key.status === 'Overdue' || key.status === 'Lost' ? 'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700' : 'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700 border border-' + key.statusColor + '-100')">{{ key.status }}</span>
                   </td>
@@ -361,22 +361,20 @@
                     @if (key.storageLocation !== '—') {
                       {{ key.storageLocation }}<br>
                       @if (key.storageDetail) {
-                        <span class="text-[10px] text-slate-400 font-medium">{{ key.storageDetail }}</span>
+                        <span class="text-[10px] text-xs font-normal font-['Inter'] line-clamp-1">{{ key.storageDetail }}</span>
                       }
                     } @else {
                       <span class="text-slate-400">—</span>
                     }
                   </td>
-                  <td class="py-3.5 px-3 text-slate-400 hidden md:table-cell">{{ key.assignedTo }}</td>
-                  <td class="py-3.5 px-3 text-slate-500 font-normal hidden lg:table-cell">{{ key.lastMovement }}<br><span class="text-[10px] text-slate-400 font-medium">{{ key.lastMovementTime }}</span></td>
+                  <td class="py-3.5 px-3 text-slate-900 text-xs font-medium font-['Inter'] line-clamp-1 hidden md:table-cell ">{{ key.assignedTo }}</td>
+                  <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime }}</span></td>
                   <td class="py-3.5 pr-5 pl-3 text-center">
                     <div class="flex items-center justify-center gap-2 text-slate-400">
                       <button (click)="triggerRowAction('View', key.id)" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       </button>
-                      <button (click)="triggerRowAction('More Options', key.id)" class="hover:text-slate-600 p-1 transition" title="More">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                      </button>
+                   
                     </div>
                   </td>
                 </tr>
@@ -419,87 +417,12 @@
           </div>
          </div> <!-- close xl:col-span-8 -->
 
-        <!-- RIGHT SIDEBAR METRIC & ACTIONS CARDS (Col Span 3) -->
-        <div class="xl:col-span-4 space-y-5 w-full">
-          
-         
-           <div class="bg-white rounded-xl border border-slate-100 p-5 space-y-4">
-              <h4 class="text-sm font-bold text-slate-900 border-slate-100 pb-3">Key Status Overview</h4>
-              <div class="flex items-center justify-between gap-2">
-                <div class="w-28 h-28 relative flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
-                    <circle cx="60" cy="60" r="50" fill="none" stroke="#f1f5f9" stroke-width="14"/>
-                     @for (seg of keyDonutSegments; track $index) {
-                       <circle cx="60" cy="60" r="50" fill="none" [attr.stroke]="seg.color" stroke-width="14" [attr.stroke-dasharray]="seg.length + ' ' + (314.16 - seg.length)" [attr.stroke-dashoffset]="seg.offset" stroke-linecap="butt"/>
-                     }
-                  </svg>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1">
-                    <span class="text-xl font-extrabold text-slate-900 leading-none">{{  filteredKeys.length }}</span>
-                    <span class="text-[9px] font-medium tracking-wider text-slate-400 uppercase">Total Keys</span>
-                  </div>
-                </div>
-                 <div class="flex-1 space-y-1.5 text-xs pl-2">
-                  <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>In Storage</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[0]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[0]?.pct ?? 0 }}%)</span></span></div>
-               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>Issued</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[1]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[1]?.pct ?? 0 }}%)</span></span></div>
-               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>In Use</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[2]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[2]?.pct ?? 0 }}%)</span></span></div>
-               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span>Overdue</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[3]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[3]?.pct ?? 0 }}%)</span></span></div>
-               <div class="flex items-center justify-between"><div class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span><span>Lost / Damaged</span></div><span class="text-slate-400 font-medium">{{ keyStatusStats[4]?.count ?? 0 }} <span class="text-[10px] text-slate-400">({{ keyStatusStats[4]?.pct ?? 0 }}%)</span></span></div>
-          </div>
-              </div>
-            </div>
-
-
-          <!-- QUICK OPERATIONS UTILITY NAVIGATION LINKS -->
-          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-3.5">
-            <h4 class="text-sm font-bold text-slate-900 tracking-wider">Quick Actions</h4>
-            <div class="flex flex-col text-xs font-semibold text-blue-500 space-y-0.5">
-              <button (click)="triggerAction('Add New Key')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
-                <svg class="w-4 h-4 " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>Add New Key</span>
-              </button>
-              <button (click)="triggerAction('Import Keys')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <span>Import Keys</span>
-              </button>
-              <button (click)="triggerAction('Assign Keys')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
-                <span>Assign Keys</span>
-              </button>
-              <button (click)="triggerAction('Transfer Key')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                <span>Transfer Key</span>
-              </button>
-              <button (click)="triggerAction('Run Key Audit')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Run Key Audit</span>
-              </button>
-              <button (click)="triggerAction('Export Key Report')" class="flex items-center space-x-3 px-2.5 py-2 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition w-full text-left">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Export Key Report</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- KEY BREAKDOWN SEGMENTATION INDEX LIST -->
-          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-4">
-            <h4 class="text-sm font-bold text-slate-900 tracking-wider">Key Type Breakdown</h4>
-             <div class="text-xs font-semibold text-slate-700 space-y-3">
-               @for (item of keyTypeStats; track item.type) {
-                 <div class="flex items-center justify-between"><div class="flex items-center space-x-2.5"><span class="w-2 h-2 rounded-full" [style.background]="item.color"></span><span>{{ item.type }}</span></div><span class="text-slate-400">{{ item.count }}</span></div>
-               }
-               @empty {
-                 <p class="text-xs text-slate-400">No key type data available.</p>
-               }
-             </div>
-            <a routerLink="#" (click)="triggerAction('View all key types'); $event.preventDefault()" class="block text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline pt-1 transition">View all key types &rarr;</a>
-          </div>
-
-         </div>
+    
 
       </div>
        } @else if (activeTab === 'sites') {
        <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
-         <div class="xl:col-span-8 space-y-4">
+         <div class="xl:col-span-12 space-y-4">
           <!-- Sites section header -->
       
           <div class="bg-white rounded-lg border border-slate-100 overflow-hidden ">
@@ -510,13 +433,13 @@
                  <thead>
                    <tr class=" border-b border-slate-100 text-xs font-bold text-slate-900 tracking-wider">
                      <th class="py-3 px-4 w-4"><input type="checkbox" class="rounded text-blue-600"></th>
-                     <th class="py-3 px-4">Site Code</th>
-                     <th class="py-3 px-4">Site Name</th>
-                     <th class="py-3 px-4">Site Type</th>
-                     <th class="py-3 px-4">Primary Contact</th>
-                     <th class="py-3 px-4">Status</th>
-                     <th class="py-3 px-4 text-center">Keys</th>
-                     <th class="py-3 px-4 text-center">Jobs</th>
+                     <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site Code</th>
+                     <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site Name</th>
+                     <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site Type</th>
+                     <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Primary Contact</th>
+                     <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Status</th>
+                     <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Keys</th>
+                     <th class="py-3 px-4 text-center text-slate-900 text-xs font-bold font-['Inter'] uppercase">Jobs</th>
                      <th class="py-3 px-4 text-center">Actions</th>
                    </tr>
                  </thead>
@@ -524,25 +447,31 @@
                    @for (site of sitesPaginated; track site.id) {
                    <tr class="hover:bg-slate-50/70 transition duration-150">
                      <td class="py-3.5 px-4"><input type="checkbox" class="rounded text-blue-600"></td>
-                      <td class="py-3.5 px-4 font-mono text-xs text-slate-800">{{ site.siteCode }}</td>
-                      <td class="py-3.5 px-4 text-blue-500 hover:underline cursor-pointer">{{ site.name }}</td>
+                      <td class="py-3.5 px-4 text-slate-500 text-xs font-medium font-['Inter']">{{ site.siteCode }}</td>
+                      <td class="py-3.5 px-4 text-blue-600 text-xs font-semibold font-['Inter'] ">{{ site.name }}</td>
                       <td class="py-3.5 px-4">
                         <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + site.typeColor + '-50 text-' + site.typeColor + '-700 border border-' + site.typeColor + '-100'">{{ site.siteType }}</span>
                       </td>
-                      <td class="py-3.5 px-4 text-slate-600 font-medium">{{ site.primaryContactName }}</td>
+                      <td class="py-3.5 px-4 text-slate-900 text-xs font-medium font-['Inter']">{{ site.primaryContactName }}</td>
                       <td class="py-3.5 px-4">
-                        <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (site.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600')"> {{ site.status }}</span>
+                        <span class="text-xs font-semibold font-['Inter']" [class]="'px-2 py-0.5 rounded ' + (site.status === 'ACTIVE' ? 'bg-green-50 text-green-600' : 'bg-red-100 text-red-600 ')"> {{ site.status }}</span>
                       </td>
-                      <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.totalKeys }}</td>
-                      <td class="py-3.5 px-4 text-center font-semibold text-slate-700">{{ site.totalJobs }}</td>
+                      <td class="py-3.5 px-4 text-center  text-slate-900 text-xs font-medium font-['Inter']">{{ site.totalKeys }}</td>
+                      <td class="py-3.5 px-4 text-center  text-slate-900 text-xs font-medium font-['Inter']">{{ site.totalJobs }}</td>
                      <td class="py-3.5 px-4 text-center">
                        <div class="flex items-center justify-center gap-2 text-slate-400">
                          <button (click)="viewSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">
-                           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                          </button>
-                         <button (click)="triggerAction('More Options')" class="hover:text-slate-600 p-1 transition">
-                           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                         </button>
+                          <button (click)="editSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.6046 2.39732C12.6046 2.84089 12.4281 3.26628 12.114 3.57989L4.18619 11.5001C4.04849 11.6372 3.8792 11.7385 3.69318 11.795L1.10758 12.5782C1.05624 12.5936 1.00167 12.5948 0.949678 12.5818C0.897682 12.5687 0.850194 12.5419 0.812253 12.504C0.774312 12.4662 0.747332 12.4188 0.734177 12.3669C0.721022 12.315 0.722181 12.2605 0.737532 12.2091L1.52218 9.62701C1.57927 9.44102 1.68126 9.27191 1.81917 9.13455L9.74644 1.21432C10.0605 0.90071 10.4864 0.724554 10.9305 0.724609C11.3745 0.724665 11.8004 0.900928 12.1143 1.21462C12.4283 1.52832 12.6047 1.95374 12.6046 2.39732Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+    </svg>                         </button>
+                          <button (click)="deleteSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">
+ <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.87972 6.06068V9.61805M7.25379 6.06068V9.61805M10.2214 3.09619V11.3967C10.2214 11.7112 10.0963 12.0128 9.8737 12.2352C9.65109 12.4576 9.34916 12.5825 9.03434 12.5825H3.09917C2.78435 12.5825 2.48242 12.4576 2.25981 12.2352C2.03719 12.0128 1.91213 11.7112 1.91213 11.3967V3.09619M0.725098 3.09619H11.4084M3.69268 3.09619V1.9104C3.69268 1.59591 3.81775 1.2943 4.04036 1.07192C4.26297 0.849541 4.5649 0.724609 4.87972 0.724609H7.25379C7.56861 0.724609 7.87054 0.849541 8.09315 1.07192C8.31576 1.2943 8.44082 1.59591 8.44082 1.9104V3.09619" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+    </svg>                         </button>
+                         
                        </div>
                      </td>
                    </tr>
@@ -581,80 +510,7 @@
            </div>
          </div>
 
-          <div class="xl:col-span-4 space-y-5">
-            <div class="bg-white rounded-xl border border-slate-100 p-5 space-y-4">
-              <h4 class="text-sm font-bold text-slate-900 border-slate-100 pb-1">Site Status Overview</h4>
-              <div class="flex items-center justify-between gap-2">
-                <div class="w-28 h-28 relative flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
-                    <circle cx="60" cy="60" r="50" fill="none" stroke="#f1f5f9" stroke-width="14"/>
-                     @for (seg of siteDonutSegments; track $index) {
-                       <circle cx="60" cy="60" r="50" fill="none" [attr.stroke]="seg.color" stroke-width="14" [attr.stroke-dasharray]="seg.length + ' ' + (314.16 - seg.length)" [attr.stroke-dashoffset]="seg.offset" stroke-linecap="butt"/>
-                     }
-                  </svg>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1">
-                    <span class="text-xl font-extrabold text-slate-900 leading-none">{{ siteStats?.total ?? sites.length }}</span>
-                    <span class="text-[9px] font-medium tracking-wider text-slate-400 uppercase">Total Sites</span>
-                  </div>
-                </div>
-                <div class="flex-1 space-y-1.5 text-xs pl-2">
-                  <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active</span> <span class="font-medium text-slate-500">{{ siteStats?.active ?? 0 }} <span class="text-[10px] text-slate-400">({{ siteStats?.activePct ?? 0 }}%)</span></span></div>
-                  <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Inactive</span> <span class="font-medium text-slate-500">{{ siteStats?.inactive ?? 0 }} <span class="text-[10px] text-slate-400">({{ siteStats?.inactivePct ?? 0 }}%)</span></span></div>
-                   <div class="flex items-center justify-between text-slate-400"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Under Maintenance</span> <span class="font-medium">0 <span class="text-[10px]">(0%)</span></span></div>
-                  <div class="flex items-center justify-between text-slate-400"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span> Planned</span> <span class="font-medium">0 <span class="text-[10px]">(0%)</span></span></div>
-                </div>
-              </div>
-            </div>
-
-           <div class="bg-white rounded-lg border border-slate-100 p-5 space-y-3">
-             <h4 class="text-sm font-bold text-slate-900 border-slate-100 pb-1">Quick Actions</h4>
-             <div class="space-y-1">
-               <button (click)="triggerAction('Add New Site')" class="w-full text-left text-sm font-medium text-blue-500 hover:bg-blue-50/50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                 Add New Site
-               </button>
-               <button (click)="triggerAction('Import Sites')" class="w-full text-left text-sm font-medium text-blue-500 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                 Import Sites
-               </button>
-               <button (click)="triggerAction('Assign Keys')" class="w-full text-left text-sm font-medium text-blue-500 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
-                 <svg class="w-4 h-4 " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                 Assign Keys
-               </button>
-               <button (click)="triggerAction('View Site Map')" class="w-full text-left text-sm font-medium text-blue-500 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
-                 <svg class="w-4 h-4 " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                 View Site Map
-               </button>
-               <button (click)="triggerAction('Export Site Report')" class="w-full text-left text-sm font-medium text-blue-500 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-3 transition">
-                 <svg class="w-4 h-4 " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                 Export Site Report
-               </button>
-             </div>
-           </div>
-
-            <div class="bg-white rounded-lg border border-slate-100 p-5 space-y-4">
-              <h4 class="text-sm font-bold text-slate-900 border-slate-100 pb-1">Site Type Breakdown</h4>
-              <div class="space-y-3 text-xs">
-                @for (item of (siteStats?.typeBreakdown ?? []); track item.type) {
-                <div class="space-y-1">
-                  <div class="flex justify-between font-medium">
-                    <span>
-                      <span class="w-2 h-2 rounded-full mr-2 inline-block" [style]="'background-color:' + hexForType(item.type)"></span>
-                      {{ item.type }}
-                    </span>
-                    <span class="text-slate-600 font-bold">{{ item.count }}</span>
-                  </div>
-                  
-                </div>
-                }
-                @empty {
-                <p class="text-xs text-slate-400">No site type data available.</p>
-                }
-              </div>
-              <button type="button" (click)="triggerAction('View all site types')" class="block w-full text-xs font-semibold text-blue-600 hover:text-blue-700 pt-2 border-t border-slate-100 transition">View all site types &rarr;</button>
-             </div>
-
-          </div>
+          
         </div>
         } @else if (activeTab === 'jobs') {
          <div class="space-y-6">
@@ -684,64 +540,77 @@
 
           <!-- Stat pills -->
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+            <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
               <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-              </div>
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.333 3.33282H14.9995C15.4415 3.33282 15.8653 3.50842 16.1779 3.82101C16.4904 4.1336 16.666 4.55755 16.666 4.99962V16.6672C16.666 17.1093 16.4904 17.5332 16.1779 17.8458C15.8653 18.1584 15.4415 18.334 14.9995 18.334H5.00048C4.5585 18.334 4.13462 18.1584 3.82209 17.8458C3.50956 17.5332 3.33398 17.1093 3.33398 16.6672V4.99962C3.33398 4.55755 3.50956 4.1336 3.82209 3.82101C4.13462 3.50842 4.5585 3.33282 5.00048 3.33282H6.66698M9.99998 9.16662H13.333M9.99998 13.3336H13.333M6.66698 9.16662H6.67532M6.66698 13.3336H6.67532M7.50023 1.66602H12.4997C12.9599 1.66602 13.333 2.03914 13.333 2.49942V4.16622C13.333 4.62649 12.9599 4.99962 12.4997 4.99962H7.50023C7.04004 4.99962 6.66698 4.62649 6.66698 4.16622V2.49942C6.66698 2.03914 7.04004 1.66602 7.50023 1.66602Z" stroke="#0052FF" stroke-width="2" stroke-linecap="round"/>
+      </svg>              </div>
               <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Total Jobs</div>
+                <div class="text-slate-500 text-xs font-medium font-['Inter'] pb-[2px]">Total Jobs</div>
                 
-                <div class="text-lg font-bold text-slate-900 leading-tight">{{ totalJobs }}</div>
+                <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ totalJobs }}</div>
               </div>
             </div>
-             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
                <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-               </div>
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.66667 1.66602V4.99962M13.3333 1.66602V4.99962M2.5 8.33322H17.5M4.16667 3.33282H15.8333C16.7538 3.33282 17.5 4.07907 17.5 4.99962V16.6672C17.5 17.5878 16.7538 18.334 15.8333 18.334H4.16667C3.24619 18.334 2.5 17.5878 2.5 16.6672V4.99962C2.5 4.07907 3.24619 3.33282 4.16667 3.33282Z" stroke="#6B21A8" stroke-width="2" stroke-linecap="round"/>
+      </svg>               </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">Scheduled</div>
+                 <div class="text-slate-500 text-xs font-medium font-['Inter'] pb-[2px]">Scheduled</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsScheduled }}</div>
+                 <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsScheduled }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
                <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
-               </div>
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 4.99962V10L13.3336 11.6668M18.334 10C18.334 14.6028 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6028 1.66602 10C1.66602 5.39727 5.39727 1.66602 10 1.66602C14.6028 1.66602 18.334 5.39727 18.334 10Z" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+        </svg>               </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">In Progress</div>
+                 <div class="text-slate-500 text-xs font-medium font-['Inter'] pb-[2px]">In Progress</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsInProgress }}</div>
+                 <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsInProgress }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
                <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
-               </div>
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.666 5L7.50023 14.166L3.33398 9.99964" stroke="#15803D" stroke-width="2" stroke-linecap="round"/>
+        </svg>               </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">Completed</div>
+                 <div class="text-slate-500 text-xs font-medium font-['Inter']  pb-[2px]">Completed</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsCompleted }}</div>
+                 <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsCompleted }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
                <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
-               </div>
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.0003 7.49967V10.833M10.0003 14.1663H10.0087M18.109 14.9999L11.4423 3.33319C11.297 3.0767 11.0862 2.86335 10.8314 2.71492C10.5767 2.56649 10.2872 2.48828 9.99234 2.48828C9.69752 2.48828 9.40797 2.56649 9.15324 2.71492C8.8985 2.86335 8.6877 3.0767 8.54234 3.33319L1.87567 14.9999C1.72874 15.2543 1.6517 15.5431 1.65235 15.837C1.653 16.1308 1.73132 16.4192 1.87938 16.673C2.02744 16.9269 2.23996 17.137 2.49542 17.2822C2.75088 17.4274 3.04018 17.5025 3.33401 17.4999H16.6673C16.9598 17.4996 17.2469 17.4223 17.5001 17.2759C17.7532 17.1295 17.9634 16.9191 18.1094 16.6658C18.2555 16.4125 18.3324 16.1252 18.3323 15.8328C18.3322 15.5404 18.2552 15.2531 18.109 14.9999Z" stroke="#B91C1C" stroke-width="2" stroke-linecap="round"/>
+        </svg>               </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">Overdue</div>
+                 <div class="text-slate-500 text-xs font-medium font-['Inter'] pb-[2px]">Overdue</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsOverdue }}</div>
+                 <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsOverdue }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
+             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
                <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 9l6 6M15 9l-6 6"/></svg>
-               </div>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_3370_1373)">
+        <path d="M12.5002 7.49982L7.49982 12.5002M7.49982 7.49982L12.5002 12.5002M18.334 10C18.334 14.6028 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6028 1.66602 10C1.66602 5.39727 5.39727 1.66602 10 1.66602C14.6028 1.66602 18.334 5.39727 18.334 10Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_3370_1373">
+        <rect width="20" height="20" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>               </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">Cancelled</div>
+                 <div class="text-slate-500 text-xs font-medium font-['Inter'] pb-[2px]">Cancelled</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ jobsCancelled }}</div>
+                 <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsCancelled }}</div>
                </div>
              </div>
           </div>
@@ -752,14 +621,14 @@
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
                   <tr class="border-b border-slate-200 text-left text-slate-500">
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job ID </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Site </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Job Type </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Officer </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Scheduled Date &amp; Time </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Status </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Priority </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
+                    <th class="px-5 py-3 text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap">Job ID </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase  whitespace-nowrap">Site </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap">Job Type </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase  whitespace-nowrap">Officer </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap">Scheduled Date &amp; Time </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap">Status </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap">Priority </th>
+                    <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -775,17 +644,22 @@
                     } @else {
                       @for (job of jobs; track job.id) {
                         <tr class="hover:bg-slate-50">
-                          <td class="px-5 py-3.5 font-semibold text-blue-600 whitespace-nowrap">{{ job.code }}</td>
-                          <td class="px-5 py-3.5"><div class="font-medium text-slate-800">{{ job.site }}</div></td>
-                          <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 text-slate-600">{{ job.type }}</span></td>
-                          <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">{{ job.officer }}</td>
-                          <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ job.date }}</td>
+                          <td class="px-5 py-3.5 text-blue-600 text-xs font-semibold font-['Inter'] whitespace-nowrap">{{ job.code }}</td>
+                          <td class="px-5 py-3.5"><div class="text-slate-900 text-xs font-semibold font-['Inter']">{{ job.site }}</div></td>
+                          <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5  text-slate-900 text-xs font-medium font-['Inter']"><div data-layer="icon-container" class="IconContainer size-4 left-0 top-0 absolute overflow-hidden">
+    <div data-svg-wrapper data-layer="lock" class="Lock left-0 top-0 absolute">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4.66667 7.33349V4.66661C4.66667 3.78248 5.01786 2.93457 5.64298 2.3094C6.2681 1.68423 7.11595 1.33301 8 1.33301C8.88406 1.33301 9.7319 1.68423 10.357 2.3094C10.9821 2.93457 11.3333 3.78248 11.3333 4.66661V7.33349M3.33333 7.33349H12.6667C13.403 7.33349 14 7.93049 14 8.66693V13.334C14 14.0704 13.403 14.6674 12.6667 14.6674H3.33333C2.59695 14.6674 2 14.0704 2 13.334V8.66693C2 7.93049 2.59695 7.33349 3.33333 7.33349Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>{{ job.type }}</span></td>
+                          <td class="px-5 py-3.5 text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ job.officer }}</td>
+                          <td class="px-5 py-3.5 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ job.date }}</td>
                           <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap" [ngClass]="jobStatusClass(job.status)">{{ job.status }}</span></td>
                           <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md" [ngClass]="jobPriorityClass(job.priority)">{{ job.priority }}</span></td>
                           <td class="px-5 py-3.5 text-right">
                             <div class="flex items-center justify-end gap-3 text-slate-400">
-                              <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                              <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                              <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
                             </div>
                           </td>
                         </tr>

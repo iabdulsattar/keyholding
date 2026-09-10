@@ -57,6 +57,9 @@ export class ViewKeyComponent implements OnInit {
   keyCategoryName = '';
   siteName = '';
   clientName = '';
+  hookStatus = '';
+  hookCabinetName = '';
+  hookLabel = '';
   showDeactivateModal = false;
   showReactivateModal = false;
   showDeleteModal = false;
@@ -101,6 +104,9 @@ export class ViewKeyComponent implements OnInit {
         this.keyCategoryName = item.keyCategoryName || item.categoryName || item.category || '';
         this.siteName = item.siteName || item.site?.name || '';
         this.clientName = item.clientName || item.client?.name || '';
+        this.hookStatus = item.hookStatus || '';
+        this.hookCabinetName = item.hookCabinetName || '';
+        this.hookLabel = item.hookLabel || '';
         this.updateStatusFromApi(item.status);
       },
       error: () => {}
