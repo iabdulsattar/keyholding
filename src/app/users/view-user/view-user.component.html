@@ -122,7 +122,7 @@
     </svg>
               Edit User
             </button>
-            @if (user?.status?.toLowerCase() === 'inactive') {
+            @if (user.status.toLowerCase() === 'inactive') {
               <button (click)="openReactivateModal()" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-50 border border-emerald-600 text-emerald-600 text-sm font-semibold hover:bg-emerald-50 transition">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M11.5 7.5a4.5 4.5 0 01-9 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>

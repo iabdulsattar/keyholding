@@ -132,16 +132,16 @@
       </div>
 
       <!-- VIEW CONTEXT NAVIGATION TABS BAR -->
-      <div class="border-b border-slate-200">
-        <nav class="flex flex-wrap -mb-px gap-x-9 gap-y-4 text-xs font-semibold text-slate-500">
-          <button (click)="switchTab('overview')" [class]="activeTab === 'overview' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Overview</button>
-          <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Keys ({{ totalKeys }})</button>
-          <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Sites ({{ sites.length }})</button>
-          <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Jobs ({{ totalJobs }})</button>
-           <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Activity Log ({{ activities.length }})</button>
-          <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Documents ({{ totalDocuments }})</button>
-          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Contact ({{ contacts.length }})</button>
-           <button (click)="switchTab('emergency')" [class]="activeTab === 'emergency' ? 'tab-btn pb-3 text-blue-600 border-b-2 border-blue-600 transition select-none' : 'tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 transition select-none'">Emergency Contact ({{ totalEmergencyContacts }})</button>
+      <div class="border-b border-slate-200 mb-6">
+        <nav class="flex w-full text-sm overflow-x-auto no-scrollbar">
+          <button (click)="switchTab('overview')" [class]="activeTab === 'overview' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Overview</button>
+          <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Keys ({{ totalKeys }})</button>
+          <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Sites ({{ sites.length }})</button>
+          <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Jobs ({{ totalJobs }})</button>
+           <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Activity Log ({{ activities.length }})</button>
+          <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Documents ({{ totalDocuments }})</button>
+          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Contact ({{ contacts.length }})</button>
+           <button (click)="switchTab('emergency')" [class]="activeTab === 'emergency' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Emergency Contact ({{ totalEmergencyContacts }})</button>
         </nav>
       </div>
 
@@ -280,11 +280,11 @@
         </div>
 
         <!-- Right column (1/3) -->
-        <div class="space-y-5">
+        <div class="flex flex-col gap-5">
 
           <!-- Status & Timeline -->
-           <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5">
-             <h3 class="font-semibold text-slate-900 mb-4">Status &amp; Timeline</h3>
+           <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5 flex-1 min-h-0">
+              <h3 class="font-semibold text-slate-900 mb-4">Status &amp; Timeline</h3>
              <div class="max-h-64 overflow-y-auto thin-scroll pr-2">
                <ol class="relative border-l-2 border-slate-100 ml-1.5 space-y-6">
                   @for (item of timelineItems; track item.action + item.date) {
@@ -309,67 +309,7 @@
              </div>
            </div>
 
-          <!-- Related Items -->
-          <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5">
-            <h3 class="font-semibold text-slate-900 mb-4">Related Items</h3>
-            <div class="space-y-1">
-              <div class="flex items-center justify-between rounded-lg px-2 py-2">
-                <span class="flex items-center gap-3 text-sm text-slate-700">
-                  <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7M9 9v.01M9 12v.01M9 15v.01"/></svg>
-                  </span>
-                  Sites
-                </span>
-                <span class="flex items-center gap-2">
-                  <span class="text-sm font-medium text-slate-900">{{ sites.length }}</span>
-                  <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-                </span>
-              </div>
-              <div class="flex items-center justify-between rounded-lg px-2 py-2">
-                <span class="flex items-center gap-3 text-sm text-slate-700">
-                  <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7a2 2 0 11-4 0 2 2 0 014 0zm-2 2v3m0 0l-3 7m3-7l3 7"/></svg>
-                  </span>
-                  Keys
-                </span>
-                <span class="flex items-center gap-2">
-                  <span class="text-sm font-medium text-slate-900">{{ keys.length }}</span>
-                  <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-                </span>
-              </div>
-              <div class="flex items-center justify-between rounded-lg px-2 py-2">
-                <span class="flex items-center gap-3 text-sm text-slate-700">
-                  <span class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                  </span>
-                  Jobs
-                </span>
-                <span class="flex items-center gap-2">
-                  <span class="text-sm font-medium text-slate-900">{{ totalJobs }}</span>
-                  <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Actions -->
-          <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5">
-            <h3 class="font-semibold text-slate-900 mb-4">Quick Actions</h3>
-             <div class="space-y-3">
-               <a class="flex items-center gap-2.5 text-sm font-medium text-blue-600 hover:text-blue-700 cursor-pointer">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                 Add New Site
-               </a>
-               <a class="flex items-center gap-2.5 text-sm font-medium text-blue-600 hover:text-blue-700 cursor-pointer">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7a2 2 0 11-4 0 2 2 0 014 0zm-2 2v3m0 0l-3 7m3-7l3 7"/></svg>
-                 Assign Keys
-               </a>
-               <a class="flex items-center gap-2.5 text-sm font-medium text-blue-600 hover:text-blue-700 cursor-pointer">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                 View Activity Log
-               </a>
-             </div>
-          </div>
+   
 
         </div>
       </div>

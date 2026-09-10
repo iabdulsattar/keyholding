@@ -12,7 +12,6 @@ import { DeactivateUserModalComponent } from './deactivate-user-modal/deactivate
 import { ReactivateUserModalComponent } from './reactivate-user-modal/reactivate-user-modal.component';
 import { ResendCredentialsModalComponent } from './resend-credentials-modal/resend-credentials-modal.component';
 import { TableUser } from '../shared/components/users/users-table/users-table.component';
-import { RolesTableComponent } from '../shared/components/roles/roles-table/roles-table.component';
 import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
 
 interface Role {
@@ -64,7 +63,7 @@ import { ActivityItem } from '../shared/components/ui/activity-timeline/activity
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, RolesTableComponent, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, RichSelectComponent],
   templateUrl: './user-management.component.html',
   styles: ``
 })

@@ -4,12 +4,13 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService, Client, PaginatedResult } from '../core/services/client.service';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
+import { BreadcrumbItem } from '../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './clients.component.html',
   styles: `.custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -20,6 +21,13 @@ export class ClientsComponent implements OnInit {
   loading = false;
   searchQuery = '';
   activeFilter: 'all' | 'Active' | 'Inactive' | 'Pending' = 'all';
+  filterStatus = 'all';
+  statusOptions = [
+    { label: 'All Status', value: 'all' },
+    { label: 'Active', value: 'Active' },
+    { label: 'Inactive', value: 'Inactive' },
+    { label: 'Pending', value: 'Pending' },
+  ];
   page = 0;
   pageSize = 10;
   totalItems = 0;
@@ -59,8 +67,15 @@ export class ClientsComponent implements OnInit {
     this.loadClients();
   }
 
+  onFilterChange(): void {
+    this.activeFilter = this.filterStatus as 'all' | 'Active' | 'Inactive' | 'Pending';
+    this.page = 0;
+    this.loadClients();
+  }
+
   setFilter(filter: 'all' | 'Active' | 'Inactive' | 'Pending'): void {
     this.activeFilter = filter;
+    this.filterStatus = filter;
     this.page = 0;
     this.loadClients();
   }
@@ -81,11 +96,11 @@ export class ClientsComponent implements OnInit {
   statusBadge(status: string): string {
     switch (status) {
       case 'Active':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Active</span></span>`;
+        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-green-600 bg-green-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Active</span></span>`;
       case 'Inactive':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-100"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Inactive</span></span>`;
+        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-orange-600 bg-orange-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Inactive</span></span>`;
       case 'Pending':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-100"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>Pending</span></span>`;
+        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-blue-600 bg-indigo-50  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>Pending</span></span>`;
       default:
         return status;
     }
