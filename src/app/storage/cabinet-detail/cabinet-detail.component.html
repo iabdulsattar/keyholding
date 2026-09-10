@@ -174,12 +174,12 @@
         <!-- Overview Tab - Cabinet Information -->
         <div *ngIf="activeTab === 'overview'">
           <!-- Content grid -->
-          <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 xl:grid-cols-3 mb-4 gap-4">
 
             <!-- Left column -->
             <div class="xl:col-span-2 space-y-4">
 
-              <div class="bg-white rounded-md shadow-xs p-6">
+              <div class="bg-white rounded-md shadow-xs px-6 pt-6 pb-12">
                 <h3 class="text-base font-bold text-slate-900 mb-5">Cabinet Information</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-12 ">
                   <div class="col-span-1 lg:col-span-8 space-y-2.5">
@@ -254,6 +254,86 @@
 
               </div>
 
+              
+            </div>
+
+            <!-- Right column -->
+            <div class="space-y-4 bg-white rounded-md shadow-xs p-5">
+
+              <!-- Access & Security -->
+              <div class=" border-b border-slate-200 pb-6">
+              <h3 class="text-base font-bold text-slate-900 mb-4">Access &amp; Security</h3>
+              <div class="space-y-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 text-xs font-medium">CCTV Monitored</span>
+                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 text-xs font-medium">Alarm System</span>
+                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
+                </div>
+                <div class="flex items-start justify-between ">
+                  <span class="text-slate-600 text-xs font-medium">Last Access</span>
+                  <div class="text-right">
+                    <div class="text-slate-900 text-xs font-semibold">15 May 2024, 10:30 AM</div>
+                    <div class="text-slate-500 text-xs">by James Walker</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Key Statistics -->
+            <div class="">
+              <h3 class="text-base font-bold text-slate-900 mb-5">Key Statistics</h3>
+              <div class="flex items-center gap-6">
+                <div class="relative w-28 h-28 flex-shrink-0">
+                  <!-- <svg viewBox="0 0 100 100" class="donut w-full h-full">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="12"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#2563eb" stroke-width="12"
+                    stroke-dasharray="179.6 251.3" stroke-dashoffset="0" stroke-linecap="butt"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="12"
+                    stroke-dasharray="53.9 251.3" stroke-dashoffset="-179.6" stroke-linecap="butt"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" stroke-width="12"
+                    stroke-dasharray="18 251.3" stroke-dashoffset="-233.5" stroke-linecap="butt"/>
+                </svg>
+                
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span class="text-2xl font-bold text-gray-900">14</span>
+                  <span class="text-[10px] text-gray-400">Total Keys</span>
+                </div> -->
+                </div>
+                <div class="flex-1 space-y-2.5 ">
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-blue-600 mb-0.5"></span>In Storage</span>
+                    <span class="font-bold text-slate-900 text-xs">10</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-emerald-500 mb-0.5"></span>Issued</span>
+                    <span class="font-bold text-slate-900 text-xs">3</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-orange-400 mb-0.5"></span>Overdue</span>
+                    <span class="font-bold text-slate-900 text-xs">1</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-red-500 mb-0.5"></span>Lost / Damaged</span>
+                    <span class="font-bold text-slate-900 text-xs">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+              <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+              <div class="xl:col-span-3 space-y-4">
+ 
               <!-- Hooks Tab & Hook Layout -->
               <div class="bg-white rounded-md shadow-xs p-6">
                 <h3 class="text-base font-bold text-gray-900 mb-5">Hook Layout ({{ cabinet.totalHooks }} Total Hooks)
@@ -355,83 +435,8 @@
                   </div>
                 </div>
               </div>
-
-            </div>
-
-            <!-- Right column -->
-            <div class="space-y-4 bg-white rounded-md shadow-xs p-5">
-
-              <!-- Access & Security -->
-              <div class=" border-b border-slate-200 pb-6">
-              <h3 class="text-base font-bold text-slate-900 mb-4">Access &amp; Security</h3>
-              <div class="space-y-3 text-sm">
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-600 text-xs font-medium">CCTV Monitored</span>
-                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-600 text-xs font-medium">Alarm System</span>
-                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
-                </div>
-                <div class="flex items-start justify-between ">
-                  <span class="text-slate-600 text-xs font-medium">Last Access</span>
-                  <div class="text-right">
-                    <div class="text-slate-900 text-xs font-semibold">15 May 2024, 10:30 AM</div>
-                    <div class="text-slate-500 text-xs">by James Walker</div>
-                  </div>
-                </div>
               </div>
-            </div>
-
-            <!-- Key Statistics -->
-            <div class="">
-              <h3 class="text-base font-bold text-slate-900 mb-5">Key Statistics</h3>
-              <div class="flex items-center gap-6">
-                <div class="relative w-28 h-28 flex-shrink-0">
-                  <!-- <svg viewBox="0 0 100 100" class="donut w-full h-full">
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="12"/>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#2563eb" stroke-width="12"
-                    stroke-dasharray="179.6 251.3" stroke-dashoffset="0" stroke-linecap="butt"/>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="12"
-                    stroke-dasharray="53.9 251.3" stroke-dashoffset="-179.6" stroke-linecap="butt"/>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" stroke-width="12"
-                    stroke-dasharray="18 251.3" stroke-dashoffset="-233.5" stroke-linecap="butt"/>
-                </svg>
-                
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                  <span class="text-2xl font-bold text-gray-900">14</span>
-                  <span class="text-[10px] text-gray-400">Total Keys</span>
-                </div> -->
-                </div>
-                <div class="flex-1 space-y-2.5 ">
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-blue-600 mb-0.5"></span>In Storage</span>
-                    <span class="font-bold text-slate-900 text-xs">10</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-emerald-500 mb-0.5"></span>Issued</span>
-                    <span class="font-bold text-slate-900 text-xs">3</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-orange-400 mb-0.5"></span>Overdue</span>
-                    <span class="font-bold text-slate-900 text-xs">1</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-red-500 mb-0.5"></span>Lost / Damaged</span>
-                    <span class="font-bold text-slate-900 text-xs">0</span>
-                  </div>
-                </div>
               </div>
-            </div>
-
-          </div>
-
-
-        </div>
       </div>
 
     </div>
