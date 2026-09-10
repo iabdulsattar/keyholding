@@ -56,6 +56,7 @@ export class AppChart implements AfterViewInit, OnDestroy {
   @Input() series: number[] = [];
   @Input() labels: string[] = [];
   @Input() colors: string[] = [];
+  @Input() showLegend: boolean = true;
 
   private currentSeries: any[] = [];
 
@@ -128,6 +129,10 @@ export class AppChart implements AfterViewInit, OnDestroy {
       series: this.currentSeries,
       labels: hasInput ? this.labels : ['Stocks', 'Bonds', 'Real Estate', 'Cash'],
       colors: this.colors.length > 0 ? this.colors : ['#10b981', '#2563eb', '#f59e0b', '#e9edf5'],
+      legend: {
+        show: this.showLegend,
+        position: 'bottom',
+      },
     };
   }
 

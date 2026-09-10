@@ -1,5 +1,4 @@
-  </div>
-  <app-deactivate-cabinet-modal<div class="min-h-screen w-full bg-gray-50 font-sans text-slate-900" *ngIf="loading; else loaded">
+ <div class="min-h-screen w-full bg-gray-50 font-sans text-slate-900" *ngIf="loading; else loaded">
   <div class="animate-pulse space-y-4">
     <div class="h-8 w-48 rounded bg-slate-200"></div>
     <div class="h-4 w-64 rounded bg-slate-200"></div>
@@ -278,7 +277,7 @@
               <h3 class="text-base font-bold text-slate-900 mb-5">Key Statistics</h3>
               <div class="flex items-center gap-6">
                 <div class="w-28 h-28 flex-shrink-0">
-                  <app-chart [series]="keyStatisticsChart.series" [labels]="keyStatisticsChart.labels" [colors]="keyStatisticsChart.colors"></app-chart>
+                  <app-chart [series]="keyStatisticsChart.series" [labels]="keyStatisticsChart.labels" [colors]="keyStatisticsChart.colors" [showLegend]="false"></app-chart>
                 </div>
                 <div class="flex-1 space-y-2.5 ">
                   @for (seg of donutSegments; track seg.label) {
@@ -301,29 +300,35 @@
  
               <!-- Hooks Tab & Hook Layout -->
               <div class="bg-white rounded-md shadow-xs p-6">
-                <h3 class="text-base font-bold text-gray-900 mb-5">Hook Layout ({{ cabinet.totalHooks }} Total Hooks)
-                </h3>
+                <div class="flex items-center justify-between mb-5">
+                  <h3 class="text-base font-bold text-gray-900">Hook Layout ({{ cabinet.totalHooks }} Total Hooks)</h3>
+                  <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'assign-key']"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Add Key to Hook
+                  </a>
+                </div>
                 <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2.5">
                   <ng-container *ngFor="let h of hooks">
                     <div class="flex flex-col items-center min-h-[90px] gap-1.5 border border-slate-200 bg-slate-50 rounded-lg py-3">
 
                       @if(h.used){
 
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="5" cy="5" r="5" fill="#0052FF" />
                       </svg>
                       }
                       @else{
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="5" cy="5" r="4" stroke="#10B981" stroke-width="2" />
                       </svg>
 
 
                       }
-                      <span class="text-slate-900 text-[7px] font-semibold font-['Inter']">{{ h.used ? h.keyName :
+                      <span class="text-slate-900 text-xs font-semibold font-['Inter']">{{ h.used ? h.keyName :
                         'Available' }}</span>
                         
-                      <span *ngIf="h.used" class="text-slate-400 text-[7px] font-semibold font-['Inter']">{{
+                      <span *ngIf="h.used" class="text-slate-400 text-[10px] font-semibold font-['Inter']">{{
                         h.keyTypeName }}</span>
 
                       <div class="flex items-center mt-auto justify-between w-full p-1 mt-0.5 border-t border-slate-100">
@@ -331,7 +336,7 @@
                         @if(h.used){
                           <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'move-key']"
                             [queryParams]="{hookId: h.id}" class="inline-flex items-center justify-center">
-                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path
                                 d="M7.04014 8.63965L8.64014 7.03965L7.04014 5.43965M8.64014 7.03965H6.22366C5.96148 7.03697 5.70399 6.96991 5.47381 6.84437C5.24364 6.71882 5.04785 6.53863 4.90366 6.31965L4.76006 6.13965M7.04014 3.83965L8.64014 2.23965L7.04014 0.639648M8.64014 2.23965L6.25094 2.23969C5.99234 2.23792 5.73717 2.29886 5.50728 2.41729C5.27739 2.53572 5.07963 2.70811 4.93094 2.91969L2.74934 6.35969C2.60065 6.57127 2.40289 6.74365 2.173 6.86208C1.94310 6.98051 1.68793 7.04145 1.42934 7.03969H0.640137M0.640137 2.23969H1.42894C1.72712 2.23761 2.01995 2.31891 2.27439 2.4744C2.52883 2.62989 2.73476 2.85339 2.86894 3.11969"
                                 stroke="#F59E0B" stroke-width="1.2799" stroke-linecap="round" />
@@ -339,7 +344,7 @@
                           </a>
                           }
                         @else{
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M7.04014 8.63965L8.64014 7.03965L7.04014 5.43965M8.64014 7.03965H6.22366C5.96148 7.03697 5.70399 6.96991 5.47381 6.84437C5.24364 6.71882 5.04785 6.53863 4.90366 6.31965L4.76006 6.13965M7.04014 3.83965L8.64014 2.23965L7.04014 0.639648M8.64014 2.23965L6.25094 2.23969C5.99234 2.23792 5.73717 2.29886 5.50728 2.41729C5.27739 2.53572 5.07963 2.70811 4.93094 2.91969L2.74934 6.35969C2.60065 6.57127 2.40289 6.74365 2.173 6.86208C1.94310 6.98051 1.68793 7.04145 1.42934 7.03969H0.640137M0.640137 2.23969H1.42894C1.72712 2.23761 2.01995 2.31891 2.27439 2.4744C2.52883 2.62989 2.73476 2.85339 2.86894 3.11969"
                             stroke="#94A3B8" stroke-width="1.2799" stroke-linecap="round" />
@@ -350,7 +355,7 @@
                         @if(h.used){
                           <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'remove-key']"
                             [queryParams]="{hookId: h.id}" class="inline-flex items-center justify-center">
-                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path
                                 d="M5.84014 3.43965L3.44014 5.83965M3.44014 3.43965L5.84014 5.83965M8.64014 4.63965C8.64014 6.84879 6.84928 8.63965 4.64014 8.63965C2.431 8.63965 0.640137 6.84879 0.640137 4.63965C0.640137 2.43051 2.431 0.639648 4.64014 0.639648C6.84928 0.639648 8.64014 2.43051 8.64014 4.63965Z"
                                 stroke="#EF4444" stroke-width="1.2799" stroke-linecap="round" />
@@ -358,7 +363,7 @@
                           </a>
                           }
                         @else{
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M5.84014 3.43965L3.44014 5.83965M3.44014 3.43965L5.84014 5.83965M8.64014 4.63965C8.64014 6.84879 6.84928 8.63965 4.64014 8.63965C2.431 8.63965 0.640137 6.84879 0.640137 4.63965C0.640137 2.43051 2.431 0.639648 4.64014 0.639648C6.84928 0.639648 8.64014 2.43051 8.64014 4.63965Z"
                             stroke="#94A3B8" stroke-width="1.2799" stroke-linecap="round" />

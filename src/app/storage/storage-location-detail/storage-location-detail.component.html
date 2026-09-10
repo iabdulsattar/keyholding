@@ -20,9 +20,9 @@
     <!-- Breadcrumb + actions -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
       <nav class="text-sm flex flex-wrap items-center gap-1">
-        <a href="#" class="text-blue-600 font-medium hover:underline">Storage Management</a>
+        <a href="#" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Management</a>
         <span class="text-gray-400 mx-1">&gt;</span>
-        <a [routerLink]="['/storage/locations']" class="text-blue-600 font-medium hover:underline">Storage Locations</a>
+        <a [routerLink]="['/storage/locations']" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Locations</a>
         <span class="text-gray-400 mx-1">&gt;</span>
         <span class="text-gray-500">{{ location.name }}</span>
       </nav>
@@ -55,8 +55,9 @@
         <!-- Identity -->
         <div class="flex items-start gap-4 lg:pr-2">
           <div class="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0">
-            <i data-lucide="building-2" class="text-indigo-500 w-7 h-7"></i>
-          </div>
+   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16.0001 13.333H16.0134M16.0001 18.6668H16.0134M16.0001 7.99929H16.0134M21.3329 13.333H21.3462M21.3329 18.6668H21.3462M21.3329 7.99929H21.3462M10.6673 13.333H10.6806M10.6673 18.6668H10.6806M10.6673 7.99929H10.6806M12.0005 29.3343V25.334C12.0005 24.9804 12.1409 24.6412 12.391 24.3911C12.641 24.1411 12.9801 24.0006 13.3337 24.0006H18.6665C19.0201 24.0006 19.3592 24.1411 19.6092 24.3911C19.8592 24.6412 19.9997 24.9804 19.9997 25.334V29.3343M8.00087 2.66553H23.9993C25.4719 2.66553 26.6657 3.85953 26.6657 5.33241V26.6674C26.6657 28.1403 25.4719 29.3343 23.9993 29.3343H8.00087C6.52826 29.3343 5.33447 28.1403 5.33447 26.6674V5.33241C5.33447 3.85953 6.52826 2.66553 8.00087 2.66553Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>          </div>
           <div class="min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="text-lg font-bold text-slate-900">{{ location.name }}</h2>
