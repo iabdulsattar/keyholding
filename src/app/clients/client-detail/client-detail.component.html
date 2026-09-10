@@ -343,7 +343,6 @@
                   <td class="py-3.5 pl-5 pr-3"><input type="checkbox" class="row-checkbox accent-blue-600 rounded cursor-pointer" (change)="onRowCheckboxChange($event)"></td>
                   <td class="py-3.5 px-3  text-xs font-semibold font-['Inter'] cursor-pointer flex items-center gap-2">
                     <span class="text-blue-600">{{ key.keyCode }}</span>                    
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code-icon lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
                   </td>
                   <td class="py-3.5 px-3">
                     <div class="flex items-center gap-2">
@@ -394,15 +393,14 @@
                  <button (click)="keysPreviousPage()" [disabled]="keysPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Previous page">
                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-7"/></svg>
                  </button>
-                 @for (p of keysVisiblePages; track p) {
-                   @if (p === '...') {
-                     <span class="px-1 text-slate-400 text-sm">...</span>
-                   } @else {
-                     <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
-                   }
-                 }
-                 <button (click)="keysGoToPage(keysTotalPages)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="keysPage === keysTotalPages ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ keysTotalPages }}</button>
-                 <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Next page">
+                  @for (p of keysVisiblePages; track p) {
+                    @if (p === '...') {
+                      <span class="px-1 text-slate-400 text-sm">...</span>
+                    } @else {
+                      <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
+                    }
+                  }
+                  <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Next page">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                </button>
                <div class="relative ml-2">
@@ -490,15 +488,14 @@
                     <button (click)="sitesPreviousPage()" [disabled]="sitesPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === 1 ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
                       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
                     </button>
-                    @for (p of sitesVisiblePages; track p) {
-                      @if (p === '...') {
-                        <span class="px-1 text-slate-400 text-sm">...</span>
-                      } @else {
-                        <button (click)="sitesGoToPage(p)" [class]="sitesPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
-                      }
-                    }
-                    <button (click)="sitesGoToPage(sitesTotalPages)" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition" [class]="sitesPage === sitesTotalPages ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">{{ sitesTotalPages }}</button>
-                    <button (click)="sitesNextPage()" [disabled]="sitesPage === sitesTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === sitesTotalPages ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
+                     @for (p of sitesVisiblePages; track p) {
+                       @if (p === '...') {
+                         <span class="px-1 text-slate-400 text-sm">...</span>
+                       } @else {
+                         <button (click)="sitesGoToPage(p)" [class]="sitesPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
+                       }
+                     }
+                     <button (click)="sitesNextPage()" [disabled]="sitesPage === sitesTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === sitesTotalPages ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                    </button>
                  </div>
@@ -646,13 +643,17 @@
                         <tr class="hover:bg-slate-50">
                           <td class="px-5 py-3.5 text-blue-600 text-xs font-semibold font-['Inter'] whitespace-nowrap">{{ job.code }}</td>
                           <td class="px-5 py-3.5"><div class="text-slate-900 text-xs font-semibold font-['Inter']">{{ job.site }}</div></td>
-                          <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5  text-slate-900 text-xs font-medium font-['Inter']"><div data-layer="icon-container" class="IconContainer size-4 left-0 top-0 absolute overflow-hidden">
-    <div data-svg-wrapper data-layer="lock" class="Lock left-0 top-0 absolute">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4.66667 7.33349V4.66661C4.66667 3.78248 5.01786 2.93457 5.64298 2.3094C6.2681 1.68423 7.11595 1.33301 8 1.33301C8.88406 1.33301 9.7319 1.68423 10.357 2.3094C10.9821 2.93457 11.3333 3.78248 11.3333 4.66661V7.33349M3.33333 7.33349H12.6667C13.403 7.33349 14 7.93049 14 8.66693V13.334C14 14.0704 13.403 14.6674 12.6667 14.6674H3.33333C2.59695 14.6674 2 14.0704 2 13.334V8.66693C2 7.93049 2.59695 7.33349 3.33333 7.33349Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </div>{{ job.type }}</span></td>
+                          <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5  text-slate-900 text-xs font-medium font-['Inter']">
+                            @if ((job.type || '').toLowerCase() === 'lock') {
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.66667 7.33349V4.66661C4.66667 3.78248 5.01786 2.93457 5.64298 2.3094C6.2681 1.68423 7.11595 1.33301 8 1.33301C8.88406 1.33301 9.7319 1.68423 10.357 2.3094C10.9821 2.93457 11.3333 3.78248 11.3333 4.66661V7.33349M3.33333 7.33349H12.6667C13.403 7.33349 14 7.93049 14 8.66693V13.334C14 14.0704 13.403 14.6674 12.6667 14.6674H3.33333C2.59695 14.6674 2 14.0704 2 13.334V8.66693C2 7.93049 2 13.334V8.66693Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+                              </svg>
+                            } @else if ((job.type || '').toLowerCase() === 'unlock') {
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.66667 7.33389V4.66702C4.66584 3.84033 4.97219 3.04281 5.52625 2.4293C6.08031 1.81578 6.84256 1.43005 7.665 1.34696C8.48745 1.26388 9.31143 1.48938 9.97698 1.97969C10.6425 2.47 11.1022 3.19014 11.2667 4.0003M3.33333 7.33379H12.6667C13.403 7.33379 14 7.93079 14 8.66722V13.3342C14 14.0707 13.403 14.6677 12.6667 14.6677H3.33333C2.59695 14.6677 2 14.0707 2 13.3342V8.66722C2 7.93079 2 8.66722Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+                              </svg>
+                            }
+                          {{ job.type }}</span></td>
                           <td class="px-5 py-3.5 text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ job.officer }}</td>
                           <td class="px-5 py-3.5 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ job.date }}</td>
                           <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap" [ngClass]="jobStatusClass(job.status)">{{ job.status }}</span></td>
@@ -722,7 +723,7 @@
              <div class="overflow-x-auto">
                <table class="w-full text-sm min-w-[1000px]">
                    <thead>
-                    <tr class="border-b border-slate-100 text-slate-500 text-xs">
+                    <tr class="border-b border-slate-100 text-slate-900 text-xs font-semibold font-['Inter'] uppercase">
                       <th class="th">Date &amp; Time</th>
                       <th class="th">Performed By</th>
                       <th class="th">Event Type</th>
@@ -873,26 +874,26 @@
             <div class="overflow-x-auto">
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
-                  <tr class="border-b border-slate-200 text-left text-slate-500">
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Document Name 
+                  <tr class="border-b border-slate-200 text-left text-slate-900 text-xs  font-['Inter'] uppercase">
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap">Document Name 
                       <!-- <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span> -->
                     </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Category 
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap">Category 
                       <!-- <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span> -->
                     </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">File Type 
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap">File Type 
                       <!-- <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span> -->
                     </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Size 
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap">Size 
                       <!-- <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span> -->
                     </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded By 
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap">Uploaded By 
                       <!-- <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span> -->
                     </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap">Uploaded On 
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap">Uploaded On 
                       <!-- <span class="text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7h14l-7 7z"/><path d="M5 5l7 7 7-7"/></svg></span> -->
                     </th>
-                    <th class="px-5 py-3 font-medium whitespace-nowrap text-right">Actions</th>
+                    <th class="px-5 py-3 font-semibold whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -956,7 +957,6 @@
                       <button (click)="documentsGoToPage(p)" [class.bg-white]="documentsPage === p" [class.text-blue-500]="documentsPage === p" [class.border-blue-500]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
                     }
                   }
-                  <button (click)="documentsGoToPage(documentsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ documentsTotalPages }}</button>
                   <button (click)="documentsNextPage()" [disabled]="documentsPage === documentsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                  </button>
@@ -1036,7 +1036,7 @@
              <div class="overflow-x-auto">
                <table class="w-full text-left border-collapse min-w-[900px]">
                  <thead>
-                   <tr class="border-b border-slate-100 text-slate-700 text-xs">
+                   <tr class="border-b border-slate-100 text-slate-900 text-xs font-medium font-['Inter'] uppercase">
                      <th class="th">Contact Name</th>
                      <th class="th">Job Title</th>
                      <th class="th">Department</th>
@@ -1044,35 +1044,36 @@
                      <th class="th">Phone</th>
                      <th class="th">Status</th>
                      <th class="th">Primary</th>
-                     <th class="th text-right">Actions</th>
+                     <th class="th text-center">Actions</th>
                    </tr>
                  </thead>
                   <tbody class="divide-y divide-slate-100">
                     @for (contact of contactsPaginated; track contact.id) {
-                      <tr class="hover:bg-slate-50">
+                     <tr class="hover:bg-slate-50">
+                   <td class="td">
+                     <div class="flex items-center gap-3">
+                       <div class="avatar {{ contact.color }}">{{ contact.initials }}</div>
+                       <span class="text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.fullName }}</span>
+                     </div>
+                   </td>
+                   <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.department }}</td>
+                   <td class="td text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.email }}</td>
+                  <td class="td text-slate-900 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.phone }}</td>
+
+                   <td class="td  text-xs font-semibold font-['Inter'] whitespace-nowrap ">
+                                         <span class="badge rounded-lg {{ contact.primaryContact === 'Yes' ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500' }} ">{{ contact.primaryContact ? 'Yes' : 'No' }}</span>
+</td>
+                   <td class="td">
+                     <span class="badge rounded-lg {{ contact.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">{{ contact.status }}</span>
+                   </td>
                         <td class="td">
-                          <div class="flex items-center gap-3">
-                            <div class="avatar {{ contact.color }}">{{ contact.initials }}</div>
-                            <span class="font-medium text-slate-700 whitespace-nowrap">{{ contact.name }}</span>
+                          <div class="flex items-center justify-center gap-3 text-slate-400">
+                            <button (click)="viewContact(contact.id)" class="hover:text-blue-600 cursor-pointer" title="View">
+                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
                           </div>
                         </td>
-                        <td class="td text-slate-600 text-[14px] whitespace-nowrap">{{ contact.title }}</td>
-                        <td class="td text-slate-600 text-[14px] whitespace-nowrap">{{ contact.dept }}</td>
-                        <td class="td text-slate-600 text-[14px] whitespace-nowrap">{{ contact.email }}</td>
-                        <td class="td text-slate-600 text-[14px] whitespace-nowrap">{{ contact.phone }}</td>
-                        <td class="td">
-                           <span class="badge {{ contactStatusClass(contact.status) }}">{{ contact.status }}</span>
-                        </td>
-                        <td class="td text-slate-600 text-[14px]">{{ contact.primary ? 'Yes' : 'No' }}</td>
-                           <td class="td">
-                               <div class="flex items-center justify-end gap-3 text-slate-400">
-                                  <button (click)="viewContact(contact.id)" class="flex items-center justify-center hover:text-blue-600 text-slate-600 cursor-pointer" title="View contact">
-                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                   </button>
-                                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
-                                </div>
-                           </td>
-                      </tr>
+                 </tr>
                     }
                   </tbody>
                </table>
@@ -1090,15 +1091,14 @@
                    <button (click)="contactsPreviousPage()" [disabled]="contactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
                    </button>
-                   @for (p of contactsVisiblePages; track p) {
-                     @if (p === '...') {
-                       <span class="px-1 text-slate-400 text-sm">...</span>
-                     } @else {
-                       <button (click)="contactsGoToPage(p)" [class.bg-white]="contactsPage === p" [class.text-blue-500]="contactsPage === p" [class.border-blue-500]="contactsPage === p" [class.text-slate-600]="contactsPage !== p" [class.hover:bg-slate-50]="contactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
-                     }
-                   }
-                   <button (click)="contactsGoToPage(contactsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ contactsTotalPages }}</button>
-                   <button (click)="contactsNextPage()" [disabled]="contactsPage === contactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                    @for (p of contactsVisiblePages; track p) {
+                      @if (p === '...') {
+                        <span class="px-1 text-slate-400 text-sm">...</span>
+                      } @else {
+                        <button (click)="contactsGoToPage(p)" [class.bg-white]="contactsPage === p" [class.text-blue-500]="contactsPage === p" [class.border-blue-500]="contactsPage === p" [class.text-slate-600]="contactsPage !== p" [class.hover:bg-slate-50]="contactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                      }
+                    }
+                    <button (click)="contactsNextPage()" [disabled]="contactsPage === contactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
                   </button>
                 </div>
@@ -1184,15 +1184,16 @@
         <div class="overflow-x-auto">
           <table class="w-full text-sm min-w-[900px]">
             <thead>
-              <tr class="border-b border-slate-100 text-slate-600 text-xs">
+              <tr class="border-b border-slate-100 text-slate-900 text-xs font-medium font-['Inter'] uppercase">
                 <th class="th">Contact Name</th>
                 <th class="th">Relationship</th>
-                <th class="th">Phone</th>
                 <th class="th">Email</th>
+               <th class="th">Phone</th>
+
                 <th class="th">Availability</th>
                 <th class="th">Primary</th>
                 <th class="th">Status</th>
-                <th class="th text-right">Actions</th>
+                <th class="th text-center">Actions</th>
               </tr>
             </thead>
              <tbody class="divide-y divide-slate-100">
@@ -1201,23 +1202,25 @@
                    <td class="td">
                      <div class="flex items-center gap-3">
                        <div class="avatar {{ ec.color }}">{{ ec.initials }}</div>
-                       <span class="font-medium text-slate-800 whitespace-nowrap">{{ ec.fullName }}</span>
+                       <span class="text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ ec.fullName }}</span>
                      </div>
                    </td>
-                   <td class="td text-slate-600 whitespace-nowrap">{{ ec.department }}</td>
-                   <td class="td text-slate-600 whitespace-nowrap">{{ ec.phone }}</td>
-                   <td class="td text-slate-600 whitespace-nowrap">{{ ec.email }}</td>
-                   <td class="td text-slate-600 whitespace-nowrap">{{ ec.availability }}</td>
-                   <td class="td">{{ ec.primaryContact ? 'Yes' : 'No' }}</td>
+                   <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ ec.department }}</td>
+                   <td class="td text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ ec.email }}</td>
+                  <td class="td text-slate-900 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ ec.phone }}</td>
+                  <td class="td text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ ec.availability }}</td>
+
+                   <td class="td  text-xs font-semibold font-['Inter'] whitespace-nowrap ">
+                                         <span class="badge rounded-lg {{ ec.primaryContact === 'Yes' ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500' }} ">{{ ec.primaryContact ? 'Yes' : 'No' }}</span>
+</td>
                    <td class="td">
-                     <span class="badge {{ ec.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">{{ ec.status }}</span>
+                     <span class="badge rounded-lg {{ ec.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">{{ ec.status }}</span>
                    </td>
                         <td class="td">
-                          <div class="flex items-center justify-end gap-3 text-slate-400">
+                          <div class="flex items-center  justify-center gap-3 text-slate-400">
                             <button (click)="viewEmergencyContact(ec.id)" class="hover:text-blue-600 cursor-pointer" title="View">
-                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                             </button>
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
                           </div>
                         </td>
                  </tr>
@@ -1242,15 +1245,14 @@
                <button (click)="emergencyContactsPreviousPage()" [disabled]="emergencyContactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
                </button>
-               @for (p of emergencyContactsVisiblePages; track p) {
-                 @if (p === '...') {
-                   <span class="px-1 text-slate-400 text-sm">...</span>
-                 } @else {
-                   <button (click)="emergencyContactsGoToPage(p)" [class.bg-white]="emergencyContactsPage === p" [class.text-blue-500]="emergencyContactsPage === p" [class.border-blue-500]="emergencyContactsPage === p" [class.text-slate-600]="emergencyContactsPage !== p" [class.hover:bg-slate-50]="emergencyContactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
-                 }
-               }
-               <button (click)="emergencyContactsGoToPage(emergencyContactsTotalPages)" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-600 text-sm font-medium hover:bg-slate-50">{{ emergencyContactsTotalPages }}</button>
-               <button (click)="emergencyContactsNextPage()" [disabled]="emergencyContactsPage === emergencyContactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                @for (p of emergencyContactsVisiblePages; track p) {
+                  @if (p === '...') {
+                    <span class="px-1 text-slate-400 text-sm">...</span>
+                  } @else {
+                    <button (click)="emergencyContactsGoToPage(p)" [class.bg-white]="emergencyContactsPage === p" [class.text-blue-500]="emergencyContactsPage === p" [class.border-blue-500]="emergencyContactsPage === p" [class.text-slate-600]="emergencyContactsPage !== p" [class.hover:bg-slate-50]="emergencyContactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                  }
+                }
+                <button (click)="emergencyContactsNextPage()" [disabled]="emergencyContactsPage === emergencyContactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
              </button>
            </div>

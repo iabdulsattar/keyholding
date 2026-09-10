@@ -35,32 +35,7 @@
 </div>
       </div>
     </div>
-         <!-- Filters row -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 mb-4">
-          <div class="relative w-full lg:col-span-3">
-            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()"
-              placeholder="Search users by name, email or role..."
-              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
-          </div>
-
-          
-          <div class="lg:col-span-2">  
-            <app-rich-select [options]="statusOptions" [(value)]="filterStatus" (valueChange)="onFilterChange()" placeholder="All Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
-          </div>
-
-          <div class="lg:col-span-5 flex">
-          <a [routerLink]="'/users/add-user'" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white font-semibold text-xs font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Add New Client
-          </a>
-          </div>
-
-        </div>
+       
 
     <!-- KEY STATUS METRIC HERO CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -103,7 +78,32 @@
 
       
     </div>
+  <!-- Filters row -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 mb-4">
+          <div class="relative w-full lg:col-span-3">
+            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()"
+              placeholder="Search users by name, email or role..."
+              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+          </div>
 
+          
+          <div class="lg:col-span-2">  
+            <app-rich-select [options]="statusOptions" [(value)]="filterStatus" (valueChange)="onFilterChange()" placeholder="All Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+          </div>
+
+          <div class="lg:col-span-5 flex">
+          <a [routerLink]="'/users/add-user'" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white font-semibold text-xs font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Add New Client
+          </a>
+          </div>
+
+        </div>
     <!-- CORE DATA FILTER AND DATAGRID CANVAS -->
     <div class="bg-white border border-slate-100 rounded-lg overflow-hidden flex flex-col mb-5">
       
