@@ -84,7 +84,7 @@
           <div class="min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="justify-start text-zinc-800 text-base font-bold font-['Inter']">KeyVault Trial</h2>
-              <span class="text-xs font-semibold text-[#3b6df5] bg-blue-50 px-2 py-0.5 rounded-full">Active Trial</span>
+              <span class="text-xs font-semibold text-[#3b6df5] bg-blue-50 px-2 py-0.5 rounded-full">Active </span>
             </div>
             <p class="text-slate-500 text-sm mt-1">You are currently exploring all features of KeyVault with full
               access.
@@ -318,13 +318,14 @@
               trial?.active ? plan?.name : plan?.name }}</p>
 
             <div class=" divide-y divide-slate-200">
-              <div class="flex items-center justify-between text-sm py-2.5">
-                <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Plan Type' : 'Plan' }}</span>
-                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ trial?.active ? plan?.type :  plan?.name }}</span>
-              </div>
+             
               <div class="flex items-center justify-between text-sm py-2.5">
                 <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Trial Duration' : 'Billing Period' }}</span>
-                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ plan?.duration }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ trial?.active ? '14 days' : plan?.duration }}</span>
+              </div>
+               <div class="flex items-center justify-between text-sm py-2.5">
+                <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Plan Type' : 'Plan' }}</span>
+                <span class="text-slate-900 text-xs font-medium font-['Inter']">{{ trial?.active ? plan?.type :  plan?.name }}</span>
               </div>
               <div class="flex items-center justify-between text-sm py-2.5">
                 <span class=" text-slate-900 text-xs font-normal font-['Inter']">{{ trial?.active ? 'Trial Start Date' : 'Start Date' }}</span>
