@@ -135,13 +135,13 @@
       <div class="border-b border-slate-200 mb-6">
         <nav class="flex  text-sm overflow-x-auto no-scrollbar">
           <button (click)="switchTab('overview')" [class]="activeTab === 'overview' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Overview</button>
-           <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Sites ({{ sites.length }})</button>
-          <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Keys ({{ totalKeys }})</button>
-          <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Jobs ({{ totalJobs }})</button>
-           <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Activity Log ({{ activities.length }})</button>
-          <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Documents ({{ totalDocuments }})</button>
-          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Contact ({{ contacts.length }})</button>
-           <button (click)="switchTab('emergency')" [class]="activeTab === 'emergency' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Emergency Contact ({{ totalEmergencyContacts }})</button>
+           <button (click)="switchTab('sites')" [class]="activeTab === 'sites' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Sites </button>
+          <button (click)="switchTab('keys')" [class]="activeTab === 'keys' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Keys </button>
+          <button (click)="switchTab('jobs')" [class]="activeTab === 'jobs' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Jobs </button>
+           <button (click)="switchTab('activity')" [class]="activeTab === 'activity' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Activity Log </button>
+          <button (click)="switchTab('documents')" [class]="activeTab === 'documents' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Documents </button>
+          <button (click)="switchTab('contact')" [class]="activeTab === 'contact' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Contact </button>
+           <button (click)="switchTab('emergency')" [class]="activeTab === 'emergency' ? 'flex-1 min-w-[110px] text-center py-3 px-2 font-semibold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap' : 'flex-1 min-w-[110px] text-center py-3 px-2 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 whitespace-nowrap'">Emergency Contact </button>
         </nav>
       </div>
 
@@ -151,7 +151,7 @@
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
 
         <!-- Left column (2/3) -->
-        <div class="xl:col-span-2 flex flex-col gap-5">
+        <div class="xl:col-span-2 space-y-5">
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Client Information -->
@@ -367,7 +367,7 @@
                     }
                   </td>
                   <td class="py-3.5 px-3 text-slate-900 text-xs font-medium font-['Inter'] line-clamp-1 hidden md:table-cell ">{{ key.assignedTo }}</td>
-                  <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement || '--' }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime || '--' }}</span></td>
+                  <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime }}</span></td>
                   <td class="py-3.5 pr-5 pl-3 text-center">
                     <div class="flex items-center justify-center gap-2 text-slate-400">
                       <button (click)="triggerRowAction('View', key.id)" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">

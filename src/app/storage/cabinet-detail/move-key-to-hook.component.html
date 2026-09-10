@@ -253,7 +253,7 @@
             <div class="flex justify-between py-2 gap-4">
               <dt class="text-slate-600 text-xs">Assigned Since</dt>
               <dd class="text-right">
-                <div class="font-semibold text-xs text-slate-900">{{ currentHook?.assignedAt || '—' }}</div>
+                <div class="font-semibold text-xs text-slate-900">{{ formatDate(currentHook?.assignedAt) }}</div>
                 <div class="text-xs text-slate-500">{{ currentHook?.assignedBy || 'by System' }}</div>
               </dd>
             </div>

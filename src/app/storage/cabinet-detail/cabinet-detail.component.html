@@ -39,10 +39,14 @@
 
               Edit
             </a>
-            <a [routerLink]="['/storage/locations/cabinets/deactivate', cabinet.id]"
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-blue-50">
-              Deactivate
-            </a>
+            <button (click)="cabinet?.active ? openDeactivateModal() : openReactivateModal()"
+              [class.border-red-600]="cabinet?.active"
+              [class.text-red-600]="cabinet?.active"
+              [class.border-emerald-600]="!cabinet?.active"
+              [class.text-emerald-600]="!cabinet?.active"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold hover:bg-slate-50 transition-colors">
+              {{ cabinet?.active ? 'Deactivate' : 'Activate' }}
+            </button>
             <div data-svg-wrapper class="">
               <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">

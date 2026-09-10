@@ -140,15 +140,15 @@ export class SubscriptionComponent implements OnInit {
     const status = sub.status?.toUpperCase();
     const isTrial = sub.trial === true || status === 'TRIAL' || status === 'TRIALING';
     const effectiveExpiry = sub.effectiveExpiry || sub.currentPeriodEnd || sub.trialEnd;
+    const subObj = sub.subscription || sub;
 
-     this.trial = {
+    this.trial = {
       active: isTrial,
-      startDate: sub.startDate || sub.createdAt ? this.formatDate(sub.startDate || sub.createdAt) : (sub.subscription?.createdAt ? this.formatDate(sub.subscription.createdAt) : '-'),
+      startDate: sub.startDate || sub.createdAt || sub.currentPeriodStart || subObj?.createdAt || subObj?.startDate || subObj?.currentPeriodStart ? this.formatDate(sub.startDate || sub.createdAt || sub.currentPeriodStart || subObj?.createdAt || subObj?.startDate || subObj?.currentPeriodStart) : '-',
       endDate: effectiveExpiry ? this.formatDate(effectiveExpiry) : '-',
       daysRemaining: effectiveExpiry ? this.daysUntil(effectiveExpiry) : 0,
     };
 
-    const subObj = sub.subscription || sub;
     const planName = sub.planName || subObj?.planName || sub.planCode || subObj?.planCode || this.formatServiceCode(sub.serviceCode);
     this.plan = {
       name: planName || 'No Active Plan',
