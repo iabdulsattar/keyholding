@@ -20,14 +20,14 @@
     <span class="text-slate-500">Move Key to Another Hook</span>
   </nav>
 
-  <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Move Key to Another Hook</h1>
+  <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Move Key to Another Hook</h1>
   <p class="text-slate-500 mt-1 mb-6">Move the key from its current hook to another available hook in this cabinet.</p>
 
   <!-- Cabinet summary card -->
   <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 mb-6">
     <div class="flex flex-col lg:flex-row lg:items-center gap-6">
 
-      <div class="flex items-start gap-4 lg:w-72 flex-shrink-0">
+      <div class="flex items-center gap-4 lg:w-72 flex-shrink-0">
         <div class="h-14 w-14 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
           <svg class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
             <rect x="4" y="3" width="16" height="18" rx="2"/>
@@ -44,22 +44,6 @@
           </div>
         </div>
       </div>
-
-    <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h2 class="text-lg font-bold text-slate-900">{{ cabinet?.name || 'Cabinet Detail' }}</h2>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
-              [ngClass]="cabinet?.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">
-              {{ cabinet?.status || 'Active' }}
-            </span>
-          </div>
-          <dl class="mt-2 space-y-1 text-sm">
-            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Cabinet Code</dt><dd class="text-slate-800 font-medium">{{ cabinet?.code || '—' }}</dd></div>
-            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Cabinet Type</dt><dd class="text-slate-800 font-medium">{{ cabinet?.type || '—' }}</dd></div>
-            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Location</dt><dd><a [routerLink]="['/storage/locations/cabinets/view', cabinetId]" class="text-blue-600 font-medium hover:underline">{{ cabinet?.storageLocation || '—' }}</a></dd></div>
-            <div class="flex gap-2"><dt class="text-slate-500 w-24 shrink-0">Floor / Area</dt><dd class="text-slate-800 font-medium">{{ cabinet?.floor || '—' }}</dd></div>
-          </dl>
-        </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 lg:gap-6 lg:flex-1 lg:justify-items-end border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 lg:pt-0 lg:pl-6">
         <div class="text-center lg:text-right">
@@ -198,7 +182,7 @@
 
     </div>
 
-    <!-- Middle column -->
+    <!-- Right column -->
     <div class="space-y-6">
 
       <!-- Selected Hook Preview -->
@@ -263,63 +247,6 @@
             <span>This action will be logged in the activity history.</span>
           </li>
         </ul>
-      </div>
-
-    </div>
-
-    <!-- Right sidebar -->
-    <div class="space-y-6">
-
-      <!-- Cabinet Information -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
-        <h3 class="font-bold text-slate-900 mb-4">Cabinet Information</h3>
-        <dl class="text-sm space-y-3">
-          <div class="flex justify-between"><dt class="text-slate-400">Cabinet Code</dt><dd class="font-medium text-slate-700">{{ cabinet?.code || '—' }}</dd></div>
-          <div class="flex justify-between"><dt class="text-slate-400">Cabinet Type</dt><dd class="font-medium text-slate-700">{{ cabinet?.type || '—' }}</dd></div>
-          <div class="flex justify-between gap-2"><dt class="text-slate-400 shrink-0">Location</dt><dd class="font-medium text-blue-600 text-right hover:underline cursor-pointer">{{ cabinet?.storageLocation || '—' }}</dd></div>
-          <div class="flex justify-between"><dt class="text-slate-400">Floor / Area</dt><dd class="font-medium text-slate-700">{{ cabinet?.floor || '—' }}</dd></div>
-          <hr class="border-slate-100" />
-          <div class="flex justify-between"><dt class="text-slate-400">Total Hooks</dt><dd class="font-medium text-slate-700">{{ stats.totalHooks }}</dd></div>
-          <div class="flex justify-between"><dt class="text-slate-400">Key Hooked</dt><dd class="font-medium text-slate-700">{{ stats.keyHooked }}</dd></div>
-          <div class="flex justify-between"><dt class="text-slate-400">Key In Use</dt><dd class="font-medium text-slate-700">{{ stats.keyInUse }}</dd></div>
-          <div class="flex justify-between"><dt class="text-slate-400">Available for Key</dt><dd class="font-medium text-slate-700">{{ stats.available }}</dd></div>
-          <div class="flex justify-between"><dt class="text-slate-400">Hook Damaged</dt><dd class="font-medium text-slate-700">{{ stats.damaged }}</dd></div>
-        </dl>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
-        <h3 class="font-bold text-slate-900 mb-3">Quick Actions</h3>
-        <div class="flex flex-col divide-y divide-slate-100">
-          <a [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'hooks']" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-blue-600 group">
-            <span class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.437 0 .644C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-              View Hook Details
-            </span>
-            <span class="text-slate-300">›</span>
-          </a>
-          <a [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'hooks']" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-blue-600 group">
-            <span class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/>
-              </svg>
-              View Hook Grid
-            </span>
-            <span class="text-slate-300">›</span>
-          </a>
-          <a [routerLink]="['/storage/locations/cabinets/view', cabinetId, 'hooks']" class="flex items-center justify-between py-3 text-sm text-slate-700 hover:text-blue-600 group">
-            <span class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/>
-              </svg>
-              View Hook List
-            </span>
-            <span class="text-slate-300">›</span>
-          </a>
-        </div>
       </div>
 
       <!-- Important note -->
