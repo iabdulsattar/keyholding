@@ -261,10 +261,70 @@
                 <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2.5">
                   <ng-container *ngFor="let h of hooks">
                     <div class="flex flex-col items-center gap-1.5 border border-slate-200 bg-slate-50 rounded-lg py-3">
-                      <span class="w-4 h-4 rounded-full inline-block"
-                        [ngClass]="h.used ? 'bg-blue-600' : 'border-2 border-emerald-500'"></span>
-                      <span class="text-xs font-bold text-slate-900">{{ h.num }}</span>
+
+                      @if(h.used){
+
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="5" cy="5" r="5" fill="#0052FF" />
+                      </svg>
+                      }
+                      @else{
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="5" cy="5" r="4" stroke="#10B981" stroke-width="2" />
+                      </svg>
+
+
+                      }
+                      <span class="text-slate-900 text-[6px] font-semibold font-['Inter']">{{ h.used ? h.keyName :
+                        'Available' }}</span>
+                      <span *ngIf="h.used" class="text-slate-400 text-[6px] font-semibold font-['Inter']">{{
+                        h.keyTypeName }}</span>
+
+                      <div class="flex items-center justify-between w-full p-1 mt-0.5 border-t border-slate-100">
+                      <!-- move key -->
+                        @if(h.used){
+                          <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'move-key']"
+                            [queryParams]="{hookId: h.id}" class="inline-flex items-center justify-center">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M7.04014 8.63965L8.64014 7.03965L7.04014 5.43965M8.64014 7.03965H6.22366C5.96148 7.03697 5.70399 6.96991 5.47381 6.84437C5.24364 6.71882 5.04785 6.53863 4.90366 6.31965L4.76006 6.13965M7.04014 3.83965L8.64014 2.23965L7.04014 0.639648M8.64014 2.23965L6.25094 2.23969C5.99234 2.23792 5.73717 2.29886 5.50728 2.41729C5.27739 2.53572 5.07963 2.70811 4.93094 2.91969L2.74934 6.35969C2.60065 6.57127 2.40289 6.74365 2.173 6.86208C1.94310 6.98051 1.68793 7.04145 1.42934 7.03969H0.640137M0.640137 2.23969H1.42894C1.72712 2.23761 2.01995 2.31891 2.27439 2.4744C2.52883 2.62989 2.73476 2.85339 2.86894 3.11969"
+                                stroke="#F59E0B" stroke-width="1.2799" stroke-linecap="round" />
+                            </svg>
+                          </a>
+                          }
+                        @else{
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M7.04014 8.63965L8.64014 7.03965L7.04014 5.43965M8.64014 7.03965H6.22366C5.96148 7.03697 5.70399 6.96991 5.47381 6.84437C5.24364 6.71882 5.04785 6.53863 4.90366 6.31965L4.76006 6.13965M7.04014 3.83965L8.64014 2.23965L7.04014 0.639648M8.64014 2.23965L6.25094 2.23969C5.99234 2.23792 5.73717 2.29886 5.50728 2.41729C5.27739 2.53572 5.07963 2.70811 4.93094 2.91969L2.74934 6.35969C2.60065 6.57127 2.40289 6.74365 2.173 6.86208C1.94310 6.98051 1.68793 7.04145 1.42934 7.03969H0.640137M0.640137 2.23969H1.42894C1.72712 2.23761 2.01995 2.31891 2.27439 2.4744C2.52883 2.62989 2.73476 2.85339 2.86894 3.11969"
+                            stroke="#94A3B8" stroke-width="1.2799" stroke-linecap="round" />
+                        </svg>
+
+                        }
+                      <!-- remove key -->
+                        @if(h.used){
+                          <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'remove-key']"
+                            [queryParams]="{hookId: h.id}" class="inline-flex items-center justify-center">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M5.84014 3.43965L3.44014 5.83965M3.44014 3.43965L5.84014 5.83965M8.64014 4.63965C8.64014 6.84879 6.84928 8.63965 4.64014 8.63965C2.431 8.63965 0.640137 6.84879 0.640137 4.63965C0.640137 2.43051 2.431 0.639648 4.64014 0.639648C6.84928 0.639648 8.64014 2.43051 8.64014 4.63965Z"
+                                stroke="#EF4444" stroke-width="1.2799" stroke-linecap="round" />
+                            </svg>
+                          </a>
+                          }
+                        @else{
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M5.84014 3.43965L3.44014 5.83965M3.44014 3.43965L5.84014 5.83965M8.64014 4.63965C8.64014 6.84879 6.84928 8.63965 4.64014 8.63965C2.431 8.63965 0.640137 6.84879 0.640137 4.63965C0.640137 2.43051 2.431 0.639648 4.64014 0.639648C6.84928 0.639648 8.64014 2.43051 8.64014 4.63965Z"
+                            stroke="#94A3B8" stroke-width="1.2799" stroke-linecap="round" />
+                          </svg>
+
+                          }
+
+
+
+                      </div>
                     </div>
+
                   </ng-container>
                 </div>
                 <div
@@ -301,93 +361,34 @@
             <!-- Right column -->
             <div class="space-y-4 bg-white rounded-md shadow-xs p-5">
 
-              <!-- Quick Actions -->
-              <div class="border-b border-slate-200 pb-6">
-                <h3 class="text-base font-bold text-slate-900 mb-4">Quick Actions</h3>
-                <div class="space-y-2">
-                  <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'assign-key']"
-                    class="w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-slate-200 hover:bg-gray-50 text-left">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g clip-path="url(#clip0_3016_557)">
-                        <path
-                          d="M5.33333 8.00021H10.6671M8.00021 5.33333V10.6671M14.6674 8.00021C14.6674 11.6824 11.6824 14.6674 8.00021 14.6674C4.31801 14.6674 1.33301 11.6824 1.33301 8.00021C1.33301 4.31801 4.31801 1.33301 8.00021 1.33301C11.6824 1.33301 14.6674 4.31801 14.6674 8.00021Z"
-                          stroke="#16A34A" stroke-width="2" stroke-linecap="round" />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_3016_557">
-                          <rect width="16" height="16" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                    <span class="flex-1 text-xs font-semibold text-slate-900 mt-0.5">Add Key to Hook</span>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                  </a>
-                <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'move-key']"
-                    class="w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-slate-200 hover:bg-gray-50 text-left">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M11.6675 14.3344L14.3344 11.6675L11.6675 9.00064M14.3344 11.6675H10.3066C9.86962 11.6631 9.44042 11.5513 9.05677 11.342C8.67312 11.1328 8.34677 10.8324 8.10644 10.4674L7.86709 10.1674M11.6675 6.33376L14.3344 3.66688L11.6675 1M14.3344 3.66688L10.3521 3.66694C9.92105 3.664 9.49573 3.76557 9.11255 3.96297C8.72937 4.16037 8.39974 4.4477 8.15191 4.80037L4.51561 10.5342C4.26778 10.8868 3.93815 11.1742 3.55497 11.3716C3.17179 11.569 2.74647 11.6705 2.31544 11.6676H1M1 3.66694H2.31477C2.81178 3.66349 3.29987 3.79899 3.72398 4.05816C4.14808 4.31733 4.49132 4.68987 4.71496 5.13373"
-                        stroke="#F59E0B" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                    <span class="flex-1 text-xs font-semibold text-slate-900">Move Key to Another Hook</span>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                  </a>
-                <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'remove-key']"
-                    class="w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-slate-200 hover:bg-gray-50 text-left">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_3016_573)">
-                        <path
-                          d="M10.0004 6.00005L6.00005 10.0004M6.00005 6.00005L10.0004 10.0004M14.6674 8.00021C14.6674 11.6824 11.6824 14.6674 8.00021 14.6674C4.31801 14.6674 1.33301 11.6824 1.33301 8.00021C1.33301 4.31801 4.31801 1.33301 8.00021 1.33301C11.6824 1.33301 14.6674 4.31801 14.6674 8.00021Z"
-                          stroke="#EF4444" stroke-width="2" stroke-linecap="round" />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_3016_573">
-                          <rect width="16" height="16" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                    <span class="flex-1 text-xs font-semibold text-slate-900 mt-0.5">Remove Key from the Hook</span>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
               <!-- Access & Security -->
               <div class=" border-b border-slate-200 pb-6">
-                <h3 class="text-base font-bold text-slate-900 mb-4">Access &amp; Security</h3>
-                <div class="space-y-3 text-sm">
-                  <div class="flex items-center justify-between">
-                    <span class="text-slate-600 text-xs font-medium">CCTV Monitored</span>
-                    <span
-                      class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-slate-600 text-xs font-medium">Alarm System</span>
-                    <span
-                      class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
-                  </div>
-                  <div class="flex items-start justify-between ">
-                    <span class="text-slate-600 text-xs font-medium">Last Access</span>
-                    <div class="text-right">
-                      <div class="text-slate-900 text-xs font-semibold">15 May 2024, 10:30 AM</div>
-                      <div class="text-slate-500 text-xs">by James Walker</div>
-                    </div>
+              <h3 class="text-base font-bold text-slate-900 mb-4">Access &amp; Security</h3>
+              <div class="space-y-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 text-xs font-medium">CCTV Monitored</span>
+                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 text-xs font-medium">Alarm System</span>
+                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
+                </div>
+                <div class="flex items-start justify-between ">
+                  <span class="text-slate-600 text-xs font-medium">Last Access</span>
+                  <div class="text-right">
+                    <div class="text-slate-900 text-xs font-semibold">15 May 2024, 10:30 AM</div>
+                    <div class="text-slate-500 text-xs">by James Walker</div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- Key Statistics -->
-              <div class="">
-                <h3 class="text-base font-bold text-slate-900 mb-5">Key Statistics</h3>
-                <div class="flex items-center gap-6">
-                  <div class="relative w-28 h-28 flex-shrink-0">
-                    <!-- <svg viewBox="0 0 100 100" class="donut w-full h-full">
+            <!-- Key Statistics -->
+            <div class="">
+              <h3 class="text-base font-bold text-slate-900 mb-5">Key Statistics</h3>
+              <div class="flex items-center gap-6">
+                <div class="relative w-28 h-28 flex-shrink-0">
+                  <!-- <svg viewBox="0 0 100 100" class="donut w-full h-full">
                   <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="12"/>
                   <circle cx="50" cy="50" r="40" fill="none" stroke="#2563eb" stroke-width="12"
                     stroke-dasharray="179.6 251.3" stroke-dashoffset="0" stroke-linecap="butt"/>
@@ -401,58 +402,58 @@
                   <span class="text-2xl font-bold text-gray-900">14</span>
                   <span class="text-[10px] text-gray-400">Total Keys</span>
                 </div> -->
+                </div>
+                <div class="flex-1 space-y-2.5 ">
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-blue-600 mb-0.5"></span>In Storage</span>
+                    <span class="font-bold text-slate-900 text-xs">10</span>
                   </div>
-                  <div class="flex-1 space-y-2.5 ">
-                    <div class="flex items-center justify-between">
-                      <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                          class="w-2 h-2 rounded-full bg-blue-600 mb-0.5"></span>In Storage</span>
-                      <span class="font-bold text-slate-900 text-xs">10</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                          class="w-2 h-2 rounded-full bg-emerald-500 mb-0.5"></span>Issued</span>
-                      <span class="font-bold text-slate-900 text-xs">3</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                          class="w-2 h-2 rounded-full bg-orange-400 mb-0.5"></span>Overdue</span>
-                      <span class="font-bold text-slate-900 text-xs">1</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                          class="w-2 h-2 rounded-full bg-red-500 mb-0.5"></span>Lost / Damaged</span>
-                      <span class="font-bold text-slate-900 text-xs">0</span>
-                    </div>
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-emerald-500 mb-0.5"></span>Issued</span>
+                    <span class="font-bold text-slate-900 text-xs">3</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-orange-400 mb-0.5"></span>Overdue</span>
+                    <span class="font-bold text-slate-900 text-xs">1</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                        class="w-2 h-2 rounded-full bg-red-500 mb-0.5"></span>Lost / Damaged</span>
+                    <span class="font-bold text-slate-900 text-xs">0</span>
                   </div>
                 </div>
               </div>
-
             </div>
 
-
           </div>
+
+
         </div>
-
-      </div>
-
-
-
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
-        <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
-          <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
-            Policy</a>
-          <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
-            Service</a>
-
-          <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
-        </div>
-
       </div>
 
     </div>
-    <app-deactivate-cabinet-modal *ngIf="isDeactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()"
-      (close)="closeDeactivateModal()" (confirmed)="onCabinetDeactivated()" />
-    <app-reactivate-cabinet-modal *ngIf="isReactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()"
-      (close)="closeReactivateModal()" (confirmed)="onCabinetReactivated()" />
+
+
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+      <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
+        <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
+          Policy</a>
+        <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
+          Service</a>
+
+        <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
+      </div>
+
+    </div>
+
+  </div>
+  <app-deactivate-cabinet-modal *ngIf="isDeactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()"
+    (close)="closeDeactivateModal()" (confirmed)="onCabinetDeactivated()" />
+  <app-reactivate-cabinet-modal *ngIf="isReactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()"
+    (close)="closeReactivateModal()" (confirmed)="onCabinetReactivated()" />
   </div>
 </ng-template>

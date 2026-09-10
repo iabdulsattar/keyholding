@@ -26,6 +26,8 @@ export interface KeyRecord {
   assignedTo: string;
   lastMovement: string;
   lastMovementTime: string;
+  lastMovementAt: string;
+  lastMovementAction: string;
   clientId?: string;
   clientName?: string;
 }
@@ -714,25 +716,41 @@ export class ClientService {
      };
      const rawStatus = item.status ?? 'IN_STORAGE';
      const mappedStatus = statusMap[rawStatus] ?? 'In Storage';
-     return {
-       id: item.id ?? '',
-       keyCode: item.keyCode ?? item.code ?? '',
-       name: item.name ?? '',
-       type: item.keyTypeName ?? item.type ?? '',
-       typeColor: typeColorMap[item.keyTypeName ?? item.type ?? ''] || 'blue',
-       site: item.siteId ?? '',
-       siteName: item.siteName ?? '',
-       status: mappedStatus,
-       statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
-       storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
-       storageDetail: '',
-       assignedTo: item.assignedToUserName ?? '',
-       lastMovement: '',
-       lastMovementTime: '',
-       clientId: item.clientId ?? item.client?.id,
-       clientName: item.clientName ?? item.client?.name,
-     };
-   }
+      return {
+        id: item.id ?? '',
+        keyCode: item.keyCode ?? item.code ?? '',
+        name: item.name ?? '',
+        type: item.keyTypeName ?? item.type ?? '',
+        typeColor: typeColorMap[item.keyTypeName ?? item.type ?? ''] || 'blue',
+        site: item.siteId ?? '',
+        siteName: item.siteName ?? '',
+        status: mappedStatus,
+        statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
+        storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
+        storageDetail: '',
+        assignedTo: item.assignedToUserName ?? '',
+        lastMovement: item.lastMovementAt ? this.formatLastMovement(item.lastMovementAt) : '',
+        lastMovementTime: item.lastMovementAt ? this.formatLastMovementTime(item.lastMovementAt) : '',
+        lastMovementAt: item.lastMovementAt ?? '',
+        lastMovementAction: item.lastMovementAction ?? '',
+        clientId: item.clientId ?? item.client?.id,
+        clientName: item.clientName ?? item.client?.name,
+      };
+    }
+
+  private formatLastMovement(value: string): string {
+    if (!value) return '';
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  private formatLastMovementTime(value: string): string {
+    if (!value) return '';
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    return date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+  }
 
     private mapContact(item: any): ContactRecord {
       const fullName = item.fullName || `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim();

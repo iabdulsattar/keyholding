@@ -151,7 +151,7 @@
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
 
         <!-- Left column (2/3) -->
-        <div class="xl:col-span-2 space-y-5">
+        <div class="xl:col-span-2 flex flex-col gap-5">
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Client Information -->
@@ -236,7 +236,7 @@
           </div>
 
           <!-- Recent Activity -->
-          <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5">
+          <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5 flex-1 min-h-0 flex flex-col">
             <div class="flex items-center justify-between mb-4">
               <h3 class="font-semibold text-slate-900">Recent Activity</h3>
               <a href="#" (click)="switchTab('activity'); $event.preventDefault()" class="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700">
@@ -244,7 +244,7 @@
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
               </a>
             </div>
-            <div class="overflow-x-auto scrollbar-none border border-slate-100 rounded-md">
+            <div class="flex-1 overflow-x-auto scrollbar-none border border-slate-100 rounded-md min-h-0">
               <table class="w-full text-sm min-w-[620px]">
                 <thead>
                   <tr class="border-b border-slate-100 text-left text-slate-900 bg-[#fafbfc]">
@@ -283,9 +283,9 @@
         <div class="flex flex-col gap-5">
 
           <!-- Status & Timeline -->
-           <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5 flex-1 min-h-0">
+           <div class="bg-white rounded-lg border border-slate-100 shadow-card p-5 flex-1 min-h-0 flex flex-col">
               <h3 class="font-semibold text-slate-900 mb-4">Status &amp; Timeline</h3>
-             <div class="max-h-64 overflow-y-auto thin-scroll pr-2">
+              <div class="flex-1 overflow-y-auto thin-scroll pr-2 min-h-0">
                <ol class="relative border-l-2 border-slate-100 ml-1.5 space-y-6">
                   @for (item of timelineItems; track item.action + item.date) {
                   <li class="pl-5 relative">
@@ -367,7 +367,7 @@
                     }
                   </td>
                   <td class="py-3.5 px-3 text-slate-900 text-xs font-medium font-['Inter'] line-clamp-1 hidden md:table-cell ">{{ key.assignedTo }}</td>
-                  <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime }}</span></td>
+                  <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement || '--' }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime || '--' }}</span></td>
                   <td class="py-3.5 pr-5 pl-3 text-center">
                     <div class="flex items-center justify-center gap-2 text-slate-400">
                       <button (click)="triggerRowAction('View', key.id)" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">

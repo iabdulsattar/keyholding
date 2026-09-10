@@ -33,6 +33,8 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
   searchTerm = '';
   activeFilter = 'All Statuses';
   activeTypeFilter = 'All Types';
+  storageLocationFilter = '';
+  storageLocations: { id: string; name: string }[] = [];
   allTypes: string[] = [];
 
   currentPage = 0;
@@ -51,11 +53,16 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     return [{ value: 'All Types', label: 'Cabinet Type' }, ...this.allTypes.map(t => ({ value: t, label: t }))];
   }
 
+  get storageLocationFilterOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'Storage Location' }, ...this.storageLocations.map(s => ({ value: s.id, label: s.name }))];
+  }
+
   
   constructor(private keyVault: KeyVaultService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCabinets();
+    this.loadStorageLocations();
   }
 
   ngAfterViewInit(): void {
@@ -71,7 +78,20 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  private loadCabinets(params?: { q?: string; status?: string; cabinetType?: string; page?: number }, showLoading = true): void {
+  private loadStorageLocations(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId) return;
+    this.keyVault.listCatalogStorageLocations(orgId, true).subscribe({
+      next: (items: any[]) => {
+        this.storageLocations = (items || []).map((s: any) => ({ id: s.id || '', name: s.name || s.locationName || '' })).filter(s => s.id && s.name);
+      },
+      error: () => {
+        this.storageLocations = [];
+      }
+    });
+  }
+
+  private loadCabinets(params?: { q?: string; status?: string; cabinetType?: string; storageLocationId?: string; page?: number }, showLoading = true): void {
     if (showLoading) this.loading = true;
     this.error = '';
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
@@ -84,10 +104,11 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     const q = params?.q ?? this.searchTerm;
     const status = params?.status ?? this.activeFilter;
     const cabinetType = params?.cabinetType ?? this.activeTypeFilter;
+    const storageLocationId = params?.storageLocationId ?? this.storageLocationFilter;
     const page = params?.page ?? this.currentPage;
     const apiStatus = status === 'All Statuses' ? undefined : (status || '').toUpperCase().replace(/ /g, '_');
     const apiType = cabinetType === 'All Types' ? undefined : cabinetType;
-    this.keyVault.listCabinets(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus, cabinetType: apiType }).subscribe({
+    this.keyVault.listCabinets(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus, cabinetType: apiType, storageLocationId: storageLocationId || undefined }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
@@ -152,15 +173,20 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     this.loadCabinets({ cabinetType: this.activeTypeFilter }, false);
   }
 
+  onStorageLocationFilterChange(): void {
+    this.currentPage = 0;
+    this.loadCabinets({ storageLocationId: this.storageLocationFilter }, false);
+  }
+
   goToPage(page: number): void {
     if (page < 0 || page >= this.totalPages) return;
     this.currentPage = page;
-    this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter });
+    this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter, storageLocationId: this.storageLocationFilter });
   }
 
   onPageSizeChange(): void {
     this.currentPage = 0;
-    this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter });
+    this.loadCabinets({ q: this.searchTerm, status: this.activeFilter, cabinetType: this.activeTypeFilter, storageLocationId: this.storageLocationFilter });
   }
 
   get totalCabinets(): number {

@@ -141,23 +141,20 @@
             (input)="onSearch()"
             class="w-full h-11 bg-white rounded-md shadow-xs pl-3.5 pr-9 py-2.5 text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600" />
         </div>
+        <div class="w-full col-span-3">
+          <app-rich-select [options]="storageLocationFilterOptions" [(value)]="storageLocationFilter" (valueChange)="onStorageLocationFilterChange()" placeholder="Storage Location" class="w-full"></app-rich-select>
+        </div>
         <div class="w-full col-span-2">
           <!-- <p class="text-xs text-slate-400 mb-1 lg:hidden">Status</p> -->
-          <app-rich-select [options]="statusFilterOptions" [(value)]="activeFilter" (valueChange)="onStatusFilterChange()" placeholder="All Statuses" class="w-full"></app-rich-select>
-        </div>
-        <div class="w-full col-span-2">
-          <!-- <p class="text-xs text-slate-400 mb-1 lg:hidden">Cabinet Type</p> -->
           <app-rich-select [options]="activeTypeFilterOptions" [(value)]="activeTypeFilter" (valueChange)="onTypeFilterChange()" placeholder="All Types" class="w-full"></app-rich-select>
         </div>
-        
         <div class="w-full col-span-2">
-          <app-rich-select placeholder="Storage Locations" class="h-11 w-full"></app-rich-select>
-         
+          <app-rich-select [options]="statusFilterOptions" [(value)]="activeFilter" (valueChange)="onStatusFilterChange()" placeholder="All Statuses" class="w-full"></app-rich-select>
         </div>
 
-        <div class="w-full col-span-3">
+        <div class="w-full col-span-2">
           <div class="flex items-center justify-end gap-3 shrink-0">
-     
+      
         <a [routerLink]="['/storage/locations/cabinets/add']" class="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-blue-600 rounded-md px-4 py-3 hover:bg-blue-700 whitespace-nowrap">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M2.70789 6.50011H10.2921M6.49999 2.70801V10.2922" stroke="white" stroke-width="2" stroke-linecap="round"/>

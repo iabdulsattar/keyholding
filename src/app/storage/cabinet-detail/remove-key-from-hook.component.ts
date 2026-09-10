@@ -11,6 +11,8 @@ interface HookDetail {
   assignedKeyId?: string;
   assignedKeyName?: string;
   keyType?: string;
+  keyCode?: string;
+  keyTypeName?: string;
   assignedAt?: string;
   assignedBy?: string;
 }
@@ -122,6 +124,8 @@ export class RemoveKeyFromHookComponent implements OnInit, AfterViewInit {
           assignedKeyId: item.assignedKeyId || item.keyId || '',
           assignedKeyName: item.assignedKeyName || item.keyName || 'KEY-0004',
           keyType: item.keyType || item.type || 'Yale',
+          keyCode: item.keyCode || '',
+          keyTypeName: item.keyTypeName || '',
           assignedAt: item.assignedAt || item.updatedAt || '2024-05-15T11:10:00',
           assignedBy: item.assignedBy || item.updatedBy || 'Faiza Ahmed',
         };

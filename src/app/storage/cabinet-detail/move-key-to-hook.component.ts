@@ -11,6 +11,8 @@ interface HookDetail {
   assignedKeyId?: string;
   assignedKeyName?: string;
   keyType?: string;
+  keyCode?: string;
+  keyTypeName?: string;
   assignedAt?: string;
   assignedBy?: string;
 }
@@ -132,6 +134,8 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
           assignedKeyId: item.assignedKeyId || item.keyId || '',
           assignedKeyName: item.assignedKeyName || item.keyName || '',
           keyType: item.keyType || item.type || '',
+          keyCode: item.keyCode || '',
+          keyTypeName: item.keyTypeName || '',
           assignedAt: item.assignedAt || item.updatedAt || '',
           assignedBy: item.assignedBy || item.updatedBy || '',
         };

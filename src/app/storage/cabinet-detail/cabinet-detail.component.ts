@@ -10,6 +10,10 @@ interface Hook {
   used: boolean;
   status?: string;
   damaged?: boolean;
+  keyName?: string;
+  keyTypeName?: string;
+  keyCode?: string;
+  id?: string;
 }
 
 interface HookStats {
@@ -192,6 +196,10 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
         num: h.hookNo || h.num || 0,
         used: h.status === 'KEY_HOOKED',
         status: h.status,
+        keyName: h.keyName || '',
+        keyTypeName: h.keyTypeName || '',
+        keyCode: h.keyCode || '',
+        id: h.id || '',
       }));
     }
     const usedSet = new Set<number>();
