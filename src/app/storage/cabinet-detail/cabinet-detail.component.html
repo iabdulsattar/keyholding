@@ -179,7 +179,7 @@
             <!-- Left column -->
             <div class="xl:col-span-2 space-y-4">
 
-              <div class="bg-white rounded-md shadow-xs px-6 pt-6 pb-12">
+              <div class="bg-white rounded-md shadow-xs px-6 pt-6 pb-20">
                 <h3 class="text-base font-bold text-slate-900 mb-5">Cabinet Information</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-12 ">
                   <div class="col-span-1 lg:col-span-8 space-y-2.5">
@@ -200,10 +200,7 @@
                       <dd class=""><a href="#" class="text-blue-600 text-xs font-medium hover:underline">{{
                           cabinet.storageLocation }}</a></dd>
                     </div>
-                    <div class="flex">
-                      <dt class="text-slate-500 text-xs font-medium w-34">Floor / Area</dt>
-                      <dd class="text-slate-900 text-xs font-medium">{{ cabinet.floor }}</dd>
-                    </div>
+                    
                     <div class="flex">
                       <dt class="text-slate-500 text-xs font-medium w-34">Description</dt>
                       <dd class="text-slate-900 text-xs font-medium">{{ cabinet.description }}</dd>
@@ -217,13 +214,14 @@
                       <dd class="text-slate-900 text-xs font-medium">{{ cabinet.totalHooks }}</dd>
                     </div>
                     <div class="flex">
-                      <dt class="text-slate-500 text-xs font-medium w-34">Used Hooks</dt>
-                      <dd class="text-slate-900 text-xs font-medium">{{ cabinet.usedHooks }}</dd>
+                      <dt class="text-slate-500 text-xs font-medium w-34">Installed On</dt>
+                      <dd class="text-slate-900 text-xs font-medium">{{ formatDate(cabinet.installedOn) }}</dd>
                     </div>
                     <div class="flex">
-                      <dt class="text-slate-500 text-xs font-medium w-34">Available Hooks</dt>
-                      <dd class="text-slate-900 text-xs font-medium">{{ cabinet.availHooks }}</dd>
+                      <dt class="text-slate-500 text-xs font-medium w-34">Last Updated</dt>
+                      <dd class="text-slate-900 text-xs font-medium">{{ formatDate(cabinet.lastUpdated) }} by {{ cabinet.lastUpdatedBy || '—' }}</dd>
                     </div>
+
                   </div>
 
                   <div class="col-span-1 lg:col-span-4">
@@ -232,19 +230,7 @@
                         class="w-full h-48 object-cover rounded-xl border border-gray-200 bg-gray-100" />
                     </div>
 
-                    <div class="flex mb-2">
-                      <dt class="text-slate-500 text-xs font-medium w-34">Installed On</dt>
-                      <dd class="text-slate-900 text-xs font-medium">
-                        {{ formatDate(cabinet.installedOn) }}
-                      </dd>
-                    </div>
-
-                    <div class="flex">
-                      <dt class="text-slate-500 text-xs font-medium w-34">Last Updated</dt>
-                      <dd class="text-slate-900 text-xs font-medium">
-                        {{ formatDate(cabinet.lastUpdated) }} by {{ cabinet.lastUpdatedBy || '—' }}
-                      </dd>
-                    </div>
+                    
                   </div>
 
 
