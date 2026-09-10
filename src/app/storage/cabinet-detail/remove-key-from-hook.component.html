@@ -11,7 +11,7 @@
 <ng-template #loaded>
 <div class="min-h-[calc(100vh-48px)] flex flex-col">
 
-  
+  <div class="flex-1">
   <!-- Page header -->
   <div class="flex items-start justify-between gap-4 mb-5">
     <div>
@@ -57,7 +57,7 @@
 
   <!-- Cabinet summary card -->
   <div class="bg-white rounded-md shadow-xs p-5 sm:p-6 mb-4">
-    <div class="flex flex-col md:flex-row md:items-start gap-5">
+    <div class="flex flex-col lg:flex-row lg:items-center gap-5">
 
       <div class="flex items-center gap-4 md:w-72 shrink-0">
         <div class="h-14 w-14 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
@@ -84,71 +84,84 @@
               {{ cabinet?.status || 'Active' }}
             </span>
           </div>
-          <dl class="mt-2 space-y-1.5 text-xs">
-            <div class="flex gap-2"><dt class="text-slate-500 font-semibold w-24 shrink-0">Cabinet Code</dt><dd class="text-slate-800 font-medium">{{ cabinet?.code || '—' }}</dd></div>
-            <div class="flex gap-2"><dt class="text-slate-500 font-semibold w-24 shrink-0">Cabinet Type</dt><dd class="text-slate-800 font-medium">{{ cabinet?.type || '—' }}</dd></div>
-            <div class="flex gap-2"><dt class="text-slate-500 font-semibold w-24 shrink-0">Location</dt><dd><a [routerLink]="['/storage/locations/cabinets/view', cabinetId]" class="text-blue-600 font-medium hover:underline">{{ cabinet?.storageLocation || '—' }}</a></dd></div>
-            <div class="flex gap-2"><dt class="text-slate-500 font-semibold w-24 shrink-0">Floor / Area</dt><dd class="text-slate-800 font-medium">{{ cabinet?.floor || '—' }}</dd></div>
+          <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 text-xs">
+            <dt class="text-slate-500 font-semibold">Cabinet Code</dt><dd class="text-slate-900">{{ cabinet?.code || '—' }}</dd>
+            <dt class="text-slate-500 font-semibold">Cabinet Type</dt><dd class="text-slate-900">{{ cabinet?.type || '—' }}</dd>
+            <dt class="text-slate-500 font-semibold">Location</dt><dd class="text-blue-600 font-semibold">{{ cabinet?.storageLocation || '—' }}</dd>
+            <dt class="text-slate-500 font-semibold">Floor / Area</dt><dd class="text-slate-900">{{ cabinet?.floor || '—' }}</dd>
           </dl>
         </div>
       </div>
 
-   <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 lg:gap-6 flex-1">
-        <div>
-          <p class="text-[11px] font-semibold tracking-wide text-slate-400 uppercase">Total Hooks</p>
-          <p class="text-2xl font-bold text-slate-900 mt-0.5">{{ stats.totalHooks }}</p>
+      <div class="grid grid-cols-2 sm:grid-cols-5 flex-1">
+        <div class="text-center lg:border-l border-slate-200">
+          <p class="text-xs font-medium tracking-wide text-slate-500 uppercase">Total Hooks</p>
+          <p class="text-3xl font-extrabold text-slate-900 mt-1.5">{{ stats.totalHooks }}</p>
         </div>
-        <div>
-          <p class="text-[11px] font-semibold tracking-wide text-slate-400 uppercase">Key Hooked</p>
-          <p class="text-2xl font-bold text-slate-900 mt-0.5">{{ stats.keyHooked }}</p>
+        <div class="text-center lg:border-l border-slate-200">
+          <p class="text-xs font-medium tracking-wide text-slate-500 uppercase">Key Hooked</p>
+          <p class="text-3xl font-extrabold text-slate-900 mt-1.5">{{ stats.keyHooked }}</p>
         </div>
-        <div>
-          <p class="text-[11px] font-semibold tracking-wide text-slate-400 uppercase">Key In Use</p>
-          <p class="text-2xl font-bold text-slate-900 mt-0.5">{{ stats.keyInUse }}</p>
+        <div class="text-center lg:border-l border-slate-200">
+          <p class="text-xs font-medium tracking-wide text-slate-500 uppercase">Key In Use</p>
+          <p class="text-3xl font-extrabold text-slate-900 mt-1.5">{{ stats.keyInUse }}</p>
         </div>
-        <div>
-          <p class="text-[11px] font-semibold tracking-wide text-slate-400 uppercase">Available for Key</p>
-          <p class="text-2xl font-bold text-slate-900 mt-0.5">{{ stats.available }}</p>
+        <div class="text-center lg:border-l border-slate-200">
+          <p class="text-xs font-medium tracking-wide text-slate-500 uppercase">Available for Key</p>
+          <p class="text-3xl font-extrabold text-slate-900 mt-1.5">{{ stats.available }}</p>
         </div>
-        <div>
-          <p class="text-[11px] font-semibold tracking-wide text-slate-400 uppercase">Hook Damaged</p>
-          <p class="text-2xl font-bold text-slate-900 mt-0.5">{{ stats.damaged }}</p>
+        <div class="text-center lg:border-l border-slate-200">
+          <p class="text-xs font-medium tracking-wide text-slate-500 uppercase">Hook Damaged</p>
+          <p class="text-3xl font-extrabold text-slate-900 mt-1.5">{{ stats.damaged }}</p>
         </div>
       </div>
-
+      
     </div>
   </div>
 
   <!-- Form + sidebar grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
 
     <!-- Left: form -->
-    <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7">
+    <div class="col-span-1 lg:col-span-8 bg-white rounded-md shadow-xs p-5 sm:p-6">
 
       <!-- Step 1 -->
       <section>
-        <h3 class="text-lg font-bold text-slate-900">1. Selected Hook</h3>
-        <p class="text-sm text-slate-500 mt-1">You are about to remove the key from the selected hook.</p>
+        <h3 class="text-base font-bold text-slate-900">1. Selected Hook</h3>
+        <p class="text-xs text-slate-600 mt-1">You are about to remove the key from the selected hook.</p>
 
-        <div class="mt-4 bg-slate-50 rounded-lg border border-slate-200 p-4 sm:p-5">
-          <div class="flex items-start gap-4">
+        <div class="mt-4 bg-slate-50 rounded-lg p-4 sm:p-5">
+          <div class="flex items-start gap-5">
             <div class="h-16 w-16 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
-              <svg class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3zM9 12v4a3 3 0 006 0v-1"/>
-              </svg>
+              <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <rect x="5" y="4" width="36" height="38" fill="url(#pattern0_3059_2025)"/>
+  <defs>
+  <pattern id="pattern0_3059_2025" patternContentUnits="objectBoundingBox" width="1" height="1">
+  <use xlink:href="#image0_3059_2025" transform="matrix(0.00150794 0 0 0.00142857 -0.000634921 0)"/>
+  </pattern>
+  <image id="image0_3059_2025" width="664" height="700" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+  </defs>
+  </svg>
             </div>
-            <dl class="text-sm grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 flex-1">
-              <dt class="text-slate-400">Hook No.</dt><dd class="text-slate-800 font-medium">{{ hookNoDisplay }}</dd>
-              <dt class="text-slate-400">Status</dt>
+            <dl class="text-sm grid grid-cols-[auto_1fr] gap-x-10 gap-y-1.5 flex-1">
+              <dt class="text-slate-500 text-xs font-semibold">Hook No.</dt><dd class="text-slate-900 text-xs font-bold">{{ hookNoDisplay }}</dd>
+              <dt class="text-slate-500 text-xs font-semibold">Status</dt>
               <dd>
-                <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">{{ hookStatusDisplay }}</span>
+                <span class="px-2 py-0.5 rounded-sm bg-blue-100 text-blue-600 text-xs font-semibold">{{ hookStatusDisplay }}</span>
               </dd>
-              <dt class="text-slate-400">Location</dt><dd class="text-slate-800 font-medium">{{ cabinet?.name || '—' }}</dd>
-              <dt class="text-slate-400">Current Key</dt>
-              <dd class="text-slate-800 font-medium flex items-center gap-1.5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 11-12 0 6 6 0 0112 0zM9 15l-4.5 4.5M4.5 19.5H8v-3.5"/>
-                </svg>
+              <dt class="text-slate-500 text-xs font-semibold">Location</dt><dd class="text-slate-900 font-normal">{{ cabinet?.name || '—' }}</dd>
+              <dt class="text-slate-500 text-xs font-semibold">Current Key</dt>
+              <dd class="text-blue-700 text-xs font-semibold flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_3059_2042)">
+    <path d="M9.04126 4.37435L10.3829 5.71602C10.492 5.8229 10.6386 5.88277 10.7913 5.88277C10.9439 5.88277 11.0906 5.8229 11.1996 5.71602L12.4246 4.49102C12.5315 4.38197 12.5913 4.23537 12.5913 4.08268C12.5913 3.92999 12.5315 3.78339 12.4246 3.67435L11.0829 2.33268M12.2495 1.16602L6.64954 6.76602M7.58293 9.04102C7.58293 10.8129 6.14651 12.2493 4.37459 12.2493C2.60268 12.2493 1.16626 10.8129 1.16626 9.04102C1.16626 7.2691 2.60268 5.83268 4.37459 5.83268C6.14651 5.83268 7.58293 7.2691 7.58293 9.04102Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_3059_2042">
+    <rect width="14" height="14" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
                 {{ hook?.assignedKeyName || '—' }}
               </dd>
             </dl>
@@ -158,11 +171,11 @@
 
       <!-- Step 2 -->
       <section class="mt-8">
-        <h3 class="text-lg font-bold text-slate-900">2. Removal Reason</h3>
-        <p class="text-sm text-slate-500 mt-1 mb-4">Please select a reason for removing the key from this hook.</p>
+        <h3 class="text-base font-bold text-slate-900">2. Removal Reason</h3>
+        <p class="text-xs text-slate-600 mt-1 mb-4">Please select a reason for removing the key from this hook.</p>
 
         <div class="mt-4">
-          <label class="block text-sm font-medium text-slate-700 mb-1.5">
+          <label class="block text-xs font-semibold text-slate-900 mb-1.5">
             Reason for Removal <span class="text-red-500">*</span>
           </label>
           <div class="relative">
@@ -188,11 +201,11 @@
 
       <!-- Step 3 -->
       <section class="mt-8">
-        <h3 class="text-lg font-bold text-slate-900">3. Additional Notes <span class="text-sm font-normal text-slate-400">(Optional)</span></h3>
+        <h3 class="text-base font-bold text-slate-900">3. Additional Notes <span class="text-sm font-normal text-slate-500">(Optional)</span></h3>
         <p class="text-sm text-slate-500 mt-1 mb-4">Add any additional information about this removal.</p>
 
         <div class="mt-4">
-          <label class="block text-sm font-medium text-slate-700 mb-1.5">Notes</label>
+          <label class="block text-xs font-semibold text-slate-900 mb-1.5">Notes</label>
           <div class="relative">
             <textarea
               [(ngModel)]="removalNote"
@@ -200,9 +213,9 @@
               maxlength="250"
               rows="4"
               placeholder="Enter notes..."
-              class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              class="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </textarea>
-            <span class="absolute bottom-2.5 right-3 text-xs text-slate-400">{{ noteCount }} / 250</span>
+            <span class="absolute bottom-2.5 right-3 text-xs text-slate-500">{{ noteCount }} / 250</span>
           </div>
         </div>
       </section>
@@ -210,17 +223,22 @@
       <!-- Actions (mobile) -->
       <div class="mt-8 flex flex-col sm:flex-row sm:justify-end gap-3">
         <button (click)="onCancel()"
-          class="order-2 sm:order-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
+          class="order-2 sm:order-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors">
+          
           Cancel
         </button>
         <button (click)="onRemoveKey()" [disabled]="submitting"
-          class="order-1 sm:order-2 flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
-          </svg>
+          class="order-1 sm:order-2 flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-red-600 text-white text-sm font-bold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_3059_2015)">
+      <path d="M11.0833 3.49954V11.6669C11.0833 11.9763 10.9604 12.2731 10.7416 12.4919C10.5228 12.7107 10.2261 12.8336 9.91667 12.8336H4.08333C3.77391 12.8336 3.47717 12.7107 3.25838 12.4919C3.03958 12.2731 2.91667 11.9763 2.91667 11.6669V3.49954M1.75 3.49954H12.25M4.66667 3.49954V2.33278C4.66667 2.02333 4.78958 1.72656 5.00838 1.50775C5.22717 1.28894 5.52391 1.16602 5.83333 1.16602H8.16667C8.47609 1.16602 8.77283 1.28894 8.99162 1.50775C9.21042 1.72656 9.33333 2.02333 9.33333 2.33278V3.49954" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_3059_2015">
+      <rect width="14" height="14" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>
           {{ submitting ? 'Removing...' : 'Remove Key' }}
         </button>
       </div>
@@ -228,80 +246,96 @@
     </div>
 
     <!-- Right sidebar -->
-    <div class="space-y-6">
+    <div class="space-y-4 col-span-1 lg:col-span-4 bg-white rounded-md shadow-xs p-5">
 
       <!-- Current key details -->
-      <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
+      <div class="bg-white rounded-md border border-slate-200 p-5 sm:p-6">
         <h4 class="text-base font-bold text-slate-900 mb-4">Current Key Details</h4>
-        <dl class="space-y-3.5 text-sm">
-          <div class="flex justify-between">
-            <dt class="text-slate-500">Key ID</dt>
-            <dd class="text-slate-900 font-semibold">{{ hook?.assignedKeyId || '—' }}</dd>
+        <dl class="space-y-3.5 text-xs">
+          <div class="flex ">
+            <dt class="text-slate-500 font-semibold w-30">Key ID</dt>
+            <dd class="text-slate-900 text-xs font-bold">{{ hook?.assignedKeyId || '—' }}</dd>
           </div>
-          <div class="flex justify-between">
-            <dt class="text-slate-500">Key Type</dt>
-            <dd class="text-slate-800">{{ hook?.keyType || '—' }}</dd>
+          <div class="flex ">
+            <dt class="text-slate-500 font-semibold w-30">Key Type</dt>
+            <dd class="text-slate-900 font-medium">{{ hook?.keyType || '—' }}</dd>
           </div>
-          <div class="flex justify-between gap-2">
-            <dt class="text-slate-500 shrink-0">Key Description</dt>
-            <dd class="text-slate-800 text-right">{{ hook?.assignedKeyName || '—' }}</dd>
+          <div class="flex  ">
+            <dt class="text-slate-500 font-semibold w-30 shrink-0">Key Description</dt>
+            <dd class="text-slate-900 font-medium">{{ hook?.assignedKeyName || '—' }}</dd>
           </div>
-          <div class="flex justify-between">
-            <dt class="text-slate-500">Current Status</dt>
+          <div class="flex ">
+            <dt class="text-slate-500 font-semibold w-30">Current Status</dt>
             <dd>
-              <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">Key Hooked</span>
+              <span class="px-2 py-0.5 rounded-sm bg-blue-100 text-blue-600 text-xs font-semibold">Key Hooked</span>
             </dd>
           </div>
-          <div class="flex justify-between">
-            <dt class="text-slate-500">Assigned Since</dt>
-            <dd class="text-slate-700 text-right">
+          <div class="flex ">
+            <dt class="text-slate-500 font-semibold w-30">Assigned Since</dt>
+            <dd class="text-slate-900 font-medium">
               {{ formatDate(hook?.assignedAt) }}
-              <span class="block text-slate-400 text-xs font-normal">by {{ hook?.assignedBy || '&ndash;' }}</span>
+              <span class="block text-slate-500 text-xs font-normal">by {{ hook?.assignedBy || '&ndash;' }}</span>
             </dd>
           </div>
         </dl>
       </div>
 
       <!-- Important note -->
-      <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+      <div class="bg-orange-100 rounded-md p-5">
         <div class="flex items-start gap-3">
-          <svg class="h-5 w-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="9"/>
-            <path stroke-linecap="round" d="M12 8v4M12 16h.01"/>
-          </svg>
+          <svg width="20" height="20" class="shrink-0" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_3059_2090)">
+    <path d="M10 6.66642V10M10 13.3336H10.0083M18.334 10C18.334 14.6028 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6028 1.66602 10C1.66602 5.39727 5.39727 1.66602 10 1.66602C14.6028 1.66602 18.334 5.39727 18.334 10Z" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_3059_2090">
+    <rect width="20" height="20" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
           <div>
             <h4 class="font-bold text-slate-900 text-sm">Important Note</h4>
-            <p class="text-sm text-amber-800 mt-1.5">Removing the key will make this hook available for a new assignment.</p>
-            <p class="text-sm text-amber-800 mt-1.5">This action will be logged in the activity history.</p>
+            <p class="text-xs text-amber-600 mt-1.5">Removing the key will make this hook available for a new assignment.</p>
+            <p class="text-xs text-amber-600 mt-1.5">This action will be logged in the activity history.</p>
           </div>
         </div>
       </div>
 
       <!-- What happens next -->
-      <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+      <div class="bg-blue-50 rounded-md p-5">
         <div class="flex items-start gap-3">
-          <svg class="h-5 w-5 text-blue-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="9"/>
-            <path stroke-linecap="round" d="M12 16v-4M12 8h.01"/>
-          </svg>
+          <svg width="18" height="18" class="shrink-0" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_3059_2098)">
+    <path d="M9.00011 11.9999V8.99962M9.00011 5.99938H9.00761M16.5007 8.99962C16.5007 13.1421 13.1426 16.5002 9.00011 16.5002C4.85764 16.5002 1.49951 13.1421 1.49951 8.99962C1.49951 4.85716 4.85764 1.49902 9.00011 1.49902C13.1426 1.49902 16.5007 4.85716 16.5007 8.99962Z" stroke="#1E40AF" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_3059_2098">
+    <rect width="18" height="18" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
           <div>
-            <h4 class="font-bold text-blue-700 text-sm">What happens next?</h4>
-            <p class="text-sm text-blue-800 mt-1.5">The key will be unassigned from this hook and the hook will become available for a new assignment.</p>
+            <h4 class="font-bold text-blue-800 text-xs">What happens next?</h4>
+            <p class="text-xs text-blue-800 mt-1.5">The key will be unassigned from this hook and the hook will become available for a new assignment.</p>
           </div>
         </div>
       </div>
 
     </div>
   </div>
+  </div>
 
   <!-- Footer links -->
-  <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-400">
-    <span></span>
-    <div class="flex gap-4">
-      <a href="#" class="hover:text-slate-600">Privacy Policy</a>
-      <a href="#" class="hover:text-slate-600">Terms of Service</a>
-      <a href="#" class="hover:text-slate-600">Support</a>
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+    <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
+        Policy</a>
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
+        Service</a>
+
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
     </div>
+
   </div>
 
 </div>
