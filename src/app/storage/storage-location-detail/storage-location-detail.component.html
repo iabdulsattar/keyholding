@@ -45,11 +45,11 @@
       </div>
     </div>
 
-    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">Storage Location Details</h1>
-    <p class="text-gray-500 mt-1 mb-6">Update the storage location details below.</p>
+    <h1 class="text-slate-900 text-3xl font-extrabold font-['Inter'] mb-1">Storage Location Details</h1>
+    <p class="text-slate-600 text-sm font-normal font-['Inter'] mt-1 mb-6">Update the storage location details below.</p>
 
     <!-- Header card -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-6">
+    <div class="bg-white rounded-md p-6 mb-6">
       <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-6 xl:gap-8 items-start">
 
         <!-- Identity -->
@@ -60,20 +60,22 @@
       </svg>          </div>
           <div class="min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
-              <h2 class="text-lg font-bold text-slate-900">{{ location.name }}</h2>
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+              <h2 class="text-slate-900 text-xl font-extrabold font-['Inter']">{{ location.name }}</h2>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold font-['Inter']"
                     [ngClass]="location.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'">
                 <span class="w-1.5 h-1.5 rounded-full" [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-rose-500'"></span>
                 {{ location.status }}
               </span>
             </div>
-            <div class="flex items-center gap-1.5 text-sm text-slate-500 mt-1.5">
+            <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold font-['Inter'] mt-1.5">
               <span class="font-medium">{{ location.code }}</span>
-              <i data-lucide="copy" class="w-3.5 h-3.5 cursor-pointer hover:text-slate-700" (click)="copyCode()"></i>
-            </div>
-            <div class="flex items-start gap-1.5 text-sm text-slate-500 mt-2">
-              <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
-              <span>{{ location.address }}</span>
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.91638 9.91638V4.08398H4.08398M9.91638 4.08398L4.08398 9.91638" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+      </svg>            </div>
+            <div class="flex items-start gap-1.5 text-slate-500 text-xs font-normal font-['Inter'] mt-2">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.35073 12.7165C8.43562 11.7796 11.6664 8.74597 11.6664 5.83311C11.6664 4.59532 11.1748 3.40823 10.2997 2.53298C9.4246 1.65773 8.23774 1.16602 7.00018 1.16602C5.76263 1.16602 4.57576 1.65773 3.70068 2.53298C2.8256 3.40823 2.33398 4.59532 2.33398 5.83311C2.33398 8.74597 5.56474 11.7796 6.64964 12.7165C6.7507 12.7925 6.87373 12.8336 7.00018 12.8336C7.12664 12.8336 7.24966 12.7925 7.35073 12.7165Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+      </svg>              <span>{{ location.address }}</span>
             </div>
           </div>
         </div>
@@ -83,17 +85,17 @@
         <!-- Site info -->
         <dl class="flex flex-col gap-y-3 text-sm">
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Site / Building</dt>
-            <dd class="font-semibold text-slate-800">{{ location.siteName }}</dd>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Site / Building</dt>
+            <dd class=" text-slate-900 text-xs font-bold font-['Inter']">{{ location.siteName }}</dd>
           </div>
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Location Type</dt>
-            <dd class="font-semibold text-slate-800">{{ location.locationType || '—' }}</dd>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Location Type</dt>
+            <dd class=" text-slate-900 text-xs font-bold font-['Inter']">{{ location.locationType || '—' }}</dd>
           </div>
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Responsible Person</dt>
-            <dd class="font-semibold text-indigo-600">{{ location.responsiblePerson }}</dd>
-            <dd class="text-slate-400 text-xs w-full sm:ml-32">{{ location.responsiblePersonTitle }}</dd>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Responsible Person</dt>
+            <dd class="text-blue-600 text-xs font-bold font-['Inter']">{{ location.responsiblePerson }}</dd>
+            <dd class="text-slate-500 text-xs font-normal font-['Inter'] w-full sm:ml-32">{{ location.responsiblePersonTitle }}</dd>
           </div>
         </dl>
 
@@ -102,25 +104,18 @@
         <!-- Contact / meta -->
         <dl class="flex flex-col gap-y-3 text-sm">
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Contact Number</dt>
-            <dd class="font-semibold text-slate-800">{{ location.contactNumber }}</dd>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Contact Number</dt>
+            <dd class="text-slate-900 text-xs font-bold font-['Inter']">{{ location.contactNumber }}</dd>
           </div>
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created By</dt>
-            <dd class="font-semibold text-slate-800">{{ location.createdBy }}</dd>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Created By</dt>
+            <dd class="text-slate-900 text-xs font-bold font-['Inter']">{{ location.createdBy }}</dd>
           </div>
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Created On</dt>
-            <dd class="font-semibold text-slate-800">{{ formatDate(location.createdDate) }}</dd>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Created On</dt>
+            <dd class="text-slate-900 text-xs font-bold font-['Inter']">{{ formatDate(location.createdDate) }}</dd>
           </div>
-          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Updated By</dt>
-            <dd class="font-semibold text-slate-800">{{ location.updatedBy }}</dd>
-          </div>
-          <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-400 w-full sm:w-32 shrink-0">Updated On</dt>
-            <dd class="font-semibold text-slate-800">{{ formatDate(location.updatedDate) }}</dd>
-          </div>
+          
         </dl>
 
       </div>
@@ -129,80 +124,105 @@
     <!-- Stat cards row -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
 
-      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
+      <div class="bg-white rounded-md  p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
-          <i data-lucide="archive" class="w-5 h-5 text-indigo-500"></i>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.3333 1.66602H6.66667C5.74619 1.66602 5 2.41227 5 3.33282V16.6672C5 17.5878 5.74619 18.334 6.66667 18.334H13.3333C14.2538 18.334 15 17.5878 15 16.6672V3.33282C15 2.41227 14.2538 1.66602 13.3333 1.66602Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>
         </div>
         <div class="min-w-0">
-          <div class="text-sm text-gray-500">Total Cabinets</div>
-          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.totalCabinets }}</div>
-          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+          <div class="text-slate-500 text-xs font-medium font-['Inter']">Total Cabinets</div>
+          <div class="text-slate-900 text-2xl font-extrabold font-['Inter'] mt-1">{{ location.totalCabinets }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold font-['Inter'] mt-2 hover:underline">
             View Cabinets
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+ <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.49951 5.99991H9.50031M5.99991 9.50031L9.50031 5.99991L5.99991 2.49951" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>          </a>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
+      <div class="bg-white rounded-md  p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-          <i data-lucide="anchor" class="w-5 h-5 text-emerald-500"></i>
-        </div>
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2904_2453)">
+      <path d="M14.3545 6.46974C14.6351 6.75049 14.7928 7.13122 14.7927 7.52818L14.7927 16.7409C14.7912 17.2204 14.6 17.6799 14.2609 18.019C13.9218 18.3581 13.4623 18.5493 12.9828 18.5508H6.01822C5.53866 18.5493 5.07918 18.3581 4.74008 18.019C4.40098 17.6799 4.2098 17.2204 4.20828 16.7409L4.20828 7.52818C4.20822 7.13122 4.36584 6.75049 4.64648 6.46974L8.44205 2.67416C8.72276 2.39345 9.1035 2.23574 9.50049 2.23574C9.89748 2.23574 10.2782 2.39345 10.5589 2.67416L14.3545 6.46974Z" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2904_2453">
+      <rect width="17.9609" height="17.9609" fill="white" transform="translate(9.50049 -0.5) rotate(45)"/>
+      </clipPath>
+      </defs>
+      </svg>        </div>
         <div class="min-w-0">
-          <div class="text-sm text-gray-500">Total Hooks / Slots</div>
-          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.totalHooks }}</div>
-          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+          <div class="text-slate-500 text-xs font-medium font-['Inter']">Total Hooks / Slots</div>
+          <div class="text-slate-900 text-2xl font-extrabold font-['Inter'] mt-1">{{ location.totalHooks }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold font-['Inter'] mt-2 hover:underline">
             View Hooks
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+ <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.49951 5.99991H9.50031M5.99991 9.50031L9.50031 5.99991L5.99991 2.49951" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>          </a>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
+      <div class="bg-white rounded-md p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
-          <i data-lucide="key" class="w-5 h-5 text-purple-500"></i>
-        </div>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.916 6.24935L14.8327 8.16602C14.9885 8.3187 15.1979 8.40423 15.416 8.40423C15.6341 8.40423 15.8436 8.3187 15.9994 8.16602L17.7493 6.41602C17.902 6.26024 17.9876 6.05081 17.9876 5.83268C17.9876 5.61455 17.902 5.40512 17.7493 5.24935L15.8327 3.33268M17.4993 1.66602L9.49927 9.66602M10.8327 12.916C10.8327 15.4473 8.78065 17.4993 6.24935 17.4993C3.71804 17.4993 1.66602 15.4473 1.66602 12.916C1.66602 10.3847 3.71804 8.33268 6.24935 8.33268C8.78065 8.33268 10.8327 10.3847 10.8327 12.916Z" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"/>
+  </svg>        </div>
         <div class="min-w-0">
-          <div class="text-sm text-gray-500">Keys in Storage</div>
-          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.keysInStorage }}</div>
-          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+          <div class="text-slate-500 text-xs font-medium font-['Inter']">Keys in Storage</div>
+          <div class="text-slate-900 text-2xl font-extrabold font-['Inter'] mt-1">{{ location.keysInStorage }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold font-['Inter'] mt-2 hover:underline">
             View Keys
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+ <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.49951 5.99991H9.50031M5.99991 9.50031L9.50031 5.99991L5.99991 2.49951" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>          </a>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3">
+      <div class="bg-white rounded-md  p-5 flex items-start gap-3">
         <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-          <i data-lucide="wrench" class="w-5 h-5 text-amber-500"></i>
-        </div>
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.1669 8.33357C18.5474 10.2013 18.2762 12.1431 17.3984 13.8351C16.5206 15.527 15.0893 16.8669 13.3431 17.6313C11.597 18.3957 9.64154 18.5384 7.80293 18.0355C5.96433 17.5327 4.35368 16.4147 3.23958 14.8681C2.12548 13.3214 1.57529 11.4396 1.68074 9.53639C1.78619 7.63318 2.54092 5.82364 3.81906 4.40954C5.0972 2.99545 6.8215 2.06226 8.7044 1.76561C10.5873 1.46897 12.515 1.82679 14.166 2.7794M7.49967 9.1665L9.99967 11.6665L18.333 3.33317" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+      </svg>        </div>
         <div class="min-w-0">
-          <div class="text-sm text-gray-500">Available Hooks</div>
-          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.availableHooks }}</div>
-          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+          <div class="text-slate-500 text-xs font-medium font-['Inter']">Available Hooks</div>
+          <div class="text-slate-900 text-2xl font-extrabold font-['Inter'] mt-1">{{ location.availableHooks }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold font-['Inter'] mt-2 hover:underline">
             View Hooks
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+ <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.49951 5.99991H9.50031M5.99991 9.50031L9.50031 5.99991L5.99991 2.49951" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>          </a>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-3 col-span-2 sm:col-span-1">
+      <div class="bg-white rounded-md  p-5 flex items-start gap-3 col-span-2 sm:col-span-1">
         <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
-          <i data-lucide="triangle-alert" class="w-5 h-5 text-red-500"></i>
-        </div>
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_2904_2492)">
+      <path d="M9.99984 7.49919V10.8325M9.99984 14.1659H10.0082M18.1085 14.9994L11.4419 3.33271C11.2965 3.07621 11.0857 2.86286 10.831 2.71443C10.5762 2.566 10.2867 2.48779 9.99185 2.48779C9.69703 2.48779 9.40748 2.566 9.15275 2.71443C8.89802 2.86286 8.68722 3.07621 8.54185 3.33271L1.87519 14.9994C1.72825 15.2538 1.65121 15.5426 1.65186 15.8365C1.65251 16.1303 1.73083 16.4187 1.87889 16.6726C2.02695 16.9264 2.23948 17.1365 2.49493 17.2817C2.75039 17.4269 3.03969 17.502 3.33352 17.4994H16.6669C16.9593 17.4991 17.2465 17.4218 17.4996 17.2754C17.7527 17.129 17.9629 16.9186 18.1089 16.6653C18.255 16.412 18.3319 16.1247 18.3318 15.8323C18.3317 15.5399 18.2547 15.2526 18.1085 14.9994Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <defs>
+      <clipPath id="clip0_2904_2492">
+      <rect width="20" height="20" fill="white"/>
+      </clipPath>
+      </defs>
+      </svg>        </div>
         <div class="min-w-0">
           <div class="text-sm text-gray-500">Out of Order Hooks</div>
-          <div class="text-2xl font-bold text-gray-900 mt-1">{{ location.outOfOrderHooks }}</div>
-          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold mt-2 hover:underline">
+          <div class="text-slate-900 text-2xl font-extrabold font-['Inter'] mt-1">{{ location.outOfOrderHooks }}</div>
+          <a [routerLink]="['/storage/locations']" class="inline-flex items-center gap-1 text-blue-600 text-xs font-semibold font-['Inter'] mt-2 hover:underline">
             View Hooks
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+ <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.49951 5.99991H9.50031M5.99991 9.50031L9.50031 5.99991L5.99991 2.49951" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+      </svg>          </a>
         </div>
       </div>
 
     </div>
 
     <!-- Location Information -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-6">
+    <div class="bg-white rounded-md  p-6 mb-6">
       <h3 class="text-lg font-bold text-gray-900 mb-5">Location Information</h3>
       <div class="grid grid-cols-1 gap-x-10 gap-y-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex justify-between sm:justify-start sm:gap-8">
@@ -271,7 +291,7 @@
     </div>
 
     <!-- Cabinets in this location -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+    <div class="bg-white rounded-md  p-6">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <h3 class="text-lg font-bold text-gray-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
         <button class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto">
