@@ -4,6 +4,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { DeactivateCabinetModalComponent } from './deactivate-cabinet-modal/deactivate-cabinet-modal.component';
 import { ReactivateCabinetModalComponent } from './reactivate-cabinet-modal/reactivate-cabinet-modal.component';
+import { AppChart } from '../../shared/components/charts/donut/chart.component';
 
 interface Hook {
   num: number;
@@ -49,16 +50,9 @@ interface Cabinet {
 @Component({
   selector: 'app-cabinet-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, DeactivateCabinetModalComponent, ReactivateCabinetModalComponent],
+  imports: [CommonModule, RouterModule, DeactivateCabinetModalComponent, ReactivateCabinetModalComponent, AppChart],
   templateUrl: './cabinet-detail.component.html',
   styles: [`
-    .donut {
-      width: 88px; height: 88px; border-radius: 50%;
-      background: conic-gradient(#2563eb 0% 71.4%, #16a34a 71.4% 92.8%, #f59e0b 92.8% 100%);
-      display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0;
-    }
-    .donut::after { content: ""; position: absolute; inset: 12px; background: #fff; border-radius: 50%; }
-    .donut-label { position: relative; z-index: 1; text-align: center; }
     @keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
     .animate-fade-in { animation: fadeIn .15s ease-out; }
   `],
@@ -74,6 +68,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
   isReactivateModalOpen = false;
   isMoreMenuOpen = false;
   rawHooks: any[] = [];
+  keyStatisticsChart = { series: [0, 0, 0, 0], labels: ['In Storage', 'Issued', 'Overdue', 'Lost / Damaged'], colors: ['#2563eb', '#10b981', '#f59e0b', '#EF4444'] };
 
   constructor(
     private route: ActivatedRoute,
@@ -154,6 +149,7 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
           alarmSystem: item.alarmSystem ?? false,
           active: active,
         };
+        this.updateKeyStatisticsChart();
         this.loading = false;
         this.createIcons();
       },
@@ -210,6 +206,65 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
       num: i + 1,
       used: usedSet.has(i + 1),
     }));
+  }
+
+  get donutSegments(): { label: string; value: number; color: string; dasharray: string; dashoffset: string; percentage: string }[] {
+    if (!this.cabinet) return [];
+    const total = this.cabinet.totalHooks || 0;
+    if (total === 0) return [];
+
+    const circumference = 2 * Math.PI * 40;
+    const statusCounts: Record<string, number> = {};
+    this.rawHooks.forEach((h: any) => {
+      const status = h.status || 'UNKNOWN';
+      statusCounts[status] = (statusCounts[status] || 0) + 1;
+    });
+
+    const inStorage = statusCounts['AVAILABLE_FOR_KEY'] ?? this.cabinet.availHooks ?? 0;
+    const issued = statusCounts['KEY_HOOKED'] ?? this.cabinet.usedHooks ?? 0;
+    const overdue = statusCounts['KEY_IN_USE'] ?? 0;
+    const damaged = statusCounts['HOOK_DAMAGED'] ?? 0;
+
+    const segments = [
+      { label: 'In Storage', value: inStorage, color: '#2563eb' },
+      { label: 'Issued', value: issued, color: '#10b981' },
+      { label: 'Overdue', value: overdue, color: '#f59e0b' },
+      { label: 'Lost / Damaged', value: damaged, color: '#EF4444' },
+    ];
+
+    let cumulative = 0;
+    return segments.map(seg => {
+      const fraction = seg.value / total;
+      const dashLength = fraction * circumference;
+      const offset = -cumulative;
+      cumulative += dashLength;
+      return {
+        ...seg,
+        dasharray: `${dashLength.toFixed(2)} ${circumference.toFixed(2)}`,
+        dashoffset: offset.toFixed(2),
+        percentage: (fraction * 100).toFixed(1),
+      };
+    });
+   }
+
+  updateKeyStatisticsChart(): void {
+    if (!this.cabinet) return;
+    const statusCounts: Record<string, number> = {};
+    this.rawHooks.forEach((h: any) => {
+      const status = h.status || 'UNKNOWN';
+      statusCounts[status] = (statusCounts[status] || 0) + 1;
+    });
+
+    const inStorage = statusCounts['AVAILABLE_FOR_KEY'] ?? this.cabinet.availHooks ?? 0;
+    const issued = statusCounts['KEY_HOOKED'] ?? this.cabinet.usedHooks ?? 0;
+    const overdue = statusCounts['KEY_IN_USE'] ?? 0;
+    const damaged = statusCounts['HOOK_DAMAGED'] ?? 0;
+
+    this.keyStatisticsChart = {
+      series: [inStorage, issued, overdue, damaged],
+      labels: ['In Storage', 'Issued', 'Overdue', 'Lost / Damaged'],
+      colors: ['#2563eb', '#10b981', '#f59e0b', '#EF4444'],
+    };
   }
 
   openDeactivateModal(): void {

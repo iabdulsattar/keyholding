@@ -1,4 +1,5 @@
-<div class="min-h-screen w-full bg-gray-50 font-sans text-slate-900" *ngIf="loading; else loaded">
+  </div>
+  <app-deactivate-cabinet-modal<div class="min-h-screen w-full bg-gray-50 font-sans text-slate-900" *ngIf="loading; else loaded">
   <div class="animate-pulse space-y-4">
     <div class="h-8 w-48 rounded bg-slate-200"></div>
     <div class="h-4 w-64 rounded bg-slate-200"></div>
@@ -276,43 +277,17 @@
             <div class="">
               <h3 class="text-base font-bold text-slate-900 mb-5">Key Statistics</h3>
               <div class="flex items-center gap-6">
-                <div class="relative w-28 h-28 flex-shrink-0">
-                  <!-- <svg viewBox="0 0 100 100" class="donut w-full h-full">
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="12"/>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#2563eb" stroke-width="12"
-                    stroke-dasharray="179.6 251.3" stroke-dashoffset="0" stroke-linecap="butt"/>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="12"
-                    stroke-dasharray="53.9 251.3" stroke-dashoffset="-179.6" stroke-linecap="butt"/>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" stroke-width="12"
-                    stroke-dasharray="18 251.3" stroke-dashoffset="-233.5" stroke-linecap="butt"/>
-                </svg>
-                
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                  <span class="text-2xl font-bold text-gray-900">14</span>
-                  <span class="text-[10px] text-gray-400">Total Keys</span>
-                </div> -->
+                <div class="w-28 h-28 flex-shrink-0">
+                  <app-chart [series]="keyStatisticsChart.series" [labels]="keyStatisticsChart.labels" [colors]="keyStatisticsChart.colors"></app-chart>
                 </div>
                 <div class="flex-1 space-y-2.5 ">
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-blue-600 mb-0.5"></span>In Storage</span>
-                    <span class="font-bold text-slate-900 text-xs">10</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-emerald-500 mb-0.5"></span>Issued</span>
-                    <span class="font-bold text-slate-900 text-xs">3</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-orange-400 mb-0.5"></span>Overdue</span>
-                    <span class="font-bold text-slate-900 text-xs">1</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
-                        class="w-2 h-2 rounded-full bg-red-500 mb-0.5"></span>Lost / Damaged</span>
-                    <span class="font-bold text-slate-900 text-xs">0</span>
-                  </div>
+                  @for (seg of donutSegments; track seg.label) {
+                    <div class="flex items-center justify-between">
+                      <span class="inline-flex items-center gap-2 text-slate-600 text-xs"><span
+                          class="w-2 h-2 rounded-full mb-0.5" [style.background]="seg.color"></span>{{ seg.label }}</span>
+                      <span class="font-bold text-slate-900 text-xs">{{ seg.value }}</span>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -432,18 +407,6 @@
     </div>
 
 
-
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
-      <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
-        <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
-          Policy</a>
-        <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
-          Service</a>
-
-        <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
-      </div>
-
-    </div>
 
   </div>
   <app-deactivate-cabinet-modal *ngIf="isDeactivateModalOpen" [cabinet]="cabinet" [orgId]="getOrgId()"

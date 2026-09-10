@@ -55,6 +55,7 @@ export class AppChart implements AfterViewInit, OnDestroy {
   @ViewChild('chart') chart!: ChartComponent;
   @Input() series: number[] = [];
   @Input() labels: string[] = [];
+  @Input() colors: string[] = [];
 
   private currentSeries: any[] = [];
 
@@ -126,7 +127,7 @@ export class AppChart implements AfterViewInit, OnDestroy {
       ...this.chartOptions,
       series: this.currentSeries,
       labels: hasInput ? this.labels : ['Stocks', 'Bonds', 'Real Estate', 'Cash'],
-      
+      colors: this.colors.length > 0 ? this.colors : ['#10b981', '#2563eb', '#f59e0b', '#e9edf5'],
     };
   }
 
