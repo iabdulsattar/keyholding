@@ -4,13 +4,15 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService, Client, PaginatedResult } from '../core/services/client.service';
+import { ToastService } from '../core/services/toast.service';
 import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
 import { BreadcrumbItem } from '../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { DeleteClientModalComponent } from './delete-client-modal/delete-client-modal.component';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, DeleteClientModalComponent],
   templateUrl: './clients.component.html',
   styles: `.custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -33,15 +35,22 @@ export class ClientsComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
 
+  showDeleteClientModal = false;
+  clientToDelete: Client | null = null;
+
   breadcrumbs: BreadcrumbItem[] = [
     { label: 'Client Management' },
     { label: 'Clients' }
   ];
 
-  constructor(private router: Router, private clientService: ClientService) {}
+  constructor(private router: Router, private clientService: ClientService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.loadClients();
+  }
+
+  getOrgId(): string {
+    return localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
   }
 
   private loadClients(): void {
@@ -108,6 +117,27 @@ export class ClientsComponent implements OnInit {
 
   viewClient(id: string): void {
     this.router.navigate(['/clients', id]);
+  }
+
+  editClient(id: string): void {
+    this.router.navigate(['/clients/add-client'], { queryParams: { editId: id } });
+  }
+
+  deleteClient(client: Client): void {
+    this.clientToDelete = client;
+    this.showDeleteClientModal = true;
+  }
+
+  onDeleteClientConfirmed(): void {
+    this.showDeleteClientModal = false;
+    this.clientToDelete = null;
+    this.loadClients();
+    this.toast.success('Client deleted successfully');
+  }
+
+  onDeleteClientClosed(): void {
+    this.showDeleteClientModal = false;
+    this.clientToDelete = null;
   }
 
   goToPage(p: number | string): void {

@@ -1,243 +1,299 @@
-<div class="min-h-[calc(100vh-48px)] flex flex-col text-gray-900">
-  <div class="flex-1 flex flex-col h-full overflow-hidden">
-    <div class="flex-grow overflow-y-auto custom-scrollbar">
+<div class="min-h-screen w-full bg-[#f6f7f7] font-sans text-slate-900">
+  <div class="">
 
-      <!-- CONTROLLER ACTION HEADER ROW -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-5">
-        <div>
-          <!-- Breadcrumbs Segment -->
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900 mb-1.5">{{ editMode ? 'Edit Client' : 'Add New Client' }}</h2>
-          <app-page-breadcrumb [pageTitle]="editMode ? 'Edit Client' : 'Add New Client'" [breadcrumbs]="breadcrumbs" />
-          
-          <p class="text-xs text-slate-500 font-medium mt-0.5">{{ editMode ? 'Update client details and configuration settings.' : 'Enter client details and configuration settings.' }}</p>
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
+      <div>
+        <!-- Breadcrumb -->
+        <div class="flex flex-wrap items-center gap-1.5 text-xs font-medium text-blue-600 mb-3">
+          <a [routerLink]="['/clients']" class="hover:underline">Clients</a>
+          <span class="text-slate-500">›</span>
+          <span class="text-slate-500">{{ editMode ? 'Edit Client' : 'Add New Client' }}</span>
         </div>
-        <!-- Action Controls Block -->
-        <div class="flex items-center gap-3 self-end sm:self-auto">
-          <button type="button" (click)="cancel()" class="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs font-semibold text-slate-600 transition">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            <span>Cancel</span>
-          </button>
-          <button type="button" (click)="onSubmit()" [disabled]="loading" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-xs font-semibold transition disabled:opacity-50">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
-            <span>{{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Update Client' : 'Save Client') }}</span>
-          </button>
-        </div>
+        <h1 class="text-3xl font-extrabold text-slate-900">{{ editMode ? 'Edit Client' : 'Add New Client' }}</h1>
+        <p class="text-sm text-slate-600 mt-1">{{ editMode ? 'Update client details and configuration settings.' :
+          'Enter client details and configuration settings.' }}</p>
       </div>
 
-      <!-- CORE SPLIT CONTENT GRID FRAME -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start mt-6">
+      <div data-svg-wrapper data-layer="Frame" class="Frame relative">
+        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g filter="url(#filter0_d_3146_380)">
+            <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges" />
+            <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_3146_380)" />
+          </g>
+          <defs>
+            <filter id="filter0_d_3146_380" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
+              <feOffset dy="1" />
+              <feGaussianBlur stdDeviation="1.5" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3146_380" />
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3146_380" result="shape" />
+            </filter>
+            <pattern id="pattern0_3146_380" patternContentUnits="objectBoundingBox" width="1" height="1">
+              <use xlink:href="#image0_3146_380" transform="scale(0.00195312)" />
+            </pattern>
+            <image id="image0_3146_380" width="512" height="512" preserveAspectRatio="none"
+              xlink:href="data:image/png;base64,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" />
+          </defs>
+        </svg>
+      </div>
+    </div>
 
-        <!-- PRIMARY SUBMISSION FORM BLOCK (8 Columns) -->
-        <form id="clientForm" class="lg:col-span-8 space-y-5">
+    <!-- Main grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-          <!-- MODULE 1: CLIENT INFORMATION BOX -->
-          <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-6 space-y-5">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">1. Client Information</h3>
+      <!-- LEFT / MAIN FORM -->
+      <form id="clientForm" class="lg:col-span-2 flex flex-col gap-5">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Client Name -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Client Name <span class="text-red-500">*</span></label>
-                 <input type="text" [(ngModel)]="clientName" name="clientName" (blur)="markTouched('clientName')" placeholder="Enter client name" class="w-full bg-white border text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(touched.has('clientName') && !clientName.trim())" [class.border-rose-500]="touched.has('clientName') && !clientName.trim()">
-                 @if (touched.has('clientName') && !clientName.trim()) {
-                  <p class="text-xs text-rose-600 mt-1">Client Name is required</p>
-                }
-              </div>
-              <!-- Email Input -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Email <span class="text-red-500">*</span></label>
-                 <input type="email" [(ngModel)]="email" name="email" (blur)="markTouched('email')" placeholder="Enter email address" class="w-full bg-white border text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" [class.border-slate-200]="!(touched.has('email') && !email.trim())" [class.border-rose-500]="touched.has('email') && !email.trim()">
-                 @if (touched.has('email') && !email.trim()) {
-                  <p class="text-xs text-rose-600 mt-1">{{ sectionErrors.information.find(m => m.toLowerCase().includes('email')) || 'Email is required' }}</p>
-                }
-              </div>
+        <!-- MODULE 1: CLIENT INFORMATION -->
+        <div class="bg-white shadow-xs rounded-md p-5 sm:p-6">
+          <h2 class="text-base font-bold text-slate-900 mb-5 border-b border-slate-200 pb-1">Client Information</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-5">
+            <!-- Client Name -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Client Name <span
+                  class="text-red-500">*</span></label>
+              <input type="text" [(ngModel)]="clientName" name="clientName" (blur)="markTouched('clientName')"
+                placeholder="Enter client name"
+                class="w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                [class.border-slate-200]="!(touched.has('clientName') && !clientName.trim())"
+                [class.border-rose-400]="touched.has('clientName') && !clientName.trim()" />
+              <p class="mt-1 text-xs text-rose-500" *ngIf="touched.has('clientName') && !clientName.trim()">Client Name
+                is required.</p>
+              <p class="mt-1 text-xs text-slate-500 font-normal"
+                *ngIf="!(touched.has('clientName') && !clientName.trim())">A unique and easy to identify name for this
+                client.</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Phone -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Phone</label>
-                <input type="text" [(ngModel)]="phone" name="phone" placeholder="Enter phone number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
-              <!-- Website -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Website</label>
-                <input type="url" [(ngModel)]="website" name="website" placeholder="https://example.com" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
-              <!-- Region Custom Dropdown -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Region <span class="text-red-500">*</span></label>
-                <app-rich-select
-                  [options]="regions"
-                  [(value)]="region"
-                  placeholder="Select region"
-                  panelWidth="wide"
-                  class="w-full"
-                  (valueChange)="markTouched('region')"
-                ></app-rich-select>
-                @if (informationInvalid && touched.has('region')) {
-                  <p class="text-xs text-rose-600 mt-1">Region is required</p>
-                }
-              </div>
+            <!-- Email -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Email <span
+                  class="text-red-500">*</span></label>
+              <input type="email" [(ngModel)]="email" name="email" (blur)="markTouched('email')"
+                placeholder="Enter email address"
+                class="w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                [class.border-slate-200]="!(touched.has('email') && !email.trim())"
+                [class.border-rose-400]="touched.has('email') && !email.trim()" />
+              <p class="mt-1 text-xs text-rose-500" *ngIf="touched.has('email') && !email.trim()">{{
+                sectionErrors.information.find(m => m.toLowerCase().includes('email')) || 'Email is required.' }}</p>
+              <p class="mt-1 text-xs text-slate-500 font-normal" *ngIf="!(touched.has('email') && !email.trim())">A
+                valid email address used for correspondence.</p>
             </div>
-
-            <!-- Address Textarea -->
-            <div class="space-y-1.5">
-              <label class="text-xs font-semibold text-slate-700">Address</label>
-              <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Enter full address" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
+            <!-- Phone -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Phone</label>
+              <input type="text" [(ngModel)]="phone" name="phone" placeholder="Enter phone number"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Primary phone number for this client.</p>
             </div>
-          </div>
-
-          <!-- MODULE 2: ADDITIONAL METADATA DETAILS MODULE -->
-          <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-6 space-y-5 ">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">2. Additional Details</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Industry Custom Select Dropdown -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Industry</label>
-                <app-rich-select
-                  [options]="industries"
-                  [(value)]="industry"
-                  placeholder="Select industry"
-                  panelWidth="wide"
-                  class="w-full"
-                ></app-rich-select>
-              </div>
-              <!-- VAT/Tax Number -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">VAT / Tax Number</label>
-                <input type="text" [(ngModel)]="vatNumber" name="vatNumber" placeholder="Enter VAT or tax number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
-              <!-- Registration Number -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Registration Number</label>
-                <input type="text" [(ngModel)]="registrationNumber" name="registrationNumber" placeholder="Enter registration number" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
+            <!-- Website -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Website</label>
+              <input type="url" [(ngModel)]="website" name="website" placeholder="https://example.com"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Client website URL.</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Contact Person -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Contact Person</label>
-                <input type="text" [(ngModel)]="contactPerson" name="contactPerson" placeholder="Enter contact person name" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
-              <!-- Designation -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Designation</label>
-                <input type="text" [(ngModel)]="designation" name="designation" placeholder="Enter designation" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
-              <!-- Contact Email -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Contact Email</label>
-                <input type="email" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Enter contact email" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-              </div>
+            <!-- Region -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Region <span
+                  class="text-red-500">*</span></label>
+              <app-rich-select [options]="regions" [(value)]="region" placeholder="Select region" panelWidth="wide"
+                class="w-full" (valueChange)="markTouched('region')"></app-rich-select>
+              <p class="mt-1 text-xs text-rose-500" *ngIf="informationInvalid && touched.has('region')">Region is
+                required.</p>
+              <p class="mt-1 text-xs text-slate-500 font-normal" *ngIf="!(informationInvalid && touched.has('region'))">
+                Select the primary operating region for this client.</p>
             </div>
-
-            <!-- Additional Optional Notes Textarea -->
-            <div class="space-y-1.5">
-              <label class="text-xs font-semibold text-slate-700">Notes</label>
-              <textarea [(ngModel)]="notes" name="notes" rows="3" placeholder="Enter any additional notes (optional)" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
+            <!-- Address -->
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Address</label>
+              <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Enter full address"
+                class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
+              <p class="mt-1 text-xs text-slate-500 font-normal">Full registered address for this client.</p>
             </div>
-          </div>
-
-          <!-- MODULE 3: CLIENT OPERATION STATE SYSTEM STATUS -->
-          <div class="bg-white border border-slate-100 rounded-lg p-4 sm:p-6 space-y-4 mb-5">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100">3. Client Status</h3>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <!-- Active Card Selection Control -->
-              <div (click)="setStatus('active')" class="rounded-xl py-4 flex items-start gap-3 cursor-pointer select-none transition" >
-                <div [ngClass]="status === 'active' ? 'mt-0.5 w-4 h-4 rounded-full border-4 border-blue-600 bg-white flex items-center justify-center' : 'mt-0.5 w-4 h-4 rounded-full border border-slate-300 bg-white flex items-center justify-center'"></div>
-                <div>
-                  <h4 class="text-xs font-bold text-slate-900">Active</h4>
-                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">This client is active and can access the system.</p>
-                </div>
-              </div>
-
-              <!-- Inactive Card Selection Control -->
-              <div (click)="setStatus('inactive')" class="rounded-xl py-4 flex items-start gap-3 cursor-pointer select-none transition" >
-                <div [ngClass]="status === 'inactive' ? 'mt-0.5 w-4 h-4 rounded-full border-4 border-blue-600 bg-white flex items-center justify-center' : 'mt-0.5 w-4 h-4 rounded-full border border-slate-300 bg-white flex items-center justify-center'"></div>
-                <div>
-                  <h4 class="text-xs font-bold text-slate-900">Inactive</h4>
-                  <p class="text-[11px] text-slate-500 font-medium mt-0.5">This client is inactive and cannot access the system.</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </form>
-
-        <!-- RIGHT HELP & VALIDATION PANEL MODULE (4 Columns) -->
-        <div class="lg:col-span-4 space-y-5">
-
-          <!-- Context Help Box Component -->
-          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-3">
-            <div class="flex items-center gap-2.5 text-blue-600">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-              <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">About Clients</h4>
-            </div>
-            <p class="text-xs font-medium text-slate-500 leading-relaxed">
-              Add a new client to your system. You can configure access settings, notifications and other preferences after the client is created.
-            </p>
-          </div>
-
-          <!-- Live Form Validation Trackers Checklist -->
-          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-4">
-            <h4 class="text-[13px] font-bold text-slate-400 tracking-wider text-slate-900"><span class="text-red-500">*</span> Required Fields</h4>
-            <ul class="space-y-2.5 text-xs font-semibold" [ngClass]="!submitted ? 'text-slate-500' : 'text-slate-500'">
-              <li [ngClass]="(submitted && !clientName) ? 'text-rose-500' : (submitted && clientName ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
-                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !clientName) ? 'bg-rose-500' : (submitted && clientName ? 'bg-emerald-500' : 'bg-slate-600')"></span>
-                <span>Client Name</span>
-              </li>
-              <li [ngClass]="(submitted && !email) ? 'text-rose-500' : (submitted && email ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
-                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !email) ? 'bg-rose-500' : (submitted && email ? 'bg-emerald-500' : 'bg-slate-600')"></span>
-                <span>Email</span>
-              </li>
-              <li [ngClass]="(submitted && !region) ? 'text-rose-500' : (submitted && region ? 'text-emerald-600' : 'text-slate-500')" class="flex items-center gap-2.5 transition-colors duration-150">
-                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="(submitted && !region) ? 'bg-rose-500' : (submitted && region ? 'bg-emerald-500' : 'bg-slate-600')"></span>
-                <span>Region</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Future Procedures Info List -->
-          <div class="bg-white border border-slate-100 rounded-lg p-5 space-y-3">
-            <div class="flex items-center gap-2.5 text-blue-600">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-up-icon lucide-square-arrow-up"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
-              <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">What's Next?</h4>
-            </div>
-            <p class="text-[11px] font-medium text-slate-600 tracking-wide">After saving, you can:</p>
-            <ul class="space-y-2 text-xs font-medium text-slate-600">
-              <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-slate-600" ></span>                
-                <span>Add keys</span>
-              </li>
-              <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-slate-600" ></span>                                
-                <span>Add Site
-                </span>
-              </li>
-              
-            </ul>
           </div>
         </div>
-      </div>
 
+        <!-- MODULE 2: ADDITIONAL DETAILS -->
+        <div class="bg-white shadow-xs rounded-md p-5 sm:p-6">
+          <h2 class="text-base font-bold text-slate-900 mb-5 border-b border-slate-200 pb-1">Additional Details</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-5">
+            <!-- Industry -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Industry</label>
+              <app-rich-select [options]="industries" [(value)]="industry" placeholder="Select industry"
+                panelWidth="wide" class="w-full"></app-rich-select>
+              <p class="mt-1 text-xs text-slate-500 font-normal">Primary industry this client operates in.</p>
+            </div>
+            <!-- VAT / Tax Number -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">VAT / Tax Number</label>
+              <input type="text" [(ngModel)]="vatNumber" name="vatNumber" placeholder="Enter VAT or tax number"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Tax identification number for invoicing.</p>
+            </div>
+            <!-- Registration Number -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Registration Number</label>
+              <input type="text" [(ngModel)]="registrationNumber" name="registrationNumber"
+                placeholder="Enter registration number"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Company registration number.</p>
+            </div>
+            <!-- Contact Person -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Contact Person</label>
+              <input type="text" [(ngModel)]="contactPerson" name="contactPerson"
+                placeholder="Enter contact person name"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Primary point of contact for this client.</p>
+            </div>
+            <!-- Designation -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Designation</label>
+              <input type="text" [(ngModel)]="designation" name="designation" placeholder="Enter designation"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Contact person's role or designation.</p>
+            </div>
+            <!-- Contact Email -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Contact Email</label>
+              <input type="email" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Enter contact email"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <p class="mt-1 text-xs text-slate-500 font-normal">Direct email for the contact person.</p>
+            </div>
+            <!-- Notes -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-900 mb-1.5">Notes <span
+                  class="text-slate-400 font-semibold">(Optional)</span></label>
+              <textarea [(ngModel)]="notes" name="notes" rows="3" placeholder="Enter any additional notes (optional)"
+                class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
+              <p class="mt-1 text-xs text-slate-500 font-normal">Any other relevant notes about this client.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 3: CLIENT STATUS -->
+        <div class="bg-white shadow-xs rounded-md p-5 sm:p-6">
+          <h2 class="text-base font-bold text-slate-900 mb-5 border-b border-slate-200 pb-1">Client Status</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Active -->
+            <div (click)="setStatus('active')"
+              class="border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition"
+              [ngClass]="status === 'active' ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-slate-300'">
+              <span class="flex-shrink-0 w-5 h-5 rounded-full"
+                [ngClass]="status === 'active' ? 'bg-blue-600' : 'bg-slate-300'"></span>
+              <div>
+                <h4 class="text-sm font-semibold text-slate-900">Active</h4>
+                <p class="text-xs text-slate-500">This client is active and can access the system.</p>
+              </div>
+            </div>
+            <!-- Inactive -->
+            <div (click)="setStatus('inactive')"
+              class="border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition"
+              [ngClass]="status === 'inactive' ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-slate-300'">
+              <span class="flex-shrink-0 w-5 h-5 rounded-full"
+                [ngClass]="status === 'inactive' ? 'bg-blue-600' : 'bg-slate-300'"></span>
+              <div>
+                <h4 class="text-sm font-semibold text-slate-900">Inactive</h4>
+                <p class="text-xs text-slate-500">This client is inactive and cannot access the system.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-8">
+          <button type="button" (click)="cancel()"
+            class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+            Cancel
+          </button>
+          <button type="button" (click)="onSubmit()" [disabled]="loading"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
+            {{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Update Client' : 'Save Client') }}
+          </button>
+        </div>
+      </form>
+
+      <!-- RIGHT / SIDEBAR -->
+      <div class="space-y-4 bg-white rounded-md shadow-xs p-5">
+
+        <!-- About Clients -->
+        <div class="rounded-md border border-slate-200  p-5">
+          <div class="flex items-center gap-2.5 text-blue-600">
+            <div class="flex h-6 w-6 items-center justify-center ">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7.00006 9.33334V6.99982M7.00006 4.6663H7.00589M12.8339 6.99982C12.8339 10.2217 10.222 12.8336 7.00006 12.8336C3.77814 12.8336 1.16626 10.2217 1.16626 6.99982C1.16626 3.7779 3.77814 1.16602 7.00006 1.16602C10.222 1.16602 12.8339 3.7779 12.8339 6.99982Z"
+                  stroke="white" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">About Clients</h4>
+          </div>
+          <p class="mt-3 text-xs font-medium text-slate-500 leading-relaxed">
+            Add a new client to your system. You can configure access settings, notifications and other preferences
+            after the client is created.
+          </p>
+
+        </div>
+
+
+
+        <!-- Important Notes -->
+        <div class="border border-slate-200 rounded-md  p-5">
+          <div class="flex items-center gap-2.5 text-amber-600">
+            <div
+              class="flex h-6 w-6 items-center justify-center rounded-full text-red-500 text-lg font-semibold font-['Inter']">
+              *
+            </div>
+            <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">Required Fields</h4>
+          </div>
+          <ul class="mt-3 space-y-2 text-xs font-medium text-slate-600">
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Client Name</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Email</li>
+            <li class="flex gap-2"><span class="text-slate-500">•</span>Region</li>
+          </ul>
+        </div>
+        <!-- What's Next -->
+        <div class="border border-slate-200 rounded-md   p-5">
+          <div class="flex items-center gap-2.5 text-green-600">
+            <div class="flex h-6 w-6 items-center justify-center ">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <rect x="14" y="14" width="14" height="14" transform="rotate(-180 14 14)"
+                  fill="url(#pattern0_3186_2150)" />
+                <defs>
+                  <pattern id="pattern0_3186_2150" patternContentUnits="objectBoundingBox" width="1" height="1">
+                    <use xlink:href="#image0_3186_2150" transform="scale(0.00195312)" />
+                  </pattern>
+                  <image id="image0_3186_2150" width="512" height="512" preserveAspectRatio="none"
+                    xlink:href="data:image/png;base64,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" />
+                </defs>
+              </svg>
+            </div>
+            <h4 class="text-[13px] font-bold text-slate-900 tracking-wider">What's Next?</h4>
+          </div>
+          <p class="mt-3 text-xs font-medium text-slate-600 tracking-wide">After saving the client, you can:</p>
+          <ol class="mt-3 space-y-2.5 text-xs font-medium text-slate-600">
+            <li class="flex items-center gap-2.5"><span
+                class="flex h-5 w-5 shrink-0 items-center justify-center text-[10px] font-bold text-white">•</span><span>Add
+                sites and storage locations.</span></li>
+            <li class="flex items-center gap-2.5"><span
+                class="flex h-5 w-5 shrink-0 items-center justify-center  text-[10px] font-bold text-white">•</span><span>Configure
+                user access and roles.</span></li>
+            <li class="flex items-center gap-2.5"><span
+                class="flex h-5 w-5 shrink-0 items-center justify-center  text-[10px] font-bold text-white">•</span><span>Assign
+                keys and set up notifications.</span></li>
+          </ol>
+        </div>
+
+      </div>
     </div>
 
   </div>
-
-    <!-- Global Base Platform Navigation Sub Footer -->
-    <footer class="w-full bg-white border-t border-slate-100 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
-      <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
-      <div class="flex items-center gap-4">
-        <a href="#" class="hover:text-slate-600 transition">Privacy Policy</a>
-        <span class="text-slate-200">|</span>
-        <a href="#" class="hover:text-slate-600 transition">Terms of Service</a>
-        <span class="text-slate-200">|</span>
-        <a href="#" class="hover:text-slate-600 transition">Support</a>
-      </div>
-    </footer>
-    
 </div>
