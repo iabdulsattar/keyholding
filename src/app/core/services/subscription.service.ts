@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import {
@@ -27,7 +28,13 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class SubscriptionService {
+  private subscriptionCache = new Map<string, any>();
+
   constructor(private api: ApiService, private auth: AuthService) {}
+
+  private invalidateSubscriptionCache(orgId: string, serviceCode: string): void {
+    this.subscriptionCache.delete(`${orgId}:${serviceCode}`);
+  }
 
   private getAuthHeaders(): HttpHeaders | undefined {
     const token = this.auth.getAccessToken();
@@ -93,12 +100,22 @@ export class SubscriptionService {
       `/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/start`,
       payload,
       headers
-    );
+    ).pipe(tap(() => this.invalidateSubscriptionCache(orgId, serviceCode)));
   }
 
   getSubscription(orgId: string, serviceCode: string): Observable<any> {
+    const cacheKey = `${orgId}:${serviceCode}`;
+    const cached = this.subscriptionCache.get(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
     const headers = this.getAuthHeaders();
-    return this.api.get<any>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}`, headers);
+    return this.api.get<any>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}`, headers).pipe(
+      map((res: any) => {
+        this.subscriptionCache.set(cacheKey, res);
+        return res;
+      })
+    );
   }
 
   getUsage(orgId: string, serviceCode: string): Observable<UsageResponse> {
@@ -116,7 +133,7 @@ export class SubscriptionService {
       `/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/plan`,
       payload,
       headers
-    );
+    ).pipe(tap(() => this.invalidateSubscriptionCache(orgId, serviceCode)));
   }
 
   cancelSubscription(orgId: string, serviceCode: string, payload: CancelSubscriptionRequest, token?: string): Observable<CancelSubscriptionResponse> {
@@ -129,7 +146,7 @@ export class SubscriptionService {
       `/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/cancel`,
       payload,
       headers
-    );
+    ).pipe(tap(() => this.invalidateSubscriptionCache(orgId, serviceCode)));
   }
 
   getSubscriptionHistory(orgId: string, serviceCode?: string): Observable<SubscriptionHistoryResponse> {

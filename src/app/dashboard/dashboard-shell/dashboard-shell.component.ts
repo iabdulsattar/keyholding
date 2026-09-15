@@ -144,6 +144,8 @@ export class DashboardShellComponent implements OnInit {
     badgeClass: string;
   }[] = [];
 
+  officersOnDuty = 0;
+  keysInUse = 0;
   officers: {
     id: string;
     name: string;
@@ -263,106 +265,113 @@ export class DashboardShellComponent implements OnInit {
 
   private applyDashboard(data: any): void {
     const payload = data?.data ?? data ?? {};
-    const totalClients = (payload.totalClients ?? this.orgUsers.length) || 124;
-    const totalSites = payload.totalSites ?? 356;
-    const totalKeys = payload.totalKeys ?? 1248;
-    const keysInStorage = payload.keysInStorage ?? 842;
-    const keysIssued = payload.keysIssued ?? 312;
+
+    const totalClients = payload.totalClients ?? 0;
+    const totalSites = payload.totalSites ?? 0;
+    const totalKeys = payload.totalKeys ?? 0;
+    const keysInStorage = payload.keysInStorage ?? 0;
+    const keysIssued = payload.keysIssued ?? 0;
+    const keysInUse = payload.keysInUse ?? 0;
     this.strategicMetrics = {
       totalClients,
       totalSites,
       totalKeys,
       keysInStorage,
       keysIssued,
-      totalClientsChange: '5%',
-      totalSitesChange: '8%',
-      totalKeysChange: '6%',
-      keysInStorageChange: '4%',
-      keysIssuedChange: '7%',
+      totalClientsChange: '0%',
+      totalSitesChange: '0%',
+      totalKeysChange: '0%',
+      keysInStorageChange: '0%',
+      keysIssuedChange: '0%',
     };
 
+    const overdueKeys = payload.overdueKeys ?? 0;
+    const lostKeys = payload.lostKeys ?? 0;
+    const damagedKeys = payload.damagedKeys ?? 0;
+    const jobsToday = payload.jobsToday ?? 0;
+    const failedJobs = payload.exceptions?.failedJobs ?? payload.failedJobs ?? 0;
     this.alertMetrics = {
-      overdueKeys: payload.overdueKeys ?? 0,
-      lostKeys: payload.lostKeys ?? 0,
-      damagedKeys: payload.damagedKeys ?? 0,
-      jobsToday: payload.jobsToday ?? 0,
-      failedJobs: payload.failedJobs ?? 0,
-      overdueKeysChange: '12%',
+      overdueKeys,
+      lostKeys,
+      damagedKeys,
+      jobsToday,
+      failedJobs,
+      overdueKeysChange: '0%',
       lostKeysChange: '0%',
-      damagedKeysChange: '13%',
-      jobsTodayChange: '16%',
-      failedJobsChange: '33%',
+      damagedKeysChange: '0%',
+      jobsTodayChange: '0%',
+      failedJobsChange: '0%',
     };
 
-    const totalJobs = this.alertMetrics.jobsToday || 48;
-    const completed = 79;
-    const inProgress = 13;
-    const failed = this.alertMetrics.failedJobs || 4;
-    const cancelled = 4;
+    this.keysInUse = keysInUse;
+    this.officersOnDuty = payload.officersOnDuty ?? 0;
+
+    const jobsOverviewPayload = payload.jobsOverview ?? {};
+    const completed = jobsOverviewPayload.completed ?? 0;
+    const inProgress = jobsOverviewPayload.inProgress ?? 0;
+    const cancelled = jobsOverviewPayload.cancelled ?? 0;
+    const overdue = jobsOverviewPayload.overdue ?? 0;
+    const scheduled = jobsOverviewPayload.scheduled ?? 0;
+    const failed = this.alertMetrics.failedJobs;
     this.jobsOverview = {
       completed,
       inProgress,
       failed,
       cancelled,
-      total: totalJobs,
-      completedCount: Math.round(totalJobs * completed / 100),
-      inProgressCount: Math.round(totalJobs * inProgress / 100),
-      failedCount: Math.round(totalJobs * failed / 100),
-      cancelledCount: Math.round(totalJobs * cancelled / 100),
+      total: jobsToday,
+      completedCount: completed,
+      inProgressCount: inProgress,
+      failedCount: failed,
+      cancelledCount: cancelled,
     };
 
     this.jobsChart = {
-      series: [this.jobsOverview.completedCount, this.jobsOverview.inProgressCount, this.jobsOverview.failedCount, this.jobsOverview.cancelledCount],
+      series: [completed, inProgress, failed, cancelled],
       labels: ['Completed', 'In Progress', 'Failed', 'Cancelled'],
       titleText: 'Jobs Overview',
     };
 
+    const pendingApprovals = payload.exceptions?.pendingApprovals ?? 0;
     this.criticalAlerts = [
       {
         title: 'Overdue Keys',
         iconWrap: 'bg-amber-50 text-amber-600',
         icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-        value: String(this.alertMetrics.overdueKeys),
+        value: String(overdueKeys),
         badgeClass: 'bg-amber-100 text-amber-800',
       },
       {
         title: 'Lost Keys',
         iconWrap: 'bg-red-50 text-red-600',
         icon: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-        value: String(this.alertMetrics.lostKeys),
+        value: String(lostKeys),
         badgeClass: 'bg-red-100 text-red-800',
       },
       {
         title: 'Damaged Keys',
         iconWrap: 'bg-purple-50 text-purple-600',
         icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
-        value: String(this.alertMetrics.damagedKeys),
+        value: String(damagedKeys),
         badgeClass: 'bg-purple-100 text-purple-800',
       },
       {
         title: 'Failed Jobs',
         iconWrap: 'bg-rose-50 text-rose-600',
         icon: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
-        value: String(this.alertMetrics.failedJobs),
+        value: String(failedJobs),
         badgeClass: 'bg-rose-100 text-rose-800',
       },
       {
         title: 'Pending Approvals',
         iconWrap: 'bg-blue-50 text-blue-600',
         icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-        value: '5',
+        value: String(pendingApprovals),
         badgeClass: 'bg-blue-100 text-blue-800',
       },
     ];
 
-    const allOfficers: any[] = [
-      ...this.orgUsers,
-      { id: 'o1', firstName: 'James', lastName: 'Carter', email: '' },
-      { id: 'o2', firstName: 'Sarah', lastName: 'Johnson', email: '' },
-      { id: 'o3', firstName: 'Michael', lastName: 'Brown', email: '' },
-      { id: 'o4', firstName: 'David', lastName: 'Wilson', email: '' },
-      { id: 'o5', firstName: 'Emma', lastName: 'Davis', email: '' },
-    ];
+    const apiOfficers: any[] = payload.officers ?? [];
+    const allOfficers: any[] = [...this.orgUsers, ...apiOfficers];
 
     this.officers = (allOfficers.length > 0 ? allOfficers : [
       { id: 'o1', firstName: 'James', lastName: 'Carter', email: '' },
