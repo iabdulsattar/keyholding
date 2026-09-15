@@ -21,10 +21,10 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
       <nav class="text-sm flex flex-wrap items-center gap-1">
         <a href="#" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Management</a>
-        <span class="text-gray-400 mx-1">&gt;</span>
+        <span class="text-slate-400 mx-1">&gt;</span>
         <a [routerLink]="['/storage/locations']" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Locations</a>
-        <span class="text-gray-400 mx-1">&gt;</span>
-        <span class="text-gray-500">{{ location.name }}</span>
+        <span class="text-slate-400 mx-1">&gt;</span>
+        <span class="text-slate-600 text-xs font-medium">{{ location.name }}</span>
       </nav>
       <div class="flex items-center gap-3">
         <a [routerLink]="['/storage/locations/edit', location.id]" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-blue-50">
