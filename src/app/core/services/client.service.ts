@@ -243,6 +243,12 @@ export class ClientService {
     return this.keyVault.reactivateClient(orgId, clientId);
   }
 
+  deleteClient(clientId: string): Observable<any> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of(null);
+    return this.keyVault.deleteClient(orgId, clientId);
+  }
+
   getClientStats(): Observable<any> {
     const orgId = this.getOrgId();
     if (!orgId) return of(null);

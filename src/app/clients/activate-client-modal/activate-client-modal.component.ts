@@ -20,6 +20,7 @@ export class ActivateClientModalComponent {
   submitting = false;
   statusMessage = '';
   statusType: '' | 'success' | 'error' = '';
+  additionalNote = '';
 
   constructor(private clientService: ClientService) {}
 
@@ -42,13 +43,13 @@ export class ActivateClientModalComponent {
       next: () => {
         this.submitting = false;
         this.statusType = 'success';
-        this.statusMessage = `${this.client()?.name || 'Client'} has been activated successfully.`;
+        this.statusMessage = `${this.client()?.name || 'Client'} has been reactivated successfully.`;
         setTimeout(() => this.confirmed.emit(), 900);
       },
       error: (err: any) => {
         this.submitting = false;
         this.statusType = 'error';
-        this.statusMessage = err?.error?.message || err?.message || 'Failed to activate client. Please try again.';
+        this.statusMessage = err?.error?.message || err?.message || 'Failed to reactivate client. Please try again.';
       }
     });
   }
