@@ -15,11 +15,12 @@ import { ToggleContactStatusModalComponent } from '../toggle-contact-status-moda
 import { DeleteEmergencyContactModalComponent } from '../delete-emergency-contact-modal/delete-emergency-contact-modal.component';
 import { ToggleEmergencyContactStatusModalComponent } from '../toggle-emergency-contact-status-modal/toggle-emergency-contact-status-modal.component';
 import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-document-modal.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent, FormatEventTypePipe],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent, FormatEventTypePipe, RichSelectComponent],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -1446,7 +1447,6 @@ viewEmergencyContact(contactId: string): void {
   get headerConfig(): { breadcrumbs: { label: string; link?: string }[]; title: string; showActions: boolean; actions: { label: string; icon: string; class?: string }[] } {
     const clientName = this.client?.name || 'Client Details';
     const baseBreadcrumbs = [
-      { label: 'Client Management', link: '/clients' },
       { label: 'Clients', link: '/clients' },
       { label: clientName }
     ];
