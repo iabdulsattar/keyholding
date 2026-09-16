@@ -648,35 +648,37 @@
           
         </div>
         } @else if (activeTab === 'jobs') {
-         <div class="space-y-6">
-           
-           <!-- Jobs section header -->
-           <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-             <div>
-               <h2 class="text-xl font-bold text-slate-900">Jobs</h2>
-               <p class="text-sm text-slate-500">View and manage all jobs for this client.</p>
-             </div>
-             <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <div class="relative">
-                  <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
-                  <input type="text" placeholder="Search jobs by job ID, site, officer..." [(ngModel)]="jobsSearch" (ngModelChange)="onJobsSearch()" class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
-                </div>
-               <button class="inline-flex items-center justify-center gap-2 border border-slate-300 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 10h12M10 16h4"/></svg>
-                 Filters
-               </button>
-               <button class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-medium shadow-sm">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
-                 Create Job
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-               </button>
-             </div>
-           </div>
+         <div class="space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
+          <div class="relative w-full lg:col-span-3">
+            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" autocomplete="off"
+              placeholder="Search jobs by job ID, site, officer..."
+              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+          </div>
 
+          
+          <div class="lg:col-span-2">  
+            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+          </div>
+
+          <div class="lg:col-span-7 flex">
+          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Add New Jobs
+          </a>
+          </div>
+
+        </div>
+            
           <!-- Stat pills -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+          <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+            <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M13.333 3.33282H14.9995C15.4415 3.33282 15.8653 3.50842 16.1779 3.82101C16.4904 4.1336 16.666 4.55755 16.666 4.99962V16.6672C16.666 17.1093 16.4904 17.5332 16.1779 17.8458C15.8653 18.1584 15.4415 18.334 14.9995 18.334H5.00048C4.5585 18.334 4.13462 18.1584 3.82209 17.8458C3.50956 17.5332 3.33398 17.1093 3.33398 16.6672V4.99962C3.33398 4.55755 3.50956 4.1336 3.82209 3.82101C4.13462 3.50842 4.5585 3.33282 5.00048 3.33282H6.66698M9.99998 9.16662H13.333M9.99998 13.3336H13.333M6.66698 9.16662H6.67532M6.66698 13.3336H6.67532M7.50023 1.66602H12.4997C12.9599 1.66602 13.333 2.03914 13.333 2.49942V4.16622C13.333 4.62649 12.9599 4.99962 12.4997 4.99962H7.50023C7.04004 4.99962 6.66698 4.62649 6.66698 4.16622V2.49942C6.66698 2.03914 7.04004 1.66602 7.50023 1.66602Z" stroke="#0052FF" stroke-width="2" stroke-linecap="round"/>
       </svg>              </div>
@@ -686,8 +688,8 @@
                 <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ totalJobs }}</div>
               </div>
             </div>
-             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
+             <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center shrink-0">
  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M6.66667 1.66602V4.99962M13.3333 1.66602V4.99962M2.5 8.33322H17.5M4.16667 3.33282H15.8333C16.7538 3.33282 17.5 4.07907 17.5 4.99962V16.6672C17.5 17.5878 16.7538 18.334 15.8333 18.334H4.16667C3.24619 18.334 2.5 17.5878 2.5 16.6672V4.99962C2.5 4.07907 3.24619 3.33282 4.16667 3.33282Z" stroke="#6B21A8" stroke-width="2" stroke-linecap="round"/>
       </svg>               </div>
@@ -697,8 +699,8 @@
                  <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsScheduled }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+             <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-full bg-amber-100 text-orange-500 flex items-center justify-center shrink-0">
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 4.99962V10L13.3336 11.6668M18.334 10C18.334 14.6028 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6028 1.66602 10C1.66602 5.39727 5.39727 1.66602 10 1.66602C14.6028 1.66602 18.334 5.39727 18.334 10Z" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
         </svg>               </div>
@@ -708,8 +710,8 @@
                  <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsInProgress }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+             <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16.666 5L7.50023 14.166L3.33398 9.99964" stroke="#15803D" stroke-width="2" stroke-linecap="round"/>
         </svg>               </div>
@@ -719,8 +721,8 @@
                  <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsCompleted }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+             <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-full bg-red-100 text-red-500 flex items-center justify-center shrink-0">
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M10.0003 7.49967V10.833M10.0003 14.1663H10.0087M18.109 14.9999L11.4423 3.33319C11.297 3.0767 11.0862 2.86335 10.8314 2.71492C10.5767 2.56649 10.2872 2.48828 9.99234 2.48828C9.69752 2.48828 9.40797 2.56649 9.15324 2.71492C8.8985 2.86335 8.6877 3.0767 8.54234 3.33319L1.87567 14.9999C1.72874 15.2543 1.6517 15.5431 1.65235 15.837C1.653 16.1308 1.73132 16.4192 1.87938 16.673C2.02744 16.9269 2.23996 17.137 2.49542 17.2822C2.75088 17.4274 3.04018 17.5025 3.33401 17.4999H16.6673C16.9598 17.4996 17.2469 17.4223 17.5001 17.2759C17.7532 17.1295 17.9634 16.9191 18.1094 16.6658C18.2555 16.4125 18.3324 16.1252 18.3323 15.8328C18.3322 15.5404 18.2552 15.2531 18.109 14.9999Z" stroke="#B91C1C" stroke-width="2" stroke-linecap="round"/>
         </svg>               </div>
@@ -730,8 +732,8 @@
                  <div class="text-slate-900 text-xl font-bold font-['Inter'] leading-tight">{{ jobsOverdue }}</div>
                </div>
              </div>
-             <div class="bg-white rounded-md border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+             <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_3370_1373)">
         <path d="M12.5002 7.49982L7.49982 12.5002M7.49982 7.49982L12.5002 12.5002M18.334 10C18.334 14.6028 14.6028 18.334 10 18.334C5.39727 18.334 1.66602 14.6028 1.66602 10C1.66602 5.39727 5.39727 1.66602 10 1.66602C14.6028 1.66602 18.334 5.39727 18.334 10Z" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
@@ -751,7 +753,7 @@
           </div>
 
           <!-- Jobs table -->
-          <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <section class="bg-white rounded-md shadow-xs overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
@@ -766,7 +768,7 @@
                     <th class="px-5 py-3  text-slate-900 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-200">
                   @if (jobsLoading) {
                     <tr>
                       <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading jobs...</td>
@@ -810,8 +812,8 @@
             </div>
 
             <!-- Pagination -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
-              <div class="text-sm text-slate-500">Showing {{ jobsShowingStart }} to {{ jobsShowingEnd }} of {{ jobsTotal }} jobs</div>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-200">
+              <div class="text-xs text-slate-500">Showing <span class="text-slate-900 font-semibold">{{ jobsShowingStart }} to {{ jobsShowingEnd }}</span> of <span class="text-slate-900 font-semibold">{{ jobsTotal }}</span> jobs</div>
               <div class="flex items-center gap-1">
                 <button (click)="jobsPreviousPage()" [disabled]="jobsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
@@ -820,7 +822,7 @@
                   @if (p === '...') {
                     <span class="px-1 text-slate-400 text-sm">...</span>
                   } @else {
-                    <button (click)="jobsGoToPage(p)" [class.bg-blue-600]="jobsPage === p" [class.text-white]="jobsPage === p" [class.border-slate-200]="jobsPage !== p" [class.text-slate-600]="jobsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md border text-sm font-medium hover:bg-slate-50">{{ p  }}</button>
+                    <button (click)="jobsGoToPage(p)" [class.bg-blue-600]="jobsPage === p" [class.text-white]="jobsPage === p" [class.border-slate-200]="jobsPage !== p" [class.text-slate-600]="jobsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md border text-xs font-semibold hover:bg-slate-50">{{ p  }}</button>
                   }
                 }
                 <button (click)="jobsNextPage()" [disabled]="jobsPage >= jobsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">

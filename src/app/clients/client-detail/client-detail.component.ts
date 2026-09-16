@@ -1044,7 +1044,7 @@ viewEmergencyContact(contactId: string): void {
     const map: Record<string, string> = {
       'HIGH': 'text-red-500',
       'MEDIUM': 'text-orange-500',
-      'LOW': 'text-green-500',
+      'LOW': 'bg-green-100 text-green-700',
       'CRITICAL': 'text-rose-600'
     };
     return map[priority] || 'text-slate-500';
