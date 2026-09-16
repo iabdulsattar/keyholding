@@ -929,88 +929,143 @@
            </div>
          </div>
          } @else if (activeTab === 'documents') {
-        <div class="space-y-6">
+        <div class="space-y-4">
           
           <!-- Documents section header -->
-          <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Documents</h2>
-              <p class="text-sm text-slate-500">View and manage all documents related to this client.</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-              <div class="relative">
-                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
-                <input type="text" placeholder="Search documents..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" [(ngModel)]="documentsSearch" (ngModelChange)="onDocumentsSearch()" />
-              </div>
-               <button class="inline-flex items-center justify-center gap-2 border border-slate-200 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 ">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 10h12M10 16h4"/></svg>
-                 Filters
-               </button>
-               <button (click)="uploadDocument()" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-medium ">
+          
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
+          <div class="relative w-full lg:col-span-3">
+            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" autocomplete="off"
+              placeholder="Search jobs by job ID, site, officer..."
+              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+          </div>
+
+          
+          <div class="lg:col-span-2">  
+            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+          </div>
+
+          <div class="lg:col-span-7 flex">
+          <button (click)="uploadDocument()" class="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v13M12 5l-4 4M12 5l4 4M5 19h14"/></svg>
                  Upload Document
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                </button>
-            </div>
+               
           </div>
 
+        </div>
+           
           <!-- Stat pills -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            <div class="bg-white rounded-lg border border-slate-100 p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h1m6 13H7a2 2 0 01-2-2V5a2 2 0 012-2h6.5L18 7.5V19a2 2 0 01-2 2z"/></svg>
+          <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3">
+            <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3370_2883)">
+<path d="M12.8337 1.83301H5.50112C5.01494 1.83301 4.54867 2.02618 4.20489 2.37002C3.8611 2.71387 3.66797 3.18022 3.66797 3.66649V18.3343C3.66797 18.8206 3.8611 19.287 4.20489 19.6308C4.54867 19.9746 5.01494 20.1678 5.50112 20.1678H16.5C16.9862 20.1678 17.4525 19.9746 17.7962 19.6308C18.14 19.287 18.3332 18.8206 18.3332 18.3343V7.33345M12.8337 1.83301C13.1239 1.83254 13.4112 1.88948 13.6793 2.00056C13.9473 2.11164 14.1908 2.27466 14.3956 2.48023L17.6842 5.76949C17.8903 5.97439 18.0538 6.21809 18.1651 6.48653C18.2765 6.75497 18.3336 7.04282 18.3332 7.33345M12.8337 1.83301V6.41671C12.8337 6.65984 12.9303 6.89302 13.1022 7.06494C13.2741 7.23686 13.5072 7.33345 13.7503 7.33345L18.3332 7.33345" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3370_2883">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
               </div>
               <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Total Documents</div>
+                <div class="text-xs text-slate-500 font-medium pb-[2px]">Total Documents</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ totalDocuments }}</div>
+                 <div class="text-xl font-bold text-slate-900 leading-tight">{{ totalDocuments }}</div>
               </div>
             </div>
-            <div class="bg-white rounded-lg border border-slate-100 p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-full bg-red-50 text-red-500 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>
+            <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-md bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                 <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3370_2891)">
+<path d="M12.8337 1.83301H5.50112C5.01494 1.83301 4.54867 2.02618 4.20489 2.37002C3.8611 2.71387 3.66797 3.18022 3.66797 3.66649V18.3343C3.66797 18.8206 3.8611 19.287 4.20489 19.6308C4.54867 19.9746 5.01494 20.1678 5.50112 20.1678H16.5C16.9862 20.1678 17.4525 19.9746 17.7962 19.6308C18.14 19.287 18.3332 18.8206 18.3332 18.3343V7.33345M12.8337 1.83301C13.1239 1.83254 13.4112 1.88948 13.6793 2.00056C13.9473 2.11164 14.1908 2.27466 14.3956 2.48023L17.6842 5.76949C17.8903 5.97439 18.0538 6.21809 18.1651 6.48653C18.2765 6.75497 18.3336 7.04282 18.3332 7.33345M12.8337 1.83301V6.41671C12.8337 6.65984 12.9303 6.89302 13.1022 7.06494C13.2741 7.23686 13.5072 7.33345 13.7503 7.33345L18.3332 7.33345M9.16742 8.25019H7.33427M14.6669 11.9171H7.33427M14.6669 15.5841H7.33427" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3370_2891">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
                </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">PDF Files</div>
+                 <div class="text-xs text-slate-500 font-medium pb-[2px]">PDF Files</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ pdfDocumentCount }}</div>
+                 <div class="text-xl font-bold text-slate-900 leading-tight">{{ pdfDocumentCount }}</div>
               </div>
             </div>
-            <div class="bg-white rounded-lg border border-slate-100 p-4 flex items-center gap-3">
-               <div class="w-9 h-9 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center shrink-0">
-                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/></svg>
+            <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+               <div class="w-9 h-9 rounded-md bg-violet-50 text-purple-500 flex items-center justify-center shrink-0">
+                 <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3370_2899)">
+<path d="M12.8337 1.83301H5.50112C5.01494 1.83301 4.54867 2.02618 4.20489 2.37002C3.8611 2.71387 3.66797 3.18022 3.66797 3.66649V18.3343C3.66797 18.8206 3.8611 19.287 4.20489 19.6308C4.54867 19.9746 5.01494 20.1678 5.50112 20.1678H16.5C16.9862 20.1678 17.4525 19.9746 17.7962 19.6308C18.14 19.287 18.3332 18.8206 18.3332 18.3343V7.33345M12.8337 1.83301C13.1239 1.83254 13.4112 1.88948 13.6793 2.00056C13.9473 2.11164 14.1908 2.27466 14.3956 2.48023L17.6842 5.76949C17.8903 5.97439 18.0538 6.21809 18.1651 6.48653C18.2765 6.75497 18.3336 7.04282 18.3332 7.33345M12.8337 1.83301V6.41671C12.8337 6.65984 12.9303 6.89302 13.1022 7.06494C13.2741 7.23686 13.5072 7.33345 13.7503 7.33345L18.3332 7.33345M7.33427 11.9171H9.16742M12.8337 11.9171H14.6669M7.33427 15.5841H9.16742M12.8337 15.5841H14.6669" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3370_2899">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
                </div>
                <div>
-                 <div class="text-xs text-slate-500 pb-[2px]">Other Files</div>
+                 <div class="text-xs text-slate-500 font-medium pb-[2px]">Other Files</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ otherDocumentCount }}</div>
+                 <div class="text-xl font-bold text-slate-900 leading-tight">{{ otherDocumentCount }}</div>
               </div>
             </div>
-            <div class="bg-white rounded-lg border border-slate-100 p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l4 2"/></svg>
+            <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-md bg-emerald-50 text-green-600 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3370_2907)">
+<path d="M19.4428 14.5667C18.8596 15.9459 17.9475 17.1611 16.786 18.1063C15.6246 19.0515 14.2493 19.6978 12.7804 19.9887C11.3115 20.2796 9.7937 20.2063 8.35967 19.7751C6.92565 19.344 5.61908 18.5681 4.5542 17.5154C3.48932 16.4626 2.69854 15.1651 2.25101 13.7362C1.80348 12.3072 1.71282 10.7905 1.98696 9.3184C2.2611 7.84635 2.89168 6.46386 3.82359 5.2918C4.75549 4.11973 5.96034 3.19378 7.3328 2.5949M19.25 11.0011C19.756 11.0011 20.1713 10.5896 20.1209 10.0863C19.9095 7.98176 18.9769 6.01506 17.481 4.51961C15.9851 3.02415 14.0181 2.09198 11.9134 1.88111C11.4092 1.83069 10.9985 2.24595 10.9985 2.75195V10.0854C10.9985 10.3285 11.095 10.5617 11.267 10.7336C11.4389 10.9055 11.6721 11.0021 11.9152 11.0021L19.25 11.0011Z" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3370_2907">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
               </div>
               <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Total Storage</div>
+                <div class="text-xs text-slate-500 font-medium pb-[2px]">Total Storage</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ formatSize(totalStorageBytes) }}</div>
+                 <div class="text-xl font-bold text-slate-900 leading-tight">{{ formatSize(totalStorageBytes) }}</div>
               </div>
             </div>
-            <div class="bg-white rounded-lg border border-slate-100 p-4 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <div class="bg-white rounded-md shadow-xs p-4 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-md bg-amber-50 text-orange-500 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3370_2915)">
+<path d="M14.6672 17.4176H20.1674M14.6672 1.83301V5.49997M17.4173 14.6674V20.1678M19.2507 11.5486V5.49997C19.2507 5.0137 19.0575 4.54735 18.7137 4.2035C18.3699 3.85966 17.9035 3.66649 17.4173 3.66649H4.58341C4.09716 3.66649 3.63082 3.85966 3.28699 4.2035C2.94316 4.54735 2.75 5.0137 2.75 5.49997V18.3343C2.75 18.8206 2.94316 19.287 3.28699 19.6308C3.63082 19.9746 4.09716 20.1678 4.58341 20.1678H12.3754M2.75 9.16693H19.2507M7.33353 1.83301V5.49997" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3370_2915">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
               </div>
               <div>
-                <div class="text-xs text-slate-500 pb-[2px]">Last Uploaded</div>
+                <div class="text-xs text-slate-500 font-medium pb-[2px]">Last Uploaded</div>
 
-                 <div class="text-lg font-bold text-slate-900 leading-tight">{{ lastUploadedDate }}</div>
-                 <div class="text-[11px] text-slate-400 pt-[2px]">Last upload</div>
+                 <div class="text-xl font-bold text-slate-900 leading-tight">{{ lastUploadedDate }}</div>
+                 
               </div>
             </div>
           </div>
 
           <!-- Documents table -->
-          <section class="bg-white rounded-lg border border-slate-100 overflow-hidden">
+          <section class="bg-white rounded-md shadow-xs overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm min-w-[880px]">
                 <thead>
@@ -1036,11 +1091,11 @@
                     <th class="px-5 py-3 font-semibold whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-200">
                   @for (doc of documentsPaginated; track doc.id) {
                     <tr class="hover:bg-slate-50">
                       <td class="px-5 py-3.5">
-                        <span class="inline-flex items-center gap-2 font-medium text-slate-800">
+                        <span class="inline-flex items-center gap-2 font-medium text-slate-500 text-sm">
                           <!-- <i class="fa-solid fa-file-lines shrink-0" [class]="'w-4 h-4 ' + getDocumentColor(doc.documentType || doc.fileType)"></i> -->
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-icon lucide-file"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></svg> 
                           {{ doc.name || doc.fileName }}
@@ -1050,22 +1105,23 @@
                         <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md {{ getCategoryColor(doc.category) }}">{{ doc.category || '-' }}</span>
                       </td>
                       <td class="px-5 py-3.5">
-                        <span class="inline-flex items-center gap-1.5 text-slate-600">
+                        <span class="inline-flex items-center gap-1.5 text-slate-600 text-sm">
                           <!-- <i class="fa-solid fa-file shrink-0" [class]="'w-3.5 h-3.5 ' + getDocumentColor(doc.documentType || doc.fileType).split(' ')[0]"></i> -->
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-icon lucide-file"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></svg> 
                           {{ doc.documentType || doc.fileType || '-' }}
                         </span>
                       </td>
-                      <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">{{ formatSize(doc.sizeBytes) }}</td>
-                      <td class="px-5 py-3.5 text-slate-700 whitespace-nowrap">{{ doc.uploadedByUserName || '-' }}</td>
-                       <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">{{ doc.createdAt | date:'dd MMM yyyy, h:mm a' }}</td>
+                      <td class="px-5 py-3.5 text-slate-600 text-sm whitespace-nowrap">{{ formatSize(doc.sizeBytes) }}</td>
+                      <td class="px-5 py-3.5 text-slate-600 text-sm whitespace-nowrap">{{ doc.uploadedByUserName || '-' }}</td>
+                       <td class="px-5 py-3.5 text-slate-600 text-sm whitespace-nowrap">{{ doc.createdAt | date:'dd MMM yyyy, h:mm a' }}</td>
                       <td class="px-5 py-3.5 text-right">
-                         <div class="flex items-center justify-end gap-3 text-slate-400">
+                         <div class="flex items-center justify-end gap-3 text-slate-600">
                            <button (click)="viewDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="View document">
                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                            </button>
                            <button (click)="downloadDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="Download document">
                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                             
                            </button>
                             <button class="hover:text-rose-600 cursor-pointer">
                               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
@@ -1081,10 +1137,8 @@
               <!-- Pagination -->
               <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
                 <div class="flex items-center gap-3">
-                  <div class="text-sm text-slate-500">Showing {{ documentsShowingStart }} to {{ documentsShowingEnd }} of {{ totalDocuments }} documents</div>
-                  <select [(ngModel)]="documentsRowsPerPage" (ngModelChange)="onDocumentsRowsPerPageChange($event)" class="text-sm border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option *ngFor="let size of documentsRowsPerPageOptions" [value]="size">{{ size }} / page</option>
-                  </select>
+                  <div class="text-sm text-slate-600">Showing {{ documentsShowingStart }} to {{ documentsShowingEnd }} of {{ totalDocuments }} documents</div>
+                  
                 </div>
                <div class="flex items-center gap-1">
                   <button (click)="documentsPreviousPage()" [disabled]="documentsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
@@ -1094,7 +1148,7 @@
                     @if (p === '...') {
                       <span class="px-1 text-slate-400 text-sm">...</span>
                     } @else {
-                      <button (click)="documentsGoToPage(p)" [class.bg-white]="documentsPage === p" [class.text-blue-500]="documentsPage === p" [class.border-blue-500]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                      <button (click)="documentsGoToPage(p)" [class.bg-white]="documentsPage === p" [class.text-blue-700]="documentsPage === p" [class.border-blue-500]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold border">{{ p }}</button>
                     }
                   }
                   <button (click)="documentsNextPage()" [disabled]="documentsPage === documentsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
