@@ -3,38 +3,16 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord } from '../../core/services/client.service';
-import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 @Component({
   selector: 'app-all-sites',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './all-sites.component.html',
   styles: [`
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-    .filter-select {
-      background-color: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
-      padding: 0.6rem 0.9rem;
-      font-size: 0.875rem;
-      color: #334155;
-      outline: none;
-    }
-    .filter-select:focus { box-shadow: 0 0 0 2px rgba(47,75,245,0.25); border-color: #2f4bf5; }
     .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
-    .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle;  }
-    .status-badge {
-      display: inline-block; font-size: 0.75rem; font-weight: 600;
-      padding: 0.25rem 0.7rem; border-radius: 0.5rem;
-    }
-    .tag {
-      display: inline-block; font-size: 0.72rem; font-weight: 500;
-      padding: 0.15rem 0.6rem; border-radius: 0.4rem; margin-top: 0.15rem;
-    }
+    .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle; }
   `]
 })
 export class AllSitesComponent implements OnInit {
@@ -64,11 +42,6 @@ export class AllSitesComponent implements OnInit {
     { value: 'all', label: 'All Statuses' },
     { value: 'active', label: 'Active' },
     { value: 'inactive', label: 'Inactive' },
-  ];
-
-  breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Sites' },
-    { label: 'All Sites' }
   ];
 
   constructor(private clientService: ClientService) {}
@@ -134,11 +107,24 @@ export class AllSitesComponent implements OnInit {
   statusBadge(status: string): string {
     switch (status) {
       case 'ACTIVE':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span>Active</span></span>`;
+        return 'bg-emerald-50 text-emerald-700';
       case 'INACTIVE':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-rose-50 text-rose-600 border border-rose-100"><span>Inactive</span></span>`;
+        return 'bg-rose-50 text-rose-600';
       default:
-        return status;
+        return '';
     }
+  }
+
+  siteTypeBadgeClass(type: string): string {
+    const map: Record<string, string> = {
+      'Office': 'bg-blue-50 text-blue-700',
+      'Warehouse': 'bg-purple-50 text-purple-700',
+      'Retail': 'bg-amber-50 text-amber-700',
+      'Distribution Centre': 'bg-emerald-50 text-emerald-700',
+      'Data Centre': 'bg-cyan-50 text-cyan-700',
+      'Construction Site': 'bg-slate-100 text-slate-600',
+      'Storage': 'bg-pink-50 text-pink-700',
+    };
+    return map[type] || 'bg-slate-100 text-slate-600';
   }
 }

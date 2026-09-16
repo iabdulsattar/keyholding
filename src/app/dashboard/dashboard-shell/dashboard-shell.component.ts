@@ -7,6 +7,7 @@ import { ProfileResponse } from '../../core/models/auth.models';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { SubscriptionService } from '../../core/services/subscription.service';
+import { formatDateUTC } from '../../core/utils/date.utils';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
 
@@ -197,10 +198,7 @@ export class DashboardShellComponent implements OnInit {
   }
 
   private formatDate(iso: string): string {
-    if (!iso) return '-';
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return '-';
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return formatDateUTC(iso);
   }
 
   private daysUntil(iso: string): number {
