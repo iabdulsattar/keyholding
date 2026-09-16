@@ -406,18 +406,42 @@
       </div>
       }
           @else if (activeTab === 'keys') {
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 mb-4">
+          <div class="relative w-full lg:col-span-3">
+            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" autocomplete="off"
+              placeholder="Search jobs by job ID, site, officer..."
+              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+          </div>
+
+          
+          <div class="lg:col-span-2">  
+            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+          </div>
+
+          <div class="lg:col-span-7 flex">
+          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Add New Keys
+          </a>
+          </div>
+
+        </div>
+        
           <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
             <div class="xl:col-span-12 space-y-4">
-             <div class="bg-white rounded-lg border border-slate-100 overflow-hidden ">
+             <div class="bg-white rounded-md shadow-xs overflow-hidden ">
            
            <div class="overflow-x-auto custom-scrollbar">
             <table class="w-full text-left border-collapse whitespace-nowrap">
               <thead>
-                <tr class=" border-b border-slate-100 text-xs font-bold text-slate-900 tracking-wider">
-                  <th class="py-3.5 pl-5 pr-3 w-10">
-                    <input type="checkbox" id="selectAllRows" (change)="toggleSelectAllRows($event.target)" class="accent-blue-600 rounded cursor-pointer">
-                  </th>
-                  <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key ID</th>
+                <tr class=" border-b border-slate-200 text-xs font-bold text-slate-900 tracking-wider">
+                  
+                  <th class="py-3.5 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key ID</th>
                   <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key Name</th>
                   <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Key Type</th>
                   <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site</th>
@@ -425,14 +449,13 @@
                   <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase hidden sm:table-cell">Storage Location</th>
                   <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase hidden md:table-cell">Assigned To</th>
                   <th class="py-3.5 px-3 text-slate-900 text-xs font-bold font-['Inter'] uppercase hidden lg:table-cell">Last Movement</th>
-                  <th class="py-3.5 pr-5 pl-3 text-center w-24 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Actions</th>
+                  <th class="py-3.5 pr-5 pl-3 text-right w-24 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Actions</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100 text-sm">
+              <tbody class="divide-y divide-slate-200 text-sm">
                 @for (key of keysPaginated; track key.id) {
                 <tr class="hover:bg-slate-50/70 transition duration-150">
-                  <td class="py-3.5 pl-5 pr-3"><input type="checkbox" class="row-checkbox accent-blue-600 rounded cursor-pointer" (change)="onRowCheckboxChange($event)"></td>
-                  <td class="py-3.5 px-3  text-xs font-semibold font-['Inter'] cursor-pointer flex items-center gap-2">
+                  <td class="py-3.5 px-4  text-xs font-semibold font-['Inter'] cursor-pointer gap-2">
                     <span class="text-blue-600">{{ key.keyCode }}</span>                    
                   </td>
                   <td class="py-3.5 px-3">
@@ -441,17 +464,17 @@
                     </div>
                   </td>
                   <td class="py-3.5 px-3">
-                    <span [class]="'px-2 py-0.5 text-[11px] font-medium rounded-md bg-' + key.typeColor + '-50 text-' + key.typeColor + '-700 border border-' + key.typeColor + '-100'">{{ key.type }}</span>
+                    <span [class]="'px-2 py-0.5 text-xs font-semibold rounded-md bg-' + key.typeColor + '-50 text-' + key.typeColor + '-700 border-' + key.typeColor + '-100'">{{ key.type }}</span>
                   </td>
                   <td class="py-3.5 px-3 text-slate-600 text-xs font-normal font-['Inter']">{{ key.siteName }}</td>
                   <td class="py-3.5 px-3">
-                    <span [class]="'px-2 py-0.5 text-[11px] font-bold rounded ' + (key.status === 'In Use' || key.status === 'Overdue' || key.status === 'Lost' ? 'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700' : 'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700 border border-' + key.statusColor + '-100')">{{ key.status }}</span>
+                    <span [class]="'px-2 py-0.5 text-xs font-semibold rounded-md ' + (key.status === 'In Use' || key.status === 'Overdue' || key.status === 'Lost' ? 'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700' : 'bg-' + key.statusColor + '-50 text-' + key.statusColor + '-700 border-' + key.statusColor + '-100')">{{ key.status }}</span>
                   </td>
-                  <td class="py-3.5 px-3 text-slate-500 font-normal hidden sm:table-cell">
+                  <td class="py-3.5 px-3 text-slate-600 font-normal hidden sm:table-cell">
                     @if (key.storageLocation !== '—') {
                       {{ key.storageLocation }}<br>
                       @if (key.storageDetail) {
-                        <span class="text-[10px] text-xs font-normal font-['Inter'] line-clamp-1">{{ key.storageDetail }}</span>
+                        <span class=" text-xs font-normal font-['Inter'] line-clamp-1">{{ key.storageDetail }}</span>
                       }
                     } @else {
                       <span class="text-slate-400">—</span>
@@ -460,7 +483,7 @@
                   <td class="py-3.5 px-3 text-slate-900 text-xs font-medium font-['Inter'] line-clamp-1 hidden md:table-cell ">{{ key.assignedTo }}</td>
                   <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime }}</span></td>
                   <td class="py-3.5 pr-5 pl-3 text-center">
-                    <div class="flex items-center justify-center gap-2 text-slate-400">
+                    <div class="flex items-center justify-end gap-2 text-slate-400">
                       <button (click)="triggerRowAction('View', key.id)" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       </button>
@@ -478,24 +501,24 @@
             </table>
            </div>
 
-          <div class="bg-white border-t border-slate-100 px-6 py-4 flex items-center justify-between">
-            <p class="text-xs text-slate-500">Showing <span class="text-slate-800 font-semibold">{{ keysShowingStart }}</span> to <span class="text-slate-800 font-semibold">{{ keysShowingEnd }}</span> of <span class="text-slate-800 font-semibold">{{ filteredKeys.length }}</span> keys</p>
+          <div class="bg-white border-t border-slate-200 px-4 py-4 flex items-center justify-between">
+            <p class="text-xs text-slate-600">Showing <span class="text-slate-600 font-bold">{{ keysShowingStart }}</span> to <span class="text-slate-600 font-bold">{{ keysShowingEnd }}</span> of <span class="text-slate-800 font-semibold">{{ filteredKeys.length }}</span> keys</p>
                <div class="flex items-center gap-1">
-                 <button (click)="keysPreviousPage()" [disabled]="keysPage === 1" class="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Previous page">
+                 <button (click)="keysPreviousPage()" [disabled]="keysPage === 1" class="p-1.5 rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Previous page">
                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-7"/></svg>
                  </button>
                   @for (p of keysVisiblePages; track p) {
                     @if (p === '...') {
                       <span class="px-1 text-slate-400 text-sm">...</span>
                     } @else {
-                      <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-500 text-blue-500' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-lg border transition">{{ p }}</button>
+                      <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-600 text-blue-600' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-md border transition">{{ p }}</button>
                     }
                   }
-                  <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Next page">
+                  <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Next page">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                </button>
                <div class="relative ml-2">
-                 <select [(ngModel)]="keysRowsPerPage" (ngModelChange)="onKeysRowsPerPageChange($event)" class="bg-white border border-slate-200 text-slate-600 font-semibold rounded-lg pl-2.5 pr-7 py-1.5 text-xs appearance-none focus:outline-none cursor-pointer transition hover:border-slate-300">
+                 <select [(ngModel)]="keysRowsPerPage" (ngModelChange)="onKeysRowsPerPageChange($event)" class="bg-white border border-slate-200 text-slate-600 font-semibold rounded-md pl-2.5 pr-7 py-1.5 text-xs appearance-none focus:outline-none cursor-pointer transition hover:border-slate-300">
                    <option *ngFor="let size of keysRowsPerPageOptions" [value]="size">{{ size }} / page</option>
                  </select>
                  <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -535,6 +558,7 @@
           </div>
 
         </div>
+
        <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
          <div class="xl:col-span-12 space-y-4">
           <!-- Sites section header -->
@@ -546,7 +570,6 @@
                <table class="w-full text-left border-collapse whitespace-nowrap">
                  <thead>
                    <tr class=" border-b border-slate-200 text-xs font-bold text-slate-900 tracking-wider">
-                     <th class="py-3 px-4 w-4"><input type="checkbox" class="rounded text-blue-600"></th>
                      <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site Code</th>
                      <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site Name</th>
                      <th class="py-3 px-4 text-slate-900 text-xs font-bold font-['Inter'] uppercase">Site Type</th>
@@ -560,7 +583,6 @@
                  <tbody class="divide-y divide-slate-200 text-sm">
                    @for (site of sitesPaginated; track site.id) {
                    <tr class="hover:bg-slate-50/70 transition duration-150">
-                     <td class="py-3.5 px-4"><input type="checkbox" class="rounded text-blue-600"></td>
                       <td class="py-3.5 px-4 text-slate-500 text-xs font-medium font-['Inter']">{{ site.siteCode }}</td>
                       <td class="py-3.5 px-4 text-blue-600 text-xs font-semibold font-['Inter'] ">{{ site.name }}</td>
                       <td class="py-3.5 px-4">
