@@ -108,15 +108,15 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
       createdDate: '2025-04-14T10:30:00',
       updatedBy: 'Faiza Ahmed',
       updatedDate: '2025-04-18T14:15:00',
-      totalCabinets: 6,
-      totalHooks: 248,
+      totalCabinets: 3,
+      totalHooks: 130,
       keysInStorage: 186,
       availableHooks: 62,
       outOfOrderHooks: 0,
       cabinets: [
-        { id: '1', code: 'CAB-A01', name: 'Cabinet A', type: 'Steel Key Cabinet', capacity: 50, hooks: 50, keysInStorage: 41 },
-        { id: '2', code: 'CAB-A02', name: 'Cabinet B', type: 'Steel Key Cabinet', capacity: 50, hooks: 50, keysInStorage: 37 },
-        { id: '3', code: 'CAB-A03', name: 'Cabinet C', type: 'Electronic Key Cabinet', capacity: 60, hooks: 60, keysInStorage: 49 },
+        { id: '1', cabinetCode: 'CAB-0001', name: 'Top Cabinet', cabinetType: 'Standard', numberOfHooks: 20, responsiblePerson: 'Faiza Kareem', keysInStorage: 16, status: 'ACTIVE', updatedBy: 'Sardar Aadil', updatedAt: '2026-09-10T17:48:04.479446Z' },
+        { id: '2', cabinetCode: 'CAB-A02', name: 'Cabinet B', cabinetType: 'Steel Key Cabinet', numberOfHooks: 50, responsiblePerson: 'John Smith', keysInStorage: 37, status: 'ACTIVE', updatedBy: 'Faiza Ahmed', updatedAt: '2026-09-08T10:12:00.000000Z' },
+        { id: '3', cabinetCode: 'CAB-A03', name: 'Cabinet C', cabinetType: 'Electronic Key Cabinet', numberOfHooks: 60, responsiblePerson: 'Sara Lee', keysInStorage: 49, status: 'INACTIVE', updatedBy: 'Sardar Aadil', updatedAt: '2026-09-01T14:30:00.000000Z' },
       ],
     };
   }
@@ -158,6 +158,20 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
     if (s === 'INACTIVE') return 'bg-rose-500';
     if (s.includes('MAINTENANCE') || s === 'UNDER MAINTENANCE') return 'bg-amber-500';
     return 'bg-slate-400';
+  }
+
+  cabinetTotalHooks(cabinet: any): number {
+    return cabinet.numberOfHooks ?? cabinet.hooks ?? cabinet.capacity ?? 0;
+  }
+
+  cabinetUsedHooks(cabinet: any): number {
+    return cabinet.keysInStorage ?? 0;
+  }
+
+  cabinetAvailableHooks(cabinet: any): number {
+    const total = this.cabinetTotalHooks(cabinet);
+    const used = cabinet.usedHooks ?? 0;
+    return Math.max(0, total - used);
   }
 
   get cabinetsPaginated(): any[] {

@@ -193,19 +193,21 @@ showDeactivateClientModal = false;
 
    constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private keyVault: KeyVaultService) {}
 
-  ngOnInit(): void {
-    this.clientId = this.route.snapshot.paramMap.get('id') || '';
-    this.loadClient();
-    this.loadKeys();
-    this.loadSites();
-    this.loadClientStats();
-    this.loadSiteStats();
-    this.loadDocuments();
-    this.loadDocumentStats();
-    this.loadContacts();
-    this.loadEmergencyContacts();
-    this.loadActivities();
-  }
+   ngOnInit(): void {
+     this.clientId = this.route.snapshot.paramMap.get('id') || '';
+     this.loadClient();
+     this.loadKeys();
+     this.loadSites();
+     this.loadClientStats();
+     this.loadSiteStats();
+     this.loadDocuments();
+     this.loadDocumentStats();
+     this.loadContacts();
+     this.loadEmergencyContacts();
+     this.loadActivities();
+     this.loadJobStats();
+     this.loadJobs();
+   }
 
   private loadDocuments(): void {
     if (!this.clientId) return;

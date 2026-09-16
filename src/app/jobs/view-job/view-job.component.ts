@@ -243,8 +243,28 @@ export class ViewJobComponent implements OnInit {
     return this.job?.requiredKeys?.keys || [];
   }
 
+  selectedChecklistItem: any = null;
+
   get checklistItems(): any[] {
     return this.job?.checklist?.items || [];
+  }
+
+  openImageModal(item: any): void {
+    this.selectedChecklistItem = item;
+  }
+
+  closeImageModal(): void {
+    this.selectedChecklistItem = null;
+  }
+
+  hasImages(item: any): boolean {
+    const count = typeof item.images === 'number' ? item.images : parseInt(item.images, 10);
+    return !isNaN(count) && count > 0;
+  }
+
+  getImageCount(item: any): number {
+    const count = typeof item.images === 'number' ? item.images : parseInt(item.images, 10);
+    return isNaN(count) ? 0 : count;
   }
 
   get escalationContacts(): { completion: any[]; notCompleted: any[] } {

@@ -294,23 +294,20 @@
     <div class="bg-white rounded-md  p-6">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <h3 class="text-lg font-bold text-gray-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
-        <button class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          Add Cabinet
-        </button>
+      
       </div>
 
       <!-- Desktop table -->
       <div class="hidden overflow-x-auto lg:block">
-        <table class="w-full min-w-[820px] text-sm">
+        <table class="w-full min-w-[1300px] text-sm">
           <thead>
             <tr class="text-left text-gray-500 border-b border-gray-100">
               <th class="font-semibold pb-3 pr-4">Cabinet Code</th>
               <th class="font-semibold pb-3 pr-4">Cabinet Name</th>
               <th class="font-semibold pb-3 pr-4">Cabinet Type</th>
-              <th class="font-semibold pb-3 pr-4">Capacity (Hooks)</th>
-              <th class="font-semibold pb-3 pr-4">Hooks / Slots</th>
-              <th class="font-semibold pb-3 pr-4">Keys in Storage</th>
+                <th class="font-semibold pb-3 pr-4">Capacity(Hooks)</th>
+                <th class="font-semibold pb-3 pr-4">Available Hooks</th>
+                <th class="font-semibold pb-3 pr-4">Keys in Storage</th>
               <th class="font-semibold pb-3 pr-4">Status</th>
               <th class="font-semibold pb-3">Actions</th>
             </tr>
@@ -318,22 +315,22 @@
           <tbody>
             <tr *ngFor="let cabinet of cabinetsPaginated"
                 class="hover:bg-gray-50/60">
-              <td class="py-4 pr-4"><a [routerLink]="['/storage/locations/cabinets/view', cabinet.id]" class="text-blue-600 font-semibold hover:underline">{{ cabinet.code }}</a></td>
-              <td class="py-4 pr-4 text-gray-800">{{ cabinet.name }}</td>
-              <td class="py-4 pr-4 text-gray-600">{{ cabinet.type }}</td>
-              <td class="py-4 pr-4 text-gray-800">{{ cabinet.capacity }}</td>
-              <td class="py-4 pr-4 text-gray-800">{{ cabinet.hooks }}</td>
-              <td class="py-4 pr-4 text-gray-800">{{ cabinet.keysInStorage }}</td>
+              <td class="py-4 pr-4"><a [routerLink]="['/storage/locations/cabinets/view', cabinet.id]" class="text-blue-600 font-semibold hover:underline">{{ cabinet.cabinetCode ?? cabinet.code ?? '—' }}</a></td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinet.name ?? '—' }}</td>
+              <td class="py-4 pr-4 text-gray-600">{{ cabinet.cabinetType ?? cabinet.type ?? '—' }}</td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinetTotalHooks(cabinet) }}</td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinetAvailableHooks(cabinet) }}</td>
+              <td class="py-4 pr-4 text-gray-800">{{ cabinetUsedHooks(cabinet) }}</td>
               <td class="py-4 pr-4">
-                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Active
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" [ngClass]="getStatusClass(cabinet.status)">
+                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ cabinet.status ?? 'Inactive' }}
                 </span>
               </td>
               <td class="py-4">
                 <div class="flex items-center justify-end gap-2">
                   <button class="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
                   <button class="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11.5a.5.5 0 1 0 0 1 .5.5.5.5 0 0 0 0-1v0a.5.5 0 0 0-.5.5h0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v.01M12 11v4"/></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11.5a.5.5 0 1 0 0 1 .5.5.5 0 0 0 0-1v0a.5.5 0 0 0-.5.5h0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v.01M12 11v4"/></svg>
                   </button>
                 </div>
               </td>
@@ -347,18 +344,21 @@
         <div class="p-4">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-medium text-blue-600">{{ cabinet.code }}</div>
-              <div class="text-sm text-slate-700">{{ cabinet.name }}</div>
+              <div class="font-medium text-blue-600">{{ cabinet.cabinetCode ?? cabinet.code ?? '—' }}</div>
+              <div class="text-sm text-slate-700">{{ cabinet.name ?? '—' }}</div>
             </div>
-            <span class="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Active
+            <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium" [ngClass]="getStatusClass(cabinet.status)">
+              <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ cabinet.status ?? 'Inactive' }}
             </span>
           </div>
           <div class="mt-3 grid grid-cols-2 gap-y-2 text-xs">
-            <div><span class="text-slate-400">Type:</span> <span class="text-slate-600">{{ cabinet.type }}</span></div>
-            <div><span class="text-slate-400">Capacity:</span> <span class="text-slate-600">{{ cabinet.capacity }}</span></div>
-            <div><span class="text-slate-400">Hooks/Slots:</span> <span class="text-slate-600">{{ cabinet.hooks }}</span></div>
-            <div><span class="text-slate-400">Keys:</span> <span class="text-slate-600">{{ cabinet.keysInStorage }}</span></div>
+            <div><span class="text-slate-400">Type:</span> <span class="text-slate-600">{{ cabinet.cabinetType ?? cabinet.type ?? '—' }}</span></div>
+            <div><span class="text-slate-400">Hooks:</span> <span class="text-slate-600">{{ cabinet.numberOfHooks ?? cabinet.hooks ?? cabinet.capacity ?? 0 }}</span></div>
+            <div><span class="text-slate-400">Available:</span> <span class="text-slate-600">{{ cabinetAvailableHooks(cabinet) }}</span></div>
+            <div><span class="text-slate-400">Responsib.:</span> <span class="text-slate-600">{{ cabinet.responsiblePerson ?? '—' }}</span></div>
+            <div><span class="text-slate-400">Keys:</span> <span class="text-slate-600">{{ cabinet.keysInStorage ?? '—' }}</span></div>
+            <div><span class="text-slate-400">Updated by:</span> <span class="text-slate-600">{{ cabinet.updatedBy ?? cabinet.updatedByUserName ?? '—' }}</span></div>
+            <div><span class="text-slate-400">Updated:</span> <span class="text-slate-600">{{ formatDate(cabinet.updatedAt ?? cabinet.updatedDate) }}</span></div>
           </div>
           <button class="mt-3 w-full rounded-lg border border-slate-200 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">View</button>
         </div>
