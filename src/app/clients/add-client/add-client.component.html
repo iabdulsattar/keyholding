@@ -11,7 +11,7 @@
           <span class="text-slate-500">{{ editMode ? 'Edit Client' : 'Add New Client' }}</span>
         </div>
         <h1 class="text-3xl font-bold text-slate-800">{{ editMode ? 'Edit Client' : 'Add New Clients' }}</h1>
-        <p class="text-xs text-slate-500 mt-1">{{ editMode ? 'Update client details and configuration settings.' :
+        <p class="text-xs text-slate-500 mt-1">{{ editMode ? 'Update client information and configuration settings.' :
           'Enter client details and configuration settings.' }}</p>
       </div>
 
@@ -217,7 +217,7 @@
           </button>
           <button type="button" (click)="onSubmit()" [disabled]="loading"
             class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
-            {{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Update Client' : 'Save Client') }}
+            {{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Save Client' : 'Save Client') }}
           </button>
         </div>
         
