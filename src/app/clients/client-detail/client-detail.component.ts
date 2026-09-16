@@ -662,7 +662,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   private getAvatarColor(first?: string, last?: string): string {
-    const colors = ['bg-violet-100 text-violet-700','bg-orange-100 text-orange-700','bg-amber-100 text-amber-700','bg-pink-100 text-pink-700','bg-indigo-100 text-indigo-700','bg-emerald-100 text-emerald-700','bg-red-100 text-red-700','bg-teal-100 text-teal-700','bg-brand-100 text-brand-700'];
+    const colors = ['bg-indigo-50 text-blue-600'];
     const seed = ((first || '') + (last || '')).trim() || 'default';
     let hash = 0;
     for (let i = 0; i < seed.length; i++) hash = (hash + seed.charCodeAt(i) * 37) % colors.length;

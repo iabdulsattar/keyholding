@@ -836,80 +836,68 @@
 } @else if (activeTab === 'activity') {
            <div class="space-y-6">
 
-            <!-- Activity Log header row -->
-            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <h2 class="text-xl font-bold text-slate-900">Activity Log</h2>
-                <p class="text-sm text-slate-500">View all actions and changes made for this client.</p>
-              </div>
-              <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <div class="relative">
-                  <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
-                  <input type="text" placeholder="Search activity..." class="w-full sm:w-64 pl-9 pr-3 py-3 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" [(ngModel)]="activitiesSearch" (ngModelChange)="onActivitiesSearch()"/>
-                </div>
-                <button class="inline-flex items-center justify-center gap-2 border border-slate-200 bg-white rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 ">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M6 8h12M10 12h4M11 16h2"/></svg>
-                  Filters
-                </button>
-                <button class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-medium ">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
-                  Export Log
-                </button>
-              </div>
-            </div>
-
+            
             <!-- Activity table -->
-            <div class="bg-white rounded-lg border border-slate-100 overflow-hidden">
+            <div class="bg-white rounded-md shadow-xs overflow-hidden">
              <div class="overflow-x-auto">
-               <table class="w-full text-sm min-w-[1000px]">
+               <table class="w-full text-sm ">
                    <thead>
-                    <tr class="border-b border-slate-100 text-slate-900 text-xs font-semibold font-['Inter'] uppercase">
-                      <th class="th">Date &amp; Time</th>
+                    <tr class="border-b border-slate-200 text-slate-900 text-xs font-bold font-['Inter'] uppercase">
                       <th class="th">Performed By</th>
+                      
+                      <th class="th">Date &amp; Time</th>
+                      <th class="th">Action</th>
+                      
                       <th class="th">Event Type</th>
+                      <th class="th">Event Name / Details</th>
+                      <th class="th">IP Address</th>
+                      
                       <th class="th">Details</th>
-                      <th class="th">Reference</th>
-                      <th class="th text-right">View</th>
+                      
                     </tr>
                   </thead>
-                    <tbody id="activity-tbody" class="divide-y divide-slate-100">
+                    <tbody id="activity-tbody" class="divide-y divide-slate-200">
                       @for (activity of activitiesPaginated; track activity.id) {
                       <tr class="hover:bg-slate-50">
-                        <td class="td">
-                          <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" [class]="getActivityIcon(activity.entity).bg + ' ' + getActivityIcon(activity.entity).color">
-                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="getActivityIcon(activity.entity).path"></svg>
-                            </div>
-                            <span class="font-medium text-slate-600 whitespace-nowrap">{{ activity.time }}</span>
-                          </div>
-                        </td>
                         <td class="td whitespace-nowrap">
                           <div class="flex items-center gap-2.5">
                             <div class="avatar" [class]="activity.avatarColor">{{ activity.initials }}</div>
                             <div>
-                              <p class="text-slate-600 font-medium leading-tight">{{ activity.by }}</p>
-                              <p class="text-xs text-slate-400 leading-tight">{{ activity.role }}</p>
+                              <p class="text-slate-900 text-sm font-semibold leading-tight">{{ activity.by }}</p>
+                              <p class="text-xs text-slate-500 leading-tight">{{ activity.role }}</p>
                             </div>
                           </div>
                         </td>
-                        <td class="td text-slate-600 whitespace-nowrap">{{ (activity.eventType | formatEventType) || activity.entity }}</td>
+                        
+                        <td class="td">
+                          <div class="flex items-center gap-2.5">
+                            
+                            <span class="text-slate-600 text-sm whitespace-nowrap">{{ activity.time }}</span>
+                          </div>
+                        </td>
+                        <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-green-100 text-green-700" >Added</span></td>
+                        <td class="td text-slate-600 text-sm whitespace-nowrap">{{ (activity.eventType | formatEventType) || activity.entity }}</td>
                         <td class="td whitespace-nowrap">
-                          <p class="text-slate-600 font-medium leading-tight">{{ activity.details || activity.name }}</p>
+                          <p class="text-slate-900 text-sm font-semibold leading-tight mb-0.5">Head Office</p>
+                          <p class="text-xs text-slate-500 leading-tight">25 Fenchurch Street, London</p>
+                              
+                        </td>  
+                        <td class="td whitespace-nowrap text-slate-600 text-sm">
+                          192.168.1.25
+
+                        </td> 
+                        <td class="td ">
+                          <p class="text-slate-600 text-sm font-normal leading-tight">{{ activity.details || activity.name }}</p>
                         </td>
-                        <td class="td text-slate-600 whitespace-nowrap">{{ activity.reference || '—' }}</td>
-                        <td class="td text-right">
-                          <button class="border border-blue-500 text-blue-600 rounded px-2.5 py-1.5 text-xs font-medium hover:bg-blue-50 transition-colors">
-                            View
-                          </button>
-                        </td>
+                        
                       </tr>
                       }
                     </tbody>
                </table>
              </div>
 
-               <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100 text-sm text-slate-400">
-                 <p>Showing {{ activitiesShowingStart }} to {{ activitiesShowingEnd }} of {{ activities.length }} activities</p>
+               <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-200 text-sm text-slate-500">
+                 <p>Showing <span class="font-bold">{{ activitiesShowingStart }} to {{ activitiesShowingEnd }}</span> of <span class="font-bold">{{ activities.length }}</span> activities</p>
                  <div class="flex items-center gap-1">
                    <button (click)="activitiesPreviousPage()" [disabled]="activitiesPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
@@ -918,7 +906,7 @@
                      @if (page === '...') {
                        <span class="px-1 text-slate-400 text-sm">&#8230;</span>
                      } @else {
-                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border" [class.bg-white]="activitiesPage === page" [class.text-blue-500]="activitiesPage === page" [class.border-blue-500]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
+                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-semibold border" [class.bg-white]="activitiesPage === page" [class.text-blue-600]="activitiesPage === page" [class.border-blue-600]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
                      }
                    }
                    <button (click)="activitiesNextPage()" [disabled]="activitiesPage === activitiesTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
@@ -1135,7 +1123,7 @@
             </div>
 
               <!-- Pagination -->
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-100">
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-slate-200">
                 <div class="flex items-center gap-3">
                   <div class="text-sm text-slate-600">Showing {{ documentsShowingStart }} to {{ documentsShowingEnd }} of {{ totalDocuments }} documents</div>
                   
