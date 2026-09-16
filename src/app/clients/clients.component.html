@@ -1,7 +1,7 @@
 <div class="min-h-[calc(100vh-48px)] flex flex-col text-gray-900 dark:bg-gray-950 dark:text-white">
-  <div class="flex-1 mx-auto w-full max-w-full space-y-5">
+  <div class="flex-1 mx-auto w-full max-w-full ">
     <!-- Title & Actions -->
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-5">
       <div>
         <h2 class="text-slate-800 text-3xl font-bold font-['Inter']">Clients</h2>
         <p class=" text-slate-500 text-xs font-normal font-['Inter'] mt-1">View and manage all clients and their details.</p>
@@ -38,12 +38,21 @@
        
 
     <!-- KEY STATUS METRIC HERO CARDS -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div (click)="setFilter('all')" class="bg-white border border-slate-100 rounded-md p-4 flex items-center space-x-4 hover:border-blue-400 transition duration-200 cursor-pointer group">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+      <div (click)="setFilter('all')" class="bg-white rounded-md shadow-xs p-4 flex items-center space-x-4 hover:border-blue-400 transition duration-200 cursor-pointer group">
         <div class="p-3 bg-blue-50 text-blue-600 rounded-full  justify-center items-center group-hover:scale-105 transition">
  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M11 9.16693H11.0092M11 12.8339H11.0092M11 5.49997H11.0092M14.6663 9.16693H14.6755M14.6663 12.8339H14.6755M14.6663 5.49997H14.6755M7.33369 9.16693H7.34285M7.33369 12.8339H7.34285M7.33369 5.49997H7.34285M8.25026 20.1678V17.4176C8.25026 17.1745 8.34683 16.9413 8.51872 16.7694C8.69061 16.5974 8.92375 16.5008 9.16684 16.5008H12.8331C13.0762 16.5008 13.3094 16.5974 13.4813 16.7694C13.6531 16.9413 13.7497 17.1745 13.7497 17.4176V20.1678M5.50054 1.83301H16.4994C17.5119 1.83301 18.3326 2.65388 18.3326 3.66649V18.3343C18.3326 19.3469 17.5119 20.1678 16.4994 20.1678H5.50054C4.48812 20.1678 3.66739 19.3469 3.66739 18.3343V3.66649C3.66739 2.65388 4.48812 1.83301 5.50054 1.83301Z" stroke="#1A56DB" stroke-width="2" stroke-linecap="round"/>
-      </svg>        </div>
+<g clip-path="url(#clip0_3146_348)">
+<path d="M11 9.16693H11.0092M11 12.8339H11.0092M11 5.49997H11.0092M14.6663 9.16693H14.6755M14.6663 12.8339H14.6755M14.6663 5.49997H14.6755M7.33369 9.16693H7.34285M7.33369 12.8339H7.34285M7.33369 5.49997H7.34285M8.25026 20.1678V17.4176C8.25026 17.1745 8.34683 16.9413 8.51872 16.7694C8.69061 16.5974 8.92375 16.5008 9.16684 16.5008H12.8331C13.0762 16.5008 13.3094 16.5974 13.4813 16.7694C13.6531 16.9413 13.7497 17.1745 13.7497 17.4176V20.1678M5.50054 1.83301H16.4994C17.5119 1.83301 18.3326 2.65388 18.3326 3.66649V18.3343C18.3326 19.3469 17.5119 20.1678 16.4994 20.1678H5.50054C4.48812 20.1678 3.66739 19.3469 3.66739 18.3343V3.66649C3.66739 2.65388 4.48812 1.83301 5.50054 1.83301Z" stroke="#1A56DB" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3146_348">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+  
+    </div>
         <div>
           <span class="text-slate-500 text-xs font-medium font-['Inter'] tracking-wider block">Total Clients</span>
           <h3 class="text-slate-800 text-3xl font-bold font-['Inter'] mt-0.5">{{ totalClients }}</h3>
@@ -51,11 +60,12 @@
         </div>
       </div>
 
-      <div (click)="setFilter('Active')" class="bg-white border border-slate-100 rounded-lg p-4 flex items-center space-x-4 hover:border-emerald-400 transition duration-200 cursor-pointer group">
-        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-full  group-hover:scale-105 transition">
-<svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10.1247 13.4999L12.3749 15.7501L16.8753 11.2497M24.7509 13.4999C24.7509 19.7136 19.7137 24.7508 13.5 24.7508C7.28628 24.7508 2.24908 19.7136 2.24908 13.4999C2.24908 7.28622 7.28628 2.24902 13.5 2.24902C19.7137 2.24902 24.7509 7.28622 24.7509 13.4999Z" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
-        </svg>        </div>
+      <div (click)="setFilter('Active')" class="bg-white rounded-md shadow-xs p-4 flex items-center space-x-4 hover:border-emerald-400 transition duration-200 cursor-pointer group">
+        <div class="p-3 bg-green-100 text-emerald-600 rounded-full  group-hover:scale-105 transition">
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.6247 13.9999L12.8749 16.2501L17.3753 11.7497M25.2509 13.9999C25.2509 20.2136 20.2137 25.2508 14 25.2508C7.78628 25.2508 2.74908 20.2136 2.74908 13.9999C2.74908 7.78622 7.78628 2.74902 14 2.74902C20.2137 2.74902 25.2509 7.78622 25.2509 13.9999Z" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
+</svg>     
+      </div>
         <div>
           <span class="text-slate-500 text-xs font-medium font-['Inter'] tracking-wider block">Active Clients</span>
           <h3 class="text-slate-800 text-3xl font-bold font-['Inter'] mt-0.5">{{ activeClients }}</h3>
@@ -63,12 +73,21 @@
         </div>
       </div>
 
-      <div (click)="setFilter('Inactive')" class="bg-white border border-slate-100 rounded-lg p-4 flex items-center space-x-4 hover:border-amber-400 transition duration-200 cursor-pointer group">
-        <div class="p-3 bg-amber-50 text-amber-600 rounded-full group-hover:scale-105 transition">
+      <div (click)="setFilter('Inactive')" class="bg-white rounded-md shadow-xs p-4 flex items-center space-x-4 hover:border-amber-400 transition duration-200 cursor-pointer group">
+        <div class="p-3 bg-orange-100 text-amber-600 rounded-full group-hover:scale-105 transition">
  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20.0909 1.77246H16.5455C15.8928 1.77246 15.3637 2.33097 15.3637 3.01994V22.9795C15.3637 23.6685 15.8928 24.227 16.5455 24.227H20.0909C20.7436 24.227 21.2727 23.6685 21.2727 22.9795V3.01994C21.2727 2.33097 20.7436 1.77246 20.0909 1.77246Z" stroke="#EA580C" stroke-width="2.36364" stroke-linecap="round"/>
-        <path d="M9.45457 1.77246H5.90911C5.25641 1.77246 4.72729 2.33097 4.72729 3.01994V22.9795C4.72729 23.6685 5.25641 24.227 5.90911 24.227H9.45457C10.1073 24.227 10.6364 23.6685 10.6364 22.9795V3.01994C10.6364 2.33097 10.1073 1.77246 9.45457 1.77246Z" stroke="#EA580C" stroke-width="2.36364" stroke-linecap="round"/>
-        </svg>        </div>
+<g clip-path="url(#clip0_3146_366)">
+<path d="M20.0909 1.77246H16.5455C15.8928 1.77246 15.3637 2.33097 15.3637 3.01994V22.9795C15.3637 23.6685 15.8928 24.227 16.5455 24.227H20.0909C20.7436 24.227 21.2727 23.6685 21.2727 22.9795V3.01994C21.2727 2.33097 20.7436 1.77246 20.0909 1.77246Z" stroke="#EA580C" stroke-width="2.36364" stroke-linecap="round"/>
+<path d="M9.45457 1.77246H5.90911C5.25641 1.77246 4.72729 2.33097 4.72729 3.01994V22.9795C4.72729 23.6685 5.25641 24.227 5.90911 24.227H9.45457C10.1073 24.227 10.6364 23.6685 10.6364 22.9795V3.01994C10.6364 2.33097 10.1073 1.77246 9.45457 1.77246Z" stroke="#EA580C" stroke-width="2.36364" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3146_366">
+<rect width="26" height="26" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+    
+      </div>
         <div>
           <span class="text-slate-500 text-xs font-medium font-['Inter'] tracking-wider block">Inactive Clients</span>
           <h3 class="text-slate-800 text-3xl font-bold font-['Inter'] mt-0.5">{{ inactiveClients }}</h3>
@@ -85,7 +104,7 @@
               <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
             </svg>
             <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" autocomplete="off"
-              placeholder="Search users by name, email or role..."
+              placeholder="Search by client name..."
               class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
           </div>
 
@@ -95,7 +114,7 @@
           </div>
 
           <div class="lg:col-span-7 flex">
-          <a [routerLink]="'add-client'" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white font-semibold text-xs font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+          <a [routerLink]="'add-client'" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -105,13 +124,13 @@
 
         </div>
     <!-- CORE DATA FILTER AND DATAGRID CANVAS -->
-    <div class="bg-white border border-slate-100 rounded-lg overflow-hidden flex flex-col mb-5">
+    <div class="bg-white rounded-md shadow-xs overflow-hidden flex flex-col mb-5">
       
       <!-- Responsive Scrollable Data Grid -->
       <div class="overflow-x-auto custom-scrollbar">
         <table class="w-full text-left border-collapse min-w-[1000px]">
           <thead>
-            <tr class=" border-b border-slate-100 text-slate-900 text-xs font-semibold font-['Inter'] uppercase tracking-wider">
+            <tr class=" border-b border-slate-200 text-slate-900 text-xs font-semibold font-['Inter'] uppercase tracking-wider">
               <th class="py-3 px-4">
                 <div class="flex items-center space-x-1 cursor-pointer hover:text-black">
                   <span>Client Code</span>
@@ -125,7 +144,7 @@
               <th class="py-3 px-4">Email</th>
            
               <th class="py-3 px-4 text-center">
-                <div class="flex items-center justify-center space-x-1 cursor-pointer hover:text-black">
+                <div class="flex items-center space-x-1 cursor-pointer hover:text-black">
                   <span>Status</span>
                 </div>
               </th>
@@ -140,26 +159,35 @@
                   <span>Created On</span>
                 </div>
               </th>
-              <th class="py-3 px-4 text-center w-24">Actions</th>
+              <th class="py-3 px-4 text-end w-24">Action</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-100 text-xs text-black/80 font-medium">
+          <tbody class="divide-y divide-slate-200 text-xs text-black/80 font-medium">
             @for (client of clients; track client.id) {
             <tr class="hover:bg-black/5 transition">
-              <td class="py-3 px-4"><span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100">{{ client.code }}</span></td>
+              <td class="py-3 px-4"><span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-700 ">{{ client.code }}</span></td>
               <td class="py-3 px-4 text-slate-800 text-sm font-medium font-['Inter']">{{ client.name }}</td>
               <td class="py-3 px-4 text-slate-500 text-sm font-normal font-['Inter']">{{ client.email }}</td>
-              <td class="py-3 px-4 text-center" [innerHTML]="statusBadge(client.status)"></td>
+              <td class="py-3 px-4 " [innerHTML]="statusBadge(client.status)"></td>
               <td class="py-3 px-4 text-center text-slate-800 text-sm font-normal font-['Inter']">{{ client.sites }}</td>
               <td class="py-3 px-4 text-center text-slate-800 text-sm font-normal font-['Inter'] ">{{ client.users }}</td>
               <td class="py-3 px-4  text-slate-500 text-sm font-normal font-['Inter']">{{ client.created }}</td>
               <td class="py-3 px-4 text-center">
                 <div class="flex items-center justify-center space-x-2 text-blue-500">
                   <button (click)="viewClient(client.id)" class="hover:text-blue-600 p-1 transition" title="View"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                  <button (click)="editClient(client.id)" class="hover:text-blue-600 p-1 transition" title="Edit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12.5911 2.39732C12.5911 2.84089 12.4148 3.26628 12.1011 3.57989L4.18217 11.5001C4.04462 11.6372 3.87552 11.7385 3.68972 11.795L1.10703 12.5782C1.05574 12.5936 1.00124 12.5948 0.949303 12.5818C0.897365 12.5687 0.849931 12.5419 0.812033 12.504C0.774134 12.4662 0.747185 12.4188 0.734045 12.3669C0.720904 12.315 0.722062 12.2605 0.737396 12.2091L1.52116 9.62701C1.57819 9.44102 1.68006 9.27191 1.81782 9.13455L9.73616 1.21432C10.0498 0.90071 10.4753 0.724554 10.9188 0.724609C11.3624 0.724665 11.7878 0.900928 12.1014 1.21462C12.415 1.52832 12.5912 1.95374 12.5911 2.39732Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
-    </svg></button>
-                  <button (click)="deleteClient(client)" class="text-red-500 hover:text-red-600 p-1 transition" title="Delete"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a3 3 0 1 1 6 0v2"></path></svg></button>
+                  <button (click)="editClient(client.id)" class="hover:text-blue-600 p-1 transition" title="Edit">
+                    
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.5911 2.39732C12.5911 2.84089 12.4148 3.26628 12.1011 3.57989L4.18217 11.5001C4.04462 11.6372 3.87552 11.7385 3.68972 11.795L1.10703 12.5782C1.05574 12.5936 1.00124 12.5948 0.949303 12.5818C0.897365 12.5687 0.849931 12.5419 0.812033 12.504C0.774134 12.4662 0.747185 12.4188 0.734045 12.3669C0.720904 12.315 0.722062 12.2605 0.737396 12.2091L1.52116 9.62701C1.57819 9.44102 1.68006 9.27191 1.81782 9.13455L9.73616 1.21432C10.0498 0.90071 10.4753 0.724554 10.9188 0.724609C11.3624 0.724665 11.7878 0.900928 12.1014 1.21462C12.415 1.52832 12.5912 1.95374 12.5911 2.39732Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+</svg>
+
+  </button>
+                  <button (click)="deleteClient(client)" class="text-red-500 hover:text-red-600 p-1 transition" title="Delete">
+                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.87492 6.06068V9.61805M7.24631 6.06068V9.61805M10.2106 3.09619V11.3967C10.2106 11.7112 10.0856 12.0128 9.86327 12.2352C9.64091 12.4576 9.33933 12.5825 9.02486 12.5825H3.09637C2.7819 12.5825 2.48032 12.4576 2.25796 12.2352C2.03559 12.0128 1.91067 11.7112 1.91067 11.3967V3.09619M0.724976 3.09619H11.3963M3.68922 3.09619V1.9104C3.68922 1.59591 3.81414 1.2943 4.0365 1.07192C4.25886 0.849541 4.56045 0.724609 4.87492 0.724609H7.24631C7.56078 0.724609 7.86237 0.849541 8.08473 1.07192C8.30709 1.2943 8.43201 1.59591 8.43201 1.9104V3.09619" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+</svg>
+
+                  </button>
                 </div>
               </td>
             </tr>
@@ -173,30 +201,50 @@
       </div>
 
       <!-- Pagination Footer -->
-      <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between text-xs text-black/70 font-medium ">
+      <div class="p-4 border-t border-slate-200 flex flex-col sm:flex-row gap-4 items-center justify-between text-xs text-slate-500 font-normal ">
         <div>
-          Showing <span class="text-black font-semibold">{{ showingStart }}-{{ showingEnd }}</span> of <span class="text-black font-semibold">{{ totalItems }}</span> clients
+          Showing <span class="">{{ showingStart }}-{{ showingEnd }}</span> of <span class="">{{ totalItems }}</span> clients
         </div>
         <div class="flex items-center space-x-4">
           <div class="flex items-center space-x-1">
-            <button (click)="prevPage()" [disabled]="page === 0" class="w-8 h-8 rounded-lg border border-black/20 bg-white flex items-center justify-center text-black/60 hover:bg-black/5 transition disabled:opacity-50 disabled:cursor-not-allowed">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            <button (click)="prevPage()" [disabled]="page === 0" class="w-8 h-8 rounded-md border border-slate-200 bg-white flex items-center justify-center text-black/60 hover:bg-black/5 transition disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3146_747)">
+<path d="M8.75 10.5L5.25 7L8.75 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3146_747">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
             </button>
             @for (p of getPageNumbers(); track p) {
               @if (p === '...') {
                 <span class="w-8 h-8 flex items-center justify-center text-black/60">...</span>
               } @else {
-                <button (click)="goToPage(p)" [class.bg-white]="page === p" [class.text-blue-500]="page === p" [class.border-blue-500]="page === p" [class.bg-white]="page !== p" [class.text-black/80]="page !== p" [class.border-black/20]="page !== p" class="w-8 h-8 rounded-lg font-bold flex items-center justify-center shadow-sm hover:bg-black/5 transition border">
+                <button (click)="goToPage(p)" [class.bg-blue-50]="page === p" [class.text-blue-700]="page === p" [class.border-blue-700]="page === p" [class.bg-white]="page !== p" [class.text-black/80]="page !== p" [class.border-black/20]="page !== p" class="w-8 h-8 rounded-md text-xs font-semibold flex items-center justify-center shadow-sm hover:bg-black/5 transition border">
                   {{ pageLabel(p) }}
                 </button>
               }
             }
-            <button (click)="nextPage()" [disabled]="page >= totalPages - 1" class="w-8 h-8 rounded-lg border border-black/20 bg-white flex items-center justify-center text-black/60 hover:bg-black/5 transition disabled:opacity-50 disabled:cursor-not-allowed">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            <button (click)="nextPage()" [disabled]="page >= totalPages - 1" class="w-8 h-8 rounded-md border border-slate-200 bg-white flex items-center justify-center text-black/60 hover:bg-black/5 transition disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3146_763)">
+<path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3146_763">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
             </button>
           </div>
           <div class="flex items-center space-x-1.5">
-            <select (change)="onPageSizeChange($event)" class="bg-white border border-black/20 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-black/80">
+            <select (change)="onPageSizeChange($event)" class="bg-white border border-slate-200 rounded-md px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-800 font-medium">
               <option [value]="10" [selected]="pageSize === 10">10 / page</option>
               <option [value]="25" [selected]="pageSize === 25">25 / page</option>
               <option [value]="50" [selected]="pageSize === 50">50 / page</option>
@@ -219,15 +267,16 @@
   }
 
   <!-- Footer -->
-    <footer class="w-full bg-white border-t border-slate-100 px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-500 font-medium space-y-2 sm:space-y-0">
-      <div>&copy; 2026 KeyVault Pro. All rights reserved.</div>
-      <div class="flex items-center space-x-4">
-        <a href="#" class="text-blue transition">Privacy Policy</a>
-        <span class="text-black/20">|</span>
-        <a href="#" class="text-blue transition">Terms of Service</a>
-        <span class="text-black/20">|</span>
-        <a href="#" class="text-blue transition">Support</a>
-      </div>
-    </footer>
-    
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
+    <div class="flex items-center gap-2 text-blue-600 text-xs font-normal font-['Inter'] ">
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Privacy
+        Policy</a>
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter'] border-r border-slate-300 pr-2">Terms of
+        Service</a>
+
+      <a href="#" class="text-blue-600 text-xs font-normal font-['Inter']">Support</a>
+    </div>
+
+  </div>
+
 </div>

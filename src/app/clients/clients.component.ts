@@ -25,7 +25,7 @@ export class ClientsComponent implements OnInit {
   activeFilter: 'all' | 'Active' | 'Inactive' | 'Pending' = 'all';
   filterStatus = 'all';
   statusOptions = [
-    { label: 'All Status', value: 'all' },
+    { label: 'Status', value: 'all' },
     { label: 'Active', value: 'Active' },
     { label: 'Inactive', value: 'Inactive' },
     { label: 'Pending', value: 'Pending' },
@@ -105,7 +105,7 @@ export class ClientsComponent implements OnInit {
   statusBadge(status: string): string {
     switch (status) {
       case 'Active':
-        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-green-600 bg-green-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Active</span></span>`;
+        return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-green-600 bg-green-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span><span>Active</span></span>`;
       case 'Inactive':
         return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-orange-600 bg-orange-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Inactive</span></span>`;
       case 'Pending':
