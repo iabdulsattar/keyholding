@@ -107,35 +107,61 @@ showDeactivateClientModal = false;
   jobsTotalElements = 0;
   jobsTotalPagesFromApi = 0;
 
-    // Document state
+// Document state
   documents: any[] = [];
   filteredDocuments: any[] = [];
   documentStats: any = null;
   documentsPage = 1;
-   documentsRowsPerPage = 8;
-   documentsRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
+  documentsRowsPerPage = 8;
+  documentsRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
   documentsSearch = '';
   documentsCategory = 'All';
   documentsLoading = false;
 
-   // Contact state
-   contacts: any[] = [];
-   filteredContacts: any[] = [];
-   contactsPage = 1;
-   contactsRowsPerPage = 10;
-   contactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
-   contactsSearch = '';
-   contactsStatus = 'All';
-   contactsLoading = false;
+  documentCategoryOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'Contract', label: 'Contract' },
+    { value: 'License', label: 'License' },
+    { value: 'Insurance', label: 'Insurance' },
+    { value: 'Report', label: 'Report' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'Certificate', label: 'Certificate' },
+    { value: 'General', label: 'General' },
+    { value: 'Legal', label: 'Legal' },
+    { value: 'Finance', label: 'Finance' },
+  ];
 
-   // Emergency contact state
-   emergencyContacts: EmergencyContact[] = [];
-   filteredEmergencyContacts: EmergencyContact[] = [];
-   emergencyContactsPage = 1;
-   emergencyContactsRowsPerPage = 10;
-   emergencyContactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
-   emergencyContactsSearch = '';
-   emergencyContactsLoading = false;
+  // Contact state
+  contacts: any[] = [];
+  filteredContacts: any[] = [];
+  contactsPage = 1;
+  contactsRowsPerPage = 10;
+  contactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
+  contactsSearch = '';
+  contactsStatus = 'All';
+  contactsLoading = false;
+
+  contactStatusOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
+
+  // Emergency contact state
+  emergencyContacts: EmergencyContact[] = [];
+  filteredEmergencyContacts: EmergencyContact[] = [];
+  emergencyContactsPage = 1;
+  emergencyContactsRowsPerPage = 10;
+  emergencyContactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
+  emergencyContactsSearch = '';
+  emergencyContactsStatus = 'All';
+  emergencyContactsLoading = false;
+
+  emergencyContactStatusOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+  ];
 
   get timelineItems(): Array<{ action: string; date: string; by: string; color: string; details?: string }> {
     const items: Array<{ action: string; date: string; by: string; color: string; details?: string }> = [];
@@ -370,13 +396,20 @@ showDeactivateClientModal = false;
      return this.emergencyContacts.filter(c => c.primaryContact).length;
    }
 
-   onEmergencyContactsSearch(): void {
-     this.emergencyContactsPage = 1;
-     const q = this.emergencyContactsSearch.toLowerCase().trim();
-     this.filteredEmergencyContacts = this.emergencyContacts.filter((c: EmergencyContact) =>
-       (c.fullName + ' ' + c.email + ' ' + c.department).toLowerCase().includes(q)
-     );
-   }
+onEmergencyContactsSearch(): void {
+      this.emergencyContactsPage = 1;
+      const q = this.emergencyContactsSearch.toLowerCase().trim();
+      this.filteredEmergencyContacts = this.emergencyContacts.filter((c: EmergencyContact) => {
+        const matchesSearch = (c.fullName + ' ' + c.email + ' ' + c.department).toLowerCase().includes(q);
+        const matchesStatus = this.emergencyContactsStatus === 'All' || c.status === this.emergencyContactsStatus;
+        return matchesSearch && matchesStatus;
+      });
+    }
+
+    onEmergencyContactsStatusChange(): void {
+      this.emergencyContactsPage = 1;
+      this.onEmergencyContactsSearch();
+    }
 
    emergencyContactsPreviousPage(): void {
      if (this.emergencyContactsPage > 1) this.emergencyContactsPage--;
@@ -625,7 +658,16 @@ viewEmergencyContact(contactId: string): void {
   onContactsSearch(): void {
     this.contactsPage = 1;
     const q = this.contactsSearch.toLowerCase().trim();
-    this.filteredContacts = this.contacts.filter((c: any) => (c.name + ' ' + c.email + ' ' + c.dept).toLowerCase().includes(q));
+    this.filteredContacts = this.contacts.filter((c: any) => {
+      const matchesSearch = (c.name + ' ' + c.email + ' ' + c.dept).toLowerCase().includes(q);
+      const matchesStatus = this.contactsStatus === 'All' || c.status === this.contactsStatus;
+      return matchesSearch && matchesStatus;
+    });
+  }
+
+  onContactsStatusChange(): void {
+    this.contactsPage = 1;
+    this.onContactsSearch();
   }
 
   onActivitiesSearch(): void {
@@ -768,8 +810,15 @@ viewEmergencyContact(contactId: string): void {
     const q = this.documentsSearch.toLowerCase().trim();
     this.filteredDocuments = this.documents.filter(doc => {
       const name = (doc.name || doc.fileName || '').toLowerCase();
-      return name.includes(q);
+      const matchesSearch = name.includes(q);
+      const matchesCategory = this.documentsCategory === 'All' || doc.category === this.documentsCategory;
+      return matchesSearch && matchesCategory;
     });
+  }
+
+  onDocumentsCategoryChange(): void {
+    this.documentsPage = 1;
+    this.onDocumentsSearch();
   }
 
   documentsPreviousPage(): void {

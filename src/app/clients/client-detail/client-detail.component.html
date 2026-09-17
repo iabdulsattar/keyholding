@@ -939,33 +939,33 @@
          } @else if (activeTab === 'documents') {
         <div class="space-y-4">
           
-          <!-- Documents section header -->
-          
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
-          <div class="relative w-full lg:col-span-3">
-            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <input type="text" autocomplete="off"
-              placeholder="Search jobs by job ID, site, officer..."
-              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
-          </div>
+<!-- Documents section header -->
+           
+           <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
+           <div class="relative w-full lg:col-span-3">
+             <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+             </svg>
+             <input type="text" [(ngModel)]="documentsSearch" (ngModelChange)="onDocumentsSearch()" autocomplete="off"
+               placeholder="Search documents by name..."
+               class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+           </div>
 
-          
-          <div class="lg:col-span-2">  
-            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
-          </div>
+           
+           <div class="lg:col-span-2">  
+             <app-rich-select [options]="documentCategoryOptions" [(value)]="documentsCategory" (valueChange)="onDocumentsCategoryChange()" placeholder="Category" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+           </div>
 
 <div class="lg:col-span-7 flex">
-          <a [routerLink]="['/clients', clientId, 'add-document']" class="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v13M12 5l-4 4M12 5l4 4M5 19h14"/></svg>
-                 Upload Document
-                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-               </a>
-                
-          </div>
+           <a [routerLink]="['/clients', clientId, 'add-document']" class="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v13M12 5l-4 4M12 5l4 4M5 19h14"/></svg>
+                  Upload Document
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </a>
+                 
+           </div>
 
-        </div>
+         </div>
            
           <!-- Stat pills -->
           <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3">
@@ -1122,19 +1122,16 @@
                       <td class="px-5 py-3.5 text-slate-600 text-sm whitespace-nowrap">{{ formatSize(doc.sizeBytes) }}</td>
                       <td class="px-5 py-3.5 text-slate-600 text-sm whitespace-nowrap">{{ doc.uploadedByUserName || '-' }}</td>
                        <td class="px-5 py-3.5 text-slate-600 text-sm whitespace-nowrap">{{ doc.createdAt | date:'dd MMM yyyy, h:mm a' }}</td>
-                      <td class="px-5 py-3.5 text-right">
+<td class="px-5 py-3.5 text-right">
                          <div class="flex items-center justify-end gap-3 text-slate-600">
                            <button (click)="viewDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="View document">
                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                            </button>
                            <button (click)="downloadDocument(doc.id)" class="hover:text-blue-600 cursor-pointer" title="Download document">
                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                             
+                              
                            </button>
-                            <button class="hover:text-rose-600 cursor-pointer">
-                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
-                            </button>
-                         </div>
+                        </div>
                       </td>
                     </tr>
                   }
@@ -1170,32 +1167,32 @@
          } @else if (activeTab === 'contact') {
          <div class="space-y-4">
  
-            <!-- Contacts header row -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
-          <div class="relative w-full lg:col-span-3">
-            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <input type="text" autocomplete="off"
-              placeholder="Search jobs by job ID, site, officer..."
-              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
-          </div>
+<!-- Contacts header row -->
+             <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
+           <div class="relative w-full lg:col-span-3">
+             <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+             </svg>
+             <input type="text" [(ngModel)]="contactsSearch" (ngModelChange)="onContactsSearch()" autocomplete="off"
+               placeholder="Search contacts by name, email..."
+               class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+           </div>
 
-          
-          <div class="lg:col-span-2">  
-            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
-          </div>
+           
+           <div class="lg:col-span-2">  
+             <app-rich-select [options]="contactStatusOptions" [(value)]="contactsStatus" (valueChange)="onContactsStatusChange()" placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+           </div>
 
-          <div class="lg:col-span-7 flex">
-          <a [routerLink]="['/clients', clientId, 'add-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Add Contact
-          </a>
-          </div>
+           <div class="lg:col-span-7 flex">
+           <a [routerLink]="['/clients', clientId, 'add-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
+             </svg>
+             Add Contact
+           </a>
+           </div>
 
-        </div>
+         </div>
            
            <!-- Stat cards -->
            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -1302,7 +1299,7 @@
                    </td>
                    <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">Operations Manager</td>
                    
-                   <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.department }}</td>
+                   <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.dept }}</td>
                    <td class="td text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.email }}</td>
                   <td class="td text-slate-900 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.phone }}</td>
 
@@ -1317,6 +1314,12 @@
                           <div class="flex items-center justify-end gap-3 text-slate-400">
                             <button (click)="viewContact(contact.id)" class="hover:text-blue-600 cursor-pointer" title="View">
                               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                            <button (click)="editContact(contact.id)" class="hover:text-blue-600 cursor-pointer" title="Edit">
+                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            </button>
+                            <button (click)="deleteContact(contact.id)" class="hover:text-rose-600 cursor-pointer" title="Delete">
+                              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                             </button>
                           </div>
                         </td>
@@ -1360,32 +1363,32 @@
 
       <div class="space-y-4">
 
-       <!-- Emergency Contacts header row -->
-       <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
-          <div class="relative w-full lg:col-span-3">
-            <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <input type="text" autocomplete="off"
-              placeholder="Search jobs by job ID, site, officer..."
-              class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
-          </div>
+<!-- Emergency Contacts header row -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 ">
+           <div class="relative w-full lg:col-span-3">
+             <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+             </svg>
+             <input type="text" [(ngModel)]="emergencyContactsSearch" (ngModelChange)="onEmergencyContactsSearch()" autocomplete="off"
+               placeholder="Search emergency contacts by name, email..."
+               class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
+           </div>
 
-          
-          <div class="lg:col-span-2">  
-            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
-          </div>
+           
+           <div class="lg:col-span-2">  
+             <app-rich-select [options]="emergencyContactStatusOptions" [(value)]="emergencyContactsStatus" (valueChange)="onEmergencyContactsStatusChange()" placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+           </div>
 
-          <div class="lg:col-span-7 flex">
-          <a [routerLink]="['/clients', clientId, 'add-emergency-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Add Emergency Contacts
-          </a>
-          </div>
+           <div class="lg:col-span-7 flex">
+           <a [routerLink]="['/clients', clientId, 'add-emergency-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
+             </svg>
+             Add Emergency Contacts
+           </a>
+           </div>
 
-        </div>
+         </div>
            
       <!-- Stat cards -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
