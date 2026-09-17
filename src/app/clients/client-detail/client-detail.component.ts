@@ -101,11 +101,21 @@ showDeactivateClientModal = false;
    jobStats: any = null;
   jobsLoading = false;
   jobsSearch = '';
+  jobsStatus = 'All';
   jobsPage = 1;
   jobsRowsPerPage = 10;
   jobsRowsPerPageOptions: number[] = [10, 25, 50, 100];
   jobsTotalElements = 0;
   jobsTotalPagesFromApi = 0;
+
+  jobStatusOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'SCHEDULED', label: 'Scheduled' },
+    { value: 'IN_PROGRESS', label: 'In Progress' },
+    { value: 'COMPLETED', label: 'Completed' },
+    { value: 'CANCELLED', label: 'Cancelled' },
+    { value: 'OVERDUE', label: 'Overdue' },
+  ];
 
 // Document state
   documents: any[] = [];
@@ -114,6 +124,8 @@ showDeactivateClientModal = false;
   documentsPage = 1;
   documentsRowsPerPage = 8;
   documentsRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
+  documentsTotalItems = 0;
+  documentsTotalPagesApi = 0;
   documentsSearch = '';
   documentsCategory = 'All';
   documentsLoading = false;
@@ -137,6 +149,8 @@ showDeactivateClientModal = false;
   contactsPage = 1;
   contactsRowsPerPage = 10;
   contactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
+  contactsTotalItems = 0;
+  contactsTotalPagesApi = 0;
   contactsSearch = '';
   contactsStatus = 'All';
   contactsLoading = false;
@@ -153,6 +167,8 @@ showDeactivateClientModal = false;
   emergencyContactsPage = 1;
   emergencyContactsRowsPerPage = 10;
   emergencyContactsRowsPerPageOptions: number[] = [10, 25, 50, 100];
+  emergencyContactsTotalItems = 0;
+  emergencyContactsTotalPagesApi = 0;
   emergencyContactsSearch = '';
   emergencyContactsStatus = 'All';
   emergencyContactsLoading = false;
@@ -239,15 +255,26 @@ showDeactivateClientModal = false;
   private loadDocuments(): void {
     if (!this.clientId) return;
     this.documentsLoading = true;
-    this.clientService.listDocuments(this.clientId, { page: 0, size: this.documentsRowsPerPage }).subscribe({
+    const params: any = { 
+      page: this.documentsPage - 1, 
+      size: this.documentsRowsPerPage 
+    };
+    if (this.documentsSearch) params.q = this.documentsSearch;
+    if (this.documentsCategory && this.documentsCategory !== 'All') params.category = this.documentsCategory;
+    
+    this.clientService.listDocuments(this.clientId, params).subscribe({
       next: (result: any) => {
         this.documents = result?.items ?? [];
         this.filteredDocuments = [...this.documents];
+        this.documentsTotalItems = result?.totalItems ?? 0;
+        this.documentsTotalPagesApi = result?.totalPages ?? 1;
         this.documentsLoading = false;
       },
       error: () => {
         this.documents = [];
         this.filteredDocuments = [];
+        this.documentsTotalItems = 0;
+        this.documentsTotalPagesApi = 1;
         this.documentsLoading = false;
       }
     });
@@ -265,10 +292,17 @@ showDeactivateClientModal = false;
     });
   }
 
-  private loadContacts(): void {
+private loadContacts(): void {
     if (!this.clientId) return;
     this.contactsLoading = true;
-    this.clientService.listContacts(this.clientId, { page: 0, size: this.contactsRowsPerPage }).subscribe({
+    const params: any = { 
+      page: this.contactsPage - 1, 
+      size: this.contactsRowsPerPage 
+    };
+    if (this.contactsSearch) params.q = this.contactsSearch;
+    if (this.contactsStatus && this.contactsStatus !== 'All') params.status = this.contactsStatus.toUpperCase();
+    
+    this.clientService.listContacts(this.clientId, params).subscribe({
       next: (result: any) => {
          this.contacts = (result?.items ?? []).map((item: any) => {
            const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
@@ -288,20 +322,31 @@ showDeactivateClientModal = false;
            };
          });
         this.filteredContacts = [...this.contacts];
+        this.contactsTotalItems = result?.totalItems ?? 0;
+        this.contactsTotalPagesApi = result?.totalPages ?? 1;
         this.contactsLoading = false;
       },
        error: () => {
          this.contacts = [];
          this.filteredContacts = [];
+         this.contactsTotalItems = 0;
+         this.contactsTotalPagesApi = 1;
          this.contactsLoading = false;
        }
      });
-   }
+  }
 
     private loadEmergencyContacts(): void {
      if (!this.clientId) return;
      this.emergencyContactsLoading = true;
-     this.clientService.listEmergencyContacts(this.clientId, { page: 0, size: this.emergencyContactsRowsPerPage }).subscribe({
+     const params: any = { 
+       page: this.emergencyContactsPage - 1, 
+       size: this.emergencyContactsRowsPerPage 
+     };
+     if (this.emergencyContactsSearch) params.q = this.emergencyContactsSearch;
+     if (this.emergencyContactsStatus && this.emergencyContactsStatus !== 'All') params.status = this.emergencyContactsStatus.toUpperCase();
+     
+     this.clientService.listEmergencyContacts(this.clientId, params).subscribe({
        next: (result: any) => {
          this.emergencyContacts = (result?.items ?? []).map((item: any) => {
            const firstName = item.firstName ?? (item.fullName ? item.fullName.split(' ')[0] : '');
@@ -326,11 +371,15 @@ showDeactivateClientModal = false;
            };
          });
          this.filteredEmergencyContacts = [...this.emergencyContacts];
+         this.emergencyContactsTotalItems = result?.totalItems ?? 0;
+         this.emergencyContactsTotalPagesApi = result?.totalPages ?? 1;
          this.emergencyContactsLoading = false;
        },
        error: () => {
          this.emergencyContacts = [];
          this.filteredEmergencyContacts = [];
+         this.emergencyContactsTotalItems = 0;
+         this.emergencyContactsTotalPagesApi = 1;
          this.emergencyContactsLoading = false;
        }
      });
@@ -343,11 +392,9 @@ showDeactivateClientModal = false;
      return data.slice(start, start + this.emergencyContactsRowsPerPage);
    }
 
-   get emergencyContactsTotalPages(): number {
-     const q = this.emergencyContactsSearch.toLowerCase().trim();
-     const data = q ? this.filteredEmergencyContacts : this.emergencyContacts;
-     return Math.max(1, Math.ceil(data.length / this.emergencyContactsRowsPerPage));
-   }
+get emergencyContactsTotalPages(): number {
+      return Math.max(1, this.emergencyContactsTotalPagesApi);
+    }
 
    get emergencyContactsShowingStart(): number {
      const q = this.emergencyContactsSearch.toLowerCase().trim();
@@ -398,36 +445,41 @@ showDeactivateClientModal = false;
 
 onEmergencyContactsSearch(): void {
       this.emergencyContactsPage = 1;
-      const q = this.emergencyContactsSearch.toLowerCase().trim();
-      this.filteredEmergencyContacts = this.emergencyContacts.filter((c: EmergencyContact) => {
-        const matchesSearch = (c.fullName + ' ' + c.email + ' ' + c.department).toLowerCase().includes(q);
-        const matchesStatus = this.emergencyContactsStatus === 'All' || c.status === this.emergencyContactsStatus;
-        return matchesSearch && matchesStatus;
-      });
+      this.loadEmergencyContacts();
     }
 
     onEmergencyContactsStatusChange(): void {
       this.emergencyContactsPage = 1;
-      this.onEmergencyContactsSearch();
+      this.loadEmergencyContacts();
     }
 
-   emergencyContactsPreviousPage(): void {
-     if (this.emergencyContactsPage > 1) this.emergencyContactsPage--;
-   }
+emergencyContactsPreviousPage(): void {
+      if (this.emergencyContactsPage > 1) {
+        this.emergencyContactsPage--;
+        this.loadEmergencyContacts();
+      }
+    }
 
-   emergencyContactsNextPage(): void {
-     if (this.emergencyContactsPage < this.emergencyContactsTotalPages) this.emergencyContactsPage++;
-   }
+    emergencyContactsNextPage(): void {
+      if (this.emergencyContactsPage < this.emergencyContactsTotalPages) {
+        this.emergencyContactsPage++;
+        this.loadEmergencyContacts();
+      }
+    }
 
-   emergencyContactsGoToPage(page: number): void {
-     if (page >= 1 && page <= this.emergencyContactsTotalPages) this.emergencyContactsPage = page;
-   }
+    emergencyContactsGoToPage(page: number): void {
+      if (page >= 1 && page <= this.emergencyContactsTotalPages) {
+        this.emergencyContactsPage = page;
+        this.loadEmergencyContacts();
+      }
+    }
 
-   onEmergencyContactsRowsPerPageChange(event: Event): void {
-     const select = event.target as HTMLSelectElement;
-     this.emergencyContactsRowsPerPage = parseInt(select.value);
-     this.emergencyContactsPage = 1;
-   }
+onEmergencyContactsRowsPerPageChange(event: Event): void {
+      const select = event.target as HTMLSelectElement;
+      this.emergencyContactsRowsPerPage = parseInt(select.value);
+      this.emergencyContactsPage = 1;
+      this.loadEmergencyContacts();
+    }
 
 viewEmergencyContact(contactId: string): void {
       if (!this.clientId) return;
@@ -595,9 +647,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get contactsTotalPages(): number {
-    const q = this.contactsSearch.toLowerCase().trim();
-    const data = q ? this.filteredContacts : this.contacts;
-    return Math.max(1, Math.ceil(data.length / this.contactsRowsPerPage));
+    return Math.max(1, this.contactsTotalPagesApi);
   }
 
   get contactsShowingStart(): number {
@@ -657,17 +707,12 @@ viewEmergencyContact(contactId: string): void {
 
   onContactsSearch(): void {
     this.contactsPage = 1;
-    const q = this.contactsSearch.toLowerCase().trim();
-    this.filteredContacts = this.contacts.filter((c: any) => {
-      const matchesSearch = (c.name + ' ' + c.email + ' ' + c.dept).toLowerCase().includes(q);
-      const matchesStatus = this.contactsStatus === 'All' || c.status === this.contactsStatus;
-      return matchesSearch && matchesStatus;
-    });
+    this.loadContacts();
   }
 
   onContactsStatusChange(): void {
     this.contactsPage = 1;
-    this.onContactsSearch();
+    this.loadContacts();
   }
 
   onActivitiesSearch(): void {
@@ -677,23 +722,34 @@ viewEmergencyContact(contactId: string): void {
   }
 
   contactsPreviousPage(): void {
-    if (this.contactsPage > 1) this.contactsPage--;
+    if (this.contactsPage > 1) {
+      this.contactsPage--;
+      this.loadContacts();
+    }
   }
 
   contactsNextPage(): void {
-    if (this.contactsPage < this.contactsTotalPages) this.contactsPage++;
+    if (this.contactsPage < this.contactsTotalPages) {
+      this.contactsPage++;
+      this.loadContacts();
+    }
   }
 
   contactsGoToPage(page: number): void {
-    if (page >= 1 && page <= this.contactsTotalPages) this.contactsPage = page;
+    if (page >= 1 && page <= this.contactsTotalPages) {
+      this.contactsPage = page;
+      this.loadContacts();
+    }
   }
 
   onContactsPageSizeChange(): void {
     this.contactsPage = 1;
+    this.loadContacts();
   }
 
   onEmergencyContactsPageSizeChange(): void {
     this.emergencyContactsPage = 1;
+    this.loadEmergencyContacts();
   }
 
   private getInitials(first?: string, last?: string): string {
@@ -740,9 +796,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get documentsTotalPages(): number {
-    const q = this.documentsSearch.toLowerCase().trim();
-    const data = q ? this.filteredDocuments : this.documents;
-    return Math.max(1, Math.ceil(data.length / this.documentsRowsPerPage));
+    return Math.max(1, this.documentsTotalPagesApi);
   }
 
   get documentsShowingStart(): number {
@@ -807,35 +861,39 @@ viewEmergencyContact(contactId: string): void {
 
   onDocumentsSearch(): void {
     this.documentsPage = 1;
-    const q = this.documentsSearch.toLowerCase().trim();
-    this.filteredDocuments = this.documents.filter(doc => {
-      const name = (doc.name || doc.fileName || '').toLowerCase();
-      const matchesSearch = name.includes(q);
-      const matchesCategory = this.documentsCategory === 'All' || doc.category === this.documentsCategory;
-      return matchesSearch && matchesCategory;
-    });
+    this.loadDocuments();
   }
 
   onDocumentsCategoryChange(): void {
     this.documentsPage = 1;
-    this.onDocumentsSearch();
+    this.loadDocuments();
   }
 
   documentsPreviousPage(): void {
-    if (this.documentsPage > 1) this.documentsPage--;
+    if (this.documentsPage > 1) {
+      this.documentsPage--;
+      this.loadDocuments();
+    }
   }
 
   documentsNextPage(): void {
-    if (this.documentsPage < this.documentsTotalPages) this.documentsPage++;
+    if (this.documentsPage < this.documentsTotalPages) {
+      this.documentsPage++;
+      this.loadDocuments();
+    }
   }
 
   documentsGoToPage(page: number): void {
-    if (page >= 1 && page <= this.documentsTotalPages) this.documentsPage = page;
+    if (page >= 1 && page <= this.documentsTotalPages) {
+      this.documentsPage = page;
+      this.loadDocuments();
+    }
   }
 
   onDocumentsRowsPerPageChange(size: string): void {
     this.documentsRowsPerPage = parseInt(size, 10) || 8;
     this.documentsPage = 1;
+    this.loadDocuments();
   }
 
   viewDocument(docId: string = ''): void {
@@ -1006,9 +1064,11 @@ viewEmergencyContact(contactId: string): void {
       return;
     }
     const q = this.jobsSearch || undefined;
+    const status = this.jobsStatus && this.jobsStatus !== 'All' ? this.jobsStatus : undefined;
     this.keyVault.listJobs(orgId, {
       clientId: this.clientId,
       q,
+      status,
       page: this.jobsPage - 1,
       size: this.jobsRowsPerPage
     }).subscribe({
@@ -1078,6 +1138,11 @@ viewEmergencyContact(contactId: string): void {
     this.loadJobs();
   }
 
+  onJobsStatusChange(): void {
+    this.jobsPage = 1;
+    this.loadJobs();
+  }
+
   jobStatusClass(status: string): string {
     const map: Record<string, string> = {
       'SCHEDULED': 'bg-purple-50 text-purple-600',
@@ -1100,15 +1165,21 @@ viewEmergencyContact(contactId: string): void {
   }
 
   jobsPreviousPage(): void {
-    if (this.jobsPage > 1) this.jobsPage--;
+    if (this.jobsPage > 1) {
+      this.jobsPage--;
+      this.loadJobs();
+    }
   }
 
   jobsNextPage(): void {
-    this.jobsPage++;
+    if (this.jobsPage < this.jobsTotalPages) {
+      this.jobsPage++;
+      this.loadJobs();
+    }
   }
 
   jobsGoToPage(page: number): void {
-    if (page >= 1) {
+    if (page >= 1 && page <= this.jobsTotalPages) {
       this.jobsPage = page;
       this.loadJobs();
     }
