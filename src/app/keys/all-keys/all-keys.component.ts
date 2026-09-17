@@ -129,7 +129,7 @@ export class AllKeysComponent implements OnInit {
         keys = keys.filter((k: KeyRecord) => k.type === this.keyTypeFilter);
       }
       this.keys = keys;
-      this.totalItems = result.totalElements || result.total || keys.length;
+      this.totalItems = result.totalItems || keys.length;
       this.totalPages = result.totalPages || Math.ceil(this.totalItems / this.pageSize);
       this.loading = false;
     });
