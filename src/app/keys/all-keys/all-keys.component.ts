@@ -25,7 +25,7 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
       outline: none;
     }
     .filter-select:focus { box-shadow: 0 0 0 2px rgba(47,75,245,0.25); border-color: #2f4bf5; }
-    .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
+    .th-cell { padding: 0.85rem 1.1rem; font-weight: 700; white-space: nowrap; font-size: 0.75rem; }
     .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle; white-space: nowrap; }
     .status-badge {
       display: inline-block; font-size: 0.75rem; font-weight: 600;
@@ -173,6 +173,6 @@ export class AllKeysComponent implements OnInit {
   }
 
   typeBadge(type: string, color = 'slate'): string {
-    return `<span class="px-2.5 py-1 rounded-lg border border-${color}-100 tag bg-${color}-50 text-${color}-600">${type}</span>`;
+    return `<span class="px-2.5 py-1 rounded-md border border-${color}-100 tag bg-${color}-50 text-${color}-600">${type}</span>`;
   }
 }
