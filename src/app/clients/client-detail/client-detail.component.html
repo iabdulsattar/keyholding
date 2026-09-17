@@ -66,14 +66,16 @@
 
         <div class="flex items-center gap-3">
             <a 
+              [routerLink]="['/clients/add-client']"
+              [queryParams]="{ editId: clientId }"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-blue-50">
 
               Edit
             </a>
             <button 
-              
+              (click)="toggleActivationState()"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-slate-50 transition-colors">
-              Deactivate
+              {{ isClientActive ? 'Deactivate' : 'Activate' }}
             </button>
             <div data-svg-wrapper class="">
               <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -439,8 +441,8 @@
             <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
           </div>
 
-          <div class="lg:col-span-7 flex">
-          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+<div class="lg:col-span-7 flex">
+          <a [routerLink]="['/keys/add-key']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -500,12 +502,12 @@
                   </td>
                   <td class="py-3.5 px-3 text-slate-900 text-xs font-medium font-['Inter'] line-clamp-1 hidden md:table-cell ">{{ key.assignedTo }}</td>
                   <td class="py-3.5 px-3 text-slate-900 text-xs font-normal font-['Inter'] hidden lg:table-cell">{{ key.lastMovement }}<br><span class="text-slate-900 text-xs font-normal font-['Inter']">{{ key.lastMovementTime }}</span></td>
-                  <td class="py-3.5 pr-5 pl-3 text-center">
+<td class="py-3.5 pr-5 pl-3 text-center">
                     <div class="flex items-center justify-end gap-2 text-slate-400">
-                      <button (click)="triggerRowAction('View', key.id)" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">
+                      <a [routerLink]="['/keys/view-key', key.id]" [queryParams]="{ returnUrl: '/clients/' + clientId }" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                      </button>
-                   
+                      </a>
+                    
                     </div>
                   </td>
                 </tr>
@@ -567,7 +569,7 @@
           </div>
 
           <div class="lg:col-span-7 flex">
-          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+          <a [routerLink]="['/sites/add-site']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -612,22 +614,22 @@
                       </td>
                       <td class="py-3.5 px-4  text-slate-900 text-xs font-medium font-['Inter']">{{ site.totalKeys }}</td>
                       <td class="py-3.5 px-4  text-slate-900 text-xs font-medium font-['Inter']">{{ site.totalJobs }}</td>
-                     <td class="py-3.5 px-4 text-right">
-                       <div class="flex items-center justify-end gap-2 text-slate-400">
-                         <button (click)="viewSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">
-                           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                         </button>
-                          <button (click)="editSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">
+<td class="py-3.5 px-4 text-right">
+                        <div class="flex items-center justify-end gap-2 text-slate-400">
+                          <a [routerLink]="['/sites/view-site', site.id]" [queryParams]="{ returnUrl: '/clients/' + clientId }" class="hover:text-blue-600 text-blue-500 p-1 transition" title="View">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                          </a>
+                           <a [routerLink]="['/sites/add-site']" [queryParams]="{ clientId: clientId, editId: site.id, returnUrl: '/clients/' + clientId }" class="hover:text-blue-600 text-blue-500 p-1 transition" title="Edit">
 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M12.6046 2.39732C12.6046 2.84089 12.4281 3.26628 12.114 3.57989L4.18619 11.5001C4.04849 11.6372 3.8792 11.7385 3.69318 11.795L1.10758 12.5782C1.05624 12.5936 1.00167 12.5948 0.949678 12.5818C0.897682 12.5687 0.850194 12.5419 0.812253 12.504C0.774312 12.4662 0.747332 12.4188 0.734177 12.3669C0.721022 12.315 0.722181 12.2605 0.737532 12.2091L1.52218 9.62701C1.57927 9.44102 1.68126 9.27191 1.81917 9.13455L9.74644 1.21432C10.0605 0.90071 10.4864 0.724554 10.9305 0.724609C11.3745 0.724665 11.8004 0.900928 12.1143 1.21462C12.4283 1.52832 12.6047 1.95374 12.6046 2.39732Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
-    </svg>                         </button>
-                          <button (click)="deleteSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition">
- <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4.87972 6.06068V9.61805M7.25379 6.06068V9.61805M10.2214 3.09619V11.3967C10.2214 11.7112 10.0963 12.0128 9.8737 12.2352C9.65109 12.4576 9.34916 12.5825 9.03434 12.5825H3.09917C2.78435 12.5825 2.48242 12.4576 2.25981 12.2352C2.03719 12.0128 1.91213 11.7112 1.91213 11.3967V3.09619M0.725098 3.09619H11.4084M3.69268 3.09619V1.9104C3.69268 1.59591 3.81775 1.2943 4.04036 1.07192C4.26297 0.849541 4.5649 0.724609 4.87972 0.724609H7.25379C7.56861 0.724609 7.87054 0.849541 8.09315 1.07192C8.31576 1.2943 8.44082 1.59591 8.44082 1.9104V3.09619" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
-    </svg>                         </button>
-                         
-                       </div>
-                     </td>
+    </svg>                         </a>
+                          <button (click)="deleteSite(site.id)" class="hover:text-blue-600 text-blue-500 p-1 transition" title="Delete">
+  <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+     <path d="M4.87972 6.06068V9.61805M7.25379 6.06068V9.61805M10.2214 3.09619V11.3967C10.2214 11.7112 10.0963 12.0128 9.8737 12.2352C9.65109 12.4576 9.34916 12.5825 9.03434 12.5825H3.09917C2.78435 12.5825 2.48242 12.4576 2.25981 12.2352C2.03719 12.0128 1.91213 11.7112 1.91213 11.3967V3.09619M0.725098 3.09619H11.4084M3.69268 3.09619V1.9104C3.69268 1.59591 3.81775 1.2943 4.04036 1.07192C4.26297 0.849541 4.5649 0.724609 4.87972 0.724609H7.25379C7.56861 0.724609 7.87054 0.849541 8.09315 1.07192C8.31576 1.2943 8.44082 1.59591 8.44082 1.9104V3.09619" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
+     </svg>                         </button>
+                          
+                        </div>
+                      </td>
                    </tr>
                    } @empty {
                    <tr>
@@ -683,7 +685,7 @@
           </div>
 
           <div class="lg:col-span-7 flex">
-          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+          <a [routerLink]="['/jobs/create-job']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -954,13 +956,13 @@
             <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
           </div>
 
-          <div class="lg:col-span-7 flex">
-          <button (click)="uploadDocument()" class="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
+<div class="lg:col-span-7 flex">
+          <a [routerLink]="['/clients', clientId, 'add-document']" class="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v13M12 5l-4 4M12 5l4 4M5 19h14"/></svg>
                  Upload Document
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-               </button>
-               
+               </a>
+                
           </div>
 
         </div>
@@ -1185,7 +1187,7 @@
           </div>
 
           <div class="lg:col-span-7 flex">
-          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+          <a [routerLink]="['/clients', clientId, 'add-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -1375,7 +1377,7 @@
           </div>
 
           <div class="lg:col-span-7 flex">
-          <a class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+          <a [routerLink]="['/clients', clientId, 'add-emergency-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
