@@ -13,6 +13,11 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
   styles: [`
     .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
     .td-cell { padding: 0.9rem 1.1rem; vertical-align: middle; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   `]
 })
 export class AllSitesComponent implements OnInit {
@@ -23,6 +28,13 @@ export class AllSitesComponent implements OnInit {
   clientFilter = '';
   siteTypeFilter = '';
   statusFilter: 'all' | 'active' | 'inactive' = 'all';
+
+  // Pagination state
+  currentPage = 1;
+  pageSize = 10;
+  pageSizeOptions = [10, 25, 50, 100];
+  totalItems = 0;
+  totalPages = 0;
 
   clientOptions: Client[] = [];
   siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution Centre', 'Construction Site', 'Storage', 'Remote Office', 'Data Centre', 'Other'];
@@ -60,7 +72,10 @@ export class AllSitesComponent implements OnInit {
 
   private loadAllSites(): void {
     this.loading = true;
-    const params: any = { page: 0, size: 200 };
+    const params: any = { 
+      page: this.currentPage - 1, 
+      size: this.pageSize 
+    };
     if (this.searchQuery) params.q = this.searchQuery;
     if (this.statusFilter && this.statusFilter !== 'all') params.status = this.statusFilter === 'active' ? 'ACTIVE' : this.statusFilter === 'inactive' ? 'INACTIVE' : this.statusFilter;
     if (this.siteTypeFilter) params.siteType = this.siteTypeFilter;
@@ -68,6 +83,8 @@ export class AllSitesComponent implements OnInit {
 
     this.clientService.listAllSites(params).subscribe((result: any) => {
       this.allSites = result.items;
+      this.totalItems = result.totalElements || result.total || result.items.length;
+      this.totalPages = result.totalPages || Math.ceil(this.totalItems / this.pageSize);
       this.loading = false;
     });
   }
@@ -77,22 +94,78 @@ export class AllSitesComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.currentPage = 1;
     this.loadAllSites();
   }
 
   onClientChange(): void {
+    this.currentPage = 1;
     this.loadAllSites();
   }
 
   onSiteTypeChange(): void {
+    this.currentPage = 1;
     this.loadAllSites();
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 1;
+    this.loadAllSites();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadAllSites();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadAllSites();
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadAllSites();
+    }
+  }
+
+  get visiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.totalPages;
+    const current = this.currentPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
+  get showingStart(): number {
+    if (this.totalItems === 0) return 0;
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get showingEnd(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
   }
 
   get clientFilterOptions(): RichSelectOption[] {
     return [{ value: '', label: 'All Clients' }, ...this.clientOptions.map(c => ({ value: c.id, label: c.name }))];
   }
 
-  get totalSites(): number { return this.allSites.length; }
+  get totalSites(): number { return this.totalItems; }
   get activeSites(): number { return this.allSites.filter(s => s.status === 'ACTIVE').length; }
   get inactiveSites(): number { return this.allSites.filter(s => s.status === 'INACTIVE').length; }
   get activePercentage(): string {
