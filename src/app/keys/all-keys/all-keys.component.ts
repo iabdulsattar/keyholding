@@ -53,6 +53,13 @@ export class AllKeysComponent implements OnInit {
   keyTypeFilter = '';
   statusFilter: string = '';
 
+  // Pagination state
+  currentPage = 1;
+  pageSize = 10;
+  pageSizeOptions = [10, 25, 50, 100];
+  totalItems = 0;
+  totalPages = 0;
+
   clientOptions: Client[] = [];
   siteOptions: SiteRecord[] = [];
   keyTypeOptions = ['All Key Types', 'Master Key', 'Door Key', 'Alarm Key', 'Gate Key', 'Utility Key', 'Office Key', 'IT Key'];
@@ -108,8 +115,8 @@ export class AllKeysComponent implements OnInit {
     this.clientService.listAllKeys({
       q: this.searchQuery || undefined,
       status,
-      page: 0,
-      size: 200,
+      page: this.currentPage - 1,
+      size: this.pageSize,
     }).subscribe((result: PaginatedResult<KeyRecord>) => {
       let keys = result.items;
       if (this.clientFilter) {
@@ -122,31 +129,91 @@ export class AllKeysComponent implements OnInit {
         keys = keys.filter((k: KeyRecord) => k.type === this.keyTypeFilter);
       }
       this.keys = keys;
+      this.totalItems = result.totalElements || result.total || keys.length;
+      this.totalPages = result.totalPages || Math.ceil(this.totalItems / this.pageSize);
       this.loading = false;
     });
   }
 
   onSearch(): void {
+    this.currentPage = 1;
     this.loadKeys();
   }
 
   onClientChange(): void {
+    this.currentPage = 1;
     this.loadKeys();
   }
 
   onSiteChange(): void {
+    this.currentPage = 1;
     this.loadKeys();
   }
 
   onKeyTypeChange(): void {
+    this.currentPage = 1;
     this.loadKeys();
   }
 
   onStatusChange(): void {
+    this.currentPage = 1;
     this.loadKeys();
   }
 
-  get totalKeys(): number { return this.keys.length; }
+  onPageSizeChange(): void {
+    this.currentPage = 1;
+    this.loadKeys();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadKeys();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadKeys();
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadKeys();
+    }
+  }
+
+  get visiblePages(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.totalPages;
+    const current = this.currentPage;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
+  get showingStart(): number {
+    if (this.totalItems === 0) return 0;
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get showingEnd(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  get totalKeys(): number { return this.totalItems; }
   get onHookKeys(): number { return this.keys.filter(k => k.status === 'In Storage').length; }
   get issuedKeys(): number { return this.keys.filter(k => k.status === 'Issued').length; }
   get onHookPercentage(): string {
