@@ -39,7 +39,7 @@ export class AllSitesComponent implements OnInit {
     { value: 'Other', label: 'Other' },
   ];
   statusFilterOptions: RichSelectOption[] = [
-    { value: 'all', label: 'All Statuses' },
+    { value: 'all', label: 'Status' },
     { value: 'active', label: 'Active' },
     { value: 'inactive', label: 'Inactive' },
   ];
@@ -89,7 +89,7 @@ export class AllSitesComponent implements OnInit {
   }
 
   get clientFilterOptions(): RichSelectOption[] {
-    return [{ value: '', label: 'All Clients' }, ...this.clientOptions.map(c => ({ value: c.id, label: c.name }))];
+    return [{ value: '', label: 'Client Type' }, ...this.clientOptions.map(c => ({ value: c.id, label: c.name }))];
   }
 
   get totalSites(): number { return this.allSites.length; }
@@ -107,7 +107,7 @@ export class AllSitesComponent implements OnInit {
   statusBadge(status: string): string {
     switch (status) {
       case 'ACTIVE':
-        return 'bg-emerald-50 text-emerald-700';
+        return 'bg-green-100 text-green-600';
       case 'INACTIVE':
         return 'bg-rose-50 text-rose-600';
       default:
