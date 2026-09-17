@@ -1289,27 +1289,27 @@
                    </tr>
                  </thead>
                   <tbody class="divide-y divide-slate-200">
-                    @for (contact of contactsPaginated; track contact.id) {
-                     <tr class="hover:bg-slate-50">
-                   <td class="td">
-                     <div class="flex items-center gap-3">
-                       <div class="avatar {{ contact.color }}">{{ contact.initials }}</div>
-                       <span class="text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.fullName }}</span>
-                     </div>
-                   </td>
-                   <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">Operations Manager</td>
-                   
-                   <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.dept }}</td>
-                   <td class="td text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.email }}</td>
-                  <td class="td text-slate-900 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.phone }}</td>
+@for (contact of contactsPaginated; track contact.id) {
+                      <tr class="hover:bg-slate-50">
+                    <td class="td">
+                      <div class="flex items-center gap-3">
+                        <div class="avatar {{ contact.color }}">{{ contact.initials }}</div>
+                        <span class="text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.name }}</span>
+                      </div>
+                    </td>
+                    <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.title }}</td>
+                    
+                    <td class="td text-slate-500 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.dept }}</td>
+                    <td class="td text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ contact.email }}</td>
+                   <td class="td text-slate-900 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.phone }}</td>
 
-                   <td class="td  text-xs font-semibold font-['Inter'] whitespace-nowrap ">
-                    <span class="badge rounded-md {{ contact.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-rose-50 text-rose-500' }}">{{ contact.status }}</span>                                                              
-                  </td>
-                   <td class="td">
-                    <span class="badge rounded-md {{ contact.primaryContact === 'Yes' ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500' }} ">{{ contact.primaryContact ? 'Yes' : 'No' }}</span>
-                                                              
+                    <td class="td  text-xs font-semibold font-['Inter'] whitespace-nowrap ">
+                     <span class="badge rounded-md {{ contact.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-rose-50 text-rose-500' }}">{{ contact.status }}</span>                                                              
                    </td>
+                    <td class="td">
+                     <span class="badge rounded-md {{ contact.primary ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500' }} ">{{ contact.primary ? 'Yes' : 'No' }}</span>
+                                                               
+                    </td>
                         <td class="td">
                           <div class="flex items-center justify-end gap-3 text-slate-400">
                             <button (click)="viewContact(contact.id)" class="hover:text-blue-600 cursor-pointer" title="View">
