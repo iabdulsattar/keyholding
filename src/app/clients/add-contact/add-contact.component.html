@@ -1,46 +1,74 @@
  <!-- Breadcrumb + title + actions -->
-      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pb-5 border-b border-slate-200">
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between ">
         <div>
-          <h1 class="text-xl sm:text-2xl font-bold text-slate-900">{{ isEditMode ? 'Edit Contact' : 'Add New Contact' }}</h1>
-          <app-page-breadcrumb [pageTitle]="isEditMode ? 'Edit Contact' : 'Add New Contact'" [breadcrumbs]="breadcrumbs" />
-          <p class="text-sm text-slate-500 mt-1">{{ isEditMode ? 'Update contact information and details.' : 'Add a new contact for ' + clientName + '.' }}</p>
+        <div class=" flex flex-wrap items-center gap-1.5 text-xs font-semibold text-slate-400 ">
+          <span class="text-blue-600">Clients</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.5 9L7.5 6L4.5 3" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+
+          <span class="text-slate-500">{{ isEditMode ? 'Edit Contact' : 'Add Contact' }}</span>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button (click)="goBack()" class="btn-outline" [disabled]="saving">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            Back to Contacts
-          </button>
-          
+        
+          <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ isEditMode ? 'Edit Contact' : 'Add Contact' }}</h1>
+          <p class="text-xs text-slate-500 mt-1">{{ isEditMode ? 'Update contact information and details.' : 'Add a new contact for ' + clientName + '.' }}</p>
         </div>
+<div class=" ">
+  <div data-svg-wrapper class="">
+    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g filter="url(#filter0_d_2004_488)">
+    <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges"/>
+    <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_2004_488)"/>
+    </g>
+    <defs>
+    <filter id="filter0_d_2004_488" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="1"/>
+    <feGaussianBlur stdDeviation="1.5"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2004_488"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2004_488" result="shape"/>
+    </filter>
+    <pattern id="pattern0_2004_488" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_2004_488" transform="scale(0.00195312)"/>
+    </pattern>
+    <image id="image0_2004_488" width="512" height="512" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+    </defs>
+    </svg>
+  </div>
+</div>
+         
       </div>
 
       <!-- Content grid -->
-      <div class="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-5 items-start py-5">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch py-5">
 
         <!-- Form column -->
-        <div class="space-y-5">
+        <div class="space-y-5 col-span-1 xl:col-span-8">
 
           <!-- Contact Information -->
-          <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
-            <h3 class="text-base font-bold text-slate-900 mb-5">Contact Information</h3>
+          <div class="bg-white rounded-md shadow-xs p-5 sm:p-6">
+            <h3 class="text-base font-bold text-slate-900 border-b border-slate-200 mb-5">Contact Information</h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <div>
-                 <label class="field-label" [class.text-rose-600]="touched.has('firstName') && !firstName.trim()" [class.text-slate-700]="!(touched.has('firstName') && !firstName.trim())">First Name <span class="text-rose-500">*</span></label>
+                 <label class="field-label" [class.text-rose-600]="touched.has('firstName') && !firstName.trim()" [class.text-slate-900]="!(touched.has('firstName') && !firstName.trim())">First Name <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('firstName') && !firstName.trim()" class="rounded-lg transition">
                    <input type="text" placeholder="Enter first name" class="field-input border-none" [(ngModel)]="firstName" name="firstName" (blur)="markTouched('firstName')" [disabled]="saving" />
                  </div>
                  @if (touched.has('firstName') && !firstName.trim()) { <p class="text-xs text-rose-600 mt-1">First name is required</p> }
               </div>
               <div>
-                 <label class="field-label" [class.text-rose-600]="touched.has('lastName') && !lastName.trim()" [class.text-slate-700]="!(touched.has('lastName') && !lastName.trim())">Last Name <span class="text-rose-500">*</span></label>
+                 <label class="field-label" [class.text-rose-600]="touched.has('lastName') && !lastName.trim()" [class.text-slate-900]="!(touched.has('lastName') && !lastName.trim())">Last Name <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('lastName') && !lastName.trim()" class="rounded-lg transition">
                    <input type="text" placeholder="Enter last name" class="field-input border-none" [(ngModel)]="lastName" name="lastName" (blur)="markTouched('lastName')" [disabled]="saving" />
                  </div>
                  @if (touched.has('lastName') && !lastName.trim()) { <p class="text-xs text-rose-600 mt-1">Last name is required</p> }
               </div>
               <div>
-                 <label class="field-label" [class.text-rose-600]="touched.has('jobTitle') && !jobTitle.trim()" [class.text-slate-700]="!(touched.has('jobTitle') && !jobTitle.trim())">Job Title <span class="text-rose-500">*</span></label>
+                 <label class="field-label" [class.text-rose-600]="touched.has('jobTitle') && !jobTitle.trim()" [class.text-slate-900]="!(touched.has('jobTitle') && !jobTitle.trim())">Job Title <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('jobTitle') && !jobTitle.trim()" class="rounded-lg transition">
                    <input type="text" placeholder="Enter job title" class="field-input border-none" [(ngModel)]="jobTitle" name="jobTitle" (blur)="markTouched('jobTitle')" [disabled]="saving" />
                  </div>
@@ -48,7 +76,7 @@
               </div>
 
               <div>
-                 <label class="field-label" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-700]="!(touched.has('email') && !email.trim())">Email Address <span class="text-rose-500">*</span></label>
+                 <label class="field-label" [class.text-rose-600]="touched.has('email') && !email.trim()" [class.text-slate-900]="!(touched.has('email') && !email.trim())">Enter Email Address <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('email') && !email.trim()" class="rounded-lg transition">
                    <input type="email" placeholder="Enter email address" class="field-input border-none" [(ngModel)]="email" name="email" (blur)="markTouched('email')" [disabled]="saving" />
                  </div>
@@ -56,7 +84,7 @@
                 <p class="field-hint">Enter a valid email address.</p>
               </div>
                <div>
-                  <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-700]="!(touched.has('phone') && !phone.trim())">Phone Number <span class="text-rose-500">*</span></label>
+                  <label class="field-label" [class.text-rose-600]="touched.has('phone') && !phone.trim()" [class.text-slate-900]="!(touched.has('phone') && !phone.trim())">Enter Phone Number <span class="text-red-500">*</span></label>
                   <div [class.border-rose-500]="touched.has('phone') && !phone.trim()" class="rounded-lg transition">
                     <input type="text" placeholder="Enter phone number" class="field-input" [(ngModel)]="phone" name="phone" (blur)="markTouched('phone')" [disabled]="saving" />
                   </div>
@@ -64,7 +92,7 @@
                  <p class="field-hint">Enter a valid phone number.</p>
                </div>
               <div>
-                <label class="field-label">Department</label>
+                <label class="field-label text-slate-900">Department</label>
                 <app-rich-select [options]="departmentOptions" [(value)]="department" (valueChange)="markTouched('department')" [disabled]="saving" placeholder="Select department" class="w-full"></app-rich-select>
                 <p class="field-hint">Select the department.</p>
               </div>
@@ -72,7 +100,23 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
                 <div>
-                  <label class="field-label" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-700]="!(touched.has('status') && !status)">Status <span class="text-rose-500">*</span></label>
+                 <label class="field-label text-slate-900">Emergency Contact</label>
+                 <div class="flex items-center gap-4 mt-1 h-11">
+                   <label class="inline-flex items-center gap-2 cursor-pointer">
+                     <input type="radio" [checked]="primaryContact === true" (change)="primaryContact = true" name="primaryContact" class="accent-blue-600 w-4 h-4" />
+                     <span class="text-[10px] text-slate-900 font-semibold">Yes</span>
+                   </label>
+                   <label class="inline-flex items-center gap-2 cursor-pointer">
+                     <input type="radio" [checked]="primaryContact === false" (change)="primaryContact = false" name="primaryContact" class="accent-blue-600 w-4 h-4" />
+                     <span class="text-[10px] text-slate-900 font-semibold">No</span>
+                   </label>
+                 </div>
+                 <p class="field-hint">Select if this contact is the primary contact.
+                 </p>
+               </div>
+                            
+                <div>
+                  <label class="field-label" [class.text-rose-600]="touched.has('status') && !status" [class.text-slate-900]="!(touched.has('status') && !status)">Status <span class="text-red-500">*</span></label>
                   <div [class.border-rose-500]="touched.has('status') && !status" class="rounded-lg  transition">
                     <app-rich-select [options]="statusOptions" [(value)]="status" (valueChange)="markTouched('status')" [disabled]="saving" placeholder="Select status" class="w-full"></app-rich-select>
                   </div>
@@ -80,124 +124,116 @@
                   <p class="field-hint">Set the status of this contact.</p>
                 </div>
 
-               <div>
-                 <label class="field-label">Primary Contact</label>
-                 <div class="flex items-center gap-4 mt-1">
-                   <label class="inline-flex items-center gap-2 cursor-pointer">
-                     <input type="radio" [checked]="primaryContact === true" (change)="primaryContact = true" name="primaryContact" class="accent-blue-600 w-4 h-4" />
-                     <span class="text-sm text-slate-700">Yes</span>
-                   </label>
-                   <label class="inline-flex items-center gap-2 cursor-pointer">
-                     <input type="radio" [checked]="primaryContact === false" (change)="primaryContact = false" name="primaryContact" class="accent-blue-600 w-4 h-4" />
-                     <span class="text-sm text-slate-700">No</span>
-                   </label>
-                 </div>
-                 <p class="field-hint">Mark this contact as the primary point of contact.</p>
-               </div>
-              
+               
               <div>
-                <label class="field-label">Preferred Contact Method</label>
+                <label class="field-label text-slate-900">Preferred Contact Method</label>
                 <app-rich-select [options]="preferredContactMethodOptions" [(value)]="preferredContactMethod" [disabled]="saving" placeholder="Select preferred contact method" class="w-full"></app-rich-select>
                 <p class="field-hint">How would you like to be contacted?</p>
               </div>
             </div>
 
             <div class="mt-5">
-              <label class="field-label">Address <span class="text-slate-400 font-normal">(Optional)</span></label>
+              <label class="field-label text-slate-900">Address <span class="">(Optional)</span></label>
               <textarea rows="3" placeholder="Enter address" class="field-input resize-y" [(ngModel)]="address" name="address" [disabled]="saving"></textarea>
               <p class="field-hint">Enter the contact address.</p>
             </div>
-          </div>
-
-          <!-- Additional Information -->
-          <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
-            <h3 class="text-base font-bold text-slate-900 mb-5">Additional Information <span class="text-slate-500 font-normal text-sm">(Optional)</span></h3>
-            <label class="field-label">Notes</label>
-            <textarea rows="4" placeholder="Enter any additional notes about this contact" class="field-input resize-y" [(ngModel)]="notes" name="notes" [disabled]="saving"></textarea>
-            <p class="field-hint">Add any extra information about this contact.</p>
 
             <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-6">
               <button (click)="cancel()" [disabled]="saving" class="btn-outline justify-center">Cancel</button>
               <button (click)="saveContact()" [disabled]="saving" class="btn-primary justify-center">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 {{ saving ? 'Saving...' : (isEditMode ? 'Update Contact' : 'Save Contact') }}
               </button>
             </div>
+            
           </div>
+
+          
         </div>
 
         <!-- Sidebar column -->
-        <div class="space-y-5">
+        <div class="space-y-5 col-span-1 xl:col-span-4 bg-white rounded-md p-5 sm:p-6">
 
           <!-- Tips -->
-          <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
+          <div class="border-b border-slate-200 pb-5">
             <div class="flex items-center gap-2 mb-4">
-              <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3a6 6 0 00-4 10.472V15a1 1 0 001 1h6a1 1 0 001-1v-1.528A6 6 0 0012 3z"/></svg>
+              <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                i
               </div>
-              <h4 class="font-bold text-slate-900">Tips</h4>
+              <h4 class="font-bold text-slate-900 text-base">Tips</h4>
             </div>
             <div class="space-y-4">
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-slate-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <svg width="20" height="20" class="shrink-0" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.6663 3.66551H16.4994C16.9856 3.66551 17.4519 3.85868 17.7956 4.20253C18.1394 4.54637 18.3326 5.01272 18.3326 5.49899V18.3334C18.3326 18.8196 18.1394 19.286 17.7956 19.6298C17.4519 19.9737 16.9856 20.1668 16.4994 20.1668H5.50051C5.01433 20.1668 4.54806 19.9737 4.20428 19.6298C3.86049 19.286 3.66736 18.8196 3.66736 18.3334V5.49899C3.66736 5.01272 3.86049 4.54637 4.20428 4.20253C4.54806 3.85868 5.01433 3.66551 5.50051 3.66551H7.33366M8.25023 1.83203H13.7497C14.2559 1.83203 14.6663 2.24247 14.6663 2.74877V4.58225C14.6663 5.08855 14.2559 5.49899 13.7497 5.49899H8.25023C7.74402 5.49899 7.33366 5.08855 7.33366 4.58225V2.74877C7.33366 2.24247 7.74402 1.83203 8.25023 1.83203Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
                 <div>
-                  <p class="text-sm font-semibold text-slate-800">Add accurate contact details</p>
-                  <p class="text-xs text-slate-500 mt-0.5">Ensure all information is correct for effective communication.</p>
+                  <p class="text-xs font-semibold text-slate-900">Add accurate contact details</p>
+                  <p class="text-xs text-sky-900 mt-0.5">Ensure all information is correct for effective communication.</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-slate-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg width="20" height="20" class="shrink-0" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.41667 9.16595V6.41573C6.41667 5.20006 6.89955 4.03418 7.75909 3.17457C8.61864 2.31496 9.78442 1.83203 11 1.83203C12.2156 1.83203 13.3814 2.31496 14.2409 3.17457C15.1004 4.03418 15.5833 5.20006 15.5833 6.41573V9.16595M11.9167 14.6664C11.9167 15.1727 11.5063 15.5831 11 15.5831C10.4937 15.5831 10.0833 15.1727 10.0833 14.6664C10.0833 14.1601 10.4937 13.7497 11 13.7497C11.5063 13.7497 11.9167 14.1601 11.9167 14.6664ZM4.58333 9.16595H17.4167C18.4292 9.16595 19.25 9.98683 19.25 10.9994V18.3334C19.25 19.346 18.4292 20.1668 17.4167 20.1668H4.58333C3.57081 20.1668 2.75 19.346 2.75 18.3334V10.9994C2.75 9.98683 3.57081 9.16595 4.58333 9.16595Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
                 <div>
-                  <p class="text-sm font-semibold text-slate-800">Set as Primary Contact</p>
-                  <p class="text-xs text-slate-500 mt-0.5">Primary contacts receive important notifications and updates.</p>
+                  <p class="text-xs font-semibold text-slate-900">Set as Primary Contact</p>
+                  <p class="text-xs text-sky-900 mt-0.5">Primary contacts receive important notifications and updates.</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <svg class="w-4 h-4 text-slate-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <svg width="20" height="20" class="shrink-0" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.25 7.3321V14.6654C19.2497 14.9869 19.1648 15.3027 19.0039 15.581C18.843 15.8594 18.6118 16.0905 18.3333 16.2513L11.9167 19.9179C11.638 20.0788 11.3218 20.1636 11 20.1636C10.6782 20.1636 10.362 20.0788 10.0833 19.9179L3.66667 16.2513C3.38824 16.0905 3.15698 15.8594 2.99609 15.581C2.8352 15.3027 2.75033 14.9869 2.75 14.6654V7.3321C2.75033 7.01061 2.8352 6.69485 2.99609 6.4165C3.15698 6.13816 3.38824 5.90702 3.66667 5.74627L10.0833 2.0796C10.362 1.9187 10.6782 1.83398 11 1.83398C11.3218 1.83398 11.638 1.9187 11.9167 2.0796L18.3333 5.74627C18.6118 5.90702 18.843 6.13816 19.0039 6.4165C19.1648 6.69485 19.2497 7.01061 19.25 7.3321Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
                 <div>
-                  <p class="text-sm font-semibold text-slate-800">Keep Information Updated</p>
-                  <p class="text-xs text-slate-500 mt-0.5">Regularly update contact details to maintain accurate records.</p>
+                  <p class="text-xs font-semibold text-slate-900">Keep Information Updated</p>
+                  <p class="text-xs text-sky-900 mt-0.5">Regularly update contact details to maintain accurate records.</p>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Quick Preview -->
-          <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
+          <div class="">
             <div class="flex items-center gap-2 mb-4">
-              <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+              <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.6672 14V12.6667C12.6672 11.9594 12.3862 11.2811 11.886 10.781C11.3859 10.281 10.7075 10 10.0002 10H5.99974C5.29241 10 4.61406 10.281 4.1139 10.781C3.61375 11.2811 3.33276 11.9594 3.33276 12.6667V14M10.6669 4.66667C10.6669 6.13943 9.47289 7.33333 7.99996 7.33333C6.52704 7.33333 5.33299 6.13943 5.33299 4.66667C5.33299 3.19391 6.52704 2 7.99996 2C9.47289 2 10.6669 3.19391 10.6669 4.66667Z" stroke="white" stroke-linecap="round"/>
+</svg>
+
               </div>
-              <h4 class="font-bold text-slate-900">Quick Preview</h4>
+              <h4 class="font-bold text-slate-900 text-sm">Quick Preview</h4>
             </div>
-            <dl class="divide-y divide-slate-100 text-sm">
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Name</dt>
-                <dd class="text-slate-900 font-medium">{{ firstName || lastName ? (firstName + ' ' + lastName).trim() : '—' }}</dd>
+            <dl class=" text-sm">
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Name</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ firstName || lastName ? (firstName + ' ' + lastName).trim() : '—' }}</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Job Title</dt>
-                <dd class="text-slate-900 font-medium">{{ jobTitle || '—' }}</dd>
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Job Title</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ jobTitle || '—' }}</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Email</dt>
-                <dd class="text-slate-900 font-medium">{{ email || '—' }}</dd>
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Email</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ email || '—' }}</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Phone</dt>
-                <dd class="text-slate-900 font-medium">{{ phone || '—' }}</dd>
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Phone</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ phone || '—' }}</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Department</dt>
-                <dd class="text-slate-900 font-medium">{{ department || '—' }}</dd>
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Department</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ department || '—' }}</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Status</dt>
-                <dd class="text-slate-900 font-medium">{{ status || '—' }}</dd>
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Status</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ status || '—' }}</dd>
               </div>
-              <div class="flex items-center justify-between py-2.5">
-                <dt class="font-medium text-slate-700">Primary Contact</dt>
-                <dd class="text-slate-900 font-medium">{{ primaryContact ? 'Yes' : 'No' }}</dd>
+              <div class="flex items-center  py-2">
+                <dt class="font-normal text-slate-900 text-xs w-35">Primary Contact</dt>
+                <dd class="text-slate-900 font-normal text-xs">{{ primaryContact ? 'Yes' : 'No' }}</dd>
               </div>
             </dl>
           </div>
