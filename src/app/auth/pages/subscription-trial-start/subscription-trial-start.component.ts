@@ -105,6 +105,7 @@ export class SubscriptionTrialStartComponent implements OnInit {
       planId: this.trialPlan.id,
       billingPeriod: 'MONTHLY',
       useTrial: true,
+      config: {},
     }).subscribe({
       next: () => {
         this.isLoading = false;

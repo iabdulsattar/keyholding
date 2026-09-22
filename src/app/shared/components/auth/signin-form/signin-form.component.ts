@@ -301,6 +301,7 @@ export class SigninFormComponent {
         planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
         billingPeriod: 'MONTHLY',
         useTrial: true,
+        config: {},
       }).subscribe({
         next: () => {
           done();
