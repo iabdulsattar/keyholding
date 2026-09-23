@@ -290,7 +290,13 @@ export class SigninFormComponent {
     const hasKeyVaultAccess = (this.permissionService.getServiceAccess() ?? []).some(
       (g) => g.serviceCode === 'key-vault'
     );
-    console.log('[Signin] hasKeyVaultAccess=', hasKeyVaultAccess);
+
+    const subscribedServices = data?.subscribedServices ?? data?.tokens?.subscribedServices ?? [];
+    const hasKeyVaultSubscribedService = subscribedServices.some(
+      (s: any) => s.serviceCode === 'key-vault'
+    );
+
+    console.log('[Signin] hasKeyVaultAccess=', hasKeyVaultAccess, 'hasKeyVaultSubscribedService=', hasKeyVaultSubscribedService);
 
     const navigateAfterLogin = (target: string) => {
       this.isLoading = false;
@@ -352,7 +358,7 @@ export class SigninFormComponent {
       });
     };
 
-    if (!hasKeyVaultAccess) {
+    if (!hasKeyVaultAccess && !hasKeyVaultSubscribedService) {
       const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
       if (orgId) {
         this.keyVault.enableService(orgId, 'key-vault', this.email, this.otpCode || '').subscribe({
