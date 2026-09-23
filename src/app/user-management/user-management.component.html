@@ -187,10 +187,19 @@
                   </td>
                   <td class="py-4 px-6 text-slate-500 text-xs font-normal font-['Inter']">{{ user.email }}</td>
                   <td class="py-4 px-6">
-                    <span
-                      class="inline-flex items-center px-2.5 py-1 bg-blue-50 rounded-md text-blue-700 text-xs font-semibold font-['Inter']">
-                      {{ user.roles[0] || 'User' }}
-                    </span>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      @for (role of user.roles; track role; let i = $index) {
+                        <span class="inline-flex items-center px-2.5 py-1 bg-blue-50 rounded-md text-blue-700 text-xs font-semibold font-['Inter']">
+                          {{ role }}
+                        </span>
+                        @if (i < user.roles.length - 1) {
+                          <span class="text-slate-300">|</span>
+                        }
+                      }
+                      @if (user.roles.length === 0) {
+                        <span class="inline-flex items-center px-2.5 py-1 bg-blue-50 rounded-md text-blue-700 text-xs font-semibold font-['Inter']">User</span>
+                      }
+                    </div>
                   </td>
                   <td class="py-4 px-6">
                     <div class="flex items-center gap-2">
@@ -297,10 +306,19 @@
                 </div>
               </div>
               <div class="flex items-center justify-between mt-3">
-                <span
-                  class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-600">
-                  {{ user.roles[0] || 'User' }}
-                </span>
+                <div class="flex flex-wrap items-center gap-1.5">
+                  @for (role of user.roles; track role; let i = $index) {
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-600">
+                      {{ role }}
+                    </span>
+                    @if (i < user.roles.length - 1) {
+                      <span class="text-slate-300">|</span>
+                    }
+                  }
+                  @if (user.roles.length === 0) {
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-600">User</span>
+                  }
+                </div>
                 <div class="flex items-center gap-1.5">
                   <span class="w-2 h-2 rounded-full" [ngClass]="{
                       'bg-emerald-500': user.invite === 'Accepted',

@@ -246,7 +246,7 @@
           <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ (selectedPlan ? (getPlanPrice(selectedPlan) * 0.2) : 0) | number:'1.2-2' }}</span>
         </div>
         <div class="flex items-center justify-between py-3 text-sm">
-          <span class="text-slate-900 text-xs font-normal font-['Inter']">Subtotal ({{ selectedPlan ? getPlanSites(selectedPlan) : 0 }} &times; £{{ (selectedPlan ? getPlanPrice(selectedPlan) : 0) | number:'1.2-2' }})</span>
+          <span class="text-slate-900 text-xs font-normal font-['Inter']"> Subtotal (excl. VAT)</span>
           <span class="text-slate-900 text-xs font-medium font-['Inter']">£{{ (selectedPlan ? getSubtotal(selectedPlan) : 0) | number:'1.2-2' }}</span>
         </div>
         <div ></div>

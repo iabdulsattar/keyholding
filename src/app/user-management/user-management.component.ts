@@ -90,7 +90,10 @@ export class UserManagementComponent implements OnInit {
 
   get roleOptions(): RichSelectOption[] {
     const roles = this.users.flatMap(u => u.roles || []);
-    return Array.from(new Set(roles)).sort().map(role => ({ value: role, label: role }));
+    return [
+      { value: '', label: 'All Roles' },
+      ...Array.from(new Set(roles)).sort().map(role => ({ value: role, label: role }))
+    ];
   }
 
   get statusOptions(): { value: string; label: string }[] {
@@ -453,8 +456,9 @@ export class UserManagementComponent implements OnInit {
   }
 
   get detailRole(): string {
-    const roles = this.detailUser?.roles || this.selectedUser?.roles || [];
-    return (roles[0]?.name || roles[0] || 'Member');
+    const roles: any[] = this.detailUser?.roles || this.selectedUser?.roles || [];
+    const roleNames = roles.map((role: any) => role?.name || role).filter((role): role is string => !!role);
+    return roleNames.length ? roleNames.join(', ') : 'Member';
   }
 
   get detailStatus(): string {

@@ -358,6 +358,41 @@ export class AddUserComponent implements OnInit {
     return sessionStorage.getItem('org_id') || sessionStorage.getItem('organizationId') || localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
   }
 
+  private getRoleIds(user: any): string[] {
+    const roleIds: string[] = [];
+    const addRoleIds = (values: unknown) => {
+      if (!Array.isArray(values)) return;
+      values.forEach(value => {
+        if (typeof value === 'string') {
+          roleIds.push(value);
+        } else if (value && typeof value === 'object') {
+          const role = value as { id?: string; roleId?: string };
+          if (role.id) roleIds.push(role.id);
+          if (role.roleId) roleIds.push(role.roleId);
+        }
+      });
+    };
+    const addRoleObjects = (values: unknown) => {
+      if (!Array.isArray(values)) return;
+      values.forEach(value => {
+        if (value && typeof value === 'object') {
+          const role = value as { id?: string; roleId?: string };
+          if (role.id) roleIds.push(role.id);
+          if (role.roleId) roleIds.push(role.roleId);
+        }
+      });
+    };
+
+    addRoleIds(user.roleIds);
+    addRoleObjects(user.roles);
+
+    const keyVault = (user.serviceAccess || []).find((service: any) => service.serviceCode === 'key-vault');
+    addRoleIds(keyVault?.roleIds);
+    addRoleObjects(keyVault?.roleDetails);
+
+    return Array.from(new Set(roleIds.map(String).filter(Boolean)));
+  }
+
   private loadUser(id: string): void {
     this.loading = true;
     this.errorMessage = '';
@@ -378,7 +413,7 @@ export class AddUserComponent implements OnInit {
         this.form.location = user.location || '';
         this.form.canAccessWeb = user.canAccessWeb ?? true;
         this.form.canAccessMobile = user.canAccessMobile ?? true;
-        this.form.roleIds = (user.roleIds || (user.serviceAccess || []).find(s => s.serviceCode === 'key-vault')?.roleIds || []).map(String);
+        this.form.roleIds = this.getRoleIds(user);
         this.profileImage = (user as any).profileImage || null;
         this.userKeycloakId = (user as any).keycloakId || null;
         this.loading = false;

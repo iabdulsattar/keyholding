@@ -88,7 +88,6 @@ export class CreateJobComponent implements OnInit {
     { value: 'Low', label: 'Low' },
     { value: 'Medium', label: 'Medium' },
     { value: 'High', label: 'High' },
-    { value: 'Critical', label: 'Critical' }
   ];
   selectedClient = '';
   selectedSite = '';
@@ -697,7 +696,6 @@ export class CreateJobComponent implements OnInit {
       'Low': 'LOW',
       'Medium': 'MEDIUM',
       'High': 'HIGH',
-      'Critical': 'CRITICAL'
     };
     return map[priority] || 'LOW';
   }

@@ -97,7 +97,7 @@ export class SubscriptionPlanComponent implements OnInit {
   }
 
   getSubtotal(plan: Plan): number {
-    return this.getPlanSites(plan) * this.unitPrice;
+    return this.unitPrice;
   }
 
   getVat(plan: Plan): number {

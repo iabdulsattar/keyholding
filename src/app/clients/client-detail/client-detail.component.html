@@ -431,17 +431,21 @@
             <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <input type="text" autocomplete="off"
-              placeholder="Search jobs by job ID, site, officer..."
+            <input type="text" [(ngModel)]="keysSearch" (ngModelChange)="onKeysSearch()" autocomplete="off"
+              placeholder="Search keys by code, name, site..."
               class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
           </div>
 
           
           <div class="lg:col-span-2">  
-            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+            <app-rich-select [options]="keyStatusOptions" [(value)]="keysStatus" (valueChange)="onKeysStatusChange()" placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
           </div>
 
-<div class="lg:col-span-7 flex">
+          <div class="lg:col-span-2">  
+            <app-rich-select [options]="keyTypeOptions" [(value)]="keysType" (valueChange)="onKeysTypeChange()" placeholder="Key Type" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+          </div>
+
+<div class="lg:col-span-5 flex">
           <a [routerLink]="['/keys/add-key']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -522,7 +526,7 @@
            </div>
 
           <div class="bg-white border-t border-slate-200 px-4 py-4 flex items-center justify-between">
-            <p class="text-xs text-slate-600">Showing <span class="text-slate-600 font-bold">{{ keysShowingStart }}</span> to <span class="text-slate-600 font-bold">{{ keysShowingEnd }}</span> of <span class="text-slate-800 font-semibold">{{ filteredKeys.length }}</span> keys</p>
+            <p class="text-xs text-slate-600">Showing <span class="text-slate-600 font-bold">{{ keysShowingStart }}</span> to <span class="text-slate-600 font-bold">{{ keysShowingEnd }}</span> of <span class="text-slate-800 font-semibold">{{ keysTotalItems }}</span> keys</p>
                <div class="flex items-center gap-1">
                  <button (click)="keysPreviousPage()" [disabled]="keysPage === 1" class="p-1.5 rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Previous page">
                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-7"/></svg>
@@ -558,17 +562,21 @@
             <svg width="16" height="16" class="absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <input type="text" autocomplete="off"
-              placeholder="Search jobs by job ID, site, officer..."
+            <input type="text" [(ngModel)]="sitesSearch" (ngModelChange)="onSitesSearch()" autocomplete="off"
+              placeholder="Search sites by name, code, address..."
               class="w-full pl-11 pr-4 py-3.5 rounded-md shadow-xs bg-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400" />
           </div>
 
           
           <div class="lg:col-span-2">  
-            <app-rich-select placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+            <app-rich-select [options]="siteStatusOptions" [(value)]="sitesStatus" (valueChange)="onSitesStatusChange()" placeholder="Status" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
           </div>
 
-          <div class="lg:col-span-7 flex">
+          <div class="lg:col-span-2">  
+            <app-rich-select [options]="siteTypeOptions" [(value)]="sitesType" (valueChange)="onSitesTypeChange()" placeholder="Site Type" class="h-10 w-full sm:w-auto" panelWidth="wide"></app-rich-select>
+          </div>
+
+          <div class="lg:col-span-5 flex">
           <a [routerLink]="['/sites/add-site']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -639,8 +647,8 @@
                  </tbody>
                </table>
              </div>
-             <div class="bg-white border-t border-slate-200 px-4 py-4 flex items-center justify-between">
-               <p class="text-xs text-slate-500">Showing <span class="text-slate-900 font-semibold">{{ sitesShowingStart }} to {{ sitesShowingEnd }}</span> of <span class="text-slate-900 font-semibold">{{ filteredSites.length }}</span> sites</p>
+<div class="bg-white border-t border-slate-200 px-4 py-4 flex items-center justify-between">
+                <p class="text-xs text-slate-500">Showing <span class="text-slate-900 font-semibold">{{ sitesShowingStart }} to {{ sitesShowingEnd }}</span> of <span class="text-slate-900 font-semibold">{{ sitesTotalItems }}</span> sites</p>
                <div class="flex items-center gap-4">
                   <div class="flex items-center gap-1">
                     <button (click)="sitesPreviousPage()" [disabled]="sitesPage === 1" class="p-1.5 rounded-md border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === 1 ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">

@@ -55,22 +55,26 @@ export class ClientDetailComponent implements OnInit {
   activeTab = 'overview';
   clientId = '';
   client: Client | null = null;
-  keys: KeyRecord[] = [];
-  filteredKeys: KeyRecord[] = [];
-   keysPage = 1;
-   keysRowsPerPage = 8;
-   keysRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
-   keysSearch = '';
-   keysStatus = 'All';
-   keysType = 'All';
-   sites: SiteRecord[] = [];
-   filteredSites: SiteRecord[] = [];
-   sitesPage = 1;
-   sitesRowsPerPage = 8;
-   sitesRowsPerPageOptions: number[] = [8, 12, 25, 50, 100];
-   sitesSearch = '';
-   sitesStatus = 'All';
-   sitesType = 'All';
+keys: KeyRecord[] = [];
+  keysPage = 1;
+  keysRowsPerPage = 8;
+  keysRowsPerPageOptions: number[] = [8, 10, 25, 50, 100];
+  keysTotalItems = 0;
+  keysTotalPagesApi = 0;
+  keysSearch = '';
+  keysStatus = 'All';
+  keysType = 'All';
+  keysLoading = false;
+sites: SiteRecord[] = [];
+  sitesPage = 1;
+  sitesRowsPerPage = 8;
+  sitesRowsPerPageOptions: number[] = [8, 12, 25, 50, 100];
+  sitesTotalItems = 0;
+  sitesTotalPagesApi = 0;
+  sitesSearch = '';
+  sitesStatus = 'All';
+  sitesType = 'All';
+  sitesLoading = false;
   loading = false;
   clientStats: any = null;
   siteStats: any = null;
@@ -177,6 +181,45 @@ showDeactivateClientModal = false;
     { value: 'All', label: 'All' },
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' },
+  ];
+
+  siteStatusOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'INACTIVE', label: 'Inactive' },
+  ];
+
+  siteTypeOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'Office', label: 'Office' },
+    { value: 'Warehouse', label: 'Warehouse' },
+    { value: 'Retail', label: 'Retail' },
+    { value: 'Distribution Centre', label: 'Distribution Centre' },
+    { value: 'Data Centre', label: 'Data Centre' },
+    { value: 'Construction Site', label: 'Construction Site' },
+    { value: 'Storage', label: 'Storage' },
+    { value: 'Remote Office', label: 'Remote Office' },
+    { value: 'Other', label: 'Other' },
+  ];
+
+  keyStatusOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'In Storage', label: 'In Storage' },
+    { value: 'Issued', label: 'Issued' },
+    { value: 'In Use', label: 'In Use' },
+    { value: 'Overdue', label: 'Overdue' },
+    { value: 'Lost / Damaged', label: 'Lost / Damaged' },
+  ];
+
+  keyTypeOptions: RichSelectOption[] = [
+    { value: 'All', label: 'All' },
+    { value: 'Master Key', label: 'Master Key' },
+    { value: 'Door Key', label: 'Door Key' },
+    { value: 'Alarm Key', label: 'Alarm Key' },
+    { value: 'Gate Key', label: 'Gate Key' },
+    { value: 'Utility Key', label: 'Utility Key' },
+    { value: 'Office Key', label: 'Office Key' },
+    { value: 'IT Key', label: 'IT Key' },
   ];
 
   get timelineItems(): Array<{ action: string; date: string; by: string; color: string; details?: string }> {
@@ -1041,16 +1084,75 @@ viewEmergencyContact(contactId: string): void {
   }
 
   private loadKeys(): void {
-    this.clientService.getKeysByClient(this.clientId).subscribe((data: KeyRecord[]) => {
-      this.keys = data;
-      this.filteredKeys = [...this.keys];
+    if (!this.clientId) return;
+    this.keysLoading = true;
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.keys = [];
+      this.keysTotalItems = 0;
+      this.keysTotalPagesApi = 1;
+      this.keysLoading = false;
+      return;
+    }
+    const params: any = {
+      clientId: this.clientId,
+      page: this.keysPage - 1,
+      size: this.keysRowsPerPage
+    };
+    if (this.keysSearch) params.q = this.keysSearch;
+    if (this.keysStatus && this.keysStatus !== 'All') params.status = this.keysStatus;
+    if (this.keysType && this.keysType !== 'All') params.keyTypeId = this.keysType;
+
+    this.keyVault.listKeys(orgId, params).subscribe({
+      next: (result: any) => {
+        const items = result?.items ?? result?.content ?? result?.data ?? [];
+        this.keys = items;
+        this.keysTotalItems = result?.totalItems ?? result?.totalElements ?? result?.total ?? items.length;
+        this.keysTotalPagesApi = result?.totalPages ?? Math.max(1, Math.ceil(this.keysTotalItems / this.keysRowsPerPage));
+        this.keysLoading = false;
+      },
+      error: () => {
+        this.keys = [];
+        this.keysTotalItems = 0;
+        this.keysTotalPagesApi = 1;
+        this.keysLoading = false;
+      }
     });
   }
 
   private loadSites(): void {
-    this.clientService.getSitesByClient(this.clientId).subscribe((data: SiteRecord[]) => {
-      this.sites = data;
-      this.filteredSites = [...this.sites];
+    if (!this.clientId) return;
+    this.sitesLoading = true;
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.sites = [];
+      this.sitesTotalItems = 0;
+      this.sitesTotalPagesApi = 1;
+      this.sitesLoading = false;
+      return;
+    }
+    const params: any = {
+      page: this.sitesPage - 1,
+      size: this.sitesRowsPerPage
+    };
+    if (this.sitesSearch) params.q = this.sitesSearch;
+    if (this.sitesStatus && this.sitesStatus !== 'All') params.status = this.sitesStatus;
+    if (this.sitesType && this.sitesType !== 'All') params.siteType = this.sitesType;
+
+    this.keyVault.listSites(orgId, this.clientId, params).subscribe({
+      next: (result: any) => {
+        const items = result?.items ?? result?.content ?? result?.data ?? [];
+        this.sites = items;
+        this.sitesTotalItems = result?.totalItems ?? result?.totalElements ?? result?.total ?? items.length;
+        this.sitesTotalPagesApi = result?.totalPages ?? Math.max(1, Math.ceil(this.sitesTotalItems / this.sitesRowsPerPage));
+        this.sitesLoading = false;
+      },
+      error: () => {
+        this.sites = [];
+        this.sitesTotalItems = 0;
+        this.sitesTotalPagesApi = 1;
+        this.sitesLoading = false;
+      }
     });
   }
 
@@ -1247,20 +1349,19 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get sitesPaginated(): SiteRecord[] {
-    const start = (this.sitesPage - 1) * this.sitesRowsPerPage;
-    return this.filteredSites.slice(start, start + this.sitesRowsPerPage);
+    return this.sites;
   }
 
   get sitesTotalPages(): number {
-    return Math.ceil(this.filteredSites.length / this.sitesRowsPerPage);
+    return Math.max(1, this.sitesTotalPagesApi);
   }
 
   get sitesShowingStart(): number {
-    return this.filteredSites.length === 0 ? 0 : (this.sitesPage - 1) * this.sitesRowsPerPage + 1;
+    return this.sitesTotalItems === 0 ? 0 : (this.sitesPage - 1) * this.sitesRowsPerPage + 1;
   }
 
   get sitesShowingEnd(): number {
-    return Math.min(this.sitesPage * this.sitesRowsPerPage, this.filteredSites.length);
+    return Math.min(this.sitesPage * this.sitesRowsPerPage, this.sitesTotalItems);
   }
 
   get sitesVisiblePages(): (number | '...')[] {
@@ -1282,24 +1383,23 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get totalKeys(): number {
-    return this.keys.length;
+    return this.keysTotalItems;
   }
 
   get keysPaginated(): KeyRecord[] {
-    const start = (this.keysPage - 1) * this.keysRowsPerPage;
-    return this.filteredKeys.slice(start, start + this.keysRowsPerPage);
+    return this.keys;
   }
 
   get keysTotalPages(): number {
-    return Math.ceil(this.filteredKeys.length / this.keysRowsPerPage);
+    return Math.max(1, this.keysTotalPagesApi);
   }
 
   get keysShowingStart(): number {
-    return this.filteredKeys.length === 0 ? 0 : (this.keysPage - 1) * this.keysRowsPerPage + 1;
+    return this.keysTotalItems === 0 ? 0 : (this.keysPage - 1) * this.keysRowsPerPage + 1;
   }
 
   get keysShowingEnd(): number {
-    return Math.min(this.keysPage * this.keysRowsPerPage, this.filteredKeys.length);
+    return Math.min(this.keysPage * this.keysRowsPerPage, this.keysTotalItems);
   }
 
   get keysVisiblePages(): (number | '...')[] {
@@ -1332,54 +1432,44 @@ viewEmergencyContact(contactId: string): void {
 
   onKeysSearch(): void {
     this.keysPage = 1;
-    this.applyKeysFilter();
+    this.loadKeys();
   }
 
   onKeysStatusChange(): void {
     this.keysPage = 1;
-    this.applyKeysFilter();
+    this.loadKeys();
   }
 
   onKeysTypeChange(): void {
     this.keysPage = 1;
-    this.applyKeysFilter();
-  }
-
-  private applyKeysFilter(): void {
-    const q = this.keysSearch.toLowerCase().trim();
-    this.filteredKeys = this.keys.filter(item => {
-      const matchesSearch = item.keyCode.toLowerCase().includes(q) ||
-                            item.name.toLowerCase().includes(q) ||
-                            item.siteName.toLowerCase().includes(q) ||
-                            item.assignedTo.toLowerCase().includes(q) ||
-                            item.storageLocation.toLowerCase().includes(q);
-      const matchesStatus = this.keysStatus === 'All' || item.status === this.keysStatus;
-      const matchesType = this.keysType === 'All' || item.type === this.keysType;
-      return matchesSearch && matchesStatus && matchesType;
-    });
+    this.loadKeys();
   }
 
   keysPreviousPage(): void {
     if (this.keysPage > 1) {
       this.keysPage--;
+      this.loadKeys();
     }
   }
 
   keysNextPage(): void {
     if (this.keysPage < this.keysTotalPages) {
       this.keysPage++;
+      this.loadKeys();
     }
   }
 
   keysGoToPage(page: number): void {
     if (page >= 1 && page <= this.keysTotalPages) {
       this.keysPage = page;
+      this.loadKeys();
     }
   }
 
   onKeysRowsPerPageChange(size: string): void {
     this.keysRowsPerPage = parseInt(size, 10) || 8;
     this.keysPage = 1;
+    this.loadKeys();
   }
 
   get totalJobs(): number {
@@ -1387,9 +1477,9 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get keyStatusStats(): { status: string; count: number; color: string; pct: number }[] {
-    const total = this.filteredKeys.length || 1;
+    const total = this.keys.length || 1;
     const counts = new Map<string, { count: number; color: string }>();
-    this.filteredKeys.forEach(k => {
+    this.keys.forEach(k => {
       const color = this.statusColorFor(k.status, k.statusColor);
       const existing = counts.get(k.status) || { count: 0, color };
       counts.set(k.status, { count: existing.count + 1, color });
@@ -1442,7 +1532,7 @@ viewEmergencyContact(contactId: string): void {
   }
 
   get keyTypeStats(): { type: string; count: number; color: string; pct: number }[] {
-    const total = this.filteredKeys.length || 1;
+    const total = this.keys.length || 1;
     const hexMap: Record<string, string> = {
       'Master Key': '#3b82f6',
       'Door Key': '#10b981',
@@ -1454,10 +1544,10 @@ viewEmergencyContact(contactId: string): void {
     };
     const knownTypes = ['Master Key', 'Door Key', 'Alarm Key', 'Gate Key', 'Utility Key', 'Office Key', 'IT Key'];
     const counts = new Map<string, number>();
-    this.filteredKeys.forEach(k => {
+    this.keys.forEach(k => {
       counts.set(k.type, (counts.get(k.type) || 0) + 1);
     });
-    const others = this.filteredKeys.filter(k => !knownTypes.includes(k.type)).length;
+    const others = this.keys.filter(k => !knownTypes.includes(k.type)).length;
     const stats = knownTypes.map(type => ({
       type,
       count: counts.get(type) || 0,
@@ -1500,53 +1590,44 @@ viewEmergencyContact(contactId: string): void {
 
   onSitesSearch(): void {
     this.sitesPage = 1;
-    this.applySitesFilter();
+    this.loadSites();
   }
 
   onSitesStatusChange(): void {
     this.sitesPage = 1;
-    this.applySitesFilter();
+    this.loadSites();
   }
 
   onSitesTypeChange(): void {
     this.sitesPage = 1;
-    this.applySitesFilter();
-  }
-
-  private applySitesFilter(): void {
-    const q = this.sitesSearch.toLowerCase().trim();
-    this.filteredSites = this.sites.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(q) ||
-                            item.siteCode.toLowerCase().includes(q) ||
-                            item.address.toLowerCase().includes(q) ||
-                            item.primaryContactName.toLowerCase().includes(q);
-      const matchesStatus = this.sitesStatus === 'All' || item.status === this.sitesStatus;
-      const matchesType = this.sitesType === 'All' || item.siteType === this.sitesType;
-      return matchesSearch && matchesStatus && matchesType;
-    });
+    this.loadSites();
   }
 
   sitesPreviousPage(): void {
     if (this.sitesPage > 1) {
       this.sitesPage--;
+      this.loadSites();
     }
   }
 
   sitesNextPage(): void {
     if (this.sitesPage < this.sitesTotalPages) {
       this.sitesPage++;
+      this.loadSites();
     }
   }
 
   sitesGoToPage(page: number): void {
     if (page >= 1 && page <= this.sitesTotalPages) {
       this.sitesPage = page;
+      this.loadSites();
     }
   }
 
   onRowsPerPageChange(size: string): void {
     this.sitesRowsPerPage = parseInt(size, 10) || 8;
     this.sitesPage = 1;
+    this.loadSites();
   }
 
   switchTab(tab: string): void {
