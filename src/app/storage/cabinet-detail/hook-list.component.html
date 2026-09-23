@@ -119,18 +119,16 @@
       </div>
     </div>
     <div class="col-span-9">
-      <div class="grid grid-cols-2 sm:grid-cols-12 gap-3 shrink-0">
-        <div class="col-span-2">
-         <app-rich-select [options]="statusFilterOptions" [(value)]="filterStatus" (valueChange)="onFilterStatusChange()" placeholder="Status" class="h-11 w-full"></app-rich-select>
+      <div class="grid grid-cols-3 sm:grid-cols-12 gap-3 shrink-0">
+        <div class="col-span-4 sm:col-span-4">
+          <app-rich-select [options]="storageLocationFilterOptions" [(value)]="filterStorageLocation" (valueChange)="onFilterStorageLocationChange()" placeholder="Storage Location" class="h-11 w-full"></app-rich-select>
         </div>
-        <div class="col-span-2">         
-         <app-rich-select [options]="cabinetFilterOptions" [(value)]="filterCabinet" placeholder="All Cabinets" class="h-11 w-full"></app-rich-select>
+        <div class="col-span-4 sm:col-span-4">
+          <app-rich-select [options]="cabinetFilterOptions" [(value)]="filterCabinet" (valueChange)="onFilterCabinetChange()" placeholder="All Cabinets" class="h-11 w-full"></app-rich-select>
         </div>
-        
-        <div class="col-span-2">   
-         <app-rich-select [options]="assignedFilterOptions" [(value)]="filterAssigned" (valueChange)="onFilterAssignedChange()" placeholder="Storage Locations" class="h-11 w-full"></app-rich-select>
+        <div class="col-span-4 sm:col-span-4">
+          <app-rich-select [options]="statusFilterOptions" [(value)]="filterStatus" (valueChange)="onFilterStatusChange()" placeholder="Status" class="h-11 w-full"></app-rich-select>
         </div>
-        
       </div>
     </div>
   </div>

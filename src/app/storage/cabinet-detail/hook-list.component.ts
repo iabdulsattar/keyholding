@@ -61,9 +61,11 @@ export class HookListComponent implements OnInit, AfterViewInit {
 
   filterSearch = '';
   filterStatus = '';
-  filterAssigned = '';
   filterCabinet = '';
   filterStorageLocation = '';
+
+  storageLocations: { id: string; name: string }[] = [];
+  cabinets: { id: string; name: string }[] = [];
 
   readonly statusFilterOptions: RichSelectOption[] = [
     { value: '', label: 'Status' },
@@ -73,15 +75,13 @@ export class HookListComponent implements OnInit, AfterViewInit {
     { value: 'HOOK_DAMAGED', label: 'Hook Damaged' },
   ];
 
-  readonly assignedFilterOptions: RichSelectOption[] = [
-    { value: '', label: 'Storage Locations' },
-    { value: 'ASSIGNED', label: 'Assigned' },
-    { value: 'UNASSIGNED', label: 'Unassigned' },
-  ];
+  get storageLocationFilterOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'Storage Location' }, ...this.storageLocations.map(s => ({ value: s.id, label: s.name }))];
+  }
 
-  readonly cabinetFilterOptions: RichSelectOption[] = [
-    { value: '', label: 'All Cabinets' },
-  ];
+  get cabinetFilterOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'All Cabinets' }, ...this.cabinets.map(c => ({ value: c.id, label: c.name }))];
+  }
 
   private allHooksRaw: any[] = [];
 
@@ -101,6 +101,10 @@ export class HookListComponent implements OnInit, AfterViewInit {
     this.cabinetId = this.route.snapshot.paramMap.get('id') || '';
     this.showAllHooks = this.route.snapshot.queryParamMap.get('all') === 'true';
     this.loadCabinetDetails();
+    if (this.showAllHooks) {
+      this.loadStorageLocations();
+      this.loadCabinetsForFilter();
+    }
     this.loadHooks();
     if (this.showAllHooks) {
       this.loadAllHooksStats();
@@ -118,6 +122,48 @@ export class HookListComponent implements OnInit, AfterViewInit {
         icons.createIcons();
       }
     }, 0);
+  }
+
+  private loadStorageLocations(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId) {
+      this.storageLocations = [];
+      return;
+    }
+    this.keyVault.listStorageLocations(orgId).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const locations = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.storageLocations = (locations || []).map((loc: any) => ({
+          id: loc.id || '',
+          name: loc.name || loc.locationName || '',
+        }));
+      },
+      error: () => {
+        this.storageLocations = [];
+      }
+    });
+  }
+
+  private loadCabinetsForFilter(): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId) {
+      this.cabinets = [];
+      return;
+    }
+    this.keyVault.listCabinets(orgId, { page: 0, size: 200 }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.cabinets = (items || []).map((c: any) => ({
+          id: c.id || '',
+          name: c.name || c.cabinetName || '',
+        }));
+      },
+      error: () => {
+        this.cabinets = [];
+      }
+    });
   }
 
   private loadCabinetDetails(): void {
@@ -179,12 +225,14 @@ export class HookListComponent implements OnInit, AfterViewInit {
 
     if (this.showAllHooks) {
       const effectivePageSize = this.pageSize === 'All' ? (this.totalItems || 200) : this.pageSize;
-      this.keyVault.listAllCabinetHooks(orgId, {
+       this.keyVault.listAllCabinetHooks(orgId, {
         assigned: 'ALL',
         page: this.currentPage,
         size: effectivePageSize,
         q: this.filterSearch || undefined,
         status: this.filterStatus || undefined,
+        cabinetId: this.showAllHooks ? (this.filterCabinet || undefined) : undefined,
+        storageLocationId: this.showAllHooks ? (this.filterStorageLocation || undefined) : undefined,
       }).subscribe({
         next: (res: any) => {
           const payload = res?.data ?? res ?? {};
@@ -227,6 +275,7 @@ export class HookListComponent implements OnInit, AfterViewInit {
       size: effectivePageSize,
       q: this.filterSearch || undefined,
       status: this.filterStatus || undefined,
+      storageLocationId: this.filterStorageLocation || undefined,
     }).subscribe({
       next: (res: any) => {
         const payload = res?.data ?? res ?? {};
@@ -450,7 +499,12 @@ export class HookListComponent implements OnInit, AfterViewInit {
     this.applyFilters();
   }
 
-  onFilterAssignedChange(): void {
+  onFilterStorageLocationChange(): void {
+    this.filterCabinet = '';
+    this.applyFilters();
+  }
+
+  onFilterCabinetChange(): void {
     this.applyFilters();
   }
 }

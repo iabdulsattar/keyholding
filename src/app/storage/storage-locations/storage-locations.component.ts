@@ -284,7 +284,7 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     if (normalized === 'ACTIVE') return 'Active';
     if (normalized === 'INACTIVE') return 'Inactive';
     if (normalized.includes('MAINTENANCE')) return 'Under Maintenance';
-    return normalized.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
+    return normalized.split(' ').map((w: string) => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
   }
 
   getLocationStatusDot(loc: any): string {

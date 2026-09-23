@@ -1174,7 +1174,7 @@ export class KeyVaultService {
    }
 
     // Hooks
-    listHooks(orgId: string, cabinetId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any> {
+    listHooks(orgId: string, cabinetId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; cabinetId?: string; storageLocationId?: string; page?: number; size?: number }): Observable<any> {
       const headers = this.getAuthHeaders();
       const q = new URLSearchParams();
       if (params?.q) q.set('q', params.q);
@@ -1186,24 +1186,28 @@ export class KeyVaultService {
       return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks${query ? `?${query}` : ''}`, headers);
     }
 
-    listAllHooks(orgId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any> {
+    listAllHooks(orgId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; cabinetId?: string; storageLocationId?: string; page?: number; size?: number }): Observable<any> {
       const headers = this.getAuthHeaders();
       const q = new URLSearchParams();
       if (params?.q) q.set('q', params.q);
       if (params?.status) q.set('status', params.status);
       if (params?.assigned) q.set('assigned', params.assigned);
+      if (params?.cabinetId) q.set('cabinetId', params.cabinetId);
+      if (params?.storageLocationId) q.set('storageLocationId', params.storageLocationId);
       q.set('page', String(params?.page ?? 0));
       q.set('size', String(params?.size ?? 10));
       const query = q.toString();
       return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/hooks${query ? `?${query}` : ''}`, headers);
     }
 
-    listAllCabinetHooks(orgId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; page?: number; size?: number }): Observable<any> {
+    listAllCabinetHooks(orgId: string, params?: { q?: string; status?: string; assigned?: 'ALL' | 'ASSIGNED' | 'UNASSIGNED'; cabinetId?: string; storageLocationId?: string; page?: number; size?: number }): Observable<any> {
       const headers = this.getAuthHeaders();
       const q = new URLSearchParams();
       if (params?.q) q.set('q', params.q);
       if (params?.status) q.set('status', params.status);
       if (params?.assigned) q.set('assigned', params.assigned);
+      if (params?.cabinetId) q.set('cabinetId', params.cabinetId);
+      if (params?.storageLocationId) q.set('storageLocationId', params.storageLocationId);
       q.set('page', String(params?.page ?? 0));
       q.set('size', String(params?.size ?? 20));
       const query = q.toString();

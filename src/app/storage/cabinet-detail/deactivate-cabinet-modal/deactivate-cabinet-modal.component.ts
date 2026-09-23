@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
@@ -21,6 +21,8 @@ export class DeactivateCabinetModalComponent {
   statusMessage = '';
   statusType: '' | 'success' | 'error' = '';
 
+  readonly hasKeys = computed(() => (this.cabinet()?.usedHooks ?? 0) > 0);
+
   constructor(private keyVault: KeyVaultService) {}
 
   cancel(): void {
@@ -29,6 +31,11 @@ export class DeactivateCabinetModalComponent {
 
   confirm(): void {
     if (!this.cabinet()?.id || !this.orgId()) return;
+    if (this.hasKeys()) {
+      this.statusMessage = 'Cannot deactivate a cabinet with keys in it. Remove all keys before deactivating.';
+      this.statusType = 'error';
+      return;
+    }
     this.submitting = true;
     this.statusMessage = '';
     this.statusType = '';

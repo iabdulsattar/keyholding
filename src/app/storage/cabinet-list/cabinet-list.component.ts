@@ -80,10 +80,18 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
 
   private loadStorageLocations(): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
-    if (!orgId) return;
-    this.keyVault.listCatalogStorageLocations(orgId, true).subscribe({
-      next: (items: any[]) => {
-        this.storageLocations = (items || []).map((s: any) => ({ id: s.id || '', name: s.name || s.locationName || '' })).filter(s => s.id && s.name);
+    if (!orgId) {
+      this.storageLocations = [];
+      return;
+    }
+    this.keyVault.listStorageLocations(orgId).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const locations = data.content ?? data.items ?? data.data ?? data ?? [];
+        this.storageLocations = (locations || []).map((loc: any) => ({
+          id: loc.id || '',
+          name: loc.name || loc.locationName || '',
+        }));
       },
       error: () => {
         this.storageLocations = [];
