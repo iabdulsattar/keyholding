@@ -2,39 +2,72 @@
   <div class="flex-grow flex flex-col h-full overflow-hidden">
     <div class="flex-grow overflow-y-auto custom-scrollbar space-y-5">
 
-      <div class=" pb-4 border-b border-slate-100 shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class=" shrink-0 flex flex-col sm:flex-row items-start justify-between gap-4">
         <div>
-          <a routerLink="/clients" class="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1.5 mb-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          <a routerLink="/clients" class="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1.5 mb-1.5">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 2.91602L2.9162 6.99982L7 11.0836M2.9162 6.99982H11.0838" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          
             Back to Sites
           </a>
-          <h2 class="text-2xl font-bold text-slate-900 mb-1.5">{{ editMode ? 'Edit Site' : 'Add New Site' }}</h2>
-          <app-page-breadcrumb [pageTitle]="editMode ? 'Edit Site' : 'Add New Site'" [breadcrumbs]="breadcrumbs" />
+          <h2 class="text-2xl font-bold text-slate-800 mb-0.5">{{ editMode ? 'Edit Site' : 'Add New Sites' }}</h2>
+          <span class="text-slate-500 text-xs">Add new site for this client.
+
+          </span>
         </div>
-        <div class="flex items-center gap-2">
+        <!-- <div class="flex items-center gap-2">
           <button type="button" (click)="resetSiteForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-3 border border-slate-200 rounded-lg transition">Cancel</button>
           <button type="button" (click)="submitSiteForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
             {{ editMode ? 'Update Site' : 'Save Site' }}
           </button>
-        </div>
+        </div> -->
+
+<div class=" ">
+  <div data-svg-wrapper class="">
+    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g filter="url(#filter0_d_2004_488)">
+    <rect x="3" y="2" width="40" height="40" rx="6" fill="white" shape-rendering="crispEdges"/>
+    <rect x="33" y="32" width="20" height="20" transform="rotate(180 33 32)" fill="url(#pattern0_2004_488)"/>
+    </g>
+    <defs>
+    <filter id="filter0_d_2004_488" x="0" y="0" width="46" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="1"/>
+    <feGaussianBlur stdDeviation="1.5"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2004_488"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2004_488" result="shape"/>
+    </filter>
+    <pattern id="pattern0_2004_488" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_2004_488" transform="scale(0.00195312)"/>
+    </pattern>
+    <image id="image0_2004_488" width="512" height="512" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+    </defs>
+    </svg>
+  </div>
+</div>
+         
       </div>
 
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
-        <form id="siteForm" class="xl:col-span-8 space-y-5">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
+        <form id="siteForm" class="xl:col-span-8 space-y-6 bg-white rounded-md p-4 sm:p-6">
 
-          <div class="bg-white rounded-lg border border-slate-100 p-4 sm:p-6 space-y-4 ">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide border-slate-100 pb-0">Site Information</h3>
+          <div class="border-b border-slate-200 pb-6 space-y-4 ">
+            <h3 class="text-base font-bold text-slate-800 tracking-wide border-slate-100 pb-0">Site Information</h3>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('siteName') && !siteName.trim())" [class.text-rose-600]="touched.has('siteName') && !siteName.trim()">Site Name <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('siteName') && !siteName.trim())" [class.text-rose-600]="touched.has('siteName') && !siteName.trim()">Site Name <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('siteName') && !siteName.trim()" class="rounded-lg border border-slate-200 transition mt-1">
                    <input type="text" [(ngModel)]="siteName" name="siteName" (blur)="markTouched('siteName')" placeholder="e.g. Head Office" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
                  @if (touched.has('siteName') && !siteName.trim()) { <p class="text-xs text-rose-600 mt-1">Site Name is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('siteType') && !siteType)" [class.text-rose-600]="touched.has('siteType') && !siteType">Site Type <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('siteType') && !siteType)" [class.text-rose-600]="touched.has('siteType') && !siteType">Site Type <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('siteType') && !siteType" class="rounded-lg transition">
                    <app-rich-select [options]="siteTypeOptions" [(value)]="siteType" placeholder="Select site type" (valueChange)="markTouched('siteType')"></app-rich-select>
                  </div>
@@ -52,34 +85,34 @@
              </div>
              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('address1') && !address1.trim())" [class.text-rose-600]="touched.has('address1') && !address1.trim()">Address Line 1 <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('address1') && !address1.trim())" [class.text-rose-600]="touched.has('address1') && !address1.trim()">Address Line 1 <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('address1') && !address1.trim()" class="rounded-lg border border-slate-200 mt-1 transition">
                    <input type="text" [(ngModel)]="address1" name="address1" (blur)="markTouched('address1')" placeholder="e.g. 25 Fenchurch Street" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
                  @if (touched.has('address1') && !address1.trim()) { <p class="text-xs text-rose-600 mt-1">Address Line 1 is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold text-slate-700">Address Line 2</label>
+                 <label class="text-xs font-semibold text-slate-800">Address Line 2</label>
                  <input type="text" [(ngModel)]="address2" name="address2" placeholder="e.g. Suite 5, Floor 2" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                </div>
              </div>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('city') && !city.trim())" [class.text-rose-600]="touched.has('city') && !city.trim()">City <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('city') && !city.trim())" [class.text-rose-600]="touched.has('city') && !city.trim()">City <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('city') && !city.trim()" class="rounded-lg border border-slate-200 mt-1 transition">
                    <input type="text" [(ngModel)]="city" name="city" (blur)="markTouched('city')" placeholder="e.g. London" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
                  @if (touched.has('city') && !city.trim()) { <p class="text-xs text-rose-600 mt-1">City is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('postcode') && !postcode.trim())" [class.text-rose-600]="touched.has('postcode') && !postcode.trim()">Postcode <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('postcode') && !postcode.trim())" [class.text-rose-600]="touched.has('postcode') && !postcode.trim()">Postcode <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('postcode') && !postcode.trim()" class="rounded-lg border border-slate-200 mt-1 transition">
                    <input type="text" [(ngModel)]="postcode" name="postcode" (blur)="markTouched('postcode')" placeholder="e.g. EC3M 3AY" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
                  @if (touched.has('postcode') && !postcode.trim()) { <p class="text-xs text-rose-600 mt-1">Postcode is required</p> }
                </div>
                <div class="space-y-1.5">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('country') && !country)" [class.text-rose-600]="touched.has('country') && !country">Country <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('country') && !country)" [class.text-rose-600]="touched.has('country') && !country">Country <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('country') && !country" class="rounded-lg transition">
                    <app-rich-select [options]="countryOptions" [(value)]="country" placeholder="Select country" (valueChange)="markTouched('country')"></app-rich-select>
                  </div>
@@ -88,29 +121,29 @@
              </div>
            </div>
 
-           <div class="bg-white rounded-lg border border-slate-100 p-4 sm:p-6 space-y-4">
-             <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100 pb-0">Site Contact</h3>
+           <div class="border-b border-slate-200 pb-6 space-y-4">
+             <h3 class="text-base font-bold text-slate-800 tracking-wide border-slate-100 pb-0">Site Contact</h3>
              <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('contactName') && !contactName.trim())" [class.text-rose-600]="touched.has('contactName') && !contactName.trim()">Primary Contact Name <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('contactName') && !contactName.trim())" [class.text-rose-600]="touched.has('contactName') && !contactName.trim()">Primary Contact Name <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('contactName') && !contactName.trim()" class="rounded-lg border border-slate-200 mt-1 transition">
                    <input type="text" [(ngModel)]="contactName" name="contactName" (blur)="markTouched('contactName')" placeholder="e.g. James Walker" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
                  @if (touched.has('contactName') && !contactName.trim()) { <p class="text-xs text-rose-600 mt-1">Primary Contact Name is required</p> }
                </div>
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold text-slate-700">Designation</label>
+                 <label class="text-xs font-semibold text-slate-800">Designation</label>
                  <input type="text" [(ngModel)]="designation" name="designation" placeholder="e.g. Operations Manager" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                </div>
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('contactPhone') && !contactPhone.trim())" [class.text-rose-600]="touched.has('contactPhone') && !contactPhone.trim()">Phone <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('contactPhone') && !contactPhone.trim())" [class.text-rose-600]="touched.has('contactPhone') && !contactPhone.trim()">Phone <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('contactPhone') && !contactPhone.trim()" class="rounded-lg border border-slate-200 mt-1 transition">
                    <input type="tel" [(ngModel)]="contactPhone" name="contactPhone" (blur)="markTouched('contactPhone')" placeholder="e.g. +44 020 7946 0958" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
                  @if (touched.has('contactPhone') && !contactPhone.trim()) { <p class="text-xs text-rose-600 mt-1">Phone is required</p> }
                </div>
                <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('contactEmail') && !contactEmail.trim())" [class.text-rose-600]="touched.has('contactEmail') && !contactEmail.trim()">Email <span class="text-red-500">*</span></label>
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('contactEmail') && !contactEmail.trim())" [class.text-rose-600]="touched.has('contactEmail') && !contactEmail.trim()">Email <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('contactEmail') && !contactEmail.trim()" class="rounded-lg border border-slate-200 mt-1 transition">
                    <input type="email" [(ngModel)]="contactEmail" name="contactEmail" (blur)="markTouched('contactEmail')" placeholder="e.g. james.walker@metrosecurity.ca" class="w-full bg-white border-none text-sm mt-0 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
                  </div>
@@ -119,40 +152,36 @@
              </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Alternative Contact Name</label>
+                <label class="text-xs font-semibold text-slate-800">Alternative Contact Name</label>
                 <input type="text" [(ngModel)]="altContactName" name="altContactName" placeholder="e.g. Sarah Miller" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-slate-700">Phone</label>
+                <label class="text-xs font-semibold text-slate-800">Phone</label>
                 <input type="tel" [(ngModel)]="altPhone" name="altPhone" placeholder="e.g. +44 020 7946 0000" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
               </div>
             </div>
           </div>
 
-           <div class="bg-white rounded-lg border border-slate-100 p-4 sm:p-6 space-y-4">
-             <h3 class="text-sm font-bold text-slate-900 tracking-wide border-slate-100">Site Details</h3>
-             <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-               <div class="space-y-1.5 md:col-span-1">
-                 <label class="text-xs font-semibold text-slate-700">Access Instructions</label>
-                 <textarea [(ngModel)]="accessInstructions" name="accessInstructions" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none h-20" placeholder="e.g. Instructions...">Use main entrance. Reception on the ground floor.</textarea>
-               </div>
+           <div class="border-b border-slate-200 pb-6 space-y-4">
+             <h3 class="text-base font-bold text-slate-800 tracking-wide border-slate-100">Site Details</h3>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                <div class="space-y-2">
-                 <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('accessSchedule') && !accessSchedule)" [class.text-rose-600]="touched.has('accessSchedule') && !accessSchedule">Access Schedule <span class="text-red-500">*</span></label>
-                 <div [class.border-rose-500]="touched.has('accessSchedule') && !accessSchedule" class="rounded-lg transition">
+                 <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('accessSchedule') && !accessSchedule)" [class.text-rose-600]="touched.has('accessSchedule') && !accessSchedule">Access Schedule <span class="text-red-500">*</span></label>
+                 <div [class.border-rose-500]="touched.has('accessSchedule') && !accessSchedule" class="rounded-lg transition mt-1">
                    <app-rich-select [options]="accessScheduleOptions" [(value)]="accessSchedule" placeholder="Select access schedule" (valueChange)="markTouched('accessSchedule')"></app-rich-select>
                  </div>
                  @if (touched.has('accessSchedule') && !accessSchedule) { <p class="text-xs text-rose-600 mt-1">Access Schedule is required</p> }
                </div>
                  <div class="space-y-1.5">
-                   <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('securityLevel') && !securityLevel)" [class.text-rose-600]="touched.has('securityLevel') && !securityLevel">Security Level <span class="text-red-500">*</span></label>
-                   <div [class.border-rose-500]="touched.has('securityLevel') && !securityLevel" class="rounded-lg transition">
+                   <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('securityLevel') && !securityLevel)" [class.text-rose-600]="touched.has('securityLevel') && !securityLevel">Security Level <span class="text-red-500">*</span></label>
+                   <div [class.border-rose-500]="touched.has('securityLevel') && !securityLevel" class="rounded-lg transition mt-1">
                      <app-rich-select [options]="securityLevelOptions" [(value)]="securityLevel" placeholder="Select level" (valueChange)="markTouched('securityLevel')"></app-rich-select>
                    </div>
                    @if (touched.has('securityLevel') && !securityLevel) { <p class="text-xs text-rose-600 mt-1">Security Level is required</p> }
                  </div>
                  <div class="space-y-1.5">
-                   <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('alarmSystem') && !alarmSystem)" [class.text-rose-600]="touched.has('alarmSystem') && !alarmSystem">Alarm System <span class="text-red-500">*</span></label>
-                   <div [class.border-rose-500]="touched.has('alarmSystem') && !alarmSystem" class="rounded-lg transition">
+                   <label class="text-xs font-semibold" [class.text-slate-800]="!(touched.has('alarmSystem') && !alarmSystem)" [class.text-rose-600]="touched.has('alarmSystem') && !alarmSystem">Alarm System <span class="text-red-500">*</span></label>
+                   <div [class.border-rose-500]="touched.has('alarmSystem') && !alarmSystem" class="rounded-lg transition mt-1">
                      <app-rich-select [options]="alarmSystemOptions" [(value)]="alarmSystem" placeholder="Select system" (valueChange)="markTouched('alarmSystem')"></app-rich-select>
                    </div>
                    @if (touched.has('alarmSystem') && !alarmSystem) { <p class="text-xs text-rose-600 mt-1">Alarm System is required</p> }
@@ -160,41 +189,74 @@
                
              </div>
 
-             <!-- RESTRICTED HOURS CONDITIONAL GRID -->
-             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 pt-2" *ngIf="accessSchedule === 'RESTRICTED'">
+             <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+              <div class="space-y-1.5 md:col-span-12">
+                 <label class="text-xs font-semibold text-slate-800">Access Instructions</label>
+                 <textarea [(ngModel)]="accessInstructions" name="accessInstructions" class="w-full bg-white border border-slate-200 text-sm mt-1 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none " placeholder="e.g. Use main entrance. Reception on the ground floor.">Use main entrance. Reception on the ground floor.</textarea>
+               </div> 
                
-               <!-- Operating Time Slots Entry Form -->
-               <div class="lg:col-span-3 bg-slate-50 border border-slate-200 rounded-xl p-4 overflow-x-auto">
-                 <div class="flex items-center gap-2 text-xs font-bold text-slate-700 mb-3 tracking-wider">
+             </div>
+
+             <!-- RESTRICTED HOURS CONDITIONAL GRID -->
+             <div class="" *ngIf="accessSchedule === 'RESTRICTED'">
+
+              <div class="flex items-center gap-2 text-sm font-bold text-slate-800 mb-3 tracking-wider">
                    <span>Restricted Access Schedule</span>
-                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info text-blue-600"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                 </div>
+                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 10.3998V7.71414M8 5.02849H8.007M15 7.71414C15 11.4223 11.866 14.4283 8 14.4283C4.13401 14.4283 1 11.4223 1 7.71414C1 4.00602 4.13401 1 8 1C11.866 1 15 4.00602 15 7.71414Z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+
+                 </div> 
+                 
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 "> 
+               <!-- Operating Time Slots Entry Form -->
+               <div class="lg:col-span-2 border border-slate-200 rounded-lg overflow-x-auto">
                  <table class="w-full text-xs text-left text-slate-600 min-w-[340px]">
-                  <thead>
-                    <tr class="text-slate-700 font-medium border-b border-slate-200">
-                      <th class="pb-2 ">Day</th>
-                      <th class="pb-2 pl-2">Allowed From</th>
-                      <th class="pb-2 pl-2">Allowed Until</th>
-                      <th class="pb-2 text-center ">Action</th>
+                  <thead class="">
+                    <tr class="text-slate-900 font-semibold border-b border-slate-200 ">
+                      <th class="py-3 px-3">Day</th>
+                      <th class="py-3 px-3">Allowed From</th>
+                      <th class="py-3 px-3">Allowed Until</th>
+                      <th class="py-3 px-3 text-end ">Action</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-100 font-medium">
+                  <tbody class="divide-y divide-slate-200 font-medium">
                      @for (day of restrictedDays; track day) {
                        @for (slot of restrictedHours[day]; track $index) {
                          <tr class="h-10">
-                           <td class="whitespace-nowrap">{{ day }}</td>
-                           <td>
-                             <input type="text" [(ngModel)]="slot.from" [ngModelOptions]="{standalone: true}" class="w-28 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center time-input" placeholder="HH:MM" [class.select-none]="slot.closed" [disabled]="slot.closed">
+                           <td class="whitespace-nowrap px-3 text-slate-900 text-xs">{{ day }}</td>
+                           <td class="px-3">
+                             <input type="text" [(ngModel)]="slot.from" [ngModelOptions]="{standalone: true}" class="w-28 bg-white border border-slate-200 rounded px-1.5 py-0.5 ext-center time-input" placeholder="HH:MM" [class.select-none]="slot.closed" [disabled]="slot.closed">
                            </td>
-                           <td>
-                             <input type="text" [(ngModel)]="slot.to" [ngModelOptions]="{standalone: true}" class="w-28 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-center time-input" placeholder="HH:MM" [class.select-none]="slot.closed" [disabled]="slot.closed">
+                           <td class="px-3">
+                             <input type="text" [(ngModel)]="slot.to" [ngModelOptions]="{standalone: true}" class="w-28 bg-white border border-slate-200 rounded px-1.5 py-0.5 ext-center time-input" placeholder="HH:MM" [class.select-none]="slot.closed" [disabled]="slot.closed">
                            </td>
-                          <td class=" text-center text-slate-400 space-x-1.5">
-                            <button type="button" class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-brand-50 text-brand-600 hover:bg-brand-100 transition text-sm font-bold" (click)="addRestrictedHour(day)" title="Add time slot for {{ day }}">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                          <td class="px-3 h-10 flex justify-end items-center  text-slate-400 space-x-2">
+                            <button type="button" class="text-brand-600 hover:bg-brand-100 transition text-sm font-bold" (click)="addRestrictedHour(day)" title="Add time slot for {{ day }}">
+                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3441_4375)">
+<path d="M4.6663 6.99982H9.33334M6.99982 4.6663V9.33334M12.8336 6.99982C12.8336 10.2217 10.2217 12.8336 6.99982 12.8336C3.7779 12.8336 1.16602 10.2217 1.16602 6.99982C1.16602 3.7779 3.7779 1.16602 6.99982 1.16602C10.2217 1.16602 12.8336 3.7779 12.8336 6.99982Z" stroke="#1E58E2" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3441_4375">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
                             </button>
-                            <button type="button" class="inline-flex items-center justify-center w-7 h-7 rounded-full text-slate-600 transition text-sm font-bold" (click)="removeRestrictedHour(day, $index)" title="Remove time slot">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2 align-middle"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            <button type="button" class="text-slate-600 transition text-sm font-bold" (click)="removeRestrictedHour(day, $index)" title="Remove time slot">
+                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3441_4377)">
+<path d="M11.0833 3.49954V11.6669C11.0833 11.9763 10.9604 12.2731 10.7416 12.4919C10.5228 12.7107 10.2261 12.8336 9.91667 12.8336H4.08333C3.77391 12.8336 3.47717 12.7107 3.25838 12.4919C3.03958 12.2731 2.91667 11.9763 2.91667 11.6669V3.49954M1.75 3.49954H12.25M4.66667 3.49954V2.33278C4.66667 2.02333 4.78958 1.72656 5.00838 1.50775C5.22717 1.28894 5.52391 1.16602 5.83333 1.16602H8.16667C8.47609 1.16602 8.77283 1.28894 8.99162 1.50775C9.21042 1.72656 9.33333 2.02333 9.33333 2.33278V3.49954" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3441_4377">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
                             </button>
 
                           </td>
@@ -202,21 +264,26 @@
                       }
                     }
                   </tbody>
-                </table>
-              </div>
+                 </table>
+                 
+               </div>
 
               <!-- Rule Warnings & Checkboxes Panel -->
-              <div class="lg:col-span-2 bg-amber-50/60 border border-amber-200/70 rounded-xl p-5 space-y-4">
-                <div class="flex gap-2.5 text-amber-800">
-                  <i class="fa-solid fa-triangle-exclamation text-base mt-0.5 shrink-0"></i>
-                  <div>
-                    <h4 class="text-xs font-bold tracking-wide">Restricted Access</h4>
-                    <p class="text-xs text-amber-700/90 mt-1 leading-relaxed">This site may only be accessed during the configured hours. Any job scheduled outside these hours will trigger a warning.</p>
+              <div class="lg:col-span-1 bg-amber-50 rounded-lg p-5 space-y-4 ">
+                <div class="gap-2.5 text-amber-800">
+                  <div class="flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.00016 5.99935V8.66602M8.00016 11.3327H8.00683M14.4871 11.9995L9.15377 2.66617C9.03748 2.46097 8.86884 2.29029 8.66506 2.17154C8.46127 2.0528 8.22963 1.99023 7.99377 1.99023C7.75792 1.99023 7.52628 2.0528 7.32249 2.17154C7.11871 2.29029 6.95007 2.46097 6.83377 2.66617L1.50044 11.9995C1.3829 12.2031 1.32126 12.4341 1.32178 12.6692C1.3223 12.9042 1.38496 13.135 1.50341 13.338C1.62185 13.5411 1.79187 13.7092 1.99624 13.8254C2.2006 13.9415 2.43205 14.0016 2.66711 13.9995H13.3338C13.5677 13.9993 13.7975 13.9375 14 13.8204C14.2025 13.7032 14.3706 13.5349 14.4875 13.3322C14.6043 13.1296 14.6658 12.8998 14.6657 12.6658C14.6657 12.4319 14.6041 12.2021 14.4871 11.9995Z" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+
+                    <h4 class="text-xs font-bold text-amber-600 tracking-wide">Restricted Access</h4>
                   </div>
+                  <p class="text-xs text-amber-600 mt-2 leading-relaxed">This site may only be accessed during the configured hours. Any job scheduled outside these hours will trigger a warning.</p>
+
                 </div>
                 
-                <div class="space-y-2.5 pt-2 border-t border-amber-200/40 text-xs font-medium text-slate-700">
-                  <h5 class="font-bold text-slate-700 tracking-wider text-[10px] mb-1.5">Additional Access Rules</h5>
+                <div class="space-y-2.5 pt-2 text-xs font-normal text-slate-900">
+                  <h5 class="font-bold text-slate-900 tracking-wider text-xs mb-2">Additional Access Rules</h5>
                   <label class="flex items-start gap-2.5 cursor-pointer">
                     <input type="checkbox" [(ngModel)]="restrictedBankHolidays" name="restrictedBankHolidays" class="mt-0.5 text-blue-600 rounded">
                     Access prohibited on Bank Holidays
@@ -235,60 +302,86 @@
                   </label>
                 </div>
               </div>
+              </div>
 </div>
 
             <!-- APPOINTMENT CRITERIA SPECIFICATION SUBFORM CARD -->
-             <div id="appointmentConfigCard" class="bg-blue-50/30 border border-blue-100 rounded-lg p-5 space-y-4" *ngIf="accessSchedule === 'BY_APPOINTMENT'">
-              <div class="flex items-center gap-2 text-xs font-bold text-slate-900 tracking-wide">
+             <div id="appointmentConfigCard" class="bg-gray-50 border border-slate-200 rounded-lg p-5 space-y-4" *ngIf="accessSchedule === 'BY_APPOINTMENT'">
+              <div class="flex items-center gap-1.5 text-xs font-bold text-blue-700 tracking-wide">
                 <span>By Appointment Settings</span>
-                <i class="fa-solid fa-circle-info text-blue-500 cursor-pointer" title="Configures rules specific to appointment-only workflows"></i>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3481_896)">
+<path d="M6.99982 9.33334V6.99982M6.99982 4.6663H7.00565M12.8336 6.99982C12.8336 10.2217 10.2217 12.8336 6.99982 12.8336C3.7779 12.8336 1.16602 10.2217 1.16602 6.99982C1.16602 3.7779 3.7779 1.16602 6.99982 1.16602C10.2217 1.16602 12.8336 3.7779 12.8336 6.99982Z" stroke="#1E58E2" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3481_896">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                 <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-700">Minimum Notice Required <span class="text-red-500">*</span></label>
+                  <label class="text-xs font-semibold text-slate-800 ">Minimum Notice Required <span class="text-red-500">*</span></label>
+                  <div class="mt-1">
                   <app-rich-select [options]="minNoticeOptions" [(value)]="minNotice" placeholder="Select notice"></app-rich-select>
+                  </div>
                 </div>
 
                 <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-700">Approval Required Name <span class="text-red-500">*</span></label>
+                  <label class="text-xs font-semibold text-slate-800">Approval Required Name <span class="text-red-500">*</span></label>
                   <input type="text" [(ngModel)]="approvalContact" name="approvalContact" placeholder="e.g. James Walker" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                 </div>
 
-                <div class="space-y-1.5">
+                <!-- <div class="space-y-1.5">
                   <label class="text-xs font-semibold text-slate-700">Approval Required Phone <span class="text-red-500">*</span></label>
                   <input type="text" [(ngModel)]="apptPhone" name="apptPhone" placeholder="e.g. +44 020 7946 0958" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
-                </div>
+                </div> -->
 
                 <div class="space-y-1.5">
-                  <label class="text-xs font-semibold text-slate-700">Approval Required Email <span class="text-red-500">*</span></label>
+                  <label class="text-xs font-semibold text-slate-800">Approval Required Email <span class="text-red-500">*</span></label>
                   <input type="email" [(ngModel)]="apptEmail" name="apptEmail" placeholder="e.g. james.walker@metrosecurity.co.uk" class="w-full bg-white border border-slate-200 text-sm px-4 py-2.5 mt-1 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                 </div>
               </div>
 
               <div class="mt-2">
-                <label class="text-xs font-semibold text-slate-700 mb-1.5 block">Appointment Notes (Optional)</label>
+                <label class="text-xs font-semibold text-slate-800 mb-1 block">Appointment Notes (Optional)</label>
                 <textarea rows="2" [(ngModel)]="apptNotes" name="apptNotes" placeholder="Access will only be granted to scheduled visitors." class="w-full bg-white border border-slate-200 text-xs px-4 py-2.5 mt-1 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition resize-none"></textarea>
               </div>
             </div>
-          </div>
 
-            <div class="bg-white rounded-lg border border-slate-100 p-4 sm:p-6 space-y-4">
+            <div class="space-y-4">
+              <h3 class="text-xs font-semibold text-slate-800 tracking-wide border-slate-100">Site Map / Location (Optional)</h3>
+             
               @if (!editMode || !attachments.length) {
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                  <div class="md:col-span-2 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 bg-slate-50/50 flex flex-col items-center justify-center text-center group cursor-pointer transition relative">
-                    <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" (change)="onFileSelect($event)">
-                    <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-400 group-hover:text-blue-500 mb-3 transition">
-                      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    </div>
-                    <p class="text-sm text-slate-600 font-medium"><span class="text-blue-600 hover:underline">Drag and drop files here</span> or <span class="text-blue-600 hover:underline">Browse Files</span></p>
-                    <p class="text-xs text-slate-400 mt-1">Supported files: JPG, PNG, PDF (Max 10MB)</p>
+                  <div class="md:col-span-2 border border-zinc-200 hover:border-blue-400 rounded-md gap-4 px-6 py-8 bg-slate-100 flex items-start justify-center text-center group cursor-pointer transition relative">
+                  <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" (change)="onFileSelect($event)">
+                  <div class="border border-blue-600 bg-white rounded-md px-4 py-1.5 text-blue-600 text-xs font-semibold ">
+                    Browse Files
+                    
                   </div>
-                  <div class="space-y-2 text-xs text-slate-500 border-l border-slate-100 pl-4 md:pl-6">
-                    <h4 class="text-[14px] font-bold text-slate-900 tracking-wider mb-1">Tips:</h4>
-                    <p class="flex items-start gap-2"><span>•</span> Upload site photos or floor plans</p>
-                    <p class="flex items-start gap-2"><span>•</span> Upload any relevant documents</p>
-                    <p class="flex items-start gap-2"><span>•</span> You can upload multiple files</p>
+                  <div>
+                  <div class="flex items-center gap-2">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.0004 10.8331V17.5M13.3336 14.1665L10.0004 10.8331L6.66729 14.1665M3.33443 12.4159C2.71533 11.7833 2.2483 11.0181 1.9687 10.1782C1.6891 9.3384 1.60428 8.44594 1.72065 7.56846C1.83702 6.69099 2.15154 5.8515 2.64038 5.11359C3.12922 4.37568 3.77956 3.7587 4.54214 3.30938C5.30472 2.86007 6.15954 2.5902 7.04186 2.52021C7.92418 2.45023 8.81085 2.58197 9.63471 2.90546C10.4586 3.22895 11.198 3.73569 11.7971 4.38732C12.3961 5.03894 12.839 5.81836 13.0922 6.66652H14.5838C15.3883 6.66643 16.1716 6.92513 16.8178 7.40441C17.4641 7.88369 17.939 8.55813 18.1726 9.3281C18.4061 10.0981 18.3858 10.9228 18.1147 11.6803C17.8436 12.4379 17.336 13.0881 16.667 13.5351" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+  
+                  <p class="text-sm text-slate-600 font-normal"><span class="text-slate-800 hover:underline">Drag and drop files here</span> 
+
+                  </p>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2">Supported files: JPG, PNG, PDF (Max 10MB)</p>
+                  </div>
+                </div>
+                
+                  <div class="space-y-2 text-xs text-slate-500 ">
+                    <h4 class="text-xs font-semibold text-slate-800 tracking-wider mb-1">Tips:</h4>
+                    <p class="flex items-start gap-2"><span>•</span> Upload a clear site map or floor plan</p>
+                    <p class="flex items-start gap-2"><span>•</span> Highlight key areas and access points</p>
+                    <p class="flex items-start gap-2"><span>•</span> Accepted formats: JPG, PNG, PDF</p>
                   </div>
                 </div>
               } @else if (editMode && attachments.length > 0) {
@@ -381,28 +474,25 @@
                }
             </div>
 
+          </div>
+
+            
            <!-- Site Status -->
-           <section class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
-             <h3 class="text-sm font-bold text-slate-900 mb-5">Site Status</h3>
+           <section class="">
+             <h3 class="text-base font-bold text-slate-800 mb-5">Site Status</h3>
              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <label class="flex items-start gap-3 rounded-lg p-4 cursor-pointer transition" [class.border-2]="siteStatus === 'Active'" [class.border-emerald-500]="siteStatus === 'Active'" [class.bg-emerald-50/50]="siteStatus === 'Active'" [class.border-slate-200]="siteStatus !== 'Active'" [class.hover:border-slate-300]="siteStatus !== 'Active'">
-                  <input type="radio" name="siteStatus" [(ngModel)]="siteStatus" value="Active" class="mt-1 accent-emerald-600 w-4 h-4">
-                  <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                    <svg class="w-4.5 h-4.5 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                  </div>
+                <label class="flex items-center gap-4 rounded-lg p-4 cursor-pointer transition" [class.border-emerald-500]="siteStatus === 'Active'" [class.bg-white]="siteStatus === 'Active'" [class.border-slate-200]="siteStatus !== 'Active'" [class.hover:border-slate-300]="siteStatus !== 'Active'">
+                  <input type="radio" name="siteStatus" [(ngModel)]="siteStatus" value="Active" class=" accent-blue-600 w-4 h-4">
                   <div>
-                    <p class="font-medium text-slate-800 text-sm">Active</p>
-                    <p class="text-sm text-slate-500">This site is active and operational.</p>
+                    <p class="font-semibold text-slate-800 text-sm">Active</p>
+                    <p class="text-xs text-slate-500">This site is active and operational.</p>
                   </div>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg p-4 cursor-pointer transition" [class.border-2]="siteStatus === 'Inactive'" [class.border-rose-500]="siteStatus === 'Inactive'" [class.bg-rose-50/50]="siteStatus === 'Inactive'" [class.border-slate-200]="siteStatus !== 'Inactive'" [class.hover:border-slate-300]="siteStatus !== 'Inactive'">
-                  <input type="radio" name="siteStatus" [(ngModel)]="siteStatus" value="Inactive" class="mt-1 accent-rose-600 w-4 h-4">
-                  <div class="w-9 h-9 rounded-full bg-red-100 text-red-500 flex items-center justify-center shrink-0">
-                    <svg class="w-4.5 h-4.5 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                  </div>
+                <label class="flex items-center gap-4 rounded-lg p-4 cursor-pointer transition" [class.border-rose-500]="siteStatus === 'Inactive'" [class.bg-white]="siteStatus === 'Inactive'" [class.border-slate-200]="siteStatus !== 'Inactive'" [class.hover:border-slate-300]="siteStatus !== 'Inactive'">
+                  <input type="radio" name="siteStatus" [(ngModel)]="siteStatus" value="Inactive" class=" accent-blue-600 w-4 h-4">
                   <div>
-                    <p class="font-medium text-slate-800 text-sm">Inactive</p>
-                    <p class="text-sm text-slate-500">This site is inactive and not operational.</p>
+                    <p class="font-semibold text-slate-800 text-sm">Inactive</p>
+                    <p class="text-xs text-slate-500">This site is inactive and not operational.</p>
                   </div>
                 </label>
              </div>
@@ -410,67 +500,92 @@
 
          </form>
 
-        <div class="space-y-5 xl:col-span-4">
-           <div class="bg-white rounded-lg border border-slate-100 p-5 sm:p-6">
-            <h3 class="text-sm font-bold text-slate-900 mb-5">Site Summary <span class="text-slate-700 font-normal text-sm">(Preview)</span></h3>
+        <div class="space-y-5 xl:col-span-4 bg-white rounded-md shadow-xs p-4 sm:p-6">
+           <div class="">
+            <h3 class="text-base font-bold text-slate-900 mb-5">Site Summary <span class="text-slate-400 font-normal text-sm">(Preview)</span></h3>
             <div class="flex justify-center mb-5">
-              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building-icon lucide-building text-slate-600"><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M12 6h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/><path d="M8 6h.01"/><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+              <div class="w-full h-28 rounded-lg bg-slate-100 flex items-center justify-center">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24.0004 19.9993H24.0204M24.0004 28H24.0204M24.0004 11.9987H24.0204M31.9996 19.9993H32.0196M31.9996 28H32.0196M31.9996 11.9987H32.0196M16.0012 19.9993H16.0212M16.0012 28H16.0212M16.0012 11.9987H16.0212M18.001 44.0012V38.0008C18.001 37.4703 18.2116 36.9615 18.5867 36.5864C18.9617 36.2113 19.4704 36.0006 20.0008 36.0006H28C28.5303 36.0006 29.039 36.2113 29.414 36.5864C29.7891 36.9615 29.9998 37.4703 29.9998 38.0008V44.0012M12.0016 3.99805H35.9992C38.2081 3.99805 39.9988 5.78905 39.9988 7.99837V40.0009C39.9988 42.2102 38.2081 44.0012 35.9992 44.0012H12.0016C9.79263 44.0012 8.00195 42.2102 8.00195 40.0009V7.99837C8.00195 5.78905 9.79263 3.99805 12.0016 3.99805Z" stroke="#1E58E2" stroke-width="3" stroke-linecap="round"/>
+</svg>
+
               </div>
             </div>
-            <dl class="space-y-3 text-sm">
+            <dl class="space-y-3 text-xs">
               <div class="flex justify-between gap-4">
-                <dt class="text-slate-700 font-semibold">Site Name</dt>
-                <dd class="text-slate-400 font-medium text-right">{{ siteName || '-' }}</dd>
-              </div>
-              <div class="flex justify-between gap-4">
-                <dt class="text-slate-700 font-semibold">Site Type</dt>
-                <dd class="text-slate-400 font-medium text-right">{{ siteType || '-' }}</dd>
+                <dt class="text-slate-500 font-semibold">Site Name</dt>
+                <dd class="text-slate-900 font-semibold text-right">{{ siteName || '-' }}</dd>
               </div>
               <div class="flex justify-between gap-4">
-                <dt class="text-slate-700 font-semibold shrink-0">Address</dt>
-                <dd class="text-slate-400 font-medium text-right">{{ address1 || '-' }}{{ address2 ? ', ' + address2 : '' }}, {{ city || '-' }}, {{ postcode || '-' }}</dd>
+                <dt class="text-slate-500 font-semibold">Site Code</dt>
+                <dd class="text-slate-900 font-semibold text-right">{{ '-' }}</dd>
+              </div>
+              
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-semibold">Site Type</dt>
+                <dd class="text-slate-900 font-semibold text-right">{{ siteType || '-' }}</dd>
+              </div>
+
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-semibold shrink-0">Address</dt>
+                <dd class="text-slate-900 font-semibold text-right">{{ address1 || '-' }}{{ address2 ? ', ' + address2 : '' }}, {{ city || '-' }}, {{ postcode || '-' }}</dd>
               </div>
               <div class="flex justify-between gap-4 items-center">
-                <dt class="text-slate-700 font-semibold">Contact</dt>
-                <dd class="text-slate-400 font-medium text-right">{{ contactName || '-' }}</dd>
+                <dt class="text-slate-500 font-semibold">Contact</dt>
+                <dd class="text-slate-900 font-semibold text-right">{{ contactName || '-' }}</dd>
               </div>
               <div class="flex justify-between gap-4 items-center">
-                <dt class="text-slate-700 font-semibold">Access Schedule</dt>
-                <dd><span class="inline-block bg-purple-100 text-purple-700 text-xs font-medium px-2.5 py-1 rounded-full">{{ accessScheduleLabel }}</span></dd>
+                <dt class="text-slate-500 font-semibold">Access Schedule</dt>
+                <dd><span class="inline-block bg-purple-100 text-purple-700 text-xs font-semibold px-2.5 py-1 rounded-sm">{{ accessScheduleLabel }}</span></dd>
               </div>
               <div class="flex justify-between gap-4 items-center">
-                <dt class="text-slate-700 font-semibold">Security Level</dt>
-                <dd><span class="inline-block bg-red-100 text-red-500 text-xs font-medium px-2.5 py-1 rounded-full">{{ securityLevel || 'Not Set' }}</span></dd>
+                <dt class="text-slate-500 font-semibold">Security Level</dt>
+                <dd><span class="inline-block bg-red-50 text-red-500 text-xs font-bold px-2.5 py-1 rounded-sm">{{ securityLevel || 'Not Set' }}</span></dd>
               </div>
               <div class="flex justify-between gap-4 items-center">
-                <dt class="text-slate-700 font-semibold">Alarm System</dt>
-                <dd class="text-slate-400 font-medium text-right">{{ alarmSystem || '-' }}</dd>
+                <dt class="text-slate-500 font-semibold">Alarm System</dt>
+                <dd class="text-slate-900 font-semibold text-right">{{ alarmSystem || '-' }}</dd>
               </div>
-              <div class="flex justify-between gap-4 items-center">
-                <dt class="text-slate-700 font-semibold">Status</dt>
-                <dd><span class="inline-block text-xs font-medium px-2.5 py-1 rounded-full {{ siteStatus === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">{{ siteStatus || 'Not Set' }}</span></dd>
-              </div>
+              
             </dl>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-100 p-5 space-y-4">
-            <h4 class="text-sm font-bold text-slate-900 border-slate-100 ">Quick Guide</h4>
-            <div class="space-y-4 text-xs text-slate-600">
+          <div class="border-t border-slate-200 pt-5 space-y-4">
+            <h4 class="text-base font-bold text-slate-900 border-slate-100 ">Quick Guide</h4>
+            <div class="space-y-4 text-xs text-slate-500">
               <div class="flex gap-3 items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star-icon lucide-star text-blue-500"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3481_998)">
+<path d="M8.00021 10.6661V7.99923M8.00021 5.33235H8.00688M14.6674 7.99923C14.6674 11.6814 11.6824 14.6664 8.00021 14.6664C4.31801 14.6664 1.33301 11.6814 1.33301 7.99923C1.33301 4.31704 4.31801 1.33203 8.00021 1.33203C11.6824 1.33203 14.6674 4.31704 14.6674 7.99923Z" stroke="#1E58E2" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3481_998">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
                 <p>All fields marked with <span class="text-rose-500 font-bold">*</span> are required</p>
               </div>
               <div class="flex gap-3 items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-more-icon lucide-message-square-more text-blue-500"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M12 11h.01"/><path d="M16 11h.01"/><path d="M8 11h.01"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.6674 4.66777L8.67293 8.48539C8.46951 8.60352 8.23845 8.66574 8.00321 8.66574C7.76797 8.66574 7.53691 8.60352 7.33349 8.48539L1.33301 4.66777M2.66645 2.66797H13.334C14.0704 2.66797 14.6674 3.26486 14.6674 4.00117V12.0004C14.6674 12.7367 14.0704 13.3336 13.334 13.3336H2.66645C1.93001 13.3336 1.33301 12.7367 1.33301 12.0004V4.00117C1.33301 3.26486 1.93001 2.66797 2.66645 2.66797Z" stroke="#1E58E2" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
                 <p>Add accurate contact details for quick communication</p>
               </div>
               <div class="flex gap-3 items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench-icon lucide-wrench text-blue-500"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.333 4.9987L11.8663 6.53203C11.991 6.65418 12.1585 6.7226 12.333 6.7226C12.5075 6.7226 12.6751 6.65418 12.7997 6.53203L14.1997 5.13203C14.3218 5.00741 14.3902 4.83987 14.3902 4.66536C14.3902 4.49086 14.3218 4.32332 14.1997 4.1987L12.6663 2.66536M13.9996 1.33203L7.59961 7.73203M8.66634 10.332C8.66634 12.3571 7.02472 13.9987 4.99967 13.9987C2.97463 13.9987 1.33301 12.3571 1.33301 10.332C1.33301 8.30699 2.97463 6.66536 4.99967 6.66536C7.02472 6.66536 8.66634 8.30699 8.66634 10.332Z" stroke="#1E58E2" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
                 <p>Assign keys after creating the site</p>
               </div>
               <div class="flex gap-3 items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen-icon lucide-square-pen text-blue-500"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 2H3.33333C2.97971 2 2.64057 2.14048 2.39052 2.39052C2.14048 2.64057 2 2.97971 2 3.33333V12.6667C2 13.0203 2.14048 13.3594 2.39052 13.6095C2.64057 13.8595 2.97971 14 3.33333 14H12.6667C13.0203 14 13.3594 13.8595 13.6095 13.6095C13.8595 13.3594 14 13.0203 14 12.6667V8M12.2501 1.75015C12.5153 1.48493 12.875 1.33594 13.2501 1.33594C13.6251 1.33594 13.9848 1.48493 14.2501 1.75015C14.5153 2.01537 14.6643 2.37508 14.6643 2.75015C14.6643 3.12522 14.5153 3.48493 14.2501 3.75015L8.2414 9.75948C8.0831 9.91765 7.88753 10.0334 7.67273 10.0962L5.7574 10.6562C5.70003 10.6729 5.63922 10.6739 5.58134 10.6591C5.52345 10.6442 5.47061 10.6141 5.42836 10.5719C5.38611 10.5296 5.35599 10.4768 5.34116 10.4189C5.32633 10.361 5.32733 10.3002 5.34406 10.2428L5.90406 8.32748C5.96708 8.11285 6.08309 7.91752 6.2414 7.75948L12.2501 1.75015Z" stroke="#1E58E2" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
                 <p>You can edit site details anytime</p>
               </div>
             </div>
