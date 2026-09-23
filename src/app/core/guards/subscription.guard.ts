@@ -1,30 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
+import { Observable, from, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { SubscriptionService } from '../services/subscription.service';
-import { catchError, map, of } from 'rxjs';
+import { SubscriptionStatusService, ALLOWED_PATHS_WITHOUT_SUBSCRIPTION } from '../services/subscription-status.service';
 
-const ALLOWED_PATHS_WITHOUT_SUBSCRIPTION = [
-  '/subscription-plan',
-  '/subscription',
-  '/subscription/complete',
-  '/signin',
-  '/login',
-  '/signup',
-  '/forgot-password',
-  '/forgot-passwordcheck',
-  '/confirm-password',
-  '/reset-password',
-  '/verification',
-  '/subscription-trial-start',
-  '/subscription-trial-ready',
-  '/activate-account',
-];
-
-export const subscriptionGuard: CanActivateFn = (route, state) => {
+export const subscriptionGuard: CanActivateFn = (route, state): boolean | UrlTree | Observable<boolean | UrlTree> => {
   const router = inject(Router);
   const authService = inject(AuthService);
-  const subscriptionService = inject(SubscriptionService);
+  const subStatus = inject(SubscriptionStatusService);
 
   const currentUrl = state.url;
   if (ALLOWED_PATHS_WITHOUT_SUBSCRIPTION.some(path => currentUrl.startsWith(path))) {
@@ -38,33 +22,38 @@ export const subscriptionGuard: CanActivateFn = (route, state) => {
     });
   }
 
-  const orgId = localStorage.getItem('org_id') || localStorage.getItem('organizationId');
+  const orgId = subStatus.getOrgId();
   if (!orgId) {
     return router.createUrlTree(['/signin'], {
       queryParams: { returnUrl: currentUrl },
     });
   }
 
-  return subscriptionService.getSubscription(orgId, 'key-vault').pipe(
-    map((res: any) => {
-      const payload = res?.data ?? res ?? {};
-      const sub = payload.subscription ?? payload ?? {};
-      const isActive = sub?.status === 'ACTIVE';
-      const isTrial = sub?.status === 'TRIALING' || sub?.status === 'TRIAL';
-      const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
-      const isTrialExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
-      
-      if (!isActive && (!isTrial || isTrialExpired)) {
-        return router.createUrlTree(['/subscription-plan'], {
-          queryParams: { returnUrl: currentUrl },
-        });
-      }
+  // Synchronous cache check: if we have a recent active subscription in localStorage,
+  // skip the API call entirely for instant navigation.
+  if (subStatus.isCachedActive()) {
+    // Also verify the cache timestamp is reasonably fresh (within 5 minutes).
+    const ts = localStorage.getItem('sub_check_ts');
+    if (ts && Date.now() - Number(ts) < 300_000) {
       return true;
-    }),
-    catchError(() => {
-      return of(router.createUrlTree(['/subscription-plan'], {
-        queryParams: { returnUrl: currentUrl },
-      }));
-    })
+    }
+  }
+
+  // Fall back to async check via the shared service.
+  return from(subStatus.checkNow()).pipe(
+    map(() =>
+      subStatus.isActive()
+        ? true
+        : router.createUrlTree(['/subscription-plan'], {
+            queryParams: { returnUrl: currentUrl },
+          })
+    ),
+    catchError(() =>
+      of(
+        router.createUrlTree(['/subscription-plan'], {
+          queryParams: { returnUrl: currentUrl },
+        })
+      )
+    )
   );
 };

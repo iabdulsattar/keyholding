@@ -5,10 +5,9 @@ import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { BackdropComponent } from '../backdrop/backdrop.component';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ToastComponent } from '../../shared/components/ui/toast/toast.component';
-import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SubscriptionService } from '../../core/services/subscription.service';
+import { SubscriptionStatusService } from '../../core/services/subscription-status.service';
 
 @Component({
   selector: 'app-layout',
@@ -27,13 +26,12 @@ export class AppLayoutComponent {
   containerClasses$: Observable<string>;
   isSidebarOpen$: Observable<boolean>;
   hideSidebarAndHeader = false;
-  trialExpired = false;
 
   constructor(
     public sidebarService: SidebarService,
     private router: Router,
     private route: ActivatedRoute,
-    private subscriptionService: SubscriptionService,
+    private subStatus: SubscriptionStatusService,
   ) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isHovered$ = this.sidebarService.isHovered$;
@@ -54,28 +52,17 @@ export class AppLayoutComponent {
       map(([expanded, mobileOpen]) => expanded || mobileOpen)
     );
 
-    this.checkTrialStatus();
+    if (this.subStatus.getOrgId()) {
+      this.subStatus.checkNow();
+    }
   }
 
-  private checkTrialStatus(): void {
-    const orgId = localStorage.getItem('org_id') || localStorage.getItem('organizationId');
-    if (!orgId) return;
+  get isTrialBannerVisible(): boolean {
+    return this.subStatus.status() === 'trial';
+  }
 
-    this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
-      next: (res: any) => {
-        const payload = res?.data ?? res ?? {};
-        const sub = payload.subscription ?? payload ?? {};
-        const status = sub?.status?.toUpperCase();
-        const isTrial = status === 'TRIAL' || status === 'TRIALING';
-        const trialEnd = sub?.trialEnd || sub?.currentPeriodEnd;
-        const isExpired = isTrial && trialEnd && new Date(trialEnd) < new Date();
-        
-        this.trialExpired = isExpired;
-      },
-      error: () => {
-        this.trialExpired = false;
-      }
-    });
+  get trialDaysRemaining(): number {
+    return this.subStatus.daysRemaining();
   }
 
   toggleSidebar(): void {
@@ -86,3 +73,4 @@ export class AppLayoutComponent {
     }
   }
 }
+

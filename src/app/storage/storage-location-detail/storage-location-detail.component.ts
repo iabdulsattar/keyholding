@@ -138,7 +138,7 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/storage/locations']);
   }
 
-  getStatusClass(status: string): string {
+   getStatusClass(status: string): string {
     const s = (status || '').toUpperCase();
     if (s === 'ACTIVE') {
       return 'bg-emerald-50 text-emerald-600';
@@ -150,6 +150,15 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
       return 'bg-amber-50 text-amber-600';
     }
     return 'bg-slate-100 text-slate-600';
+  }
+
+  getStatusLabel(status: string): string {
+    if (!status) return '—';
+    const normalized = status.toUpperCase().replace(/_/g, ' ');
+    if (normalized === 'ACTIVE') return 'Active';
+    if (normalized === 'INACTIVE') return 'Inactive';
+    if (normalized.includes('MAINTENANCE')) return 'Under Maintenance';
+    return normalized.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
   }
 
   getStatusDotClass(status: string): string {

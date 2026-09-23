@@ -64,7 +64,7 @@
               <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold font-['Inter']"
                     [ngClass]="location.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'">
                 <span class="w-1.5 h-1.5 rounded-full" [ngClass]="location.isActive ? 'bg-emerald-500' : 'bg-rose-500'"></span>
-                {{ location.status }}
+                {{ getStatusLabel(location.status) }}
               </span>
             </div>
             <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold font-['Inter'] mt-1.5">
@@ -248,7 +248,7 @@
         <div class="flex justify-between sm:justify-start sm:gap-8">
           <dt class="text-gray-400 w-40 flex-shrink-0">Status</dt>
           <dd class="text-emerald-600 font-semibold inline-flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> {{ location.status }}
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> {{ getStatusLabel(location.status) }}
           </dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
@@ -323,7 +323,7 @@
               <td class="py-4 pr-4 text-gray-800">{{ cabinetUsedHooks(cabinet) }}</td>
               <td class="py-4 pr-4">
                 <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" [ngClass]="getStatusClass(cabinet.status)">
-                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ cabinet.status ?? 'Inactive' }}
+                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ getStatusLabel(cabinet.status) ?? 'Inactive' }}
                 </span>
               </td>
               <td class="py-4">
@@ -348,7 +348,7 @@
               <div class="text-sm text-slate-700">{{ cabinet.name ?? '—' }}</div>
             </div>
             <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium" [ngClass]="getStatusClass(cabinet.status)">
-              <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ cabinet.status ?? 'Inactive' }}
+              <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ getStatusLabel(cabinet.status) ?? 'Inactive' }}
             </span>
           </div>
           <div class="mt-3 grid grid-cols-2 gap-y-2 text-xs">

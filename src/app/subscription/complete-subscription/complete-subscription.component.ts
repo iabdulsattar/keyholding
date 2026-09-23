@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { AuthService } from '../../core/services/auth.service';
+import { SubscriptionStatusService } from '../../core/services/subscription-status.service';
 import { Subscription } from 'rxjs';
 import { ChangePlanRequest } from '../../core/models/subscription.models';
 
@@ -39,6 +40,7 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private subscriptionService: SubscriptionService,
     private authService: AuthService,
+    private subStatus: SubscriptionStatusService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -245,9 +247,10 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
         this.errorMessage = result.error.message || 'Card validation failed. Please check your card details.';
       } else {
         planCall(result.paymentMethod.id).subscribe({
-          next: (planRes) => {
-            console.log('Plan subscription success:', planRes);
-            saveBillingInfoCall().subscribe({
+      next: (planRes) => {
+        console.log('Plan subscription success:', planRes);
+        this.subStatus.onCheckoutSuccess();
+        saveBillingInfoCall().subscribe({
               next: () => {
                 this.isLoading = false;
                 this.router.navigate(['/invoice']);

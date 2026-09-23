@@ -8,6 +8,7 @@ import { InputFieldComponent } from '../../form/input/input-field.component';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { KeyVaultService } from '../../../../core/services/keyvault.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
+import { SubscriptionStatusService } from '../../../../core/services/subscription-status.service';
 import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class SigninFormComponent {
     private router: Router,
     private keyVault: KeyVaultService,
     private subscriptionService: SubscriptionService,
+    private subStatus: SubscriptionStatusService,
     private toast: ToastService,
   ) {}
 
@@ -292,6 +294,7 @@ export class SigninFormComponent {
 
     const navigateAfterLogin = (target: string) => {
       this.isLoading = false;
+      this.subStatus.checkNow();
       this.toast.success('Login successful! Redirecting...');
       setTimeout(() => this.router.navigate([target]), 600);
     };
@@ -303,7 +306,8 @@ export class SigninFormComponent {
         useTrial: true,
         config: {},
       }).subscribe({
-        next: () => {
+        next: (trialRes) => {
+          this.subStatus.setFromResponse(trialRes);
           done();
         },
         error: () => {
@@ -321,6 +325,7 @@ export class SigninFormComponent {
 
       this.subscriptionService.getSubscription(orgId, 'key-vault').subscribe({
         next: (res: any) => {
+          this.subStatus.setFromResponse(res);
           const payload = res?.data ?? res ?? {};
           const sub = payload.subscription ?? payload ?? {};
           const status = sub?.status?.toUpperCase();

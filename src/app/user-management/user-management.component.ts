@@ -10,6 +10,7 @@ import { AuthService } from '../core/services/auth.service';
 import { SendInviteModalComponent } from './send-invite-modal/send-invite-modal.component';
 import { DeactivateUserModalComponent } from './deactivate-user-modal/deactivate-user-modal.component';
 import { ReactivateUserModalComponent } from './reactivate-user-modal/reactivate-user-modal.component';
+import { DeleteUserModalComponent } from './delete-user-modal/delete-user-modal.component';
 import { ResendCredentialsModalComponent } from './resend-credentials-modal/resend-credentials-modal.component';
 import { TableUser } from '../shared/components/users/users-table/users-table.component';
 import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
@@ -63,7 +64,7 @@ import { ActivityItem } from '../shared/components/ui/activity-timeline/activity
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, ResendCredentialsModalComponent, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SendInviteModalComponent, DeactivateUserModalComponent, ReactivateUserModalComponent, DeleteUserModalComponent, ResendCredentialsModalComponent, RichSelectComponent],
   templateUrl: './user-management.component.html',
   styles: ``
 })
@@ -84,6 +85,7 @@ export class UserManagementComponent implements OnInit {
   showInviteModal = false;
   showDeactivateModal = false;
   showReactivateModal = false;
+  showDeleteModal = false;
   showResendModal = false;
   resendTargetUser: TableUser | null = null;
   currentUserId: string | null = null;
@@ -434,7 +436,7 @@ export class UserManagementComponent implements OnInit {
   deleteUser(user: User): void {
     if (!user?.id) return;
     this.selectedUser = user;
-    this.showDeactivateModal = true;
+    this.showDeleteModal = true;
   }
 
   onTablePageChange(page: number): void {
@@ -586,6 +588,17 @@ export class UserManagementComponent implements OnInit {
     if (this.detailUser) {
       this.detailUser = { ...this.detailUser, status: 'Active' };
     }
+    this.loadUsers();
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+  }
+
+  onUserDeleted(): void {
+    this.showDeleteModal = false;
+    this.selectedUser = null;
+    this.detailUser = null;
     this.loadUsers();
   }
 

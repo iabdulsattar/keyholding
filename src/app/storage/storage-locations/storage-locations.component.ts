@@ -163,6 +163,20 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  editLocation(location: any): void {
+    const id = location.id || location.code || '';
+    if (id) {
+      this.router.navigate(['/storage/locations/edit', id]);
+    }
+  }
+
+  deleteLocation(location: any): void {
+    const id = location.id || location.code || '';
+    if (id) {
+      this.router.navigate(['/storage/locations/deactivate', id]);
+    }
+  }
+
   onSearch(): void {
     this.currentPage = 0;
     this.loadStorageLocations({ q: this.searchTerm });
@@ -264,9 +278,13 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   getLocationStatus(loc: any): string {
-    const raw = loc.status || (loc.active ? 'Active' : 'Inactive') || '—';
-    if (raw === 'UNDER_MAINTENANCE' || raw === 'MAINTENANCE') return 'Under Maintenance';
-    return raw;
+    const raw = loc.status || (loc.active !== undefined ? (loc.active ? 'ACTIVE' : 'INACTIVE') : '') || '—';
+    if (raw === '—') return raw;
+    const normalized = raw.toUpperCase().replace(/_/g, ' ');
+    if (normalized === 'ACTIVE') return 'Active';
+    if (normalized === 'INACTIVE') return 'Inactive';
+    if (normalized.includes('MAINTENANCE')) return 'Under Maintenance';
+    return normalized.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
   }
 
   getLocationStatusDot(loc: any): string {

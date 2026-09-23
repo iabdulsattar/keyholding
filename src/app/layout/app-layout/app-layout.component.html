@@ -4,6 +4,13 @@
     <app-backdrop></app-backdrop>
   </div>
     <div [class]="containerClasses$ | async" class="flex flex-col h-screen overflow-hidden">
+      <div *ngIf="isTrialBannerVisible" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 text-sm flex items-center justify-center">
+        <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>You are on a free trial. Your trial expires in {{ trialDaysRemaining }} day{{ trialDaysRemaining === 1 ? '' : 's' }}.</span>
+        <a routerLink="/subscription-plan" class="ml-4 font-semibold underline hover:no-underline">Upgrade now</a>
+      </div>
       <div class="flex-1 overflow-y-auto bg-[#F4F6FA] p-6 max-w-full dark:bg-gray-950">
       <router-outlet></router-outlet>
     </div>
