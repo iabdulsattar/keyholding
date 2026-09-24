@@ -76,7 +76,7 @@
     
     <!-- Header card -->
     <div class="bg-white rounded-md shadow-xs p-6 mb-4">
-      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-6 xl:gap-8 items-start">
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-6 xl:gap-8 items-center">
 
         <!-- Identity -->
         <div class="flex items-center gap-4 lg:pr-2 ">
@@ -136,7 +136,7 @@
         <div class="hidden xl:block w-px bg-slate-200 h-full"></div>
 
         <!-- Site info -->
-        <dl class="flex flex-col gap-y-4 text-sm">
+        <dl class="flex flex-col gap-y-4 text-sm ">
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
             <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-34 shrink-0">Site / Building</dt>
             <dd class=" text-slate-900 text-xs font-bold font-['Inter']">{{ location.siteName }}</dd>
@@ -157,15 +157,15 @@
         <!-- Contact / meta -->
         <dl class="flex flex-col gap-y-4 text-sm">
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-34 shrink-0">Contact Number</dt>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Contact Number</dt>
             <dd class="text-slate-900 text-xs font-bold font-['Inter']">{{ location.contactNumber }}</dd>
           </div>
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-34 shrink-0">Created By</dt>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Created By</dt>
             <dd class="text-slate-900 text-xs font-bold font-['Inter']">{{ location.createdBy }}</dd>
           </div>
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-34 shrink-0">Created On</dt>
+            <dt class="text-slate-500 text-xs font-semibold font-['Inter'] w-full sm:w-32 shrink-0">Created On</dt>
             <dd class="text-slate-900 text-xs font-bold font-['Inter']">{{ formatDate(location.createdDate) }}</dd>
           </div>
           
