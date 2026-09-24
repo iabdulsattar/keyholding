@@ -103,6 +103,7 @@ export interface UpdateUserRequest {
   location?: string;
   canAccessWeb?: boolean;
   canAccessMobile?: boolean;
+  serviceCode?: string;
 }
 
 export interface DeactivateUserRequest {
