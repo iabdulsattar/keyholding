@@ -206,7 +206,7 @@
                     </div>
                     
                     <div class="flex">
-                      <dt class="text-slate-500 text-xs font-medium w-34">Description</dt>
+                      <dt class="text-slate-500 text-xs font-medium shrink-0 w-34">Description</dt>
                       <dd class="text-slate-900 text-xs font-medium">{{ cabinet.description }}</dd>
                     </div>
                     <div class="flex">
@@ -310,7 +310,7 @@
                 </div>
                 <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2.5">
                   <ng-container *ngFor="let h of hooks">
-                    <div class="flex flex-col items-center min-h-[90px] gap-1.5 border border-slate-200 bg-slate-50 rounded-lg py-3">
+                    <div class="flex flex-col items-center text-center min-h-[90px] gap-1.5 border border-slate-200 bg-slate-50 rounded-lg py-3">
 
                       @if(h.used){
 
@@ -325,13 +325,17 @@
 
 
                       }
-                      <span class="text-slate-900 text-xs font-semibold font-['Inter']">{{ h.used ? h.keyName :
-                        'Available' }}</span>
+                      <span class="text-slate-900 text-xs font-semibold font-['Inter']">
+                        {{ h.used
+    ? ((h.keyName || '').split(' ').slice(0, 4).join(' ') + ((h.keyName || '').split(' ').length > 4 ? '...' : ''))
+    : 'Available'
+  }}
+                      </span>
                         
                       <span *ngIf="h.used" class="text-slate-400 text-[10px] font-semibold font-['Inter']">{{
                         h.keyTypeName }}</span>
 
-                      <div class="flex items-center mt-auto justify-between w-full p-1 mt-0.5 border-t border-slate-100">
+                      <div class="flex items-center mt-auto justify-between w-full py-2 px-2 mt-0.5 border-t border-slate-100">
                       <!-- move key -->
                         @if(h.used){
                           <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id, 'move-key']"
