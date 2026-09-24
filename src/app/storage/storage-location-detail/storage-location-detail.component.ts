@@ -141,7 +141,7 @@ export class StorageLocationDetailComponent implements OnInit, AfterViewInit {
    getStatusClass(status: string): string {
     const s = (status || '').toUpperCase();
     if (s === 'ACTIVE') {
-      return 'bg-emerald-50 text-emerald-600';
+      return 'bg-emerald-100 text-emerald-500';
     }
     if (s === 'INACTIVE') {
       return 'bg-rose-50 text-rose-600';
