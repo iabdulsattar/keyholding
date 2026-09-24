@@ -536,6 +536,7 @@ export class AddUserComponent implements OnInit {
         location: this.form.location.trim() || undefined,
         canAccessWeb: this.form.canAccessWeb,
         canAccessMobile: this.form.canAccessMobile,
+        serviceCode: 'key-vault',
       };
 
       this.userService.updateUser(orgId, this.userId, payload, this.avatarFile).subscribe({
