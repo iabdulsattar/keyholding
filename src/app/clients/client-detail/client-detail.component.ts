@@ -113,7 +113,7 @@ showDeactivateClientModal = false;
   jobsTotalPagesFromApi = 0;
 
   jobStatusOptions: RichSelectOption[] = [
-    { value: 'All', label: 'All' },
+    { value: 'All', label: 'Status' },
     { value: 'SCHEDULED', label: 'Scheduled' },
     { value: 'IN_PROGRESS', label: 'In Progress' },
     { value: 'COMPLETED', label: 'Completed' },
@@ -135,7 +135,7 @@ showDeactivateClientModal = false;
   documentsLoading = false;
 
   documentCategoryOptions: RichSelectOption[] = [
-    { value: 'All', label: 'All' },
+    { value: 'All', label: 'Status' },
     { value: 'Contract', label: 'Contract' },
     { value: 'License', label: 'License' },
     { value: 'Insurance', label: 'Insurance' },
@@ -160,7 +160,7 @@ showDeactivateClientModal = false;
   contactsLoading = false;
 
   contactStatusOptions: RichSelectOption[] = [
-    { value: 'All', label: 'All' },
+    { value: 'All', label: 'Status' },
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' },
   ];
@@ -178,7 +178,7 @@ showDeactivateClientModal = false;
   emergencyContactsLoading = false;
 
   emergencyContactStatusOptions: RichSelectOption[] = [
-    { value: 'All', label: 'All' },
+    { value: 'All', label: 'Status' },
     { value: 'Active', label: 'Active' },
     { value: 'Inactive', label: 'Inactive' },
   ];
