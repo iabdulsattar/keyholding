@@ -358,25 +358,30 @@
     </div>
 
     <!-- Cabinets in this location -->
-    <div class="bg-white rounded-md  p-6">
+    <div class="bg-white rounded-md shadow-xs  p-6">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-        <h3 class="text-lg font-bold text-gray-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
-      
+        <h3 class="text-sm font-bold text-slate-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
+        <a [routerLink]="" [queryParams]="" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Add Cabinet
+          </a>      
       </div>
 
       <!-- Desktop table -->
       <div class="hidden overflow-x-auto lg:block">
-        <table class="w-full min-w-[1300px] text-sm">
+        <table class="w-full min-w-[1300px] text-xs">
           <thead>
-            <tr class="text-left text-gray-500 border-b border-gray-100">
-              <th class="font-semibold pb-3 pr-4">Cabinet Code</th>
-              <th class="font-semibold pb-3 pr-4">Cabinet Name</th>
-              <th class="font-semibold pb-3 pr-4">Cabinet Type</th>
-                <th class="font-semibold pb-3 pr-4">Capacity(Hooks)</th>
-                <th class="font-semibold pb-3 pr-4">Available Hooks</th>
-                <th class="font-semibold pb-3 pr-4">Keys in Storage</th>
-              <th class="font-semibold pb-3 pr-4">Status</th>
-              <th class="font-semibold pb-3">Actions</th>
+            <tr class="text-left text-slate-900 border-b border-slate-200">
+              <th class="font-bold pb-3 pr-4">Cabinet Code</th>
+              <th class="font-bold pb-3 pr-4">Cabinet Name</th>
+              <th class="font-bold pb-3 pr-4">Cabinet Type</th>
+              <th class="font-bold pb-3 pr-4">Capacity (Hooks)</th>
+              <th class="font-bold pb-3 pr-4">Hooks / Slots</th>
+              <th class="font-bold pb-3 pr-4">Keys in Storage</th>
+              <th class="font-bold pb-3 pr-4">Status</th>
+              <th class="font-bold pb-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
