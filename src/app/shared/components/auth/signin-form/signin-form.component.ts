@@ -248,10 +248,15 @@ export class SigninFormComponent {
     }
 
     const orgs = data?.tokens?.organizations ?? data?.organizations ?? [];
+    const store = this.isChecked ? localStorage : sessionStorage;
     const storeOrg = (id: string, name?: string) => {
+      store.setItem('org_id', id);
+      store.setItem('organizationId', id);
       localStorage.setItem('org_id', id);
       localStorage.setItem('organizationId', id);
       if (name) {
+        store.setItem('organizationName', name);
+        store.setItem('org_name', name);
         localStorage.setItem('organizationName', name);
         localStorage.setItem('org_name', name);
       }
