@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
-import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
-import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { formatJobStatus } from '../../shared/utils/job.utils';
 
 @Component({
   selector: 'app-all-jobs',
@@ -172,6 +172,10 @@ export class AllJobsComponent implements OnInit {
       'CANCELLED': 'bg-slate-100 text-slate-500'
     };
     return map[status] || 'bg-slate-100 text-slate-500';
+  }
+
+  getJobStatusLabel(status: string): string {
+    return formatJobStatus(status);
   }
 
   priorityClass(priority: string): string {

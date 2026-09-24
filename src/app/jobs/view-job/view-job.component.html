@@ -33,9 +33,10 @@
       <span class="inline-flex items-center gap-1 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']"
         [class]="statusClass(job?.status || '')">
         <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-        {{ job?.status || '—' }}
+        {{ getJobStatusLabel(job?.status) || '—' }}
       </span>
     </div>
+
     <div class="flex items-center gap-2 mb-6">
       <a href="#" class="text-blue-600 font-bold text-sm font-['Inter'] hover:underline">{{ job?.code || jobId || '—'
         }}</a>
@@ -130,7 +131,7 @@
             class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']"
             [class]="statusClass(job?.status || '')">
             <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-            {{ job?.status || '—' }}
+            {{ getJobStatusLabel(job?.status) || '—' }}
           </span>
         </div>
         <div class="mt-5">
@@ -427,7 +428,7 @@
                   class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] text-xs font-bold font-['Inter']"
                   [class]="statusClass(job?.status || '')">
                   <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                  {{ job?.status || '—' }}
+                  {{ getJobStatusLabel(job?.status) || '—' }}
                 </span>
               </dd>
             </div>
