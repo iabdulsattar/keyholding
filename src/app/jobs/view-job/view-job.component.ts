@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { formatJobStatus } from '../../shared/utils/job.utils';
 
 interface JobDetail {
   id: string;
@@ -223,6 +224,10 @@ export class ViewJobComponent implements OnInit {
       'Pending': 'bg-amber-50 text-amber-600'
     };
     return map[status] || 'bg-slate-100 text-slate-500';
+  }
+
+  getJobStatusLabel(status: string): string {
+    return formatJobStatus(status);
   }
 
   priorityClass(priority: string): string {

@@ -16,6 +16,7 @@ import { DeleteEmergencyContactModalComponent } from '../delete-emergency-contac
 import { ToggleEmergencyContactStatusModalComponent } from '../toggle-emergency-contact-status-modal/toggle-emergency-contact-status-modal.component';
 import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-document-modal.component';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { formatJobStatus } from '../../shared/utils/job.utils';
 
 @Component({
   selector: 'app-client-detail',
@@ -1254,6 +1255,10 @@ viewEmergencyContact(contactId: string): void {
       'CANCELLED': 'bg-slate-100 text-slate-500'
     };
     return map[status] || 'bg-slate-100 text-slate-500';
+  }
+
+  getJobStatusLabel(status: string): string {
+    return formatJobStatus(status);
   }
 
   jobPriorityClass(priority: string): string {
