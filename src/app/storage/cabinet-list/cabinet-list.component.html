@@ -139,7 +139,7 @@
           <input type="text" placeholder="Search cabinets..."
             [(ngModel)]="searchTerm"
             (input)="onSearch()"
-            class="w-full h-11 bg-white rounded-md shadow-xs pl-3.5 pr-9 py-2.5 text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600" />
+            class="w-full h-11 bg-white rounded-md border border-slate-200 pl-3.5 pr-9 py-2.5 text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600" />
         </div>
         <div class="w-full col-span-3">
           <app-rich-select [options]="storageLocationFilterOptions" [(value)]="storageLocationFilter" (valueChange)="onStorageLocationFilterChange()" placeholder="Storage Location" class="w-full"></app-rich-select>

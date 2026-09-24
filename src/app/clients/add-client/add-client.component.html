@@ -61,7 +61,7 @@
                   class="text-red-500">*</span></label>
               <input type="text" [(ngModel)]="clientName" name="clientName" (blur)="markTouched('clientName')"
                 placeholder="Enter client name"
-                class="w-full h-11 rounded-lg border px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                class="w-full h-11 rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!(touched.has('clientName') && !clientName.trim())"
                 [class.border-rose-400]="touched.has('clientName') && !clientName.trim()" />
               <p class="mt-1 text-xs text-rose-500" *ngIf="touched.has('clientName') && !clientName.trim()">Client Name
@@ -74,7 +74,7 @@
                   class="text-red-500">*</span></label>
               <input type="email" [(ngModel)]="email" name="email" (blur)="markTouched('email')"
                 placeholder="Enter email address"
-                class="w-full h-11 rounded-lg border px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                class="w-full h-11 rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 [class.border-slate-200]="!(touched.has('email') && !email.trim())"
                 [class.border-rose-400]="touched.has('email') && !email.trim()" />
               <p class="mt-1 text-xs text-rose-500" *ngIf="touched.has('email') && !email.trim()">{{
@@ -85,14 +85,14 @@
             <div>
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Phone</label>
               <input type="text" [(ngModel)]="phone" name="phone" placeholder="Enter phone number"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Website -->
             <div>
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Website</label>
               <input type="url" [(ngModel)]="website" name="website" placeholder="https://example.com"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Region -->
@@ -109,7 +109,7 @@
             <div class="sm:col-span-3">
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Address</label>
               <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Enter full address"
-                class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
+                class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
               
             </div>
           </div>
@@ -128,7 +128,7 @@
             <div>
               <label class="block text-xs font-medium text-slate-900 mb-1.5">VAT / Tax Number</label>
               <input type="text" [(ngModel)]="vatNumber" name="vatNumber" placeholder="Enter VAT or tax number"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Registration Number -->
@@ -136,7 +136,7 @@
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Registration Number</label>
               <input type="text" [(ngModel)]="registrationNumber" name="registrationNumber"
                 placeholder="Enter registration number"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Contact Person -->
@@ -144,28 +144,28 @@
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Contact Person</label>
               <input type="text" [(ngModel)]="contactPerson" name="contactPerson"
                 placeholder="Enter contact person name"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Designation -->
             <div>
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Designation</label>
               <input type="text" [(ngModel)]="designation" name="designation" placeholder="Enter designation"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Contact Email -->
             <div>
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Contact Email</label>
               <input type="email" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Enter contact email"
-                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                class="w-full h-11 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100">
               
             </div>
             <!-- Notes -->
             <div class="sm:col-span-3">
               <label class="block text-xs font-medium text-slate-900 mb-1.5">Notes </label>
               <textarea [(ngModel)]="notes" name="notes" rows="3" placeholder="Enter any additional notes (optional)"
-                class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
+                class="w-full resize-none rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
               
             </div>
           </div>

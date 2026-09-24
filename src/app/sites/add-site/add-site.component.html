@@ -16,13 +16,13 @@
 
           </span>
         </div>
-        <!-- <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2">
           <button type="button" (click)="resetSiteForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm px-5 py-3 border border-slate-200 rounded-lg transition">Cancel</button>
           <button type="button" (click)="submitSiteForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
             {{ editMode ? 'Update Site' : 'Save Site' }}
           </button>
-        </div> -->
+        </div> 
 
 <div class=" ">
   <div data-svg-wrapper class="">
@@ -478,7 +478,7 @@
 
             
            <!-- Site Status -->
-           <section class="">
+           <section class="border-b border-slate-200">
              <h3 class="text-base font-bold text-slate-800 mb-5">Site Status</h3>
              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label class="flex items-center gap-4 rounded-lg p-4 cursor-pointer transition" [class.border-emerald-500]="siteStatus === 'Active'" [class.bg-white]="siteStatus === 'Active'" [class.border-slate-200]="siteStatus !== 'Active'" [class.hover:border-slate-300]="siteStatus !== 'Active'">
@@ -497,6 +497,15 @@
                 </label>
              </div>
            </section>
+
+           <div class="flex items-center justify-end gap-2">
+          <button type="button" (click)="resetSiteForm()" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-800 font-semibold text-sm px-5 py-3 border border-slate-200 rounded-lg transition">Cancel</button>
+          <button type="button" (click)="submitSiteForm()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 17 8"/></svg>
+            {{ editMode ? 'Update Site' : 'Save Site' }}
+          </button>
+        </div> 
+
 
          </form>
 
