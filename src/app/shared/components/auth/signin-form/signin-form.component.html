@@ -36,8 +36,56 @@
            </div>
          </div>
 
+         <!-- Email Verification OTP step -->
+         @if (requiresEmailVerification) {
+         <div class="mt-4 sm:mt-6 mb-4 sm:mb-8">
+           <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
+             Email Verification
+           </h1>
+           <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+             We've sent a 6-digit verification code to
+             <span class="text-brand-500 dark:text-brand-400">{{ email }}</span>.
+             Please check your inbox and enter the code to verify your email.
+           </p>
+         </div>
+
+         <form (ngSubmit)="verifyEmailOtp()" class="space-y-6">
+           <div class="flex gap-2 sm:gap-3 justify-center">
+             <app-input-field type="text" placeholder="" name="d1" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" required />
+             <app-input-field type="text" placeholder="" name="d2" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" required />
+             <app-input-field type="text" placeholder="" name="d3" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" required />
+             <app-input-field type="text" placeholder="" name="d4" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" required />
+             <app-input-field type="text" placeholder="" name="d5" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" required />
+             <app-input-field type="text" placeholder="" name="d6" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" required />
+           </div>
+
+           <div class="mt-2 mb-2 sm:mb-3">
+             <p class="text-xs sm:text-sm font-normal text-center text-gray-700 dark:text-gray-400">
+               Didn't receive the code?
+               <a (click)="resendEmailOtp()" class="text-brand-500 hover:text-brand-600 dark:text-brand-400 cursor-pointer">
+                 Resend Code
+               </a>
+             </p>
+           </div>
+
+           <app-button className="w-full" size="sm" variant="primary" [disabled]="isLoading" (btnClick)="verifyEmailOtp()">
+             @if (isLoading) {
+             <span class="flex items-center gap-2">
+               <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+               </svg>
+               Verifying...
+             </span>
+             } @else {
+             Verify Email
+             }
+           </app-button>
+         </form>
+         }
+
          <!-- OTP (2FA) verification step -->
-        @if (requiresOtp) {
+         @if (requiresOtp && !requiresEmailVerification) {
         <div class="mt-4 sm:mt-6 mb-4 sm:mb-8">
           <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
             Two-Factor Verification
@@ -89,7 +137,7 @@
         }
 
         <!-- Email / Password form -->
-        <form (ngSubmit)="onSignIn()" class="mt-6 space-y-5" [class.hidden]="requiresOtp">
+         <form (ngSubmit)="onSignIn()" class="mt-6 space-y-5" [class.hidden]="requiresOtp || requiresEmailVerification">
           <div>
             <label class="block text-sm font-semibold text-slate-800 mb-2">Email Address</label>
             <div class="relative">

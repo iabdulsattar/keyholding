@@ -46,6 +46,7 @@ export class SigninFormComponent {
 
   // ---- OTP (2FA) step ----
   requiresOtp = false;
+  requiresEmailVerification = false;
   challengeToken = '';
   otpSentTo = '';
   d1 = '';
@@ -149,6 +150,69 @@ export class SigninFormComponent {
     });
   }
 
+  startEmailVerification(): void {
+    if (!this.email.trim()) {
+      this.toast.error('Email is missing. Please enter your email to continue.');
+      return;
+    }
+    this.isLoading = true;
+    this.authService.resendSignupOtp({ email: this.email }).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.requiresEmailVerification = true;
+        this.resetOtpStep();
+        this.toast.success('A verification code has been sent to your email.');
+      },
+      error: () => {
+        this.isLoading = false;
+        this.toast.error('Failed to send verification code. Please try again.');
+      }
+    });
+  }
+
+  resendEmailOtp(): void {
+    if (!this.email.trim()) return;
+    this.isLoading = true;
+    this.authService.resendSignupOtp({ email: this.email }).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.resetOtpStep();
+        this.toast.success('A new verification code has been sent to your email.');
+      },
+      error: () => {
+        this.isLoading = false;
+        this.toast.error('Failed to resend the code. Please try again.');
+      }
+    });
+  }
+
+  verifyEmailOtp(): void {
+    this.isLoading = true;
+    this.digitError = false;
+
+    const code = this.otpCode.replace(/\s+/g, '').trim();
+    if (!/^\d{6}$/.test(code)) {
+      this.isLoading = false;
+      this.digitError = true;
+      this.toast.error('Enter the 6-digit verification code.');
+      return;
+    }
+
+    this.authService.verifySignupOtp({ email: this.email, code }).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.requiresEmailVerification = false;
+        this.toast.success('Email verified successfully. Please sign in again.');
+        this.router.navigate(['/signin']);
+      },
+      error: (err: any) => {
+        this.isLoading = false;
+        const detail = err?.error?.detail || err?.error?.message;
+        this.toast.error(detail ? `Verification failed: ${detail}` : 'Invalid or expired code. Please try again.');
+      }
+    });
+  }
+
   private decodeExp(token: string): number | null {
     try {
       const parts = token.split('.');
@@ -211,6 +275,8 @@ export class SigninFormComponent {
 
         if (err.status === 401) {
           this.toast.error('Invalid email or password. Please try again.');
+        } else if (err.status === 403 && /email.*not.*ver/i.test(err?.error?.message || '')) {
+          this.startEmailVerification();
         } else if (err.status === 400) {
           this.toast.error(err.error?.detail || 'Please check your input and try again.');
         } else {
