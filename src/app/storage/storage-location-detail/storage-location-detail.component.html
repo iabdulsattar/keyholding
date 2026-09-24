@@ -175,7 +175,7 @@
     </div>
 
     <!-- Stat cards row -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
 
       <div class="bg-white rounded-md shadow-xs p-5 flex items-center gap-3">
         <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
@@ -275,70 +275,84 @@
     </div>
 
     <!-- Location Information -->
-    <div class="bg-white rounded-md  p-6 mb-6">
-      <h3 class="text-lg font-bold text-gray-900 mb-5">Location Information</h3>
-      <div class="grid grid-cols-1 gap-x-10 gap-y-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
+    <div class="bg-white rounded-md  p-6 mb-4">
+      <h3 class="text-sm font-bold text-slate-900 mb-4">Location Information</h3>
+      <div class="grid grid-cols-1 text-xs lg:grid-cols-12 ">
+        <div class="col-span-1 lg:col-span-6 space-y-3 lg:border-r lg:border-slate-200">
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Location Code</dt>
-          <dd class="text-gray-900 font-medium">{{ location.code }}</dd>
+          <dt class="text-slate-500 w-34 flex-shrink-0">Location Code</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.code }}</dd>
+        </div>
+
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Location Name</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.name }}</dd>
+        </div>
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Site / Building</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.siteName }}</dd>
+        </div>
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Location Type</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.locationType || '—' }}</dd>
+        </div>
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Address</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.address }}</dd>
+        </div>
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">City</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.city }}</dd>
+        </div>
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Postcode / ZIP</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.postcode }}</dd>
+        </div>
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Country</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.country }}</dd>
+        </div>
+        
+        </div>
+        <div class="col-span-1 lg:col-span-6 space-y-3 lg:pl-8 lg:pt-0 pt-2.5">
+        
+        <div class="flex justify-between sm:justify-start sm:gap-8">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Responsible Person</dt>
+          <dd class="text-blue-600 font-semibold hover:underline"><a href="#" class="hover:underline">{{ location.responsiblePerson }}</a></dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Responsible Person</dt>
-          <dd class="text-blue-600 font-medium hover:underline"><a href="#" class="hover:underline">{{ location.responsiblePerson }}</a></dd>
+          <dt class="text-slate-500 w-34 flex-shrink-0">Contact Number</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.contactNumber }}</dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Location Name</dt>
-          <dd class="text-gray-900 font-medium">{{ location.name }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Contact Number</dt>
-          <dd class="text-gray-900 font-medium">{{ location.contactNumber }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Site / Building</dt>
-          <dd class="text-gray-900 font-medium">{{ location.siteName }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Status</dt>
-          <dd class="text-emerald-600 font-semibold inline-flex items-center gap-1.5">
+          <dt class="text-slate-500 w-34 flex-shrink-0">Status</dt>
+          <dd class="text-emerald-600 font-bold inline-flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> {{ getStatusLabel(location.status) }}
           </dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Location Type</dt>
-          <dd class="text-gray-900 font-medium">{{ location.locationType || '—' }}</dd>
+          <dt class="text-slate-500 w-34 flex-shrink-0">Created By</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.createdBy }}</dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Created By</dt>
-          <dd class="text-gray-900 font-medium">{{ location.createdBy }}</dd>
+          <dt class="text-slate-500 w-34 flex-shrink-0">Created On</dt>
+          <dd class="text-slate-900 font-semibold">{{ formatDate(location.createdDate) }}</dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Address</dt>
-          <dd class="text-gray-900 font-medium">{{ location.address }}</dd>
+          <dt class="text-slate-500 w-34 flex-shrink-0">Last Updated By</dt>
+          <dd class="text-slate-900 font-semibold">{{ location.updatedBy }}</dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Created On</dt>
-          <dd class="text-gray-900 font-medium">{{ formatDate(location.createdDate) }}</dd>
+          <dt class="text-slate-500 w-34 flex-shrink-0">Last Updated On</dt>
+          <dd class="text-slate-900 font-semibold">{{ formatDate(location.updatedDate) }}</dd>
         </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">City</dt>
-          <dd class="text-gray-900 font-medium">{{ location.city }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Last Updated By</dt>
-          <dd class="text-gray-900 font-medium">{{ location.updatedBy }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Postcode / ZIP</dt>
-          <dd class="text-gray-900 font-medium">{{ location.postcode }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Last Updated On</dt>
-          <dd class="text-gray-900 font-medium">{{ formatDate(location.updatedDate) }}</dd>
-        </div>
-        <div class="flex justify-between sm:justify-start sm:gap-8">
-          <dt class="text-gray-400 w-40 flex-shrink-0">Country</dt>
-          <dd class="text-gray-900 font-medium">{{ location.country }}</dd>
+        
         </div>
       </div>
     </div>
