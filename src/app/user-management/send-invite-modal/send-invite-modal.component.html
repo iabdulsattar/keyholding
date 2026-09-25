@@ -35,7 +35,7 @@
       </li>
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500 mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        User role: <span class="font-semibold text-slate-800">{{ (user()?.roles || [])[0] || user()?.role || 'Member' }}</span>
+        User role: <span class="font-semibold text-slate-800">{{ (user()?.roles || user()?.roleNames || []).filter(r => r).join(', ') || 'Administrator' }}</span>
       </li>
       <li class="flex items-start gap-2.5 text-sm text-slate-600">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500 mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>

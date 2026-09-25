@@ -138,12 +138,15 @@ export class ViewUserComponent implements OnInit {
   get roleName(): string {
     if (!this.user) return '—';
     const roles = (this.user as any).roles || [];
-    const roleNames = roles.map((r: any) => r.name);
+    const roleNames = roles.map((r: any) => r?.name).filter(Boolean);
     if (roleNames.length > 0) {
       return roleNames.join(', ');
     }
     const serviceRoles = this.serviceAccessRoles;
-    return serviceRoles.length > 0 ? serviceRoles.join(', ') : '—';
+    if (serviceRoles.length > 0) {
+      return serviceRoles.join(', ');
+    }
+    return 'Administrator';
   }
 
   get serviceAccessRoles(): string[] {

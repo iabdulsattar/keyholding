@@ -97,8 +97,9 @@ export class SubscriptionPlanComponent implements OnInit {
   }
 
   getSubtotal(plan: Plan): number {
-    return this.unitPrice;
-  }
+if (plan.monthlyPriceCents) return plan.monthlyPriceCents / 100;
+    const map: Record<string, number> = { KV_STARTER: 49, KV_USER_LICENCE: 9.99, KV_PROFESSIONAL: 129, KV_BUSINESS: 249 };
+    return map[plan.code] ?? 0;  }
 
   getVat(plan: Plan): number {
     return this.getPlanPrice(plan) * 0.2;

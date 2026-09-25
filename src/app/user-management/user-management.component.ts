@@ -195,10 +195,10 @@ export class UserManagementComponent implements OnInit {
     const hasFilters = !!(this.searchQuery.trim() || this.filterRole || this.filterStatus);
     const size = hasFilters ? 200 : this.pageSize;
 
-    this.keyVault.listKeyVaultUsers(orgId, { page: 0, size, q: this.searchQuery.trim() || undefined }).subscribe({
+    this.userService.listUsers(orgId, { page: 0, size, q: this.searchQuery.trim() || undefined, roleId: this.filterRole || undefined, status: this.filterStatus || undefined }).subscribe({
       next: (res) => {
-        const payload = res?.['data'] ?? res;
-        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? payload?.data ?? [];
+        const payload = res?.content ?? res?.items ?? res?.data ?? res ?? [];
+        const items = Array.isArray(payload) ? payload : [];
         this.users = items.map((item: any, index: number) => ({
           id: item.userId || item.id,
           name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
@@ -459,8 +459,21 @@ export class UserManagementComponent implements OnInit {
 
   get detailRole(): string {
     const roles: any[] = this.detailUser?.roles || this.selectedUser?.roles || [];
-    const roleNames = roles.map((role: any) => role?.name || role).filter((role): role is string => !!role);
-    return roleNames.length ? roleNames.join(', ') : 'Member';
+    const roleNames = roles.map((role: any) => role?.name || role).filter((role): role is string => !!role && role !== 'null' && role !== 'undefined');
+    if (roleNames.length > 0) {
+      return roleNames.join(', ');
+    }
+    const serviceRoles = (this.detailUser?.serviceAccess || this.selectedUser as any)?.serviceAccess;
+    if (serviceRoles && Array.isArray(serviceRoles)) {
+      const keyVault = serviceRoles.find((s: any) => s.serviceCode === 'key-vault');
+      if (keyVault?.roleDetails) {
+        const detailNames = keyVault.roleDetails.map((d: any) => d.roleName).filter(Boolean);
+        if (detailNames.length > 0) {
+          return detailNames.join(', ');
+        }
+      }
+    }
+    return 'Administrator';
   }
 
   get detailStatus(): string {
