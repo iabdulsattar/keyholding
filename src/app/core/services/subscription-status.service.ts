@@ -45,6 +45,7 @@ export class SubscriptionStatusService {
   private lastOrgId: string | null = null;
 
   constructor() {
+    this.lastOrgId = localStorage.getItem('sub_last_org_id');
     effect(() => {
       const st = this.status();
       if (st !== 'expired') return;
@@ -79,6 +80,7 @@ export class SubscriptionStatusService {
       const res: any = await firstValueFrom(this.sub.getSubscription(orgId, 'key-vault'));
       this.applyResult(res);
       this.lastOrgId = orgId;
+      localStorage.setItem('sub_last_org_id', orgId);
       localStorage.setItem('sub_check_ts', String(Date.now()));
     } catch {
       this.status.set('expired');
@@ -90,7 +92,10 @@ export class SubscriptionStatusService {
   setFromResponse(res: any): void {
     this.applyResult(res);
     const orgId = this.getOrgId();
-    if (orgId) this.lastOrgId = orgId;
+    if (orgId) {
+      this.lastOrgId = orgId;
+      localStorage.setItem('sub_last_org_id', orgId);
+    }
     localStorage.setItem('sub_check_ts', String(Date.now()));
   }
 
@@ -136,7 +141,15 @@ export class SubscriptionStatusService {
     if (!cached) return false;
     try {
       const services = JSON.parse(cached);
-      return services.some((s: any) => s.status === 'ACTIVE');
+      return services.some((s: any) => {
+        const st = s.status?.toUpperCase();
+        if (st === 'ACTIVE') return true;
+        if (st === 'TRIAL' || st === 'TRIALING') {
+          const exp = s.effectiveExpiry ? new Date(s.effectiveExpiry).getTime() : null;
+          return exp !== null && exp > Date.now();
+        }
+        return false;
+      });
     } catch {
       return false;
     }
