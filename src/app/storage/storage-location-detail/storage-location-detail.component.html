@@ -361,12 +361,6 @@
     <div class="bg-white rounded-md shadow-xs  p-6">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <h3 class="text-sm font-bold text-slate-900">Cabinets in This Location ({{ location.totalCabinets }})</h3>
-        <a [routerLink]="" [queryParams]="" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Add Cabinet
-          </a>      
       </div>
 
       <!-- Desktop table -->
@@ -400,21 +394,18 @@
               </td>
               <td class="py-4">
                 <div class="flex items-center justify-end gap-2">
-                  <button  class="hover:text-blue-600 p-1 transition" title="View"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <a [routerLink]="['/storage/locations/cabinets/view', cabinet.id]" class="hover:text-blue-600 p-1 transition" title="View"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></a>
                   
-                  <button class="hover:text-blue-600 p-1 transition" title="Edit">
-                    
+                  <a [routerLink]="['/storage/locations/cabinets/edit', cabinet.id]" class="hover:text-blue-600 p-1 transition" title="Edit">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12.5911 2.39732C12.5911 2.84089 12.4148 3.26628 12.1011 3.57989L4.18217 11.5001C4.04462 11.6372 3.87552 11.7385 3.68972 11.795L1.10703 12.5782C1.05574 12.5936 1.00124 12.5948 0.949303 12.5818C0.897365 12.5687 0.849931 12.5419 0.812033 12.504C0.774134 12.4662 0.747185 12.4188 0.734045 12.3669C0.720904 12.315 0.722062 12.2605 0.737396 12.2091L1.52116 9.62701C1.57819 9.44102 1.68006 9.27191 1.81782 9.13455L9.73616 1.21432C10.0498 0.90071 10.4753 0.724554 10.9188 0.724609C11.3624 0.724665 11.7878 0.900928 12.1014 1.21462C12.415 1.52832 12.5912 1.95374 12.5911 2.39732Z" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
                     </svg>
-                  
-                  </button>
+                  </a>
 
                   <button class="text-red-500 hover:text-red-600 p-1 transition" title="Delete">
                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M4.87492 6.06068V9.61805M7.24631 6.06068V9.61805M10.2106 3.09619V11.3967C10.2106 11.7112 10.0856 12.0128 9.86327 12.2352C9.64091 12.4576 9.33933 12.5825 9.02486 12.5825H3.09637C2.7819 12.5825 2.48032 12.4576 2.25796 12.2352C2.03559 12.0128 1.91067 11.7112 1.91067 11.3967V3.09619M0.724976 3.09619H11.3963M3.68922 3.09619V1.9104C3.68922 1.59591 3.81414 1.2943 4.0365 1.07192C4.25886 0.849541 4.56045 0.724609 4.87492 0.724609H7.24631C7.56078 0.724609 7.86237 0.849541 8.08473 1.07192C8.30709 1.2943 8.43201 1.59591 8.43201 1.9104V3.09619" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
                     </svg>
-
                   </button>
                 </div>
               </td>
