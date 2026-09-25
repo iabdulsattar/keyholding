@@ -174,7 +174,7 @@ export class AllJobsComponent implements OnInit {
     return map[status] || 'bg-slate-100 text-slate-500';
   }
 
-  getJobStatusLabel(status: string): string {
+  getJobStatusLabel(status?: string | null): string {
     return formatJobStatus(status);
   }
 

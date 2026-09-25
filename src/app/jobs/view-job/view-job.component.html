@@ -33,7 +33,7 @@
       <span class="inline-flex items-center gap-1 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']"
         [class]="statusClass(job?.status || '')">
         <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-        {{ getJobStatusLabel(job?.status) || '—' }}
+        {{ getJobStatusLabel(job?.status) }}
       </span>
     </div>
 
@@ -131,7 +131,7 @@
             class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']"
             [class]="statusClass(job?.status || '')">
             <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-            {{ getJobStatusLabel(job?.status) || '—' }}
+            {{ getJobStatusLabel(job?.status) }}
           </span>
         </div>
         <div class="mt-5">
@@ -428,7 +428,7 @@
                   class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] text-xs font-bold font-['Inter']"
                   [class]="statusClass(job?.status || '')">
                   <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                  {{ getJobStatusLabel(job?.status) || '—' }}
+                  {{ getJobStatusLabel(job?.status) }}
                 </span>
               </dd>
             </div>
