@@ -185,7 +185,7 @@ showDeactivateClientModal = false;
   ];
 
   siteStatusOptions: RichSelectOption[] = [
-    { value: 'All', label: 'All' },
+    { value: 'All', label: 'Status' },
     { value: 'ACTIVE', label: 'Active' },
     { value: 'INACTIVE', label: 'Inactive' },
   ];
@@ -204,7 +204,7 @@ showDeactivateClientModal = false;
   ];
 
   keyStatusOptions: RichSelectOption[] = [
-    { value: 'All', label: 'All' },
+    { value: 'All', label: 'Status' },
     { value: 'In Storage', label: 'In Storage' },
     { value: 'Issued', label: 'Issued' },
     { value: 'In Use', label: 'In Use' },
