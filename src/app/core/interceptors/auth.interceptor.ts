@@ -168,10 +168,16 @@ export class AuthInterceptor implements HttpInterceptor {
     return this.authService.getRefreshToken();
   }
 
-  private setAccessToken(token: string) {
-    const exp = this.decodeExp(token) ?? Date.now() + this.DEFAULT_EXPIRY_MS;
-    const expiresAt = String(exp);
-    this.authService.setTokens(token, this.getRefreshToken(), expiresAt);
+   private setAccessToken(token: string) {
+    // Preserve the existing session-expiry (which mirrors the refresh-token TTL
+    // for remembered sessions) instead of overwriting it with the short-lived
+    // access-token expiry, otherwise the auth guard would log the user out
+    // prematurely after a refresh.
+    const existingExpiry =
+      localStorage.getItem('session_expires_at') ??
+      sessionStorage.getItem('session_expires_at') ??
+      String(this.decodeExp(token) ?? Date.now() + this.DEFAULT_EXPIRY_MS);
+    this.authService.setTokens(token, this.getRefreshToken(), existingExpiry);
   }
 
   private setRefreshToken(token: string) {

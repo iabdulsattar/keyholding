@@ -62,6 +62,7 @@ export interface LoginRequest {
   email: string;
   password: string;
   serviceCode?: string;
+  rememberMe?: boolean;
 }
 
 export interface LoginResponse {

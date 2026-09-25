@@ -149,6 +149,79 @@ export class AuthService {
     return localStorage.getItem('remember_device') === 'true';
   }
 
+  /** Persist the "remember me" preference so subsequent token reads/writes
+   * land in localStorage (persistent) vs sessionStorage (tab-session only). */
+  setRemembered(remember: boolean): void {
+    if (remember) {
+      localStorage.setItem('remember_device', 'true');
+    } else {
+      localStorage.removeItem('remember_device');
+    }
+  }
+
+  /** Decode the `exp` claim from a JWT into a millisecond epoch timestamp. */
+  decodeExp(token: string): number | null {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        return null;
+      }
+      const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return typeof payload.exp === 'number' ? payload.exp * 1000 : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Default session length used when the API doesn't report a TTL. */
+  private readonly DEFAULT_SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+  /**
+   * Compute the session-expiry epoch-ms for a login response.
+   *
+   * Remembered sessions are bounded by the **refresh-token** TTL so the auth
+   * guard only logs the user out once the refresh token itself has expired
+   * (which can be days away). The access token is refreshed transparently by
+   * the interceptor in between. Non-remembered sessions fall back to the
+   * access-token expiry because sessionStorage is cleared on browser close
+   * anyway.
+   */
+  computeSessionExpiry(
+    accessToken: string,
+    refreshExpiresInSec?: number,
+    accessExpiresInSec?: number,
+    remember?: boolean,
+  ): number {
+    const now = Date.now();
+    if (remember) {
+      if (typeof refreshExpiresInSec === 'number' && refreshExpiresInSec > 0) {
+        return now + refreshExpiresInSec * 1000;
+      }
+      const accessExp = this.decodeExp(accessToken);
+      return accessExp ?? now + this.DEFAULT_SESSION_TTL_MS;
+    }
+    if (typeof accessExpiresInSec === 'number' && accessExpiresInSec > 0) {
+      return now + accessExpiresInSec * 1000;
+    }
+    const accessExp = this.decodeExp(accessToken);
+    return accessExp ?? now + this.DEFAULT_SESSION_TTL_MS;
+  }
+
+  /**
+   * Persist a fully-formed session: set the remember flag first so that
+   * `setTokens` routes every value to the correct storage bucket, then
+   * write the tokens + expiry in one place.
+   */
+  storeSession(
+    accessToken: string,
+    refreshToken: string | null,
+    expiresAt: string,
+    remember: boolean,
+  ): void {
+    this.setRemembered(remember);
+    this.setTokens(accessToken, refreshToken, expiresAt);
+  }
+
   private cachedUserId: string | null = null;
 
   getUserId(): Observable<string> {

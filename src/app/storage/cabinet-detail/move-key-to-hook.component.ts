@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface HookDetail {
   id: string;
@@ -26,7 +27,7 @@ interface AvailableHook {
 @Component({
   selector: 'app-move-key-to-hook',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
   templateUrl: './move-key-to-hook.component.html',
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
@@ -50,7 +51,18 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
   moveNote = '';
   noteCount = 0;
   submitted = false;
-  isHookDropdownOpen = false;
+
+  get hookOptions(): RichSelectOption[] {
+    return this.availableHooks.map(h => ({
+      value: h.hookId,
+      label: `${h.no} - ${h.status}`,
+    }));
+  }
+
+  get selectedNewHook(): AvailableHook | undefined {
+    if (!this.selectedNewHookId) return undefined;
+    return this.availableHooks.find(h => h.hookId === this.selectedNewHookId);
+  }
 
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService) {}
 
@@ -226,22 +238,8 @@ export class MoveKeyToHookComponent implements OnInit, AfterViewInit {
     return !this.selectedNewHookId;
   }
 
-  get selectedNewHook(): AvailableHook | undefined {
-    if (!this.selectedNewHookId) return undefined;
-    return this.availableHooks.find(h => h.hookId === this.selectedNewHookId);
-  }
-
   updateNoteCount(): void {
     this.noteCount = this.moveNote.length;
-  }
-
-  toggleHookDropdown(): void {
-    this.isHookDropdownOpen = !this.isHookDropdownOpen;
-  }
-
-  selectHook(hook: AvailableHook): void {
-    this.selectedNewHookId = hook.hookId;
-    this.isHookDropdownOpen = false;
   }
 
   onCancel(): void {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
 interface AvailableHook {
   no: string;
@@ -20,7 +21,7 @@ interface AvailableKey {
 @Component({
   selector: 'app-assign-key-to-hook',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
   templateUrl: './assign-key-to-hook.component.html',
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
@@ -38,13 +39,26 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
   availableKeys: AvailableKey[] = [];
   stats = { totalHooks: 0, keyHooked: 0, keyInUse: 0, available: 0, damaged: 0 };
 
-  selectedHook: AvailableHook | null = null;
-  selectedKey: AvailableKey | null = null;
+  selectedHookId = '';
+  selectedKeyId = '';
   assignmentNote = '';
   noteCount = 0;
-  isHookDropdownOpen = false;
-  isKeyDropdownOpen = false;
   submitted = false;
+
+  get hookOptions(): RichSelectOption[] {
+    return this.availableHooks.map(h => ({
+      value: h.hookId,
+      label: `${h.no} - ${h.status}`,
+    }));
+  }
+
+  get keyOptions(): RichSelectOption[] {
+    return this.availableKeys.map(k => ({
+      value: k.id,
+      label: `${k.code} — ${k.name}`,
+      description: k.type,
+    }));
+  }
 
   constructor(private route: ActivatedRoute, private router: Router, private keyVault: KeyVaultService) {}
 
@@ -183,54 +197,30 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toggleHookDropdown(): void {
-    this.isHookDropdownOpen = !this.isHookDropdownOpen;
-  }
-
-  selectHook(hook: AvailableHook): void {
-    this.selectedHook = hook;
-    this.isHookDropdownOpen = false;
-  }
-
-  toggleKeyDropdown(): void {
-    this.isKeyDropdownOpen = !this.isKeyDropdownOpen;
-  }
-
-  selectKey(key: AvailableKey): void {
-    this.selectedKey = key;
-    this.isKeyDropdownOpen = false;
-  }
-
-  selectKeyById(keyId: string): void {
-    if (!keyId) {
-      this.selectedKey = null;
-      return;
-    }
-    this.selectedKey = this.availableKeys.find(k => k.id === keyId) || null;
-  }
-
   updateNoteCount(): void {
     this.noteCount = this.assignmentNote.length;
   }
 
-  closeHookDropdown(): void {
-    this.isHookDropdownOpen = false;
+  get selectedHook(): AvailableHook | null {
+    if (!this.selectedHookId) return null;
+    return this.availableHooks.find(h => h.hookId === this.selectedHookId) || null;
   }
 
-  closeKeyDropdown(): void {
-    this.isKeyDropdownOpen = false;
+  get selectedKey(): AvailableKey | null {
+    if (!this.selectedKeyId) return null;
+    return this.availableKeys.find(k => k.id === this.selectedKeyId) || null;
   }
 
   get hookInvalid(): boolean {
-    return this.submitted && !this.selectedHook;
+    return this.submitted && !this.selectedHookId;
   }
 
   get keyInvalid(): boolean {
-    return this.submitted && !this.selectedKey;
+    return this.submitted && !this.selectedKeyId;
   }
 
   get formInvalid(): boolean {
-    return !this.selectedHook || !this.selectedKey;
+    return !this.selectedHookId || !this.selectedKeyId;
   }
 
   onCancel(): void {

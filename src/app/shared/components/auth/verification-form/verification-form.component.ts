@@ -81,19 +81,6 @@ export class VerificationFormComponent implements OnInit {
     return emailRegex.test(email);
   }
 
-  private decodeExp(token: string): number | null {
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-        return null;
-      }
-      const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-      return typeof payload.exp === 'number' ? payload.exp * 1000 : null;
-    } catch {
-      return null;
-    }
-  }
-
   onVerify() {
     this.isLoading = true;
     this.errorMessage = '';
@@ -162,17 +149,15 @@ export class VerificationFormComponent implements OnInit {
               return;
             }
 
-            const exp = this.decodeExp(accessToken);
-            const expiresAt = String(exp ?? Date.now() + 24 * 60 * 60 * 1000);
+            const remember = this.isCheckedOne;
+            const expiresAt = String(this.authService.computeSessionExpiry(
+              accessToken,
+              loginRes?.tokens?.refresh_expires_in ?? loginRes?.refresh_expires_in,
+              loginRes?.tokens?.expires_in ?? loginRes?.expires_in,
+              remember,
+            ));
 
-            localStorage.setItem('access_token_saas', accessToken);
-            localStorage.setItem('refresh_token', refreshToken ?? '');
-
-            localStorage.removeItem('remember_device');
-            localStorage.removeItem('session_expires_at');
-            sessionStorage.setItem('access_token_saas', accessToken);
-            sessionStorage.setItem('refresh_token', refreshToken ?? '');
-            sessionStorage.setItem('session_expires_at', expiresAt);
+            this.authService.storeSession(accessToken, refreshToken ?? null, expiresAt, remember);
 
             const orgs = loginRes?.tokens?.organizations ?? loginRes?.organizations ?? [];
             if (orgs?.length > 0) {

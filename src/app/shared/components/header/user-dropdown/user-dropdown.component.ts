@@ -59,8 +59,8 @@ export class UserDropdownComponent implements OnInit {
     return (first + last).toUpperCase() || 'U';
   }
 
-  onSignOut(): void {
-    const refreshToken = localStorage.getItem('refresh_token_saas') || sessionStorage.getItem('refresh_token_saas');
+   onSignOut(): void {
+    const refreshToken = this.authService.getRefreshToken();
     const token = this.authService.getAccessToken();
 
     const finish = () => {

@@ -192,37 +192,34 @@ export class UserManagementComponent implements OnInit {
       return;
     }
 
-    const hasFilters = !!(this.searchQuery.trim() || this.filterRole || this.filterStatus);
-    const size = hasFilters ? 200 : this.pageSize;
-
-    this.userService.listUsers(orgId, { page: 0, size, q: this.searchQuery.trim() || undefined, roleId: this.filterRole || undefined, status: this.filterStatus || undefined }).subscribe({
-      next: (res) => {
-        const payload = res?.content ?? res?.items ?? res?.data ?? res ?? [];
-        const items = Array.isArray(payload) ? payload : [];
+    this.userService.listUsers(orgId, { page: this.currentPage, size: this.pageSize, q: this.searchQuery.trim() || undefined, roleId: this.filterRole || undefined }).subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res?.items ?? res;
+        const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? payload?.data ?? [];
         this.users = items.map((item: any, index: number) => ({
-          id: item.userId || item.id,
+          id: item.id,
           name: [item.firstName, item.lastName].filter(Boolean).join(' ') || item.name || item.email || 'Unknown',
           email: item.email || '-',
-          roleIds: item.roleIds || [],
-          roles: [],
-          status: (item.status || '').toLowerCase() === 'inactive' ? 'Inactive' : 'Active',
-          invite: item.invitationStatus || 'Not Invited',
-          inviteSub: item.grantedAt ? new Date(item.grantedAt).toLocaleString() : '-',
-          lastLogin: '-',
+          roleIds: item.roles?.map((r: any) => r.id) || [],
+          roles: item.roles?.map((r: any) => r.name) || [],
+          status: (item.status || '').toUpperCase() === 'INACTIVE' ? 'Inactive' : 'Active',
+          invite: item.invitationStatus ? item.invitationStatus.charAt(0) + item.invitationStatus.slice(1).toLowerCase() : 'Not Invited',
+          inviteSub: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
+          lastLogin: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleString() : '-',
           lastTime: '-',
-          created: '-',
+          created: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
           img: (index % 37) + 1,
           resend: false,
           department: item.department || ['Operations', 'Security', 'Compliance', 'HR'][index % 4],
           phone: item.phoneNumber || ['+91 98765 43210', '+91 98765 12345', '+91 99456 12345', '+91 99876 00000'][index % 4],
           location: item.location || ['Head Office', 'North Gate', 'Control Room', 'Central Hub'][index % 4],
           employeeId: item.employeeId || `EMP-${String(12 + index).padStart(5, '0')}`,
-          joined: item.grantedAt ? new Date(item.grantedAt).toLocaleString() : '-',
+          joined: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
         }));
 
-        this.totalElements = this.users.length;
-        this.totalPages = Math.max(1, Math.ceil(this.users.length / this.pageSize));
-        this.currentPage = Math.min(this.currentPage, this.totalPages - 1);
+        this.totalElements = res?.meta?.totalElements ?? items.length;
+        this.totalPages = res?.meta?.totalPages ?? Math.max(1, Math.ceil(this.totalElements / this.pageSize));
+        this.currentPage = typeof res?.meta?.page === 'number' ? res.meta.page - 1 : Math.min(this.currentPage, this.totalPages - 1);
 
         this.selectedUser = this.selectedUser && this.users.some(user => user.email === this.selectedUser?.email)
           ? this.selectedUser
@@ -232,7 +229,6 @@ export class UserManagementComponent implements OnInit {
         }
         this.loading = false;
         this.loadStats();
-        this.resolveUserRoleNames();
       },
       error: () => {
         this.loading = false;

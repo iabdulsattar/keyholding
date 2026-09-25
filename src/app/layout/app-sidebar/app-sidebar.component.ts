@@ -291,8 +291,8 @@ export class AppSidebarComponent implements OnInit {
     this.isDropdownOpen = false;
   }
 
-  onSignOut(): void {
-    const refreshToken = localStorage.getItem('refresh_token_saas') || sessionStorage.getItem('refresh_token_saas');
+   onSignOut(): void {
+    const refreshToken = this.authService.getRefreshToken();
     const token = this.authService.getAccessToken();
 
     const finish = () => {

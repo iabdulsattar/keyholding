@@ -95,7 +95,7 @@ export class SigninFormComponent {
       return;
     }
     this.isLoading = true;
-    this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
+    this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault', rememberMe: this.isChecked }).subscribe({
       next: (res: any) => {
         this.isLoading = false;
         if (res?.challengeToken) {
@@ -131,7 +131,7 @@ export class SigninFormComponent {
           this.finalizeLogin({ tokens: { access_token: accessToken, refresh_token: refreshToken } });
         } else {
           this.toast.success('Verification successful. Completing sign-in...');
-          this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
+          this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault', rememberMe: this.isChecked }).subscribe({
             next: (loginRes: any) => {
               this.finalizeLogin(loginRes);
             },
@@ -213,19 +213,6 @@ export class SigninFormComponent {
     });
   }
 
-  private decodeExp(token: string): number | null {
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-        return null;
-      }
-      const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-      return typeof payload.exp === 'number' ? payload.exp * 1000 : null;
-    } catch {
-      return null;
-    }
-  }
-
   private validateForm(): boolean {
     let isValid = true;
     this.emailError = '';
@@ -254,7 +241,7 @@ export class SigninFormComponent {
       return;
     }
 
-    this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault' }).subscribe({
+    this.authService.login({ email: this.email, password: this.password, serviceCode: 'key-vault', rememberMe: this.isChecked }).subscribe({
       next: (res) => {
         const data = res as any;
 
@@ -289,6 +276,8 @@ export class SigninFormComponent {
   private finalizeLogin(data: any) {
     const accessToken = data?.tokens?.access_token ?? data?.access_token;
     const refreshToken = data?.tokens?.refresh_token ?? data?.refresh_token;
+    const refreshExpiresIn = data?.tokens?.refresh_expires_in ?? data?.refresh_expires_in;
+    const accessExpiresIn = data?.tokens?.expires_in ?? data?.expires_in;
 
     if (!accessToken) {
       this.isLoading = false;
@@ -296,28 +285,29 @@ export class SigninFormComponent {
       return;
     }
 
-    const exp = this.decodeExp(accessToken);
-    const expiresAt = String(exp ?? Date.now() + 24 * 60 * 60 * 1000);
+    const remember = this.isChecked;
 
-    localStorage.setItem('access_token_saas', accessToken);
-    localStorage.setItem('refresh_token', refreshToken ?? '');
+    // For remembered sessions the session-expiry mirrors the refresh-token TTL
+    // so the auth guard keeps the user signed in until the refresh token itself
+    // expires. For non-remembered sessions the access-token expiry is used
+    // (sessionStorage is cleared on browser close regardless).
+    const expiresAt = String(this.authService.computeSessionExpiry(
+      accessToken,
+      refreshExpiresIn,
+      accessExpiresIn,
+      remember,
+    ));
 
-    if (this.isChecked) {
-      localStorage.setItem('remember_device', 'true');
-      localStorage.setItem('session_expires_at', expiresAt);
-    } else {
-      localStorage.removeItem('remember_device');
-      localStorage.removeItem('session_expires_at');
-      sessionStorage.setItem('access_token_saas', accessToken);
-      sessionStorage.setItem('refresh_token', refreshToken ?? '');
-      sessionStorage.setItem('session_expires_at', expiresAt);
-    }
+    this.authService.storeSession(accessToken, refreshToken ?? null, expiresAt, remember);
 
+    // ---- Organization context ----
     const orgs = data?.tokens?.organizations ?? data?.organizations ?? [];
-    const store = this.isChecked ? localStorage : sessionStorage;
     const storeOrg = (id: string, name?: string) => {
+      const store = remember ? localStorage : sessionStorage;
       store.setItem('org_id', id);
       store.setItem('organizationId', id);
+      // Always mirror into localStorage so subscription checks and other
+      // consumers that read from localStorage still resolve the org id.
       localStorage.setItem('org_id', id);
       localStorage.setItem('organizationId', id);
       if (name) {
@@ -327,6 +317,7 @@ export class SigninFormComponent {
         localStorage.setItem('org_name', name);
       }
     };
+
     if (orgs?.length > 0) {
       storeOrg(orgs[0].id, orgs[0].name);
     } else {
@@ -337,8 +328,7 @@ export class SigninFormComponent {
             storeOrg(profileOrgs[0].id, profileOrgs[0].name);
           }
         },
-        error: () => {
-        }
+        error: () => {},
       });
     }
 
@@ -349,8 +339,7 @@ export class SigninFormComponent {
           storeOrg(sessionOrgs[0].id, sessionOrgs[0].name);
         }
       },
-      error: () => {
-      }
+      error: () => {},
     });
 
     this.permissionService.setServiceAccess((data?.serviceAccess as ServiceAccessGrant[]) ?? data?.tokens?.serviceAccess);
@@ -366,8 +355,6 @@ export class SigninFormComponent {
     const hasKeyVaultSubscribedService = subscribedServices.some(
       (s: any) => s.serviceCode === 'key-vault'
     );
-
-    console.log('[Signin] hasKeyVaultAccess=', hasKeyVaultAccess, 'hasKeyVaultSubscribedService=', hasKeyVaultSubscribedService);
 
     const navigateAfterLogin = (target: string) => {
       this.isLoading = false;
