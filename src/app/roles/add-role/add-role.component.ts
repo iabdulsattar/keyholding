@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -74,7 +74,18 @@ export class AddRoleComponent implements OnInit {
   readonly maxNameLength = 100;
   readonly maxDescLength = 300;
 
+  // Validation state
+  nameTouched = false;
+  descTouched = false;
+  nameError = '';
+  descError = '';
+  permissionsTouched = false;
+
   groups: PermissionGroup[] = [];
+
+  @ViewChild('roleNameInput') roleNameInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('roleDescInput') roleDescInput!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('permissionsSection') permissionsSection!: ElementRef<HTMLElement>;
 
   constructor(private keyVault: KeyVaultService, private router: Router, private route: ActivatedRoute, private permissionService: PermissionService) {}
 
@@ -212,29 +223,98 @@ export class AddRoleComponent implements OnInit {
     return this.groups.flatMap((g) => g.permissions.filter((p) => p.checked).map((p) => p.key));
   }
 
+  // Validation methods
+  validateName(): boolean {
+    this.nameTouched = true;
+    if (!this.roleName.trim()) {
+      this.nameError = 'Role name is required.';
+      return false;
+    }
+    if (this.roleName.trim().length > this.maxNameLength) {
+      this.nameError = `Role name must be ${this.maxNameLength} characters or less.`;
+      return false;
+    }
+    this.nameError = '';
+    return true;
+  }
+
+  validateDesc(): boolean {
+    this.descTouched = true;
+    if (!this.roleDesc.trim()) {
+      this.descError = 'Description is required.';
+      return false;
+    }
+    if (this.roleDesc.trim().length > this.maxDescLength) {
+      this.descError = `Description must be ${this.maxDescLength} characters or less.`;
+      return false;
+    }
+    this.descError = '';
+    return true;
+  }
+
+  validatePermissions(): boolean {
+    this.permissionsTouched = true;
+    if (this.selectedPermissions.length === 0) {
+      this.permissionsError = 'Please select at least one permission.';
+      return false;
+    }
+    this.permissionsError = '';
+    return true;
+  }
+
+  validateAll(): boolean {
+    const nameValid = this.validateName();
+    const descValid = this.validateDesc();
+    const permsValid = this.validatePermissions();
+    return nameValid && descValid && permsValid;
+  }
+
+  focusFirstInvalid(): void {
+    if (!this.validateName()) {
+      this.roleNameInput?.nativeElement.focus();
+      this.roleNameInput?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!this.validateDesc()) {
+      this.roleDescInput?.nativeElement.focus();
+      this.roleDescInput?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!this.validatePermissions()) {
+      this.permissionsSection?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Focus first checkbox
+      const firstCheckbox = this.permissionsSection?.nativeElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      firstCheckbox?.focus();
+      return;
+    }
+  }
+
+  onNameBlur(): void {
+    this.validateName();
+  }
+
+  onDescBlur(): void {
+    this.validateDesc();
+  }
+
   cancel(): void {
     this.router.navigate(['/roles']);
   }
 
   saveRole(): void {
+    this.errorMessage = '';
+    this.permissionsError = '';
+
+    if (!this.validateAll()) {
+      this.focusFirstInvalid();
+      return;
+    }
+
     const orgId = this.getOrgId();
     if (!orgId) {
       this.errorMessage = 'Organization not found.';
       return;
     }
-
-    if (!this.roleName.trim()) {
-      this.errorMessage = 'Role name is required.';
-      return;
-    }
-
-    if (this.selectedPermissions.length === 0) {
-      this.permissionsError = 'Please select at least one permission.';
-      return;
-    }
-
-    this.permissionsError = '';
-    this.errorMessage = '';
 
     const payload: CreateRoleRequest = {
       code: this.roleName.trim().toUpperCase().replace(/\s+/g, '_'),
@@ -270,5 +350,9 @@ export class AddRoleComponent implements OnInit {
         }
       });
     }
+  }
+
+  get isSaveDisabled(): boolean {
+    return !this.canSaveRole || this.saving || !this.roleName.trim() || !this.roleDesc.trim() || this.selectedPermissions.length === 0;
   }
 }
