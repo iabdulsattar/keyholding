@@ -92,7 +92,12 @@ export class RolesListComponent implements OnInit {
         } else if (payload && typeof payload === 'object') {
           roles = payload.roles ?? payload.items ?? payload.content ?? [];
         }
-        this.roles = roles;
+        this.roles = roles.map(r => ({
+          ...r,
+          permissions: Array.isArray(r.permissions) ? r.permissions : [],
+          userCount: r.userCount ?? 0,
+        }));
+        this.totalRoles = roles.length;
         this.totalRoles = roles.length;
         this.activeRoles = roles.filter(r => r.active).length;
         this.inactiveRoles = roles.filter(r => !r.active).length;
