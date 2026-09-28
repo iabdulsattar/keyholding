@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProductService, Product } from '../../../../core/services';
 
 export interface ProductItem {
   id: string;
@@ -20,41 +21,32 @@ export interface ProductItem {
   templateUrl: './product-switcher.component.html',
 })
 export class ProductSwitcherComponent {
-  @Input() products: ProductItem[] = [
-    {
-      id: 'edob',
-      name: 'eDOB',
-      description: 'Digital Occurrence Management',
-      icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-blue-600',
-      status: 'current',
-    },
-    {
-      id: 'keyvault',
-      name: 'KeyVault Pro',
-      description: 'Enterprise Key Management',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-violet-700',
-      status: 'available',
-      actionLabel: 'Explore KeyVault Pro',
-      actionHref: '#',
-      descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
-    },
-    {
-      id: 'misentinel',
-      name: 'MiSentinelSOS',
-      description: 'Lone Worker Safety',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-emerald-600',
-      status: 'coming-soon',
-    },
-  ];
+  private productService = inject(ProductService);
 
+  @Input() products: ProductItem[] = [];
   @Input() exploreAllHref: string = '#';
-
   @Output() productSelected = new EventEmitter<ProductItem>();
 
   showSwitcher = false;
+
+  getProducts(): ProductItem[] {
+    const serviceProducts = this.productService.getProducts().map(p => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      icon: p.icon,
+      iconBg: p.iconBg,
+      status: p.status,
+      actionLabel: p.actionLabel,
+      actionHref: p.actionHref,
+      descriptionText: p.descriptionText,
+    }));
+    return serviceProducts.length > 0 ? serviceProducts : this.products;
+  }
+
+  getCurrentProduct(): ProductItem | undefined {
+    return this.getProducts().find(p => p.status === 'current');
+  }
 
   toggleSwitcher(event: MouseEvent): void {
     event.stopPropagation();
@@ -63,6 +55,16 @@ export class ProductSwitcherComponent {
 
   selectProduct(product: ProductItem): void {
     this.productSelected.emit(product);
+    this.showSwitcher = false;
+  }
+
+  switchToProduct(product: ProductItem): void {
+    this.productService.setCurrentProduct(product.id);
+    const products = this.getProducts().map(p => ({
+      ...p,
+      status: p.id === product.id ? 'current' : p.status
+    }));
+    this.products = products;
   }
 
   @HostListener('document:click')

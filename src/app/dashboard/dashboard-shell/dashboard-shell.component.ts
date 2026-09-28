@@ -7,6 +7,8 @@ import { ProfileResponse } from '../../core/models/auth.models';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { SubscriptionService } from '../../core/services/subscription.service';
+import { ProductService } from '../../core/services';
+import { ProductItem } from '../../shared/components/ui/product-switcher/product-switcher.component';
 import { formatDateUTC } from '../../core/utils/date.utils';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
@@ -162,6 +164,7 @@ export class DashboardShellComponent implements OnInit {
     public sidebarService: SidebarService,
     private keyVaultService: KeyVaultService,
     private subscriptionService: SubscriptionService,
+    private productService: ProductService,
   ) {}
 
   ngOnInit(): void {
@@ -409,6 +412,27 @@ export class DashboardShellComponent implements OnInit {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+    });
+  }
+
+  onProductSelected(product: ProductItem): void {
+    const orgId = this.getOrgId();
+    const email = this.authService.getAccessToken() ? '' : '';
+    const otpCode = '';
+
+    if (!orgId) {
+      console.error('No organization ID found');
+      return;
+    }
+
+    this.productService.switchToProduct(product.id, orgId, email, otpCode).subscribe({
+      next: (response) => {
+        console.log('Product switched successfully:', response);
+        window.location.reload();
+      },
+      error: (error) => {
+        console.error('Failed to switch product:', error);
+      }
     });
   }
 

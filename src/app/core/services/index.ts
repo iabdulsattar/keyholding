@@ -6,3 +6,6 @@ export { NotificationService } from '../services/notification.service';
 export { ToastService } from '../services/toast.service';
 export type { ToastType } from '../services/toast.service';
 export { UserService } from '../services/user.service';
+export { KeyVaultService } from '../services/keyvault.service';
+export { ProductService } from '../services/product.service';
+export type { Product, ProductSubscriptionRequest, EnableServiceRequest, ProductSwitchResponse } from '../models/product.models';
