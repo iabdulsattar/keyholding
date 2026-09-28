@@ -358,6 +358,22 @@ export class AuthService {
     );
   }
 
+  // Exchange refresh token for a different service/product
+  refreshForService(payload: RefreshTokenRequest, targetServiceCode: string): Observable<RefreshTokenResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Target-Service-Code': targetServiceCode
+    });
+    return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', payload, headers).pipe(
+      map((res: any) => {
+        if (res && typeof res === 'object' && 'data' in res) {
+          return res.data as RefreshTokenResponse;
+        }
+        return res as RefreshTokenResponse;
+      })
+    );
+  }
+
   logout(payload: LogoutRequest, token?: string): Observable<void> {
     const accessToken = token ?? this.getAccessToken();
     const headers = new HttpHeaders({
