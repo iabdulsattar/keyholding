@@ -389,6 +389,11 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/pages/sign-up/sign-up.component').then(m => m.SignUpComponent),
     title:'Sign Up | KeyVault Pro'
   },
+  {
+    path:'external-login',
+    loadComponent: () => import('./auth/pages/external-login/external-login.component').then(m => m.ExternalLoginComponent),
+    title:'External Login | KeyVault Pro'
+  },
   // error pages
   {
     path:'**',

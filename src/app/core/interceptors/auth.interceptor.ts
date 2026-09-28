@@ -168,7 +168,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return this.authService.getRefreshToken();
   }
 
-   private setAccessToken(token: string) {
+private setAccessToken(token: string) {
     // Preserve the existing session-expiry (which mirrors the refresh-token TTL
     // for remembered sessions) instead of overwriting it with the short-lived
     // access-token expiry, otherwise the auth guard would log the user out
@@ -177,11 +177,21 @@ export class AuthInterceptor implements HttpInterceptor {
       localStorage.getItem('session_expires_at') ??
       sessionStorage.getItem('session_expires_at') ??
       String(this.decodeExp(token) ?? Date.now() + this.DEFAULT_EXPIRY_MS);
-    this.authService.setTokens(token, this.getRefreshToken(), existingExpiry);
+    const serviceCode = this.getCurrentServiceCode() ?? undefined;
+    this.authService.setTokens(token, this.getRefreshToken(), existingExpiry, serviceCode);
   }
 
   private setRefreshToken(token: string) {
-    this.authService.setRefreshToken(token);
+    const serviceCode = this.getCurrentServiceCode() ?? undefined;
+    this.authService.setRefreshToken(token, serviceCode);
+  }
+
+  private getCurrentServiceCode(): string | null {
+    const remember = localStorage.getItem('remember_device');
+    if (remember === 'true') {
+      return localStorage.getItem('service_code') || localStorage.getItem('currentServiceCode');
+    }
+    return sessionStorage.getItem('service_code') || sessionStorage.getItem('currentServiceCode');
   }
 
   private clearTokens() {

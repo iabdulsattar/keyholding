@@ -217,9 +217,10 @@ export class AuthService {
     refreshToken: string | null,
     expiresAt: string,
     remember: boolean,
+    serviceCode?: string,
   ): void {
     this.setRemembered(remember);
-    this.setTokens(accessToken, refreshToken, expiresAt);
+    this.setTokens(accessToken, refreshToken, expiresAt, serviceCode);
   }
 
   private cachedUserId: string | null = null;
@@ -236,26 +237,28 @@ export class AuthService {
     );
   }
 
-  setTokens(accessToken: string, refreshToken: string | null, expiresAt: string): void {
+  setTokens(accessToken: string, refreshToken: string | null, expiresAt: string, serviceCode?: string): void {
     const remember = localStorage.getItem('remember_device');
     if (remember === 'true') {
       localStorage.setItem('access_token_saas', accessToken);
       localStorage.setItem('refresh_token', refreshToken ?? '');
       localStorage.setItem('session_expires_at', expiresAt);
+      if (serviceCode) localStorage.setItem('service_code', serviceCode);
     } else {
       sessionStorage.setItem('access_token_saas', accessToken);
       sessionStorage.setItem('refresh_token', refreshToken ?? '');
       sessionStorage.setItem('session_expires_at', expiresAt);
+      if (serviceCode) sessionStorage.setItem('service_code', serviceCode);
     }
   }
 
-  setRefreshToken(refreshToken: string): void {
+  setRefreshToken(refreshToken: string, serviceCode?: string): void {
     const accessToken = this.getAccessToken();
     const remember = localStorage.getItem('remember_device');
     const expiresAt = remember === 'true'
       ? (localStorage.getItem('session_expires_at') ?? String(Date.now() + 24 * 60 * 60 * 1000))
       : (sessionStorage.getItem('session_expires_at') ?? String(Date.now() + 24 * 60 * 60 * 1000));
-    this.setTokens(accessToken ?? '', refreshToken, expiresAt);
+    this.setTokens(accessToken ?? '', refreshToken, expiresAt, serviceCode);
   }
 
   clearTokens(): void {
@@ -348,7 +351,9 @@ export class AuthService {
 
   refresh(payload: RefreshTokenRequest): Observable<RefreshTokenResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', payload, headers).pipe(
+    const currentServiceCode = this.getCurrentServiceCode();
+    const requestPayload = currentServiceCode ? { ...payload, serviceCode: currentServiceCode } : payload;
+    return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', requestPayload, headers).pipe(
       map((res: any) => {
         if (res && typeof res === 'object' && 'data' in res) {
           return res.data as RefreshTokenResponse;
@@ -358,13 +363,19 @@ export class AuthService {
     );
   }
 
+  private getCurrentServiceCode(): string | null {
+    const remember = localStorage.getItem('remember_device');
+    if (remember === 'true') {
+      return localStorage.getItem('service_code') || localStorage.getItem('currentServiceCode');
+    }
+    return sessionStorage.getItem('service_code') || sessionStorage.getItem('currentServiceCode');
+  }
+
   // Exchange refresh token for a different service/product
   refreshForService(payload: RefreshTokenRequest, targetServiceCode: string): Observable<RefreshTokenResponse> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-Target-Service-Code': targetServiceCode
-    });
-    return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', payload, headers).pipe(
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const requestPayload = { ...payload, serviceCode: targetServiceCode };
+    return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', requestPayload, headers).pipe(
       map((res: any) => {
         if (res && typeof res === 'object' && 'data' in res) {
           return res.data as RefreshTokenResponse;

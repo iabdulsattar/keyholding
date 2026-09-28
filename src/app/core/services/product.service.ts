@@ -159,7 +159,7 @@ export class ProductService {
         const organizations = res?.organizations ?? res?.tokens?.organizations;
 
         if (newAccessToken) {
-          this.auth.setTokens(newAccessToken, newRefreshToken, String(Date.now() + 24 * 60 * 60 * 1000));
+          this.auth.setTokens(newAccessToken, newRefreshToken, String(Date.now() + 24 * 60 * 60 * 1000), product.serviceCode);
         }
 
         this.setCurrentProductByServiceCode(product.serviceCode);
@@ -178,19 +178,14 @@ export class ProductService {
       throw new Error('No refresh token available');
     }
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-Service-Code': serviceCode
-    });
-
-    return this.api.post<any>('/api/v1/auth/refresh', { refreshToken }, headers).pipe(
+    return this.auth.refreshForService({ refreshToken }, serviceCode).pipe(
       tap((res: any) => {
         const newAccessToken = res?.access_token ?? res?.tokens?.access_token;
         const newRefreshToken = res?.refresh_token ?? res?.tokens?.refresh_token;
         const organizations = res?.organizations ?? res?.tokens?.organizations;
 
         if (newAccessToken) {
-          this.auth.setTokens(newAccessToken, newRefreshToken, String(Date.now() + 24 * 60 * 60 * 1000));
+          this.auth.setTokens(newAccessToken, newRefreshToken, String(Date.now() + 24 * 60 * 60 * 1000), serviceCode);
         }
 
         this.setCurrentProductByServiceCode(serviceCode);
@@ -203,7 +198,7 @@ export class ProductService {
     );
   }
 
-  private setCurrentProductByServiceCode(serviceCode: string): void {
+  setCurrentProductByServiceCode(serviceCode: string): void {
     const product = this.products.find(p => p.serviceCode === serviceCode);
     if (product) {
       this.currentProductId = product.id;
