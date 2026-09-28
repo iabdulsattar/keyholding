@@ -416,22 +416,25 @@ export class DashboardShellComponent implements OnInit {
   }
 
   onProductSelected(product: ProductItem): void {
-    const orgId = this.getOrgId();
-    const email = this.authService.getAccessToken() ? '' : '';
-    const otpCode = '';
+    const currentProduct = this.productService.getCurrentProduct();
+    const isSameProduct = currentProduct?.id === product.id;
 
-    if (!orgId) {
-      console.error('No organization ID found');
-      return;
+    if (isSameProduct) {
+      return; // Already on this product
     }
 
-    this.productService.switchToProduct(product.id, orgId, email, otpCode).subscribe({
+    // Use refresh token for seamless switching (no OTP required)
+    this.productService.switchToProductWithRefreshToken(product.id).subscribe({
       next: (response) => {
         console.log('Product switched successfully:', response);
         window.location.reload();
       },
       error: (error) => {
         console.error('Failed to switch product:', error);
+        // Fallback: if refresh token fails, redirect to login for the new product
+        if (error.status === 401 || error.status === 403) {
+          window.location.href = `/signin?service=${product.id}`;
+        }
       }
     });
   }

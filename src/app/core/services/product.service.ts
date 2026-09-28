@@ -17,6 +17,7 @@ export class ProductService {
       description: 'Enterprise Key Management',
       serviceCode: 'key-vault',
       baseUrl: 'https://sbskeyvault.workalert.uk',
+      planId: 'f28006cf-1174-4042-859a-8a3d2e78d60f',
       icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
       iconBg: 'bg-violet-700',
       status: 'available',
@@ -88,6 +89,22 @@ export class ProductService {
     );
   }
 
+  startSubscriptionForProduct(orgId: string, productId: string, billingPeriod: 'MONTHLY' | 'ANNUAL' = 'MONTHLY', useTrial = true, token?: string): Observable<any> {
+    const product = this.getProductById(productId);
+    if (!product || !product.planId) {
+      throw new Error(`Product ${productId} not found or missing planId`);
+    }
+
+    const request: ProductSubscriptionRequest = {
+      serviceCode: product.serviceCode,
+      planId: product.planId,
+      billingPeriod,
+      useTrial,
+    };
+
+    return this.startSubscription(orgId, request, token);
+  }
+
   getSubscription(orgId: string, serviceCode: string): Observable<any> {
     return this.subscriptionService.getSubscription(orgId, serviceCode);
   }
@@ -120,6 +137,38 @@ export class ProductService {
       baseUrl: product.baseUrl
     }).pipe(
       switchMap(() => this.refreshTokenForProduct(product.serviceCode))
+    );
+  }
+
+  // Switch to product using existing refresh token (no OTP required)
+  switchToProductWithRefreshToken(productId: string): Observable<ProductSwitchResponse> {
+    const product = this.getProductById(productId);
+    if (!product) {
+      throw new Error(`Product ${productId} not found`);
+    }
+
+    const refreshToken = this.auth.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error('No refresh token available. Please log in first.');
+    }
+
+    return this.auth.refreshForService({ refreshToken }, product.serviceCode).pipe(
+      tap((res: any) => {
+        const newAccessToken = res?.access_token ?? res?.tokens?.access_token;
+        const newRefreshToken = res?.refresh_token ?? res?.tokens?.refresh_token;
+        const organizations = res?.organizations ?? res?.tokens?.organizations;
+
+        if (newAccessToken) {
+          this.auth.setTokens(newAccessToken, newRefreshToken, String(Date.now() + 24 * 60 * 60 * 1000));
+        }
+
+        this.setCurrentProductByServiceCode(product.serviceCode);
+      }),
+      map((res: any) => ({
+        accessToken: res?.access_token ?? res?.tokens?.access_token,
+        refreshToken: res?.refresh_token ?? res?.tokens?.refresh_token,
+        organizations: res?.organizations ?? res?.tokens?.organizations ?? []
+      }))
     );
   }
 

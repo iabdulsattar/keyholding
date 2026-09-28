@@ -4,6 +4,7 @@ export interface Product {
   description: string;
   serviceCode: string;
   baseUrl: string;
+  planId?: string;
   icon: string;
   iconBg: string;
   status: 'current' | 'available' | 'coming-soon';
