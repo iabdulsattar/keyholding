@@ -133,7 +133,7 @@ export class VerificationComponent implements OnInit {
       return;
     }
 
-     this.authService.verifySignupOtp({ email, code: otp }).subscribe({
+     this.authService.verifySignupOtp({ email, code: otp, serviceCode: 'key-vault' }).subscribe({
       next: (res: any) => {
         this.toast.success(res?.message || 'Email verified successfully. Please sign in.');
         this.isLoading = false;
@@ -157,7 +157,7 @@ export class VerificationComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.authService.resendSignupOtp({ email }).subscribe({
+    this.authService.resendSignupOtp({ email, serviceCode: 'key-vault' }).subscribe({
       next: () => {
         this.isLoading = false;
         this.toast.success('Verification code resent. Please check your inbox.');

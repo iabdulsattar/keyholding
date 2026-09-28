@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -147,6 +147,7 @@ export class DashboardShellComponent implements OnInit {
 
   officersOnDuty = 0;
   keysInUse = 0;
+  showProductSwitcher = false;
   officers: {
     id: string;
     name: string;
@@ -446,5 +447,15 @@ export class DashboardShellComponent implements OnInit {
 
   private icon(inner: string, stroke = 'currentColor', size = 24): string {
     return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  }
+
+  toggleProductSwitcher(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showProductSwitcher = !this.showProductSwitcher;
+  }
+
+  @HostListener('document:click')
+  closeProductSwitcher(): void {
+    this.showProductSwitcher = false;
   }
 }

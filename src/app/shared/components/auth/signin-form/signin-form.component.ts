@@ -156,7 +156,7 @@ export class SigninFormComponent {
       return;
     }
     this.isLoading = true;
-    this.authService.resendSignupOtp({ email: this.email }).subscribe({
+    this.authService.resendSignupOtp({ email: this.email, serviceCode: 'key-vault' }).subscribe({
       next: () => {
         this.isLoading = false;
         this.requiresEmailVerification = true;
@@ -173,7 +173,7 @@ export class SigninFormComponent {
   resendEmailOtp(): void {
     if (!this.email.trim()) return;
     this.isLoading = true;
-    this.authService.resendSignupOtp({ email: this.email }).subscribe({
+    this.authService.resendSignupOtp({ email: this.email, serviceCode: 'key-vault' }).subscribe({
       next: () => {
         this.isLoading = false;
         this.resetOtpStep();
@@ -198,7 +198,7 @@ export class SigninFormComponent {
       return;
     }
 
-    this.authService.verifySignupOtp({ email: this.email, code }).subscribe({
+    this.authService.verifySignupOtp({ email: this.email, code, serviceCode: 'key-vault' }).subscribe({
       next: () => {
         this.isLoading = false;
         this.requiresEmailVerification = false;

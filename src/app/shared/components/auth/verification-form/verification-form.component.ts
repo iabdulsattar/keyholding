@@ -116,7 +116,7 @@ export class VerificationFormComponent implements OnInit {
       return;
     }
 
-    this.authService.verifySignupOtp({ email, code: otp }).subscribe({
+    this.authService.verifySignupOtp({ email, code: otp, serviceCode: 'key-vault' }).subscribe({
       next: (res) => {
         this.isSigningInAfterVerification = true;
         this.successMessage = res?.message || 'Email verified successfully.';
@@ -210,7 +210,7 @@ export class VerificationFormComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
-    this.authService.resendSignupOtp({ email }).subscribe({
+    this.authService.resendSignupOtp({ email, serviceCode: 'key-vault' }).subscribe({
       next: () => {
         this.isLoading = false;
         this.successMessage = 'Verification code resent. Please check your inbox.';
