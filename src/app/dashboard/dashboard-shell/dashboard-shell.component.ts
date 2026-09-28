@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -10,11 +10,12 @@ import { SubscriptionService } from '../../core/services/subscription.service';
 import { formatDateUTC } from '../../core/utils/date.utils';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-dashboard-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, AppChart, LineChartDashboardComponent],
+  imports: [CommonModule, RouterModule, AppChart, LineChartDashboardComponent, ProductSwitcherComponent],
   templateUrl: './dashboard-shell.component.html',
   styles: `
     @keyframes wave {
@@ -147,7 +148,6 @@ export class DashboardShellComponent implements OnInit {
 
   officersOnDuty = 0;
   keysInUse = 0;
-  showProductSwitcher = false;
   officers: {
     id: string;
     name: string;
@@ -449,13 +449,4 @@ export class DashboardShellComponent implements OnInit {
     return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
   }
 
-  toggleProductSwitcher(event: MouseEvent): void {
-    event.stopPropagation();
-    this.showProductSwitcher = !this.showProductSwitcher;
-  }
-
-  @HostListener('document:click')
-  closeProductSwitcher(): void {
-    this.showProductSwitcher = false;
-  }
 }
