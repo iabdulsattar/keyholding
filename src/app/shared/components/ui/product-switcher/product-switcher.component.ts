@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Product } from '../../../../core/services';
 
@@ -21,7 +21,7 @@ export interface ProductItem {
   imports: [CommonModule],
   templateUrl: './product-switcher.component.html',
 })
-export class ProductSwitcherComponent {
+export class ProductSwitcherComponent implements OnInit {
   @Input() products: ProductItem[] = [
     {
       id: 'edob',
@@ -60,8 +60,20 @@ export class ProductSwitcherComponent {
   @Output() productSelected = new EventEmitter<ProductItem>();
 
   showSwitcher = false;
+  visibleProducts: ProductItem[] = [];
+
+  ngOnInit(): void {
+    this.refreshProducts();
+  }
+
+  /** Recompute the list so statuses reflect the current subscription state. */
+  private refreshProducts(): void {
+    this.visibleProducts = this.getProducts();
+  }
 
   getProducts(): ProductItem[] {
+    this.productService.syncStatusesFromSubscriptions();
+
     const serviceProducts = this.productService.getProducts().map(p => ({
       id: p.id,
       name: p.name,
@@ -84,6 +96,9 @@ export class ProductSwitcherComponent {
   toggleSwitcher(event: MouseEvent): void {
     event.stopPropagation();
     this.showSwitcher = !this.showSwitcher;
+    if (this.showSwitcher) {
+      this.refreshProducts();
+    }
   }
 
   selectProduct(product: ProductItem): void {
@@ -93,12 +108,8 @@ export class ProductSwitcherComponent {
 
   switchToProduct(product: ProductItem): void {
     this.productService.setCurrentProduct(product.id);
-    const products = this.getProducts().map(p => ({
-      ...p,
-      status: p.id === product.id ? 'current' : p.status
-    }));
-    this.products = products;
-}
+    this.refreshProducts();
+  }
 
   @HostListener('document:click')
   closeSwitcher(): void {

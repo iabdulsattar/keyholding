@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { SubscriptionLayoutComponent } from '../../../layout/subscription-layout/subscription-layout.component';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { SubscriptionStatusService } from '../../../core/services/subscription-status.service';
 
 @Component({
   selector: 'app-subscription-trial-ready',
@@ -18,7 +17,7 @@ import { SubscriptionStatusService } from '../../../core/services/subscription-s
   styles: ''
 })
 export class SubscriptionTrialReadyComponent implements OnInit {
-  userName = '';
+  userName = 'User';
   userEmail = '';
   userRole = '';
   orgName = '';
@@ -27,7 +26,6 @@ export class SubscriptionTrialReadyComponent implements OnInit {
   constructor(
     private subscriptionService: SubscriptionService,
     private authService: AuthService,
-    private subStatus: SubscriptionStatusService,
     private router: Router
   ) {}
 
@@ -52,7 +50,6 @@ export class SubscriptionTrialReadyComponent implements OnInit {
   }
 
   goToDashboard(): void {
-    this.subStatus.checkNow();
     this.router.navigate(['/dashboard']);
   }
 

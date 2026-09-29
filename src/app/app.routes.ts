@@ -394,11 +394,7 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/pages/subscription-trial-start/subscription-trial-start.component').then(m => m.SubscriptionTrialStartComponent),
     title:'Start Free Trial | KeyVault Pro'
   },
-  {
-    path:'auth/external-login',
-    loadComponent: () => import('./auth/pages/subscription-trial-start/subscription-trial-start.component').then(m => m.SubscriptionTrialStartComponent),
-    title:'Start Free Trial | KeyVault Pro'
-  },
+ 
   // error pages
   {
     path:'**',

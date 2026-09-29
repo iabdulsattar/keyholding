@@ -443,10 +443,10 @@
         }
 
         <div class="flex flex-col-reverse sm:flex-row justify-end gap-3">
-          <a routerLink="/signin"
+          <button type="button" (click)="notNow()"
             class="w-full sm:w-auto px-6 py-3 rounded-lg border border-slate-200 text-blue-600 font-semibold text-sm hover:bg-slate-50 transition text-center">
             Not Now
-          </a>
+          </button>
           <button
             class="w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             [disabled]="isLoading" (click)="startTrial()">

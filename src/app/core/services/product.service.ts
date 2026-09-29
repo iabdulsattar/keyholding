@@ -59,6 +59,53 @@ export class ProductService {
     return this.products;
   }
 
+  /** Service codes the identity service reports as subscribed for this org. */
+  getSubscribedServiceCodes(): string[] {
+    const cached = localStorage.getItem('subscribed_services');
+    if (!cached) return [];
+    try {
+      const parsed = JSON.parse(cached);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((s: any) => s?.serviceCode).filter(Boolean);
+    } catch {
+      return [];
+    }
+  }
+
+  private getStoredServiceCode(): string | null {
+    return localStorage.getItem('service_code') || sessionStorage.getItem('service_code') || null;
+  }
+
+  /**
+   * Recompute each product's status from the persisted subscription list:
+   * the active service is `current`, any other subscribed service is
+   * `available`, and everything else falls back to its declared status.
+   */
+  syncStatusesFromSubscriptions(serviceCode?: string): void {
+    const active = serviceCode || this.getStoredServiceCode() || this.getCurrentServiceCode();
+    const subscribed = this.getSubscribedServiceCodes();
+
+    if (active && !this.currentProductId) {
+      this.currentProductId = this.products.find(p => p.serviceCode === active)?.id ?? this.currentProductId;
+    }
+
+    this.products = this.products.map((p) => {
+      const isCurrent = !!active && p.serviceCode === active;
+      const isSubscribed = subscribed.includes(p.serviceCode);
+
+      let status: Product['status'] = p.status;
+      if (isCurrent) {
+        status = 'current';
+      } else if (isSubscribed) {
+        status = 'available';
+      } else if (p.status === 'current') {
+        status = 'coming-soon';
+      }
+
+      return { ...p, status };
+    });
+  }
+
   getProductById(id: string): Product | undefined {
     return this.products.find(p => p.id === id);
   }
@@ -202,10 +249,7 @@ export class ProductService {
     const product = this.products.find(p => p.serviceCode === serviceCode);
     if (product) {
       this.currentProductId = product.id;
-      this.products = this.products.map(p => ({
-        ...p,
-        status: p.id === product.id ? 'current' : p.status
-      }));
+      this.syncStatusesFromSubscriptions(serviceCode);
     }
   }
 

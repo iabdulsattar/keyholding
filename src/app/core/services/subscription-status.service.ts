@@ -22,6 +22,7 @@ export const ALLOWED_PATHS_WITHOUT_SUBSCRIPTION = [
   '/subscription-trial-ready',
   '/activate-account',
   '/external-login',
+  '/auth/external-login',
 ];
 
 @Injectable({ providedIn: 'root' })
@@ -108,8 +109,7 @@ export class SubscriptionStatusService {
     const isTrial =
       subObj?.trial === true || statusUpper === 'TRIAL' || statusUpper === 'TRIALING';
     const isActive = subObj?.status === 'ACTIVE';
-    const effectiveExpiry =
-      subObj?.effectiveExpiry || subObj?.trialEnd || subObj?.currentPeriodEnd;
+    const effectiveExpiry = this.getEntryExpiry(subObj);
     const isTrialExpired =
       isTrial && effectiveExpiry && new Date(effectiveExpiry) < new Date();
 
@@ -131,29 +131,82 @@ export class SubscriptionStatusService {
   }
 
   /**
+   * The identity service names the trial/period end differently per endpoint
+   * (`expiresAt` on /auth/refresh, `effectiveExpiry`/`trialEnd` on the
+   * subscription endpoints), so normalise every spelling here.
+   */
+  private getEntryExpiry(entry: any): string | null {
+    return (
+      entry?.effectiveExpiry ??
+      entry?.expiresAt ??
+      entry?.trialEnd ??
+      entry?.trialEndsAt ??
+      entry?.currentPeriodEnd ??
+      null
+    );
+  }
+
+  /**
    * Apply the `subscribedServices` list returned by /auth/refresh (or login).
-   * The list is persisted verbatim so the sync guard cache stays in sync with
-   * what the identity service just reported.
+   * The list is persisted with a normalised `effectiveExpiry` so the sync
+   * guard cache stays in sync with what the identity service just reported.
    */
   setFromSubscribedServices(services: any[] | undefined, serviceCode = 'key-vault'): void {
     const list = Array.isArray(services) ? services : [];
-    localStorage.setItem('subscribed_services', JSON.stringify(list));
+    localStorage.setItem(
+      'subscribed_services',
+      JSON.stringify(
+        list.map((s: any) => ({
+          ...s,
+          effectiveExpiry: this.getEntryExpiry(s) ?? s?.effectiveExpiry,
+        }))
+      )
+    );
 
     const entry = list.find((s: any) => s?.serviceCode === serviceCode);
     const statusUpper = entry?.status?.toUpperCase();
-    const effectiveExpiry = entry?.effectiveExpiry || entry?.trialEnd || entry?.currentPeriodEnd;
+    const effectiveExpiry = this.getEntryExpiry(entry);
     const isTrial = entry?.trial === true || statusUpper === 'TRIAL' || statusUpper === 'TRIALING';
     const isTrialExpired = isTrial && effectiveExpiry && new Date(effectiveExpiry) < new Date();
+    const isCancelled =
+      statusUpper === 'CANCELLED' || statusUpper === 'EXPIRED' || statusUpper === 'INACTIVE';
 
-    if (!entry || statusUpper === 'ACTIVE') {
-      this.status.set('active');
-    } else if (isTrial && !isTrialExpired) {
-      this.status.set('trial');
+    if (entry && !isCancelled && entry.active !== false && !(isTrial && isTrialExpired)) {
+      // The identity service reports this serviceCode as subscribed, so the org
+      // is entitled regardless of the exact status string it returned.
+      this.status.set(statusUpper === 'ACTIVE' || !isTrial ? 'active' : 'trial');
     } else {
+      // No entry for this service, or the entry is expired/cancelled: the user
+      // still has to go through the trial flow.
       this.status.set('expired');
     }
 
     this.effectiveExpiry.set(effectiveExpiry ? new Date(effectiveExpiry).getTime() : null);
+
+    const orgId = this.getOrgId();
+    if (orgId) {
+      this.lastOrgId = orgId;
+      localStorage.setItem('sub_last_org_id', orgId);
+    }
+    localStorage.setItem('sub_check_ts', String(Date.now()));
+  }
+
+  /**
+   * Record a trial that was just started in this session. The start endpoint
+   * often omits `effectiveExpiry`, which would make the cache read back as
+   * expired and bounce the user off the dashboard, so store the known window.
+   */
+  onTrialStarted(serviceCode = 'key-vault', trialDays = 14): void {
+    const end = new Date();
+    end.setDate(end.getDate() + trialDays);
+    const effectiveExpiry = end.toISOString();
+
+    this.status.set('trial');
+    this.effectiveExpiry.set(end.getTime());
+    localStorage.setItem(
+      'subscribed_services',
+      JSON.stringify([{ serviceCode, status: 'TRIALING', trial: true, effectiveExpiry }])
+    );
 
     const orgId = this.getOrgId();
     if (orgId) {
@@ -176,11 +229,15 @@ export class SubscriptionStatusService {
     try {
       const services = JSON.parse(cached);
       return services.some((s: any) => {
+        if (s?.active === false) return false;
         const st = s.status?.toUpperCase();
         if (st === 'ACTIVE') return true;
         if (st === 'TRIAL' || st === 'TRIALING') {
-          const exp = s.effectiveExpiry ? new Date(s.effectiveExpiry).getTime() : null;
-          return exp !== null && exp > Date.now();
+          const expiry = this.getEntryExpiry(s);
+          // A trial with no reported end date is still running: the identity
+          // service only sends `expiresAt` once the window is scheduled.
+          if (!expiry) return true;
+          return new Date(expiry).getTime() > Date.now();
         }
         return false;
       });
@@ -194,23 +251,24 @@ export class SubscriptionStatusService {
     if (!cached) return;
     try {
       const services = JSON.parse(cached);
-      const active = services.some((s: any) => s.status === 'ACTIVE');
-      const trial = services.some((s: any) => {
+      const active = services.some((s: any) => s?.active !== false && s.status?.toUpperCase() === 'ACTIVE');
+      const trialEntry = services.find((s: any) => {
         const st = s.status?.toUpperCase();
-        return st === 'TRIAL' || st === 'TRIALING';
+        return s?.active !== false && (st === 'TRIAL' || st === 'TRIALING');
       });
-      const exp = services[0]?.effectiveExpiry
-        ? new Date(services[0].effectiveExpiry).getTime()
-        : null;
+      const exp = trialEntry ? this.getEntryExpiry(trialEntry) : null;
+      const trialExpired = !!exp && new Date(exp).getTime() <= Date.now();
 
       if (active) {
         this.status.set('active');
-      } else if (trial && exp && exp > Date.now()) {
+      } else if (trialEntry && !trialExpired) {
         this.status.set('trial');
-      } else if (trial && (!exp || exp <= Date.now())) {
+      } else {
         this.status.set('expired');
       }
-      if (exp) this.effectiveExpiry.set(exp);
+
+      const anyExpiry = services.map((s: any) => this.getEntryExpiry(s)).find(Boolean);
+      if (anyExpiry) this.effectiveExpiry.set(new Date(anyExpiry).getTime());
     } catch {
       // ignore parse errors
     }

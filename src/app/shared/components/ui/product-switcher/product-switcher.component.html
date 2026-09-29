@@ -43,7 +43,7 @@
     </div>
 
     <div class="space-y-1 px-3 pb-3">
-      <ng-container *ngFor="let product of products">
+      <ng-container *ngFor="let product of visibleProducts">
         <ng-container *ngIf="product.status === 'current'; else productRow">
           <a href="#" role="menuitem" class="flex items-center gap-3 rounded-md p-3 hover:bg-blue-50"
             (click)="selectProduct(product); $event.preventDefault()">
