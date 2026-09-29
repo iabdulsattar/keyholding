@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SubscriptionLayoutComponent } from '../../../layout/subscription-layout/subscription-layout.component';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { SubscriptionStatusService } from '../../../core/services/subscription-status.service';
 
 @Component({
   selector: 'app-subscription-trial-ready',
@@ -24,7 +26,9 @@ export class SubscriptionTrialReadyComponent implements OnInit {
 
   constructor(
     private subscriptionService: SubscriptionService,
-    private authService: AuthService
+    private authService: AuthService,
+    private subStatus: SubscriptionStatusService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +49,11 @@ export class SubscriptionTrialReadyComponent implements OnInit {
         }
       });
     }
+  }
+
+  goToDashboard(): void {
+    this.subStatus.checkNow();
+    this.router.navigate(['/dashboard']);
   }
 
   private getOrgId(): string | null {

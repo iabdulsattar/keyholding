@@ -83,6 +83,7 @@ export interface StartSubscriptionResponse {
 export interface ChangePlanRequest {
   newPlanId: string;
   billingPeriod: BillingPeriod;
+  useTrial?: boolean;
   config?: Record<string, any>;
   paymentMethodId?: string;
 }

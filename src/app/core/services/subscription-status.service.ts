@@ -21,6 +21,7 @@ export const ALLOWED_PATHS_WITHOUT_SUBSCRIPTION = [
   '/subscription-trial-start',
   '/subscription-trial-ready',
   '/activate-account',
+  '/external-login',
 ];
 
 @Injectable({ providedIn: 'root' })
@@ -127,6 +128,39 @@ export class SubscriptionStatusService {
       'subscribed_services',
       JSON.stringify([{ serviceCode: 'key-vault', status: isActive ? 'ACTIVE' : statusUpper, effectiveExpiry }])
     );
+  }
+
+  /**
+   * Apply the `subscribedServices` list returned by /auth/refresh (or login).
+   * The list is persisted verbatim so the sync guard cache stays in sync with
+   * what the identity service just reported.
+   */
+  setFromSubscribedServices(services: any[] | undefined, serviceCode = 'key-vault'): void {
+    const list = Array.isArray(services) ? services : [];
+    localStorage.setItem('subscribed_services', JSON.stringify(list));
+
+    const entry = list.find((s: any) => s?.serviceCode === serviceCode);
+    const statusUpper = entry?.status?.toUpperCase();
+    const effectiveExpiry = entry?.effectiveExpiry || entry?.trialEnd || entry?.currentPeriodEnd;
+    const isTrial = entry?.trial === true || statusUpper === 'TRIAL' || statusUpper === 'TRIALING';
+    const isTrialExpired = isTrial && effectiveExpiry && new Date(effectiveExpiry) < new Date();
+
+    if (!entry || statusUpper === 'ACTIVE') {
+      this.status.set('active');
+    } else if (isTrial && !isTrialExpired) {
+      this.status.set('trial');
+    } else {
+      this.status.set('expired');
+    }
+
+    this.effectiveExpiry.set(effectiveExpiry ? new Date(effectiveExpiry).getTime() : null);
+
+    const orgId = this.getOrgId();
+    if (orgId) {
+      this.lastOrgId = orgId;
+      localStorage.setItem('sub_last_org_id', orgId);
+    }
+    localStorage.setItem('sub_check_ts', String(Date.now()));
   }
 
   onCheckoutSuccess(): void {
