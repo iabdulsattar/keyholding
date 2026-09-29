@@ -431,9 +431,15 @@ export class DashboardShellComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to switch product:', error);
+        console.error('Error status:', error?.status);
+        console.error('Error message:', error?.message);
+        console.error('Error body:', error?.error);
         // Fallback: if refresh token fails, redirect to login for the new product
-        if (error.status === 401 || error.status === 403) {
+        const status = error?.status ?? error?.error?.status;
+        if (status === 401 || status === 403) {
           window.location.href = `/signin?service=${product.id}`;
+        } else {
+          alert(`Failed to switch to ${product.name}: ${error?.message || 'Unknown error'}`);
         }
       }
     });

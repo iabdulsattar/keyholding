@@ -109,7 +109,7 @@ export class SubscriptionTrialStartComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/signin']);
+        this.router.navigate(['/subscription-trial-ready']);
       },
       error: (err) => {
         this.isLoading = false;

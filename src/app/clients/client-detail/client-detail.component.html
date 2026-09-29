@@ -77,6 +77,12 @@
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-slate-50 transition-colors">
               {{ isClientActive ? 'Deactivate' : 'Reactivate' }}
             </button>
+            @if (showDeactivateClientModal && client) {
+              <app-deactivate-client-modal [client]="client" [orgId]="getOrgId()" (close)="showDeactivateClientModal = false" (confirmed)="onClientDeactivated()" />
+            }
+            @if (showActivateClientModal && client) {
+              <app-activate-client-modal [client]="client" [orgId]="getOrgId()" (close)="showActivateClientModal = false" (confirmed)="onClientActivated()" />
+            }
             <div data-svg-wrapper class="">
               <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
