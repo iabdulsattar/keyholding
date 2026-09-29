@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Product } from '../../../../core/services';
-import { AuthService } from '../../../../core/services/auth.service';
 
 export interface ProductItem {
   id: string;
@@ -57,7 +56,6 @@ export class ProductSwitcherComponent {
     // },
   ];
   private productService = inject(ProductService);
-  private authService = inject(AuthService);
   @Input() exploreAllHref: string = '#';
   @Output() productSelected = new EventEmitter<ProductItem>();
 
@@ -100,14 +98,7 @@ export class ProductSwitcherComponent {
       status: p.id === product.id ? 'current' : p.status
     }));
     this.products = products;
-  }
-
-  getQuickLoginUrl(product: ProductItem): string {
-    const refreshToken = this.authService.getRefreshToken();
-    if (!refreshToken) return '#';
-    const baseUrl = this.productService.getProductByServiceCode(product.serviceCode)?.baseUrl || window.location.origin;
-    return `${baseUrl}/external-login?refreshToken=${encodeURIComponent(refreshToken)}&serviceCode=${product.serviceCode}`;
-  }
+}
 
   @HostListener('document:click')
   closeSwitcher(): void {

@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap, switchMap, catchError } from 'rxjs';
+import { Observable, of, tap, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
@@ -83,19 +83,6 @@ export class ProductService {
     return current?.serviceCode ?? null;
   }
 
-  /** Get the external login URL for a product (e.g., to share via email) */
-  getExternalLoginUrl(productId: string, refreshToken: string): string | null {
-    const product = this.getProductById(productId);
-    if (!product) return null;
-    const baseUrl = window.location.origin;
-    return `${baseUrl}/external-login?refreshToken=${encodeURIComponent(refreshToken)}&serviceCode=${product.serviceCode}`;
-  }
-
-  /** Get all available products for quick login links */
-  getAvailableProducts(): Product[] {
-    return this.products.filter(p => p.status !== 'coming-soon');
-  }
-
   startSubscription(orgId: string, request: ProductSubscriptionRequest, token?: string): Observable<any> {
     return this.subscriptionService.startSubscription(orgId, request, request.serviceCode, token).pipe(
       tap(() => this.invalidateCache(orgId, request.serviceCode))
@@ -165,12 +152,8 @@ export class ProductService {
       throw new Error('No refresh token available. Please log in first.');
     }
 
-    console.log('[ProductService] Switching to product:', product.id, 'serviceCode:', product.serviceCode);
-    console.log('[ProductService] Using refresh token (first 20 chars):', refreshToken.substring(0, 20) + '...');
-
     return this.auth.refreshForService({ refreshToken }, product.serviceCode).pipe(
       tap((res: any) => {
-        console.log('[ProductService] Switch response:', res);
         const newAccessToken = res?.access_token ?? res?.tokens?.access_token;
         const newRefreshToken = res?.refresh_token ?? res?.tokens?.refresh_token;
         const organizations = res?.organizations ?? res?.tokens?.organizations;
@@ -180,12 +163,6 @@ export class ProductService {
         }
 
         this.setCurrentProductByServiceCode(product.serviceCode);
-      }),
-      catchError((error) => {
-        console.error('[ProductService] Switch failed:', error);
-        console.error('[ProductService] Error status:', error?.status);
-        console.error('[ProductService] Error body:', error?.error);
-        throw error;
       }),
       map((res: any) => ({
         accessToken: res?.access_token ?? res?.tokens?.access_token,

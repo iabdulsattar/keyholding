@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import {
   SignupRequest,
@@ -375,9 +375,7 @@ export class AuthService {
   refreshForService(payload: RefreshTokenRequest, targetServiceCode: string): Observable<RefreshTokenResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const requestPayload = { ...payload, serviceCode: targetServiceCode };
-    console.log('[AuthService] refreshForService request:', { ...requestPayload, refreshToken: requestPayload.refreshToken?.substring(0, 20) + '...' });
     return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', requestPayload, headers).pipe(
-      tap((res) => console.log('[AuthService] refreshForService response:', res)),
       map((res: any) => {
         if (res && typeof res === 'object' && 'data' in res) {
           return res.data as RefreshTokenResponse;
