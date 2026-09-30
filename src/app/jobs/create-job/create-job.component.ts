@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { ClientService } from '../../core/services/client.service';
 import { UserService } from '../../core/services/user.service';
@@ -38,6 +39,8 @@ interface JobTypeOption {
 
 export type JobScheduleType = 'OPEN' | 'SCHEDULED';
 
+const THIRD_PARTY_ACCESS_JOB_TYPE = 'Third Party Access';
+
 @Component({
   selector: 'app-create-job',
   standalone: true,
@@ -70,11 +73,6 @@ export class CreateJobComponent implements OnInit {
     notifyNotCompleted: '',
     notes: ''
   };
-
-  scheduleTypeOptions: RichSelectOption[] = [
-    { value: 'OPEN', label: 'Open' },
-    { value: 'SCHEDULED', label: 'Scheduled' },
-  ];
 
   idTypeOptions: RichSelectOption[] = [
     { value: 'Company ID', label: 'Company ID' },
@@ -151,12 +149,38 @@ export class CreateJobComponent implements OnInit {
   keysModalSubmitted = false;
   keysModalError = '';
 
-  constructor(private router: Router, private keyVault: KeyVaultService, private clientService: ClientService, private userService: UserService, private toast: ToastService) {}
+  // Present when the route carries an :id, which turns the same form into an
+  // edit for an existing job.
+  jobId: string | null = null;
+  isEditMode = false;
+  loadingJob = false;
+
+  constructor(private router: Router, private route: ActivatedRoute, private keyVault: KeyVaultService, private clientService: ClientService, private userService: UserService, private toast: ToastService) {}
 
   ngOnInit(): void {
+    this.jobId = this.route.snapshot.paramMap.get('id') || null;
+    this.isEditMode = !!this.jobId;
     this.loadJobTypes();
     this.loadClients();
     this.loadOfficers();
+    if (this.jobId) {
+      this.loadJobForEdit(this.jobId);
+    }
+  }
+
+  get pageTitle(): string {
+    return this.isEditMode ? 'Edit Job' : 'Create Job';
+  }
+
+  get pageSubtitle(): string {
+    return this.isEditMode
+      ? 'Update the details below to edit this job.'
+      : 'Fill in the details below to create a new job.';
+  }
+
+  get submitLabel(): string {
+    if (this.saving) return this.isEditMode ? 'Saving...' : 'Creating...';
+    return this.isEditMode ? 'Save Changes' : 'Create Job';
   }
 
   get selectedKeys(): Key[] {
@@ -200,10 +224,154 @@ export class CreateJobComponent implements OnInit {
     if (!orgId) return;
     this.keyVault.listJobTypes(orgId, false).subscribe((res: any) => {
       const items = res?.data?.items ?? res?.items ?? res?.data ?? res ?? [];
-      if (items && items.length > 0) {
-        this.jobTypeOptions = this.toRichOptions(items);
+      const list = Array.isArray(items) ? items : [];
+      if (list.length > 0) {
+        this.jobTypeOptions = this.toRichOptions(list);
       }
+      this.ensureThirdPartyAccessJobType(orgId, list);
     });
+  }
+
+  /**
+   * "Third Party Access" ships as a standard job type, so it is created for the
+   * organisation once if it is not already returned by the job types endpoint.
+   */
+  private ensureThirdPartyAccessJobType(orgId: string, items: any[]): void {
+    const exists = items.some((t: any) => (t?.name || '').trim().toLowerCase() === THIRD_PARTY_ACCESS_JOB_TYPE.toLowerCase());
+    if (exists) return;
+
+    this.keyVault.createJobType(orgId, {
+      name: THIRD_PARTY_ACCESS_JOB_TYPE,
+      description: 'Third party access, escorted entry and collection on a client site.',
+      iconKey: 'briefcase',
+      sortOrder: items.length + 1,
+      active: true,
+    }).subscribe({
+      next: (res: any) => {
+        const created = res?.data ?? res;
+        if (!created?.id) return;
+        this.jobTypeOptions = [
+          ...this.jobTypeOptions,
+          { value: created.id, label: created.name || THIRD_PARTY_ACCESS_JOB_TYPE },
+        ];
+      },
+      error: () => {
+        // Not fatal: the user can still add the type manually.
+      },
+    });
+  }
+
+  /**
+   * Populate the form from an existing job. Client and site option lists load
+   * asynchronously, so the dependent lists are requested once the ids are set.
+   */
+  private loadJobForEdit(jobId: string): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+    this.loadingJob = true;
+    this.keyVault.getJob(orgId, jobId).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        this.applyJobToForm(data);
+        this.loadingJob = false;
+      },
+      error: () => {
+        this.loadingJob = false;
+        this.toast.error('Failed to load job');
+      },
+    });
+  }
+
+  private applyJobToForm(data: any): void {
+    const priority = String(data.priority || '').toUpperCase();
+    const scheduleType: JobScheduleType = String(data.scheduleType || '').toUpperCase() === 'OPEN' ? 'OPEN' : 'SCHEDULED';
+
+    this.job.title = data.title || '';
+    this.job.reference = data.reference || '';
+    this.job.description = data.description || '';
+    this.job.notes = data.additionalNotes || '';
+    this.job.idChecked = data.idChecked === true;
+    this.job.idType = data.idType || this.job.idType;
+    this.job.priority = this.fromApiPriority(priority);
+
+    const scheduledDate = data.scheduledDate || '';
+    const dueDate = this.toApiDateOnly(data.dueDate);
+    this.job.scheduleType = scheduleType;
+    this.activeTab = scheduleType === 'OPEN' ? 0 : 1;
+    this.job.date = scheduleType === 'OPEN' ? (dueDate || scheduledDate) : scheduledDate;
+    this.job.startTime = this.toApiTimeOnly(scheduleType === 'OPEN' ? data.dueDate : data.startTime);
+    this.job.endTime = this.toApiTimeOnly(data.endTime);
+    this.updateDuration();
+
+    this.selectedJobType = data.jobTypeId || data.jobType?.id || '';
+    this.selectedClient = data.clientId || data.client?.id || '';
+    this.selectedSite = data.siteId || data.site?.id || '';
+    this.job.officer = data.officerUserId || data.officer?.id || '';
+
+    if (this.selectedClient) {
+      this.loadSites(this.selectedClient);
+      this.loadEmergencyContacts(this.selectedClient);
+    }
+    if (this.selectedJobType) {
+      this.loadChecklist(this.selectedJobType);
+    }
+
+    const escalation = data.escalation || {};
+    this.selectedCompletionContactIds = this.toContactIds(escalation.notifyOnCompletion);
+    this.selectedNotCompletedContactIds = this.toContactIds(escalation.notifyOnNotCompleted);
+
+    this.applyJobChecklist(data.checklist?.items);
+    this.applyJobKeys(data.requiredKeys?.keys || data.keys || []);
+  }
+
+  private applyJobChecklist(items: any[]): void {
+    const list = Array.isArray(items) ? items : [];
+    if (!list.length) return;
+    this.checklistItems = list.map((ci: any) => ({
+      id: ci.id || ci.checklistItemId || '',
+      title: ci.title || ci.text || '',
+      text: ci.title || ci.text || '',
+    }));
+  }
+
+  private applyJobKeys(keys: any[]): void {
+    const list = Array.isArray(keys) ? keys : [];
+    this.keys = list.map((k: any) => ({
+      id: k.id || k.keyId || k.keyCode || '',
+      code: k.keyCode || k.code || '',
+      name: k.keyName || k.name || '',
+      cabinet: k.storageLocation || k.cabinet || '',
+      hook: k.hook || '',
+      site: k.siteName || k.site || '',
+      room: k.description || k.room || '',
+      status: (k.status ?? 'IN_STORAGE') === 'IN_STORAGE' ? 'Available' : 'Issued',
+      selected: true,
+    }));
+  }
+
+  private toContactIds(list: any): string[] {
+    if (!Array.isArray(list)) return [];
+    return list.map((c: any) => (typeof c === 'string' ? c : c?.id || c?.contactId || '')).filter(Boolean);
+  }
+
+  /** `2026-05-15T18:30:00Z` -> `2026-05-15`. */
+  private toApiDateOnly(value?: string | null): string {
+    if (!value) return '';
+    const match = String(value).match(/^(\d{4}-\d{2}-\d{2})/);
+    return match ? match[1] : '';
+  }
+
+  /** `18:30`, `18:30:00` or a full ISO timestamp -> `18:30`. */
+  private toApiTimeOnly(value?: string | null): string {
+    if (!value) return '';
+    const match = String(value).match(/(\d{2}):(\d{2})/);
+    return match ? `${match[1]}:${match[2]}` : '';
+  }
+
+  private fromApiPriority(priority: string): string {
+    if (priority === 'HIGH') return 'High';
+    if (priority === 'MEDIUM') return 'Medium';
+    return 'Low';
   }
 
   private loadClients(): void {
@@ -296,9 +464,20 @@ export class CreateJobComponent implements OnInit {
     this.loadChecklist(jobTypeId);
   }
 
-  onScheduleTypeChange(scheduleType: string): void {
-    this.job.scheduleType = (scheduleType === 'OPEN' ? 'OPEN' : 'SCHEDULED') as JobScheduleType;
+  /**
+   * The "Job Schedule" cards are the only control for the job's schedule kind,
+   * so the API `scheduleType` follows the selected tab: Open -> OPEN,
+   * Scheduled -> SCHEDULED.
+   */
+  onScheduleTabChange(tab: number): void {
+    this.activeTab = tab;
+    this.job.scheduleType = tab === 0 ? 'OPEN' : 'SCHEDULED';
     this.updateDuration();
+    // Each tab validates only its own fields, so anything the previous tab
+    // flagged must not keep blocking the form.
+    delete this.errors['date'];
+    delete this.errors['startTime'];
+    delete this.errors['endTime'];
   }
 
   get isOpenSchedule(): boolean {
@@ -365,13 +544,15 @@ export class CreateJobComponent implements OnInit {
   }
 
   /**
-   * Open jobs carry a single `dueDate` timestamp instead of a date plus a
-   * start/end window, so combine the picked date with the due time.
+   * Open jobs carry a single `dueDate` instead of a start/end window. The Open
+   * tab only asks for a "due by" date, so an unset time means end of that UTC
+   * day.
    */
   private toApiDueDate(): string | undefined {
-    if (!this.job.date || !this.job.startTime) return undefined;
-    const time = this.job.startTime.length === 5 ? `${this.job.startTime}:00` : this.job.startTime;
-    return `${this.job.date}T${time}Z`;
+    if (!this.job.date) return undefined;
+    const time = this.job.startTime ? this.job.startTime : '23:59';
+    const normalised = time.length === 5 ? `${time}:00` : time;
+    return `${this.job.date}T${normalised}Z`;
   }
 
   private calculateDuration(start: string, end: string): string {
@@ -514,7 +695,7 @@ export class CreateJobComponent implements OnInit {
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
-        this.keys = items.map((k: any) => {
+        const pageKeys = items.map((k: any) => {
           const status = k.status ?? 'IN_STORAGE';
           const mappedStatus = status === 'IN_STORAGE' ? 'Available' : 'Issued';
           return {
@@ -529,6 +710,10 @@ export class CreateJobComponent implements OnInit {
             selected: false
           };
         });
+        // Keep keys chosen on another page (or preloaded when editing) selected.
+        const pageIds = new Set(pageKeys.map((k: Key) => k.id));
+        const stillSelected = this.keys.filter((k: Key) => k.selected && !pageIds.has(k.id));
+        this.keys = [...pageKeys, ...stillSelected];
         this.totalElements = res?.meta?.totalElements ?? items.length;
         this.totalPages = res?.meta?.totalPages ?? Math.max(1, Math.ceil(items.length / this.pageSize));
         this.currentPage = page;
@@ -707,10 +892,11 @@ export class CreateJobComponent implements OnInit {
     if (!this.selectedClient) this.errors['client'] = 'Client is required';
     if (!this.selectedSite) this.errors['site'] = 'Site is required';
     if (!this.job.title.trim()) this.errors['title'] = 'Job title is required';
-    if (!this.job.date) this.errors['date'] = 'Date is required';
-    if (this.isOpenSchedule) {
-      if (!this.job.startTime) this.errors['startTime'] = 'Due time is required';
-    } else {
+    // Only the fields of the selected schedule tab are validated: an open job
+    // is available immediately so its due date stays optional, while a
+    // scheduled job needs the full date and time window.
+    if (!this.isOpenSchedule) {
+      if (!this.job.date) this.errors['date'] = 'Date is required';
       if (!this.job.startTime) this.errors['startTime'] = 'Start time is required';
       if (!this.job.endTime) this.errors['endTime'] = 'End time is required';
     }
@@ -727,6 +913,45 @@ export class CreateJobComponent implements OnInit {
 
     if (!this.validateForm()) return;
 
+    const payload = this.buildJobPayload();
+
+    if (this.isEditMode && this.jobId) {
+      this.saving = true;
+      this.keyVault.updateJob(orgId, this.jobId, payload).subscribe({
+        next: () => {
+          this.saving = false;
+          this.toast.success('Job updated successfully!');
+          this.router.navigate(['/jobs', this.jobId]);
+        },
+        error: (err) => {
+          console.error('Failed to update job', err);
+          this.saving = false;
+          this.toast.error('Failed to update job');
+        }
+      });
+      return;
+    }
+
+    this.saving = true;
+    this.keyVault.createJob(orgId, payload).subscribe({
+      next: (res: any) => {
+        const createdId = res?.data?.id ?? res?.id;
+        if (createdId) {
+          this.uploadJobAttachments(orgId, createdId);
+        } else {
+          this.saving = false;
+          this.toast.error('Failed to create job');
+        }
+      },
+      error: (err) => {
+        console.error('Failed to create job', err);
+        this.saving = false;
+        this.toast.error('Failed to create job');
+      }
+    });
+  }
+
+  private buildJobPayload(): any {
     const payload: any = {
       jobTypeId: this.selectedJobType,
       title: this.job.title,
@@ -757,23 +982,7 @@ export class CreateJobComponent implements OnInit {
       payload.endTime = this.job.endTime || undefined;
     }
 
-    this.saving = true;
-    this.keyVault.createJob(orgId, payload).subscribe({
-      next: (res: any) => {
-        const createdId = res?.data?.id ?? res?.id;
-        if (createdId) {
-          this.uploadJobAttachments(orgId, createdId);
-        } else {
-          this.saving = false;
-          this.toast.error('Failed to create job');
-        }
-      },
-      error: (err) => {
-        console.error('Failed to create job', err);
-        this.saving = false;
-        this.toast.error('Failed to create job');
-      }
-    });
+    return payload;
   }
 
   get selectedJobTypeLabel(): string {

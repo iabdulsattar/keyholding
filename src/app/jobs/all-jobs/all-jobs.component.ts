@@ -224,6 +224,10 @@ export class AllJobsComponent implements OnInit {
     this.router.navigate(['/jobs', jobId]);
   }
 
+  editJob(jobId: string): void {
+    this.router.navigate(['/jobs/edit-job', jobId]);
+  }
+
   goToPage(page: number): void {
     if (page >= 0 && page < this.pagination.totalPages) {
       this.loadJobs(page);

@@ -2,10 +2,16 @@
 
     <!-- Page header -->
     <div class="mb-6">
-        <h1 class="text-slate-900 text-3xl font-extrabold font-['Inter']">Create Job</h1>
-        <p class="text-slate-600 text-sm font-normal font-['Inter'] mt-1">Fill in the details below to create a new job.
+        <h1 class="text-slate-900 text-3xl font-extrabold font-['Inter']">{{ pageTitle }}</h1>
+        <p class="text-slate-600 text-sm font-normal font-['Inter'] mt-1">{{ pageSubtitle }}
         </p>
     </div>
+
+    @if (loadingJob) {
+    <div class="mb-4 rounded-md border border-slate-200 bg-white px-5 py-4 text-sm text-slate-600">
+        Loading job details...
+    </div>
+    }
 
     <!-- Summary cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
@@ -360,7 +366,7 @@
     <h2 class="text-slate-900 text-sm font-semibold font-['Inter']">Job Schedule
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-2">
-      <button (click)="activeTab = 0" class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
+      <button (click)="onScheduleTabChange(0)" class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
         [class.border-blue-600]="activeTab === 0" [class.bg-white]="activeTab === 0" [class.ring-1]="activeTab === 0"
         [class.ring-blue-100]="activeTab === 0" 
         [class.border-slate-200]="activeTab !== 0" [class.bg-white]="activeTab !== 0"
@@ -388,7 +394,7 @@
         </span>
       </button>
 
-      <button (click)="activeTab = 1; "
+      <button (click)="onScheduleTabChange(1)"
         class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
         [class.border-blue-600]="activeTab === 1" [class.bg-white]="activeTab === 1"
         [class.ring-1]="activeTab === 1" [class.ring-blue-100]="activeTab === 1" 
@@ -436,17 +442,7 @@
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Schedule Type <span
-                        class="text-rose-500">*</span></label>
-                <app-rich-select [options]="scheduleTypeOptions" [value]="job.scheduleType"
-                    (valueChange)="onScheduleTypeChange($event)" placeholder="Select schedule type" panelWidth="wide"
-                    class="w-full">
-                </app-rich-select>
-                <p class="text-[9px] text-slate-500 mt-1.5">Open jobs are due by a single date and time.</p>
-            </div>
-            <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">{{ isOpenSchedule ?
-                        'Due Date' : 'Date' }} <span
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Date <span
                         class="text-rose-500">*</span></label>
                 <app-date-picker id="job-date" [defaultDate]="job.date" placeholder="Select date"
                     (dateChange)="onDateChange($event)" [class.border-rose-500]="submitted && errors.date"
@@ -458,11 +454,9 @@
                 <p class="text-[9px] text-slate-500 mt-1.5">Select the date.</p>
             </div>
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">{{ isOpenSchedule ?
-                        'Due Time' : 'Start Time' }} <span
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Start Time <span
                         class="text-rose-500">*</span></label>
-                <app-time-picker id="job-start-time" [defaultTime]="job.startTime"
-                    [placeholder]="isOpenSchedule ? 'Select due time' : 'Select start time'"
+                <app-time-picker id="job-start-time" [defaultTime]="job.startTime" placeholder="Select start time"
                     (timeChange)="onStartTimeChange($event)" [class.border-rose-500]="submitted && errors.startTime"
                     [class.ring-1]="submitted && errors.startTime"
                     [class.ring-rose-500/20]="submitted && errors.startTime">
@@ -470,10 +464,8 @@
                 @if (submitted && errors.startTime) {
                 <p class="text-xs text-rose-500 mt-1">{{ errors.startTime }}</p>
                 }
-                <p class="text-[9px] text-slate-500 mt-1.5">{{ isOpenSchedule ? 'Time the job is due.' :
-                        'Start time.' }}</p>
+                <p class="text-[9px] text-slate-500 mt-1.5">Start time.</p>
             </div>
-            @if (!isOpenSchedule) {
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">End Time <span
                         class="text-rose-500">*</span></label>
@@ -486,7 +478,6 @@
                 }
                 <p class="text-[9px] text-slate-500 mt-1.5">End time.</p>
             </div>
-            }
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Duration</label>
                 <input type="text" [value]="job.duration" disabled
@@ -900,7 +891,7 @@
                         <rect width="16" height="16" fill="white" />
                     </clipPath>
                 </defs>
-            </svg>{{ saving ? 'Creating...' : 'Create Job' }} </button>
+            </svg>{{ submitLabel }} </button>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
