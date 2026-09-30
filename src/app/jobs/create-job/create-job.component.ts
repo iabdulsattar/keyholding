@@ -108,6 +108,8 @@ export class CreateJobComponent implements OnInit {
   checklistItems: ChecklistItem[] = [];
   newChecklistItem = '';
   checklistLoading = false;
+  activeTab = 0;
+  status: 'active' | 'inactive' = 'active';
 
   clientOptions: RichSelectOption[] = [];
   siteOptions: RichSelectOption[] = [];
@@ -118,6 +120,16 @@ export class CreateJobComponent implements OnInit {
     { value: 'Medium', label: 'Medium' },
     { value: 'High', label: 'High' },
   ];
+
+  VisitorTypeOptions: RichSelectOption[] = [
+    { value: 'all', label: 'Select visitor type' },
+    { value: 'electrician', label: 'Electrician' },
+  ];
+
+  setStatus(status: 'active' | 'inactive'): void {
+    this.status = status;
+  }
+
   selectedClient = '';
   selectedSite = '';
   selectedJobType = '';
