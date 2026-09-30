@@ -543,7 +543,7 @@
                     @if (p === '...') {
                       <span class="px-1 text-slate-400 text-sm">...</span>
                     } @else {
-                      <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-600 text-blue-600' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-md border transition">{{ p }}</button>
+                      <button (click)="keysGoToPage(p)" [class]="keysPage === p ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-md border transition">{{ p }}</button>
                     }
                   }
                   <button (click)="keysNextPage()" [disabled]="keysPage >= keysTotalPages" class="p-1.5 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Next page">
@@ -663,7 +663,7 @@
                        @if (p === '...') {
                          <span class="px-1 text-slate-400 text-sm">...</span>
                        } @else {
-                         <button (click)="sitesGoToPage(p)" [class]="sitesPage === p ? 'border-blue-600 text-blue-600' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-md border transition">{{ p }}</button>
+                         <button (click)="sitesGoToPage(p)" [class]="sitesPage === p ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 text-slate-600 hover:bg-slate-50'" class="w-7 h-7 flex items-center justify-center text-xs font-bold rounded-md border transition">{{ p }}</button>
                        }
                      }
                      <button (click)="sitesNextPage()" [disabled]="sitesPage === sitesTotalPages" class="p-1.5 rounded-md border border-slate-200 text-xs font-semibold transition" [class]="sitesPage === sitesTotalPages ? 'text-slate-300 pointer-events-none' : 'text-slate-600 hover:bg-slate-50'">
@@ -939,7 +939,7 @@
                      @if (page === '...') {
                        <span class="px-1 text-slate-400 text-sm">&#8230;</span>
                      } @else {
-                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-semibold border" [class.bg-white]="activitiesPage === page" [class.text-blue-600]="activitiesPage === page" [class.border-blue-600]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
+                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-semibold border" [class.bg-blue-600]="activitiesPage === page" [class.text-white]="activitiesPage === page" [class.border-blue-600]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
                      }
                    }
                    <button (click)="activitiesNextPage()" [disabled]="activitiesPage === activitiesTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
@@ -1166,7 +1166,7 @@
                     @if (p === '...') {
                       <span class="px-1 text-slate-400 text-sm">...</span>
                     } @else {
-                      <button (click)="documentsGoToPage(p)" [class.bg-white]="documentsPage === p" [class.text-blue-700]="documentsPage === p" [class.border-blue-500]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold border">{{ p }}</button>
+                      <button (click)="documentsGoToPage(p)" [class.bg-blue-600]="documentsPage === p" [class.text-white]="documentsPage === p" [class.border-blue-600]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold border">{{ p }}</button>
                     }
                   }
                   <button (click)="documentsNextPage()" [disabled]="documentsPage === documentsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
