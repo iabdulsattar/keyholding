@@ -119,7 +119,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     const page = params?.page ?? this.currentPage;
     const apiStatus = status === 'All Statuses' ? undefined : (status || '').toUpperCase().replace(/ /g, '_');
     const apiType = cabinetType === 'All Types' ? undefined : cabinetType;
-    this.keyVault.listCabinets(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus, cabinetType: apiType, storageLocationId: storageLocationId || undefined }).subscribe({
+    this.keyVault.listCabinets(orgId, { page, size: this.pageSize, q: q || undefined, status: apiStatus, cabinetType: apiType, storageLocationId: storageLocationId || undefined, numberOfHooks: 1 }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
