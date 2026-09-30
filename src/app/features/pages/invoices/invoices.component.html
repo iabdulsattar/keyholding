@@ -128,7 +128,7 @@
 
     <!-- Desktop table -->
      <div class="hidden md:block bg-white rounded-md border border-slate-200 overflow-hidden">
-      <div class="overflow-x-auto no-scrollbar h-[320px]">
+      <div class="overflow-x-auto no-scrollbar">
         <table class="w-full min-w-[520px]">
           <thead>
            <tr class=" border-b border-slate-200">
@@ -142,7 +142,7 @@
          </thead>
         <tbody
   [class]="filteredInvoices.length === 0
-    ? 'divide-y divide-slate-200 -[320px]'
+    ? 'divide-y divide-slate-200 h-[320px]'
     : 'divide-y divide-slate-200'"
 >
 
