@@ -279,6 +279,7 @@ showDeactivateClientModal = false;
   activitiesTotalPagesFromApi = 1;
   activitiesSearch = '';
   activitiesLoading = false;
+  activitiesLoaded = false;
 
   // The overview tab shows its own short page of the same activity list, so it
   // paginates independently of the Activity Log tab.
@@ -301,10 +302,9 @@ showDeactivateClientModal = false;
      this.loadDocuments();
      this.loadDocumentStats();
      this.loadContacts();
-     this.loadEmergencyContacts();
-     this.loadActivities();
-     this.loadJobStats();
-     this.loadJobs();
+      this.loadEmergencyContacts();
+      this.loadJobStats();
+      this.loadJobs();
    }
 
   private loadDocuments(): void {
@@ -600,10 +600,14 @@ viewEmergencyContact(contactId: string): void {
       this.currentEmergencyContactStatus = '';
     }
 
+      /**
+       * The audit endpoint is only requested for the Activity Log tab, so the
+       * Overview panel must not claim there is no activity before it has run.
+       */
       private loadActivities(): void {
        if (!this.clientId) return;
        this.activitiesLoading = true;
-          this.clientService.listAuditLog({ targetType: 'CLIENT', targetId: this.clientId, includeRelated: true, page: 0, size: 200 }).subscribe({
+          this.clientService.listAuditLog({ targetType: 'CLIENT', targetId: this.clientId, includeRelated: true, page: 0, size: 50 }).subscribe({
          next: (result: any) => {
             const items = result?.items ?? result?.data?.items ?? [];
             this.activities = items.map((item: any) => {
@@ -629,12 +633,14 @@ viewEmergencyContact(contactId: string): void {
             });
            this.filteredActivities = [...this.activities];
            this.overviewActivitiesPage = 1;
+           this.activitiesLoaded = true;
            this.activitiesLoading = false;
          },
           error: () => {
             this.activities = [];
             this.filteredActivities = [];
             this.overviewActivitiesPage = 1;
+            this.activitiesLoaded = true;
             this.activitiesLoading = false;
           }
         });
