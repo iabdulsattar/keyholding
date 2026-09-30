@@ -442,7 +442,8 @@
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Date <span
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">{{ isOpenSchedule ?
+                        'Due Date' : 'Date' }} <span
                         class="text-rose-500">*</span></label>
                 <app-date-picker id="job-date" [defaultDate]="job.date" placeholder="Select date"
                     (dateChange)="onDateChange($event)" [class.border-rose-500]="submitted && errors.date"
