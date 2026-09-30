@@ -586,7 +586,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-200">
-                @for (user of existingUsers; track user.id) {
+                @for (user of existingUsers; track user.id || user.email || $index) {
                 <tr>
                   <td class="py-3 px-5">
                     <div class="flex items-center gap-3">

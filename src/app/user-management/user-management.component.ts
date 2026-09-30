@@ -50,6 +50,8 @@ interface User {
   location?: string;
   employeeId?: string;
   joined?: string;
+  /** True when the account holds the Administrator role; those are protected. */
+  isAdmin?: boolean;
 }
 
 interface PageMeta {
@@ -202,6 +204,7 @@ export class UserManagementComponent implements OnInit {
           email: item.email || '-',
           roleIds: item.roles?.map((r: any) => r.id) || [],
           roles: item.roles?.map((r: any) => r.name) || [],
+          isAdmin: this.isAdministratorRole(item.roles),
           status: (item.status || '').toUpperCase() === 'INACTIVE' ? 'Inactive' : 'Active',
           invite: item.invitationStatus ? item.invitationStatus.charAt(0) + item.invitationStatus.slice(1).toLowerCase() : 'Not Invited',
           inviteSub: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
@@ -414,11 +417,13 @@ export class UserManagementComponent implements OnInit {
   editUser(user?: User): void {
     const target = user || this.selectedUser;
     if (!target?.id) return;
+    if (this.blockProtectedAction('edited', target)) return;
     this.router.navigate(['/users/add-user'], { queryParams: { id: target.id } });
   }
 
   deactivateUser(user: User): void {
     if (!user?.id) return;
+    if (this.blockProtectedAction('deactivated', user)) return;
     this.selectedUser = user;
     this.showDeactivateModal = true;
   }
@@ -431,6 +436,7 @@ export class UserManagementComponent implements OnInit {
 
   deleteUser(user: User): void {
     if (!user?.id) return;
+    if (this.blockProtectedAction('deleted', user)) return;
     this.selectedUser = user;
     this.showDeleteModal = true;
   }
@@ -563,6 +569,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   openDeactivateModal(): void {
+    if (this.blockProtectedAction('deactivated', this.selectedUser)) return;
     this.showDeactivateModal = true;
   }
 
@@ -749,10 +756,34 @@ export class UserManagementComponent implements OnInit {
   }
 
   private resolveUserRoleNames(): void {
-    this.users = this.users.map(user => ({
-      ...user,
-      roles: this.resolveRoleNames(user.roleIds),
-    }));
+    this.users = this.users.map(user => {
+      const roles = this.resolveRoleNames(user.roleIds);
+      return {
+        ...user,
+        roles: roles.length ? roles : user.roles,
+        isAdmin: this.isAdministratorRole(roles.length ? roles : user.roles),
+      };
+    });
+  }
+
+  /** Administrator accounts are protected from edit, deactivate and delete. */
+  private isAdministratorRole(roles: any): boolean {
+    const list = (Array.isArray(roles) ? roles : [])
+      .map((role: any) => (typeof role === 'string' ? role : role?.name || role?.roleName || ''))
+      .filter((name: string) => !!name);
+    return list.some(name => name.trim().toLowerCase() === 'administrator');
+  }
+
+  isProtectedUser(user?: User | null): boolean {
+    if (!user) return false;
+    if (user.isAdmin) return true;
+    return this.isAdministratorRole(user.roles);
+  }
+
+  private blockProtectedAction(action: string, user?: User | null): boolean {
+    if (!this.isProtectedUser(user)) return false;
+    this.errorMessage = `Administrator accounts cannot be ${action}.`;
+    return true;
   }
 
   private getEntityName(details: string): string {

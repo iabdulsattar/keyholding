@@ -355,6 +355,10 @@
                     <tr>
                       <td colspan="4" class="py-6 px-4 text-center text-slate-500 text-sm">Loading activity...</td>
                     </tr>
+                  } @else if (!activitiesLoaded) {
+                    <tr>
+                      <td colspan="4" class="py-6 px-4 text-center text-slate-500 text-sm">Open the Activity Log tab to view activity.</td>
+                    </tr>
                   } @else if (activities.length === 0) {
                     <tr>
                       <td colspan="4" class="py-6 px-4 text-center text-slate-500 text-sm">No activity found.</td>
@@ -376,7 +380,6 @@
               <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3 border-t border-slate-200 text-xs text-slate-500">
           <div class="flex items-center gap-3">
             <p>Showing <span class="text-slate-900 font-semibold">{{ overviewActivitiesShowingStart }} to {{ overviewActivitiesShowingEnd }}</span> of <span class="text-slate-900 font-semibold">{{ overviewActivitiesTotal }}</span> activities</p>
-
           </div>
             <div class="flex items-center gap-1">
                <button (click)="overviewActivitiesPreviousPage()" [disabled]="overviewActivitiesPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">

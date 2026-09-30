@@ -235,8 +235,10 @@ export class AddUserComponent implements OnInit {
         const payload = res?.data ?? res;
         const items = Array.isArray(payload) ? payload : payload?.content ?? payload?.items ?? payload?.data ?? [];
         this.existingUsers = items.map((item: any, index: number) => ({
-          id: item.id,
-          name: item.fullName || item.name || `${item.firstName || ''} ${item.lastName || ''}`.trim() || 'Unknown',
+          // `eligible-users` identifies the user as `userId`/`keycloakId`
+          // depending on the payload, and Import is a no-op without an id.
+          id: item.id || item.userId || item.keycloakId || item.sub || '',
+          name: item.fullName || item.name || `${item.firstName || ''} ${item.lastName || ''}`.trim() || item.email || 'Unknown',
           email: item.email || '-',
           initials: this.getInitialsForUser(item),
           bgColor: this.getAvatarColor(item.name || item.email || index),
