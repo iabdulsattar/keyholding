@@ -114,7 +114,7 @@
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-[100px] text-xs font-bold font-['Inter']"
             [class]="priorityClass(job?.priority || '')">
             <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-            {{ job?.priority || '—' }}
+            {{ getPriorityLabel(job?.priority) }}
           </span>
         </div>
         <div class="mt-5">
@@ -417,7 +417,7 @@
                   class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[100px] text-xs font-bold font-['Inter']"
                   [class]="priorityClass(job?.priority || '')">
                   <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                  {{ job?.priority || '—' }}
+                  {{ getPriorityLabel(job?.priority) }}
                 </span>
               </dd>
             </div>
@@ -480,7 +480,7 @@
                 <td class="px-5 py-4 text-slate-600 whitespace-nowrap">{{ key.hook }}</td>
                 <td class="px-5 py-4"><span
                     class="inline-flex px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 text-xs font-semibold whitespace-nowrap">{{
-                    key.status }}</span></td>
+                    getKeyStatusLabel(key.status) }}</span></td>
                 <td class="px-5 py-4 text-center">
                   @if (key.used) {
                   <svg class="w-4 h-4 text-slate-400 inline" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -525,8 +525,8 @@
               <div>
                 <h4 class="font-semibold text-slate-900 text-sm font-['Inter']">Key Usage Summary</h4>
                 <p class="text-xs text-slate-900 font-normal font-['Inter'] mt-0.5">{{
-                  job?.requiredKeys?.summary?.issued ?? 0 }} of {{ job?.requiredKeys?.summary?.issued ?? 0 }} required
-                  keys were used and returned.</p>
+                    job?.requiredKeys?.summary?.used ?? 0 }} of {{ job?.requiredKeys?.summary?.issued ?? 0 }} required
+                    keys were used and {{ job?.requiredKeys?.summary?.returned ?? 0 }} were returned.</p>
               </div>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">

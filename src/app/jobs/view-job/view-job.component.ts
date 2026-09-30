@@ -3,7 +3,23 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
-import { formatJobStatus } from '../../shared/utils/job.utils';
+import { formatJobStatus, humanizeEnum } from '../../shared/utils/job.utils';
+
+const KEY_STATUS_LABELS: Record<string, string> = {
+  ON_THE_HOOK: 'In Storage',
+  ON_HOOK: 'In Storage',
+  IN_STORAGE: 'In Storage',
+  ISSUED: 'Issued',
+  IN_USE: 'In Use',
+  OVERDUE: 'Overdue',
+  DAMAGED: 'Damaged',
+  LOST: 'Lost',
+  LOST_DAMAGED: 'Damaged / Lost',
+  DAMAGED_LOST: 'Damaged / Lost',
+  NOT_RETURNED: 'Not Returned',
+  RETURNED: 'Returned',
+  USED: 'Used',
+};
 
 interface JobDetail {
   id: string;
@@ -115,6 +131,23 @@ export class ViewJobComponent implements OnInit {
     const checklist = data.checklist || {};
     const escalation = data.escalation || {};
 
+    const mappedKeys = (requiredKeys.keys || []).map((k: any) => ({
+      id: k.keyCode || k.keyId || '',
+      name: k.keyName || '—',
+      storageLocation: k.storageLocation || '—',
+      cabinet: k.cabinet || '—',
+      hook: k.hook || '—',
+      site: k.site || '—',
+      status: k.status || k.keyStatus || '—',
+      used: k.used || false,
+      returned: k.returned || false
+    }));
+
+    // The API does not always send `summary`; when it is absent the counts
+    // fell back to zeros even though each key row already carries a
+    // used/returned flag, so the tiles disagreed with the table above them.
+    const derivedSummary = this.buildKeyUsageSummary(mappedKeys, requiredKeys.summary);
+
     return {
       id: data.id || '',
       code: data.jobCode || '',
@@ -145,18 +178,8 @@ export class ViewJobComponent implements OnInit {
         checklistItems: tiles.checklistItems ?? 0
       },
       requiredKeys: {
-        keys: (requiredKeys.keys || []).map((k: any) => ({
-          id: k.keyCode || k.keyId || '',
-          name: k.keyName || '—',
-          storageLocation: k.storageLocation || '—',
-          cabinet: k.cabinet || '—',
-          hook: k.hook || '—',
-          site: k.site || '—',
-          status: k.status || '—',
-          used: k.used || false,
-          returned: k.returned || false
-        })),
-        summary: requiredKeys.summary || { issued: 0, used: 0, returned: 0, notReturned: 0 }
+        keys: mappedKeys,
+        summary: derivedSummary
       },
       checklist: {
         total: checklist.total ?? 0,
@@ -164,7 +187,7 @@ export class ViewJobComponent implements OnInit {
         items: (checklist.items || []).map((ci: any) => ({
           id: ci.id || '',
           text: ci.title || ci.text || '—',
-          response: ci.response || 'Pending',
+          response: ci.response ? humanizeEnum(ci.response) : 'Pending',
           notes: ci.notes || '-',
           images: ci.imageCount ?? ci.images ?? '0'
         }))
@@ -180,7 +203,7 @@ export class ViewJobComponent implements OnInit {
     if (!dateStr) return '—';
     try {
       const date = new Date(dateStr);
-      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
     } catch {
       return dateStr || '—';
     }
@@ -201,7 +224,8 @@ export class ViewJobComponent implements OnInit {
     if (!dateStr) return '—';
     try {
       const date = new Date(dateStr);
-      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + this.formatTime(date.toTimeString().slice(0, 5));
+      const utcTime = `${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
+      return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + this.formatTime(utcTime);
     } catch {
       return dateStr || '—';
     }
@@ -230,6 +254,12 @@ export class ViewJobComponent implements OnInit {
     return formatJobStatus(status);
   }
 
+  getPriorityLabel(priority?: string | null): string {
+    const value = (priority || '').trim();
+    if (!value) return '—';
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  }
+
   priorityClass(priority: string): string {
     const map: Record<string, string> = {
       'HIGH': 'text-red-500',
@@ -237,7 +267,7 @@ export class ViewJobComponent implements OnInit {
       'LOW': 'text-green-500',
       'CRITICAL': 'text-rose-600'
     };
-    return map[priority] || 'text-slate-500';
+    return map[(priority || '').toUpperCase()] || 'text-slate-500';
   }
 
   setActiveTab(tabId: string): void {
@@ -246,6 +276,41 @@ export class ViewJobComponent implements OnInit {
 
   get requiredKeys(): any[] {
     return this.job?.requiredKeys?.keys || [];
+  }
+
+  /**
+   * Key Usage Summary counts. When the key rows are available they are
+   * authoritative, since they drive the used/returned tick marks in the table
+   * directly above; the API summary is only trusted when there are no rows to
+   * count. A returned key is always one that was used, so "not returned" is the
+   * used keys that never came back.
+   */
+  private buildKeyUsageSummary(
+    keys: { used: boolean; returned: boolean }[],
+    apiSummary: any
+  ): { issued: number; used: number; returned: number; notReturned: number } {
+    if (!keys.length) {
+      return {
+        issued: apiSummary?.issued ?? 0,
+        used: apiSummary?.used ?? 0,
+        returned: apiSummary?.returned ?? 0,
+        notReturned: apiSummary?.notReturned ?? 0
+      };
+    }
+
+    const returned = keys.filter(k => k.returned).length;
+    const used = keys.filter(k => k.used || k.returned).length;
+
+    return {
+      issued: keys.length,
+      used,
+      returned,
+      notReturned: Math.max(0, used - returned)
+    };
+  }
+
+  getKeyStatusLabel(status?: string | null): string {
+    return humanizeEnum(status, KEY_STATUS_LABELS);
   }
 
   selectedChecklistItem: any = null;

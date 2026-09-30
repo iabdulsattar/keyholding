@@ -146,9 +146,9 @@ export class AllJobsComponent implements OnInit {
     if (!scheduledDate) return '';
     try {
       const date = new Date(scheduledDate);
-      const day = date.getDate();
-      const month = date.toLocaleString('en-GB', { month: 'short' });
-      const year = date.getFullYear();
+      const day = date.getUTCDate();
+      const month = date.toLocaleString('en-GB', { timeZone: 'UTC', month: 'short' });
+      const year = date.getUTCFullYear();
       let timeStr = '';
       if (startTime) {
         const [hours, minutes] = startTime.split(':');

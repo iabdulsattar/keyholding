@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { getSiteSecurityLevelLabel } from '../../shared/utils/site.utils';
 
 @Component({
   selector: 'app-reactivate-storage-location',
@@ -106,6 +107,11 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
     });
   }
 
+  /** Security level is a site attribute; the location itself has none. */
+  get securityLevelLabel(): string {
+    return getSiteSecurityLevelLabel(this.site?.securityLevel);
+  }
+
   private loadSite(orgId: string, siteId: string): void {
     this.keyVault.getSite(orgId, siteId).subscribe({
       next: (res: any) => {
@@ -113,6 +119,7 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
         this.site = {
           accessSchedule: item.accessSchedule || '',
           accessInstructions: item.accessInstructions || '',
+          securityLevel: item.securityLevel || '',
         };
       },
       error: () => {
@@ -183,7 +190,7 @@ export class ReactivateStorageLocationComponent implements OnInit, AfterViewInit
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   formatAccessSchedule(value: string | null | undefined): string {

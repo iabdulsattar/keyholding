@@ -278,6 +278,15 @@ showDeactivateClientModal = false;
   activitiesSearch = '';
   activitiesLoading = false;
 
+  // The overview tab shows its own short page of the same activity list, so it
+  // paginates independently of the Activity Log tab.
+  overviewActivitiesPage = 1;
+  overviewActivitiesRowsPerPage = 5;
+
+  // Shared with the template pipe so the Action badge and the Event Type
+  // column always agree on how an event type is worded.
+  private readonly eventTypeFormatter = new FormatEventTypePipe();
+
    constructor(private route: ActivatedRoute, private router: Router, private clientService: ClientService, private keyVault: KeyVaultService) {}
 
    ngOnInit(): void {
@@ -359,7 +368,7 @@ private loadContacts(): void {
              dept: item.department || '—',
              email: item.email || '—',
              phone: item.phone || '—',
-             status: item.status === 'INACTIVE' ? 'Inactive' : 'Active',
+              status: this.normalizeContactStatus(item),
              primary: item.primaryContact ?? false,
              initials: this.getInitials(firstName, lastName),
              color: this.getAvatarColor(firstName, lastName),
@@ -404,7 +413,7 @@ private loadContacts(): void {
              phone: item.phone || '—',
              email: item.email || '—',
              availability: item.availability || '—',
-             status: item.status === 'Inactive' ? 'Inactive' : 'Active',
+              status: this.normalizeContactStatus(item),
              primaryContact: item.primaryContact ?? false,
              notifyFor: item.notifyFor || '—',
              address: item.address || '—',
@@ -605,23 +614,25 @@ viewEmergencyContact(contactId: string): void {
                 role: item.userRole || '—',
                 initials: this.getInitials(actor),
                 avatarColor: this.getAvatarColor(actor),
-                action: this.getEventAction(item.eventType || '') || item.action || '—',
+                action: this.getActivityAction(item),
                 eventType: item.eventType || '—',
                 entity: this.formatTargetType(item.targetType),
                 name: this.getActivityEntityName(item) || '—',
                 detail1: '',
-                ip: item.ipAddress || '—',
+                 ip: item.ipAddress || item.ip_address || data?.ipAddress || '—',
                 details: this.formatActivityDetails(item),
                 reference: this.extractReference(item.eventType) || (item.id ? `#${item.id.slice(0, 8)}` : '—'),
                 actorUserId: data?.actorUserId || item.userId,
               };
             });
            this.filteredActivities = [...this.activities];
+           this.overviewActivitiesPage = 1;
            this.activitiesLoading = false;
          },
           error: () => {
             this.activities = [];
             this.filteredActivities = [];
+            this.overviewActivitiesPage = 1;
             this.activitiesLoading = false;
           }
         });
@@ -681,6 +692,55 @@ viewEmergencyContact(contactId: string): void {
     if (normalized.includes('added')) return 'Added';
     if (normalized.includes('edited')) return 'Edited';
     return '';
+  }
+
+  /**
+   * Action badge label. Verb-specific rules win, but events with no rule
+   * (e.g. `keyvault.hook.key_moved`) fall back to the humanised event type
+   * so the column never renders a bare dash.
+   */
+  private getActivityAction(item: any): string {
+    const eventType = item?.eventType || '';
+    const action = this.getEventAction(eventType);
+    if (action) return action;
+
+    if (eventType) {
+      const humanized = this.eventTypeFormatter.transform(eventType);
+      if (humanized && humanized !== '—') return humanized;
+    }
+
+    return item?.action || '—';
+  }
+
+  /**
+   * Contacts and emergency contacts both expose a two-state ACTIVE/INACTIVE
+   * status, but the payload spelling varies (`ACTIVE`, `Active`, `isActive`).
+   * The service layer already normalises most of this, so match on a
+   * case- and separator-insensitive token rather than a single literal, which
+   * previously let inactive records render as Active.
+   */
+  private normalizeContactStatus(item: any): string {
+    const raw = item?.status ?? item?.isActive ?? item?.active;
+
+    if (typeof raw === 'boolean') return raw ? 'Active' : 'Inactive';
+
+    const text = (raw ?? '').toString().trim();
+    if (!text) return '—';
+
+    const token = text.toUpperCase().replace(/[\s_-]+/g, '');
+    const active = ['ACTIVE', 'A', '1', 'TRUE', 'ENABLED', 'ON'];
+    const inactive = ['INACTIVE', 'INACTIVATED', '0', 'FALSE', 'DISABLED', 'OFF', 'DEACTIVATED', 'BLOCKED', 'SUSPENDED'];
+
+    if (active.includes(token)) return 'Active';
+    if (inactive.includes(token)) return 'Inactive';
+
+    return '—';
+  }
+
+  contactStatusClass(status: string): string {
+    return (status ?? '').toLowerCase() === 'inactive'
+      ? 'bg-rose-50 text-rose-500'
+      : 'bg-emerald-50 text-emerald-600';
   }
 
   get contactsPaginated(): any[] {
@@ -815,8 +875,8 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 
@@ -824,7 +884,7 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '--';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   private formatTargetType(value?: string): string {
@@ -1106,7 +1166,8 @@ viewEmergencyContact(contactId: string): void {
 
     this.keyVault.listKeys(orgId, params).subscribe({
       next: (result: any) => {
-        const items = result?.items ?? result?.content ?? result?.data ?? [];
+        const raw = result?.items ?? result?.content ?? result?.data ?? [];
+        const items = (Array.isArray(raw) ? raw : []).map((item: any) => this.clientService.mapKey(item));
         this.keys = items;
         this.keysTotalItems = result?.totalItems ?? result?.totalElements ?? result?.total ?? items.length;
         this.keysTotalPagesApi = result?.totalPages ?? Math.max(1, Math.ceil(this.keysTotalItems / this.keysRowsPerPage));
@@ -1219,9 +1280,9 @@ viewEmergencyContact(contactId: string): void {
     if (!scheduledDate) return '';
     try {
       const date = new Date(scheduledDate);
-      const day = date.getDate();
-      const month = date.toLocaleString('en-GB', { month: 'short' });
-      const year = date.getFullYear();
+      const day = date.getUTCDate();
+      const month = date.toLocaleString('en-GB', { timeZone: 'UTC', month: 'short' });
+      const year = date.getUTCFullYear();
       let timeStr = '';
       if (startTime) {
         const [hours, minutes] = startTime.split(':');
@@ -1261,6 +1322,17 @@ viewEmergencyContact(contactId: string): void {
     return formatJobStatus(status);
   }
 
+  getJobPriorityLabel(priority?: string | null): string {
+    const value = (priority || '').trim();
+    if (!value) return '—';
+    const normalized = value.toUpperCase();
+    if (normalized === 'HIGH') return 'High';
+    if (normalized === 'MEDIUM') return 'Medium';
+    if (normalized === 'LOW') return 'Low';
+    if (normalized === 'CRITICAL') return 'Critical';
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  }
+
   jobPriorityClass(priority: string): string {
     const map: Record<string, string> = {
       'HIGH': 'text-red-500',
@@ -1268,7 +1340,7 @@ viewEmergencyContact(contactId: string): void {
       'LOW': 'bg-green-100 text-green-700',
       'CRITICAL': 'text-rose-600'
     };
-    return map[priority] || 'text-slate-500';
+    return map[(priority || '').toUpperCase()] || 'text-slate-500';
   }
 
   jobsPreviousPage(): void {
@@ -1868,10 +1940,6 @@ uploadDocument(): void {
     }
   }
 
-  contactStatusClass(status: string): string {
-    return status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500';
-  }
-
   viewContact(contactId: string): void {
     if (!this.clientId) return;
     this.router.navigate(['/clients', this.clientId, 'view-contact', contactId]);
@@ -1950,13 +2018,28 @@ uploadDocument(): void {
   getActionColor(action: string): string {
     const map: Record<string, string> = {
       Added: "bg-emerald-50 text-emerald-600",
+      Created: "bg-amber-50 text-amber-600",
       Edited: "bg-slate-100 text-slate-500",
+      Updated: "bg-amber-50 text-amber-600",
       Deleted: "bg-rose-50 text-rose-500",
       Deactivated: "bg-slate-100 text-slate-500",
-      Created: "bg-amber-50 text-amber-600",
+      Activated: "bg-emerald-50 text-emerald-600",
+      Reactivated: "bg-emerald-50 text-emerald-600",
       Uploaded: "bg-sky-50 text-sky-600",
+      Downloaded: "bg-sky-50 text-sky-600",
+      Assigned: "bg-indigo-50 text-indigo-600",
+      Unassigned: "bg-slate-100 text-slate-500",
+      Issued: "bg-indigo-50 text-indigo-600",
+      Returned: "bg-emerald-50 text-emerald-600",
+      Viewed: "bg-slate-100 text-slate-500",
+      Moved: "bg-sky-50 text-sky-600",
     };
-    return map[action] || "bg-slate-100 text-slate-600";
+    if (!action) return "bg-slate-100 text-slate-600";
+    if (map[action]) return map[action];
+    // Actions are rendered with their entity prefix ("Key Moved"), so retry
+    // without it to keep a single colour definition per verb.
+    const withoutEntity = action.replace(/^(Key|Site|Client|Job|Document|Contact)\s+/i, '');
+    return map[withoutEntity] || "bg-slate-100 text-slate-600";
   }
 
   private getActivityEntityName(item: any): string {
@@ -2000,5 +2083,59 @@ uploadDocument(): void {
 
   activitiesGoToPage(page: number): void {
     if (page >= 1 && page <= this.activitiesTotalPages) this.activitiesPage = page;
+  }
+
+  // ---- Overview "Recent Activity" pagination ----
+
+  get overviewActivitiesTotal(): number {
+    return this.activities.length;
+  }
+
+  get overviewActivitiesPaginated(): any[] {
+    const start = (this.overviewActivitiesPage - 1) * this.overviewActivitiesRowsPerPage;
+    return this.activities.slice(start, start + this.overviewActivitiesRowsPerPage);
+  }
+
+  get overviewActivitiesTotalPages(): number {
+    return Math.max(1, Math.ceil(this.overviewActivitiesTotal / this.overviewActivitiesRowsPerPage));
+  }
+
+  get overviewActivitiesShowingStart(): number {
+    if (this.overviewActivitiesTotal === 0) return 0;
+    return (this.overviewActivitiesPage - 1) * this.overviewActivitiesRowsPerPage + 1;
+  }
+
+  get overviewActivitiesShowingEnd(): number {
+    return Math.min(this.overviewActivitiesPage * this.overviewActivitiesRowsPerPage, this.overviewActivitiesTotal);
+  }
+
+  get overviewActivitiesVisiblePages(): (number | '...')[] {
+    const total = this.overviewActivitiesTotalPages;
+    const current = this.overviewActivitiesPage;
+    const pages: (number | '...')[] = [];
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push('...');
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push('...');
+      pages.push(total);
+    }
+    return pages;
+  }
+
+  overviewActivitiesPreviousPage(): void {
+    if (this.overviewActivitiesPage > 1) this.overviewActivitiesPage--;
+  }
+
+  overviewActivitiesNextPage(): void {
+    if (this.overviewActivitiesPage < this.overviewActivitiesTotalPages) this.overviewActivitiesPage++;
+  }
+
+  overviewActivitiesGoToPage(page: number): void {
+    if (page >= 1 && page <= this.overviewActivitiesTotalPages) this.overviewActivitiesPage = page;
   }
 }

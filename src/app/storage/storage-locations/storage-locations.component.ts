@@ -1,4 +1,4 @@
-ï»¿import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -278,8 +278,8 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   getLocationStatus(loc: any): string {
-    const raw = loc.status || (loc.active !== undefined ? (loc.active ? 'ACTIVE' : 'INACTIVE') : '') || 'â€”';
-    if (raw === 'â€”') return raw;
+    const raw = loc.status || (loc.active !== undefined ? (loc.active ? 'ACTIVE' : 'INACTIVE') : '') || '—';
+    if (raw === '—') return raw;
     const normalized = raw.toUpperCase().replace(/_/g, ' ');
     if (normalized === 'ACTIVE') return 'Active';
     if (normalized === 'INACTIVE') return 'Inactive';
@@ -296,9 +296,9 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
   }
 
   formatDate(value: string | null | undefined): string {
-    if (!value) return 'â€”';
+    if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 }

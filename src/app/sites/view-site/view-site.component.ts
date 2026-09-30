@@ -6,17 +6,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
-import { DeactivateSiteModalComponent } from '../deactivate-site-modal/deactivate-site-modal.component';
-import { ActivateSiteModalComponent } from '../activate-site-modal/activate-site-modal.component';
 import { DeleteSiteModalComponent } from '../delete-site-modal/delete-site-modal.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
+import { getSiteSecurityLevelLabel } from '../../shared/utils/site.utils';
 
 @Component({
   selector: 'app-view-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateSiteModalComponent, ActivateSiteModalComponent, DeleteSiteModalComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeleteSiteModalComponent],
   templateUrl: './view-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -50,6 +49,13 @@ export class ViewSiteComponent implements OnInit {
   attachmentsLoading = false;
   attachmentError = '';
 
+  summaryLoading = false;
+  totalKeys = 0;
+  totalJobs = 0;
+  activeJobs = 0;
+  lastCompletedJob = '—';
+  nextScheduledJob = '—';
+
   showDeactivateModal = false;
   showActivateModal = false;
   showDeleteModal = false;
@@ -81,6 +87,7 @@ export class ViewSiteComponent implements OnInit {
     this.siteId = this.route.snapshot.paramMap.get('id') || '';
     if (this.siteId) {
       this.loadSite();
+      this.loadSiteSummary();
       this.loadAttachments();
       this.loadActivities();
     }
@@ -167,6 +174,148 @@ export class ViewSiteComponent implements OnInit {
         : null;
       this.loading = false;
     });
+  }
+
+  /**
+   * Site Summary counts and dates. The site endpoint does not return these, so
+   * they are derived from the site's own key and job lists.
+   */
+  private loadSiteSummary(): void {
+    if (!this.orgId && !this.siteId) return;
+    const orgId = this.orgId || localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !this.siteId) return;
+
+    this.summaryLoading = true;
+
+    this.keyVault.listKeys(orgId, { siteId: this.siteId, page: 0, size: 1 }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? [];
+        this.totalKeys = data.totalItems ?? data.totalElements ?? data.total ?? (Array.isArray(items) ? items.length : 0);
+        this.summaryLoading = false;
+      },
+      error: () => {
+        this.totalKeys = 0;
+        this.summaryLoading = false;
+      }
+    });
+
+    this.keyVault.listJobs(orgId, { siteId: this.siteId, page: 0, size: 200 }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res ?? {};
+        const items = data.content ?? data.items ?? data.data ?? (Array.isArray(data) ? data : []);
+        const jobs: any[] = Array.isArray(items) ? items : [];
+        this.totalJobs = data.totalItems ?? data.totalElements ?? data.total ?? jobs.length;
+        this.summaryLoading = false;
+        this.buildJobSummary(jobs);
+      },
+      error: () => {
+        this.totalJobs = 0;
+        this.activeJobs = 0;
+        this.lastCompletedJob = '—';
+        this.nextScheduledJob = '—';
+        this.summaryLoading = false;
+      }
+    });
+  }
+
+  private buildJobSummary(jobs: any[]): void {
+    const closed = ['COMPLETED', 'CANCELLED', 'CANCELED'];
+    const now = Date.now();
+
+    const open = jobs.filter(j => !closed.includes(this.normalizeJobStatus(j)));
+    this.activeJobs = open.length;
+
+    const completed = jobs
+      .filter(j => this.normalizeJobStatus(j) === 'COMPLETED')
+      .map(j => ({ job: j, at: this.jobTimestamp(j) }))
+      .filter(entry => entry.at > 0)
+      .sort((a, b) => b.at - a.at);
+    this.lastCompletedJob = completed.length ? this.formatDateTime(new Date(completed[0].at).toISOString()) : '—';
+
+    const upcoming = open
+      .map(j => ({ job: j, at: this.jobTimestamp(j) }))
+      .filter(entry => entry.at > now)
+      .sort((a, b) => a.at - b.at);
+    this.nextScheduledJob = upcoming.length ? this.formatDateTime(new Date(upcoming[0].at).toISOString()) : '—';
+  }
+
+  private normalizeJobStatus(job: any): string {
+    return (job?.status ?? '').toString().trim().toUpperCase();
+  }
+
+  private jobTimestamp(job: any): number {
+    const scheduled = job?.scheduledDate ? new Date(job.scheduledDate).getTime() : NaN;
+    const completed = job?.completedAt || job?.updatedAt;
+    const stamp = completed ? new Date(completed).getTime() : NaN;
+    if (!isNaN(stamp)) return stamp;
+    return isNaN(scheduled) ? 0 : scheduled;
+  }
+
+  get accessScheduleLabel(): string {
+    const raw = this.site?.accessSchedule || '';
+    if (!raw) return '--';
+    const labels: Record<string, string> = {
+      ALWAYS: '24/7 Access',
+      '24_7': '24/7 Access',
+      BUSINESS_HOURS: 'Business Hours',
+      RESTRICTED: 'Restricted Hours',
+      BY_APPOINTMENT: 'By Appointment Only',
+    };
+    return labels[raw] || this.humanizeLabel(raw);
+  }
+
+  get securityLevelLabel(): string {
+    return getSiteSecurityLevelLabel(this.site?.securityLevel);
+  }
+
+  /**
+   * The appointment block is only populated when access is
+   * BY_APPOINTMENT, so the flag cannot be inferred from its presence.
+   */
+  get appointmentRequired(): boolean {
+    if (this.site?.accessSchedule === 'BY_APPOINTMENT') return true;
+    if (this.site?.scheduleConfig?.appointmentRequired === true) return true;
+    return !!this.site?.appointment;
+  }
+
+  get minimumNotice(): string {
+    return this.site?.appointment?.minimumNoticeRequired
+      || this.site?.scheduleConfig?.minimumNoticeRequired
+      || '--';
+  }
+
+  get approvalRequiredFrom(): string {
+    return this.site?.appointment?.approvalRequiredName
+      || this.site?.scheduleConfig?.approvalRequiredName
+      || '--';
+  }
+
+  get alarmSystemLabel(): string {
+    const raw = this.site?.alarmSystem || '';
+    if (!raw) return '--';
+    const labels: Record<string, string> = {
+      NONE: 'None',
+      CCTV: 'CCTV',
+      INTRUDER_ALARM: 'Intruder Alarm',
+      INTRUDER_AND_CCTV: 'Intruder And CCTV',
+    };
+    return labels[raw] || this.humanizeLabel(raw);
+  }
+
+  /**
+   * Title-cases each word after stripping separators, so an unexpected enum
+   * like `SOME_NEW_VALUE` renders as `Some New Value` rather than leaking
+   * underscores into the UI.
+   */
+  private humanizeLabel(value: string): string {
+    const text = (value || '').replace(/[_-]+/g, ' ').trim();
+    if (!text) return '--';
+    return text
+      .split(' ')
+      .filter(Boolean)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   }
 
   switchTab(tabId: string): void {
@@ -346,8 +495,8 @@ export class ViewSiteComponent implements OnInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 

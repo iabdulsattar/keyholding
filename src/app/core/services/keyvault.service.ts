@@ -725,10 +725,11 @@ export class KeyVaultService {
     return this.api.get<any>(`${base}${query ? `?${query}` : ''}`, headers);
   }
 
-  listAllKeys(orgId: string, params?: { clientId?: string; q?: string; status?: string; page?: number; size?: number }): Observable<any> {
+  listAllKeys(orgId: string, params?: { clientId?: string; siteId?: string; q?: string; status?: string; page?: number; size?: number }): Observable<any> {
     const headers = this.getAuthHeaders();
     const q = new URLSearchParams();
     if (params?.clientId) q.set('clientId', params.clientId);
+    if (params?.siteId) q.set('siteId', params.siteId);
     if (params?.q) q.set('q', params.q);
     if (params?.status) q.set('status', params.status);
     q.set('page', String(params?.page ?? 0));

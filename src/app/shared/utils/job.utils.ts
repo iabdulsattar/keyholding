@@ -21,3 +21,19 @@ export function formatJobStatus(status: string | undefined | null): string {
   }
   return upper.charAt(0).toUpperCase() + upper.slice(1).toLowerCase();
 }
+
+/**
+ * Render any backend enum as a readable label: `ON_THE_HOOK` -> "On The Hook",
+ * `ISSUED` -> "Issued". Falls back to an em dash when nothing is supplied.
+ */
+export function humanizeEnum(value: string | undefined | null, labels: Record<string, string> = {}): string {
+  const raw = (value || '').trim();
+  if (!raw) return '—';
+  const upper = raw.toUpperCase();
+  if (labels[upper]) return labels[upper];
+  return upper
+    .split(/[_\s-]+/)
+    .filter(Boolean)
+    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(' ');
+}

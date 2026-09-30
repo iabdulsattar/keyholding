@@ -79,11 +79,14 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.cabinetId = this.route.snapshot.paramMap.get('id') || this.route.snapshot.queryParamMap.get('editId') || '';
     this.editMode = !!this.cabinetId;
-    if (this.editMode) {
-      this.loadCabinet();
-    } else {
-      this.loadStorageLocations();
-    }
+    // The storage location dropdown is needed in both modes. The cabinet is
+    // fetched only after the locations land, so the id it carries always
+    // matches an option that is already in the list.
+    this.loadStorageLocations(() => {
+      if (this.editMode) {
+        this.loadCabinet();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -135,12 +138,13 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private loadStorageLocations(): void {
+  private loadStorageLocations(onLoaded?: () => void): void {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId) {
       this.storageLocations = [];
       this.loading = false;
       this.createIcons();
+      onLoaded?.();
       return;
     }
     this.keyVault.listStorageLocations(orgId).subscribe({
@@ -153,11 +157,13 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
         }));
         this.loading = false;
         this.createIcons();
+        onLoaded?.();
       },
       error: () => {
         this.storageLocations = [];
         this.loading = false;
         this.createIcons();
+        onLoaded?.();
       }
     });
   }

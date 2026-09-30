@@ -10,7 +10,7 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
 @Component({
   selector: 'app-add-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }

@@ -6,9 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService, KeyAttachment } from '../../core/services/keyvault.service';
 import { ClientService } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
-import { DeactivateKeyModalComponent } from '../deactivate-key-modal/deactivate-key-modal.component';
-import { ReactivateKeyModalComponent } from '../reactivate-key-modal/reactivate-key-modal.component';
-import { DeleteKeyModalComponent } from '../delete-key-modal/delete-key-modal.component';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
@@ -16,7 +13,7 @@ import { NavigationReferrerService } from '../../core/services/navigation-referr
 @Component({
   selector: 'app-view-key',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateKeyModalComponent, ReactivateKeyModalComponent, DeleteKeyModalComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './view-key.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -37,6 +34,12 @@ import { NavigationReferrerService } from '../../core/services/navigation-referr
     .view-btn:hover { background: rgba(47, 111, 237, 0.1); }
     .view-btn:focus-visible { outline: 2px solid #2f6fed; outline-offset: 2px; }
     .view-btn svg { width: 17px; height: 17px; }
+    .file-list { display: flex; flex-direction: column; gap: 8px; }
+    .file-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #ffffff; border: 1px solid #e3e6ea; border-radius: 10px; transition: background 0.15s ease; }
+    .file-row:hover { background: #f8fafc; }
+    .file-row-icon { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: #f1f2f5; display: flex; align-items: center; justify-content: center; }
+    .file-row-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .file-row-icon svg { width: 16px; height: 16px; color: #64748b; }
   `]
 })
 export class ViewKeyComponent implements OnInit {
@@ -60,6 +63,8 @@ export class ViewKeyComponent implements OnInit {
   hookStatus = '';
   hookCabinetName = '';
   hookLabel = '';
+  hookId = '';
+  hookNo: number | string = '';
   showDeactivateModal = false;
   showReactivateModal = false;
   showDeleteModal = false;
@@ -104,9 +109,11 @@ export class ViewKeyComponent implements OnInit {
         this.keyCategoryName = item.keyCategoryName || item.categoryName || item.category || '';
         this.siteName = item.siteName || item.site?.name || '';
         this.clientName = item.clientName || item.client?.name || '';
-        this.hookStatus = item.hookStatus || '';
-        this.hookCabinetName = item.hookCabinetName || '';
-        this.hookLabel = item.hookLabel || '';
+        this.hookStatus = item.hookStatus || item.hook?.status || '';
+        this.hookCabinetName = item.hookCabinetName || item.hook?.cabinetName || item.cabinetName || '';
+        this.hookLabel = item.hookLabel || item.hook?.label || '';
+        this.hookId = item.hookId || item.hook?.id || '';
+        this.hookNo = item.hookNo ?? item.hook?.hookNo ?? '';
         this.updateStatusFromApi(item.status);
       },
       error: () => {}
@@ -117,6 +124,54 @@ export class ViewKeyComponent implements OnInit {
     const isInactive = (apiStatus || '').toUpperCase() === 'INACTIVE';
     this.key.status = isInactive ? 'inactive' : 'active';
     this.keyStatusClass = isInactive ? 'bg-slate-100 text-slate-500' : 'bg-emerald-50 text-emerald-600';
+  }
+
+  /**
+   * Operational status is driven purely by hook assignment: any hook detail on
+   * the key (or a hook status that means a key is on it) counts as assigned.
+   */
+  get isHookAssigned(): boolean {
+    if (this.hookId || this.hookNo !== '' || this.hookLabel || this.hookCabinetName) return true;
+
+    const status = (this.hookStatus || '').toUpperCase();
+    if (status === 'KEY_HOOKED' || status === 'KEY_IN_USE') return true;
+    if (status === 'AVAILABLE_FOR_KEY' || status === 'UNASSIGNED' || status === 'HOOK_DAMAGED') return false;
+
+    return false;
+  }
+
+  /**
+   * Hook status arrives as a raw enum (`AVAILABLE_FOR_KEY`), so it is mapped
+   * to the same wording the hook list uses rather than shown verbatim.
+   */
+  get hookStatusLabel(): string {
+    const status = (this.hookStatus || '').trim();
+    if (!status) return 'Unassigned';
+
+    const labels: Record<string, string> = {
+      KEY_HOOKED: 'Key Hooked',
+      KEYHOOKED: 'Key Hooked',
+      KEY_IN_USE: 'Key In Use',
+      KEYINUSE: 'Key In Use',
+      IN_USE: 'Key In Use',
+      AVAILABLE_FOR_KEY: 'Available for Key',
+      AVAILABLEFORKEY: 'Available for Key',
+      HOOK_DAMAGED: 'Hook Damaged',
+      HOOKDAMAGED: 'Hook Damaged',
+      DAMAGED: 'Hook Damaged',
+      UNASSIGNED: 'Unassigned',
+    };
+
+    const key = status.toUpperCase();
+    if (labels[key]) return labels[key];
+
+    // Unknown enum: fall back to title-cased words so underscores never leak.
+    return status
+      .replace(/[_-]+/g, ' ')
+      .split(' ')
+      .filter(Boolean)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   }
 
   get statusLabel(): string {
@@ -146,6 +201,16 @@ export class ViewKeyComponent implements OnInit {
     const parts = first.fileName.split('.');
     const ext = parts.pop();
     return ext ? ext.toUpperCase() : 'MASTER-IMG';
+  }
+
+  /** First attachment is shown as the main key image. */
+  get primaryAttachment(): KeyAttachment | null {
+    return this.attachments[0] ?? null;
+  }
+
+  /** Any remaining attachments are listed as compact previews underneath. */
+  get secondaryAttachments(): KeyAttachment[] {
+    return this.attachments.slice(1);
   }
 
   toggleDropdown(): void {
@@ -376,8 +441,8 @@ export class ViewKeyComponent implements OnInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 

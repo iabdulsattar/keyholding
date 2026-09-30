@@ -10,6 +10,8 @@ interface CabinetRow {
   code: string;
   name: string;
   type: string;
+  storageLocationId: string;
+  storageLocation: string;
   totalHooks: number;
   usedHooks: number;
   availHooks: number;
@@ -92,6 +94,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
           id: loc.id || '',
           name: loc.name || loc.locationName || '',
         }));
+        this.resolveStorageLocationNames();
       },
       error: () => {
         this.storageLocations = [];
@@ -124,6 +127,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
         this.allTypes = [...new Set([...this.allTypes, ...rawTypes])];
         const normalized = (items && items.length ? items : []).map((c: any) => this.normalizeCabinet(c));
         this.cabinets = normalized;
+        this.resolveStorageLocationNames();
         this.currentPage = Number(data.page ?? data.number ?? page ?? 0);
         this.totalItems = Number(data.totalElements ?? data.total ?? this.cabinets.length);
         this.totalPages = Number(data.totalPages ?? Math.max(1, Math.ceil(this.totalItems / this.pageSize)));
@@ -156,6 +160,8 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
       code: c.code || c.cabinetCode || '',
       name: c.name || c.cabinetName || '',
       type: c.cabinetType || c.type || '',
+      storageLocationId: c.storageLocationId || c.storageLocation?.id || '',
+      storageLocation: c.storageLocationName || c.storageLocation?.name || c.locationName || '',
       totalHooks: totalHooks,
       usedHooks: usedHooks,
       availHooks: availHooks,
@@ -164,6 +170,20 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
       updatedDate: c.updatedDate || c.updatedAt || c.lastUpdated || '',
       updatedBy: c.updatedBy || c.lastUpdatedBy || '',
     };
+  }
+
+  /**
+   * The cabinet list only carries `storageLocationId`, so fill the display
+   * name from the location list already loaded for the filter dropdown. Runs
+   * after both responses land because either can arrive first.
+   */
+  private resolveStorageLocationNames(): void {
+    if (!this.storageLocations.length) return;
+    this.cabinets.forEach((c) => {
+      if (c.storageLocation || !c.storageLocationId) return;
+      const match = this.storageLocations.find(loc => loc.id === c.storageLocationId);
+      if (match) c.storageLocation = match.name;
+    });
   }
 
   onSearch(): void {
@@ -278,7 +298,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   viewCabinet(cabinet: CabinetRow): void {

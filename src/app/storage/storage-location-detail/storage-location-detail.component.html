@@ -389,7 +389,7 @@
               <td class="py-4 pr-4 text-slate-900">{{ cabinetUsedHooks(cabinet) }}</td>
               <td class="py-4 pr-4">
                 <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" [ngClass]="getStatusClass(cabinet.status)">
-                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ getStatusLabel(cabinet.status) ?? 'Inactive' }}
+                  <span class="w-1.5 h-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ getStatusLabel(cabinet.status) }}
                 </span>
               </td>
               <td class="py-4">
@@ -423,7 +423,7 @@
               <div class="text-sm text-slate-700">{{ cabinet.name ?? '—' }}</div>
             </div>
             <span class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-bold" [ngClass]="getStatusClass(cabinet.status)">
-              <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ getStatusLabel(cabinet.status) ?? 'Inactive' }}
+              <span class="h-1.5 w-1.5 rounded-full" [ngClass]="getStatusDotClass(cabinet.status)"></span>{{ getStatusLabel(cabinet.status) }}
             </span>
           </div>
           <div class="mt-3 grid grid-cols-2 gap-y-2 text-xs">

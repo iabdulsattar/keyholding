@@ -89,8 +89,9 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     this.isRefreshing = true;
-    console.log('[AuthInterceptor] Refreshing access token...');
-    return from(this.authService.refresh({ refreshToken })).pipe(
+    const serviceCode = this.getCurrentServiceCode();
+    console.log('[AuthInterceptor] Refreshing access token...', { serviceCode });
+    return from(this.authService.refresh({ refreshToken, serviceCode: serviceCode ?? undefined })).pipe(
       switchMap((res: any) => {
         this.isRefreshing = false;
         const newToken = res?.access_token ?? res?.tokens?.access_token;
@@ -107,8 +108,7 @@ export class AuthInterceptor implements HttpInterceptor {
         this.setAccessToken(newToken);
         if (newRefreshToken) {
           this.setRefreshToken(newRefreshToken);
-        }
-        console.log('[AuthInterceptor] Token refreshed successfully');
+        }        console.log('[AuthInterceptor] Token refreshed successfully');
         this.flushQueue(newToken);
         return next.handle(req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } }));
       }),
@@ -187,11 +187,7 @@ private setAccessToken(token: string) {
   }
 
   private getCurrentServiceCode(): string | null {
-    const remember = localStorage.getItem('remember_device');
-    if (remember === 'true') {
-      return localStorage.getItem('service_code') || localStorage.getItem('currentServiceCode');
-    }
-    return sessionStorage.getItem('service_code') || sessionStorage.getItem('currentServiceCode');
+    return this.authService.getCurrentServiceCode();
   }
 
   private clearTokens() {

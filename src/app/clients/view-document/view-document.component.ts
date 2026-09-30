@@ -11,7 +11,7 @@ import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-do
 @Component({
   selector: 'app-view-document',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, PageBreadcrumbComponent, DeleteDocumentModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SafeUrlPipe, DeleteDocumentModalComponent],
   templateUrl: './view-document.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -205,8 +205,8 @@ export class ViewDocumentComponent implements OnInit {
     if (!value) return '—';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 }

@@ -7,7 +7,7 @@ export interface Product {
   planId?: string;
   icon: string;
   iconBg: string;
-  status: 'current' | 'available' | 'coming-soon';
+  status: 'current' | 'subscribed' | 'available' | 'coming-soon';
   actionLabel?: string;
   actionHref?: string;
   descriptionText?: string;

@@ -399,7 +399,7 @@ export class SubscriptionTrialStartComponent implements OnInit {
   }
 
   get todayLabel(): string {
-    return new Date().toLocaleDateString('en-GB', {
+    return new Date().toLocaleDateString('en-GB', { timeZone: 'UTC',
       day: 'numeric',
       month: 'short',
       year: 'numeric'
@@ -409,7 +409,7 @@ export class SubscriptionTrialStartComponent implements OnInit {
   get trialEndLabel(): string {
     const date = new Date();
     date.setDate(date.getDate() + this.trialDays);
-    return date.toLocaleDateString('en-GB', {
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC',
       day: 'numeric',
       month: 'short',
       year: 'numeric'

@@ -176,7 +176,7 @@ export class DashboardShellComponent implements OnInit {
   private loadGreeting(): void {
     this.authService.me().subscribe({
       next: (profile: ProfileResponse) => {
-        const hour = new Date().getHours();
+        const hour = new Date().getUTCHours();
         this.greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
         this.userName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || profile.email || 'User';
       },
@@ -407,35 +407,11 @@ export class DashboardShellComponent implements OnInit {
     if (!iso) return '';
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '';
-    return d.toLocaleString(undefined, {
+    return d.toLocaleString('en-GB', { timeZone: 'UTC',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    });
-  }
-
-  onProductSelected(product: ProductItem): void {
-    const currentProduct = this.productService.getCurrentProduct();
-    const isSameProduct = currentProduct?.id === product.id;
-
-    if (isSameProduct) {
-      return; // Already on this product
-    }
-
-    // Use refresh token for seamless switching (no OTP required)
-    this.productService.switchToProductWithRefreshToken(product.id).subscribe({
-      next: (response) => {
-        console.log('Product switched successfully:', response);
-        window.location.reload();
-      },
-      error: (error) => {
-        console.error('Failed to switch product:', error);
-        // Fallback: if refresh token fails, redirect to login for the new product
-        if (error.status === 401 || error.status === 403) {
-          window.location.href = `/signin?service=${product.id}`;
-        }
-      }
     });
   }
 

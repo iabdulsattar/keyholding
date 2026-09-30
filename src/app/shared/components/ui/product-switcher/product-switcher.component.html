@@ -45,26 +45,24 @@
     <div class="space-y-1 px-3 pb-3">
       <ng-container *ngFor="let product of visibleProducts">
         <ng-container *ngIf="product.status === 'current'; else productRow">
-          <a href="#" role="menuitem" class="flex items-center gap-3 rounded-md p-3 hover:bg-blue-50"
-            (click)="selectProduct(product); $event.preventDefault()">
+          <div role="menuitem" aria-current="true" aria-disabled="true"
+            class="flex cursor-default items-center gap-3 rounded-md p-3">
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md {{ product.iconBg }} text-white">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="product.icon"></svg>
-              
- 
             </span>
             <span class="min-w-0 flex-1">
               <span class="block text-sm font-semibold text-slate-900">{{ product.name }}</span>
               <span class="block truncate text-xs text-slate-500 font-medium">{{ product.description }}</span>
             </span>
             <span class="shrink-0 rounded-xs bg-blue-100 px-2.5 py-0.5 text-[11px] font-bold text-blue-600">Current</span>
-          </a>
+          </div>
         </ng-container>
-
-        <ng-template #productRow >
-          <div class="rounded-md p-3 hover:bg-blue-50">
-          <div class="flex items-center gap-3  "
+        <ng-template #productRow>
+          <button type="button" class="flex items-center gap-3 rounded-md p-3 w-full text-left hover:bg-blue-50"
             [class.opacity-90]="product.status === 'coming-soon'"
-            [class.bg-slate-50/70 ring-1 ring-slate-100]="product.status === 'available'">
+            [class.bg-slate-50/70]="product.status === 'available'"
+            [disabled]="product.status === 'coming-soon' || isSwitching"
+            (click)="selectProduct(product); $event.preventDefault()">
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md {{ product.iconBg }} text-white">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="product.icon"></svg>
                
@@ -74,22 +72,16 @@
               <span class="block text-sm font-semibold text-slate-900">{{ product.name }}</span>
               <span class="block truncate text-xs text-slate-500 font-medium">{{ product.description }}</span>
             </span>
+            <span class="shrink-0 rounded-xs bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600"
+              *ngIf="product.status === 'subscribed'">Active</span>
             <span class="shrink-0 rounded-xs bg-green-50 px-2.5 py-0.5 text-[11px] font-bold text-green-600"
               *ngIf="product.status === 'available'">Available</span>
             <span class="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-500"
               *ngIf="product.status === 'coming-soon'">Coming Soon</span>
-          </div>
-          <p class="mt-3 text-xs leading-relaxed text-slate-500 font-medium" *ngIf="product.descriptionText">
+          </button>
+          <p class="mt-3 text-xs leading-relaxed text-slate-600" *ngIf="product.descriptionText">
             {{ product.descriptionText }}
           </p>
-          <a [href]="product.actionHref || '#'" role="menuitem"
-            class="mt-3 flex w-full items-center justify-center gap-2 rounded-sm border border-blue-600 bg-white px-4 py-2 text-sm font-bold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            *ngIf="product.actionLabel"
-            (click)="selectProduct(product); $event.preventDefault()">
-            {{ product.actionLabel }}
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-          </div>
         </ng-template>
       </ng-container>
     </div>

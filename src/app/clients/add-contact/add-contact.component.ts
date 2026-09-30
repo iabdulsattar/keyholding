@@ -11,7 +11,7 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
 @Component({
   selector: 'app-add-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-contact.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }

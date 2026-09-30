@@ -124,6 +124,16 @@
           <p class="text-xs text-slate-500 font-medium mt-1.5">Choose what notifications this contact should receive.</p>
         </div>
       </div>
+      <div class="mt-5">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" [(ngModel)]="primaryContact" name="primaryContact" [disabled]="saving"
+            class="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+          <span>
+            <span class="block text-sm font-medium text-slate-700">Set as Primary Contact</span>
+            <span class="block text-xs text-slate-500 font-medium mt-0.5">Primary contacts are notified first in emergencies.</span>
+          </span>
+        </label>
+      </div>
       <!-- Actions -->
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-6">
       <button type="button" (click)="cancel()" [disabled]="saving" class="px-4 py-2.5 rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
@@ -221,6 +231,12 @@
           <dt class="text-slate-800 font-medium">Status</dt>
           <dd class="text-right">
             <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium" [ngClass]="status === 'Active' ? 'bg-emerald-100 text-emerald-700' : status === 'Inactive' ? 'bg-slate-100 text-slate-600' : 'bg-red-100 text-red-600'">{{ status || 'Active' }}</span>
+          </dd>
+        </div>
+        <div class="flex justify-between gap-3 py-2.5 items-center">
+          <dt class="text-slate-800 font-medium">Primary Contact</dt>
+          <dd class="text-right">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium" [ngClass]="primaryContact ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'">{{ primaryContact ? 'Yes' : 'No' }}</span>
           </dd>
         </div>
       </dl>

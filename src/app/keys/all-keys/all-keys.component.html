@@ -99,20 +99,20 @@
             class="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white h-11 border border-slate-200 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
         </div>
         <div class="col-span-1 lg:col-span-2">
-          <app-rich-select [options]="statusFilterOptions" [(value)]="statusFilter" (valueChange)="onStatusChange()" placeholder="All Status"></app-rich-select>
-        
-        </div>
-        <div class="col-span-1 lg:col-span-2">
-          <app-rich-select  placeholder="All Clients "></app-rich-select>
-                
+          <app-rich-select [options]="clientFilterOptions" [(value)]="clientFilter" (valueChange)="onClientChange()" placeholder="All Clients"></app-rich-select>
+                 
         </div>
         <div class="col-span-1 lg:col-span-2">
           <app-rich-select [options]="siteFilterOptions" [(value)]="siteFilter" (valueChange)="onSiteChange()" placeholder="All Sites"></app-rich-select>
-                    
+                     
         </div>
         <div class="col-span-1 lg:col-span-2">
           <app-rich-select [options]="keyTypeFilterOptions" [(value)]="keyTypeFilter" (valueChange)="onKeyTypeChange()" placeholder="All Key Types"></app-rich-select>
-                    
+                     
+        </div>
+        <div class="col-span-1 lg:col-span-2">
+          <app-rich-select [options]="statusFilterOptions" [(value)]="statusFilter" (valueChange)="onStatusChange()" placeholder="All Status"></app-rich-select>
+         
         </div>
         <div class="col-span-1 lg:col-span-2 flex justify-end">
            <button routerLink="/keys/add-key" [queryParams]="{ returnUrl: '/keys/all-keys' }" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md text-xs shadow-blue-500/10 transition w-full sm:w-auto">

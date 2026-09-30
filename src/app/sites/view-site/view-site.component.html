@@ -112,9 +112,9 @@
             <h3 class="text-base font-bold text-slate-800 tracking-wider mb-4">Site Details & Contacts</h3>
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 text-sm">
               <div class=" space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Access Instructions</span><p class="font-medium text-slate-800 mt-1 leading-relaxed">{{ site?.accessInstructions || '--' }}</p></div>
-              <div class="space-y-1.5"><span class="text-slate-500 text-xs font-semibold uppercase">Access Schedule</span><div class="mt-1"><span class="bg-violet-100 text-violet-500 text-xs font-semibold px-2.5 py-0.5 rounded-sm">{{ site?.accessSchedule || '--' }}</span></div></div>
-                <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Security Level</span><div class="mt-1"><span class="bg-red-100 text-red-500 text-xs font-semibold px-2.5 py-0.5 rounded-sm">{{ site?.securityLevel || '--' }}</span></div></div>
-                <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Alarm System</span><p class="font-medium text-slate-800 mt-1">{{ site?.alarmSystem || '--' }}</p></div>
+              <div class="space-y-1.5"><span class="text-slate-500 text-xs font-semibold uppercase">Access Schedule</span><div class="mt-1"><span class="bg-violet-100 text-violet-500 text-xs font-semibold px-2.5 py-0.5 rounded-sm">{{ accessScheduleLabel }}</span></div></div>
+                <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Security Level</span><div class="mt-1"><span class="bg-red-100 text-red-500 text-xs font-semibold px-2.5 py-0.5 rounded-sm">{{ securityLevelLabel }}</span></div></div>
+                <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Alarm System</span><p class="font-medium text-slate-800 mt-1">{{ alarmSystemLabel }}</p></div>
               
             </div>
 
@@ -156,15 +156,15 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-4 gap-x-4">
                   <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase mb-0.5">Minimum Notice </p>
-                    <p class="text-sm font-medium text-slate-800">{{ site?.appointment?.minimumNoticeRequired || '--' }}</p>
+                    <p class="text-sm font-medium text-slate-800">{{ appointmentRequired ? minimumNotice : 'Not applicable' }}</p>
                   </div>
                   <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase mb-0.5">Approval Required From</p>
-                    <p class="text-sm font-medium text-slate-800">{{ site?.appointment?.approvalRequiredName || '--' }}</p>
+                    <p class="text-sm font-medium text-slate-800">{{ appointmentRequired ? approvalRequiredFrom : 'Not applicable' }}</p>
                   </div>
                   <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase mb-0.5">Approval Phone</p>
-                    <p class="text-sm font-medium text-slate-800">{{ site?.appointment?.approvalRequiredNumber || '--' }}</p>
+                    <p class="text-sm font-medium text-slate-800">{{ site?.appointment?.approvalRequiredNumber || site?.scheduleConfig?.approvalRequiredNumber || '--' }}</p>
                   </div>
                   <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase mb-0.5">Approval Email</p>
@@ -308,29 +308,29 @@
           <div class="space-y-4 border-b border-slate-200 pb-5">
             <h4 class="text-sm font-bold text-slate-800 tracking-wider border-slate-100 ">Site Summary</h4>
             <div class="space-y-3 text-xs font-normal text-slate-700">
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Keys</span> <span class="font-semibold text-slate-800 text-xs">--</span></div>
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Jobs</span> <span class="font-semibold text-slate-800 text-xs">--</span></div>
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Active Jobs</span> <span class="font-semibold text-slate-800 text-xs">--</span></div>
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Last Job completed</span> <span class="font-semibold text-slate-800 text-xs">--</span></div>
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Next Scheduled Job</span> <span class="font-semibold text-slate-800 text-xs">--</span></div>
-              
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Keys</span> <span class="font-semibold text-slate-800 text-xs">{{ summaryLoading ? '…' : totalKeys }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Jobs</span> <span class="font-semibold text-slate-800 text-xs">{{ summaryLoading ? '…' : totalJobs }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Active Jobs</span> <span class="font-semibold text-slate-800 text-xs">{{ summaryLoading ? '…' : activeJobs }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Last Job completed</span> <span class="font-semibold text-slate-800 text-xs">{{ lastCompletedJob }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Next Scheduled Job</span> <span class="font-semibold text-slate-800 text-xs">{{ nextScheduledJob }}</span></div>
+               
             </div>
           </div>
 
           <div class="space-y-4 border-b border-slate-200 pb-5">
             <div class="flex items-center justify-between border-slate-100 flex-wrap gap-2">
               <h4 class="text-sm font-bold text-slate-800 tracking-wider">Access Schedule</h4>
-              <span class="bg-violet-100 text-violet-500 text-xs font-semibold px-2 py-0.5 rounded-sm">{{ site?.accessSchedule || '--' }}</span>
+              <span class="bg-violet-100 text-violet-500 text-xs font-semibold px-2 py-0.5 rounded-sm">{{ accessScheduleLabel }}</span>
             </div>
             <div class="space-y-3.5 text-xs font-normal text-slate-700">
               <div class="flex items-start gap-3">
-                <div class="w-full flex items-center"><span class="text-slate-500 w-40 block">Appointment Required</span><p class="text-slate-800 font-semibold ">{{ site?.appointment?.approvalRequiredName ? 'Yes' : 'No' }}</p></div>
+                <div class="w-full flex items-center"><span class="text-slate-500 w-40 block">Appointment Required</span><p class="text-slate-800 font-semibold ">{{ appointmentRequired ? 'Yes' : 'No' }}</p></div>
               </div>
               <div class="flex items-start gap-3">
-                <div class="w-full flex items-center"><span class="text-slate-500 w-40 block">Minimum Notice Required</span><p class="text-slate-800 font-semibold ">{{ site?.appointment?.minimumNoticeRequired || '--' }}</p></div>
+                <div class="w-full flex items-center"><span class="text-slate-500 w-40 block">Minimum Notice Required</span><p class="text-slate-800 font-semibold ">{{ appointmentRequired ? minimumNotice : 'Not applicable' }}</p></div>
               </div>
               <div class="flex items-start gap-3">
-                <div class="w-full flex items-center"><span class="text-slate-500 w-40 block">Approval Required From</span><p class="text-slate-800 font-semibold ">{{ site?.appointment?.approvalRequiredName || '--' }}</p></div>
+                <div class="w-full flex items-center"><span class="text-slate-500 w-40 block">Approval Required From</span><p class="text-slate-800 font-semibold ">{{ appointmentRequired ? approvalRequiredFrom : 'Not applicable' }}</p></div>
               </div>
             </div>
           </div>

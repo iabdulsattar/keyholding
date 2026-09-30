@@ -193,7 +193,7 @@
                   <div class="text-xs font-normal text-slate-900 uppercase mb-1.5">Hook</div>
                   <div class="text-sm font-semibold text-slate-900 flex items-center gap-1.5">
                     <!-- <span class="w-2 h-2 rounded-full shrink-0" [class]="hookStatus ? 'bg-emerald-500' : 'bg-blue-500'"></span> -->
-                    {{ hookStatus || 'Unassigned' }}
+                    {{ hookStatusLabel }}
                   </div>
                 </div>
               </div>
@@ -228,14 +228,14 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <div class="text-xs font-normal text-slate-900 uppercase mb-2">Operational Status</div>
-                  <div class="flex items-center gap-3 rounded-lg border px-4 py-3" [class]="(siteName || key.storageLocation || key.storageLocationName || hookStatus || hookCabinetName || hookLabel) ? 'border-emerald-200 bg-emerald-50' : 'border-blue-200 bg-blue-50'">
+                  <div class="flex items-center gap-3 rounded-lg border px-4 py-3" [class]="isHookAssigned ? 'border-emerald-200 bg-emerald-50' : 'border-red-200 bg-red-50'">
                     <div class="bg-white rounded-full p-1">
-                    
-                    <svg class="w-5 h-5 mt-0.5 shrink-0" [class]="(siteName || key.storageLocation || key.storageLocationName || hookStatus || hookCabinetName || hookLabel) ? 'text-emerald-600' : 'text-blue-600'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+
+                    <svg class="w-5 h-5 mt-0.5 shrink-0" [class]="isHookAssigned ? 'text-emerald-600' : 'text-red-600'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
                     <div>
-                      <div class="text-sm font-bold text-slate-900">{{ siteName || key.storageLocation || key.storageLocationName || hookStatus || hookCabinetName || hookLabel ? 'Assigned' : 'Unassigned' }}</div>
-                      <div class="text-xs text-slate-600">{{ siteName || key.storageLocation || key.storageLocationName || hookStatus || hookCabinetName || hookLabel ? 'Key is currently assigned.' : 'Key is not assigned to any hook.' }}</div>
+                      <div class="text-sm font-bold text-slate-900">{{ isHookAssigned ? 'Assigned' : 'Unassigned' }}</div>
+                      <div class="text-xs text-slate-600">{{ isHookAssigned ? 'Key is assigned to a hook.' : 'Key is not assigned to any hook.' }}</div>
                     </div>
                   </div>
                 </div>
@@ -289,42 +289,61 @@
                   </div>
                 </div>
               } @else {
-                <div class="file-grid">
-                  @for (a of attachments; track a.id) {
-                    <div class="file-card">
-                      <div class="thumb">
-                        @if (isImage(a.contentType)) {
-                          <img [src]="a['publicUrl'] || a.storagePath" alt="{{ a.fileName }}">
-                        } @else {
-                          <div class="thumb doc-thumb">
-                            <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
-                              <rect width="100" height="70" fill="#f1f2f5"/>
-                              <g stroke="#c7cbd4" stroke-width="1" fill="none">
-                                <rect x="10" y="8" width="80" height="54"/>
-                                <line x1="10" y1="28" x2="90" y2="28"/>
-                                <line x1="35" y1="8" x2="35" y2="62"/>
-                                <line x1="60" y1="8" x2="60" y2="62"/>
-                              </g>
-                              <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                              <circle cx="32" cy="24" r="2.5" fill="#e8434c"/>
-                              <circle cx="62" cy="24" r="2.5" fill="#e8434c"/>
-                            </svg>
-                          </div>
-                        }
+                <div class="file-card">
+                  <div class="thumb">
+                    @if (isImage(primaryAttachment!.contentType)) {
+                      <img [src]="primaryAttachment!['publicUrl'] || primaryAttachment!.storagePath" alt="{{ primaryAttachment!.fileName }}">
+                    } @else {
+                      <div class="thumb doc-thumb">
+                        <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="100" height="70" fill="#f1f2f5"/>
+                          <g stroke="#c7cbd4" stroke-width="1" fill="none">
+                            <rect x="10" y="8" width="80" height="54"/>
+                            <line x1="10" y1="28" x2="90" y2="28"/>
+                            <line x1="35" y1="8" x2="35" y2="62"/>
+                            <line x1="60" y1="8" x2="60" y2="62"/>
+                          </g>
+                          <path d="M20 45 L32 28 L44 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M50 45 L62 28 L74 45" stroke="#e8434c" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                          <circle cx="32" cy="24" r="2.5" fill="#e8434c"/>
+                          <circle cx="62" cy="24" r="2.5" fill="#e8434c"/>
+                        </svg>
                       </div>
-                      <div class="file-meta">
-                        <div class="file-info">
-                          <div class="file-name">{{ a.fileName }}</div>
-                          <div class="file-size">{{ formatSize(a.sizeBytes) }}</div>
-                        </div>
-                        <button class="view-btn" aria-label="View {{ a.fileName }}" (click)="downloadAttachment(a)">
+                    }
+                  </div>
+                  <div class="file-meta">
+                    <div class="file-info">
+                      <div class="file-name">{{ primaryAttachment!.fileName }}</div>
+                      <div class="file-size">{{ formatSize(primaryAttachment!.sizeBytes) }}</div>
+                    </div>
+                    <button type="button" class="view-btn" aria-label="View {{ primaryAttachment!.fileName }}" (click)="downloadAttachment(primaryAttachment!)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                @if (secondaryAttachments.length > 0) {
+                  <div class="file-list mt-4">
+                    @for (a of secondaryAttachments; track a.id) {
+                      <div class="file-row">
+                        <span class="file-row-icon">
+                          @if (isImage(a.contentType)) {
+                            <img [src]="a['publicUrl'] || a.storagePath" alt="{{ a.fileName }}">
+                          } @else {
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                          }
+                        </span>
+                        <span class="file-info flex-1">
+                          <span class="file-name block">{{ a.fileName }}</span>
+                          <span class="file-size block">{{ formatSize(a.sizeBytes) }}</span>
+                        </span>
+                        <button type="button" class="view-btn" aria-label="View {{ a.fileName }}" (click)="downloadAttachment(a)">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
                       </div>
-                    </div>
-                  }
-                </div>
+                    }
+                  </div>
+                }
               }
               <div class="text-xs text-slate-400 mt-3" *ngIf="attachmentsLoading">Loading attachments...</div>
             </section>

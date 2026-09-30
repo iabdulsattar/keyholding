@@ -5,6 +5,7 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
 import { DeactivateCabinetModalComponent } from './deactivate-cabinet-modal/deactivate-cabinet-modal.component';
 import { ReactivateCabinetModalComponent } from './reactivate-cabinet-modal/reactivate-cabinet-modal.component';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
+import { getCabinetSecurityLevelLabel } from '../../shared/utils/site.utils';
 
 interface Hook {
   num: number;
@@ -30,11 +31,13 @@ interface Cabinet {
   code: string;
   name: string;
   type: string;
+  securityLevel: string;
   status: string;
   totalHooks: number;
   usedHooks: number;
   availHooks: number;
   storageLocation: string;
+  storageLocationId: string;
   floor: string;
   description: string;
   installedOn: string;
@@ -44,6 +47,8 @@ interface Cabinet {
   responsiblePerson: string;
   cctvMonitored: boolean;
   alarmSystem: boolean;
+  lastAccessAt: string;
+  lastAccessBy: string;
   active: boolean;
 }
 
@@ -133,11 +138,13 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
           code: item.code || item.cabinetCode || '',
           name: item.name || item.cabinetName || '',
           type: item.cabinetType || item.type || '',
+          securityLevel: item.securityLevel || '',
           status: status,
           totalHooks: totalHooks,
           usedHooks: usedHooks,
           availHooks: availHooks,
-          storageLocation: item.storageLocationName || item.locationName || '',
+          storageLocationId: item.storageLocationId || item.storageLocation?.id || '',
+          storageLocation: item.storageLocationName || item.storageLocation?.name || item.locationName || '',
           floor: item.floorArea || item.floor || '',
           description: item.description || '',
           installedOn: item.installedOn || item.installedDate || '',
@@ -147,16 +154,41 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
           responsiblePerson: item.responsiblePerson || '',
           cctvMonitored: item.cctvMonitored ?? false,
           alarmSystem: item.alarmSystem ?? false,
+          // The cabinet payload does not currently carry an access trail, so
+          // this stays empty until the API exposes one.
+          lastAccessAt: item.lastAccessedAt || item.lastAccessAt || item.lastAccess || '',
+          lastAccessBy: item.lastAccessedBy || item.lastAccessByName || item.lastAccessBy || '',
           active: active,
         };
         this.updateKeyStatisticsChart();
         this.loading = false;
         this.createIcons();
+        if (this.cabinet.storageLocationId && !this.cabinet.storageLocation) {
+          this.loadStorageLocationName(orgId, this.cabinet.storageLocationId);
+        }
       },
       error: () => {
         this.cabinet = null;
         this.loading = false;
         this.createIcons();
+      }
+    });
+  }
+
+  /**
+   * The cabinet payload only carries `storageLocationId`, so the name is
+   * resolved with a single lookup rather than loading every location.
+   */
+  private loadStorageLocationName(orgId: string, storageLocationId: string): void {
+    this.keyVault.getStorageLocation(orgId, storageLocationId).subscribe({
+      next: (res: any) => {
+        const item = res?.data ?? res ?? {};
+        if (!this.cabinet) return;
+        this.cabinet.storageLocation = item.name || item.locationName || '';
+        this.createIcons();
+      },
+      error: () => {
+        // Leave the field empty rather than showing a raw UUID.
       }
     });
   }
@@ -167,11 +199,13 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
       code: 'CAB-0001',
       name: 'Cabinet A - Main Floor',
       type: 'Standard',
+      securityLevel: 'HIGH',
       status: 'Active',
       totalHooks: 20,
       usedHooks: 14,
       availHooks: 6,
       storageLocation: 'Head Office Vault (LOC-0001)',
+      storageLocationId: '',
       floor: 'Main Floor',
       description: 'Primary key storage cabinet for main floor operations.',
       installedOn: '10 May 2024',
@@ -181,8 +215,14 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
       responsiblePerson: '',
       cctvMonitored: true,
       alarmSystem: true,
+      lastAccessAt: '',
+      lastAccessBy: '',
       active: true,
     };
+  }
+
+  get securityLevelLabel(): string {
+    return getCabinetSecurityLevelLabel(this.cabinet?.securityLevel);
   }
 
   get hooks(): Hook[] {
@@ -319,6 +359,17 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/storage/locations/cabinets']);
   }
 
+  /** Green/amber pill for the yes/no access flags. */
+  flagBadgeClass(flag: boolean): string {
+    return flag
+      ? 'text-emerald-500 bg-emerald-50'
+      : 'text-slate-500 bg-slate-100';
+  }
+
+  flagLabel(flag: boolean): string {
+    return flag ? 'Yes' : 'No';
+  }
+
   getStatusClass(status: string): string {
     if (status === 'Active') return 'bg-emerald-50 text-emerald-600';
     if (status === 'Inactive') return 'bg-rose-50 text-rose-600';
@@ -330,8 +381,8 @@ export class CabinetDetailComponent implements OnInit, AfterViewInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 }

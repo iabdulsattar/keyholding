@@ -106,13 +106,35 @@ export class AssignKeyToHookComponent implements OnInit, AfterViewInit {
           totalHooks: item.numberOfHooks || item.totalHooks || 0,
           usedHooks: item.usedHooks || 0,
           availableHooks: item.availableHooks || 0,
-          storageLocation: item.storageLocationName || item.locationName || '',
+          storageLocation: item.storageLocationName || item.storageLocation?.name || item.locationName || '',
+          storageLocationId: item.storageLocationId || item.storageLocation?.id || '',
         };
         this.createIcons();
+        if (this.cabinet.storageLocationId && !this.cabinet.storageLocation) {
+          this.loadStorageLocationName(orgId, this.cabinet.storageLocationId);
+        }
       },
       error: () => {
         this.cabinet = null;
         this.createIcons();
+      }
+    });
+  }
+
+  /**
+   * The cabinet payload only carries `storageLocationId`, so the display name
+   * is resolved with a single lookup rather than loading every location.
+   */
+  private loadStorageLocationName(orgId: string, storageLocationId: string): void {
+    this.keyVault.getStorageLocation(orgId, storageLocationId).subscribe({
+      next: (res: any) => {
+        const item = res?.data ?? res ?? {};
+        if (!this.cabinet) return;
+        this.cabinet.storageLocation = item.name || item.locationName || '';
+        this.createIcons();
+      },
+      error: () => {
+        // Leave the field empty rather than showing a raw UUID.
       }
     });
   }
