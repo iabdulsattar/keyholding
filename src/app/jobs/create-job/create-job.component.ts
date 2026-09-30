@@ -79,6 +79,7 @@ export class CreateJobComponent implements OnInit {
   checklistItems: ChecklistItem[] = [];
   newChecklistItem = '';
   checklistLoading = false;
+  activeTab = 0;
 
   clientOptions: RichSelectOption[] = [];
   siteOptions: RichSelectOption[] = [];
