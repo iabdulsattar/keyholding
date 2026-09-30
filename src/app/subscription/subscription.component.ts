@@ -180,7 +180,7 @@ export class SubscriptionComponent implements OnInit {
     if (!iso) return '-';
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '-';
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return d.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   get serviceCodeLabel(): string {

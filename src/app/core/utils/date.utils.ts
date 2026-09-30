@@ -29,13 +29,13 @@ export function formatDateTimeUTC(iso: string | null | undefined): string {
   const d = new Date(iso);
   if (isNaN(d.getTime())) return String(iso);
   const datePart = d.toLocaleDateString('en-GB', getTimezoneOptions());
-  const timePart = d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', ...(TIMEZONE_ENABLED && TIMEZONE ? { timeZone: TIMEZONE } : {}) });
+  const timePart = formatTimeUTC(d);
   return `${datePart}, ${timePart}`;
 }
 
-export function formatTimeUTC(iso: string | null | undefined): string {
+export function formatTimeUTC(iso: string | Date | null | undefined): string {
   if (!iso) return '';
-  const d = new Date(iso);
+  const d = iso instanceof Date ? iso : new Date(iso);
   if (isNaN(d.getTime())) return '';
   return d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', ...(TIMEZONE_ENABLED && TIMEZONE ? { timeZone: TIMEZONE } : {}) });
 }

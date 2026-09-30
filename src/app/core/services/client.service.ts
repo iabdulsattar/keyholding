@@ -57,7 +57,9 @@ export interface Client {
   sites: number;
   users: number;
   created: string;
+  createdBy?: string;
   lastUpdated?: string;
+  updatedBy?: string;
   phone?: string;
   website?: string;
   address?: string;
@@ -157,15 +159,15 @@ export class ClientService {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   private formatDateTime(value: any): string {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 
@@ -622,17 +624,22 @@ export class ClientService {
        );
      }
 
-  listAllKeys(params?: { q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
+  listAllKeys(params?: { clientId?: string; siteId?: string; q?: string; status?: string; page?: number; size?: number }): Observable<PaginatedResult<KeyRecord>> {
     const orgId = this.getOrgId();
     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
     const page = params?.page ?? 0;
     const size = params?.size ?? 10;
-    return this.keyVault.listAllKeys(orgId, { q: params?.q, status: params?.status, page, size }).pipe(
+    return this.keyVault.listAllKeys(orgId, { clientId: params?.clientId, siteId: params?.siteId, q: params?.q, status: params?.status, page, size }).pipe(
       map((res: any) => {
         const data = res?.data ?? res ?? {};
-        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapKey(item));
-        const totalItems = data.totalItems ?? data.total ?? items.length;
-        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
+        // This endpoint returns a bare array under `data` with the paging
+        // totals in a sibling `meta` block, so the counts have to be read
+        // from there rather than from `data`.
+        const meta = res?.meta ?? data?.meta ?? {};
+        const rawItems = Array.isArray(data) ? data : (data.items ?? data.data ?? []);
+        const items = (Array.isArray(rawItems) ? rawItems : []).map((item: any) => this.mapKey(item));
+        const totalItems = meta.totalElements ?? data.totalItems ?? data.total ?? items.length;
+        const totalPages = meta.totalPages ?? data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
         return { items, totalItems, page, size, totalPages };
       })
     );
@@ -649,7 +656,9 @@ export class ClientService {
       sites: item.sites ?? 0,
       users: item.users ?? 0,
       created: this.formatDate(item.createdAt ?? item.created),
+      createdBy: item.createdByUserName || item.createdByName || item.createdBy || '',
       lastUpdated: this.formatDateTime(item.updatedAt ?? item.lastUpdated ?? item.modifiedAt),
+      updatedBy: item.updatedByUserName || item.updatedByName || item.updatedBy || item.lastUpdatedBy || '',
       phone: item.phone ?? item.phoneNumber,
       website: item.website,
       address: item.address,
@@ -691,37 +700,42 @@ export class ClientService {
     };
   }
 
-   private mapKey(item: any): KeyRecord {
+   mapKey(item: any): KeyRecord {
      const statusMap: Record<string, KeyRecord['status']> = {
-       'IN_STORAGE': 'In Storage',
-       'ISSUED': 'Issued',
-       'IN_USE': 'In Use',
-       'OVERDUE': 'Overdue',
-       'DAMAGED': 'Damaged',
-       'LOST': 'Lost',
-       'LOST_DAMAGED': 'Damaged / Lost',
-       'DAMAGED_LOST': 'Damaged / Lost',
-     };
-     const typeColorMap: Record<string, string> = {
-       'Master Key': 'blue',
-       'Door Key': 'emerald',
-       'Alarm Key': 'violet',
-       'Gate Key': 'orange',
-       'Utility Key': 'cyan',
-       'Office Key': 'indigo',
-       'IT Key': 'violet',
-     };
-     const statusColorMap: Record<string, string> = {
-       'In Storage': 'emerald',
-       'Issued': 'blue',
-       'In Use': 'indigo',
-       'Overdue': 'orange',
-       'Damaged': 'violet',
-       'Lost': 'rose',
-       'Damaged / Lost': 'rose',
-     };
-     const rawStatus = item.status ?? 'IN_STORAGE';
-     const mappedStatus = statusMap[rawStatus] ?? 'In Storage';
+        'ON_THE_HOOK': 'In Storage',
+        'ON_HOOK': 'In Storage',
+        'IN_STORAGE': 'In Storage',
+        'ISSUED': 'Issued',
+        'IN_USE': 'In Use',
+        'OVERDUE': 'Overdue',
+        'DAMAGED': 'Damaged',
+        'LOST': 'Lost',
+        'LOST_DAMAGED': 'Damaged / Lost',
+        'DAMAGED_LOST': 'Damaged / Lost',
+      };
+      const typeColorMap: Record<string, string> = {
+        'Master Key': 'blue',
+        'Door Key': 'emerald',
+        'Alarm Key': 'violet',
+        'Gate Key': 'orange',
+        'Utility Key': 'cyan',
+        'Office Key': 'indigo',
+        'IT Key': 'violet',
+      };
+      const statusColorMap: Record<string, string> = {
+        'In Storage': 'emerald',
+        'Issued': 'blue',
+        'In Use': 'indigo',
+        'Overdue': 'orange',
+        'Damaged': 'violet',
+        'Lost': 'rose',
+        'Damaged / Lost': 'rose',
+      };
+      // The list endpoint reports the operational state as `keyStatus`; older
+      // payloads only send `status`.
+      const rawStatus = item.keyStatus ?? item.status ?? 'IN_STORAGE';
+      const mappedStatus = statusMap[rawStatus] ?? this.humanizeStatus(rawStatus);
+      const movementAction = (item.lastMovementAction || '').toString();
       return {
         id: item.id ?? '',
         keyCode: item.keyCode ?? item.code ?? '',
@@ -732,30 +746,49 @@ export class ClientService {
         siteName: item.siteName ?? '',
         status: mappedStatus,
         statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
-        storageLocation: item.storageLocationName ?? item.storageLocation ?? '',
+        storageLocation: item.storageLocationName || item.storageLocation || '—',
         storageDetail: '',
-        assignedTo: item.assignedToUserName ?? '',
-        lastMovement: item.lastMovementAt ? this.formatLastMovement(item.lastMovementAt) : '',
+        assignedTo: item.assignedToUserName || '—',
+        lastMovement: movementAction
+          ? this.formatMovementAction(movementAction)
+          : (item.lastMovementAt ? this.formatLastMovement(item.lastMovementAt) : '—'),
         lastMovementTime: item.lastMovementAt ? this.formatLastMovementTime(item.lastMovementAt) : '',
         lastMovementAt: item.lastMovementAt ?? '',
-        lastMovementAction: item.lastMovementAction ?? '',
+        lastMovementAction: movementAction,
         clientId: item.clientId ?? item.client?.id,
         clientName: item.clientName ?? item.client?.name,
       };
+    }
+
+    /** Turn any raw enum (`ON_THE_HOOK`) into a readable label (`On The Hook`). */
+    private humanizeStatus(value: string): KeyRecord['status'] {
+      const text = (value || '').replace(/[_-]+/g, ' ').trim();
+      if (!text) return 'In Storage';
+      const label = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+      return label as KeyRecord['status'];
+    }
+
+    private formatMovementAction(action: string): string {
+      return action
+        .toLowerCase()
+        .split(/[_-]+/)
+        .filter(Boolean)
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
     }
 
   private formatLastMovement(value: string): string {
     if (!value) return '';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   private formatLastMovementTime(value: string): string {
     if (!value) return '';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    return date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    return date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
   }
 
     private mapContact(item: any): ContactRecord {

@@ -116,6 +116,7 @@ export interface AcceptInvitationRequest {
 
 export interface RefreshTokenRequest {
   refreshToken: string;
+  serviceCode?: string;
 }
 
 export interface RefreshTokenResponse {

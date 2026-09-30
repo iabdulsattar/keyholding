@@ -9,7 +9,7 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
 @Component({
   selector: 'app-all-keys',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PageBreadcrumbComponent, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './all-keys.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -80,11 +80,15 @@ export class AllKeysComponent implements OnInit {
     { value: 'IN_USE', label: 'In Use' },
     { value: 'OVERDUE', label: 'Overdue' },
     { value: 'DAMAGED', label: 'Damaged' },
-    { value: 'LOST', label: 'Damaged / Lost' },
+    { value: 'LOST', label: 'Lost' },
   ];
 
   get siteFilterOptions(): RichSelectOption[] {
     return [{ value: '', label: 'All Sites' }, ...this.siteOptions.map(s => ({ value: s.id, label: s.name }))];
+  }
+
+  get clientFilterOptions(): RichSelectOption[] {
+    return [{ value: '', label: 'All Clients' }, ...this.clientOptions.map(c => ({ value: c.id, label: c.name }))];
   }
 
   constructor(private clientService: ClientService) {}
@@ -96,42 +100,61 @@ export class AllKeysComponent implements OnInit {
   }
 
   private loadClients(): void {
-    this.clientService.listClients({ page: 0, size: 200 }).subscribe((result: any) => {
-      this.clients = result.items;
-      this.clientOptions = result.items;
+    this.clientService.listClients({ page: 0, size: 200 }).subscribe({
+      next: (result: any) => {
+        this.clients = result?.items ?? [];
+        this.clientOptions = this.clients;
+      },
+      error: () => {
+        this.clients = [];
+        this.clientOptions = [];
+      }
     });
   }
 
   private loadSites(): void {
-    this.clientService.listAllSites({ page: 0, size: 200 }).subscribe((result: any) => {
-      this.sites = result.items;
-      this.siteOptions = result.items;
+    this.clientService.listAllSites({ page: 0, size: 200 }).subscribe({
+      next: (result: any) => {
+        this.sites = result?.items ?? [];
+        this.siteOptions = this.sites;
+      },
+      error: () => {
+        this.sites = [];
+        this.siteOptions = [];
+      }
     });
   }
 
   private loadKeys(): void {
     this.loading = true;
     const status = this.statusFilter ? this.statusFilter : undefined;
+    // Client and site are sent to the API rather than filtered on the results,
+    // otherwise the filter would only apply to the current page while the
+    // totals still counted every key.
     this.clientService.listAllKeys({
       q: this.searchQuery || undefined,
       status,
+      clientId: this.clientFilter || undefined,
+      siteId: this.siteFilter || undefined,
       page: this.currentPage - 1,
       size: this.pageSize,
-    }).subscribe((result: PaginatedResult<KeyRecord>) => {
-      let keys = result.items;
-      if (this.clientFilter) {
-        keys = keys.filter((k: KeyRecord) => k.clientId === this.clientFilter);
+    }).subscribe({
+      next: (result: PaginatedResult<KeyRecord>) => {
+        let keys = result.items;
+        if (this.keyTypeFilter && this.keyTypeFilter !== 'All Key Types') {
+          keys = keys.filter((k: KeyRecord) => k.type === this.keyTypeFilter);
+        }
+        this.keys = keys;
+        this.totalItems = result.totalItems || keys.length;
+        this.totalPages = result.totalPages || Math.ceil(this.totalItems / this.pageSize);
+        this.loading = false;
+      },
+      error: () => {
+        this.keys = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
+        this.loading = false;
       }
-      if (this.siteFilter) {
-        keys = keys.filter((k: KeyRecord) => k.site === this.siteFilter || k.siteName === this.siteFilter);
-      }
-      if (this.keyTypeFilter && this.keyTypeFilter !== 'All Key Types') {
-        keys = keys.filter((k: KeyRecord) => k.type === this.keyTypeFilter);
-      }
-      this.keys = keys;
-      this.totalItems = result.totalItems || keys.length;
-      this.totalPages = result.totalPages || Math.ceil(this.totalItems / this.pageSize);
-      this.loading = false;
     });
   }
 

@@ -43,6 +43,8 @@ import {
   ApiWrapper
 } from '../models/auth.models';
 
+export const DEFAULT_SERVICE_CODE = 'key-vault';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private api: ApiService) {}
@@ -238,17 +240,20 @@ export class AuthService {
   }
 
   setTokens(accessToken: string, refreshToken: string | null, expiresAt: string, serviceCode?: string): void {
+    // The service code is required by the refresh endpoint, so never let it
+    // lapse: fall back to what is already stored, then to this product.
+    const resolvedServiceCode = serviceCode || this.getCurrentServiceCode() || DEFAULT_SERVICE_CODE;
     const remember = localStorage.getItem('remember_device');
     if (remember === 'true') {
       localStorage.setItem('access_token_saas', accessToken);
       localStorage.setItem('refresh_token', refreshToken ?? '');
       localStorage.setItem('session_expires_at', expiresAt);
-      if (serviceCode) localStorage.setItem('service_code', serviceCode);
+      localStorage.setItem('service_code', resolvedServiceCode);
     } else {
       sessionStorage.setItem('access_token_saas', accessToken);
       sessionStorage.setItem('refresh_token', refreshToken ?? '');
       sessionStorage.setItem('session_expires_at', expiresAt);
-      if (serviceCode) sessionStorage.setItem('service_code', serviceCode);
+      sessionStorage.setItem('service_code', resolvedServiceCode);
     }
   }
 
@@ -266,11 +271,13 @@ export class AuthService {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('remember_device');
     localStorage.removeItem('session_expires_at');
+    localStorage.removeItem('service_code');
     localStorage.removeItem('org_id');
     localStorage.removeItem('organizationId');
     sessionStorage.removeItem('access_token_saas');
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem('session_expires_at');
+    sessionStorage.removeItem('service_code');
     sessionStorage.removeItem('org_id');
     sessionStorage.removeItem('organizationId');
   }
@@ -351,8 +358,8 @@ export class AuthService {
 
   refresh(payload: RefreshTokenRequest): Observable<RefreshTokenResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const currentServiceCode = this.getCurrentServiceCode();
-    const requestPayload = currentServiceCode ? { ...payload, serviceCode: currentServiceCode } : payload;
+    const serviceCode = payload.serviceCode || this.getCurrentServiceCode();
+    const requestPayload = { ...payload, serviceCode };
     return this.api.post<ApiWrapper<RefreshTokenResponse> | RefreshTokenResponse>('/api/v1/auth/refresh', requestPayload, headers).pipe(
       map((res: any) => {
         if (res && typeof res === 'object' && 'data' in res) {
@@ -363,12 +370,23 @@ export class AuthService {
     );
   }
 
-  private getCurrentServiceCode(): string | null {
+  /**
+   * Resolve the active service code for the session. The backend requires it
+   * on refresh, so look in the active storage bucket first, then fall back to
+   * the other bucket (the remember flag can change between requests) and
+   * finally to this product's default.
+   */
+  getCurrentServiceCode(): string | null {
     const remember = localStorage.getItem('remember_device');
-    if (remember === 'true') {
-      return localStorage.getItem('service_code') || localStorage.getItem('currentServiceCode');
-    }
-    return sessionStorage.getItem('service_code') || sessionStorage.getItem('currentServiceCode');
+    const primary = remember === 'true' ? localStorage : sessionStorage;
+    const secondary = remember === 'true' ? sessionStorage : localStorage;
+    return (
+      primary.getItem('service_code') ||
+      primary.getItem('currentServiceCode') ||
+      secondary.getItem('service_code') ||
+      secondary.getItem('currentServiceCode') ||
+      DEFAULT_SERVICE_CODE
+    );
   }
 
   // Exchange refresh token for a different service/product

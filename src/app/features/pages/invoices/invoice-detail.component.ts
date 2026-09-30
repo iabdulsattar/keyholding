@@ -77,7 +77,7 @@ export class InvoiceDetailComponent implements OnInit {
   private formatDate(dateStr: string | undefined): string {
     if (!dateStr) return '—';
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   private mapInvoice(inv: any): any {

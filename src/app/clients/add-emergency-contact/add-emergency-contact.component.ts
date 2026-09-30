@@ -46,6 +46,7 @@ export class AddEmergencyContactComponent implements OnInit {
   status = '';
   address = '';
   notes = '';
+  primaryContact = false;
 
   departmentOptions: RichSelectOption[] = [
     { value: '', label: 'Select department' },
@@ -161,6 +162,7 @@ export class AddEmergencyContactComponent implements OnInit {
           this.status = contact.status || 'Active';
           this.address = contact.address || '';
           this.notes = contact.notes || '';
+          this.primaryContact = contact.primaryContact ?? false;
         }
       },
       error: () => {
@@ -222,7 +224,7 @@ export class AddEmergencyContactComponent implements OnInit {
       phone: this.phone,
       department: this.department || undefined,
       availability: this.availability || undefined,
-      primaryContact: false,
+      primaryContact: this.primaryContact,
       status: this.status as 'Active' | 'Inactive' | 'ACTIVE' | 'INACTIVE',
       address: this.address || undefined,
       notes: this.notes || undefined,

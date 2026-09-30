@@ -8,6 +8,12 @@ import { SubscriptionService } from './subscription.service';
 import { KeyVaultService } from './keyvault.service';
 import { Product, ProductSubscriptionRequest, EnableServiceRequest, ProductSwitchResponse } from '../models/product.models';
 
+/**
+ * This deployment *is* KeyVault Pro, so it is the default "current" product
+ * when no explicit service code has been stored for the session.
+ */
+const OWN_SERVICE_CODE = 'key-vault';
+
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private products: Product[] = [
@@ -20,7 +26,7 @@ export class ProductService {
       planId: 'f28006cf-1174-4042-859a-8a3d2e78d60f',
       icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
       iconBg: 'bg-violet-700',
-      status: 'available',
+      status: 'current',
       actionLabel: 'Explore KeyVault Pro',
       descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
     },
@@ -32,18 +38,11 @@ export class ProductService {
       baseUrl: 'https://sbsedob.workalert.uk',
       icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
       iconBg: 'bg-blue-600',
-      status: 'coming-soon',
+      status: 'available',
+      actionLabel: 'Switch to eDOB',
+      descriptionText: 'Record and manage digital occurrence certificates for every work location.',
     },
-    {
-      id: 'misentinel',
-      name: 'MiSentinelSOS',
-      description: 'Lone Worker Safety',
-      serviceCode: 'misentinel',
-      baseUrl: 'https://sbsmisentinel.workalert.uk',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-emerald-600',
-      status: 'coming-soon',
-    },
+   
   ];
 
   private currentProductId: string | null = null;
@@ -72,22 +71,25 @@ export class ProductService {
     }
   }
 
-  private getStoredServiceCode(): string | null {
-    return localStorage.getItem('service_code') || sessionStorage.getItem('service_code') || null;
+  /**
+   * This deployment *is* KeyVault Pro, so it is always the "current" product -
+   * the stored service code may be left over from another app on the same
+   * domain and must not move the badge onto a different product.
+   */
+  private getStoredServiceCode(): string {
+    return OWN_SERVICE_CODE;
   }
 
   /**
    * Recompute each product's status from the persisted subscription list:
-   * the active service is `current`, any other subscribed service is
+   * this app's own service is `current`, any other subscribed service is
    * `available`, and everything else falls back to its declared status.
    */
   syncStatusesFromSubscriptions(serviceCode?: string): void {
-    const active = serviceCode || this.getStoredServiceCode() || this.getCurrentServiceCode();
+    const active = OWN_SERVICE_CODE;
     const subscribed = this.getSubscribedServiceCodes();
 
-    if (active && !this.currentProductId) {
-      this.currentProductId = this.products.find(p => p.serviceCode === active)?.id ?? this.currentProductId;
-    }
+    this.currentProductId = this.products.find(p => p.serviceCode === active)?.id ?? null;
 
     this.products = this.products.map((p) => {
       const isCurrent = !!active && p.serviceCode === active;
@@ -97,6 +99,12 @@ export class ProductService {
       if (isCurrent) {
         status = 'current';
       } else if (isSubscribed) {
+        // Already subscribed to this service - it is live for the org, so it
+        // must not be offered as something still to be enabled.
+        status = 'subscribed';
+      } else if (p.baseUrl) {
+        // A deployed product the org has not subscribed to yet is offered as
+        // available, not "coming soon" - the switcher links straight to it.
         status = 'available';
       } else if (p.status === 'current') {
         status = 'coming-soon';
@@ -243,6 +251,35 @@ export class ProductService {
         organizations: res?.organizations ?? res?.tokens?.organizations ?? []
       }))
     );
+  }
+
+  /**
+   * Cross-app product switch: hand the refresh token to the target product's
+   * external-login endpoint, which exchanges it, persists the response and
+   * routes the user on. Mirrors the behaviour of the other Sentinel apps.
+   */
+  redirectToProduct(productId: string): void {
+    const product = this.getProductById(productId);
+    if (!product) {
+      throw new Error(`Product ${productId} not found`);
+    }
+    if (product.serviceCode === this.getStoredServiceCode()) {
+      throw new Error('You are already using this product.');
+    }
+    if (!product.baseUrl) {
+      throw new Error(`Product ${productId} has no application URL configured`);
+    }
+
+    const refreshToken = this.auth.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error('No refresh token available. Please log in first.');
+    }
+
+    const target = `${product.baseUrl.replace(/\/+$/, '')}/external-login`
+      + `?token=${encodeURIComponent(refreshToken)}`
+      + `&serviceCode=${encodeURIComponent(product.serviceCode)}`;
+
+    window.location.href = target;
   }
 
   setCurrentProductByServiceCode(serviceCode: string): void {

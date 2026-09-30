@@ -39,13 +39,13 @@
 
               Edit
             </a>
-            <button (click)="cabinet?.active ? openDeactivateModal() : openReactivateModal()"
-              [class.border-red-600]="cabinet?.active"
-              [class.text-red-600]="cabinet?.active"
-              [class.border-emerald-600]="!cabinet?.active"
-              [class.text-emerald-600]="!cabinet?.active"
+            <button (click)="cabinet.active ? openDeactivateModal() : openReactivateModal()"
+              [class.border-red-600]="cabinet.active"
+              [class.text-red-600]="cabinet.active"
+              [class.border-emerald-600]="!cabinet.active"
+              [class.text-emerald-600]="!cabinet.active"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold hover:bg-slate-50 transition-colors">
-              {{ cabinet?.active ? 'Deactivate' : 'Activate' }}
+              {{ cabinet.active ? 'Deactivate' : 'Activate' }}
             </button>
             <div data-svg-wrapper class="">
               <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -201,8 +201,7 @@
                     </div>
                     <div class="flex">
                       <dt class="text-slate-500 text-xs font-medium w-34">Storage Location</dt>
-                      <dd class=""><a href="#" class="text-blue-600 text-xs font-medium hover:underline">{{
-                          cabinet.storageLocation }}</a></dd>
+                      <dd class="text-slate-900 text-xs font-medium">{{ cabinet.storageLocation || '—' }}</dd>
                     </div>
                     
                     <div class="flex">
@@ -211,7 +210,7 @@
                     </div>
                     <div class="flex">
                       <dt class="text-slate-500 text-xs font-medium w-34">Security Level</dt>
-                      <dd class="text-slate-900 text-xs font-medium">{{ cabinet.type }}</dd>
+                      <dd class="text-slate-900 text-xs font-medium">{{ securityLevelLabel }}</dd>
                     </div>
                     <div class="flex">
                       <dt class="text-slate-500 text-xs font-medium w-34">Number of Hooks</dt>
@@ -256,17 +255,19 @@
               <div class="space-y-3 text-sm">
                 <div class="flex items-center justify-between">
                   <span class="text-slate-600 text-xs font-medium">CCTV Monitored</span>
-                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
+                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-sm" [class]="flagBadgeClass(cabinet.cctvMonitored)">{{ flagLabel(cabinet.cctvMonitored) }}</span>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-slate-600 text-xs font-medium">Alarm System</span>
-                  <span class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-0.5 rounded-sm">Yes</span>
+                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-sm" [class]="flagBadgeClass(cabinet.alarmSystem)">{{ flagLabel(cabinet.alarmSystem) }}</span>
                 </div>
                 <div class="flex items-start justify-between ">
                   <span class="text-slate-600 text-xs font-medium">Last Access</span>
                   <div class="text-right">
-                    <div class="text-slate-900 text-xs font-semibold">15 May 2024, 10:30 AM</div>
-                    <div class="text-slate-500 text-xs">by James Walker</div>
+                    <div class="text-slate-900 text-xs font-semibold">{{ formatDate(cabinet.lastAccessAt) }}</div>
+                    @if (cabinet.lastAccessBy) {
+                    <div class="text-slate-500 text-xs">by {{ cabinet.lastAccessBy }}</div>
+                    }
                   </div>
                 </div>
               </div>

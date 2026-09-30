@@ -72,11 +72,18 @@
 
               Edit
             </a>
-            <button 
+            <button
+              type="button"
               (click)="toggleActivationState()"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-semibold hover:bg-slate-50 transition-colors">
               {{ isClientActive ? 'Deactivate' : 'Reactivate' }}
             </button>
+            @if (showDeactivateClientModal && client) {
+              <app-deactivate-client-modal [client]="client" [orgId]="getOrgId()" (close)="showDeactivateClientModal = false" (confirmed)="onClientDeactivated()" />
+            }
+            @if (showActivateClientModal && client) {
+              <app-activate-client-modal [client]="client" [orgId]="getOrgId()" (close)="showActivateClientModal = false" (confirmed)="onClientActivated()" />
+            }
             <div data-svg-wrapper class="">
               <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -215,9 +222,11 @@
 </svg>
 
               <div>
-                <div class="text-xs text-slate-500 mb-0.5">Last Updated</div>
+                <div class="text-xs text-slate-500">Last Updated</div>
                 <div class="text-xs font-semibold text-slate-800 mb-0.5">{{ client?.lastUpdated || '--' }}</div>
-                <div class="text-xs text-slate-500">by User</div>
+                @if (client?.updatedBy) {
+                <div class="text-xs text-slate-500">by {{ client?.updatedBy }}</div>
+                }
               </div>
             </div>
           </div>
@@ -351,7 +360,7 @@
                       <td colspan="4" class="py-6 px-4 text-center text-slate-500 text-sm">No activity found.</td>
                     </tr>
                   } @else {
-                    @for (activity of activities.slice(0, 5); track activity.id) {
+                    @for (activity of overviewActivitiesPaginated; track activity.id) {
                       <tr>
                         <td class="py-3 px-4 whitespace-nowrap text-slate-800 text-xs font-normal">{{ (activity.eventType | formatEventType) || activity.action || '—' }}</td>
                         
@@ -366,25 +375,25 @@
               </table>
               <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3 border-t border-slate-200 text-xs text-slate-500">
           <div class="flex items-center gap-3">
-            <p>Showing <span class="text-slate-900 font-semibold">{{ emergencyContactsShowingStart }} to {{ emergencyContactsShowingEnd }}</span> of <span class="text-slate-900 font-semibold">{{ totalEmergencyContacts }}</span> emergency contacts</p>
-            
+            <p>Showing <span class="text-slate-900 font-semibold">{{ overviewActivitiesShowingStart }} to {{ overviewActivitiesShowingEnd }}</span> of <span class="text-slate-900 font-semibold">{{ overviewActivitiesTotal }}</span> activities</p>
+
           </div>
             <div class="flex items-center gap-1">
-               <button (click)="emergencyContactsPreviousPage()" [disabled]="emergencyContactsPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
+               <button (click)="overviewActivitiesPreviousPage()" [disabled]="overviewActivitiesPage === 1" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Previous page">
                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
                </button>
-                @for (p of emergencyContactsVisiblePages; track p) {
+                @for (p of overviewActivitiesVisiblePages; track p) {
                   @if (p === '...') {
                     <span class="px-1 text-slate-400 text-sm">...</span>
                   } @else {
-                    <button (click)="emergencyContactsGoToPage(p)" [class.bg-blue-600]="emergencyContactsPage === p" [class.text-white]="emergencyContactsPage === p" [class.border-blue-600]="emergencyContactsPage === p" [class.text-slate-600]="emergencyContactsPage !== p" [class.hover:bg-slate-50]="emergencyContactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-semibold border">{{ p }}</button>
+                    <button (click)="overviewActivitiesGoToPage(p)" [class.bg-blue-600]="overviewActivitiesPage === p" [class.text-white]="overviewActivitiesPage === p" [class.border-blue-600]="overviewActivitiesPage === p" [class.text-slate-600]="overviewActivitiesPage !== p" [class.hover:bg-slate-50]="overviewActivitiesPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-semibold border">{{ p }}</button>
                   }
                 }
-                <button (click)="emergencyContactsNextPage()" [disabled]="emergencyContactsPage === emergencyContactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
+                <button (click)="overviewActivitiesNextPage()" [disabled]="overviewActivitiesPage === overviewActivitiesTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
              </button>
-           </div>
-        </div>
+            </div>
+         </div>
         
             </div>
           </div>
@@ -412,8 +421,10 @@
                  <li class="pl-5 relative">
                    <span class="absolute -left-[6px] top-1 h-3 w-3 rounded-full bg-emerald-500 ring-4 ring-white"></span>
                    <div class="text-sm font-semibold text-slate-900">Active</div>
-                   <div class="text-xs text-slate-500 mt-0.5">{{ client?.created || '' }}</div>
-                   <div class="text-xs text-slate-400">by System</div>
+                    <div class="text-xs text-slate-500 mt-0.5">{{ client?.created || '' }}</div>
+                    @if (client?.createdBy) {
+                    <div class="text-xs text-slate-400">by {{ client?.createdBy }}</div>
+                    }
                  </li>
                  }
                </ol>
@@ -819,10 +830,12 @@
                           <td class="px-5 py-3.5 text-slate-900 text-xs font-medium font-['Inter'] whitespace-nowrap">{{ job.officer }}</td>
                           <td class="px-5 py-3.5 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ job.date }}</td>
                           <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md whitespace-nowrap" [ngClass]="jobStatusClass(job.status)">{{ getJobStatusLabel(job.status) }}</span></td>
-                          <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md" [ngClass]="jobPriorityClass(job.priority)">{{ job.priority }}</span></td>
+                          <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md" [ngClass]="jobPriorityClass(job.priority)">{{ getJobPriorityLabel(job.priority) }}</span></td>
                           <td class="px-5 py-3.5 text-right">
                             <div class="flex items-center justify-end gap-3 text-slate-400">
-                              <svg class="w-4 h-4 hover:text-slate-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                              <a [routerLink]="['/jobs', job.id]" [queryParams]="{ returnUrl: '/clients/' + clientId }" class="hover:text-slate-600" title="View">
+                                <svg class="w-4 h-4 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                              </a>
                             </div>
                           </td>
                         </tr>
@@ -897,16 +910,14 @@
                             <span class="text-slate-600 text-sm whitespace-nowrap">{{ activity.time }}</span>
                           </div>
                         </td>
-                        <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-green-100 text-green-700" >Added</span></td>
+                        <td class="px-5 py-3.5"><span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md" [class]="getActionColor(activity.action)">{{ activity.action }}</span></td>
                         <td class="td text-slate-600 text-sm whitespace-nowrap">{{ (activity.eventType | formatEventType) || activity.entity }}</td>
                         <td class="td whitespace-nowrap">
-                          <p class="text-slate-900 text-sm font-semibold leading-tight mb-0.5">Head Office</p>
-                          <p class="text-xs text-slate-500 leading-tight">25 Fenchurch Street, London</p>
-                              
+                          <p class="text-slate-900 text-sm font-semibold leading-tight mb-0.5">{{ activity.name }}</p>
+                          <p class="text-xs text-slate-500 leading-tight">{{ activity.entity }}</p>
                         </td>  
                         <td class="td whitespace-nowrap text-slate-600 text-sm">
-                          192.168.1.25
-
+                          {{ activity.ip }}
                         </td> 
                         <td class="td ">
                           <p class="text-slate-600 text-sm font-normal leading-tight">{{ activity.details || activity.name }}</p>
@@ -1306,7 +1317,7 @@
                    <td class="td text-slate-900 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ contact.phone }}</td>
 
                     <td class="td  text-xs font-semibold font-['Inter'] whitespace-nowrap ">
-                     <span class="badge rounded-md {{ contact.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-rose-50 text-rose-500' }}">{{ contact.status }}</span>                                                              
+                      <span class="badge rounded-md {{ contactStatusClass(contact.status) }}">{{ contact.status }}</span>                                                            
                    </td>
                     <td class="td">
                      <span class="badge rounded-md {{ contact.primary ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500' }} ">{{ contact.primary ? 'Yes' : 'No' }}</span>
@@ -1504,7 +1515,7 @@
                   <td class="td text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ ec.availability }}</td>
 
                   <td class="td">
-                     <span class="badge rounded-md {{ ec.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-rose-50 text-rose-500' }}">{{ ec.status }}</span>
+                      <span class="badge rounded-md {{ contactStatusClass(ec.status) }}">{{ ec.status }}</span>
                    </td>
                    
                    <td class="td  text-xs font-semibold font-['Inter'] whitespace-nowrap ">

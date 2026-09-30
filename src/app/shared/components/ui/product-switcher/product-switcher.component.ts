@@ -9,7 +9,7 @@ export interface ProductItem {
   serviceCode: string;
   icon: string;
   iconBg: string;
-  status: 'current' | 'available' | 'coming-soon';
+  status: 'current' | 'subscribed' | 'available' | 'coming-soon';
   actionLabel?: string;
   actionHref?: string;
   descriptionText?: string;
@@ -24,36 +24,32 @@ export interface ProductItem {
 export class ProductSwitcherComponent implements OnInit {
   @Input() products: ProductItem[] = [
     {
+      id: 'keyvault',
+      name: 'KeyVault Pro',
+      description: 'Enterprise Key Management',
+      serviceCode: 'key-vault',
+      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+      iconBg: 'bg-violet-700',
+      status: 'current',
+    },
+    {
       id: 'edob',
       name: 'eDOB',
       description: 'Digital Occurrence Management',
       serviceCode: 'edob',
       icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
       iconBg: 'bg-blue-600',
-      status: 'current',
-    },
-
-    {
-      id: 'keyvault',
-      name: 'KeyVault Pro',
-      description: 'Enterprise Key Management',
-      serviceCode: 'key-vault',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-blue-600',
       status: 'available',
-      actionLabel: 'Explore KeyVault Pro',
-      actionHref: '#',
-      descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
     },
-    // {
-    //   id: 'misentinel',
-    //   name: 'MiSentinelSOS',
-    //   description: 'Lone Worker Safety',
-    //   serviceCode: 'misentinel',
-    //   icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-    //   iconBg: 'bg-emerald-600',
-    //   status: 'coming-soon',
-    // },
+    {
+      id: 'misentinel',
+      name: 'MiSentinelSOS',
+      description: 'Lone Worker Safety',
+      serviceCode: 'misentinel',
+      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+      iconBg: 'bg-emerald-600',
+      status: 'coming-soon',
+    },
   ];
   private productService = inject(ProductService);
   @Input() exploreAllHref: string = '#';
@@ -61,6 +57,7 @@ export class ProductSwitcherComponent implements OnInit {
 
   showSwitcher = false;
   visibleProducts: ProductItem[] = [];
+  isSwitching = false;
 
   ngOnInit(): void {
     this.refreshProducts();
@@ -102,8 +99,23 @@ export class ProductSwitcherComponent implements OnInit {
   }
 
   selectProduct(product: ProductItem): void {
-    this.productSelected.emit(product);
+    if (product.status === 'current' || product.status === 'coming-soon' || this.isSwitching) {
+      return;
+    }
+
+    this.isSwitching = true;
     this.showSwitcher = false;
+
+    this.productSelected.emit(product);
+
+    try {
+      this.productService.redirectToProduct(product.id);
+    } catch (error: any) {
+      this.isSwitching = false;
+      this.showSwitcher = true;
+      const message = error?.message || error?.error?.detail || error?.error?.message || 'Unknown error';
+      alert(`Failed to switch to ${product.name}: ${message}. Please try again.`);
+    }
   }
 
   switchToProduct(product: ProductItem): void {

@@ -16,7 +16,7 @@ import { NavigationReferrerService } from '../../core/services/navigation-referr
 @Component({
   selector: 'app-add-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }

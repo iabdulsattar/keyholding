@@ -36,6 +36,8 @@ interface JobTypeOption {
   name: string;
 }
 
+export type JobScheduleType = 'OPEN' | 'SCHEDULED';
+
 @Component({
   selector: 'app-create-job',
   standalone: true,
@@ -55,16 +57,38 @@ export class CreateJobComponent implements OnInit {
     title: '',
     reference: '',
     description: '',
+    scheduleType: 'SCHEDULED' as JobScheduleType,
     date: '',
     startTime: '',
     endTime: '',
     duration: '',
     officer: '',
     priority: 'Low',
+    idChecked: false,
+    idType: 'Company ID',
     notifyCompletion: '',
     notifyNotCompleted: '',
     notes: ''
   };
+
+  scheduleTypeOptions: RichSelectOption[] = [
+    { value: 'OPEN', label: 'Open' },
+    { value: 'SCHEDULED', label: 'Scheduled' },
+  ];
+
+  idTypeOptions: RichSelectOption[] = [
+    { value: 'Company ID', label: 'Company ID' },
+    { value: 'Photo ID', label: 'Photo ID' },
+    { value: 'Employee ID', label: 'Employee ID' },
+    { value: 'Passport', label: 'Passport' },
+    { value: 'Driving Licence', label: 'Driving Licence' },
+  ];
+
+  /**
+   * `visitorTypeId` is part of the create-job contract but has no endpoint in
+   * this client yet, so it is left off the payload until the lookup exists.
+   */
+  readonly visitorTypeId: string | null = null;
 
   showAddKeysModal = false;
   showAddChecklistModal = false;
@@ -75,6 +99,11 @@ export class CreateJobComponent implements OnInit {
   currentPage = 0;
   pageSize = 6;
   totalPages = 0;
+  // Filters inside the "Add Required Keys" modal. The site list reuses the
+  // form's `siteOptions` so both dropdowns list the same sites.
+  keySearch = '';
+  keySiteFilter = '';
+  keyStatusFilter = '';
   totalElements = 0;
   checklistItems: ChecklistItem[] = [];
   newChecklistItem = '';
@@ -255,6 +284,15 @@ export class CreateJobComponent implements OnInit {
     this.loadChecklist(jobTypeId);
   }
 
+  onScheduleTypeChange(scheduleType: string): void {
+    this.job.scheduleType = (scheduleType === 'OPEN' ? 'OPEN' : 'SCHEDULED') as JobScheduleType;
+    this.updateDuration();
+  }
+
+  get isOpenSchedule(): boolean {
+    return this.job.scheduleType === 'OPEN';
+  }
+
   getJobTypeBgClass(): string {
   if (
     this.selectedJobTypeLabel === 'Lock Service' ||
@@ -303,11 +341,25 @@ export class CreateJobComponent implements OnInit {
   }
 
   private updateDuration(): void {
+    if (this.isOpenSchedule) {
+      this.job.duration = '';
+      return;
+    }
     if (this.job.startTime && this.job.endTime) {
       this.job.duration = this.calculateDuration(this.job.startTime, this.job.endTime);
     } else {
       this.job.duration = '';
     }
+  }
+
+  /**
+   * Open jobs carry a single `dueDate` timestamp instead of a date plus a
+   * start/end window, so combine the picked date with the due time.
+   */
+  private toApiDueDate(): string | undefined {
+    if (!this.job.date || !this.job.startTime) return undefined;
+    const time = this.job.startTime.length === 5 ? `${this.job.startTime}:00` : this.job.startTime;
+    return `${this.job.date}T${time}Z`;
   }
 
   private calculateDuration(start: string, end: string): string {
@@ -437,7 +489,16 @@ export class CreateJobComponent implements OnInit {
       return;
     }
 
-    this.keyVault.listKeys(orgId, { page, size: this.pageSize, clientId: this.selectedClient || undefined, siteId: this.selectedSite || undefined }).subscribe({
+    this.keyVault.listKeys(orgId, {
+      page,
+      size: this.pageSize,
+      clientId: this.selectedClient || undefined,
+      // The modal's own site filter narrows the form's site rather than
+      // replacing it, so a job with no site set can still filter by site.
+      siteId: this.keySiteFilter || this.selectedSite || undefined,
+      q: this.keySearch.trim() || undefined,
+      status: this.keyStatusFilter || undefined
+    }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
@@ -473,6 +534,23 @@ export class CreateJobComponent implements OnInit {
     }
   }
 
+  onKeySearchChange(): void {
+    this.currentPage = 0;
+    this.loadKeys(0);
+  }
+
+  onKeySiteFilterChange(siteId: string): void {
+    this.keySiteFilter = siteId || '';
+    this.currentPage = 0;
+    this.loadKeys(0);
+  }
+
+  onKeyStatusFilterChange(status: string): void {
+    this.keyStatusFilter = status || '';
+    this.currentPage = 0;
+    this.loadKeys(0);
+  }
+
   prevPage(): void {
     if (this.currentPage > 0) {
       this.loadKeys(this.currentPage - 1);
@@ -503,6 +581,13 @@ export class CreateJobComponent implements OnInit {
 
   openAddKeysModal(): void {
     this.showAddKeysModal = true;
+    // Clear any filter left over from a previous open so the list always
+    // starts from the full set for this client.
+    this.keySearch = '';
+    this.keySiteFilter = '';
+    this.keyStatusFilter = '';
+    this.currentPage = 0;
+    this.loadKeys(0);
   }
 
   closeAddKeysModal(): void {
@@ -611,8 +696,13 @@ export class CreateJobComponent implements OnInit {
     if (!this.selectedSite) this.errors['site'] = 'Site is required';
     if (!this.job.title.trim()) this.errors['title'] = 'Job title is required';
     if (!this.job.date) this.errors['date'] = 'Date is required';
-    if (!this.job.startTime) this.errors['startTime'] = 'Start time is required';
-    if (!this.job.endTime) this.errors['endTime'] = 'End time is required';
+    if (this.isOpenSchedule) {
+      if (!this.job.startTime) this.errors['startTime'] = 'Due time is required';
+    } else {
+      if (!this.job.startTime) this.errors['startTime'] = 'Start time is required';
+      if (!this.job.endTime) this.errors['endTime'] = 'End time is required';
+    }
+    if (this.job.idChecked && !this.job.idType.trim()) this.errors['idType'] = 'ID type is required';
     if (!this.job.officer) this.errors['officer'] = 'Officer is required';
     if (this.selectedKeys.length === 0) this.errors['keys'] = 'At least one key is required';
 
@@ -630,19 +720,30 @@ export class CreateJobComponent implements OnInit {
       title: this.job.title,
       clientId: this.selectedClient || this.job.client,
       siteId: this.selectedSite || this.job.site,
+      visitorTypeId: this.visitorTypeId ?? undefined,
       reference: this.job.reference || '',
       description: this.job.description || undefined,
-      scheduledDate: this.job.date || undefined,
-      startTime: this.job.startTime || undefined,
-      endTime: this.job.endTime || undefined,
+      scheduleType: this.job.scheduleType,
       officerUserId: this.job.officer || undefined,
       priority: this.mapPriority(this.job.priority),
       keyIds: this.selectedKeys.map(k => k.id),
       checklistItems: this.checklistItems.map(ci => ci.id),
+      idChecked: this.job.idChecked,
+      idType: this.job.idType || undefined,
       notifyOnCompletion: this.selectedCompletionContactIds,
       notifyOnNotCompleted: this.selectedNotCompletedContactIds,
+      platform: 'WEB',
       additionalNotes: this.job.notes || undefined
     };
+
+    // Open jobs are due at a single instant; scheduled jobs span a window.
+    if (this.isOpenSchedule) {
+      payload.dueDate = this.toApiDueDate();
+    } else {
+      payload.scheduledDate = this.job.date || undefined;
+      payload.startTime = this.job.startTime || undefined;
+      payload.endTime = this.job.endTime || undefined;
+    }
 
     this.saving = true;
     this.keyVault.createJob(orgId, payload).subscribe({

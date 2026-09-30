@@ -171,7 +171,7 @@ export class AddClientComponent implements OnInit {
       status: this.status === 'active' ? 'Active' : 'Inactive',
       sites: 0,
       users: 0,
-      created: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      created: new Date().toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }),
       phone: this.phone || undefined,
       website: this.website || undefined,
       address: this.address || undefined,

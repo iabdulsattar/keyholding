@@ -204,17 +204,17 @@ export class UserManagementComponent implements OnInit {
           roles: item.roles?.map((r: any) => r.name) || [],
           status: (item.status || '').toUpperCase() === 'INACTIVE' ? 'Inactive' : 'Active',
           invite: item.invitationStatus ? item.invitationStatus.charAt(0) + item.invitationStatus.slice(1).toLowerCase() : 'Not Invited',
-          inviteSub: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
-          lastLogin: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleString() : '-',
+          inviteSub: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
+          lastLogin: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
           lastTime: '-',
-          created: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
+          created: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
           img: (index % 37) + 1,
           resend: false,
           department: item.department || ['Operations', 'Security', 'Compliance', 'HR'][index % 4],
           phone: item.phoneNumber || ['+91 98765 43210', '+91 98765 12345', '+91 99456 12345', '+91 99876 00000'][index % 4],
           location: item.location || ['Head Office', 'North Gate', 'Control Room', 'Central Hub'][index % 4],
           employeeId: item.employeeId || `EMP-${String(12 + index).padStart(5, '0')}`,
-          joined: item.createdAt ? new Date(item.createdAt).toLocaleString() : '-',
+          joined: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
         }));
 
         this.totalElements = res?.meta?.totalElements ?? items.length;
@@ -494,12 +494,12 @@ export class UserManagementComponent implements OnInit {
   }
 
   get detailJoined(): string {
-    if (this.detailUser?.createdAt) return new Date(this.detailUser.createdAt).toLocaleString();
+    if (this.detailUser?.createdAt) return new Date(this.detailUser.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
     return this.selectedUser?.joined || this.selectedUser?.created || '';
   }
 
   get detailLastLogin(): string {
-    if (this.detailUser?.lastLoginAt) return new Date(this.detailUser.lastLoginAt).toLocaleString();
+    if (this.detailUser?.lastLoginAt) return new Date(this.detailUser.lastLoginAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
     return this.selectedUser?.lastLogin || '';
   }
 
@@ -554,7 +554,7 @@ export class UserManagementComponent implements OnInit {
   onInviteSent(): void {
     this.showInviteModal = false;
     if (this.selectedUser) {
-      this.selectedUser = { ...this.selectedUser, invite: 'Pending', inviteSub: new Date().toLocaleString() } as User;
+      this.selectedUser = { ...this.selectedUser, invite: 'Pending', inviteSub: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) } as User;
     }
   }
 
@@ -722,8 +722,8 @@ export class UserManagementComponent implements OnInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    const datePart = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
     return `${datePart}, ${timePart}`;
   }
 

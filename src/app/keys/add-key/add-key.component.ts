@@ -15,7 +15,7 @@ import { NavigationReferrerService } from '../../core/services/navigation-referr
 @Component({
   selector: 'app-add-key',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, PageBreadcrumbComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
   templateUrl: './add-key.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -352,6 +352,17 @@ export class AddKeyComponent implements OnInit {
     this.existingAttachments = [];
     this.attachmentsLoading = false;
     this.attachmentError = '';
+    this.goBack();
+  }
+
+  /**
+   * Return to wherever this form was opened from. The entry point passes a
+   * `returnUrl`, so arriving from All Keys goes back to All Keys and arriving
+   * from a client's detail page goes back to that client. The `clientId`
+   * fallback covers a deep link with no `returnUrl`, and the final fallback
+   * is the All Keys list.
+   */
+  goBack(): void {
     if (this.returnUrl) {
       this.router.navigateByUrl(this.returnUrl);
     } else if (this.clientId) {
