@@ -436,15 +436,6 @@
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
             <div>
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Schedule Type <span
-                        class="text-rose-500">*</span></label>
-                <app-rich-select [options]="scheduleTypeOptions" [value]="job.scheduleType"
-                    (valueChange)="onScheduleTypeChange($event)" placeholder="Select schedule type" panelWidth="wide"
-                    class="w-full">
-                </app-rich-select>
-                <p class="text-[9px] text-slate-500 mt-1.5">Open jobs are due by a single date and time.</p>
-            </div>
-            <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">{{ isOpenSchedule ?
                         'Due Date' : 'Date' }} <span
                         class="text-rose-500">*</span></label>
