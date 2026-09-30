@@ -600,10 +600,14 @@
                   </td>
                   <td class="py-3 px-5 text-slate-500 text-sm font-normal hidden sm:table-cell">{{ user.email }}</td>
                   <td class="py-3 px-5 text-right">
+                    @if (user.grantedAt) {
+                    <span class="text-xs text-slate-400 font-medium">Already active</span>
+                    } @else {
                     <button (click)="importUser(user)" [disabled]="activatingUserId === user.id"
                       class="px-4 py-1.5 rounded-md border border-blue-700 text-blue-700 text-xs font-semibold hover:bg-blue-50 transition disabled:opacity-70">
                       {{ activatingUserId === user.id ? 'Importing...' : 'Import' }}
                     </button>
+                    }
                   </td>
                 </tr>
                 }

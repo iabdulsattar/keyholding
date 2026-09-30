@@ -241,6 +241,7 @@ export class AddUserComponent implements OnInit {
           initials: this.getInitialsForUser(item),
           bgColor: this.getAvatarColor(item.name || item.email || index),
           status: item.invitationStatus || 'Not Invited',
+          grantedAt: item.grantedAt || null,
         }));
         const meta = res?.meta ?? res;
         this.existingUsersTotal = meta?.totalElements ?? this.existingUsers.length;

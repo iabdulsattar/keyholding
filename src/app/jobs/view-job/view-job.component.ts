@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { formatJobStatus, humanizeEnum } from '../../shared/utils/job.utils';
+import { API_BASE } from '../../core/config';
 
 const KEY_STATUS_LABELS: Record<string, string> = {
   ON_THE_HOOK: 'In Storage',
@@ -189,7 +190,8 @@ export class ViewJobComponent implements OnInit {
           text: ci.title || ci.text || '—',
           response: ci.response ? humanizeEnum(ci.response) : 'Pending',
           notes: ci.notes || '-',
-          images: ci.imageCount ?? ci.images ?? '0'
+          images: ci.imageCount ?? (Array.isArray(ci.images) ? ci.images.length : 0),
+          imageUrls: this.extractImageUrls(ci)
         }))
       },
       escalation: {
@@ -197,6 +199,22 @@ export class ViewJobComponent implements OnInit {
         notifyOnNotCompleted: escalation.notifyOnNotCompleted || []
       }
     };
+  }
+
+  /**
+   * Checklist evidence arrives as an array of URLs, occasionally as
+   * `{ url }` objects, and sometimes as relative paths that need the API host.
+   */
+  private extractImageUrls(item: any): string[] {
+    const raw = item?.images;
+    if (!Array.isArray(raw)) return [];
+    return raw
+      .map((img: any) => {
+        const url = typeof img === 'string' ? img : (img?.url || img?.src || img?.path || '');
+        if (!url) return '';
+        return url.startsWith('/') ? `${API_BASE}${url}` : url;
+      })
+      .filter((url: string) => !!url);
   }
 
   private formatDate(dateStr: string | undefined): string {
@@ -328,13 +346,19 @@ export class ViewJobComponent implements OnInit {
   }
 
   hasImages(item: any): boolean {
-    const count = typeof item.images === 'number' ? item.images : parseInt(item.images, 10);
-    return !isNaN(count) && count > 0;
+    return this.getItemImages(item).length > 0 || this.getImageCount(item) > 0;
   }
 
   getImageCount(item: any): number {
     const count = typeof item.images === 'number' ? item.images : parseInt(item.images, 10);
     return isNaN(count) ? 0 : count;
+  }
+
+  /** Image URLs captured against a checklist item, ready for the modal. */
+  getItemImages(item: any): string[] {
+    if (!item) return [];
+    const urls = Array.isArray(item.imageUrls) ? item.imageUrls : [];
+    return urls.filter((url: string) => typeof url === 'string' && !!url.trim());
   }
 
   get escalationContacts(): { completion: any[]; notCompleted: any[] } {

@@ -148,8 +148,8 @@ export class RemoveKeyFromHookComponent implements OnInit, AfterViewInit {
           keyType: item.keyType || item.type || 'Yale',
           keyCode: item.keyCode || '',
           keyTypeName: item.keyTypeName || '',
-          assignedAt: item.assignedAt || item.updatedAt || '2024-05-15T11:10:00',
-          assignedBy: item.assignedBy || item.updatedBy || 'Faiza Ahmed',
+          assignedAt: item.createdAt || item.assignedAt || item.updatedAt || '',
+          assignedBy: item.createdByUserName || item.assignedBy || item.updatedBy || '',
         };
         this.loading = false;
         this.createIcons();
@@ -214,8 +214,8 @@ export class RemoveKeyFromHookComponent implements OnInit, AfterViewInit {
       assignedKeyId: '',
       assignedKeyName: 'KEY-0004',
       keyType: 'Yale',
-      assignedAt: '2024-05-15T11:10:00',
-      assignedBy: 'Faiza Ahmed',
+      assignedAt: '',
+      assignedBy: '',
     };
   }
 

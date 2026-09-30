@@ -94,16 +94,21 @@ export class UserService {
     );
   }
 
+  /**
+   * Users that exist in the organization but are not yet subscribed to
+   * key-vault, i.e. the candidates shown under "Activate Existing User".
+   * Scoping the path to the service replaces the old serviceCode filter on the
+   * full user list, which returned members already active for key-vault.
+   */
   listUserstoImport(orgId: string, options: ListUsersParams = {}): Observable<PagedUsers> {
     let params = new HttpParams();
     if (options.q) params = params.set('q', options.q);
     if (options.status) params = params.set('status', options.status);
     if (options.page != null) params = params.set('page', String(options.page));
     if (options.size != null) params = params.set('size', String(options.size));
-     params = params.set('serviceCode', 'key-vault');
 
     const query = params.toString();
-    const path = `${this.base(orgId)}/users${query ? `?${query}` : ''}`;
+    const path = `${this.base(orgId)}/services/key-vault/eligible-users${query ? `?${query}` : ''}`;
     return this.api.get<ApiWrapper<PagedUsers>>(path, this.authHeaders()).pipe(
       map(res => res.data)
     );

@@ -237,8 +237,8 @@ export class AllKeysComponent implements OnInit {
   }
 
   get totalKeys(): number { return this.totalItems; }
-  get onHookKeys(): number { return this.keys.filter(k => k.status === 'In Storage').length; }
-  get issuedKeys(): number { return this.keys.filter(k => k.status === 'Issued').length; }
+  get onHookKeys(): number { return this.keys.filter(k => this.hasState(k, 'ON_THE_HOOK', 'ON_HOOK')).length; }
+  get issuedKeys(): number { return this.keys.filter(k => this.hasState(k, 'ISSUED')).length; }
   get onHookPercentage(): string {
     if (!this.totalKeys) return '0';
     return ((this.totalKeys - this.issuedKeys) / this.totalKeys * 100).toFixed(1);
@@ -248,18 +248,22 @@ export class AllKeysComponent implements OnInit {
     return (this.issuedKeys / this.totalKeys * 100).toFixed(1);
   }
 
+  private hasState(key: KeyRecord, ...states: string[]): boolean {
+    return states.indexOf((key.statusCode || key.status || '').toUpperCase()) !== -1;
+  }
+
+  /** Renders the raw key state (`ON_THE_HOOK`) as plain words (`On the hook`). */
   statusBadge(status: string, color = 'emerald'): string {
-    const labelMap: Record<string, string> = {
-      'In Storage': 'On the Hook',
-      'Issued': 'Issued',
-      'In Use': 'In Use',
-      'Overdue': 'Overdue',
-      'Damaged': 'Damaged',
-      'Lost': 'Damaged / Lost',
-      'Damaged / Lost': 'Damaged / Lost',
-    };
-    const label = labelMap[status] || status;
+    const label = this.statusLabel(status);
     return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-${color}-50 text-${color}-700 border border-${color}-100"><span>${label}</span></span>`;
+  }
+
+  private statusLabel(status: string): string {
+    const text = (status || '').replace(/[_-]+/g, ' ').trim();
+    if (!text) return '';
+    if (text !== text.toUpperCase() && text !== text.toLowerCase()) return text;
+    const lower = text.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
   }
 
   typeBadge(type: string, color = 'slate'): string {

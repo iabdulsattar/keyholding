@@ -89,7 +89,7 @@
                 <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Site Code</span><p class="font-mono font-medium text-slate-800 mt-0.5">{{ site?.siteCode || siteId }}</p></div>
                 <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Site Type</span><p class="font-medium text-slate-800 mt-0.5">{{ site?.siteType || '--' }}</p></div>
                 <div class="space-y-1"><span class="text-slate-500 text-xs font-semibold uppercase">Status</span><p class="font-medium flex items-center gap-1.5 mt-0.5" [class.text-slate-800]="isSiteActive" [class.text-rose-600]="!isSiteActive"><span [class]="isSiteActive ? 'w-2 h-2 rounded-full bg-emerald-500' : 'w-2 h-2 rounded-full bg-rose-500'"></span> {{ isSiteActive ? 'Active' : 'Inactive' }}</p></div>
-                <div class="col-span-2 sm:col-span-4 space-y-1 border-slate-50"><span class="text-slate-500 text-xs font-semibold uppercase">Client</span><p><a routerLink="/clients" class="text-blue-600 hover:underline font-medium flex items-center gap-1.5 mt-0.5">{{ site?.clientName || '--' }} 
+                <div class="col-span-2 sm:col-span-4 space-y-1 border-slate-50"><span class="text-slate-500 text-xs font-semibold uppercase">Client</span><p><a routerLink="/clients" class="text-blue-600 hover:underline font-medium flex items-center gap-1.5 mt-0.5">{{ site?.clientName || '--' }}  
                 </a></p></div>
               </div>
             </div>
@@ -308,9 +308,9 @@
           <div class="space-y-4 border-b border-slate-200 pb-5">
             <h4 class="text-sm font-bold text-slate-800 tracking-wider border-slate-100 ">Site Summary</h4>
             <div class="space-y-3 text-xs font-normal text-slate-700">
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Keys</span> <span class="font-semibold text-slate-800 text-xs">{{ summaryLoading ? '…' : totalKeys }}</span></div>
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Jobs</span> <span class="font-semibold text-slate-800 text-xs">{{ summaryLoading ? '…' : totalJobs }}</span></div>
-              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Active Jobs</span> <span class="font-semibold text-slate-800 text-xs">{{ summaryLoading ? '…' : activeJobs }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Keys</span> <span class="font-semibold text-slate-800 text-xs">{{ loading ? '…' : totalKeys }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Total Jobs</span> <span class="font-semibold text-slate-800 text-xs">{{ loading ? '…' : totalJobs }}</span></div>
+              <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Active Jobs</span> <span class="font-semibold text-slate-800 text-xs">{{ loading ? '…' : activeJobs }}</span></div>
               <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Last Job completed</span> <span class="font-semibold text-slate-800 text-xs">{{ lastCompletedJob }}</span></div>
               <div class="flex items-center "><span class="text-slate-500 w-40 shrink-0">Next Scheduled Job</span> <span class="font-semibold text-slate-800 text-xs">{{ nextScheduledJob }}</span></div>
                

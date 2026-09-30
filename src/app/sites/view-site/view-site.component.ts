@@ -49,7 +49,6 @@ export class ViewSiteComponent implements OnInit {
   attachmentsLoading = false;
   attachmentError = '';
 
-  summaryLoading = false;
   totalKeys = 0;
   totalJobs = 0;
   activeJobs = 0;
@@ -87,7 +86,6 @@ export class ViewSiteComponent implements OnInit {
     this.siteId = this.route.snapshot.paramMap.get('id') || '';
     if (this.siteId) {
       this.loadSite();
-      this.loadSiteSummary();
       this.loadAttachments();
       this.loadActivities();
     }
@@ -172,84 +170,25 @@ export class ViewSiteComponent implements OnInit {
             clientName: item.clientName || item.client?.name || 'Client',
           }
         : null;
+      this.applySiteSummary(item?.summary);
       this.loading = false;
     });
   }
 
   /**
-   * Site Summary counts and dates. The site endpoint does not return these, so
-   * they are derived from the site's own key and job lists.
+   * The site endpoint returns its own key/job summary, so the panel is filled
+   * from that instead of re-listing every key and job for the site.
    */
-  private loadSiteSummary(): void {
-    if (!this.orgId && !this.siteId) return;
-    const orgId = this.orgId || localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
-    if (!orgId || !this.siteId) return;
-
-    this.summaryLoading = true;
-
-    this.keyVault.listKeys(orgId, { siteId: this.siteId, page: 0, size: 1 }).subscribe({
-      next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = data.content ?? data.items ?? data.data ?? [];
-        this.totalKeys = data.totalItems ?? data.totalElements ?? data.total ?? (Array.isArray(items) ? items.length : 0);
-        this.summaryLoading = false;
-      },
-      error: () => {
-        this.totalKeys = 0;
-        this.summaryLoading = false;
-      }
-    });
-
-    this.keyVault.listJobs(orgId, { siteId: this.siteId, page: 0, size: 200 }).subscribe({
-      next: (res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = data.content ?? data.items ?? data.data ?? (Array.isArray(data) ? data : []);
-        const jobs: any[] = Array.isArray(items) ? items : [];
-        this.totalJobs = data.totalItems ?? data.totalElements ?? data.total ?? jobs.length;
-        this.summaryLoading = false;
-        this.buildJobSummary(jobs);
-      },
-      error: () => {
-        this.totalJobs = 0;
-        this.activeJobs = 0;
-        this.lastCompletedJob = '—';
-        this.nextScheduledJob = '—';
-        this.summaryLoading = false;
-      }
-    });
-  }
-
-  private buildJobSummary(jobs: any[]): void {
-    const closed = ['COMPLETED', 'CANCELLED', 'CANCELED'];
-    const now = Date.now();
-
-    const open = jobs.filter(j => !closed.includes(this.normalizeJobStatus(j)));
-    this.activeJobs = open.length;
-
-    const completed = jobs
-      .filter(j => this.normalizeJobStatus(j) === 'COMPLETED')
-      .map(j => ({ job: j, at: this.jobTimestamp(j) }))
-      .filter(entry => entry.at > 0)
-      .sort((a, b) => b.at - a.at);
-    this.lastCompletedJob = completed.length ? this.formatDateTime(new Date(completed[0].at).toISOString()) : '—';
-
-    const upcoming = open
-      .map(j => ({ job: j, at: this.jobTimestamp(j) }))
-      .filter(entry => entry.at > now)
-      .sort((a, b) => a.at - b.at);
-    this.nextScheduledJob = upcoming.length ? this.formatDateTime(new Date(upcoming[0].at).toISOString()) : '—';
-  }
-
-  private normalizeJobStatus(job: any): string {
-    return (job?.status ?? '').toString().trim().toUpperCase();
-  }
-
-  private jobTimestamp(job: any): number {
-    const scheduled = job?.scheduledDate ? new Date(job.scheduledDate).getTime() : NaN;
-    const completed = job?.completedAt || job?.updatedAt;
-    const stamp = completed ? new Date(completed).getTime() : NaN;
-    if (!isNaN(stamp)) return stamp;
-    return isNaN(scheduled) ? 0 : scheduled;
+  private applySiteSummary(summary: any): void {
+    this.totalKeys = Number(summary?.totalKeys ?? 0);
+    this.totalJobs = Number(summary?.totalJobs ?? 0);
+    this.activeJobs = Number(summary?.activeJobs ?? 0);
+    this.lastCompletedJob = summary?.lastJobCompletedAt
+      ? this.formatDateTime(summary.lastJobCompletedAt)
+      : '—';
+    this.nextScheduledJob = summary?.nextScheduledJobAt
+      ? this.formatDateTime(summary.nextScheduledJobAt)
+      : '—';
   }
 
   get accessScheduleLabel(): string {

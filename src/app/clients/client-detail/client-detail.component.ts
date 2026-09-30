@@ -203,13 +203,15 @@ showDeactivateClientModal = false;
     { value: 'Other', label: 'Other' },
   ];
 
+  // Values are the API status codes; only the labels are human readable.
   keyStatusOptions: RichSelectOption[] = [
     { value: 'All', label: 'Status' },
-    { value: 'In Storage', label: 'In Storage' },
-    { value: 'Issued', label: 'Issued' },
-    { value: 'In Use', label: 'In Use' },
-    { value: 'Overdue', label: 'Overdue' },
-    { value: 'Lost / Damaged', label: 'Lost / Damaged' },
+    { value: 'IN_STORAGE', label: 'In Storage' },
+    { value: 'ISSUED', label: 'Issued' },
+    { value: 'IN_USE', label: 'In Use' },
+    { value: 'OVERDUE', label: 'Overdue' },
+    { value: 'LOST', label: 'Lost' },
+    { value: 'DAMAGED', label: 'Damaged' },
   ];
 
   keyTypeOptions: RichSelectOption[] = [

@@ -20,6 +20,8 @@ export interface KeyRecord {
   site: string;
   siteName: string;
   status: 'In Storage' | 'Issued' | 'In Use' | 'Overdue' | 'Lost' | 'Damaged' | 'Damaged / Lost';
+  /** Raw API state the label above was derived from, e.g. `ON_THE_HOOK`. */
+  statusCode?: string;
   statusColor: string;
   storageLocation: string;
   storageDetail: string;
@@ -745,6 +747,7 @@ export class ClientService {
         site: item.siteId ?? '',
         siteName: item.siteName ?? '',
         status: mappedStatus,
+        statusCode: rawStatus,
         statusColor: rawStatus === 'LOST' || rawStatus === 'LOST_DAMAGED' || rawStatus === 'DAMAGED_LOST' ? 'rose' : statusColorMap[mappedStatus] || 'emerald',
         storageLocation: item.storageLocationName || item.storageLocation || '—',
         storageDetail: '',
