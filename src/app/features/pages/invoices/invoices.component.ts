@@ -125,7 +125,7 @@ export class InvoicesComponent implements OnInit {
     const dateStr = date ? date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) : '—';
 
     const amount = inv.amountCents != null
-      ? `${(inv.amountCents / 100).toFixed(2)} ${inv.currency || 'GBP'}`
+      ? `£${(inv.amountCents / 100).toFixed(2)}`
       : '—';
 
     const invoiceStatus = inv.paymentStatus === 'PAID' ? 'Paid' : inv.paymentStatus === 'PENDING' ? 'Pending' : inv.paymentStatus === 'OVERDUE' ? 'Overdue' : (inv.status || 'Pending');
