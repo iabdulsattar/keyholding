@@ -224,7 +224,7 @@
               @if (p === '...') {
                 <span class="w-8 h-8 flex items-center justify-center text-black/60">...</span>
               } @else {
-                <button (click)="goToPage(p)" [class.bg-blue-50]="page === p" [class.text-blue-700]="page === p" [class.border-blue-700]="page === p" [class.bg-white]="page !== p" [class.text-black/80]="page !== p" [class.border-black/20]="page !== p" class="w-8 h-8 rounded-md text-xs font-semibold flex items-center justify-center shadow-sm hover:bg-black/5 transition border">
+                <button (click)="goToPage(p)" [class.bg-blue-600]="page === p" [class.text-white]="page === p" [class.border-blue-600]="page === p" [class.bg-white]="page !== p" [class.text-black/80]="page !== p" [class.border-black/20]="page !== p" class="w-8 h-8 rounded-md text-xs font-semibold flex items-center justify-center shadow-sm hover:bg-black/5 transition border">
                   {{ pageLabel(p) }}
                 </button>
               }

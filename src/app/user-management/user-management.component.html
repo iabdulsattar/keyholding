@@ -328,7 +328,9 @@
               } @else {
               <button (click)="onTablePageChange(page)"
                 class="w-9 h-9 rounded-md border flex items-center justify-center text-xs font-semibold"
-                [class.border-blue-700]="page === currentPage" [class.text-blue-700]="page === currentPage"
+                [class.border-blue-600]="page === currentPage" [class.text-white]="page === currentPage"
+                [class.bg-blue-600]="page === currentPage"
+                
                 [class.border-slate-200]="page !== currentPage" [class.text-slate-600]="page !== currentPage"
                 [class.hover:bg-slate-50]="page !== currentPage">
                 {{ page + 1 }}
