@@ -1125,13 +1125,15 @@ export class KeyVaultService {
    }
 
    // Cabinets
-    listCabinets(orgId: string, params?: { storageLocationId?: string; q?: string; status?: string; cabinetType?: string; page?: number; size?: number }): Observable<any> {
+    listCabinets(orgId: string, params?: { storageLocationId?: string; q?: string; status?: string; cabinetType?: string; page?: number; size?: number; numberOfHooks?: number }): Observable<any> {
       const headers = this.getAuthHeaders();
       const q = new URLSearchParams();
       if (params?.storageLocationId) q.set('storageLocationId', params.storageLocationId);
       if (params?.q) q.set('q', params.q);
       if (params?.status) q.set('status', params.status);
       if (params?.cabinetType) q.set('cabinetType', params.cabinetType);
+      // Hook capacity per cabinet, e.g. 1 for single-key cabinets.
+      if (params?.numberOfHooks != null) q.set('numberOfHooks', String(params.numberOfHooks));
       q.set('page', String(params?.page ?? 0));
       q.set('size', String(params?.size ?? 10));
       const query = q.toString();
