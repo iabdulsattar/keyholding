@@ -23,6 +23,7 @@ export class AllJobsComponent implements OnInit {
   stats: any = {};
   loading = false;
   Math = Math;
+  jobsLoading = false;
 
   filters = {
     q: '',

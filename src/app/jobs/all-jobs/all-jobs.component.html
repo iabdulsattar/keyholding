@@ -144,6 +144,16 @@
              </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
+            @if (jobsLoading) {
+              <tr>
+                <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading jobs...</td>
+              </tr>
+            } @else {
+            @if (jobs.length === 0) {
+              <tr>
+                <td colspan="8" class="px-5 py-8 text-center text-slate-400 h-[320px]">No jobs found for this client.</td>
+              </tr>
+            } @else {                     
             @for (job of jobs; track job.id) {
               <tr class="hover:bg-slate-50 transition">
                 <td class="px-5 py-4 whitespace-nowrap">
@@ -172,6 +182,8 @@
                 </td>
               </tr>
             }
+          }
+        }
           </tbody>
         </table>
       </div>
@@ -208,7 +220,7 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-b-md px-4 py-3 ">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-b-md px-4 py-3 border-t border-slate-200">
       <p class="text-slate-500 text-xs font-medium font-['Inter'] order-2 sm:order-1">
         Showing {{ pagination.totalElements > 0 ? (pagination.page * pagination.size) + 1 : 0 }} to {{ Math.min((pagination.page + 1) * pagination.size, pagination.totalElements) }} of {{ pagination.totalElements }} jobs
       </p>
