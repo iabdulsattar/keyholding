@@ -215,9 +215,9 @@
             class="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50">
             Cancel
           </button>
-          <button type="button" (click)="onSubmit()" [disabled]="loading"
+          <button type="button" (click)="onSubmit()" [disabled]="loading || loadingClient || !!loadError"
             class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
-            {{ loading ? (editMode ? 'Updating...' : 'Saving...') : (editMode ? 'Save Client' : 'Save Client') }}
+            {{ loading ? (editMode ? 'Updating...' : 'Saving...') : (loadingClient ? 'Loading...' : 'Save Client') }}
           </button>
         </div>
         

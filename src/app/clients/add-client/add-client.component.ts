@@ -60,6 +60,12 @@ export class AddClientComponent implements OnInit {
   ];
 
   loading = false;
+  loadingClient = false;
+  loadError = '';
+  /** Id confirmed by the single-client endpoint, used for the update call. */
+  loadedId: string | null = null;
+  /** Full record as returned by the API, so untouched fields survive an update. */
+  original: Client | null = null;
   editMode = false;
   editingClientId: string | null = null;
   submitted = false;
@@ -73,10 +79,13 @@ export class AddClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      if (params['editId']) {
+      const editId = params['editId'];
+      if (editId) {
         this.editMode = true;
-        this.editingClientId = params['editId'];
-        this.loadClient(this.editingClientId as string);
+        this.editingClientId = editId;
+        // The form is filled only from the single-client endpoint; nothing is
+        // carried over from the list row or the client detail view.
+        this.loadClient(editId);
       } else {
         this.editMode = false;
         this.editingClientId = null;
@@ -84,27 +93,73 @@ export class AddClientComponent implements OnInit {
     });
   }
 
+  private getOrgId(): string | null {
+    const remember = localStorage.getItem('remember_device');
+    if (remember === 'true') {
+      return localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
+    }
+    return sessionStorage.getItem('org_id') || sessionStorage.getItem('organizationId')
+      || localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
+  }
+
   private loadClient(clientId: string): void {
-    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-    if (!orgId) return;
-    this.clientService.getClientById(orgId, clientId).subscribe((client: Client | undefined) => {
-      if (!client) return;
-      this.clientCode = client.code;
-      this.clientName = client.name;
-      this.email = client.email;
-      this.phone = client.phone || '';
-      this.website = client.website || '';
-      this.region = client.region;
-      this.address = client.address || '';
-      this.industry = client.industry || '';
-      this.vatNumber = client.vatNumber || '';
-      this.registrationNumber = client.registrationNumber || '';
-      this.contactPerson = client.contactPerson || '';
-      this.designation = client.designation || '';
-      this.contactEmail = client.contactEmail || '';
-      this.notes = client.notes || '';
-      this.status = client.status === 'Active' ? 'active' : 'inactive';
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.loadError = 'Organization not found.';
+      this.loadingClient = false;
+      return;
+    }
+
+    this.loadingClient = true;
+    this.loadError = '';
+    this.clientService.getClientById(orgId, clientId).subscribe({
+      next: (client: Client | undefined) => {
+        this.loadingClient = false;
+        if (!client) {
+          this.loadError = 'Client not found.';
+          return;
+        }
+        this.clientCode = client.code || '';
+        this.clientName = client.name || '';
+        this.email = client.email || '';
+        this.phone = client.phone || '';
+        this.website = client.website || '';
+        this.region = this.regionLabel(client.region);
+        this.address = client.address || '';
+        this.industry = client.industry || '';
+        this.vatNumber = client.vatNumber || '';
+        this.registrationNumber = client.registrationNumber || '';
+        this.contactPerson = client.contactPerson || '';
+        this.designation = client.designation || '';
+        this.contactEmail = client.contactEmail || '';
+        this.notes = client.notes || '';
+        this.status = this.toStatus(client.status);
+        this.loadedId = client.id || clientId;
+        this.original = client;
+      },
+      error: () => {
+        this.loadingClient = false;
+        this.loadError = 'Failed to load client details.';
+      }
     });
+  }
+
+  /** The region may arrive as a plain string or as an object with a name. */
+  private regionLabel(region: any): string {
+    if (!region) return '';
+    if (typeof region === 'string') return region;
+    return region.name || region.label || region.regionName || '';
+  }
+
+  /** `ACTIVE` / `Active` / `true` all mean active; anything else is inactive. */
+  private toStatus(status: any): 'active' | 'inactive' {
+    if (typeof status === 'string') {
+      const value = status.trim().toUpperCase();
+      if (value === 'ACTIVE' || value === 'TRUE') return 'active';
+      if (value === 'INACTIVE' || value === 'FALSE' || value === 'VOID') return 'inactive';
+      return 'active';
+    }
+    return status === true ? 'active' : 'inactive';
   }
 
   sectionErrors: { information: string[]; details: string[]; status: string[] } = {
@@ -161,34 +216,18 @@ export class AddClientComponent implements OnInit {
     // `loading` is only set once the form is valid, so a second click landing
     // before that point would otherwise post a duplicate client.
     if (this.loading) return;
+    // Saving while the API response is still in flight would post the blank
+    // form over the real client record.
+    if (this.editMode && (this.loadingClient || this.loadError)) return;
     if (!this.validate()) return;
 
     this.loading = true;
 
-    const clientData: Client = {
-      id: this.editMode ? (this.editingClientId || '') : '',
-      code: this.editMode ? (this.clientCode || '') : '',
-      name: this.clientName,
-      email: this.email,
-      region: this.region,
-      status: this.status === 'active' ? 'Active' : 'Inactive',
-      sites: 0,
-      users: 0,
-      created: new Date().toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }),
-      phone: this.phone || undefined,
-      website: this.website || undefined,
-      address: this.address || undefined,
-      industry: this.industry || undefined,
-      vatNumber: this.vatNumber || undefined,
-      registrationNumber: this.registrationNumber || undefined,
-      contactPerson: this.contactPerson || undefined,
-      designation: this.designation || undefined,
-      contactEmail: this.contactEmail || undefined,
-      notes: this.notes || undefined,
-    };
+    const clientData = this.buildPayload();
 
-    if (this.editMode && this.editingClientId) {
-      this.clientService.updateClient(this.editingClientId, clientData).subscribe({
+    const targetId = this.loadedId || this.editingClientId;
+    if (this.editMode && targetId) {
+      this.clientService.updateClient(targetId, clientData).subscribe({
         next: () => {
           this.loading = false;
           this.toast.success('Client updated successfully!');
@@ -212,6 +251,40 @@ export class AddClientComponent implements OnInit {
         }
       });
     }
+  }
+
+  /**
+   * On create the record is built from the form alone. On update it starts from
+   * the record the single-client endpoint returned, so server-owned values
+   * (`sites`, `users`, `created`, `createdBy`, `lastUpdated`, `updatedBy`) are
+   * sent back unchanged instead of being reset by the form.
+   */
+  private buildPayload(): Client {
+    const base: Partial<Client> = this.editMode && this.original ? { ...this.original } : {
+      sites: 0,
+      users: 0,
+      created: new Date().toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }),
+    };
+
+    return {
+      ...base,
+      id: this.editMode ? (this.loadedId || this.editingClientId || '') : '',
+      code: this.editMode ? (this.clientCode || this.original?.code || '') : '',
+      name: this.clientName,
+      email: this.email,
+      region: this.region,
+      status: this.status === 'active' ? 'Active' : 'Inactive',
+      phone: this.phone || undefined,
+      website: this.website || undefined,
+      address: this.address || undefined,
+      industry: this.industry || undefined,
+      vatNumber: this.vatNumber || undefined,
+      registrationNumber: this.registrationNumber || undefined,
+      contactPerson: this.contactPerson || undefined,
+      designation: this.designation || undefined,
+      contactEmail: this.contactEmail || undefined,
+      notes: this.notes || undefined,
+    } as Client;
   }
 
   cancel(): void {

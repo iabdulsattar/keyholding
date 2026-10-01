@@ -41,12 +41,18 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   private getOrgId(): string | null {
-    return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    const remember = localStorage.getItem('remember_device');
+    if (remember === 'true') {
+      return localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
+    }
+    return sessionStorage.getItem('org_id') || sessionStorage.getItem('organizationId')
+      || localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
   }
 
   loadInvoiceDetail(): void {
     this.loading = true;
     this.error = '';
+    this.invoice = null;
     const orgId = this.getOrgId();
     if (!orgId || !this.invoiceId) {
       this.loading = false;
@@ -56,8 +62,17 @@ export class InvoiceDetailComponent implements OnInit {
 
     this.subscriptionService.getInvoiceDetail(orgId, this.invoiceId).subscribe({
       next: (res: InvoiceDetailResponse) => {
-        this.invoice = this.mapInvoice(res.data);
+        const raw = res?.data ?? (res as any);
+        if (!raw) {
+          this.loading = false;
+          this.error = 'Invoice not found.';
+          return;
+        }
+        this.invoice = this.mapInvoice(raw);
         this.loading = false;
+        // The invoice payload carries no billing snapshot (`billing` is null), so
+        // the organisation's billing profile fills those fields.
+        if (!this.invoice.hasBilling) this.loadBillingFallback(orgId);
       },
       error: (err: any) => {
         console.error('Failed to load invoice detail', err);
@@ -67,71 +82,123 @@ export class InvoiceDetailComponent implements OnInit {
     });
   }
 
-  private formatCurrency(cents: number | undefined, currency: string): string {
+  /** Fills the billing card from the billing profile when the invoice has none. */
+  private loadBillingFallback(orgId: string): void {
+    this.subscriptionService.getBillingInfo(orgId).subscribe({
+      next: (res: any) => {
+        const profile = res?.data ?? res ?? {};
+        if (!this.invoice) return;
+        const address = [profile.billingAddress, profile.city, profile.postcode, profile.country]
+          .filter(Boolean)
+          .join(', ');
+        this.invoice = {
+          ...this.invoice,
+          companyName: this.invoice.companyName === '—' ? (profile.companyName || '—') : this.invoice.companyName,
+          billingEmail: this.invoice.billingEmail === '—' ? (profile.billingEmail || '—') : this.invoice.billingEmail,
+          billingAddress: this.invoice.billingAddress === '—' ? (address || '—') : this.invoice.billingAddress,
+        };
+      },
+      error: () => { }
+    });
+  }
+
+  private formatCurrency(cents: number | undefined | null, currency: string): string {
     if (cents == null) return '—';
     const amount = (cents / 100).toFixed(2);
     const symbol = currency === 'GBP' ? '£' : currency === 'USD' ? '$' : `${currency} `;
     return `${symbol}${amount}`;
   }
 
-  private formatDate(dateStr: string | undefined): string {
+  private formatDate(dateStr: string | undefined | null): string {
     if (!dateStr) return '—';
     const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return '—';
     return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
 
+  /** `PAID` / `PENDING` / `OVERDUE` / `VOID` become display labels. */
+  private toDisplayStatus(status: any): string {
+    const value = String(status ?? '').trim().toUpperCase();
+    if (value === 'PAID' || value === 'SETTLED') return 'Paid';
+    if (value === 'PENDING') return 'Pending';
+    if (value === 'OVERDUE') return 'Overdue';
+    if (value === 'OPEN' || value === 'UNPAID') return 'Open';
+    if (value === 'VOID' || value === 'CANCELLED' || value === 'CANCELED') return 'Void';
+    return value ? value.charAt(0) + value.slice(1).toLowerCase() : 'Pending';
+  }
+
   private mapInvoice(inv: any): any {
-    const status = inv.paymentStatus || inv.status || 'Pending';
+    const billing = inv.billing ?? {};
+    const currency = inv.currency || 'GBP';
     const billingPeriod = inv.billingPeriod === 'ANNUAL' ? 'Annual' : 'Monthly';
-    const desc = inv.planName ? `${inv.planName} (${billingPeriod})` : (inv.description || `${billingPeriod} subscription`);
+    const planName = inv.planName || '—';
+    const desc = inv.description || (planName !== '—' ? `${planName} (${billingPeriod})` : `${billingPeriod} subscription`);
 
     const subtotal = inv.subtotalCents ?? inv.amountCents ?? 0;
     const vat = inv.vatCents ?? 0;
     const total = inv.totalCents ?? subtotal + vat;
     const vatRate = inv.vatRateBps ?? (vat && subtotal ? Math.round((vat / subtotal) * 10000) : 0);
-    const vatPercent = (vatRate / 100).toFixed(2);
+    const vatPercent = vatRate ? (vatRate / 100).toFixed(vatRate % 100 === 0 ? 0 : 2) : '0';
 
-    const billing = inv.billing || {};
-
-    const features = inv.planFeatures || {};
+    const features = inv.planFeatures ?? {};
     const formatFeature = (val: any) => val === true ? 'Unlimited' : val === false ? '—' : (val ?? '—');
+    const serviceLabel = inv.serviceCode ? String(inv.serviceCode).replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : 'Subscription';
 
     return {
       number: inv.number || inv.invoiceNumber || '—',
-      status: status,
+      status: this.toDisplayStatus(inv.paymentStatus || inv.status),
       description: desc,
       date: this.formatDate(inv.invoiceDate || inv.createdAt),
       dueDate: this.formatDate(inv.dueDate),
       paymentDate: this.formatDate(inv.paidAt),
-      plan: inv.planName || '—',
-      unitPrice: this.formatCurrency(subtotal, inv.currency),
-      amount: this.formatCurrency(subtotal, inv.currency),
-      subtotal: this.formatCurrency(subtotal, inv.currency),
-      vat: this.formatCurrency(vat, inv.currency),
-      total: this.formatCurrency(total, inv.currency),
+      plan: planName,
+      // The line item mirrors the plan that was billed, not a fixed label.
+      itemTitle: serviceLabel,
+      itemSubtitle: `${billingPeriod} access to ${planName}`,
+      itemUnitPrice: this.formatCurrency(subtotal, currency),
+      unitPrice: this.formatCurrency(subtotal, currency),
+      amount: this.formatCurrency(subtotal, currency),
+      subtotal: this.formatCurrency(subtotal, currency),
+      vat: this.formatCurrency(vat, currency),
+      vatLabel: vatRate ? `VAT (${vatPercent}%)` : 'VAT',
+      total: this.formatCurrency(total, currency),
+      currency,
       companyName: billing.companyName || '—',
-      billingEmail: billing.billingEmail || '—',
+      billingEmail: billing.billingEmail || billing.email || '—',
       billingAddress: [billing.billingAddress, billing.city, billing.postcode, billing.country].filter(Boolean).join(', ') || '—',
       billingCycle: billingPeriod,
+      billingPeriodLabel: billingPeriod,
+      periodStart: this.formatDate(inv.periodStart),
       nextBillingDate: this.formatDate(inv.currentPeriodEnd || inv.periodEnd || inv.endDate),
       paymentMethod: inv.paymentMethod || '—',
       pdfUrl: inv.pdfUrl || '',
+      hostedUrl: inv.hostedInvoiceUrl || '',
+      planCode: inv.planCode || '—',
+      serviceCode: inv.serviceCode || '—',
+      hasBilling: !!(billing.companyName || billing.billingEmail || billing.billingAddress),
       planDetails: {
-        name: inv.planName || '—',
-        price: this.formatCurrency(total, inv.currency),
+        name: planName,
+        price: this.formatCurrency(total, currency),
         period: `/${billingPeriod.toLowerCase()}`,
         description: desc,
-        sites: formatFeature(features.max_sites === -1 ? 'Unlimited' : features.max_sites),
-        keys: formatFeature(features.unlimited_keys ? 'Unlimited' : features.max_keys),
+        sites: features.max_sites === -1 ? 'Unlimited' : formatFeature(features.max_sites),
+        keys: features.unlimited_keys || features.max_keys === -1 ? 'Unlimited' : (features.max_key_sets !== undefined ? formatFeature(features.max_key_sets) : formatFeature(features.max_keys)),
         users: formatFeature(features.max_users),
-        jobs: formatFeature(features.max_jobs === -1 ? 'Unlimited' : features.max_jobs),
-        features: Object.entries(features).some(([, val]) => val === -1)
-          ? 'All Enterprise Features'
-          : Object.entries(features)
-              .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
-              .map(([, val]) => formatFeature(val))
-              .join(', ') || '—',
+        jobs: features.max_jobs === -1 ? 'Unlimited' : formatFeature(features.max_jobs),
+        features: this.formatFeatures(features, formatFeature),
       }
     };
+  }
+
+  /** Renders `planFeatures` as readable `Label: value` pairs, skipping extras. */
+  private formatFeatures(features: Record<string, any>, formatFeature: (val: any) => string): string {
+    const entries = Object.entries(features)
+      .filter(([key]) => !key.startsWith('extra_') && key !== 'unlimited_keys')
+      .map(([key, val]) => {
+        const label = key.replace(/^max_/, '').replace(/_/g, ' ');
+        const shown = val === -1 ? 'Unlimited' : formatFeature(val);
+        return `${label.charAt(0).toUpperCase()}${label.slice(1)}: ${shown}`;
+      });
+    return entries.join(', ') || '—';
   }
 }

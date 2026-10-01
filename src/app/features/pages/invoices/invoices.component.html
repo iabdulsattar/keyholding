@@ -94,7 +94,7 @@
       <path d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
       </svg>
       <input type="text" placeholder="Search by invoice no. or description"
-             [(ngModel)]="searchQuery"
+             [(ngModel)]="searchQuery" (ngModelChange)="onFilterChange()"
              class="w-full pl-11 pr-4 py-3 rounded-md shadow-xs bg-white text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400">
     </div>
     <button class="flex items-center gap-3 px-4 py-3 rounded-md shadow-xs bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 whitespace-nowrap">
@@ -111,7 +111,7 @@
       01 Jan 2025 - 31 Dec 2026
     </button>
     <div class="relative">
-      <select [(ngModel)]="statusFilter" class="appearance-none pl-4 pr-10 py-3 rounded-md shadow-xs bg-white text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 w-full lg:w-auto">
+      <select [(ngModel)]="statusFilter" (ngModelChange)="onFilterChange()" class="appearance-none pl-4 pr-10 py-3 rounded-md shadow-xs bg-white text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 w-full lg:w-auto">
         <option>All Status</option>
         <option>Paid</option>
         <option>Pending</option>
@@ -155,7 +155,7 @@
                <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">No invoices found.</td>
              </tr>
            } @else {
-             @for (inv of filteredInvoices; track inv.no) {
+@for (inv of pagedInvoices; track inv.no) {
             <tr class="hover:bg-slate-50/60 transition">
               <td class="px-6 py-4 text-slate-500 text-xs font-semibold font-['Inter'] whitespace-nowrap">{{ inv.no }}</td>
               <td class="px-4 py-4 text-slate-500 text-xs font-normal font-['Inter'] whitespace-nowrap">{{ inv.date }}</td>
@@ -196,15 +196,30 @@
       </table>
     </div>
     <div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 ">
-      <p class="text-slate-600 text-xs font-normal font-['Inter']">Showing 1 to 10 of {{ totalInvoices }} Invoices</p>
+      <p class="text-slate-600 text-xs font-normal font-['Inter']">Showing {{ rangeStart }} to {{ rangeEnd }} of {{ totalFiltered }} Invoices</p>
       <div class="flex items-center gap-2">
-        <button class="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50" aria-label="Previous page">
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+          class="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Previous page">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.5 9L4.5 6L7.5 3" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
-        <button class="w-8 h-8 rounded-md bg-blue-700 text-white font-bold text-xs font-['Inter']">1</button>
-        <button class="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50" aria-label="Next page">
+        @for (page of pageNumbers; track $index) {
+          @if (page === '...') {
+            <span class="w-8 h-8 flex items-center justify-center text-slate-400 text-xs">...</span>
+          } @else {
+            <button (click)="goToPage(page)"
+              class="w-8 h-8 rounded-md font-bold text-xs font-['Inter']"
+              [class.bg-blue-700]="page === currentPage"
+              [class.text-white]="page === currentPage"
+              [class.bg-white]="page !== currentPage"
+              [class.border]="page !== currentPage"
+              [class.border-slate-200]="page !== currentPage"
+              [class.text-slate-600]="page !== currentPage">{{ page }}</button>
+          }
+        }
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"
+          class="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Next page">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M4.5 9L7.5 6L4.5 3" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
   </svg>

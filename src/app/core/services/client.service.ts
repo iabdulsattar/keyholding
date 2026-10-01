@@ -154,7 +154,12 @@ export class ClientService {
   constructor(private keyVault: KeyVaultService) {}
 
   private getOrgId(): string | null {
-    return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    const remember = localStorage.getItem('remember_device');
+    if (remember === 'true') {
+      return localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
+    }
+    return sessionStorage.getItem('org_id') || sessionStorage.getItem('organizationId')
+      || localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
   }
 
   private formatDate(value: any): string {

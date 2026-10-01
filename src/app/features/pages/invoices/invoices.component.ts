@@ -33,6 +33,9 @@ export class InvoicesComponent implements OnInit {
   dateFrom = '';
   dateTo = '';
 
+  pageSize = 10;
+  currentPage = 1;
+
   statusStyles: Record<string, string> = {
     Paid: 'bg-emerald-50 text-emerald-600',
     Pending: 'bg-amber-50 text-amber-600',
@@ -137,6 +140,60 @@ export class InvoicesComponent implements OnInit {
     return result;
   }
 
+  /** Filter changes are applied client-side, so only the page needs resetting. */
+  onFilterChange(): void {
+    this.resetPage();
+  }
+
+  get pagedInvoices(): InvoiceRow[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredInvoices.slice(start, start + this.pageSize);
+  }
+
+  get totalFiltered(): number {
+    return this.filteredInvoices.length;
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.totalFiltered / this.pageSize));
+  }
+
+  get rangeStart(): number {
+    return this.totalFiltered === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get rangeEnd(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalFiltered);
+  }
+
+  get pageNumbers(): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+    const total = this.totalPages;
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+      return pages;
+    }
+    pages.push(1);
+    if (this.currentPage > 3) pages.push('...');
+    const start = Math.max(2, this.currentPage - 1);
+    const end = Math.min(total - 1, this.currentPage + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (this.currentPage < total - 2) pages.push('...');
+    pages.push(total);
+    return pages;
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+    }
+  }
+
+  /** Any filter change must bring the reader back to the first page. */
+  private resetPage(): void {
+    this.currentPage = 1;
+  }
+
   private getOrgId(): string | null {
     return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
   }
@@ -182,6 +239,7 @@ export class InvoicesComponent implements OnInit {
     }).subscribe({
       next: (res: InvoiceListResponse) => {
         this.invoices = (res?.data ?? []).map((inv: Invoice) => this.mapInvoice(inv));
+        this.resetPage();
         this.loading = false;
       },
       error: (err: any) => {
