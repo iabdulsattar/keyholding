@@ -150,7 +150,7 @@
             @if (loading) {
               <tr><td colspan="10" class="py-8 text-center text-slate-400">Loading keys...</td></tr>
             } @else if (keys.length === 0) {
-              <tr><td colspan="10" class="py-8 text-center text-slate-400">No matching key records found.</td></tr>
+              <tr><td colspan="10" class="py-8 text-center text-slate-400 h-[320px]">No matching key records found.</td></tr>
             } @else {
               @for (k of keys; track k.id) {
               <tr class="hover:bg-slate-50/70 transition">
