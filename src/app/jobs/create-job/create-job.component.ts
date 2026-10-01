@@ -93,6 +93,8 @@ export class CreateJobComponent implements OnInit {
   showAddJobTypeModal = false;
   newJobTypeName = '';
   keys: Key[] = [];
+  /** Full availability response; search, status filter and paging run over it. */
+  availableKeys: Key[] = [];
   keysLoading = true;
   currentPage = 0;
   pageSize = 6;
@@ -473,6 +475,7 @@ export class CreateJobComponent implements OnInit {
     this.activeTab = tab;
     this.job.scheduleType = tab === 0 ? 'OPEN' : 'SCHEDULED';
     this.updateDuration();
+    this.refreshKeyAvailability();
     // Each tab validates only its own fields, so anything the previous tab
     // flagged must not keep blocking the form.
     delete this.errors['date'];
@@ -519,16 +522,28 @@ export class CreateJobComponent implements OnInit {
   onDateChange(event: any): void {
     const dateStr = event?.dateStr || this.job.date;
     this.job.date = this.toApiDate(dateStr);
+    this.refreshKeyAvailability();
   }
 
   onStartTimeChange(time: string): void {
     this.job.startTime = this.toApiTime(time || this.job.startTime);
     this.updateDuration();
+    this.refreshKeyAvailability();
   }
 
   onEndTimeChange(time: string): void {
     this.job.endTime = this.toApiTime(time || this.job.endTime);
     this.updateDuration();
+    this.refreshKeyAvailability();
+  }
+
+  /**
+   * Availability depends on the job's schedule window, so an open key list has
+   * to be re-fetched once the date, times or schedule kind change.
+   */
+  private refreshKeyAvailability(): void {
+    if (!this.showAddKeysModal) return;
+    this.loadKeys(0);
   }
 
   private updateDuration(): void {
@@ -682,58 +697,84 @@ export class CreateJobComponent implements OnInit {
       return;
     }
 
-    this.keyVault.listKeys(orgId, {
-      page,
-      size: this.pageSize,
+    this.keyVault.getKeyAvailability(orgId, {
+      scheduleType: this.job.scheduleType,
+      // Only a scheduled job has a window; an open job's due date must not be
+      // sent here or the API would filter on the wrong dates.
+      scheduledDate: this.isOpenSchedule ? undefined : (this.job.date || undefined),
+      startTime: this.isOpenSchedule ? undefined : (this.job.startTime || undefined),
+      endTime: this.isOpenSchedule ? undefined : (this.job.endTime || undefined),
       clientId: this.selectedClient || undefined,
       // The modal's own site filter narrows the form's site rather than
       // replacing it, so a job with no site set can still filter by site.
-      siteId: this.keySiteFilter || this.selectedSite || undefined,
-      q: this.keySearch.trim() || undefined,
-      status: this.keyStatusFilter || undefined
+      siteId: this.keySiteFilter || this.selectedSite || undefined
     }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
-        const pageKeys = items.map((k: any) => {
-          const status = k.status ?? 'IN_STORAGE';
-          const mappedStatus = status === 'IN_STORAGE' ? 'Available' : 'Issued';
+        // Keys already chosen must survive a refresh of the availability list.
+        const selectedIds = new Set(this.keys.filter((k: Key) => k.selected).map((k: Key) => k.id));
+        this.availableKeys = items.map((k: any) => {
+          const rawStatus = String(k.status ?? k.keyStatus ?? 'IN_STORAGE');
           return {
             code: k.keyCode ?? '',
-            id: k.id ?? '',
+            id: k.id ?? k.keyId ?? '',
             name: k.name ?? '',
-            cabinet: k.storageLocation ?? '',
-            hook: '',
+            cabinet: k.storageLocationName ?? k.storageLocation ?? '',
+            hook: k.hookNo != null ? String(k.hookNo) : '',
             site: k.siteName ?? '',
             room: k.description ?? '',
-            status: mappedStatus,
-            selected: false
-          };
+            status: rawStatus === 'IN_STORAGE' || rawStatus === 'AVAILABLE' ? 'Available' : 'Issued',
+            selected: selectedIds.has(k.id ?? k.keyId ?? '')
+          } as Key;
         });
-        // Keep keys chosen on another page (or preloaded when editing) selected.
-        const pageIds = new Set(pageKeys.map((k: Key) => k.id));
-        const stillSelected = this.keys.filter((k: Key) => k.selected && !pageIds.has(k.id));
-        this.keys = [...pageKeys, ...stillSelected];
-        this.totalElements = res?.meta?.totalElements ?? items.length;
-        this.totalPages = res?.meta?.totalPages ?? Math.max(1, Math.ceil(items.length / this.pageSize));
-        this.currentPage = page;
+        // The endpoint takes no paging or filter arguments, so the search box,
+        // status filter and pager are applied to the returned set.
+        this.applyKeyFilters(page);
         this.keysLoading = false;
       },
       error: () => {
+        this.availableKeys = [];
+        this.keys = [];
+        this.totalElements = 0;
+        this.totalPages = 1;
         this.keysLoading = false;
       }
     });
   }
 
+  /** Client-side search, status filter and paging over the available key set. */
+  private applyKeyFilters(page = this.currentPage): void {
+    const q = this.keySearch.trim().toLowerCase();
+    const filtered = this.availableKeys.filter((k: Key) => {
+      const matchesQuery = !q || (k.code || '').toLowerCase().includes(q) || (k.name || '').toLowerCase().includes(q);
+      const matchesStatus = !this.keyStatusFilter || (k.status || '').toLowerCase() === this.keyStatusFilter.toLowerCase();
+      return matchesQuery && matchesStatus;
+    });
+
+    this.totalElements = filtered.length;
+    this.totalPages = Math.max(1, Math.ceil(filtered.length / this.pageSize));
+    this.currentPage = Math.min(page, this.totalPages - 1);
+
+    const start = this.currentPage * this.pageSize;
+    const pageKeys = filtered.slice(start, start + this.pageSize);
+    const pageIds = new Set(pageKeys.map((k: Key) => k.id));
+    // Keys chosen on another page (or preloaded when editing) stay listed so
+    // the selection is not lost while paging or filtering.
+    const stillSelected = this.availableKeys.filter((k: Key) => k.selected && !pageIds.has(k.id));
+    this.keys = [...pageKeys, ...stillSelected];
+  }
+
   goToPage(page: number): void {
     if (page >= 0 && page < this.totalPages) {
-      this.loadKeys(page);
+      this.currentPage = page;
+      this.applyKeyFilters(page);
     }
   }
 
   onKeySearchChange(): void {
     this.currentPage = 0;
-    this.loadKeys(0);
+    this.applyKeyFilters(0);
   }
 
   onKeySiteFilterChange(siteId: string): void {
@@ -745,18 +786,18 @@ export class CreateJobComponent implements OnInit {
   onKeyStatusFilterChange(status: string): void {
     this.keyStatusFilter = status || '';
     this.currentPage = 0;
-    this.loadKeys(0);
+    this.applyKeyFilters(0);
   }
 
   prevPage(): void {
     if (this.currentPage > 0) {
-      this.loadKeys(this.currentPage - 1);
+      this.applyKeyFilters(this.currentPage - 1);
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages - 1) {
-      this.loadKeys(this.currentPage + 1);
+      this.applyKeyFilters(this.currentPage + 1);
     }
   }
 
@@ -908,6 +949,9 @@ export class CreateJobComponent implements OnInit {
   }
 
   createJob(): void {
+    // A second click while the first request is in flight would create a
+    // duplicate job, so the submit is ignored until it settles.
+    if (this.saving) return;
     const orgId = this.getOrgId();
     if (!orgId) return;
 
@@ -987,6 +1031,16 @@ export class CreateJobComponent implements OnInit {
 
   get selectedJobTypeLabel(): string {
     return this.jobTypeOptions.find(o => o.value === this.selectedJobType)?.label || 'Select job type';
+  }
+
+  /**
+   * Visitor type only applies to escorted/third party entry. Lock and unlock
+   * jobs carry no visitor, so the field is hidden rather than left misleading.
+   */
+  get showVisitorType(): boolean {
+    const label = this.selectedJobTypeLabel.trim().toLowerCase();
+    if (!this.selectedJobType || label === 'select job type') return false;
+    return label === THIRD_PARTY_ACCESS_JOB_TYPE.toLowerCase();
   }
 
   get selectedSiteLabel(): string {

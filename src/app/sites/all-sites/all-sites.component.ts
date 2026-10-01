@@ -24,6 +24,7 @@ export class AllSitesComponent implements OnInit {
   allSites: SiteRecord[] = [];
   clients: Client[] = [];
   loading = false;
+  deletingSiteId = '';
   searchQuery = '';
   clientFilter = '';
   siteTypeFilter = '';
@@ -96,6 +97,33 @@ export class AllSitesComponent implements OnInit {
   onSearch(): void {
     this.currentPage = 1;
     this.loadAllSites();
+  }
+
+  /**
+   * Deletes the site straight from the listing, without the confirmation
+   * dialog, and reloads the current page so the totals stay correct.
+   */
+  deleteSite(site: SiteRecord): void {
+    const orgId = this.getOrgId();
+    if (!orgId || !site?.id || this.deletingSiteId === site.id) return;
+    this.deletingSiteId = site.id;
+    this.clientService.deleteSite(orgId, site.id).subscribe({
+      next: () => {
+        this.deletingSiteId = '';
+        // Stepping back keeps the page valid when the last row was removed.
+        if (this.allSites.length === 1 && this.currentPage > 1) {
+          this.currentPage--;
+        }
+        this.loadAllSites();
+      },
+      error: () => {
+        this.deletingSiteId = '';
+      }
+    });
+  }
+
+  private getOrgId(): string {
+    return localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
   }
 
   onClientChange(): void {

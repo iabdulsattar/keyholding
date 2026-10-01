@@ -158,6 +158,9 @@ export class AddClientComponent implements OnInit {
   }
 
   onSubmit(): void {
+    // `loading` is only set once the form is valid, so a second click landing
+    // before that point would otherwise post a duplicate client.
+    if (this.loading) return;
     if (!this.validate()) return;
 
     this.loading = true;

@@ -104,6 +104,8 @@ securityLevel = '';
     details: []
   };
   editMode = false;
+  /** True from submit until the request (and any uploads) settle. */
+  submitting = false;
   editingSiteId: string | null = null;
   clientId = '';
   clientName = '';
@@ -538,6 +540,9 @@ securityLevel = '';
   }
 
   submitSiteForm(): void {
+    // Guard against a double click or an Enter keypress sending a second
+    // request while the first one is still in flight.
+    if (this.submitting) return;
     if (!this.validate()) return;
 
     const accessScheduleMap: Record<string, 'BUSINESS_HOURS' | 'BY_APPOINTMENT' | '24_7' | 'RESTRICTED' | 'ALWAYS'> = {
@@ -622,6 +627,7 @@ securityLevel = '';
       }
     };
 
+    this.submitting = true;
     if (this.editMode && this.editingSiteId) {
       this.clientService.updateSite(orgId, this.editingSiteId, site).subscribe({
         next: (res: any) => {
@@ -629,6 +635,7 @@ securityLevel = '';
           onSaved(createdId);
         },
         error: () => {
+          this.submitting = false;
           this.toast.error('Failed to update site. Please try again.');
         }
       });
@@ -639,6 +646,7 @@ securityLevel = '';
           onSaved(createdId);
         },
         error: () => {
+          this.submitting = false;
           this.toast.error('Failed to save site. Please try again.');
         }
       });
@@ -677,6 +685,7 @@ securityLevel = '';
   }
 
   private finishSiteSubmit(): void {
+    this.submitting = false;
     this.toast.success(this.editMode ? 'Site updated successfully!' : 'Site saved successfully!');
     const destination = this.returnUrl ? [this.returnUrl] : this.clientId ? ['/clients', this.clientId] : ['/sites/all-sites'];
     setTimeout(() => this.router.navigate(destination), 800);

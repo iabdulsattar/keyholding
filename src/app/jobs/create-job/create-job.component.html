@@ -176,6 +176,7 @@
                     }
                     <p class="text-[9px] text-slate-500 mt-1.5">Enter a short title for this job.</p>
                 </div>
+                @if (showVisitorType) {
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Visitor Type                         
                     </label>
@@ -192,6 +193,7 @@
                     
                     <p class="text-[9px] text-slate-500  mt-1.5">Enter type of visitor</p>
                 </div>
+                }
                 
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Reference</label>
@@ -892,7 +894,7 @@
                         <rect width="16" height="16" fill="white" />
                     </clipPath>
                 </defs>
-            </svg>{{ submitLabel }} </button>
+            </svg>{{ saving ? 'Saving...' : submitLabel }} </button>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-6 text-sm">
