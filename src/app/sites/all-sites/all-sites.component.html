@@ -135,7 +135,7 @@
             @if (loading) {
               <tr><td colspan="8" class="py-8 text-center text-slate-400">Loading sites...</td></tr>
             } @else if (allSites.length === 0) {
-              <tr><td colspan="8" class="py-8 text-center text-slate-400">No matching site records found.</td></tr>
+              <tr><td colspan="8" class="py-8 text-center text-slate-400 h-[320px]">No matching site records found.</td></tr>
             } @else {
               @for (s of allSites; track s.id) {
               <tr class="hover:bg-slate-50/70 transition-colors">

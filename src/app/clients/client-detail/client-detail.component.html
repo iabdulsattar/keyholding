@@ -357,7 +357,7 @@
                     </tr>
                   } @else if (!activitiesLoaded) {
                     <tr>
-                      <td colspan="4" class="py-6 px-4 text-center text-slate-500 text-sm">Open the Activity Log tab to view activity.</td>
+                      <td colspan="4" class="py-6 px-4 text-center text-slate-500 text-sm h-[210px]">Open the Activity Log tab to view activity.</td>
                     </tr>
                   } @else if (activities.length === 0) {
                     <tr>
@@ -529,7 +529,7 @@
                 }
                 @empty {
                 <tr>
-                  <td colspan="10" class="py-8 text-center text-slate-400 font-medium">No keys found matching criteria.</td>
+                  <td colspan="10" class="py-8 text-center text-slate-400 font-medium h-[320px]">No keys found matching criteria.</td>
                 </tr>
                 }
               </tbody>
@@ -649,7 +649,7 @@
                    </tr>
                    } @empty {
                    <tr>
-                     <td colspan="10" class="py-8 text-center text-slate-400 font-medium">No site assets found matching criteria.</td>
+                     <td colspan="10" class="py-8 text-center text-slate-400 font-medium h-[320px]">No site assets found matching criteria.</td>
                    </tr>
                    }
                  </tbody>
@@ -812,7 +812,7 @@
                   } @else {
                     @if (jobs.length === 0) {
                       <tr>
-                        <td colspan="8" class="px-5 py-8 text-center text-slate-400">No jobs found for this client.</td>
+                        <td colspan="8" class="px-5 py-8 text-center text-slate-400 h-[320px]">No jobs found for this client.</td>
                       </tr>
                     } @else {
                       @for (job of jobs; track job.id) {
