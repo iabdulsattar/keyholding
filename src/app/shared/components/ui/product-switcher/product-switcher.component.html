@@ -47,8 +47,12 @@
         <ng-container *ngIf="product.status === 'current'; else productRow">
           <div role="menuitem" aria-current="true" aria-disabled="true"
             class="flex cursor-default items-center gap-3 rounded-md p-3 bg-blue-50">
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md {{ product.iconBg }} text-white">
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="product.icon"></svg>
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-blue-600 text-white">
+              <!-- <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="product.icon"></svg> -->
+              <svg width="20" height="20" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.73862 6.44444L8.49612 10.7074C8.5046 10.7576 8.49756 10.8092 8.47593 10.8553C8.4543 10.9014 8.41912 10.9398 8.37509 10.9653C8.33105 10.9909 8.28027 11.0024 8.22952 10.9983C8.17878 10.9942 8.13049 10.9747 8.09112 10.9424L6.30112 9.59893C6.21471 9.53438 6.10973 9.4995 6.00187 9.4995C5.89401 9.4995 5.78903 9.53438 5.70262 9.59893L3.90962 10.9419C3.87028 10.9742 3.82205 10.9936 3.77137 10.9977C3.72068 11.0018 3.66996 10.9903 3.62595 10.9649C3.58195 10.9394 3.54676 10.9011 3.52508 10.8551C3.5034 10.8091 3.49626 10.7576 3.50462 10.7074L4.26162 6.44444M9 3.99961C9 5.65647 7.65685 6.99961 6 6.99961C4.34315 6.99961 3 5.65647 3 3.99961C3 2.34276 4.34315 0.999611 6 0.999611C7.65685 0.999611 9 2.34276 9 3.99961Z" stroke="white" stroke-width="0.8" stroke-linecap="round"/>
+              </svg>
+
             </span>
             <span class="min-w-0 flex-1">
               <span class="block text-sm font-semibold text-slate-900">{{ product.name }}</span>
@@ -63,9 +67,12 @@
             [disabled]="product.status === 'coming-soon' || isSwitching"
             (click)="selectProduct(product); $event.preventDefault()">
             <div class="flex items-center gap-3">
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md {{ product.iconBg }} text-white">
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="product.icon"></svg>
-               
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-blue-600 text-white">
+              <!-- <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="product.icon"></svg> -->
+              <svg width="20" height="20" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.73862 6.44444L8.49612 10.7074C8.5046 10.7576 8.49756 10.8092 8.47593 10.8553C8.4543 10.9014 8.41912 10.9398 8.37509 10.9653C8.33105 10.9909 8.28027 11.0024 8.22952 10.9983C8.17878 10.9942 8.13049 10.9747 8.09112 10.9424L6.30112 9.59893C6.21471 9.53438 6.10973 9.4995 6.00187 9.4995C5.89401 9.4995 5.78903 9.53438 5.70262 9.59893L3.90962 10.9419C3.87028 10.9742 3.82205 10.9936 3.77137 10.9977C3.72068 11.0018 3.66996 10.9903 3.62595 10.9649C3.58195 10.9394 3.54676 10.9011 3.52508 10.8551C3.5034 10.8091 3.49626 10.7576 3.50462 10.7074L4.26162 6.44444M9 3.99961C9 5.65647 7.65685 6.99961 6 6.99961C4.34315 6.99961 3 5.65647 3 3.99961C3 2.34276 4.34315 0.999611 6 0.999611C7.65685 0.999611 9 2.34276 9 3.99961Z" stroke="white" stroke-width="0.8" stroke-linecap="round"/>
+              </svg>
+ 
 
             </span>
             <span class="min-w-0 flex-1">
