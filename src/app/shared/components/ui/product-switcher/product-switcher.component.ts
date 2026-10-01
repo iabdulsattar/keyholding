@@ -7,8 +7,8 @@ export interface ProductItem {
   name: string;
   description: string;
   serviceCode: string;
-  icon: string;
-  iconBg: string;
+  // icon: string;
+  // iconBg: string;
   status: 'current' | 'subscribed' | 'available' | 'coming-soon';
   actionLabel?: string;
   actionHref?: string;
@@ -28,8 +28,8 @@ export class ProductSwitcherComponent implements OnInit {
       name: 'KeyVault Pro',
       description: 'Enterprise Key Management',
       serviceCode: 'key-vault',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-blue-600',
+      // icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+      // iconBg: 'bg-blue-600',
       status: 'current',
     },
     {
@@ -37,8 +37,8 @@ export class ProductSwitcherComponent implements OnInit {
       name: 'eDOB',
       description: 'Digital Occurrence Management',
       serviceCode: 'edob',
-      icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-blue-600',
+      // icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+      // iconBg: 'bg-blue-600',
       status: 'available',
     },
     {
@@ -46,8 +46,8 @@ export class ProductSwitcherComponent implements OnInit {
       name: 'MiSentinelSOS',
       description: 'Lone Worker Safety',
       serviceCode: 'misentinel',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-emerald-600',
+      // icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+      // iconBg: 'bg-emerald-600',
       status: 'coming-soon',
     },
   ];
