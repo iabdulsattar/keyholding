@@ -31,7 +31,7 @@ export class TagsInputComponent {
   get containerClasses(): string {
     if (this.draftInvalid) return 'border-red-400 ring-2 ring-red-100';
     if (this.duplicateError) return 'border-amber-400 ring-2 ring-amber-100';
-    return 'border-slate-300 focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-100';
+    return 'border-slate-200 focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-100';
   }
 
   focusInput(): void {
