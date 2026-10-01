@@ -701,7 +701,7 @@
           </div>
 
           <div class="lg:col-span-7 flex">
-          <a [routerLink]="['/jobs/create-job']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+          <a [routerLink]="['/jobs/create-job']" [queryParams]="{ clientId: clientId, returnUrl: '/clients/' + clientId }" class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -860,7 +860,7 @@
                   @if (p === '...') {
                     <span class="px-1 text-slate-400 text-sm">...</span>
                   } @else {
-                    <button (click)="jobsGoToPage(p)" [class.bg-blue-600]="jobsPage === p" [class.text-white]="jobsPage === p" [class.border-slate-200]="jobsPage !== p" [class.text-slate-600]="jobsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md border text-xs font-semibold hover:bg-slate-50">{{ p  }}</button>
+                    <button (click)="jobsGoToPage(p)" [class.bg-blue-600]="jobsPage === p" [class.border-blue-600]="jobsPage === p" [class.hover:bg-blue-700]="jobsPage === p" [class.text-white]="jobsPage === p" [class.border-slate-200]="jobsPage !== p" [class.text-slate-600]="jobsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md border text-xs font-semibold ">{{ p  }}</button>
                   }
                 }
                 <button (click)="jobsNextPage()" [disabled]="jobsPage >= jobsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
@@ -942,7 +942,7 @@
                      @if (page === '...') {
                        <span class="px-1 text-slate-400 text-sm">&#8230;</span>
                      } @else {
-                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-semibold border" [class.bg-blue-600]="activitiesPage === page" [class.text-white]="activitiesPage === page" [class.border-blue-600]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
+                       <button (click)="activitiesGoToPage(page)" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-semibold border" [class.bg-blue-600]="activitiesPage === page" [class.hover:bg-blue-700]="activitiesPage === page" [class.text-white]="activitiesPage === page" [class.border-blue-600]="activitiesPage === page" [class.text-slate-600]="activitiesPage !== page" [class.hover:bg-slate-50]="activitiesPage !== page">{{ page }}</button>
                      }
                    }
                    <button (click)="activitiesNextPage()" [disabled]="activitiesPage === activitiesTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
@@ -973,7 +973,7 @@
            </div>
 
 <div class="lg:col-span-7 flex">
-           <a [routerLink]="['/clients', clientId, 'add-document']" class="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
+           <a [routerLink]="['/clients', clientId, 'add-document']" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-sm font-semibold ml-auto">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v13M12 5l-4 4M12 5l4 4M5 19h14"/></svg>
                   Upload Document
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
@@ -1174,7 +1174,7 @@
                     @if (p === '...') {
                       <span class="px-1 text-slate-400 text-sm">...</span>
                     } @else {
-                      <button (click)="documentsGoToPage(p)" [class.bg-blue-600]="documentsPage === p" [class.text-white]="documentsPage === p" [class.border-blue-600]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold border">{{ p }}</button>
+                      <button (click)="documentsGoToPage(p)" [class.bg-blue-600]="documentsPage === p" [class.hover:bg-blue-700]="documentsPage === p" [class.text-white]="documentsPage === p" [class.border-blue-600]="documentsPage === p" [class.text-slate-600]="documentsPage !== p" [class.hover:bg-slate-50]="documentsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold border">{{ p }}</button>
                     }
                   }
                   <button (click)="documentsNextPage()" [disabled]="documentsPage === documentsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
@@ -1205,7 +1205,7 @@
            </div>
 
            <div class="lg:col-span-7 flex">
-           <a [routerLink]="['/clients', clientId, 'add-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+           <a [routerLink]="['/clients', clientId, 'add-contact']" class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
              </svg>
@@ -1369,7 +1369,7 @@
                       @if (p === '...') {
                         <span class="px-1 text-slate-400 text-sm">...</span>
                       } @else {
-                        <button (click)="contactsGoToPage(p)" [class.bg-blue-600]="contactsPage === p" [class.text-white]="contactsPage === p" [class.border-blue-600]="contactsPage === p" [class.text-slate-600]="contactsPage !== p" [class.hover:bg-slate-50]="contactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
+                        <button (click)="contactsGoToPage(p)" [class.bg-blue-600]="contactsPage === p" [class.hover:bg-blue-700]="contactsPage === p" [class.text-white]="contactsPage === p" [class.border-blue-600]="contactsPage === p" [class.text-slate-600]="contactsPage !== p" [class.hover:bg-slate-50]="contactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium border">{{ p }}</button>
                       }
                     }
                     <button (click)="contactsNextPage()" [disabled]="contactsPage === contactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
@@ -1406,7 +1406,7 @@
            </div>
 
            <div class="lg:col-span-7 flex">
-           <a [routerLink]="['/clients', clientId, 'add-emergency-contact']" class="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
+           <a [routerLink]="['/clients', clientId, 'add-emergency-contact']" class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-slate-50 font-semibold text-sm font-['Inter'] px-5 py-3 rounded-md shadow-xs whitespace-nowrap ml-auto">
              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                <path d="M2.91626 7.00006H11.0839M7.00006 2.91626V11.0839" stroke="white" stroke-width="2" stroke-linecap="round"/>
              </svg>
@@ -1566,7 +1566,7 @@
                   @if (p === '...') {
                     <span class="px-1 text-slate-400 text-sm">...</span>
                   } @else {
-                    <button (click)="emergencyContactsGoToPage(p)" [class.bg-blue-600]="emergencyContactsPage === p" [class.text-white]="emergencyContactsPage === p" [class.border-blue-600]="emergencyContactsPage === p" [class.text-slate-600]="emergencyContactsPage !== p" [class.hover:bg-slate-50]="emergencyContactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-semibold border">{{ p }}</button>
+                    <button (click)="emergencyContactsGoToPage(p)" [class.bg-blue-600]="emergencyContactsPage === p" [class.hover:bg-blue-700]="emergencyContactsPage === p" [class.text-white]="emergencyContactsPage === p" [class.border-blue-600]="emergencyContactsPage === p" [class.text-slate-600]="emergencyContactsPage !== p" [class.hover:bg-slate-50]="emergencyContactsPage !== p" class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-semibold border">{{ p }}</button>
                   }
                 }
                 <button (click)="emergencyContactsNextPage()" [disabled]="emergencyContactsPage === emergencyContactsTotalPages" class="w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" aria-label="Next page">
