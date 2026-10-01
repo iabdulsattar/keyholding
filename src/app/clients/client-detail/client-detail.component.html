@@ -1151,6 +1151,11 @@
                       </td>
                     </tr>
                   }
+                  @empty {
+                 <tr>
+                   <td colspan="8" class="py-8 text-center text-slate-400 font-medium h-[320px]">No documents found.</td>
+                 </tr>
+               }
                 </tbody>
               </table>
             </div>
@@ -1341,6 +1346,11 @@
                         </td>
                  </tr>
                     }
+                @empty {
+                 <tr>
+                   <td colspan="8" class="py-8 text-center text-slate-400 font-medium h-[320px] text-sm">No contacts found.</td>
+                 </tr>
+                }  
                   </tbody>
                </table>
              </div>
@@ -1536,7 +1546,7 @@
                }
                @empty {
                  <tr>
-                   <td colspan="8" class="py-8 text-center text-slate-400 font-medium">No emergency contacts found.</td>
+                   <td colspan="8" class="py-8 text-center text-slate-400 font-medium h-[320px]">No emergency contacts found.</td>
                  </tr>
                }
              </tbody>
