@@ -72,6 +72,11 @@ export const routes: Routes = [
             title: 'Complete Your Subscription | KeyVault Pro'
           },
           {
+            path: 'settings/incident-escalation',
+            loadComponent: () => import('./settings/incident-escalation/incident-escalation.component').then(m => m.IncidentEscalationComponent),
+            title: 'Incident Escalation | KeyVault Pro'
+          },
+          {
             path: 'clients',
             loadComponent: () => import('./clients/clients.component').then(m => m.ClientsComponent),
             title: 'Clients | KeyVault Pro'

@@ -1,0 +1,42 @@
+<div class="w-full max-w-md">
+  <div class="bootstrap-tagsinput flex min-h-9 w-full cursor-text flex-wrap items-center gap-1.5 rounded-md border bg-white px-2 py-1.5 transition-colors"
+       [ngClass]="containerClasses"
+       (click)="focusInput()">
+
+    @for (tag of tags; track tag) {
+      <span class="tag label label-info inline-flex max-w-full items-center gap-1 rounded bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-100">
+        <span class="truncate">{{ tag }}</span>
+        <span data-role="remove"
+              role="button"
+              tabindex="0"
+              class="remove cursor-pointer text-blue-400 hover:text-blue-700"
+              [attr.aria-label]="'Remove ' + tag"
+              (click)="remove(tag, $event)"
+              (keydown.enter)="remove(tag, $event)"
+              (keydown.space)="remove(tag, $event); $event.preventDefault()">
+          <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </span>
+      </span>
+    }
+
+    <input #tagInput
+           type="text"
+           name="tags"
+           autocomplete="off"
+           [attr.placeholder]="placeholder"
+           [attr.size]="inputSize"
+           [disabled]="disabled"
+           [(ngModel)]="draft"
+           (ngModelChange)="onDraftInput()"
+           (keydown)="onKeydown($event)"
+           (paste)="onPaste($event)"
+           (blur)="commit()"
+           class="min-w-[6rem] flex-1 border-0 bg-transparent p-0 text-xs text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed" />
+  </div>
+
+  @if (draftInvalid) {
+    <p class="mt-1 text-xs text-red-500">{{ invalidMessage }}</p>
+  } @else if (duplicateError) {
+    <p class="mt-1 text-xs text-amber-500">{{ duplicateMessage }}</p>
+  }
+</div>
