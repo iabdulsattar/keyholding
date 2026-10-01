@@ -6,6 +6,7 @@ import { UserService } from '../../core/services/user.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { DeactivateRoleModalComponent } from '../deactivate-role-modal/deactivate-role-modal.component';
 import { ToastService } from '../../core/services/toast.service';
+import { resolveUserStatus } from '../../core/utils/status.utils';
 
 interface Role {
   id: string;
@@ -149,7 +150,7 @@ export class DeactivateRoleComponent implements OnInit {
       email: u.email,
       department: extra.department || '—',
       lastLogin: this.formatDateTime(extra.lastLoginAt || extra.lastLogin),
-      status: u.enabled ? 'Active' : 'Inactive',
+      status: resolveUserStatus(u),
     };
   }
 

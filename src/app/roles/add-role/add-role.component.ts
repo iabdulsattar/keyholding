@@ -209,6 +209,16 @@ export class AddRoleComponent implements OnInit {
     return group.permissions.some((p) => this.matches(p));
   }
 
+  /** Checked permissions in a group, counting only the ones currently listed. */
+  selectedCount(group: PermissionGroup): number {
+    return group.permissions.filter((p) => p.checked && this.matches(p)).length;
+  }
+
+  /** Total permissions in a group, counting only the ones currently listed. */
+  visibleCount(group: PermissionGroup): number {
+    return group.permissions.filter((p) => this.matches(p)).length;
+  }
+
   get hasResults(): boolean {
     return this.groups.some((g) => this.groupVisible(g));
   }
