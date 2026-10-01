@@ -966,8 +966,8 @@
                 <select [ngModel]="keyStatusFilter" (ngModelChange)="onKeyStatusFilterChange($event)"
                     class="w-full rounded-md border border-slate-200 text-xs text-slate-900 font-medium font-['Inter'] px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
                     <option value="">All Statuses</option>
-                    <option value="IN_STORAGE">Available</option>
-                    <option value="ISSUED">Issued</option>
+                    <option value="Available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
                 </select>
             </div>
 
@@ -1000,7 +1000,11 @@
                             <tr class="hover:bg-slate-50 transition">
                                 <td class="px-4 py-4 align-top">
                                     <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)"
-                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                                        [disabled]="!key.selectable"
+                                        [attr.title]="key.selectable ? null : 'Assigned to another job'"
+                                        [class.cursor-not-allowed]="!key.selectable"
+                                        [class.opacity-50]="!key.selectable"
+                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed" />
                                 </td>
                                 <td class="px-2 py-4">
                                     <div class="flex items-start gap-3">
@@ -1037,8 +1041,8 @@
                                         class="inline-block px-2.5 py-1 rounded-sm text-xs font-semibold font-['Inter']"
                                         [class.bg-green-100]="key.status === 'Available'"
                                         [class.text-green-700]="key.status === 'Available'"
-                                        [class.bg-orange-100]="key.status === 'Issued'"
-                                        [class.text-orange-700]="key.status === 'Issued'">{{ key.status }}</span>
+                                        [class.bg-slate-100]="key.status === 'Unavailable'"
+                                        [class.text-slate-500]="key.status === 'Unavailable'">{{ key.status }}@if (key.assignedJobCode) {<span class="font-normal"> ({{ key.assignedJobCode }})</span>}</span>
                                 </td>
                             </tr>
                             }
@@ -1049,9 +1053,13 @@
                 <!-- Cards (mobile) -->
                 <div class="md:hidden space-y-3">
                     @for (key of keys; track key.id) {
-                    <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4 cursor-pointer">
+                    <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4"
+                        [class.cursor-pointer]="key.selectable"
+                        [class.opacity-60]="!key.selectable">
                         <input type="checkbox" [checked]="key.selected" (change)="toggleKeySelection(key)"
-                            class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                            [disabled]="!key.selectable"
+                            [attr.title]="key.selectable ? null : 'Assigned to another job'"
+                            class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed" />
                         <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 grid place-items-center shrink-0">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -1066,8 +1074,8 @@
                                 <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold"
                                     [class.bg-emerald-50]="key.status === 'Available'"
                                     [class.text-emerald-700]="key.status === 'Available'"
-                                    [class.bg-amber-50]="key.status === 'Issued'"
-                                    [class.text-amber-700]="key.status === 'Issued'">{{ key.status }}</span>
+                                    [class.bg-slate-100]="key.status === 'Unavailable'"
+                                    [class.text-slate-500]="key.status === 'Unavailable'">{{ key.status }}@if (key.assignedJobCode) {<span class="font-normal"> ({{ key.assignedJobCode }})</span>}</span>
                             </div>
                             <div class="text-slate-900 font-medium">{{ key.name }}</div>
                             <div class="mt-1 flex gap-2 flex-wrap">

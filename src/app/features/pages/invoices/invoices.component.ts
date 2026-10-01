@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionService } from '../../../core/services/subscription.service';
-import { Invoice, InvoiceListResponse } from '../../../core/models/subscription.models';
+import { Invoice, InvoiceListResponse, InvoiceStats, InvoiceStatsResponse } from '../../../core/models/subscription.models';
 
 interface InvoiceRow {
   id: string;
@@ -24,6 +24,8 @@ interface InvoiceRow {
 })
 export class InvoicesComponent implements OnInit {
   invoices: InvoiceRow[] = [];
+  stats: InvoiceStats | null = null;
+  statsLoading = false;
   loading = false;
   error = '';
   searchQuery = '';
@@ -43,12 +45,82 @@ export class InvoicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInvoices();
+    this.loadStats();
   }
 
-  get totalInvoices() { return this.invoices.length; }
-  get paidInvoices() { return this.invoices.filter(i => i.status === 'Paid').length; }
-  get pendingInvoices() { return this.invoices.filter(i => i.status === 'Pending' || i.status === 'Open').length; }
-  get overdueInvoices() { return this.invoices.filter(i => i.status === 'Overdue').length; }
+  /** Reads the first defined alias among the names the backend may use. */
+  private statValue(...names: string[]): number | null {
+    const source = this.stats;
+    if (!source) return null;
+    for (const name of names) {
+      const value = source[name];
+      if (value === null || value === undefined || value === '') continue;
+      const num = typeof value === 'number' ? value : Number(value);
+      if (!isNaN(num)) return num;
+    }
+    return null;
+  }
+
+  private formatAmount(cents: number | null): string {
+    if (cents === null) return '—';
+    return `£${(cents / 100).toFixed(2)}`;
+  }
+
+  // The stats endpoint is the source of truth for the cards; the loaded rows are
+  // only a fallback so the page still shows numbers if the call fails.
+  get totalInvoices(): number {
+    return this.statValue('total', 'totalInvoices', 'count') ?? this.invoices.length;
+  }
+
+  get paidInvoices(): number {
+    return this.statValue('paid', 'paidInvoices', 'paidCount') ?? this.invoices.filter(i => i.status === 'Paid').length;
+  }
+
+  get pendingInvoices(): number {
+    return this.statValue('pending', 'pendingInvoices', 'pendingCount')
+      ?? this.invoices.filter(i => i.status === 'Pending' || i.status === 'Open').length;
+  }
+
+  get overdueInvoices(): number {
+    return this.statValue('overdue', 'overdueInvoices', 'overdueCount')
+      ?? this.invoices.filter(i => i.status === 'Overdue').length;
+  }
+
+  get totalAmount(): string {
+    return this.formatAmount(this.statValue('totalAmountCents', 'totalCents', 'amountCents'));
+  }
+
+  get paidAmount(): string {
+    return this.formatAmount(this.statValue('paidAmountCents', 'paidCents'));
+  }
+
+  get pendingAmount(): string {
+    return this.formatAmount(this.statValue('pendingAmountCents', 'pendingCents'));
+  }
+
+  get overdueAmount(): string {
+    return this.formatAmount(this.statValue('overdueAmountCents', 'overdueCents'));
+  }
+
+  loadStats(): void {
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.statsLoading = true;
+    this.subscriptionService.getInvoiceStats(orgId, this.getServiceCode()).subscribe({
+      next: (res: InvoiceStatsResponse) => {
+        this.stats = res?.data ?? (res as any) ?? null;
+        this.statsLoading = false;
+      },
+      error: (err: any) => {
+        // A missing stats endpoint must not break the page: the cards fall back
+        // to counts derived from the loaded rows.
+        console.error('Failed to load invoice stats', err);
+        this.stats = null;
+        this.statsLoading = false;
+      }
+    });
+  }
 
   get filteredInvoices(): InvoiceRow[] {
     let result = [...this.invoices];

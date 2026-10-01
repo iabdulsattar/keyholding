@@ -193,6 +193,42 @@ export interface InvoiceDetailResponse {
   };
 }
 
+/**
+ * Counts and totals for the invoices of one service. The backend may name the
+ * fields differently, so every known alias is optional and the caller resolves
+ * the first one present.
+ */
+export interface InvoiceStats {
+  total?: number;
+  totalInvoices?: number;
+  count?: number;
+  paid?: number;
+  paidInvoices?: number;
+  paidCount?: number;
+  pending?: number;
+  pendingInvoices?: number;
+  pendingCount?: number;
+  overdue?: number;
+  overdueInvoices?: number;
+  overdueCount?: number;
+  void?: number;
+  voidInvoices?: number;
+  totalAmountCents?: number;
+  paidAmountCents?: number;
+  pendingAmountCents?: number;
+  overdueAmountCents?: number;
+  currency?: string;
+  [key: string]: any;
+}
+
+export interface InvoiceStatsResponse {
+  data: InvoiceStats;
+  meta?: {
+    timestamp: string;
+    requestId: string;
+  };
+}
+
 // -------- Billing Info --------
 export interface BillingInfo {
   companyName?: string;

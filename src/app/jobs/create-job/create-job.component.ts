@@ -13,6 +13,7 @@ import { RichSelectComponent } from '../../shared/components/form/rich-select/ri
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
+import { toUtcIso } from '../../core/utils/date.utils';
 
 interface Key {
   id: string;
@@ -22,8 +23,11 @@ interface Key {
   hook: string;
   site: string;
   room: string;
-  status: 'Available' | 'Issued';
+  status: 'Available' | 'Unavailable';
   selected: boolean;
+  /** assignedToOtherJob from the API: only a key assigned to this job can be picked. */
+  selectable: boolean;
+  assignedJobCode?: string | null;
 }
 
 interface ChecklistItem {
@@ -346,8 +350,11 @@ export class CreateJobComponent implements OnInit {
       hook: k.hook || '',
       site: k.siteName || k.site || '',
       room: k.description || k.room || '',
-      status: (k.status ?? 'IN_STORAGE') === 'IN_STORAGE' ? 'Available' : 'Issued',
+      // Keys already on the job stay selectable so they can be unchecked again.
+      status: 'Available',
       selected: true,
+      selectable: true,
+      assignedJobCode: k.assignedJobCode ?? null,
     }));
   }
 
@@ -564,10 +571,7 @@ export class CreateJobComponent implements OnInit {
    * day.
    */
   private toApiDueDate(): string | undefined {
-    if (!this.job.date) return undefined;
-    const time = this.job.startTime ? this.job.startTime : '23:59';
-    const normalised = time.length === 5 ? `${time}:00` : time;
-    return `${this.job.date}T${normalised}Z`;
+    return toUtcIso(this.job.date, this.job.startTime || '23:59');
   }
 
   private calculateDuration(start: string, end: string): string {
@@ -701,9 +705,9 @@ export class CreateJobComponent implements OnInit {
       scheduleType: this.job.scheduleType,
       // Only a scheduled job has a window; an open job's due date must not be
       // sent here or the API would filter on the wrong dates.
-      scheduledDate: this.isOpenSchedule ? undefined : (this.job.date || undefined),
-      startTime: this.isOpenSchedule ? undefined : (this.job.startTime || undefined),
-      endTime: this.isOpenSchedule ? undefined : (this.job.endTime || undefined),
+      scheduledDate: this.isOpenSchedule ? undefined : toUtcIso(this.job.date, '00:00:00'),
+      startTime: this.isOpenSchedule || !this.job.date ? undefined : toUtcIso(this.job.date, this.job.startTime),
+      endTime: this.isOpenSchedule || !this.job.date ? undefined : toUtcIso(this.job.date, this.job.endTime),
       clientId: this.selectedClient || undefined,
       // The modal's own site filter narrows the form's site rather than
       // replacing it, so a job with no site set can still filter by site.
@@ -715,17 +719,23 @@ export class CreateJobComponent implements OnInit {
         // Keys already chosen must survive a refresh of the availability list.
         const selectedIds = new Set(this.keys.filter((k: Key) => k.selected).map((k: Key) => k.id));
         this.availableKeys = items.map((k: any) => {
-          const rawStatus = String(k.status ?? k.keyStatus ?? 'IN_STORAGE');
+          const id = k.id ?? k.keyId ?? '';
+          // assignedToOtherJob is the API's signal that this key belongs to the
+          // job being edited: true = already added and still selectable,
+          // false = not part of this job, so it is locked out.
+          const selectable = k.assignedToOtherJob === true;
           return {
             code: k.keyCode ?? '',
-            id: k.id ?? k.keyId ?? '',
-            name: k.name ?? '',
+            id,
+            name: k.keyName ?? k.name ?? '',
             cabinet: k.storageLocationName ?? k.storageLocation ?? '',
             hook: k.hookNo != null ? String(k.hookNo) : '',
             site: k.siteName ?? '',
             room: k.description ?? '',
-            status: rawStatus === 'IN_STORAGE' || rawStatus === 'AVAILABLE' ? 'Available' : 'Issued',
-            selected: selectedIds.has(k.id ?? k.keyId ?? '')
+            status: selectable ? 'Available' : 'Unavailable',
+            selected: selectable && (selectedIds.has(id) || k.selected === true),
+            selectable,
+            assignedJobCode: k.assignedJobCode ?? null
           } as Key;
         });
         // The endpoint takes no paging or filter arguments, so the search box,
@@ -844,6 +854,8 @@ export class CreateJobComponent implements OnInit {
   }
 
   toggleKeySelection(key: Key): void {
+    // Keys the API reports as not assigned to this job cannot be added.
+    if (!key.selectable) return;
     key.selected = !key.selected;
   }
 
@@ -1017,14 +1029,16 @@ export class CreateJobComponent implements OnInit {
       additionalNotes: this.job.notes || undefined
     };
 
-    // Open jobs are due at a single instant; scheduled jobs span a window.
-    if (this.isOpenSchedule) {
-      payload.dueDate = this.toApiDueDate();
-    } else {
-      payload.scheduledDate = this.job.date || undefined;
-      payload.startTime = this.job.startTime || undefined;
-      payload.endTime = this.job.endTime || undefined;
-    }
+// Open jobs are due at a single instant; scheduled jobs span a window. Every
+  // value is sent as an explicit UTC instant so the API never has to guess the
+  // zone from the browser's local offset.
+  if (this.isOpenSchedule) {
+    payload.dueDate = this.toApiDueDate();
+  } else {
+    payload.scheduledDate = toUtcIso(this.job.date, '00:00:00');
+    payload.startTime = this.job.date ? toUtcIso(this.job.date, this.job.startTime) : undefined;
+    payload.endTime = this.job.date ? toUtcIso(this.job.date, this.job.endTime) : undefined;
+  }
 
     return payload;
   }

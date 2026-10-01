@@ -47,7 +47,7 @@
       <div>
         <p class="text-slate-500 text-xs font-medium font-['Inter']">Total Invoices</p>
         <p class="text-slate-900 text-2xl font-extrabold font-['Inter']">{{ totalInvoices }}</p>
-        <p class="text-slate-500 text-xs font-normal font-['Inter']">All time</p>
+        <p class="text-slate-500 text-xs font-normal font-['Inter']">{{ totalAmount }}</p>
       </div>
     </div>
 
@@ -59,7 +59,7 @@
       <div>
         <p class="text-slate-500 text-xs font-medium font-['Inter']">Paid Invoices</p>
         <p class="text-slate-900 text-2xl font-extrabold font-['Inter']">{{ paidInvoices }}</p>
-        <p class=" text-emerald-500 text-xs font-bold font-['Inter']">£2,397.60</p>
+        <p class=" text-emerald-500 text-xs font-bold font-['Inter']">{{ paidAmount }}</p>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
       <div>
         <p class="text-slate-500 text-xs font-medium font-['Inter']">Pending Invoices</p>
         <p class="text-slate-900 text-2xl font-extrabold font-['Inter']">{{ pendingInvoices }}</p>
-        <p class="text-amber-500 text-xs font-bold font-['Inter']">£359.64</p>
+        <p class="text-amber-500 text-xs font-bold font-['Inter']">{{ pendingAmount }}</p>
       </div>
     </div>
 
@@ -82,7 +82,7 @@
       <div>
         <p class="text-slate-500 text-xs font-medium font-['Inter']">Overdue Invoices</p>
         <p class="text-slate-900 text-2xl font-extrabold font-['Inter']">{{ overdueInvoices }}</p>
-        <p class="text-red-500 text-xs font-bold font-['Inter']">£119.88</p>
+        <p class="text-red-500 text-xs font-bold font-['Inter']">{{ overdueAmount }}</p>
       </div>
     </div>
   </div>

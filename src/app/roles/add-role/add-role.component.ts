@@ -63,6 +63,8 @@ interface PermissionGroup {
 export class AddRoleComponent implements OnInit {
   roleName = '';
   roleDesc = '';
+  /** Code returned by the API for the loaded role; empty when creating. */
+  roleCode = '';
   status: 'active' | 'inactive' = 'active';
   search = '';
   isEditMode = false;
@@ -128,11 +130,21 @@ export class AddRoleComponent implements OnInit {
     this.keyVault.getRole(orgId, id).subscribe({
       next: (res: any) => {
         const role = res?.data ?? res;
+        if (!role) {
+          this.errorMessage = 'Role not found.';
+          return;
+        }
+
+        // Everything on the form comes from the role endpoint, never from the
+        // row that was clicked in the list or from the view page.
         this.roleName = role.name || '';
         this.roleDesc = role.description || '';
-        this.status = role.active ? 'active' : 'inactive';
+        this.roleCode = role.code || '';
+        this.status = this.toStatus(role.active);
 
-        const granted = new Set<string>(role.permissions || []);
+        // The API may return permissions as codes, as objects, or under a
+        // separate list field, so normalise them all into a set of codes.
+        const granted = new Set<string>(this.extractPermissionCodes(role));
         this.groups = this.groups.map(group => ({
           ...group,
           permissions: group.permissions.map(perm => ({
@@ -145,6 +157,24 @@ export class AddRoleComponent implements OnInit {
         this.errorMessage = 'Failed to load role details.';
       }
     });
+  }
+
+  /** `active` may arrive as a boolean or as a string, so both are accepted. */
+  private toStatus(active: any): 'active' | 'inactive' {
+    if (typeof active === 'string') {
+      const value = active.trim().toUpperCase();
+      if (value === 'FALSE' || value === 'INACTIVE') return 'inactive';
+      if (value === 'TRUE' || value === 'ACTIVE') return 'active';
+    }
+    return active === true ? 'active' : 'inactive';
+  }
+
+  private extractPermissionCodes(role: any): string[] {
+    const source = role.permissions ?? role.permissionCodes ?? role.grantedPermissions ?? [];
+    if (!Array.isArray(source)) return [];
+    return source
+      .map((p: any) => (typeof p === 'string' ? p : p?.code || p?.id || p?.key || p?.name || ''))
+      .filter(Boolean);
   }
 
   private loadPermissions(): void {
@@ -327,7 +357,11 @@ export class AddRoleComponent implements OnInit {
     }
 
     const payload: CreateRoleRequest = {
-      code: this.roleName.trim().toUpperCase().replace(/\s+/g, '_'),
+      // On edit the API's own code is kept, since it is the role's identity;
+      // a new role still derives one from its name.
+      code: this.isEditMode && this.roleCode
+        ? this.roleCode
+        : this.roleName.trim().toUpperCase().replace(/\s+/g, '_'),
       name: this.roleName.trim(),
       description: this.roleDesc.trim() || undefined,
       active: this.status === 'active',

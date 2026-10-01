@@ -23,7 +23,8 @@ import {
   UsageResponse,
   Invoice,
   InvoiceListResponse,
-  InvoiceDetailResponse
+  InvoiceDetailResponse,
+  InvoiceStatsResponse
 } from '../models/subscription.models';
 
 @Injectable({ providedIn: 'root' })
@@ -224,6 +225,11 @@ export class SubscriptionService {
    // if (params?.sort) q.set('sort', params.sort);
     const query = q.toString();
     return this.api.get<InvoiceListResponse>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/invoices?${query}`, headers);
+  }
+
+  getInvoiceStats(orgId: string, serviceCode = 'key-vault'): Observable<InvoiceStatsResponse> {
+    const headers = this.getAuthHeaders();
+    return this.api.get<InvoiceStatsResponse>(`/api/v1/subscriptions/organizations/${orgId}/services/${serviceCode}/invoices/stats`, headers);
   }
 
   getInvoiceDetail(orgId: string, invoiceId: string): Observable<InvoiceDetailResponse> {
