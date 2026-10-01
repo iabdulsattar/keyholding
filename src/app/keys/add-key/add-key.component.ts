@@ -71,6 +71,8 @@ export class AddKeyComponent implements OnInit {
   loadingClients = false;
   loadingCatalog = false;
   editing = false;
+  /** True from submit until the request (and any uploads) settle. */
+  submitting = false;
   pageTitle = 'Add New Key';
   clientName = '';
   showClientDropdown = false;
@@ -373,6 +375,9 @@ export class AddKeyComponent implements OnInit {
   }
 
   submitKeyForm(): void {
+    // Guard against a double click or an Enter keypress sending a second
+    // request while the first one is still in flight.
+    if (this.submitting) return;
     if (!this.validate()) {
       return;
     }
@@ -413,6 +418,7 @@ export class AddKeyComponent implements OnInit {
       ? this.keyVault.updateKey(orgId, this.editKeyId, key)
       : this.keyVault.createKey(orgId, key);
 
+    this.submitting = true;
     request$.subscribe({
       next: (res: any) => {
         const savedKey = res?.data ?? res;
@@ -428,6 +434,7 @@ export class AddKeyComponent implements OnInit {
         }
       },
       error: () => {
+        this.submitting = false;
         this.toast.error(this.editing ? 'Failed to update key. Please try again.' : 'Failed to save key. Please try again.');
       }
     });
@@ -491,6 +498,7 @@ export class AddKeyComponent implements OnInit {
   }
 
   private finishKeySubmit(): void {
+    this.submitting = false;
     this.toast.success(this.editing ? 'Key updated successfully!' : 'Key saved successfully!');
     const destination = this.returnUrl ? [this.returnUrl] : this.clientId ? ['/clients', this.clientId] : ['/keys/all-keys'];
     setTimeout(() => this.router.navigate(destination), 800);

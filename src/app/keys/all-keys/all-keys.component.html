@@ -182,12 +182,16 @@
 
                     </a>
 
-                    <a  class="text-blue-500 hover:text-blue-700">
-                      <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <button type="button" (click)="deleteKey(k)" [disabled]="deletingKeyId === k.id" title="Delete key"
+                      class="text-blue-500 hover:text-red-700 disabled:opacity-50">
+                       @if (deletingKeyId === k.id) {
+                       <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"/></svg>
+                       } @else {
+                       <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.87972 6.06068V9.61805M7.25379 6.06068V9.61805M10.2214 3.09619V11.3967C10.2214 11.7112 10.0963 12.0128 9.8737 12.2352C9.65109 12.4576 9.34916 12.5825 9.03434 12.5825H3.09917C2.78435 12.5825 2.48242 12.4576 2.25981 12.2352C2.03719 12.0128 1.91213 11.7112 1.91213 11.3967V3.09619M0.725098 3.09619H11.4084M3.69268 3.09619V1.9104C3.69268 1.59591 3.81775 1.2943 4.04036 1.07192C4.26297 0.849541 4.5649 0.724609 4.87972 0.724609H7.25379C7.56861 0.724609 7.87054 0.849541 8.09315 1.07192C8.31576 1.2943 8.44082 1.59591 8.44082 1.9104V3.09619" stroke="#64748B" stroke-width="1.44999" stroke-linecap="round"/>
 </svg>
-
-                    </a> 
+                       }
+                    </button>
                   </div>
                 </td>
               </tr>

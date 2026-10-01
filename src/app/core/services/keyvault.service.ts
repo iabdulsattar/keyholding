@@ -1361,6 +1361,24 @@ export class KeyVaultService {
     }
 
     // Jobs
+    /**
+     * Keys that are actually available for a job's schedule window.
+     * A scheduled job must send the date and both times so the API can exclude
+     * keys already booked in that slot; an open job has no window.
+     */
+    getKeyAvailability(orgId: string, params: { scheduleType?: string; scheduledDate?: string; startTime?: string; endTime?: string; clientId?: string; siteId?: string }): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      if (params?.scheduleType) q.set('scheduleType', params.scheduleType);
+      if (params?.scheduledDate) q.set('scheduledDate', params.scheduledDate);
+      if (params?.startTime) q.set('startTime', params.startTime);
+      if (params?.endTime) q.set('endTime', params.endTime);
+      if (params?.clientId) q.set('clientId', params.clientId);
+      if (params?.siteId) q.set('siteId', params.siteId);
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/key-availability${query ? `?${query}` : ''}`, headers);
+    }
+
     listJobs(orgId: string, params?: { q?: string; clientId?: string; siteId?: string; officerId?: string; jobTypeId?: string; status?: string; page?: number; size?: number }): Observable<any> {
       const headers = this.getAuthHeaders();
       const q = new URLSearchParams();

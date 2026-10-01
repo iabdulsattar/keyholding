@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '../../core/services/client.service';
+import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 
@@ -42,6 +43,7 @@ export class AllKeysComponent implements OnInit {
   clients: Client[] = [];
   sites: SiteRecord[] = [];
   loading = false;
+  deletingKeyId = '';
   searchQuery = '';
   clientFilter = '';
 
@@ -91,7 +93,7 @@ export class AllKeysComponent implements OnInit {
     return [{ value: '', label: 'All Clients' }, ...this.clientOptions.map(c => ({ value: c.id, label: c.name }))];
   }
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private keyVault: KeyVaultService) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -154,6 +156,29 @@ export class AllKeysComponent implements OnInit {
         this.totalItems = 0;
         this.totalPages = 0;
         this.loading = false;
+      }
+    });
+  }
+
+  /**
+   * Deletes the key straight from the listing, without the confirmation dialog,
+   * then reloads so the totals match the rows that remain.
+   */
+  deleteKey(key: KeyRecord): void {
+    const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
+    if (!orgId || !key?.id || this.deletingKeyId === key.id) return;
+    this.deletingKeyId = key.id;
+    this.keyVault.deleteKey(orgId, key.id).subscribe({
+      next: () => {
+        this.deletingKeyId = '';
+        // Stepping back keeps the page valid when the last row was removed.
+        if (this.keys.length === 1 && this.currentPage > 1) {
+          this.currentPage--;
+        }
+        this.loadKeys();
+      },
+      error: () => {
+        this.deletingKeyId = '';
       }
     });
   }
