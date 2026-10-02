@@ -235,6 +235,12 @@ export class DashboardShellComponent implements OnInit {
   }
 
   private loadSubscriptionTrial(): void {
+    // The trial banner links to the administrator-only subscription pages, so
+    // members never trigger this request or see the banner.
+    if (!this.permissionService.isOrgAdmin()) {
+      this.trial = null;
+      return;
+    }
     const orgId = this.getOrgId();
     if (!orgId) return;
 

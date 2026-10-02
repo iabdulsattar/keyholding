@@ -125,13 +125,10 @@ export class VerificationFormComponent implements OnInit {
         if (!tempPassword) {
           this.isSigningInAfterVerification = false;
           this.isLoading = false;
-          const orgId = localStorage.getItem('org_id');
           setTimeout(() => {
-            if (orgId) {
-              this.router.navigate(['/subscription-plan']);
-            } else {
-              this.router.navigate(['/signin']);
-            }
+            // No org role is known on this fallback path and the plan page is
+            // administrator-only, so send the user back to sign in.
+            this.router.navigate(['/signin']);
           }, 600);
           return;
         }
@@ -181,13 +178,10 @@ export class VerificationFormComponent implements OnInit {
             sessionStorage.removeItem('verification_password');
             this.isSigningInAfterVerification = false;
             this.isLoading = false;
-            const orgId = localStorage.getItem('org_id');
             setTimeout(() => {
-              if (orgId) {
-                this.router.navigate(['/subscription-plan']);
-              } else {
-                this.router.navigate(['/signin']);
-              }
+              // Auto-login failed, so no org role is known here and the plan
+              // page is administrator-only anyway.
+              this.router.navigate(['/signin']);
             }, 600);
           }
         });

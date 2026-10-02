@@ -20,3 +20,21 @@ export function permissionGuard(...permissions: string[]): CanActivateFn {
     return allowed ? true : router.createUrlTree(['/dashboard']);
   };
 }
+
+/**
+ * Guard for module pages whose permissions come from the API catalogue.
+ * Access is granted when the user holds any permission matching one of the
+ * given code fragments; administrators and wildcard grants always pass.
+ *
+ * Usage:
+ *   canActivate: [authGuard, moduleGuard('keys.', 'key.')]
+ */
+export function moduleGuard(...fragments: string[]): CanActivateFn {
+  return (): boolean | UrlTree => {
+    const permissionService = inject(PermissionService);
+    const router = inject(Router);
+
+    const allowed = permissionService.hasModuleAccess(...fragments);
+    return allowed ? true : router.createUrlTree(['/dashboard']);
+  };
+}

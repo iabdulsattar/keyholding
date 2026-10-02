@@ -356,6 +356,8 @@ export class SigninFormComponent {
       (s: any) => s.serviceCode === 'key-vault'
     );
 
+    const isOrgAdmin = this.permissionService.isOrgAdmin();
+
     const navigateAfterLogin = (target: string) => {
       this.isLoading = false;
       this.subStatus.checkNow();
@@ -363,7 +365,13 @@ export class SigninFormComponent {
       setTimeout(() => this.router.navigate([target]), 600);
     };
 
+    // Trials and subscriptions are administrator-only: a member never triggers
+    // a subscription start, they simply land on the app.
     const startFreshTrial = (orgId: string, done: () => void) => {
+      if (!this.permissionService.isOrgAdmin()) {
+        done();
+        return;
+      }
       this.subscriptionService.startSubscription(orgId, {
         planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
         billingPeriod: 'MONTHLY',
@@ -407,7 +415,8 @@ export class SigninFormComponent {
           if (isActive || (isTrial && !isTrialExpired)) {
             navigateAfterLogin('/');
           } else {
-            navigateAfterLogin('/subscription-plan');
+            // Only administrators may see the plan page; members go straight in.
+            navigateAfterLogin(isOrgAdmin ? '/subscription-plan' : '/');
           }
         },
         error: () => {
@@ -418,7 +427,9 @@ export class SigninFormComponent {
 
     if (!hasKeyVaultAccess && !hasKeyVaultSubscribedService) {
       const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
-      if (orgId) {
+      // Enabling the service is part of the subscription onboarding chain, so it
+      // is administrator-only. Members go straight into the app instead.
+      if (orgId && isOrgAdmin) {
         this.keyVault.enableService(orgId, 'key-vault', this.email, this.otpCode || '').subscribe({
           next: () => {
             this.permissionService.setServiceAccess([

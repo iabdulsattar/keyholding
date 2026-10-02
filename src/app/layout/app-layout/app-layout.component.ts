@@ -8,6 +8,7 @@ import { ToastComponent } from '../../shared/components/ui/toast/toast.component
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SubscriptionStatusService } from '../../core/services/subscription-status.service';
+import { PermissionService } from '../../core/services/permission.service';
 
 @Component({
   selector: 'app-layout',
@@ -32,6 +33,7 @@ export class AppLayoutComponent {
     private router: Router,
     private route: ActivatedRoute,
     private subStatus: SubscriptionStatusService,
+    private permissions: PermissionService,
   ) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isHovered$ = this.sidebarService.isHovered$;
@@ -58,7 +60,8 @@ export class AppLayoutComponent {
   }
 
   get isTrialBannerVisible(): boolean {
-    return this.subStatus.status() === 'trial';
+    // The banner links to the plan page, which is administrator-only.
+    return this.permissions.isOrgAdmin() && this.subStatus.status() === 'trial';
   }
 
   get trialDaysRemaining(): number {

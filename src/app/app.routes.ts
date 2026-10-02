@@ -1,7 +1,8 @@
 import { Routes, PreloadAllModules } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { permissionGuard } from './core/guards/permission.guard';
+import { permissionGuard, moduleGuard } from './core/guards/permission.guard';
 import { subscriptionGuard } from './core/guards/subscription.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
       {
@@ -64,11 +65,13 @@ export const routes: Routes = [
           {
             path: 'subscription',
             loadComponent: () => import('./subscription/subscription.component').then(m => m.SubscriptionComponent),
+            canActivate: [adminGuard],
             title: 'Subscription & Trial | KeyVault Pro'
           },
           {
             path: 'subscription/complete',
             loadComponent: () => import('./subscription/complete-subscription/complete-subscription.component').then(m => m.CompleteSubscriptionComponent),
+            canActivate: [adminGuard],
             title: 'Complete Your Subscription | KeyVault Pro'
           },
           {
@@ -344,6 +347,7 @@ export const routes: Routes = [
            {
              path:'subscription-plan',
              loadComponent: () => import('./auth/pages/subscription-plan/subscription-plan.component').then(m => m.SubscriptionPlanComponent),
+             canActivate: [adminGuard],
              title:'Choose Plan | KeyVault Pro'
            },
        ]
@@ -392,11 +396,13 @@ export const routes: Routes = [
   {
     path:'subscription-trial-start',
     loadComponent: () => import('./auth/pages/subscription-trial-start/subscription-trial-start.component').then(m => m.SubscriptionTrialStartComponent),
+    canActivate: [authGuard, adminGuard],
     title:'Start Free Trial | KeyVault Pro'
   },
   {
     path:'subscription-trial-ready',
     loadComponent: () => import('./auth/pages/subscription-trial-ready/subscription-trial-ready.component').then(m => m.SubscriptionTrialReadyComponent),
+    canActivate: [authGuard, adminGuard],
     title:'Trial Ready | KeyVault Pro'
   },
   {

@@ -3,12 +3,14 @@ import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { PermissionService } from '../services/permission.service';
 import { SubscriptionStatusService, ALLOWED_PATHS_WITHOUT_SUBSCRIPTION } from '../services/subscription-status.service';
 
 export const subscriptionGuard: CanActivateFn = (route, state): boolean | UrlTree | Observable<boolean | UrlTree> => {
   const router = inject(Router);
   const authService = inject(AuthService);
   const subStatus = inject(SubscriptionStatusService);
+  const permissionService = inject(PermissionService);
 
   const currentUrl = state.url;
   if (ALLOWED_PATHS_WITHOUT_SUBSCRIPTION.some(path => currentUrl.startsWith(path))) {
@@ -20,6 +22,13 @@ export const subscriptionGuard: CanActivateFn = (route, state): boolean | UrlTre
     return router.createUrlTree(['/signin'], {
       queryParams: { returnUrl: currentUrl },
     });
+  }
+
+  // Only organisation administrators own subscription and trial decisions, so
+  // members are never pushed onto the plan/trial pages when the org has no
+  // subscription. They just continue into the app as before.
+  if (!permissionService.isOrgAdmin()) {
+    return true;
   }
 
   const orgId = subStatus.getOrgId();

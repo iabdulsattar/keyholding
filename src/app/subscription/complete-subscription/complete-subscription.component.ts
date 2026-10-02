@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { AuthService } from '../../core/services/auth.service';
 import { SubscriptionStatusService } from '../../core/services/subscription-status.service';
+import { PermissionService } from '../../core/services/permission.service';
 import { Subscription } from 'rxjs';
 import { ChangePlanRequest } from '../../core/models/subscription.models';
 
@@ -41,6 +42,7 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     private authService: AuthService,
     private subStatus: SubscriptionStatusService,
+    private permissionService: PermissionService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -174,6 +176,13 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
   get f() { return this.billingForm.controls as any; }
 
   activatePlan() {
+    // Defence in depth: the route is administrator-guarded, but a paid plan
+    // change must never be submitted by a non-administrator.
+    if (!this.permissionService.isOrgAdmin()) {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
+
     if (this.billingForm.invalid) {
       this.markFormGroupTouched(this.billingForm);
       this.errorMessage = 'Please fill in all required fields correctly.';

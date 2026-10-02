@@ -165,6 +165,13 @@ export class SubscriptionTrialStartComponent implements OnInit {
       const hasSubscription = this.hasServiceSubscription(subscribedServices, serviceCode);
       const hasServiceAccess = this.permissionService.canAccessService(serviceCode);
 
+      // Trials and subscriptions are administrator-only. A member arriving on
+      // this link keeps the session just persisted but never sees the trial page.
+      if (!this.permissionService.isOrgAdmin()) {
+        this.router.navigate(['/']);
+        return;
+      }
+
       // Only a fully entitled org skips the trial flow. Everything else -
       // unsubscribed, or subscribed without the service grant - goes through
       // the start-subscription + enable-service chain on this page.
@@ -200,16 +207,29 @@ export class SubscriptionTrialStartComponent implements OnInit {
           this.userRole = this.extractRole(profile);
 
           const org = profile?.organizations?.[0];
+          if (org?.role) {
+            this.permissionService.setOrgRole(org.role);
+          }
           if (org?.id && !this.orgId) {
             this.storeOrg(org.id, org.name);
             this.orgId = org.id;
             this.orgName = org.name || this.orgName;
           }
+
+          // Direct visits land here too (e.g. /external-login without a token in
+          // the link), so the admin check runs once the profile role is known.
+          if (this.permissionService.isOrgAdmin()) {
+            this.loadTrialPlan();
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error: () => {
           this.userName = 'User';
+          this.loadTrialPlan();
         }
       });
+      return;
     }
 
     this.loadTrialPlan();
@@ -322,6 +342,13 @@ export class SubscriptionTrialStartComponent implements OnInit {
 
   async startTrial(): Promise<void> {
     if (this.isLoading) return;
+
+    // Defence in depth: the route is admin-guarded, but a member must never be
+    // able to start a trial or subscription from this component either.
+    if (!this.permissionService.isOrgAdmin()) {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
 
     this.isLoading = true;
     this.errorMessage = '';

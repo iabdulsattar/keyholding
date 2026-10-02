@@ -44,6 +44,13 @@ export type JobScheduleType = 'OPEN' | 'SCHEDULED';
 
 const THIRD_PARTY_ACCESS_JOB_TYPE = 'Third Party Access';
 
+/**
+ * Standard checklist templates. Lock and unlock jobs are tied to their job
+ * type; Third Party Access uses an org-level item (no `jobTypeId`).
+ */
+const LOCK_UNLOCK_CHECKLIST_TITLE = 'Confirm keys returned to cabinet';
+const THIRD_PARTY_ACCESS_CHECKLIST_TITLE = 'Verify ID badge on arrival';
+
 @Component({
   selector: 'app-create-job',
   standalone: true,
@@ -117,6 +124,8 @@ export class CreateJobComponent implements OnInit {
   checklistItems: ChecklistItem[] = [];
   newChecklistItem = '';
   checklistLoading = false;
+  /** Job type ids whose standard checklist item has already been requested. */
+  private seededChecklistTypes = new Set<string>();
   activeTab = 0;
   status: 'active' | 'inactive' = 'active';
 
@@ -475,10 +484,62 @@ export class CreateJobComponent implements OnInit {
         text: ci.title ?? ci.text ?? ''
       }));
       this.checklistLoading = false;
+      this.ensureStandardChecklist(jobTypeId);
     }, () => {
       this.checklistItems = [];
       this.checklistLoading = false;
+      this.ensureStandardChecklist(jobTypeId);
     });
+  }
+
+  /**
+   * Lock/unlock and Third Party Access jobs always ship with a standard
+   * checklist item, created through POST /jobs/checklist when the job type has
+   * none yet.
+   */
+  private ensureStandardChecklist(jobTypeId: string): void {
+    const spec = this.standardChecklistSpec();
+    const orgId = this.getOrgId();
+    if (!orgId || !jobTypeId || !spec) return;
+    if (this.seededChecklistTypes.has(jobTypeId)) return;
+    if (this.checklistItems.some(ci => (ci.title || '').trim().toLowerCase() === spec.title.toLowerCase())) {
+      return;
+    }
+
+    this.seededChecklistTypes.add(jobTypeId);
+    this.keyVault.createChecklistItem(orgId, {
+      title: spec.title,
+      jobTypeId: spec.withJobTypeId ? jobTypeId : undefined,
+      sortOrder: 1,
+      active: true,
+    }).subscribe({
+      next: (res: any) => {
+        const created = res?.data ?? res;
+        if (created?.id) {
+          this.checklistItems = [
+            ...this.checklistItems,
+            { id: created.id, title: created.title || spec.title, text: created.title || spec.title },
+          ];
+        }
+      },
+      error: () => {
+        // Allow a retry on the next job type selection.
+        this.seededChecklistTypes.delete(jobTypeId);
+      },
+    });
+  }
+
+  /** Standard checklist for the selected job type, or null when it has none. */
+  private standardChecklistSpec(): { title: string; withJobTypeId: boolean } | null {
+    const label = this.selectedJobTypeLabel.trim().toLowerCase();
+    if (!this.selectedJobType || label === 'select job type') return null;
+    if (label.includes('lock')) {
+      return { title: LOCK_UNLOCK_CHECKLIST_TITLE, withJobTypeId: true };
+    }
+    if (label === THIRD_PARTY_ACCESS_JOB_TYPE.toLowerCase()) {
+      return { title: THIRD_PARTY_ACCESS_CHECKLIST_TITLE, withJobTypeId: false };
+    }
+    return null;
   }
 
   onClientChange(clientId: string): void {
@@ -994,7 +1055,15 @@ export class CreateJobComponent implements OnInit {
     const orgId = this.getOrgId();
     if (!orgId || !this.selectedJobType) return;
 
-    this.keyVault.addChecklistItem(orgId, this.selectedJobType, { title }).subscribe((res: any) => {
+    // Third Party Access checklist items are org-level, so no `jobTypeId` is
+    // sent for them; every other job type sends its own id.
+    const isThirdPartyAccess = this.showVisitorType;
+    this.keyVault.createChecklistItem(orgId, {
+      title,
+      jobTypeId: isThirdPartyAccess ? undefined : this.selectedJobType,
+      sortOrder: this.checklistItems.length + 1,
+      active: true,
+    }).subscribe((res: any) => {
       const created = res?.data ?? res;
       if (created) {
         this.checklistItems.push({

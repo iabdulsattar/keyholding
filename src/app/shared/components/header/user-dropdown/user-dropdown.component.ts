@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-user-dropdown',
@@ -13,6 +14,7 @@ import { ToastService } from '../../../../core/services/toast.service';
 export class UserDropdownComponent implements OnInit {
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
+  private permissions = inject(PermissionService);
 
   isOpen = false;
   userName = '';
@@ -65,6 +67,9 @@ export class UserDropdownComponent implements OnInit {
 
     const finish = () => {
       this.authService.clearTokens();
+      // Drop grants and the persisted org role so the next user on this browser
+      // does not inherit this user's permissions.
+      this.permissions.clear();
       window.location.href = '/signin';
     };
 
