@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { KeyVaultService } from '../../core/services/keyvault.service';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-storage-location-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ProductSwitcherComponent],
   templateUrl: './storage-location-detail.component.html',
 })
 export class StorageLocationDetailComponent implements OnInit, AfterViewInit {

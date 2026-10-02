@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface SiteBuilding {
   id: string;
@@ -13,7 +14,7 @@ interface SiteBuilding {
 @Component({
   selector: 'app-storage-location-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './storage-location-form.component.html',
 })
 export class StorageLocationFormComponent implements OnInit, AfterViewInit {
