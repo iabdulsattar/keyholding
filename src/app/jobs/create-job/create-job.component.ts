@@ -75,7 +75,11 @@ export class CreateJobComponent implements OnInit {
     idType: 'Company ID',
     notifyCompletion: '',
     notifyNotCompleted: '',
-    notes: ''
+    notes: '',
+    visitorFullName: '',
+    visitorCompany: '',
+    visitorContactNumber: '',
+    visitorPurposeOfVisit: ''
   };
 
   idTypeOptions: RichSelectOption[] = [
@@ -137,6 +141,11 @@ export class CreateJobComponent implements OnInit {
 
   setStatus(status: 'active' | 'inactive'): void {
     this.status = status;
+  }
+
+  /** The Yes/No control drives the `idChecked` payload flag. */
+  setIdChecked(checked: boolean): void {
+    this.job.idChecked = checked;
   }
 
   selectedClient = '';
@@ -227,7 +236,10 @@ export class CreateJobComponent implements OnInit {
   }
 
   private getOrgId(): string | null {
-    return localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+    // Session storage is checked too: without "remember device" the org id
+    // only lives there, and a miss here silently empties every lookup.
+    return sessionStorage.getItem('org_id') || sessionStorage.getItem('organizationId')
+      || localStorage.getItem('org_id') || localStorage.getItem('organizationId') || null;
   }
 
   private loadJobTypes(): void {
@@ -330,6 +342,12 @@ export class CreateJobComponent implements OnInit {
       this.loadVisitorTypes(true);
       if (data.visitorTypeId) this.selectedVisitorType = data.visitorTypeId;
     }
+
+    // Visitor details are top-level on the job, not nested under a visitor object.
+    this.job.visitorFullName = data.visitorFullName ?? '';
+    this.job.visitorCompany = data.visitorCompany ?? '';
+    this.job.visitorContactNumber = data.visitorContactNumber ?? '';
+    this.job.visitorPurposeOfVisit = data.visitorPurposeOfVisit ?? '';
 
     const escalation = data.escalation || {};
     this.selectedCompletionContactIds = this.toContactIds(escalation.notifyOnCompletion);
@@ -1081,18 +1099,24 @@ export class CreateJobComponent implements OnInit {
       notifyOnCompletion: this.selectedCompletionContactIds,
       notifyOnNotCompleted: this.selectedNotCompletedContactIds,
       platform: 'WEB',
-      additionalNotes: this.job.notes || undefined
+      additionalNotes: this.job.notes || undefined,
+      // Visitor details belong to the job payload itself and travel with both
+      // schedule types.
+      visitorFullName: this.job.visitorFullName || undefined,
+      visitorCompany: this.job.visitorCompany || undefined,
+      visitorContactNumber: this.job.visitorContactNumber || undefined,
+      visitorPurposeOfVisit: this.job.visitorPurposeOfVisit || undefined
     };
 
-// Open jobs are due at a single instant; scheduled jobs span a window. Every
-  // value is sent as an explicit UTC instant so the API never has to guess the
-  // zone from the browser's local offset.
+// Open jobs are due at a single instant; scheduled jobs span a window. The API
+  // takes `YYYY-MM-DD` for the date and `HH:mm` for each time of a scheduled job,
+  // while an open job takes one `dueDate` UTC instant.
   if (this.isOpenSchedule) {
     payload.dueDate = this.toApiDueDate();
   } else {
-    payload.scheduledDate = toUtcIso(this.job.date, '00:00:00');
-    payload.startTime = this.job.date ? toUtcIso(this.job.date, this.job.startTime) : undefined;
-    payload.endTime = this.job.date ? toUtcIso(this.job.date, this.job.endTime) : undefined;
+    payload.scheduledDate = this.job.date || undefined;
+    payload.startTime = this.job.startTime || undefined;
+    payload.endTime = this.job.endTime || undefined;
   }
 
     return payload;
