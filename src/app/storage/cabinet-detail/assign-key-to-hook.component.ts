@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface AvailableHook {
   no: string;
@@ -21,7 +22,7 @@ interface AvailableKey {
 @Component({
   selector: 'app-assign-key-to-hook',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './assign-key-to-hook.component.html',
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }

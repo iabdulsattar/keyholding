@@ -5,6 +5,7 @@ import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { KeyVaultService, Cabinet } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface StorageLocation {
   id: string;
@@ -14,7 +15,7 @@ interface StorageLocation {
 @Component({
   selector: 'app-add-cabinet',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent, DatePickerComponent],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent, DatePickerComponent, ProductSwitcherComponent],
   templateUrl: './add-cabinet.component.html',
 })
 export class AddCabinetComponent implements OnInit, AfterViewInit {
