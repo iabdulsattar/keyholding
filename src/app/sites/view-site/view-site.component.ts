@@ -11,11 +11,12 @@ import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
 import { getSiteSecurityLevelLabel } from '../../shared/utils/site.utils';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-view-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeleteSiteModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeleteSiteModalComponent, ProductSwitcherComponent],
   templateUrl: './view-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }

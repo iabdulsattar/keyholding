@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord } from '../../core/services/client.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-all-sites',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './all-sites.component.html',
   styles: [`
     .th-cell { padding: 0.85rem 1.1rem; font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
