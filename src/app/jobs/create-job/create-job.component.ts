@@ -1108,15 +1108,16 @@ export class CreateJobComponent implements OnInit {
       visitorPurposeOfVisit: this.job.visitorPurposeOfVisit || undefined
     };
 
-// Open jobs are due at a single instant; scheduled jobs span a window. The API
-  // takes `YYYY-MM-DD` for the date and `HH:mm` for each time of a scheduled job,
-  // while an open job takes one `dueDate` UTC instant.
+// Every date and time is normalised to an explicit UTC instant before it
+  // reaches the payload, so no value is left for the server to interpret in a
+  // local zone. Open jobs are due at a single instant; scheduled jobs span a
+  // window that is anchored to midnight UTC on the chosen day.
   if (this.isOpenSchedule) {
     payload.dueDate = this.toApiDueDate();
   } else {
-    payload.scheduledDate = this.job.date || undefined;
-    payload.startTime = this.job.startTime || undefined;
-    payload.endTime = this.job.endTime || undefined;
+    payload.scheduledDate = toUtcIso(this.job.date, '00:00:00');
+    payload.startTime = this.job.date ? toUtcIso(this.job.date, this.job.startTime) : undefined;
+    payload.endTime = this.job.date ? toUtcIso(this.job.date, this.job.endTime) : undefined;
   }
 
     return payload;
