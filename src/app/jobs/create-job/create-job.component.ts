@@ -87,10 +87,12 @@ export class CreateJobComponent implements OnInit {
   ];
 
   /**
-   * `visitorTypeId` is part of the create-job contract but has no endpoint in
-   * this client yet, so it is left off the payload until the lookup exists.
-   */
-  readonly visitorTypeId: string | null = null;
+ * `visitorTypeId` is the id from the visitor-types lookup, resolved only when a
+ * Third Party Access job type is selected.
+ */
+  get visitorTypeId(): string | null {
+    return this.showVisitorType ? (this.selectedVisitorType || null) : null;
+  }
 
   showAddKeysModal = false;
   showAddChecklistModal = false;
@@ -125,10 +127,13 @@ export class CreateJobComponent implements OnInit {
     { value: 'High', label: 'High' },
   ];
 
+  // Visitor types come from /visitor-types and are loaded when a Third Party
+  // Access job type is selected, so the placeholder is all this form starts with.
   VisitorTypeOptions: RichSelectOption[] = [
-    { value: 'all', label: 'Select visitor type' },
-    { value: 'electrician', label: 'Electrician' },
+    { value: '', label: 'Select visitor type' },
   ];
+  visitorTypesLoading = false;
+  selectedVisitorType = '';
 
   setStatus(status: 'active' | 'inactive'): void {
     this.status = status;
@@ -320,6 +325,10 @@ export class CreateJobComponent implements OnInit {
     }
     if (this.selectedJobType) {
       this.loadChecklist(this.selectedJobType);
+      // Editing a Third Party Access job needs the same visitor-type lookup and
+      // must restore the visitor the job already carries.
+      this.loadVisitorTypes(true);
+      if (data.visitorTypeId) this.selectedVisitorType = data.visitorTypeId;
     }
 
     const escalation = data.escalation || {};
@@ -471,6 +480,47 @@ export class CreateJobComponent implements OnInit {
     this.selectedJobType = jobTypeId;
     this.checklistItems = [];
     this.loadChecklist(jobTypeId);
+    // Visitor types are only meaningful for a Third Party Access job, so the
+    // lookup is made here rather than on page load.
+    this.loadVisitorTypes();
+  }
+
+  /** Loads visitor types from the API when the job type needs them. */
+  private loadVisitorTypes(force = false): void {
+    if (!this.showVisitorType) {
+      // Leaving Third Party Access clears the choice so no stale id is sent.
+      this.selectedVisitorType = '';
+      this.VisitorTypeOptions = [{ value: '', label: 'Select visitor type' }];
+      return;
+    }
+    if (!force && this.VisitorTypeOptions.length > 1) return;
+
+    const orgId = this.getOrgId();
+    if (!orgId) return;
+
+    this.visitorTypesLoading = true;
+    this.keyVault.listVisitorTypes(orgId, false).subscribe({
+      next: (res: any) => {
+        this.visitorTypesLoading = false;
+        const data = res?.data ?? res ?? [];
+        const items = Array.isArray(data) ? data : (data.content ?? data.items ?? []);
+        this.VisitorTypeOptions = [
+          { value: '', label: 'Select visitor type' },
+          ...items.map((v: any) => ({
+            value: v.id ?? v.visitorTypeId ?? v.code ?? v.name ?? '',
+            label: v.name ?? v.label ?? v.code ?? '—',
+          })).filter((v: RichSelectOption) => !!v.value)
+        ];
+      },
+      error: () => {
+        this.visitorTypesLoading = false;
+        this.VisitorTypeOptions = [{ value: '', label: 'Select visitor type' }];
+      }
+    });
+  }
+
+  onVisitorTypeChange(value: string): void {
+    this.selectedVisitorType = value;
   }
 
   /**
@@ -724,10 +774,9 @@ export class CreateJobComponent implements OnInit {
         const selectedIds = new Set(this.keys.filter((k: Key) => k.selected).map((k: Key) => k.id));
         this.availableKeys = items.map((k: any) => {
           const id = k.id ?? k.keyId ?? '';
-          // assignedToOtherJob is the API's signal that this key belongs to the
-          // job being edited: true = already added and still selectable,
-          // false = not part of this job, so it is locked out.
-          const selectable = k.assignedToOtherJob === true;
+          // assignedToOtherJob is the API's signal that the key is booked elsewhere:
+          // false = free for this job and selectable, true = unavailable.
+          const selectable = k.assignedToOtherJob === false;
           return {
             code: k.keyCode ?? '',
             id,
