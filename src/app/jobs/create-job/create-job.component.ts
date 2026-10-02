@@ -13,7 +13,6 @@ import { RichSelectComponent } from '../../shared/components/form/rich-select/ri
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
-import { toUtcIso } from '../../core/utils/date.utils';
 
 interface Key {
   id: string;
@@ -639,7 +638,10 @@ export class CreateJobComponent implements OnInit {
    * day.
    */
   private toApiDueDate(): string | undefined {
-    return toUtcIso(this.job.date, this.job.startTime || '23:59');
+    if (!this.job.date) return undefined;
+    const time = this.job.startTime ? this.job.startTime : '23:59';
+    const normalised = time.length === 5 ? `${time}:00` : time;
+    return `${this.job.date}T${normalised}Z`;
   }
 
   private calculateDuration(start: string, end: string): string {
@@ -1095,7 +1097,8 @@ export class CreateJobComponent implements OnInit {
       keyIds: this.selectedKeys.map(k => k.id),
       checklistItems: this.checklistItems.map(ci => ci.id),
       idChecked: this.job.idChecked,
-      idType: this.job.idType || undefined,
+      // An ID type only means anything when verification is switched on.
+      idType: this.job.idChecked ? (this.job.idType || undefined) : undefined,
       notifyOnCompletion: this.selectedCompletionContactIds,
       notifyOnNotCompleted: this.selectedNotCompletedContactIds,
       platform: 'WEB',
@@ -1108,16 +1111,15 @@ export class CreateJobComponent implements OnInit {
       visitorPurposeOfVisit: this.job.visitorPurposeOfVisit || undefined
     };
 
-// Every date and time is normalised to an explicit UTC instant before it
-  // reaches the payload, so no value is left for the server to interpret in a
-  // local zone. Open jobs are due at a single instant; scheduled jobs span a
-  // window that is anchored to midnight UTC on the chosen day.
+// Open jobs are due at a single instant; scheduled jobs span a window. Only the
+  // fields belonging to the chosen schedule type are sent, so an open job never
+  // carries a window and a scheduled job never carries a due date.
   if (this.isOpenSchedule) {
     payload.dueDate = this.toApiDueDate();
   } else {
-    payload.scheduledDate = toUtcIso(this.job.date, '00:00:00');
-    payload.startTime = this.job.date ? toUtcIso(this.job.date, this.job.startTime) : undefined;
-    payload.endTime = this.job.date ? toUtcIso(this.job.date, this.job.endTime) : undefined;
+    payload.scheduledDate = this.job.date || undefined;
+    payload.startTime = this.job.startTime || undefined;
+    payload.endTime = this.job.endTime || undefined;
   }
 
     return payload;
