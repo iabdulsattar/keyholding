@@ -355,6 +355,8 @@
             </tr>
           </thead>
           <tbody>
+            @for (cabinet of cabinetsPaginated; track cabinet.id) {
+                
             <tr *ngFor="let cabinet of cabinetsPaginated"
                 class="hover:bg-gray-50/60">
               <td class="py-4 pr-4"><a [routerLink]="['/storage/locations/cabinets/view', cabinet.id]" class="text-blue-600 font-bold hover:underline">{{ cabinet.cabinetCode ?? cabinet.code ?? '—' }}</a></td>
@@ -386,6 +388,13 @@
                 </div>
               </td>
             </tr>
+
+            }
+            @empty {
+            <tr>
+              <td colspan="8" class="py-8 text-center text-slate-400 font-medium h-[320px]">No cabinets found.</td>
+            </tr>
+            }
           </tbody>
         </table>
       </div>
