@@ -388,6 +388,25 @@ export interface JobAttachment {
   [key: string]: any;
 }
 
+export interface Incident {
+  id?: string;
+  incidentCode?: string;
+  incidentType?: 'LOST' | 'BROKEN' | 'DAMAGED';
+  keyId?: string;
+  keyName?: string;
+  keyCode?: string;
+  jobId?: string;
+  jobCode?: string;
+  clientId?: string;
+  siteId?: string;
+  description?: string;
+  reportedByUserId?: string;
+  reportedAt?: string;
+  status?: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED';
+  resolvedAt?: string;
+  [key: string]: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -1473,5 +1492,59 @@ export class KeyVaultService {
     downloadJobAttachmentBlob(orgId: string, jobId: string, attachmentId: string): Observable<Blob> {
       const headers = this.getAuthHeaders();
       return this.api.getBlob(`/api/v1/keyvault/organizations/${orgId}/jobs/${jobId}/attachments/${attachmentId}/download`, headers);
+    }
+
+    // Incidents
+    listIncidents(orgId: string, params?: { q?: string; incidentType?: string; status?: string; clientId?: string; siteId?: string; page?: number; size?: number }): Observable<any> {
+      const headers = this.getAuthHeaders();
+      const q = new URLSearchParams();
+      if (params?.q) q.set('q', params.q);
+      if (params?.incidentType) q.set('incidentType', params.incidentType);
+      if (params?.status) q.set('status', params.status);
+      if (params?.clientId) q.set('clientId', params.clientId);
+      if (params?.siteId) q.set('siteId', params.siteId);
+      q.set('page', String(params?.page ?? 0));
+      q.set('size', String(params?.size ?? 10));
+      const query = q.toString();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/incidents${query ? `?${query}` : ''}`, headers);
+    }
+
+    getIncidentStats(orgId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/incidents/stats`, headers);
+    }
+
+    getIncident(orgId: string, incidentId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/incidents/${incidentId}`, headers);
+    }
+
+    createIncident(orgId: string, incident: Partial<Incident>): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/incidents`, incident, headers);
+    }
+
+    updateIncident(orgId: string, incidentId: string, incident: Partial<Incident>): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.patch<any>(`/api/v1/keyvault/organizations/${orgId}/incidents/${incidentId}`, incident, headers);
+    }
+
+    updateIncidentStatus(orgId: string, incidentId: string, data: { status: string; note?: string }): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/incidents/${incidentId}/status`, data, headers);
+    }
+
+    deleteIncident(orgId: string, incidentId: string): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.delete<any>(`/api/v1/keyvault/organizations/${orgId}/incidents/${incidentId}`, headers);
     }
   }
