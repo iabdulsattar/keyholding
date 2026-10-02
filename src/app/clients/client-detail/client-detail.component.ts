@@ -17,11 +17,12 @@ import { ToggleEmergencyContactStatusModalComponent } from '../toggle-emergency-
 import { DeleteDocumentModalComponent } from '../delete-document-modal/delete-document-modal.component';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { formatJobStatus } from '../../shared/utils/job.utils';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent, FormatEventTypePipe, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DeactivateClientModalComponent, ActivateClientModalComponent, DeleteContactModalComponent, ToggleContactStatusModalComponent, DeleteEmergencyContactModalComponent, ToggleEmergencyContactStatusModalComponent, DeleteDocumentModalComponent, FormatEventTypePipe, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './client-detail.component.html',
   styles: `
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }

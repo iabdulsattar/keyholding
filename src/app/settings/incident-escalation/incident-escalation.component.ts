@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ToastService } from '../../core/services/toast.service';
 
 import { TagsInputComponent } from '../../shared/components/form/tags-input/tags-input.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 type IncidentKey = 'lost' | 'damaged';
 
@@ -47,7 +48,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 @Component({
   selector: 'app-incident-escalation',
   standalone: true,
-  imports: [CommonModule, FormsModule, TagsInputComponent],
+  imports: [CommonModule, FormsModule, TagsInputComponent, ProductSwitcherComponent],
   templateUrl: './incident-escalation.component.html',
   styles: [`
     .toggle-knob {
