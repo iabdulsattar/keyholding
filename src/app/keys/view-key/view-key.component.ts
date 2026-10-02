@@ -9,11 +9,12 @@ import { ToastService } from '../../core/services/toast.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { ActivityItem } from '../../shared/components/ui/activity-timeline/activity-timeline.component';
 import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-view-key',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ProductSwitcherComponent],
   templateUrl: './view-key.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }

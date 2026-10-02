@@ -6,11 +6,12 @@ import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '.
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-all-keys',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './all-keys.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
