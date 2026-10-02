@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface Role {
   id: string;
@@ -25,7 +26,7 @@ interface Role {
 @Component({
   selector: 'app-roles-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './roles-list.component.html',
   styles: ``
 })
