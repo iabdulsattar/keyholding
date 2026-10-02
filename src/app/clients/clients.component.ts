@@ -8,11 +8,12 @@ import { ToastService } from '../core/services/toast.service';
 import { RichSelectComponent, RichSelectOption } from '../shared/components/form/rich-select/rich-select.component';
 import { BreadcrumbItem } from '../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { DeleteClientModalComponent } from './delete-client-modal/delete-client-modal.component';
+import { ProductSwitcherComponent } from '../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, DeleteClientModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, DeleteClientModalComponent, ProductSwitcherComponent],
   templateUrl: './clients.component.html',
   styles: `.custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }

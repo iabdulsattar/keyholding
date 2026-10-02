@@ -8,6 +8,7 @@ import { ClientService, Client } from '../../core/services/client.service';
 import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent } from '../../shared/components/form/rich-select/rich-select.component';
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-add-client',
@@ -17,6 +18,7 @@ import { RichSelectOption } from '../../shared/components/form/rich-select/rich-
     RouterModule,
     FormsModule,
     RichSelectComponent,
+    ProductSwitcherComponent
   ],
   templateUrl: './add-client.component.html',
   styles: [`
