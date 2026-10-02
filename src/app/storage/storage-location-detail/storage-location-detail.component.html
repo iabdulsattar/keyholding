@@ -21,7 +21,7 @@
     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-5">
       <div>
       <nav class="text-sm flex flex-wrap items-center gap-1 mb-1.5">
-        <a href="#" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Management</a>
+        <a [routerLink]="['/storage/locations']" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Management</a>
         <span class="text-slate-400 mx-1">&gt;</span>
         <a [routerLink]="['/storage/locations']" class="text-blue-600 text-xs font-medium font-['Inter']">Storage Locations</a>
         <span class="text-slate-400 mx-1">&gt;</span>
@@ -300,7 +300,7 @@
         
         <div class="flex justify-between sm:justify-start sm:gap-8">
           <dt class="text-slate-500 w-34 flex-shrink-0">Responsible Person</dt>
-          <dd class="text-blue-600 font-semibold hover:underline"><a href="#" class="hover:underline">{{ location.responsiblePerson }}</a></dd>
+          <dd class="text-blue-600 font-semibold">{{ location.responsiblePerson }}</dd>
         </div>
         <div class="flex justify-between sm:justify-start sm:gap-8">
           <dt class="text-slate-500 w-34 flex-shrink-0">Contact Number</dt>
