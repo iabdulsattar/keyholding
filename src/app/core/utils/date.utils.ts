@@ -41,8 +41,12 @@ export function formatDateTimeUTC(iso: string | null | undefined): string {
 export function toUtcIso(date: string | null | undefined, time?: string | null): string | undefined {
   if (!date) return undefined;
   const datePart = date.length > 10 ? date.slice(0, 10) : date;
-  const timePart = time ? (time.length === 5 ? `${time}:00` : time) : '00:00:00';
-  return `${datePart}T${timePart}Z`;
+  const timePart = toUtcTimeOfDay(time) || '00:00:00';
+  // An instant is only trusted once it round-trips; a malformed input would
+  // otherwise be sent as an invalid timestamp.
+  const instant = new Date(`${datePart}T${timePart}Z`);
+  if (isNaN(instant.getTime())) return undefined;
+  return instant.toISOString().replace(/\.\d{3}Z$/, 'Z');
 }
 
 /** Normalises `HH:mm` or `HH:mm:ss` to `HH:mm:ss`. */
