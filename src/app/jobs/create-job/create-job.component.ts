@@ -705,13 +705,17 @@ export class CreateJobComponent implements OnInit {
       scheduleType: this.job.scheduleType,
       // Only a scheduled job has a window; an open job's due date must not be
       // sent here or the API would filter on the wrong dates.
-      scheduledDate: this.isOpenSchedule ? undefined : toUtcIso(this.job.date, '00:00:00'),
-      startTime: this.isOpenSchedule || !this.job.date ? undefined : toUtcIso(this.job.date, this.job.startTime),
-      endTime: this.isOpenSchedule || !this.job.date ? undefined : toUtcIso(this.job.date, this.job.endTime),
+      // The availability endpoint takes the date on its own and `HH:mm` times, not
+      // full UTC instants, so the query deliberately differs from the save payload.
+      scheduledDate: this.isOpenSchedule ? undefined : (this.job.date || undefined),
+      startTime: this.isOpenSchedule ? undefined : (this.job.startTime || undefined),
+      endTime: this.isOpenSchedule ? undefined : (this.job.endTime || undefined),
       clientId: this.selectedClient || undefined,
       // The modal's own site filter narrows the form's site rather than
       // replacing it, so a job with no site set can still filter by site.
-      siteId: this.keySiteFilter || this.selectedSite || undefined
+      siteId: this.keySiteFilter || this.selectedSite || undefined,
+      // Editing must not filter out the keys the job already holds.
+      excludeJobId: this.isEditMode ? (this.jobId || undefined) : undefined
     }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res ?? {};

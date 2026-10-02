@@ -25,7 +25,7 @@ export class ProductSwitcherComponent implements OnInit {
   @Input() products: ProductItem[] = [
     {
       id: 'keyvault',
-      name: 'KeyVault Pro',
+      name: 'KeyVault',
       description: 'Enterprise Key Management',
       serviceCode: 'key-vault',
       // icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',

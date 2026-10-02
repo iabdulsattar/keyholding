@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { InvoiceDetailResponse } from '../../../core/models/subscription.models';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-invoice-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './invoice-detail.component.html',
   styles: ''
 })
@@ -28,7 +30,8 @@ export class InvoiceDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -102,6 +105,116 @@ export class InvoiceDetailComponent implements OnInit {
     });
   }
 
+  /** Billing form state, opened from the Billing Information card. */
+  showBillingEdit = false;
+  billingLoading = false;
+  billingSaving = false;
+  billingError = '';
+  billingForm = {
+    companyName: '',
+    billingEmail: '',
+    billingAddress: '',
+    city: '',
+    postcode: '',
+    country: '',
+    vatNumber: '',
+  };
+
+  openBillingEdit(): void {
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.toast.error('Organization not found.');
+      return;
+    }
+
+    this.showBillingEdit = true;
+    this.billingError = '';
+    this.billingLoading = true;
+
+    this.subscriptionService.getBillingInfo(orgId).subscribe({
+      next: (res: any) => {
+        this.billingLoading = false;
+        const profile = res?.profile ?? res?.data ?? res ?? {};
+        this.billingForm = {
+          companyName: profile.companyName || '',
+          billingEmail: profile.billingEmail || profile.email || '',
+          billingAddress: profile.billingAddress || profile.address || '',
+          city: profile.city || '',
+          postcode: profile.postcode || '',
+          country: profile.country || '',
+          vatNumber: profile.vatNumber || profile.vatTaxNumber || '',
+        };
+      },
+      error: () => {
+        this.billingLoading = false;
+        this.billingError = 'Failed to load billing information.';
+      }
+    });
+  }
+
+  closeBillingEdit(): void {
+    if (this.billingSaving) return;
+    this.showBillingEdit = false;
+    this.billingError = '';
+  }
+
+  /** Saves through PUT /billing-info, then refreshes the card on the page. */
+  saveBillingInfo(): void {
+    if (this.billingSaving) return;
+    const orgId = this.getOrgId();
+    if (!orgId) {
+      this.billingError = 'Organization not found.';
+      return;
+    }
+
+    if (!this.billingForm.companyName.trim()) {
+      this.billingError = 'Company name is required.';
+      return;
+    }
+    if (this.billingForm.billingEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.billingForm.billingEmail.trim())) {
+      this.billingError = 'Enter a valid billing email address.';
+      return;
+    }
+
+    this.billingSaving = true;
+    this.billingError = '';
+
+    this.subscriptionService.saveBillingInfo(orgId, {
+      companyName: this.billingForm.companyName.trim(),
+      billingEmail: this.billingForm.billingEmail.trim() || undefined,
+      billingAddress: this.billingForm.billingAddress.trim() || undefined,
+      city: this.billingForm.city.trim() || undefined,
+      postcode: this.billingForm.postcode.trim() || undefined,
+      country: this.billingForm.country.trim() || undefined,
+      vatNumber: this.billingForm.vatNumber.trim() || undefined,
+    }).subscribe({
+      next: () => {
+        this.billingSaving = false;
+        this.showBillingEdit = false;
+        this.toast.success('Billing information updated.');
+        this.applyBillingToInvoice();
+      },
+      error: (err: any) => {
+        this.billingSaving = false;
+        this.billingError = err?.error?.message || 'Failed to update billing information.';
+      }
+    });
+  }
+
+  /** Reflects the saved values on the card without another invoice fetch. */
+  private applyBillingToInvoice(): void {
+    if (!this.invoice) return;
+    const address = [this.billingForm.billingAddress, this.billingForm.city, this.billingForm.postcode, this.billingForm.country]
+      .filter(Boolean)
+      .join(', ');
+    this.invoice = {
+      ...this.invoice,
+      companyName: this.billingForm.companyName.trim() || '—',
+      billingEmail: this.billingForm.billingEmail.trim() || '—',
+      billingAddress: address || '—',
+    };
+  }
+
   private formatCurrency(cents: number | undefined | null, currency: string): string {
     if (cents == null) return '—';
     const amount = (cents / 100).toFixed(2);
@@ -131,7 +244,7 @@ export class InvoiceDetailComponent implements OnInit {
     const billing = inv.billing ?? {};
     const currency = inv.currency || 'GBP';
     const billingPeriod = inv.billingPeriod === 'ANNUAL' ? 'Annual' : 'Monthly';
-    const planName = inv.planName || '—';
+    const planName = inv.planName || '-';
     const desc = inv.description || (planName !== '—' ? `${planName} (${billingPeriod})` : `${billingPeriod} subscription`);
 
     const subtotal = inv.subtotalCents ?? inv.amountCents ?? 0;
@@ -144,9 +257,18 @@ export class InvoiceDetailComponent implements OnInit {
     const formatFeature = (val: any) => val === true ? 'Unlimited' : val === false ? '—' : (val ?? '—');
     const serviceLabel = inv.serviceCode ? String(inv.serviceCode).replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : 'Subscription';
 
+    const displayStatus = this.toDisplayStatus(inv.paymentStatus || inv.status);
+    const rawStatus = String(inv.paymentStatus || inv.status || '').trim().toUpperCase();
+    // Anything not settled can still be paid, whatever the API calls the
+    // intermediate states (PENDING, OPEN, UNPAID, DUE).
+    const isSettled = rawStatus === 'PAID' || rawStatus === 'SETTLED' || rawStatus === 'VOID'
+      || rawStatus === 'CANCELLED' || rawStatus === 'CANCELED';
+
     return {
       number: inv.number || inv.invoiceNumber || '—',
-      status: this.toDisplayStatus(inv.paymentStatus || inv.status),
+      status: displayStatus,
+      // Only an unsettled invoice offers the Pay Now action.
+      isPending: !isSettled,
       description: desc,
       date: this.formatDate(inv.invoiceDate || inv.createdAt),
       dueDate: this.formatDate(inv.dueDate),
@@ -170,7 +292,7 @@ export class InvoiceDetailComponent implements OnInit {
       billingPeriodLabel: billingPeriod,
       periodStart: this.formatDate(inv.periodStart),
       nextBillingDate: this.formatDate(inv.currentPeriodEnd || inv.periodEnd || inv.endDate),
-      paymentMethod: inv.paymentMethod || '—',
+      paymentMethod: inv.paymentMethod || 'Card',
       pdfUrl: inv.pdfUrl || '',
       hostedUrl: inv.hostedInvoiceUrl || '',
       planCode: inv.planCode || '—',
