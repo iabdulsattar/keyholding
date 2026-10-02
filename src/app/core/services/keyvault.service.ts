@@ -1324,6 +1324,12 @@ export class KeyVaultService {
      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/cabinets/${cabinetId}/hooks/${hookId}/move-key`, data, headers);
     }
 
+    // Visitor Types
+    listVisitorTypes(orgId: string, activeOnly = false): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/visitor-types?activeOnly=${activeOnly}`, headers);
+    }
+
     // Job Types
     listJobTypes(orgId: string, includeInactive = false): Observable<any> {
       const headers = this.getAuthHeaders();

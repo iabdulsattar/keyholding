@@ -19,7 +19,7 @@ export class ProductService {
   private products: Product[] = [
     {
       id: 'keyvault',
-      name: 'KeyVault Pro',
+      name: 'KeyVault ',
       description: 'Enterprise Key Management',
       serviceCode: 'key-vault',
       baseUrl: 'https://sbskeyvault.workalert.uk',
@@ -27,7 +27,7 @@ export class ProductService {
       icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
       iconBg: 'bg-violet-700',
       status: 'current',
-      actionLabel: 'Explore KeyVault Pro',
+      actionLabel: 'Explore KeyVault ',
       descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
     },
     {

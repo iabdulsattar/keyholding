@@ -180,9 +180,12 @@
                 <div>
                     <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Visitor Type                         
                     </label>
-                    <div class="flex items-center gap-2">
-                        <app-rich-select [options]="VisitorTypeOptions"                             
-                            placeholder="Select visitor type" panelWidth="wide"
+<div class="flex items-center gap-2">
+                        <app-rich-select [options]="VisitorTypeOptions"
+                            [value]="selectedVisitorType"
+                            (valueChange)="onVisitorTypeChange($event)"
+                            [disabled]="visitorTypesLoading"
+                            [placeholder]="visitorTypesLoading ? 'Loading visitor types...' : 'Select visitor type'" panelWidth="wide"
                             class="flex-1">
                         </app-rich-select>
                         <!-- <button (click)="openAddJobTypeModal()" aria-label="Add job type"
