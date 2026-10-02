@@ -786,7 +786,9 @@ export class CreateJobComponent implements OnInit {
             site: k.siteName ?? '',
             room: k.description ?? '',
             status: selectable ? 'Available' : 'Unavailable',
-            selected: selectable && (selectedIds.has(id) || k.selected === true),
+            // A key already chosen for this job stays checked even if the API reports it as
+            // taken, so editing never silently drops an existing assignment.
+            selected: selectedIds.has(id) || (selectable && k.selected === true),
             selectable,
             assignedJobCode: k.assignedJobCode ?? null
           } as Key;
