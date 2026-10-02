@@ -13,7 +13,6 @@ import { RichSelectComponent } from '../../shared/components/form/rich-select/ri
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
-import { toUtcIso } from '../../core/utils/date.utils';
 
 interface Key {
   id: string;
@@ -44,6 +43,13 @@ interface JobTypeOption {
 export type JobScheduleType = 'OPEN' | 'SCHEDULED';
 
 const THIRD_PARTY_ACCESS_JOB_TYPE = 'Third Party Access';
+
+/**
+ * Standard checklist templates. Lock and unlock jobs are tied to their job
+ * type; Third Party Access uses an org-level item (no `jobTypeId`).
+ */
+const LOCK_UNLOCK_CHECKLIST_TITLE = 'Confirm keys returned to cabinet';
+const THIRD_PARTY_ACCESS_CHECKLIST_TITLE = 'Verify ID badge on arrival';
 
 @Component({
   selector: 'app-create-job',
@@ -118,6 +124,8 @@ export class CreateJobComponent implements OnInit {
   checklistItems: ChecklistItem[] = [];
   newChecklistItem = '';
   checklistLoading = false;
+  /** Job type ids whose standard checklist item has already been requested. */
+  private seededChecklistTypes = new Set<string>();
   activeTab = 0;
   status: 'active' | 'inactive' = 'active';
 
@@ -476,10 +484,62 @@ export class CreateJobComponent implements OnInit {
         text: ci.title ?? ci.text ?? ''
       }));
       this.checklistLoading = false;
+      this.ensureStandardChecklist(jobTypeId);
     }, () => {
       this.checklistItems = [];
       this.checklistLoading = false;
+      this.ensureStandardChecklist(jobTypeId);
     });
+  }
+
+  /**
+   * Lock/unlock and Third Party Access jobs always ship with a standard
+   * checklist item, created through POST /jobs/checklist when the job type has
+   * none yet.
+   */
+  private ensureStandardChecklist(jobTypeId: string): void {
+    const spec = this.standardChecklistSpec();
+    const orgId = this.getOrgId();
+    if (!orgId || !jobTypeId || !spec) return;
+    if (this.seededChecklistTypes.has(jobTypeId)) return;
+    if (this.checklistItems.some(ci => (ci.title || '').trim().toLowerCase() === spec.title.toLowerCase())) {
+      return;
+    }
+
+    this.seededChecklistTypes.add(jobTypeId);
+    this.keyVault.createChecklistItem(orgId, {
+      title: spec.title,
+      jobTypeId: spec.withJobTypeId ? jobTypeId : undefined,
+      sortOrder: 1,
+      active: true,
+    }).subscribe({
+      next: (res: any) => {
+        const created = res?.data ?? res;
+        if (created?.id) {
+          this.checklistItems = [
+            ...this.checklistItems,
+            { id: created.id, title: created.title || spec.title, text: created.title || spec.title },
+          ];
+        }
+      },
+      error: () => {
+        // Allow a retry on the next job type selection.
+        this.seededChecklistTypes.delete(jobTypeId);
+      },
+    });
+  }
+
+  /** Standard checklist for the selected job type, or null when it has none. */
+  private standardChecklistSpec(): { title: string; withJobTypeId: boolean } | null {
+    const label = this.selectedJobTypeLabel.trim().toLowerCase();
+    if (!this.selectedJobType || label === 'select job type') return null;
+    if (label.includes('lock')) {
+      return { title: LOCK_UNLOCK_CHECKLIST_TITLE, withJobTypeId: true };
+    }
+    if (label === THIRD_PARTY_ACCESS_JOB_TYPE.toLowerCase()) {
+      return { title: THIRD_PARTY_ACCESS_CHECKLIST_TITLE, withJobTypeId: false };
+    }
+    return null;
   }
 
   onClientChange(clientId: string): void {
@@ -639,7 +699,10 @@ export class CreateJobComponent implements OnInit {
    * day.
    */
   private toApiDueDate(): string | undefined {
-    return toUtcIso(this.job.date, this.job.startTime || '23:59');
+    if (!this.job.date) return undefined;
+    const time = this.job.startTime ? this.job.startTime : '23:59';
+    const normalised = time.length === 5 ? `${time}:00` : time;
+    return `${this.job.date}T${normalised}Z`;
   }
 
   private calculateDuration(start: string, end: string): string {
@@ -992,7 +1055,15 @@ export class CreateJobComponent implements OnInit {
     const orgId = this.getOrgId();
     if (!orgId || !this.selectedJobType) return;
 
-    this.keyVault.addChecklistItem(orgId, this.selectedJobType, { title }).subscribe((res: any) => {
+    // Third Party Access checklist items are org-level, so no `jobTypeId` is
+    // sent for them; every other job type sends its own id.
+    const isThirdPartyAccess = this.showVisitorType;
+    this.keyVault.createChecklistItem(orgId, {
+      title,
+      jobTypeId: isThirdPartyAccess ? undefined : this.selectedJobType,
+      sortOrder: this.checklistItems.length + 1,
+      active: true,
+    }).subscribe((res: any) => {
       const created = res?.data ?? res;
       if (created) {
         this.checklistItems.push({
@@ -1095,7 +1166,8 @@ export class CreateJobComponent implements OnInit {
       keyIds: this.selectedKeys.map(k => k.id),
       checklistItems: this.checklistItems.map(ci => ci.id),
       idChecked: this.job.idChecked,
-      idType: this.job.idType || undefined,
+      // An ID type only means anything when verification is switched on.
+      idType: this.job.idChecked ? (this.job.idType || undefined) : undefined,
       notifyOnCompletion: this.selectedCompletionContactIds,
       notifyOnNotCompleted: this.selectedNotCompletedContactIds,
       platform: 'WEB',
@@ -1108,16 +1180,15 @@ export class CreateJobComponent implements OnInit {
       visitorPurposeOfVisit: this.job.visitorPurposeOfVisit || undefined
     };
 
-// Every date and time is normalised to an explicit UTC instant before it
-  // reaches the payload, so no value is left for the server to interpret in a
-  // local zone. Open jobs are due at a single instant; scheduled jobs span a
-  // window that is anchored to midnight UTC on the chosen day.
+// Open jobs are due at a single instant; scheduled jobs span a window. Only the
+  // fields belonging to the chosen schedule type are sent, so an open job never
+  // carries a window and a scheduled job never carries a due date.
   if (this.isOpenSchedule) {
     payload.dueDate = this.toApiDueDate();
   } else {
-    payload.scheduledDate = toUtcIso(this.job.date, '00:00:00');
-    payload.startTime = this.job.date ? toUtcIso(this.job.date, this.job.startTime) : undefined;
-    payload.endTime = this.job.date ? toUtcIso(this.job.date, this.job.endTime) : undefined;
+    payload.scheduledDate = this.job.date || undefined;
+    payload.startTime = this.job.startTime || undefined;
+    payload.endTime = this.job.endTime || undefined;
   }
 
     return payload;

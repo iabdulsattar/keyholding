@@ -9,13 +9,31 @@ import { ToastService } from '../../core/services/toast.service';
 import { SubscriptionStatusService } from '../../core/services/subscription-status.service';
 import { combineLatest, Subscription } from 'rxjs';
 
+type NavSubItem = {
+  name: string;
+  path: string;
+  queryParams?: Record<string, any>;
+  pro?: boolean;
+  new?: boolean;
+  /** Hidden from members; only organisation administrators see the item. */
+  adminOnly?: boolean;
+  /** Hidden when the user holds none of these exact permissions. */
+  permissions?: string[];
+  /** Hidden when the user holds no permission matching one of these fragments. */
+  moduleFragments?: string[];
+};
+
 type NavItem = {
   name: string;
   icon: string;
   path?: string;
   new?: boolean;
   permissions?: string[];
-  subItems?: { name: string; path: string; queryParams?: Record<string, any>; pro?: boolean; new?: boolean }[];
+  /** Hidden from members; only organisation administrators see the item. */
+  adminOnly?: boolean;
+  /** Hidden when the user holds no permission matching one of these fragments. */
+  moduleFragments?: string[];
+  subItems?: NavSubItem[];
 };
 
 @Component({
@@ -37,21 +55,25 @@ export class AppSidebarComponent implements OnInit {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
       name: "Clients",
       path: "/clients",
+      moduleFragments: ["clients.", "client."],
     },
     {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>`,
       name: "Sites",
       path: "/sites/all-sites",
+      moduleFragments: ["sites.", "site."],
     },
     {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M15 7a2 2 0 012 2v0a2 2 0 01-2 2H9a2 2 0 01-2-2v0a2 2 0 012-2m6 0V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v2m6 0H9m-4 4l1.5 9a2 2 0 002 1.8h7a2 2 0 002-1.8L19 11"/></svg>`,
       name: "Keys",
       path: "/keys/all-keys",
+      moduleFragments: ["keys.", "key."],
     },
     {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 3.5v3h6v-3"/><path d="M9 12h6M9 15.5h6"/></svg>`,
       name: "Jobs",
       path: "/jobs",
+      moduleFragments: ["jobs.", "job."],
     },
     // {
     //   icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
@@ -61,6 +83,7 @@ export class AppSidebarComponent implements OnInit {
     {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>`,
       name: "Storage Management",
+      moduleFragments: ["storage.", "cabinet.", "cabinets.", "hook.", "hooks."],
       subItems: [
         { name: "Storage Locations", path: "/storage/locations" },
         { name: "Cabinets", path: "/storage/locations/cabinets" },
@@ -72,17 +95,17 @@ export class AppSidebarComponent implements OnInit {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 013-3.87m5-3.13a4 4 0 100-8 4 4 0 000 8zm6 3.13a4 4 0 00-3-3.87"/></svg>`,
       name: "Users",
       subItems: [
-        { name: "Users", path: "/user-management" },
-        { name: "Roles", path: "/roles" },
-        { name: "Permissions", path: "/permissions" },
+        { name: "Users", path: "/user-management", permissions: ['admin.users.manage'] },
+        { name: "Roles", path: "/roles", permissions: ['admin.roles.manage'] },
+        { name: "Permissions", path: "/permissions", permissions: ['admin.users.manage', 'admin.roles.manage'] },
       ],
     },
     {
       icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`,
       name: "Subscription",
       subItems: [
-        { name: "Manage subscription", path: "/subscription" },
-        { name: "Invoices", path: "/invoice" },
+        { name: "Manage subscription", path: "/subscription", adminOnly: true },
+        { name: "Invoices", path: "/invoice", moduleFragments: ['invoices.', 'invoice.', 'billing.'] },
       ],
     },
     // {
@@ -181,11 +204,37 @@ export class AppSidebarComponent implements OnInit {
   }
 
   isNavVisible(item: NavItem): boolean {
+    // Subscription/trial entry points are administrator-only, so members never
+    // see the group regardless of the org's subscription state.
+    if (item.adminOnly && !this.permissions.isOrgAdmin()) {
+      return false;
+    }
+    if (item.moduleFragments && !this.permissions.hasModuleAccess(...item.moduleFragments)) {
+      return false;
+    }
+    // Drop a group when every one of its entries is hidden from this user.
+    if (item.subItems?.length && !item.subItems.some(sub => this.isSubItemVisible(sub))) {
+      return false;
+    }
     if (this.subStatus.status() === 'expired') {
       return item.name === 'Subscription';
     }
     if (!item.permissions || item.permissions.length === 0) return true;
     return this.permissions.hasAnyPermission(item.permissions);
+  }
+
+  /** Administrator-only sub-items (e.g. Manage subscription) are hidden from members. */
+  isSubItemVisible(subItem: NavSubItem): boolean {
+    if (subItem.adminOnly && !this.permissions.isOrgAdmin()) {
+      return false;
+    }
+    if (subItem.permissions?.length && !this.permissions.hasAnyPermission(subItem.permissions)) {
+      return false;
+    }
+    if (subItem.moduleFragments && !this.permissions.hasModuleAccess(...subItem.moduleFragments)) {
+      return false;
+    }
+    return true;
   }
 
   toggleSubmenu(section: string, index: number) {
@@ -311,6 +360,9 @@ export class AppSidebarComponent implements OnInit {
 
     const finish = () => {
       this.authService.clearTokens();
+      // Grants and the persisted org role must go too, otherwise the next user
+      // on this browser inherits the previous user's admin-only permissions.
+      this.permissions.clear();
       window.location.href = '/signin';
     };
 

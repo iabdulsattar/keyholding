@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { SubscriptionService } from './subscription.service';
 import { AuthService } from './auth.service';
+import { PermissionService } from './permission.service';
 
 export type SubscriptionStatus = 'unknown' | 'active' | 'trial' | 'expired';
 
@@ -30,6 +31,7 @@ export class SubscriptionStatusService {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly sub = inject(SubscriptionService);
+  private readonly permissions = inject(PermissionService);
 
   readonly status = signal<SubscriptionStatus>('unknown');
   readonly effectiveExpiry = signal<number | null>(null);
@@ -51,6 +53,9 @@ export class SubscriptionStatusService {
     effect(() => {
       const st = this.status();
       if (st !== 'expired') return;
+      // Members never see subscription/trial flows, so an expired org
+      // subscription must not bounce them onto the plan page.
+      if (!this.permissions.isOrgAdmin()) return;
       const url = this.router.url;
       if (ALLOWED_PATHS_WITHOUT_SUBSCRIPTION.some(p => url.startsWith(p))) return;
       this.router.navigate(['/subscription-plan'], { queryParams: { returnUrl: url } });

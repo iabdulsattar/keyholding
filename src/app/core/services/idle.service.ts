@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { PermissionService } from './permission.service';
 
 @Injectable({ providedIn: 'root' })
 export class IdleService {
@@ -13,6 +14,7 @@ export class IdleService {
     private authService: AuthService,
     private router: Router,
     private ngZone: NgZone,
+    private permissionService: PermissionService,
   ) {}
 
   start(): void {
@@ -62,6 +64,7 @@ export class IdleService {
   private logout(): void {
     this.stop();
     this.authService.clearTokens();
+    this.permissionService.clear();
     this.router.navigate(['/signin']);
   }
 }

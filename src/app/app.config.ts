@@ -23,22 +23,24 @@ export const appConfig: ApplicationConfig = {
       permissionService.restore();
       
       const token = authService.getAccessToken();
-      if (token && !permissionService.hasAnyService()) {
-        return authService.getSession(token).pipe(
-          map((session: any) => {
-            const grants = session?.serviceAccess;
-            if (grants) {
-              const next = Array.isArray(grants) ? grants : (grants ? [grants] : []);
-              permissionService.setServiceAccess(next);
-            }
-            const orgs = session?.organizations ?? [];
-            const orgRole = orgs?.length > 0 ? orgs[0].role : undefined;
-            permissionService.setOrgRole(orgRole);
-          }),
-          catchError(() => of(null))
-        );
-      }
-      return of(null);
+      if (!token) return of(null);
+
+      // The session is re-read on every start so the org role is never stale;
+      // a role left behind by a previous user would otherwise keep admin-only
+      // features (subscriptions, trials) visible to whoever signs in next.
+      return authService.getSession(token).pipe(
+        map((session: any) => {
+          const grants = session?.serviceAccess;
+          if (grants) {
+            const next = Array.isArray(grants) ? grants : (grants ? [grants] : []);
+            permissionService.setServiceAccess(next);
+          }
+          const orgs = session?.organizations ?? [];
+          const orgRole = orgs?.length > 0 ? orgs[0].role : undefined;
+          permissionService.setOrgRole(orgRole);
+        }),
+        catchError(() => of(null))
+      );
     })
   ]
 };

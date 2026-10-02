@@ -10,6 +10,37 @@ export interface ServiceAccessGrant {
 }
 
 const STORAGE_KEY = 'service_access_saas';
+const ORG_ROLE_STORAGE_KEY = 'org_role';
+
+/**
+ * Role values the identity service uses for privileged organisation members.
+ * Compared case-insensitively against the org role, the grant role names/codes
+ * and the raw permission list.
+ */
+const ADMIN_ROLE_NAMES = new Set([
+  'owner',
+  'admin',
+  'administrator',
+  'orgadmin',
+  'org_admin',
+  'organisation_admin',
+  'organization_admin',
+  'superadmin',
+  'super_admin',
+]);
+
+/** Org roles that qualify on their own when the API returned no role names. */
+const OWNER_ROLE_NAMES = new Set(['owner', 'superadmin', 'super_admin']);
+
+/**
+ * Explicit administrative permissions. Used as a secondary signal so an
+ * administrator is still recognised when the API omits the org role, without
+ * honouring blanket wildcard grants (a plain member must never qualify).
+ */
+const ADMIN_PERMISSIONS = new Set([
+  'admin.users.manage',
+  'admin.roles.manage',
+]);
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
@@ -26,6 +57,59 @@ export class PermissionService {
 
   setOrgRole(role: string | null | undefined): void {
     this.orgRole = role || null;
+    // Persisted so a page refresh (which restores grants without re-reading the
+    // session) still knows the user's org role. Role-gated features such as
+    // subscriptions/trials would otherwise fail open for every refreshed user.
+    if (this.orgRole) {
+      localStorage.setItem(ORG_ROLE_STORAGE_KEY, this.orgRole);
+      sessionStorage.setItem(ORG_ROLE_STORAGE_KEY, this.orgRole);
+    } else {
+      localStorage.removeItem(ORG_ROLE_STORAGE_KEY);
+      sessionStorage.removeItem(ORG_ROLE_STORAGE_KEY);
+    }
+  }
+
+  private restoreOrgRole(): void {
+    const stored =
+      sessionStorage.getItem(ORG_ROLE_STORAGE_KEY) || localStorage.getItem(ORG_ROLE_STORAGE_KEY);
+    this.orgRole = stored || null;
+  }
+
+  /**
+   * True when the signed-in user is an organisation administrator. Subscription
+   * and trial features are restricted to these users, so this deliberately
+   * does NOT honour wildcard permission grants.
+   *
+   * Resolution order: an explicit administrative permission, then the service
+   * role names returned by the API (e.g. "Administrator"), then - only when the
+   * API told us nothing - an owner-level org role. A plain `ADMIN` org role on
+   * its own is not enough, otherwise every ordinary member invited as an org
+   * admin would inherit billing.
+   */
+  isOrgAdmin(): boolean {
+    if (this.getPermissions().some((p) => ADMIN_PERMISSIONS.has(p))) {
+      return true;
+    }
+
+    const roleNames = this.collectGrantRoleNames();
+    if (roleNames.length > 0) {
+      return roleNames.some((name) => ADMIN_ROLE_NAMES.has(name));
+    }
+
+    const orgRole = (this.orgRole || '').trim().toLowerCase();
+    return OWNER_ROLE_NAMES.has(orgRole);
+  }
+
+  /** Every distinct role name/code the API attached to the service grants. */
+  private collectGrantRoleNames(): string[] {
+    const names = new Set<string>();
+    for (const grant of this.grantsSignal()) {
+      for (const role of grant.roles ?? []) {
+        const candidate = (role?.name || role?.code || '').trim().toLowerCase();
+        if (candidate) names.add(candidate);
+      }
+    }
+    return Array.from(names);
   }
 
   /**
@@ -58,6 +142,7 @@ export class PermissionService {
 
   /** Read persisted grants (e.g. after a page refresh). */
   restore(): void {
+    this.restoreOrgRole();
     const raw =
       sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
     if (!raw) {
@@ -90,6 +175,8 @@ export class PermissionService {
     this.orgRole = null;
     localStorage.removeItem(STORAGE_KEY);
     sessionStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(ORG_ROLE_STORAGE_KEY);
+    sessionStorage.removeItem(ORG_ROLE_STORAGE_KEY);
   }
 
   getServiceAccess(): ServiceAccessGrant[] {
@@ -137,5 +224,25 @@ export class PermissionService {
   hasAnyPermission(permissions: string[]): boolean {
     if (this.orgRole === 'OWNER') return true;
     return permissions.some((p) => this.hasPermission(p));
+  }
+
+  /**
+   * True when the user holds at least one permission belonging to a module.
+   *
+   * The permission catalogue is served by the API, so module access is matched
+   * on permission-code fragments (`'keys.'`, `'job.'`, ...) instead of an
+   * exhaustive hard-coded list. Organisation administrators and wildcard grants
+   * always pass; anyone without a matching permission loses the module's pages,
+   * navigation and actions.
+   */
+  hasModuleAccess(...fragments: string[]): boolean {
+    const needles = fragments
+      .map((f) => (f || '').trim().toLowerCase())
+      .filter(Boolean);
+    if (needles.length === 0) return true;
+    if (this.isOrgAdmin()) return true;
+    if (this.grantsSignal().some((g) => g.wildcard === true)) return true;
+    const codes = this.getPermissions().map((p) => p.trim().toLowerCase());
+    return needles.some((needle) => codes.some((code) => code.includes(needle)));
   }
 }

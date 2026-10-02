@@ -1372,6 +1372,30 @@ export class KeyVaultService {
       return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/types/${jobTypeId}/checklist`, item, headers);
     }
 
+    /**
+     * POST /api/v1/keyvault/organizations/{orgId}/jobs/checklist
+     * `jobTypeId` is sent for job types that own a template (lock/unlock) and
+     * omitted for Third Party Access, which uses an org-level item.
+     */
+    createChecklistItem(
+      orgId: string,
+      item: { title: string; jobTypeId?: string; sortOrder?: number; active?: boolean }
+    ): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(this.auth.getAccessToken() ? { Authorization: `Bearer ${this.auth.getAccessToken()}` } : {})
+      });
+      const body: { title: string; sortOrder: number; active: boolean; jobTypeId?: string } = {
+        title: item.title,
+        sortOrder: item.sortOrder ?? 1,
+        active: item.active ?? true,
+      };
+      if (item.jobTypeId) {
+        body.jobTypeId = item.jobTypeId;
+      }
+      return this.api.post<any>(`/api/v1/keyvault/organizations/${orgId}/jobs/checklist`, body, headers);
+    }
+
     updateChecklistItem(orgId: string, checklistItemId: string, item: Partial<ChecklistItem>): Observable<any> {
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
