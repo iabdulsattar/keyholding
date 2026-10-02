@@ -50,16 +50,19 @@ export const routes: Routes = [
           {
             path: 'invoice',
             loadComponent: () => import('./features/pages/invoices/invoices.component').then(m => m.InvoicesComponent),
+            canActivate: [adminGuard],
             title: 'Invoices | KeyVault Pro'
           },
           {
             path: 'invoice-detail/:invoiceId',
             loadComponent: () => import('./features/pages/invoices/invoice-detail.component').then(m => m.InvoiceDetailComponent),
+            canActivate: [adminGuard],
             title: 'Invoice Details | KeyVault Pro'
           },
           {
             path: 'invoice-detail-two',
             loadComponent: () => import('./features/pages/invoices/invoice-detail-two.component').then(m => m.InvoiceDetailTwoComponent),
+            canActivate: [adminGuard],
             title: 'Invoices | KeyVault Pro'
           },
           {
