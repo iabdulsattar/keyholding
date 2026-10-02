@@ -7,6 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { ServiceUser, CreateUserRequest, UpdateUserRequest } from '../../core/models/user.models';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface Role {
   id: string;
@@ -33,7 +34,7 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, MultiSelectComponent, RichSelectComponent],
+  imports: [CommonModule, FormsModule, RouterModule, MultiSelectComponent, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './add-user.component.html',
   styles: ``
 })

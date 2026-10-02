@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { PermissionService } from '../../core/services/permission.service';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface Role {
   id: string;
@@ -56,7 +57,7 @@ interface PermissionGroup {
 @Component({
   selector: 'app-add-role',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, ProductSwitcherComponent],
   templateUrl: './add-role.component.html',
   styles: ``,
 })

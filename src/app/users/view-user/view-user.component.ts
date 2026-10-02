@@ -9,11 +9,12 @@ import { PermissionService } from '../../core/services/permission.service';
 import { ServiceUser } from '../../core/models/user.models';
 import { DeactivateUserModalComponent } from '../../user-management/deactivate-user-modal/deactivate-user-modal.component';
 import { ReactivateUserModalComponent } from '../../user-management/reactivate-user-modal/reactivate-user-modal.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-view-user',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, DeactivateUserModalComponent, ReactivateUserModalComponent],
+  imports: [CommonModule, FormsModule, RouterModule, DeactivateUserModalComponent, ReactivateUserModalComponent, ProductSwitcherComponent],
   templateUrl: './view-user.component.html',
   styles: ``
 })
