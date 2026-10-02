@@ -15,6 +15,7 @@
         </svg>
         <span class="text-slate-500 text-xs font-medium font-['Inter']">Job Details</span>
       </nav>
+      <div class="flex gap-3">
       <button
         routerLink="/jobs"
         class="flex items-center gap-2 px-4 py-2 rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-900 font-['Inter'] hover:bg-slate-100 transition">
@@ -26,13 +27,14 @@
       </button>
       <button
         [routerLink]="['/jobs/edit-job', jobId]"
-        class="flex items-center gap-2 px-4 py-2 rounded-md bg-blue-700 text-white text-xs font-semibold font-['Inter'] hover:bg-blue-800 transition">
+        class="flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 text-white text-xs font-semibold font-['Inter'] hover:bg-blue-700 transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M12 20h9" />
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
         </svg>
         Edit Job
       </button>
+      </div>
     </div>
 
     <!-- Title -->
