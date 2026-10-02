@@ -4,6 +4,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface HookRow {
   no: string;
@@ -34,7 +35,7 @@ interface HookStats {
 @Component({
   selector: 'app-hook-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './hook-list.component.html',
   styles: [`
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }

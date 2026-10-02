@@ -6,6 +6,7 @@ import { DeactivateCabinetModalComponent } from './deactivate-cabinet-modal/deac
 import { ReactivateCabinetModalComponent } from './reactivate-cabinet-modal/reactivate-cabinet-modal.component';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { getCabinetSecurityLevelLabel } from '../../shared/utils/site.utils';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface Hook {
   num: number;
@@ -55,7 +56,7 @@ interface Cabinet {
 @Component({
   selector: 'app-cabinet-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, DeactivateCabinetModalComponent, ReactivateCabinetModalComponent, AppChart],
+  imports: [CommonModule, RouterModule, DeactivateCabinetModalComponent, ReactivateCabinetModalComponent, AppChart, ProductSwitcherComponent],
   templateUrl: './cabinet-detail.component.html',
   styles: [`
     @keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
