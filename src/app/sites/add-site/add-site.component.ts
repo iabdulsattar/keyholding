@@ -12,11 +12,12 @@ import { RichSelectComponent, RichSelectOption } from '../../shared/components/f
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { Observable } from 'rxjs';
 import { NavigationReferrerService } from '../../core/services/navigation-referrer.service';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-add-site',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, RichSelectComponent, ProductSwitcherComponent],
   templateUrl: './add-site.component.html',
   styles: [`
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
