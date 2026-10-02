@@ -262,55 +262,23 @@ export class AllKeysComponent implements OnInit {
     return Math.min(this.currentPage * this.pageSize, this.totalItems);
   }
 
-  get totalKeys(): number { return this.stats.total; }
-  get onHookKeys(): number { return this.stats.onHook; }
-  get issuedKeys(): number { return this.stats.issued; }
+  get totalKeys(): number { return this.totalItems; }
+  get onHookKeys(): number { return this.keys.filter(k => this.hasState(k, 'ON_THE_HOOK', 'ON_HOOK')).length; }
+  get issuedKeys(): number { return this.keys.filter(k => this.hasState(k, 'ISSUED')).length; }
   get onHookPercentage(): string {
-    if (!this.stats.total) return '0';
-    return (this.stats.onHook / this.stats.total * 100).toFixed(1);
+    if (!this.totalKeys) return '0';
+    return ((this.totalKeys - this.issuedKeys) / this.totalKeys * 100).toFixed(1);
   }
   get issuedPercentage(): string {
-    if (!this.stats.total) return '0';
-    return (this.stats.issued / this.stats.total * 100).toFixed(1);
+    if (!this.totalKeys) return '0';
+    return (this.issuedKeys / this.totalKeys * 100).toFixed(1);
   }
 
-  /**
-   * Counts are keyed off `keyStatus` and read from the API totals, not from the
-   * rows on the current page: a page holds ten keys while the card is labelled
-   * "across all clients". `keyTypeFilter` is applied in the browser only, so it
-   * is intentionally not part of these counts.
-   */
-  private loadStats(): void {
-    const base = {
-      q: this.searchQuery || undefined,
-      clientId: this.clientFilter || undefined,
-      siteId: this.siteFilter || undefined,
-    };
-    const count = (status?: string) =>
-      this.clientService
-        .listAllKeys({ ...base, status, page: 0, size: 1 })
-        .pipe(map(res => res.totalItems || 0));
-
-    forkJoin({
-      total: count(),
-      onHook: count(KEY_STATUS_ON_HOOK),
-      issued: count(KEY_STATUS_ISSUED),
-    }).subscribe({
-      next: ({ total, onHook, issued }) => {
-        this.stats = { total, onHook, issued };
-      },
-      error: () => {
-        this.stats = { total: this.totalItems, onHook: 0, issued: 0 };
-      },
-    });
+  private hasState(key: KeyRecord, ...states: string[]): boolean {
+    return states.indexOf((key.statusCode || key.status || '').toUpperCase()) !== -1;
   }
 
-  /** `keyStatus` values that mean "resting on a hook" and "handed out". */
-  private hasKeyStatus(key: KeyRecord, ...states: string[]): boolean {
-    const value = (key.statusCode || '').trim().toUpperCase();
-    return states.indexOf(value) !== -1;
-  }
-/** Renders the raw key status (`IN_STORAGE`) as plain words (`In storage`). */
+  /** Renders the raw key state (`ON_THE_HOOK`) as plain words (`On the hook`). */
   statusBadge(status: string, color = 'emerald'): string {
     const label = this.statusLabel(status);
     return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-${color}-50 text-${color}-700 border border-${color}-100"><span>${label}</span></span>`;
