@@ -94,9 +94,11 @@ export class SubscriptionTrialStartComponent implements OnInit {
   /**
    * External entry point: always exchange the refresh token from the link
    * first and persist that response (tokens, org, service access, subscribed
-   * services). Only then decide where the user goes: a `subscribedServices`
-   * entry for this serviceCode means the org is already subscribed and lands
-   * straight on the dashboard; anything else falls through to the trial page.
+   * services). Only then decide where the user goes. A member calls nothing
+   * but the service enable API and lands on the dashboard; an administrator
+   * with a `subscribedServices` entry for this serviceCode is already entitled
+   * and goes straight to the dashboard, while any other administrator falls
+   * through to the trial page.
    */
   private async resolveFromRefreshToken(refreshToken: string, serviceCode: string): Promise<void> {
     try {
@@ -123,34 +125,6 @@ export class SubscriptionTrialStartComponent implements OnInit {
       ));
       this.authService.storeSession(accessToken, newRefreshToken ?? null, expiresAt, this.authService.isRemembered(), serviceCode);
 
-      // ---- Organization context (mirrors the sign-in flow) ----
-      const orgs = res?.organizations ?? res?.tokens?.organizations ?? [];
-      if (orgs[0]?.id) {
-        this.storeOrg(orgs[0].id, orgs[0].name);
-      } else {
-        this.authService.me(accessToken).subscribe({
-          next: (profile: any) => {
-            const profileOrgs = profile?.organizations ?? [];
-            if (profileOrgs.length > 0) {
-              this.storeOrg(profileOrgs[0].id, profileOrgs[0].name);
-            }
-          },
-          error: () => {},
-        });
-      }
-
-      this.authService.getSession(accessToken).subscribe({
-        next: (session: any) => {
-          const sessionOrgs = session?.organizations ?? [];
-          if (sessionOrgs.length > 0) {
-            this.storeOrg(sessionOrgs[0].id, sessionOrgs[0].name);
-          }
-        },
-        error: () => {},
-      });
-
-      this.permissionService.setOrgRole(orgs?.[0]?.role);
-
       // ---- Service access (grants) exactly as the sign-in flow stores them ----
       const serviceAccess = res?.serviceAccess ?? res?.tokens?.serviceAccess;
       if (serviceAccess) {
@@ -162,13 +136,45 @@ export class SubscriptionTrialStartComponent implements OnInit {
       this.subStatus.setFromSubscribedServices(subscribedServices, serviceCode);
       this.productService.setCurrentProductByServiceCode(serviceCode);
 
+      // ---- Organization + profile context ----
+      // Awaited (the sign-in flow fires these in the background) because the
+      // member path needs a resolved org id, email and role before it can call
+      // the enable API and hand over to the dashboard.
+      const orgs = res?.organizations ?? res?.tokens?.organizations ?? [];
+      const profile: any = await firstValueFrom(this.authService.me(accessToken)).catch(() => null);
+      const profileOrgs = profile?.organizations ?? [];
+      const org = orgs[0] ?? profileOrgs[0] ?? null;
+
+      if (org?.id) {
+        this.storeOrg(org.id, org.name);
+      } else {
+        const session: any = await firstValueFrom(this.authService.getSession(accessToken)).catch(() => null);
+        const sessionOrg = (session?.organizations ?? [])[0];
+        if (sessionOrg?.id) {
+          this.storeOrg(sessionOrg.id, sessionOrg.name);
+        }
+      }
+
+      const user = profile?.user ?? profile?.data ?? profile;
+      this.userEmail = user?.email || this.userEmail;
+      this.userName =
+        `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || user?.email || this.userName;
+      this.userRole = this.extractRole(profile) || org?.role || '';
+      this.permissionService.setOrgRole(org?.role ?? this.extractRole(profile));
+
+      this.orgId = this.getOrgId();
+      this.orgName = this.authService.getOrgName() || org?.name || this.orgName;
+
       const hasSubscription = this.hasServiceSubscription(subscribedServices, serviceCode);
       const hasServiceAccess = this.permissionService.canAccessService(serviceCode);
 
-      // Trials and subscriptions are administrator-only. A member arriving on
-      // this link keeps the session just persisted but never sees the trial page.
+      // Members are entitled by their organisation, never by a trial of their
+      // own: the only call they make from this link is the service enable API
+      // and then straight into the dashboard. They never see (or start) a
+      // subscription or trial, and no plan/trial page is rendered for them.
       if (!this.permissionService.isOrgAdmin()) {
-        this.router.navigate(['/']);
+        await this.enableServiceForMember(this.orgId, serviceCode);
+        this.router.navigate(['/dashboard']);
         return;
       }
 
@@ -393,6 +399,26 @@ export class SubscriptionTrialStartComponent implements OnInit {
     if (err.status === 409) return true;
     const message = String(err?.error?.detail ?? err?.error?.message ?? err?.message ?? '').toLowerCase();
     return /already (subscribed|exists)|existing subscription|subscription exists/.test(message);
+  }
+
+  /**
+   * Member external login: the organisation already owns the subscription, so
+   * the member only needs the key-vault service enabled for their own account.
+   * This is the single API call a member makes from this link - no subscription
+   * or trial request is issued - and the local grant is patched so navigation
+   * and module permissions resolve before the dashboard loads.
+   */
+  private async enableServiceForMember(orgId: string | null, serviceCode: string): Promise<void> {
+    if (!orgId) return;
+
+    await firstValueFrom(
+      this.keyVaultService.enableService(orgId, serviceCode, this.userEmail, '')
+    ).catch(() => null);
+
+    this.permissionService.setServiceAccess([
+      ...this.permissionService.getServiceAccess().filter((g) => g.serviceCode !== serviceCode),
+      { serviceCode, wildcard: false, permissions: [], roles: [] }
+    ]);
   }
 
   /** Grant this org access to the key-vault service so the dashboard is usable. */
