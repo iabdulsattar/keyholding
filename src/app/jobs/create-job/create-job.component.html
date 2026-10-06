@@ -603,14 +603,9 @@
             <div>
                 @if (job.idChecked) {
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">ID Type <span class="text-rose-500">*</span></label>
-                <app-rich-select [options]="idTypeOptions" [(value)]="job.idType" placeholder="Select ID type"
-                    panelWidth="wide" class="w-full">
-                </app-rich-select>
-                <p class="text-[9px] text-slate-500 mt-1.5">Select the type of ID verified</p>
-                } @else {
-                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">ID Type</label>
-                <input type="text" placeholder="Select 'ID Checked' first"
-                    class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-400" disabled />
+                <input type="text" [(ngModel)]="job.idType" placeholder="Enter ID type (e.g. Company ID, Driving Licence, Passport)"
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                <p class="text-[9px] text-slate-500 mt-1.5">Enter the type of ID verified</p>
                 }
                      
             </div>
