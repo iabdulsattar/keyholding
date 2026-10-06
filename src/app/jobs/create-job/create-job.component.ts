@@ -71,7 +71,7 @@ export class CreateJobComponent implements OnInit {
     officer: '',
     priority: 'Low',
     idChecked: false,
-    idType: 'Company ID',
+    idType: 'ID name',
     notifyCompletion: '',
     notifyNotCompleted: '',
     notes: '',
@@ -82,7 +82,7 @@ export class CreateJobComponent implements OnInit {
   };
 
   idTypeOptions: RichSelectOption[] = [
-    { value: 'Company ID', label: 'ID name' },
+    { value: 'ID name', label: 'ID name' },
     { value: 'Photo ID', label: 'Photo ID' },
     { value: 'Employee ID', label: 'Employee ID' },
     { value: 'Passport', label: 'Passport' },
