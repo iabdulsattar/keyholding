@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Invoice, InvoiceListResponse, InvoiceStats, InvoiceStatsResponse } from '../../../core/models/subscription.models';
+import { ProductSwitcherComponent } from '../../../shared/components/ui/product-switcher/product-switcher.component';
 
 interface InvoiceRow {
   id: string;
@@ -18,7 +19,7 @@ interface InvoiceRow {
 @Component({
   selector: 'app-invoices',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ProductSwitcherComponent],
   templateUrl: './invoices.component.html',
   styles: ''
 })

@@ -9,6 +9,7 @@ import { SubscriptionStatusService } from '../../core/services/subscription-stat
 import { PermissionService } from '../../core/services/permission.service';
 import { Subscription } from 'rxjs';
 import { ChangePlanRequest } from '../../core/models/subscription.models';
+import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
 declare global {
   interface Window {
@@ -19,7 +20,7 @@ declare global {
 @Component({
   selector: 'app-complete-subscription',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, ProductSwitcherComponent],
   templateUrl: './complete-subscription.component.html',
   styles: ``
 })

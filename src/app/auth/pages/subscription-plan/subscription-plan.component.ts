@@ -4,11 +4,12 @@ import { SubscriptionService } from '../../../core/services/subscription.service
 import { Plan } from '../../../core/models/subscription.models';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ProductSwitcherComponent } from '../../../shared/components/ui/product-switcher/product-switcher.component';
 
 @Component({
   selector: 'app-subscription-plan',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, ProductSwitcherComponent],
   templateUrl: './subscription-plan.component.html',
   styles: ''
 })
