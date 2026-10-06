@@ -377,7 +377,7 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-2">
       <button (click)="onScheduleTabChange(0)" 
         [disabled]="openTabDisabled"
-        class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
+        class="col-span-1 md:col-span-4 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
         [class.border-blue-600]="activeTab === 0" [class.bg-white]="activeTab === 0" [class.ring-1]="activeTab === 0"
         [class.ring-blue-100]="activeTab === 0" 
         [class.border-slate-200]="activeTab !== 0" [class.bg-white]="activeTab !== 0"
@@ -408,7 +408,7 @@
 
       <button (click)="onScheduleTabChange(1)"
         [disabled]="scheduleTabDisabled"
-        class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
+        class="col-span-1 md:col-span-4 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
         [class.border-blue-600]="activeTab === 1" [class.bg-white]="activeTab === 1"
         [class.ring-1]="activeTab === 1" [class.ring-blue-100]="activeTab === 1" 
         [class.border-slate-200]="activeTab !== 1" [class.bg-white]="activeTab !== 1"
