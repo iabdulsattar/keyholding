@@ -82,7 +82,7 @@ export class CreateJobComponent implements OnInit {
   };
 
   idTypeOptions: RichSelectOption[] = [
-    { value: 'Company ID', label: 'Company ID' },
+    { value: 'Company ID', label: 'ID name' },
     { value: 'Photo ID', label: 'Photo ID' },
     { value: 'Employee ID', label: 'Employee ID' },
     { value: 'Passport', label: 'Passport' },
