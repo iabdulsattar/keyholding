@@ -661,7 +661,37 @@ export class CreateJobComponent implements OnInit {
   }
 
   get isOpenSchedule(): boolean {
-    return this.job.scheduleType === 'OPEN';
+    const label = this.selectedJobTypeLabel.trim().toLowerCase();
+    if (!this.selectedJobType) return true;
+    if (label === THIRD_PARTY_ACCESS_JOB_TYPE.toLowerCase()) return true;
+    if (label.includes('lock')) return false;
+    return true;
+  }
+
+  /** True when the job type forces the Scheduled tab. */
+  get isScheduledOnly(): boolean {
+    const label = this.selectedJobTypeLabel.trim().toLowerCase();
+    return this.selectedJobType && label.includes('lock');
+  }
+
+  /** True when the job type forces the Open tab. */
+  get isOpenOnly(): boolean {
+    return this.showVisitorType;
+  }
+
+  /** Both tabs disabled when the job type locks the schedule kind. */
+  get scheduleLocked(): boolean {
+    return this.isOpenOnly || this.isScheduledOnly;
+  }
+
+  /** Open tab disabled for lock/unlock job types. */
+  get openTabDisabled(): boolean {
+    return this.isScheduledOnly;
+  }
+
+  /** Scheduled tab disabled for Third Party Access job type. */
+  get scheduleTabDisabled(): boolean {
+    return this.isOpenOnly;
   }
 
   getJobTypeBgClass(): string {
