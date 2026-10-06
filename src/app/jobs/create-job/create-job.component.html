@@ -395,11 +395,14 @@
     <h2 class="text-slate-900 text-sm font-semibold font-['Inter']">Job Schedule
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-2">
-      <button (click)="onScheduleTabChange(0)" class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
+      <button (click)="onScheduleTabChange(0)" 
+        [disabled]="openTabDisabled"
+        class="col-span-1 md:col-span-3 border text-left flex items-start gap-4 p-5 rounded-md shadow-xs transition"
         [class.border-blue-600]="activeTab === 0" [class.bg-white]="activeTab === 0" [class.ring-1]="activeTab === 0"
         [class.ring-blue-100]="activeTab === 0" 
         [class.border-slate-200]="activeTab !== 0" [class.bg-white]="activeTab !== 0"
-        [class.hover:border-slate-300]="activeTab !== 0">
+        [class.hover:border-slate-300]="activeTab !== 0"
+        [class.opacity-60]="openTabDisabled" [class.cursor-not-allowed]="openTabDisabled">
         <span class="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
           [class.bg-white]="activeTab === 0" [class.border]="activeTab === 0" [class.border-blue-600]="activeTab === 0"
           [class.bg-slate-50]="activeTab !== 0">
