@@ -597,13 +597,7 @@ export class CreateJobComponent implements OnInit {
     this.loadKeys(0);
   }
 
-  /** The Scheduled tab is disabled for Third Party Access jobs. */
-  get scheduleTabDisabled(): boolean {
-    return this.showVisitorType;
-  }
-
-
-  /** Loads visitor types from the API when the job type needs them. */
+  
   private loadVisitorTypes(force = false): void {
     if (!this.showVisitorType) {
       // Leaving Third Party Access clears the choice so no stale id is sent.
@@ -671,7 +665,7 @@ export class CreateJobComponent implements OnInit {
   /** True when the job type forces the Scheduled tab. */
   get isScheduledOnly(): boolean {
     const label = this.selectedJobTypeLabel.trim().toLowerCase();
-    return this.selectedJobType && label.includes('lock');
+    return !!this.selectedJobType && label.includes('lock');
   }
 
   /** True when the job type forces the Open tab. */
