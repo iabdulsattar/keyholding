@@ -419,7 +419,7 @@ export class CreateJobComponent implements OnInit {
   }
 
   private loadClients(): void {
-    this.clientService.listClients({ page: 0, size: 200 }).subscribe((result: any) => {
+    this.clientService.listClients({ page: 0, size: 200, status: 'Active' }).subscribe((result: any) => {
       this.clientOptions = this.toRichOptions(result.items);
     });
   }
@@ -442,7 +442,7 @@ export class CreateJobComponent implements OnInit {
       return;
     }
     this.clientService.getSitesByClient(clientId).subscribe((sites: any[]) => {
-      this.siteOptions = this.toRichOptions(sites);
+      this.siteOptions = this.toRichOptions(sites.filter(s => s.status === 'ACTIVE'));
     });
   }
 
