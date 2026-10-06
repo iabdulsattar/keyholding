@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DropdownComponent } from '../../ui/dropdown/dropdown.component';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { PermissionService } from '../../../../core/services/permission.service';
@@ -15,6 +15,7 @@ export class UserDropdownComponent implements OnInit {
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
   private permissions = inject(PermissionService);
+  private router = inject(Router);
 
   isOpen = false;
   userName = '';
@@ -70,7 +71,8 @@ export class UserDropdownComponent implements OnInit {
       // Drop grants and the persisted org role so the next user on this browser
       // does not inherit this user's permissions.
       this.permissions.clear();
-      window.location.href = '/signin';
+      // Router navigation keeps the SPA alive: no full page reload on sign out.
+      this.router.navigate(['/signin']);
     };
 
     if (token && refreshToken) {

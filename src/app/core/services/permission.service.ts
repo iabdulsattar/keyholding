@@ -29,8 +29,21 @@ const ADMIN_ROLE_NAMES = new Set([
   'super_admin',
 ]);
 
-/** Org roles that qualify on their own when the API returned no role names. */
-const OWNER_ROLE_NAMES = new Set(['owner', 'superadmin', 'super_admin']);
+/** Org roles that grant organisation-administrator rights. */
+const OWNER_ROLE_NAMES = new Set([
+  'owner',
+  'admin',
+  'administrator',
+  'orgadmin',
+  'org_admin',
+  'organisation_admin',
+  'organization_admin',
+  'superadmin',
+  'super_admin',
+]);
+
+/** Anything else the identity service reports (`MEMBER`, `USER`, ...) is not an admin. */
+const NON_ADMIN_ROLE_NAMES = new Set(['member', 'user', 'viewer', 'guest', 'staff', 'employee']);
 
 /**
  * Explicit administrative permissions. Used as a secondary signal so an
@@ -77,18 +90,22 @@ export class PermissionService {
 
   /**
    * True when the signed-in user is an organisation administrator. Subscription
-   * and trial features are restricted to these users, so this deliberately
-   * does NOT honour wildcard permission grants.
+   * and trial features are restricted to these users.
    *
-   * Resolution order: an explicit administrative permission, then the service
-   * role names returned by the API (e.g. "Administrator"), then - only when the
-   * API told us nothing - an owner-level org role. A plain `ADMIN` org role on
-   * its own is not enough, otherwise every ordinary member invited as an org
-   * admin would inherit billing.
+   * The org role reported by the identity service wins: a `MEMBER` is never an
+   * administrator, whatever permissions the service grants happen to include
+   * (a member can carry an expanded or wildcard permission list without being
+   * an administrator). Only when the org role is missing do the service role
+   * names and then the explicit admin permissions act as a fallback, so an
+   * administrator is still recognised when the API omits `organizations`.
    */
   isOrgAdmin(): boolean {
-    if (this.getPermissions().some((p) => ADMIN_PERMISSIONS.has(p))) {
-      return true;
+    const orgRole = (this.orgRole || '').trim().toLowerCase();
+
+    if (orgRole) {
+      if (NON_ADMIN_ROLE_NAMES.has(orgRole)) return false;
+      if (OWNER_ROLE_NAMES.has(orgRole)) return true;
+      // An unrecognised, non-member org role: fall through to the role names.
     }
 
     const roleNames = this.collectGrantRoleNames();
@@ -96,8 +113,7 @@ export class PermissionService {
       return roleNames.some((name) => ADMIN_ROLE_NAMES.has(name));
     }
 
-    const orgRole = (this.orgRole || '').trim().toLowerCase();
-    return OWNER_ROLE_NAMES.has(orgRole);
+    return this.getPermissions().some((p) => ADMIN_PERMISSIONS.has(p));
   }
 
   /** Every distinct role name/code the API attached to the service grants. */

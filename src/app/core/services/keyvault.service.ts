@@ -407,6 +407,129 @@ export interface Incident {
   [key: string]: any;
 }
 
+/**
+ * Counts returned by the keys overview endpoint. The status buckets follow the
+ * key status codes the API filters on (`IN_STORAGE`, `ISSUED`, `IN_USE`,
+ * `OVERDUE`, `DAMAGED`, `LOST`).
+ */
+export interface KeyOverview {
+  total: number;
+  onTheHook: number;
+  issued: number;
+  inUse: number;
+  overdue: number;
+  damaged: number;
+  lost: number;
+}
+
+/** Candidate field names per bucket, so a response variant cannot zero a card. */
+const OVERVIEW_FIELDS: Record<keyof Omit<KeyOverview, 'total'>, string[]> = {
+  onTheHook: ['onTheHook', 'onTheHooks', 'onHook', 'onTheHookCount', 'inStorage', 'inStorageCount', 'available', 'availableCount'],
+  issued: ['issued', 'issuedCount', 'issuedKeys'],
+  inUse: ['inUse', 'inUseCount', 'inUseKeys'],
+  overdue: ['overdue', 'overdueCount', 'overdueKeys'],
+  damaged: ['damaged', 'damagedCount', 'damagedKeys'],
+  lost: ['lost', 'lostCount', 'lostKeys'],
+};
+
+const OVERVIEW_TOTAL_FIELDS = ['total', 'totalKeys', 'totalCount', 'totalKeysCount', 'keyCount', 'count', 'all'];
+
+/** Status code aliases that the API may report for the same bucket. */
+const OVERVIEW_STATUS_ALIASES: Record<keyof Omit<KeyOverview, 'total'>, string[]> = {
+  onTheHook: ['IN_STORAGE', 'ON_THE_HOOK', 'ON_HOOK', 'AVAILABLE'],
+  issued: ['ISSUED'],
+  inUse: ['IN_USE'],
+  overdue: ['OVERDUE'],
+  damaged: ['DAMAGED'],
+  lost: ['LOST'],
+};
+
+function toCount(value: any): number | null {
+  if (typeof value === 'number' && isFinite(value)) return value;
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
+    if (isFinite(parsed)) return parsed;
+  }
+  return null;
+}
+
+function readField(source: any, names: string[]): number | null {
+  if (!source || typeof source !== 'object') return null;
+  for (const name of names) {
+    const hit = toCount(source[name]);
+    if (hit !== null) return hit;
+  }
+  // Snake case responses (`on_the_hook`, `in_storage`) are matched too.
+  const flat = Object.keys(source).reduce<Record<string, any>>((acc, key) => {
+    acc[key.toLowerCase().replace(/[_-]/g, '')] = source[key];
+    return acc;
+  }, {});
+  for (const name of names) {
+    const hit = toCount(flat[name.toLowerCase().replace(/[_-]/g, '')]);
+    if (hit !== null) return hit;
+  }
+  return null;
+}
+
+/** `{ IN_STORAGE: 4 }` or `[{ status: 'IN_STORAGE', count: 4 }]` -> counts by code. */
+function readStatusBreakdown(payload: any): Record<string, number> {
+  const out: Record<string, number> = {};
+  const source = payload?.byStatus ?? payload?.statusCounts ?? payload?.statuses ?? payload?.breakdown ?? payload;
+
+  if (Array.isArray(source)) {
+    for (const entry of source) {
+      const code = String(entry?.status ?? entry?.statusCode ?? entry?.code ?? entry?.name ?? '').trim().toUpperCase();
+      const count = toCount(entry?.count ?? entry?.total ?? entry?.value ?? entry?.quantity);
+      if (code && count !== null) out[code] = (out[code] ?? 0) + count;
+    }
+    return out;
+  }
+
+  if (source && typeof source === 'object') {
+    for (const [key, value] of Object.entries(source)) {
+      const code = key.trim().toUpperCase().replace(/[_-]/g, '_');
+      const count = toCount(value);
+      if (count !== null) out[code] = (out[code] ?? 0) + count;
+    }
+  }
+
+  return out;
+}
+
+/**
+ * Normalises the keys overview payload into the buckets the All Keys cards
+ * read. Counts are additive per bucket (a response may report several
+ * spellings of the same bucket) and a missing bucket falls back to 0 rather
+ * than leaving a card blank.
+ */
+export function normalizeKeyOverview(res: any): KeyOverview {
+  const payload = res?.data ?? res?.overview ?? res?.stats ?? res ?? {};
+  const body = payload?.data ?? payload?.overview ?? payload?.stats ?? payload ?? {};
+  const breakdown = readStatusBreakdown(body);
+
+  const buckets: KeyOverview = { total: 0, onTheHook: 0, issued: 0, inUse: 0, overdue: 0, damaged: 0, lost: 0 };
+
+  (Object.keys(OVERVIEW_FIELDS) as (keyof Omit<KeyOverview, 'total'>)[]).forEach(bucket => {
+    let count = readField(body, OVERVIEW_FIELDS[bucket]) ?? 0;
+    if (!count) {
+      for (const code of OVERVIEW_STATUS_ALIASES[bucket]) {
+        count = readField(breakdown, [code]) ?? 0;
+        if (count) break;
+      }
+    }
+    buckets[bucket] = count;
+  });
+
+  const reportedTotal = readField(body, OVERVIEW_TOTAL_FIELDS);
+  const summed = (Object.keys(OVERVIEW_FIELDS) as (keyof Omit<KeyOverview, 'total'>)[])
+    .reduce((acc, bucket) => acc + buckets[bucket], 0);
+  // The reported total wins; the bucket sum is the fallback when the endpoint
+  // only ships the per-status breakdown.
+  buckets.total = reportedTotal ?? (summed || 0);
+
+  return buckets;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -796,6 +919,18 @@ export class KeyVaultService {
   getKeyStats(orgId: string, clientId: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/clients/${clientId}/keys/stats`, headers);
+  }
+
+  /**
+   * Organisation-wide key totals used by the All Keys statistics cards
+   * (GET /api/v1/keyvault/organizations/{orgId}/keys/overview). The payload is
+   * unwrapped from its `data` envelope so callers read the counts directly.
+   */
+  getKeysOverview(orgId: string): Observable<KeyOverview> {
+    const headers = this.getAuthHeaders();
+    return this.api
+      .get<any>(`/api/v1/keyvault/organizations/${orgId}/keys/overview`, headers)
+      .pipe(map(res => normalizeKeyOverview(res)));
   }
 
   getKeyMovements(orgId: string, keyId: string): Observable<any> {

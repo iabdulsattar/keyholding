@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { KeyVaultService } from './keyvault.service';
+import { KeyVaultService, KeyOverview } from './keyvault.service';
 
 export interface PaginatedResult<T> {
   items: T[];
@@ -262,6 +262,13 @@ export class ClientService {
     const orgId = this.getOrgId();
     if (!orgId) return of(null);
     return this.keyVault.getClientStats(orgId);
+  }
+
+  /** Organisation-wide key counts for the All Keys statistics cards. */
+  getKeysOverview(): Observable<KeyOverview> {
+    const orgId = this.getOrgId();
+    if (!orgId) return of({ total: 0, onTheHook: 0, issued: 0, inUse: 0, overdue: 0, damaged: 0, lost: 0 });
+    return this.keyVault.getKeysOverview(orgId);
   }
 
   getSiteStats(clientId: string): Observable<any> {

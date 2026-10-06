@@ -366,7 +366,8 @@ export class AppSidebarComponent implements OnInit {
       // Grants and the persisted org role must go too, otherwise the next user
       // on this browser inherits the previous user's admin-only permissions.
       this.permissions.clear();
-      window.location.href = '/signin';
+      // Router navigation keeps the SPA alive: no full page reload on sign out.
+      this.router.navigate(['/signin']);
     };
 
     if (token && refreshToken) {

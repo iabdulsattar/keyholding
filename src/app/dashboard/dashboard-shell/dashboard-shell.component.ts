@@ -169,6 +169,17 @@ export class DashboardShellComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadGreeting();
+    this.loadDashboard(true);
+    this.loadSubscriptionTrial();
+  }
+
+  /**
+   * Returning to the dashboard (for example after creating a job) re-reads the
+   * API instead of relying on a full page reload, so the cards always show the
+   * current data.
+   */
+  refresh(): void {
+    this.loadGreeting();
     this.loadDashboard();
     this.loadSubscriptionTrial();
   }
@@ -214,7 +225,7 @@ export class DashboardShellComponent implements OnInit {
     return Math.max(0, diff);
   }
 
-  private loadDashboard(): void {
+  private loadDashboard(showLoader = false): void {
     const orgId = this.getOrgId();
     if (!orgId) {
       this.loading = false;
@@ -222,10 +233,17 @@ export class DashboardShellComponent implements OnInit {
       return;
     }
 
+    // Only the first load blanks the page; a refresh keeps the current cards on
+    // screen while the new figures are fetched.
+    if (showLoader) {
+      this.loading = true;
+    }
+
     this.keyVaultService.getDashboardStats(orgId).subscribe({
       next: (data: any) => {
         this.applyDashboard(data);
         this.loading = false;
+        this.dashboardError = false;
       },
       error: () => {
         this.loading = false;

@@ -342,6 +342,17 @@ export class ViewSiteComponent implements OnInit {
     this.siteNameToDelete = '';
   }
 
+  /**
+   * Refreshes the audit trail in place and scrolls to it, so the page never
+   * has to reload.
+   */
+viewAuditHistory(): void {
+    this.loadActivities();
+    setTimeout(() => {
+      document.getElementById('siteActivitySection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   loadActivities(): void {
     if (!this.siteId) return;
     this.activitiesLoading = true;
