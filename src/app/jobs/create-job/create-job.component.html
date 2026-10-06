@@ -197,29 +197,9 @@
                     <p class="text-[9px] text-slate-500  mt-1.5">Enter type of visitor</p>
                 </div>
 
-                <div>
-                    <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Visitor Full Name</label>
-                    <input type="text" [(ngModel)]="job.visitorFullName" placeholder="Enter visitor full name"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-                </div>
-
-                <div>
-                    <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Visitor Company</label>
-                    <input type="text" [(ngModel)]="job.visitorCompany" placeholder="Enter visitor company"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-                </div>
-
-                <div>
-                    <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Visitor Contact Number</label>
-                    <input type="text" [(ngModel)]="job.visitorContactNumber" placeholder="Enter visitor contact number"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-                </div>
-
-                <div>
-                    <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Purpose of Visit</label>
-                    <input type="text" [(ngModel)]="job.visitorPurposeOfVisit" placeholder="Enter purpose of visit"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
-                </div>
+                                
+                
+                
                 }
                 
                 <div>
@@ -555,6 +535,8 @@
         </div>
     </div>
 
+    @if (showVisitorType) {
+                
     <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
         <div class="flex items-center gap-2 mb-4">
             <svg width="17" height="17" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -567,8 +549,72 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Full Name <span class="text-rose-500">*</span></label>
+                <input type="text" [(ngModel)]="job.visitorFullName" placeholder="Enter visitor full name"
+                     class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                <p class="text-[9px] text-slate-500 mt-1.5">Enter the full name</p>
+                     
+            </div>
+
+            <div>
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Company Name <span class="text-rose-500">*</span></label>
+                <input type="text" [(ngModel)]="job.visitorCompany" placeholder="Enter visitor company name"
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                <p class="text-[9px] text-slate-500 mt-1.5">Enter the company name</p>
+                     
+            </div>
+    
+            <div>
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Contact Number</label>
+                <input type="text" [(ngModel)]="job.visitorContactNumber" placeholder="Enter visitor contact number"
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                <p class="text-[9px] text-slate-500 mt-1.5">Enter the contact number</p>
+                     
+            </div>
+
+            <div>
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Purpose of Visit <span class="text-rose-500">*</span></label>
+                <input type="text" [(ngModel)]="job.visitorPurposeOfVisit" placeholder="Enter purpose of visit"
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                <p class="text-[9px] text-slate-500 mt-1.5">Enter the purpose of visit</p>
+                     
+            </div>
+                
         </div>
-    </div>    
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#f5f7fb] rounded-md mt-4 p-4 ">
+            <label class="relative flex items-start gap-2 cursor-pointer">
+
+              <input type="checkbox" 
+                class="mt-0.5 w-4 h-4 shrink-0 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+
+              
+              <!-- Text -->
+              <div class="flex flex-col gap-1 text-left">
+                <span class="text-slate-900 text-xs font-semibold font-['Inter'] mt-0.5">
+                  ID Checked / Verified
+                </span>
+
+                <span class="text-slate-500 text-[10px] font-normal font-['Inter']">
+                  Tick if an ID has been checked and verified
+                </span>
+              </div>
+
+            </label>
+
+            <div>
+                <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">ID Description</label>
+                <input type="text" placeholder="Company ID card"
+                    class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                <p class="text-[9px] text-slate-500 mt-1.5">Enter details of the ID checked (e.g. Company ID card, Driving Licence, Contractor ID)</p>
+                     
+            </div>
+
+        </div>
+    </div>
+    
+    }
     
     <!-- Required Keys -->
     <div class="bg-white rounded-md p-5 sm:p-6 mb-4">
