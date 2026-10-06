@@ -561,7 +561,47 @@ export class CreateJobComponent implements OnInit {
     // Visitor types are only meaningful for a Third Party Access job, so the
     // lookup is made here rather than on page load.
     this.loadVisitorTypes();
+    this.applyDefaultScheduleTab();
   }
+
+  /**
+   * Third Party Access jobs are walk-in / ad-hoc, so the Open tab is
+   * pre-selected and the Scheduled tab is disabled. Lock and unlock jobs are
+   * point-in-time jobs, so they open on the Scheduled tab. Everything else
+   * defaults to Open.
+   */
+  private applyDefaultScheduleTab(): void {
+    const isThirdParty = this.showVisitorType;
+    let scheduleType: JobScheduleType = 'OPEN';
+
+    if (isThirdParty || !this.selectedJobTypeLabel.toLowerCase().includes('lock')) {
+      this.activeTab = 0;
+      scheduleType = 'OPEN';
+      if (isThirdParty) {
+        // Open jobs have no start/end window, so clear any window fields so they
+        // are never sent by accident for a Third Party Access job.
+        this.job.date = '';
+        this.job.startTime = '';
+        this.job.endTime = '';
+        this.updateDuration();
+      }
+    } else {
+      this.activeTab = 1;
+      scheduleType = 'SCHEDULED';
+    }
+
+    this.job.scheduleType = scheduleType;
+    delete this.errors['date'];
+    delete this.errors['startTime'];
+    delete this.errors['endTime'];
+    this.loadKeys(0);
+  }
+
+  /** The Scheduled tab is disabled for Third Party Access jobs. */
+  get scheduleTabDisabled(): boolean {
+    return this.showVisitorType;
+  }
+
 
   /** Loads visitor types from the API when the job type needs them. */
   private loadVisitorTypes(force = false): void {
@@ -607,7 +647,9 @@ export class CreateJobComponent implements OnInit {
    * Scheduled -> SCHEDULED.
    */
   onScheduleTabChange(tab: number): void {
-    this.activeTab = tab;
+    // The Scheduled tab is disabled for Third Party Access jobs; ignore clicks
+    // that would switch away from Open while it is disabled.
+    if (tab === 1 && this.scheduleTabDisabled) return;
     this.job.scheduleType = tab === 0 ? 'OPEN' : 'SCHEDULED';
     this.updateDuration();
     this.refreshKeyAvailability();

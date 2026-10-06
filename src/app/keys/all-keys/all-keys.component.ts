@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord, KeyRecord, PaginatedResult } from '../../core/services/client.service';
-import { KeyVaultService } from '../../core/services/keyvault.service';
+import { KeyVaultService, KeyOverview } from '../../core/services/keyvault.service';
 import { PageBreadcrumbComponent, BreadcrumbItem } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
@@ -47,6 +47,8 @@ export class AllKeysComponent implements OnInit {
   deletingKeyId = '';
   searchQuery = '';
   clientFilter = '';
+  overview: KeyOverview | null = null;
+  overviewLoading = false;
 
   breadcrumbs: BreadcrumbItem[] = [
     { label: 'Keys' },
@@ -100,6 +102,27 @@ export class AllKeysComponent implements OnInit {
     this.loadClients();
     this.loadSites();
     this.loadKeys();
+    this.loadOverview();
+  }
+
+  /**
+   * Statistics cards come from the organisation-wide keys overview endpoint, so
+   * the counts cover every key in the org rather than the current page of
+   * results. When it cannot be reached the page-local counts are used as a
+   * fallback so the cards still render.
+   */
+  private loadOverview(): void {
+    this.overviewLoading = true;
+    this.clientService.getKeysOverview().subscribe({
+      next: (overview: KeyOverview) => {
+        this.overview = overview;
+        this.overviewLoading = false;
+      },
+      error: () => {
+        this.overview = null;
+        this.overviewLoading = false;
+      }
+    });
   }
 
   private loadClients(): void {
@@ -177,6 +200,7 @@ export class AllKeysComponent implements OnInit {
           this.currentPage--;
         }
         this.loadKeys();
+        this.loadOverview();
       },
       error: () => {
         this.deletingKeyId = '';
@@ -262,12 +286,19 @@ export class AllKeysComponent implements OnInit {
     return Math.min(this.currentPage * this.pageSize, this.totalItems);
   }
 
-  get totalKeys(): number { return this.totalItems; }
-  get onHookKeys(): number { return this.keys.filter(k => this.hasState(k, 'ON_THE_HOOK', 'ON_HOOK')).length; }
-  get issuedKeys(): number { return this.keys.filter(k => this.hasState(k, 'ISSUED')).length; }
+  /** Organisation-wide totals from /keys/overview, or the filtered result count. */
+  get totalKeys(): number { return this.overview ? this.overview.total : this.totalItems; }
+  get onHookKeys(): number {
+    return this.overview
+      ? this.overview.onTheHook
+      : this.keys.filter(k => this.hasState(k, 'IN_STORAGE', 'ON_THE_HOOK', 'ON_HOOK')).length;
+  }
+  get issuedKeys(): number {
+    return this.overview ? this.overview.issued : this.keys.filter(k => this.hasState(k, 'ISSUED')).length;
+  }
   get onHookPercentage(): string {
     if (!this.totalKeys) return '0';
-    return ((this.totalKeys - this.issuedKeys) / this.totalKeys * 100).toFixed(1);
+    return ((this.onHookKeys / this.totalKeys) * 100).toFixed(1);
   }
   get issuedPercentage(): string {
     if (!this.totalKeys) return '0';
