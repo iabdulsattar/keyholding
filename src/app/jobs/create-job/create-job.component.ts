@@ -71,7 +71,7 @@ export class CreateJobComponent implements OnInit {
     officer: '',
     priority: 'Low',
     idChecked: false,
-    idType: 'Company ID',
+    idType: 'ID Name',
     notifyCompletion: '',
     notifyNotCompleted: '',
     notes: '',
