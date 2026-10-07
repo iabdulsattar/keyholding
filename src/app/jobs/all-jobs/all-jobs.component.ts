@@ -128,6 +128,36 @@ export class AllJobsComponent implements OnInit {
     });
   }
 
+  private sortState = { by: 'code', dir: 'desc' as 'asc' | 'desc' };
+
+  get sortBy(): string { return this.sortState.by; }
+  get sortDir(): 'asc' | 'desc' { return this.sortState.dir; }
+
+  get sortedJobs(): any[] {
+    const jobs = [...this.jobs];
+    const dir = this.sortState.dir === 'asc' ? 1 : -1;
+    return jobs.sort((a, b) => {
+      const av = a[this.sortState.by];
+      const bv = b[this.sortState.by];
+      if (av == null && bv == null) return 0;
+      if (av == null) return dir;
+      if (bv == null) return -dir;
+      if (typeof av === 'string' && typeof bv === 'string') {
+        return dir * av.localeCompare(bv, undefined, { numeric: true, sensitivity: 'base' });
+      }
+      return dir * ((av > bv) ? 1 : (av < bv ? -1 : 0));
+    });
+  }
+
+  onSortChange(column: string): void {
+    if (this.sortState.by === column) {
+      this.sortState.dir = this.sortState.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortState.by = column;
+      this.sortState.dir = 'desc';
+    }
+  }
+
   mapJob(job: any): any {
     return {
       id: job.id ?? '',

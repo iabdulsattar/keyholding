@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   // Refresh the access token this many ms before it actually expires,
   // so the user never hits a 401 mid-request.
-  private readonly REFRESH_THRESHOLD_MS = 60 * 1000;
+  private readonly REFRESH_THRESHOLD_MS = 5 * 60 * 1000;
 
   private readonly DEFAULT_EXPIRY_MS = 24 * 60 * 60 * 1000;
 
@@ -183,7 +183,18 @@ private setAccessToken(token: string) {
 
   private setRefreshToken(token: string) {
     const serviceCode = this.getCurrentServiceCode() ?? undefined;
+    // Extend session expiry when we get a new refresh token
+    // Add a reasonable TTL (e.g., 7 days for remembered, 24h for non-remembered)
+    const remember = localStorage.getItem('remember_device') === 'true';
+    const storage = remember ? localStorage : sessionStorage;
+    const currentExpiry = storage.getItem('session_expires_at');
+    const currentExpiryNum = currentExpiry ? Number(currentExpiry) : 0;
+    const now = Date.now();
+    const EXTENSION_MS = remember ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+    // Only extend if current expiry is not already far in future
+    const newExpiry = Math.max(currentExpiryNum, now + EXTENSION_MS);
     this.authService.setRefreshToken(token, serviceCode);
+    storage.setItem('session_expires_at', String(newExpiry));
   }
 
   private getCurrentServiceCode(): string | null {

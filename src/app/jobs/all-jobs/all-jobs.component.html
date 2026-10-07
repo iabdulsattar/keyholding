@@ -133,13 +133,22 @@
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-slate-200 text-left text-slate-500">
-              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Job ID</th>
-              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Client</th>
-              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Site</th>
-              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Job Type</th>
-              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Officer</th>
-              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Scheduled Date &amp; Time</th>
-               <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap">Status</th>
+<th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('code')">
+                <div class="flex items-center gap-1">
+                  Job ID
+                  @if (sortBy === 'code') {
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" [class.rotate-180]="sortDir === 'asc'">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                  </svg>
+                  }
+                </div>
+              </th>
+              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('client')">Client</th>
+              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('site')">Site</th>
+              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('type')">Job Type</th>
+              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('officer')">Officer</th>
+              <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('date')">Scheduled Date & Time</th>
+               <th class="px-5 py-3.5 text-slate-900 text-xs font-semibold font-['Inter'] capitalize whitespace-nowrap cursor-pointer hover:bg-slate-50 select-none" (click)="onSortChange('status')">Status</th>
                <th class="px-5 py-3.5 text-slate-500 text-xs font-semibold font-['Inter'] uppercase whitespace-nowrap text-right">Actions</th>
              </tr>
           </thead>
@@ -149,12 +158,12 @@
                 <td colspan="8" class="px-5 py-8 text-center text-slate-400">Loading jobs...</td>
               </tr>
             } @else {
-            @if (jobs.length === 0) {
+            @if (sortedJobs.length === 0) {
               <tr>
                 <td colspan="8" class="px-5 py-8 text-center text-slate-400 h-[320px]">No jobs found for this client.</td>
               </tr>
             } @else {                     
-            @for (job of jobs; track job.id) {
+            @for (job of sortedJobs; track job.id) {
               <tr class="hover:bg-slate-50 transition">
                 <td class="px-5 py-4 whitespace-nowrap">
                   <a href="#" class="text-blue-600 text-xs font-semibold font-['Inter']">{{ job.code }}</a>
@@ -189,7 +198,7 @@
 
     <!-- Cards (mobile) -->
     <div class="md:hidden space-y-3">
-      @for (job of jobs; track job.id) {
+      @for (job of sortedJobs; track job.id) {
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
           <div class="flex items-start justify-between gap-2 mb-2">
             <a href="#" class="text-blue-600 font-semibold text-sm hover:underline">{{ job.code }}</a>

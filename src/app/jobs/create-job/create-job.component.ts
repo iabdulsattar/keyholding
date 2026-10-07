@@ -837,6 +837,7 @@ export class CreateJobComponent implements OnInit {
       return;
     }
 
+    this.keysLoading = true;
     this.keyVault.getKeyAvailability(orgId, {
       scheduleType: this.job.scheduleType,
       // Only a scheduled job has a window; an open job's due date must not be
@@ -1101,6 +1102,12 @@ export class CreateJobComponent implements OnInit {
       if (!this.job.date) this.errors['date'] = 'Date is required';
       if (!this.job.startTime) this.errors['startTime'] = 'Start time is required';
       if (!this.job.endTime) this.errors['endTime'] = 'End time is required';
+    }
+    // Visitor fields validation (only for Third Party Access job type)
+    if (this.showVisitorType) {
+      if (!this.job.visitorFullName.trim()) this.errors['visitorFullName'] = 'Visitor full name is required';
+      if (!this.job.visitorCompany.trim()) this.errors['visitorCompany'] = 'Visitor company name is required';
+      if (!this.job.visitorPurposeOfVisit.trim()) this.errors['visitorPurposeOfVisit'] = 'Purpose of visit is required';
     }
     if (this.job.idChecked && !this.job.idType.trim()) this.errors['idType'] = 'ID type is required';
     if (!this.job.officer) this.errors['officer'] = 'Officer is required';
