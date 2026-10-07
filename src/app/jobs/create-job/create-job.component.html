@@ -1138,8 +1138,10 @@
                         <span class="px-1 text-slate-400">…</span>
                         } @else {
                         <button (click)="goToPage(p - 1)"
-                            class="w-8 h-8 grid place-items-center rounded-sm border text-blue-600 font-medium text-xs font-['Inter']"
-                            [class.border-blue-600]="currentPage === p - 1" [class.bg-blue-50]="currentPage === p - 1"
+                            class="w-8 h-8 grid place-items-center rounded-sm border text-white font-medium text-xs font-['Inter']"
+                            [class.border-blue-600]="currentPage === p - 1" [class.bg-blue-600]="currentPage === p - 1"
+                            [class.hover:bg-blue-700]="currentPage === p - 1" 
+                            
                             [class.border-slate-200]="currentPage !== p - 1"
                             [class.text-slate-600]="currentPage !== p - 1"
                             [class.hover:bg-slate-50]="currentPage !== p - 1">{{ p }}</button>
