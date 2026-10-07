@@ -551,7 +551,12 @@
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Full Name <span class="text-rose-500">*</span></label>
                 <input type="text" [(ngModel)]="job.visitorFullName" placeholder="Enter visitor full name"
-                     class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                     class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"
+                     [class.border-rose-500]="submitted && errors['visitorFullName']" [class.ring-1]="submitted && errors['visitorFullName']"
+                     [class.ring-rose-500/20]="submitted && errors['visitorFullName']" />
+                @if (submitted && errors['visitorFullName']) {
+                <p class="text-xs text-rose-500 mt-1">{{ errors['visitorFullName'] }}</p>
+                }
                 <p class="text-[9px] text-slate-500 mt-1.5">Enter the full name</p>
                      
             </div>
@@ -559,7 +564,12 @@
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Company Name <span class="text-rose-500">*</span></label>
                 <input type="text" [(ngModel)]="job.visitorCompany" placeholder="Enter visitor company name"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"
+                    [class.border-rose-500]="submitted && errors['visitorCompany']" [class.ring-1]="submitted && errors['visitorCompany']"
+                    [class.ring-rose-500/20]="submitted && errors['visitorCompany']" />
+                @if (submitted && errors['visitorCompany']) {
+                <p class="text-xs text-rose-500 mt-1">{{ errors['visitorCompany'] }}</p>
+                }
                 <p class="text-[9px] text-slate-500 mt-1.5">Enter the company name</p>
                      
             </div>
@@ -575,7 +585,12 @@
             <div>
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">Purpose of Visit <span class="text-rose-500">*</span></label>
                 <input type="text" [(ngModel)]="job.visitorPurposeOfVisit" placeholder="Enter purpose of visit"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"
+                    [class.border-rose-500]="submitted && errors['visitorPurposeOfVisit']" [class.ring-1]="submitted && errors['visitorPurposeOfVisit']"
+                    [class.ring-rose-500/20]="submitted && errors['visitorPurposeOfVisit']" />
+                @if (submitted && errors['visitorPurposeOfVisit']) {
+                <p class="text-xs text-rose-500 mt-1">{{ errors['visitorPurposeOfVisit'] }}</p>
+                }
                 <p class="text-[9px] text-slate-500 mt-1.5">Enter the purpose of visit</p>
                      
             </div>
@@ -604,7 +619,12 @@
                 @if (job.idChecked) {
                 <label class="block text-slate-900 text-xs font-semibold font-['Inter'] mb-1.5">ID Type <span class="text-rose-500">*</span></label>
                 <input type="text" [(ngModel)]="job.idType" placeholder="ID name"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" />
+                    class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"
+                    [class.border-rose-500]="submitted && errors['idType']" [class.ring-1]="submitted && errors['idType']"
+                    [class.ring-rose-500/20]="submitted && errors['idType']" />
+                @if (submitted && errors['idType']) {
+                <p class="text-xs text-rose-500 mt-1">{{ errors['idType'] }}</p>
+                }
                 <p class="text-[9px] text-slate-500 mt-1.5">Enter details of the ID checked(e.g. Company ID card, Driving Licence, Contractor ID)</p>
                 }
                      
@@ -1021,6 +1041,19 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200">
+                            @if (keysLoading) {
+                            <tr>
+                                <td colspan="4" class="py-8">
+                                    <div class="flex items-center justify-center gap-2 text-slate-500 text-sm">
+                                        <svg class="animate-spin h-5 w-5 text-blue-600" viewBox="0 0 24 24" fill="none">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Loading available keys...
+                                    </div>
+                                </td>
+                            </tr>
+                            } @else {
                             @for (key of keys; track key.id) {
                             <tr class="hover:bg-slate-50 transition">
                                 <td class="px-4 py-4 align-top">
@@ -1071,12 +1104,24 @@
                                 </td>
                             </tr>
                             }
+                            }
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Cards (mobile) -->
                 <div class="md:hidden space-y-3">
+                    @if (keysLoading) {
+                    <div class="flex items-center justify-center py-8">
+                        <div class="flex items-center gap-2 text-slate-500 text-sm">
+                            <svg class="animate-spin h-5 w-5 text-blue-600" viewBox="0 0 24 24" fill="none">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Loading available keys...
+                        </div>
+                    </div>
+                    } @else {
                     @for (key of keys; track key.id) {
                     <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4"
                         [class.cursor-pointer]="key.selectable"
@@ -1112,6 +1157,7 @@
                             <div class="mt-1 text-sm text-slate-500">{{ key.site }} · {{ key.room }}</div>
                         </div>
                     </label>
+                    }
                     }
                 </div>
 

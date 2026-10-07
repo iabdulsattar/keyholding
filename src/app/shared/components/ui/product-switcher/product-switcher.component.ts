@@ -22,35 +22,7 @@ export interface ProductItem {
   templateUrl: './product-switcher.component.html',
 })
 export class ProductSwitcherComponent implements OnInit {
-  @Input() products: ProductItem[] = [
-    {
-      id: 'keyvault',
-      name: 'KeyVault',
-      description: 'Enterprise Key Management',
-      serviceCode: 'key-vault',
-      // icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      // iconBg: 'bg-blue-600',
-      status: 'current',
-    },
-    {
-      id: 'edob',
-      name: 'eDOB',
-      description: 'Digital Occurrence Management',
-      serviceCode: 'edob',
-      // icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      // iconBg: 'bg-blue-600',
-      status: 'available',
-    },
-    {
-      id: 'misentinel',
-      name: 'MiSentinelSOS',
-      description: 'Lone Worker Safety',
-      serviceCode: 'misentinel',
-      // icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      // iconBg: 'bg-emerald-600',
-      status: 'coming-soon',
-    },
-  ];
+  @Input() products: ProductItem[] = [];
   private productService = inject(ProductService);
   @Input() exploreAllHref: string = '#';
   @Output() productSelected = new EventEmitter<ProductItem>();
@@ -58,9 +30,25 @@ export class ProductSwitcherComponent implements OnInit {
   showSwitcher = false;
   visibleProducts: ProductItem[] = [];
   isSwitching = false;
+  loadingServices = false;
 
   ngOnInit(): void {
-    this.refreshProducts();
+    this.loadProducts();
+  }
+
+  /** Load products from API (with fallback to input/defaults) */
+  private loadProducts(): void {
+    this.loadingServices = true;
+    this.productService.loadServicesFromApi().subscribe({
+      next: () => {
+        this.loadingServices = false;
+        this.refreshProducts();
+      },
+      error: () => {
+        this.loadingServices = false;
+        this.refreshProducts();
+      }
+    });
   }
 
   /** Recompute the list so statuses reflect the current subscription state. */

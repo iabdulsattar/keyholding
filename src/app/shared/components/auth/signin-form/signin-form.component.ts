@@ -351,10 +351,13 @@ export class SigninFormComponent {
       (g) => g.serviceCode === 'key-vault'
     );
 
-    const subscribedServices = data?.subscribedServices ?? data?.tokens?.subscribedServices ?? [];
+    const subscribedServices = data?.subscribedServices ?? data?.tokens?.subscribedServices ?? data?.data?.subscribedServices ?? [];
     const hasKeyVaultSubscribedService = subscribedServices.some(
       (s: any) => s.serviceCode === 'key-vault'
     );
+
+    // Persist all subscribed services for product switcher
+    this.subStatus.setFromSubscribedServices(subscribedServices, 'key-vault');
 
     const isOrgAdmin = this.permissionService.isOrgAdmin();
 

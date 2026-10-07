@@ -1,12 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap, switchMap } from 'rxjs';
+import { Observable, of, tap, switchMap, catchError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { SubscriptionService } from './subscription.service';
 import { KeyVaultService } from './keyvault.service';
 import { Product, ProductSubscriptionRequest, EnableServiceRequest, ProductSwitchResponse } from '../models/product.models';
+import { ServiceInfo } from '../models/subscription.models';
 
 /**
  * This deployment *is* KeyVault Pro, so it is the default "current" product
@@ -14,37 +15,40 @@ import { Product, ProductSubscriptionRequest, EnableServiceRequest, ProductSwitc
  */
 const OWN_SERVICE_CODE = 'key-vault';
 
+// Local product definitions with UI metadata (icons, URLs, plan IDs)
+const LOCAL_PRODUCTS: Product[] = [
+  {
+    id: 'keyvault',
+    name: 'KeyVault ',
+    description: 'Enterprise Key Management',
+    serviceCode: 'key-vault',
+    baseUrl: 'https://sbskeyvault.workalert.uk',
+    planId: 'f28006cf-1174-4042-859a-8a3d2e78d60f',
+    icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+    iconBg: 'bg-violet-700',
+    status: 'current',
+    actionLabel: 'Explore KeyVault ',
+    descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
+  },
+  {
+    id: 'edob',
+    name: 'eDOB',
+    description: 'Digital Occurrence Management',
+    serviceCode: 'edob',
+    baseUrl: 'https://sbsedob.workalert.uk',
+    icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+    iconBg: 'bg-blue-600',
+    status: 'available',
+    actionLabel: 'Switch to eDOB',
+    descriptionText: 'Record and manage digital occurrence certificates for every work location.',
+  },
+];
+
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private products: Product[] = [
-    {
-      id: 'keyvault',
-      name: 'KeyVault ',
-      description: 'Enterprise Key Management',
-      serviceCode: 'key-vault',
-      baseUrl: 'https://sbskeyvault.workalert.uk',
-      planId: 'f28006cf-1174-4042-859a-8a3d2e78d60f',
-      icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-violet-700',
-      status: 'current',
-      actionLabel: 'Explore KeyVault ',
-      descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
-    },
-    {
-      id: 'edob',
-      name: 'eDOB',
-      description: 'Digital Occurrence Management',
-      serviceCode: 'edob',
-      baseUrl: 'https://sbsedob.workalert.uk',
-      icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
-      iconBg: 'bg-blue-600',
-      status: 'available',
-      actionLabel: 'Switch to eDOB',
-      descriptionText: 'Record and manage digital occurrence certificates for every work location.',
-    },
-   
-  ];
-
+  private products: Product[] = [...LOCAL_PRODUCTS];
+  private servicesLoaded = false;
+  private servicesLoading = false;
   private currentProductId: string | null = null;
 
   constructor(
@@ -56,6 +60,77 @@ export class ProductService {
 
   getProducts(): Product[] {
     return this.products;
+  }
+
+  /** Load services from API and merge with local definitions */
+  loadServicesFromApi(): Observable<Product[]> {
+    if (this.servicesLoaded || this.servicesLoading) {
+      return of(this.products);
+    }
+    this.servicesLoading = true;
+    return this.subscriptionService.listServices().pipe(
+      switchMap((services: ServiceInfo[]) => {
+        this.mergeServices(services);
+        this.servicesLoaded = true;
+        // Fetch all active subscriptions to ensure subscribed status is accurate
+        const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id');
+        if (orgId) {
+          return this.fetchAllActiveSubscriptions(orgId).pipe(
+            tap((activeServiceCodes) => {
+              // Merge with existing cached subscriptions
+              const cached = this.getSubscribedServiceCodes();
+              const merged = [...new Set([...cached, ...activeServiceCodes])];
+              localStorage.setItem('subscribed_services', JSON.stringify(
+                merged.map(code => ({ serviceCode: code, status: 'ACTIVE' }))
+              ));
+            }),
+            map(() => this.products),
+            catchError(() => of(this.products))
+          );
+        }
+        return of(this.products);
+      }),
+      tap(() => {
+        this.servicesLoading = false;
+        this.syncStatusesFromSubscriptions();
+      }),
+      catchError(() => {
+        this.servicesLoading = false;
+        this.syncStatusesFromSubscriptions();
+        return of(this.products);
+      })
+    );
+  }
+
+  /** Merge API services with local product definitions */
+  private mergeServices(services: ServiceInfo[]): void {
+    for (const svc of services) {
+      const isActive = (svc as any).active === true;
+      const existing = this.products.find(p => p.serviceCode === svc.code);
+      if (existing) {
+        // Update name/description from API
+        existing.name = svc.name || existing.name;
+        existing.description = svc.description || existing.description;
+        // Store active flag for status computation
+        (existing as any).apiActive = isActive;
+      } else {
+        // New service from API - add with defaults
+        this.products.push({
+          id: svc.code,
+          name: svc.name,
+          description: svc.description || '',
+          serviceCode: svc.code,
+          baseUrl: (svc as any).baseUrl || '',
+          planId: (svc as any).planId || '',
+          icon: (svc as any).icon || '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+          iconBg: (svc as any).iconBg || 'bg-slate-600',
+          status: 'available',
+          actionLabel: `Switch to ${svc.name}`,
+          descriptionText: svc.description || '',
+          apiActive: isActive,
+        });
+      }
+    }
   }
 
   /** Service codes the identity service reports as subscribed for this org. */
@@ -71,6 +146,21 @@ export class ProductService {
     }
   }
 
+  /** Fetch all active subscription service codes from subscription history API */
+  fetchAllActiveSubscriptions(orgId: string): Observable<string[]> {
+    return this.subscriptionService.getSubscriptionHistory(orgId).pipe(
+      map((res: any) => {
+        const data = res?.data ?? res ?? {};
+        const history = data.content ?? data.items ?? data.data ?? data ?? [];
+        return history
+          .filter((sub: any) => sub?.status === 'ACTIVE' || sub?.status === 'TRIALING')
+          .map((sub: any) => sub?.serviceCode)
+          .filter(Boolean);
+      }),
+      catchError(() => of([]))
+    );
+  }
+
   /**
    * This deployment *is* KeyVault Pro, so it is always the "current" product -
    * the stored service code may be left over from another app on the same
@@ -82,8 +172,11 @@ export class ProductService {
 
   /**
    * Recompute each product's status from the persisted subscription list:
-   * this app's own service is `current`, any other subscribed service is
-   * `available`, and everything else falls back to its declared status.
+   * - this app's own service is `current`
+   * - API active: true + subscribed → `subscribed` (shown as "active")
+   * - API active: true + not subscribed → `available`
+   * - API active: false → `available`
+   * - no API active flag (local-only) → fallback to baseUrl check
    */
   syncStatusesFromSubscriptions(serviceCode?: string): void {
     const active = OWN_SERVICE_CODE;
@@ -94,18 +187,27 @@ export class ProductService {
     this.products = this.products.map((p) => {
       const isCurrent = !!active && p.serviceCode === active;
       const isSubscribed = subscribed.includes(p.serviceCode);
+      const apiActive = (p as any).apiActive === true;
+      const hasBaseUrl = !!p.baseUrl;
 
       let status: Product['status'] = p.status;
       if (isCurrent) {
         status = 'current';
-      } else if (isSubscribed) {
-        // Already subscribed to this service - it is live for the org, so it
-        // must not be offered as something still to be enabled.
-        status = 'subscribed';
-      } else if (p.baseUrl) {
-        // A deployed product the org has not subscribed to yet is offered as
-        // available, not "coming soon" - the switcher links straight to it.
+      } else if (apiActive) {
+        // Service is active in the platform
+        if (isSubscribed) {
+          // Org is subscribed to this active service
+          status = 'subscribed';
+        } else {
+          // Active service but org not subscribed - available to enable
+          status = 'available';
+        }
+      } else if (!apiActive && (p as any).apiActive === false) {
+        // Service exists but is inactive in platform - still show as available
         status = 'available';
+      } else if (hasBaseUrl) {
+        // Local-only product with baseUrl (deployed but no API flag yet)
+        status = isSubscribed ? 'subscribed' : 'available';
       } else if (p.status === 'current') {
         status = 'coming-soon';
       }

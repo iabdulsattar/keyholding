@@ -132,7 +132,7 @@ export class SubscriptionTrialStartComponent implements OnInit {
       }
 
       // ---- Subscribed services cache used by the subscription guard ----
-      const subscribedServices = res?.subscribedServices ?? res?.tokens?.subscribedServices ?? [];
+      const subscribedServices = res?.subscribedServices ?? res?.tokens?.subscribedServices ?? res?.data?.subscribedServices ?? [];
       this.subStatus.setFromSubscribedServices(subscribedServices, serviceCode);
       this.productService.setCurrentProductByServiceCode(serviceCode);
 

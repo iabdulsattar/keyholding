@@ -11,6 +11,7 @@ export interface Product {
   actionLabel?: string;
   actionHref?: string;
   descriptionText?: string;
+  apiActive?: boolean; // from /api/v1/subscriptions/services
 }
 
 export interface ProductSubscriptionRequest {

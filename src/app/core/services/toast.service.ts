@@ -16,6 +16,8 @@ export class ToastService {
   private toasts: Toast[] = [];
   private toastSubject = new Subject<Toast[]>();
   private idCounter = 0;
+  private recentMessages = new Map<string, number>(); // message -> timestamp
+  private readonly DEDUPE_WINDOW_MS = 2000; // don't show same message within 2s
 
   get toasts$(): Observable<Toast[]> {
     return this.toastSubject.asObservable();
@@ -37,7 +39,15 @@ export class ToastService {
     this.show({ type: 'info', message, duration });
   }
 
-  show(toast: Omit<Toast, 'id' | 'createdAt'>): void {
+  private show(toast: Omit<Toast, 'id' | 'createdAt'>): void {
+    // Dedupe: don't show identical message within DEDUPE_WINDOW_MS
+    const now = Date.now();
+    const lastShown = this.recentMessages.get(toast.message);
+    if (lastShown && now - lastShown < this.DEDUPE_WINDOW_MS) {
+      return; // skip duplicate
+    }
+    this.recentMessages.set(toast.message, now);
+
     const id = ++this.idCounter;
     const createdAt = Date.now();
     this.toasts = [...this.toasts, { ...toast, id, createdAt }];
