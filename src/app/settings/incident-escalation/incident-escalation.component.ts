@@ -167,6 +167,8 @@ export class IncidentEscalationComponent implements OnInit {
       return;
     }
 
+    if (this.saving) return;
+
     this.saving = true;
     try {
       this.persist();

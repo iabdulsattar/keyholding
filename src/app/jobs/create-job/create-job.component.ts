@@ -824,7 +824,7 @@ export class CreateJobComponent implements OnInit {
       if (hasError) {
         this.toast.error('Job created, but some attachments failed to upload.');
       } else {
-        this.toast.success('Job created successfully with attachments!');
+        this.toast.success('Job created successfully!');
       }
       setTimeout(() => this.router.navigate(['/jobs']), 600);
     }

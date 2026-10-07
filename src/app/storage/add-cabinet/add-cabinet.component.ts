@@ -232,6 +232,8 @@ export class AddCabinetComponent implements OnInit, AfterViewInit {
     const orgId = localStorage.getItem('organizationId') || localStorage.getItem('org_id') || '';
     if (!orgId || !this.storageLocationId || !this.cabinetName) return;
 
+    if (this.saving) return;
+
     const cabinet = {
       storageLocationId: this.storageLocationId,
       name: this.cabinetName,
