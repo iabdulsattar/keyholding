@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions } from '../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -208,17 +209,17 @@ export class UserManagementComponent implements OnInit {
           isAdmin: this.isAdministratorRole(item.roles),
           status: (item.status || '').toUpperCase() === 'INACTIVE' ? 'Inactive' : 'Active',
           invite: item.invitationStatus ? item.invitationStatus.charAt(0) + item.invitationStatus.slice(1).toLowerCase() : 'Not Invited',
-          inviteSub: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
-          lastLogin: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
+          inviteSub: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })) : '-',
+          lastLogin: item.lastLoginAt ? new Date(item.lastLoginAt).toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })) : '-',
           lastTime: '-',
-          created: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
+          created: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })) : '-',
           img: (index % 37) + 1,
           resend: false,
           department: item.department || ['Operations', 'Security', 'Compliance', 'HR'][index % 4],
           phone: item.phoneNumber || ['+91 98765 43210', '+91 98765 12345', '+91 99456 12345', '+91 99876 00000'][index % 4],
           location: item.location || ['Head Office', 'North Gate', 'Control Room', 'Central Hub'][index % 4],
           employeeId: item.employeeId || `EMP-${String(12 + index).padStart(5, '0')}`,
-          joined: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '-',
+          joined: item.createdAt ? new Date(item.createdAt).toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })) : '-',
         }));
 
         this.totalElements = res?.meta?.totalElements ?? items.length;
@@ -501,12 +502,12 @@ export class UserManagementComponent implements OnInit {
   }
 
   get detailJoined(): string {
-    if (this.detailUser?.createdAt) return new Date(this.detailUser.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    if (this.detailUser?.createdAt) return new Date(this.detailUser.createdAt).toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
     return this.selectedUser?.joined || this.selectedUser?.created || '';
   }
 
   get detailLastLogin(): string {
-    if (this.detailUser?.lastLoginAt) return new Date(this.detailUser.lastLoginAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    if (this.detailUser?.lastLoginAt) return new Date(this.detailUser.lastLoginAt).toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
     return this.selectedUser?.lastLogin || '';
   }
 
@@ -561,7 +562,7 @@ export class UserManagementComponent implements OnInit {
   onInviteSent(): void {
     this.showInviteModal = false;
     if (this.selectedUser) {
-      this.selectedUser = { ...this.selectedUser, invite: 'Pending', inviteSub: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) } as User;
+      this.selectedUser = { ...this.selectedUser, invite: 'Pending', inviteSub: new Date().toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })) } as User;
     }
   }
 
@@ -730,8 +731,8 @@ export class UserManagementComponent implements OnInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 

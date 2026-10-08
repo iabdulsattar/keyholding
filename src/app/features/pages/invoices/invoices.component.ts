@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions } from '../../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -253,7 +254,7 @@ export class InvoicesComponent implements OnInit {
 
   private mapInvoice(inv: Invoice): InvoiceRow {
     const date = inv.createdAt ? new Date(inv.createdAt) : null;
-    const dateStr = date ? date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+    const dateStr = date ? date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' })) : '—';
 
     const amount = inv.amountCents != null
       ? `£${(inv.amountCents / 100).toFixed(2)}`

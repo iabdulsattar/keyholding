@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -172,13 +173,13 @@ export class ViewUserComponent implements OnInit {
 
   get createdAt(): string {
     if (!this.user?.createdAt) return '—';
-    return new Date(this.user.createdAt).toLocaleString('en-GB', { timeZone: 'UTC',
+    return new Date(this.user.createdAt).toLocaleString('en-GB', getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric',
       hour: 'numeric',
       minute: '2-digit'
-    });
+    }));
   }
 
   get createdBy(): string {
@@ -187,13 +188,13 @@ export class ViewUserComponent implements OnInit {
 
   get updatedAt(): string {
     if (!this.user?.updatedAt) return '—';
-    return new Date(this.user.updatedAt).toLocaleString('en-GB', { timeZone: 'UTC',
+    return new Date(this.user.updatedAt).toLocaleString('en-GB', getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric',
       hour: 'numeric',
       minute: '2-digit'
-    });
+    }));
   }
 
   get updatedBy(): string {
@@ -221,13 +222,13 @@ export class ViewUserComponent implements OnInit {
 
   get lastLogin(): string {
     if (!this.user?.lastLoginAt) return '—';
-    return new Date(this.user.lastLoginAt).toLocaleString('en-GB', { timeZone: 'UTC',
+    return new Date(this.user.lastLoginAt).toLocaleString('en-GB', getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric',
       hour: 'numeric',
       minute: '2-digit'
-    });
+    }));
   }
 
   goBack(): void {

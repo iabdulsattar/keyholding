@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { formatScheduleRange, getTimezoneOptions, scheduleFromUtc } from '../../core/utils/date.utils';
+import { TIMEZONE, TIMEZONE_ENABLED } from '../../core/config';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -53,6 +55,7 @@ import { ProductSwitcherComponent } from '../../shared/components/ui/product-swi
   `
 })
 export class ClientDetailComponent implements OnInit {
+  readonly dateTimezone = TIMEZONE_ENABLED && TIMEZONE ? TIMEZONE : undefined;
   isClientActive = true;
   activeTab = 'overview';
   clientId = '';
@@ -884,8 +887,8 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 
@@ -893,7 +896,7 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '--';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   private formatTargetType(value?: string): string {
@@ -1254,7 +1257,7 @@ viewEmergencyContact(contactId: string): void {
           site: job.siteName ?? job.site?.name ?? '',
           type: job.jobTypeName ?? job.jobType?.name ?? '',
           officer: job.officerName ?? job.officer?.fullName ?? '',
-          date: this.formatJobDate(job.scheduledDate, job.startTime),
+          date: formatScheduleRange(job.scheduledDate, job.startTime, job.endTime),
           status: job.status ?? 'SCHEDULED',
           priority: job.priority ?? 'MEDIUM',
           raw: job
@@ -1283,27 +1286,6 @@ viewEmergencyContact(contactId: string): void {
         this.jobStats = null;
       }
     });
-  }
-
-  formatJobDate(scheduledDate?: string, startTime?: string): string {
-    if (!scheduledDate) return '';
-    try {
-      const date = new Date(scheduledDate);
-      const day = date.getUTCDate();
-      const month = date.toLocaleString('en-GB', { timeZone: 'UTC', month: 'short' });
-      const year = date.getUTCFullYear();
-      let timeStr = '';
-      if (startTime) {
-        const [hours, minutes] = startTime.split(':');
-        const h = parseInt(hours, 10);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const h12 = h % 12 || 12;
-        timeStr = `, ${h12}:${minutes} ${ampm}`;
-      }
-      return `${day} ${month} ${year}${timeStr}`;
-    } catch {
-      return scheduledDate || '';
-    }
   }
 
   onJobsSearch(): void {

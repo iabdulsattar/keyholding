@@ -369,6 +369,8 @@ export class AddRoleComponent implements OnInit {
       permissions: this.selectedPermissions,
     };
 
+    if (this.saving) return;
+
     this.saving = true;
 
     if (this.isEditMode && this.roleId) {

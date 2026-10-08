@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { getTimezoneOptions } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -299,7 +300,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
   }
 
   viewCabinet(cabinet: CabinetRow): void {

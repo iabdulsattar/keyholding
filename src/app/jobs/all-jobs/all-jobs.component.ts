@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { formatScheduleRange } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -166,32 +167,11 @@ export class AllJobsComponent implements OnInit {
       site: job.siteName ?? job.site?.name ?? '',
       type: job.jobTypeName ?? job.jobType?.name ?? '',
       officer: job.officerName ?? job.officer?.fullName ?? '',
-      date: this.formatJobDate(job.scheduledDate, job.startTime),
+      date: formatScheduleRange(job.scheduledDate, job.startTime, job.endTime),
       status: job.status ?? 'SCHEDULED',
       priority: job.priority ?? 'MEDIUM',
       raw: job
     };
-  }
-
-  formatJobDate(scheduledDate?: string, startTime?: string): string {
-    if (!scheduledDate) return '';
-    try {
-      const date = new Date(scheduledDate);
-      const day = date.getUTCDate();
-      const month = date.toLocaleString('en-GB', { timeZone: 'UTC', month: 'short' });
-      const year = date.getUTCFullYear();
-      let timeStr = '';
-      if (startTime) {
-        const [hours, minutes] = startTime.split(':');
-        const h = parseInt(hours, 10);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const h12 = h % 12 || 12;
-        timeStr = `, ${h12}:${minutes} ${ampm}`;
-      }
-      return `${day} ${month} ${year}${timeStr}`;
-    } catch {
-      return scheduledDate;
-    }
   }
 
   statusClass(status: string): string {

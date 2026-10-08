@@ -511,6 +511,8 @@ export class AddUserComponent implements OnInit {
     this.touched.add('form.fullName');
     this.touched.add('form.email');
 
+    if (this.saving) return;
+
     if (!this.form.fullName.trim() || !this.form.email.trim()) {
       this.errorMessage = 'Please fill in all required fields.';
       return;

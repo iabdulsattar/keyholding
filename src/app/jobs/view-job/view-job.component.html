@@ -375,12 +375,16 @@
           </h3>
           <dl class="">
             <div class="grid grid-cols-2 py-2 gap-2">
-              <dt class="text-xs text-slate-500 font-medium font-['Inter']">Scheduled Date</dt>
-              <dd class="text-xs font-semibold font-['Inter'] text-slate-900">{{ job?.scheduledDate || '—' }}</dd>
+              <dt class="text-xs text-slate-500 font-medium font-['Inter']">Start Date</dt>
+              <dd class="text-xs font-semibold font-['Inter'] text-slate-900">{{ job?.startDate || '—' }}</dd>
             </div>
             <div class="grid grid-cols-2 py-2 gap-2">
               <dt class="text-xs text-slate-500 font-medium font-['Inter']">Start Time</dt>
               <dd class="text-xs font-semibold font-['Inter']  text-slate-900">{{ job?.startTime || '—' }}</dd>
+            </div>
+            <div class="grid grid-cols-2 py-2 gap-2">
+              <dt class="text-xs text-slate-500 font-medium font-['Inter']">End Date</dt>
+              <dd class="text-xs font-semibold font-['Inter'] text-slate-900">{{ job?.endDate || '—' }}</dd>
             </div>
             <div class="grid grid-cols-2 py-2 gap-2">
               <dt class="text-xs text-slate-500 font-medium font-['Inter']">End Time</dt>
