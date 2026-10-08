@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { getTimezoneOptions } from '../../../../core/utils/date.utils';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DropdownComponent } from '../../ui/dropdown/dropdown.component';
@@ -122,6 +123,6 @@ export class NotificationDropdownComponent implements OnInit {
     if (diffMin < 60) return `${diffMin} min ago`;
     if (diffHr < 24) return `${diffHr} hr ago`;
     if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 }

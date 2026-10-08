@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -265,7 +266,7 @@ export class AddClientComponent implements OnInit {
     const base: Partial<Client> = this.editMode && this.original ? { ...this.original } : {
       sites: 0,
       users: 0,
-      created: new Date().toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }),
+      created: new Date().toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' })),
     };
 
     return {

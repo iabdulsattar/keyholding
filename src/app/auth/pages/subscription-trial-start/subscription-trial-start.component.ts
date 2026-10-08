@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions } from '../../../core/utils/date.utils';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { SubscriptionService } from '../../../core/services/subscription.service';
@@ -452,20 +453,20 @@ export class SubscriptionTrialStartComponent implements OnInit {
   }
 
   get todayLabel(): string {
-    return new Date().toLocaleDateString('en-GB', { timeZone: 'UTC',
+    return new Date().toLocaleDateString('en-GB', getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric'
-    });
+    }));
   }
 
   get trialEndLabel(): string {
     const date = new Date();
     date.setDate(date.getDate() + this.trialDays);
-    return date.toLocaleDateString('en-GB', { timeZone: 'UTC',
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric'
-    });
+    }));
   }
 }

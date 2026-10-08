@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions, isTimezoneEnabled, scheduleFromUtc } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -148,6 +149,9 @@ export class ViewJobComponent implements OnInit {
     // fell back to zeros even though each key row already carries a
     // used/returned flag, so the tiles disagreed with the table above them.
     const derivedSummary = this.buildKeyUsageSummary(mappedKeys, requiredKeys.summary);
+    const scheduleDate = String(data.scheduledDate || '').slice(0, 10);
+    const scheduleStart = scheduleFromUtc(scheduleDate, this.toApiTimeOnly(data.startTime));
+    const scheduleEnd = scheduleFromUtc(scheduleDate, this.toApiTimeOnly(data.endTime));
 
     return {
       id: data.id || '',
@@ -161,9 +165,9 @@ export class ViewJobComponent implements OnInit {
       address: data.siteAddress || '—',
       reference: data.reference || '—',
       description: data.description || '—',
-      scheduledDate: this.formatDate(data.scheduledDate),
-      startTime: this.formatTime(data.startTime),
-      endTime: this.formatTime(data.endTime),
+      scheduledDate: this.formatDate(scheduleStart.date),
+      startTime: this.formatTime(scheduleStart.time),
+      endTime: this.formatTime(scheduleEnd.time),
       durationMinutes: data.durationMinutes ?? tiles.durationMinutes ?? 0,
       repeat: data.repeat || 'One Time',
       officer: data.officerName || '—',
@@ -220,11 +224,19 @@ export class ViewJobComponent implements OnInit {
   private formatDate(dateStr: string | undefined): string {
     if (!dateStr) return '—';
     try {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+      const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (!match) return dateStr;
+      const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     } catch {
       return dateStr || '—';
     }
+  }
+
+  private toApiTimeOnly(value?: string | null): string {
+    if (!value) return '';
+    const match = String(value).match(/T(\d{2}):(\d{2})/) || String(value).match(/^(\d{2}):(\d{2})/);
+    return match ? `${match[1]}:${match[2]}` : '';
   }
 
   private formatTime(timeStr: string | undefined): string {
@@ -242,8 +254,10 @@ export class ViewJobComponent implements OnInit {
     if (!dateStr) return '—';
     try {
       const date = new Date(dateStr);
-      const utcTime = `${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
-      return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + this.formatTime(utcTime);
+      const hours = isTimezoneEnabled() ? date.getUTCHours() : date.getHours();
+      const minutes = isTimezoneEnabled() ? date.getUTCMinutes() : date.getMinutes();
+      const localTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+      return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' })) + ', ' + this.formatTime(localTime);
     } catch {
       return dateStr || '—';
     }

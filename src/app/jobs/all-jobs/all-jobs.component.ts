@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { scheduleFromUtc } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -176,13 +177,16 @@ export class AllJobsComponent implements OnInit {
   formatJobDate(scheduledDate?: string, startTime?: string): string {
     if (!scheduledDate) return '';
     try {
-      const date = new Date(scheduledDate);
-      const day = date.getUTCDate();
-      const month = date.toLocaleString('en-GB', { timeZone: 'UTC', month: 'short' });
-      const year = date.getUTCFullYear();
+      const datePart = String(scheduledDate).slice(0, 10);
+      const timeMatch = startTime?.match(/T(\d{2}):(\d{2})/) || startTime?.match(/^(\d{2}):(\d{2})/);
+      const time = timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '';
+      const schedule = scheduleFromUtc(datePart, time);
+      const [year, monthNumber, day] = schedule.date.split('-').map(Number);
+      const date = new Date(Date.UTC(year, monthNumber - 1, day));
+      const month = date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' });
       let timeStr = '';
-      if (startTime) {
-        const [hours, minutes] = startTime.split(':');
+      if (schedule.time) {
+        const [hours, minutes] = schedule.time.split(':');
         const h = parseInt(hours, 10);
         const ampm = h >= 12 ? 'PM' : 'AM';
         const h12 = h % 12 || 12;

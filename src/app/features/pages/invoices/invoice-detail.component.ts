@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions } from '../../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -226,7 +227,7 @@ export class InvoiceDetailComponent implements OnInit {
     if (!dateStr) return '—';
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return '—';
-    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   /** `PAID` / `PENDING` / `OVERDUE` / `VOID` become display labels. */

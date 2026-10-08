@@ -13,6 +13,7 @@ import { RichSelectComponent } from '../../shared/components/form/rich-select/ri
 import { RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
+import { scheduleToUtc, scheduleUtcToLocal } from '../../core/utils/date.utils';
 
 interface Key {
   id: string;
@@ -316,13 +317,20 @@ export class CreateJobComponent implements OnInit {
     this.job.idType = data.idType || this.job.idType;
     this.job.priority = this.fromApiPriority(priority);
 
-    const scheduledDate = data.scheduledDate || '';
+    const scheduledDate = this.toApiDateOnly(data.scheduledDate);
     const dueDate = this.toApiDateOnly(data.dueDate);
     this.job.scheduleType = scheduleType;
     this.activeTab = scheduleType === 'OPEN' ? 0 : 1;
-    this.job.date = scheduleType === 'OPEN' ? (dueDate || scheduledDate) : scheduledDate;
-    this.job.startTime = this.toApiTimeOnly(scheduleType === 'OPEN' ? data.dueDate : data.startTime);
-    this.job.endTime = this.toApiTimeOnly(data.endTime);
+    const formStart = scheduleUtcToLocal(
+      scheduleType === 'OPEN'
+        ? (dueDate || scheduledDate)
+        : (this.toApiDateOnly(data.startTime) || scheduledDate),
+      this.toApiTimeOnly(scheduleType === 'OPEN' ? data.dueDate : data.startTime)
+    );
+    this.job.date = formStart.date;
+    this.job.startTime = formStart.time;
+    const scheduledEndDate = this.toApiDateOnly(data.endTime) || scheduledDate;
+    this.job.endTime = scheduleUtcToLocal(scheduledEndDate, this.toApiTimeOnly(data.endTime)).time;
     this.updateDuration();
 
     this.selectedJobType = data.jobTypeId || data.jobType?.id || '';
@@ -399,7 +407,7 @@ export class CreateJobComponent implements OnInit {
   /** `18:30`, `18:30:00` or a full ISO timestamp -> `18:30`. */
   private toApiTimeOnly(value?: string | null): string {
     if (!value) return '';
-    const match = String(value).match(/(\d{2}):(\d{2})/);
+    const match = String(value).match(/T(\d{2}):(\d{2})/) || String(value).match(/^(\d{2}):(\d{2})/);
     return match ? `${match[1]}:${match[2]}` : '';
   }
 
@@ -700,14 +708,14 @@ export class CreateJobComponent implements OnInit {
 
   /**
    * Open jobs carry a single `dueDate` instead of a start/end window. The Open
-   * tab only asks for a "due by" date, so an unset time means end of that UTC
-   * day.
+   * tab only asks for a "due by" date, so an unset time means end of the
+   * selected calendar day in the configured timezone.
    */
   private toApiDueDate(): string | undefined {
     if (!this.job.date) return undefined;
     const time = this.job.startTime ? this.job.startTime : '23:59';
-    const normalised = time.length === 5 ? `${time}:00` : time;
-    return `${this.job.date}T${normalised}Z`;
+    const utcDueDate = scheduleToUtc(this.job.date, time);
+    return `${utcDueDate.date}T${utcDueDate.time}:00Z`;
   }
 
   private calculateDuration(start: string, end: string): string {
@@ -1198,9 +1206,11 @@ export class CreateJobComponent implements OnInit {
   if (this.isOpenSchedule) {
     payload.dueDate = this.toApiDueDate();
   } else {
+    const start = scheduleToUtc(this.job.date, this.job.startTime);
+    const end = scheduleToUtc(this.job.date, this.job.endTime);
     payload.scheduledDate = this.job.date || undefined;
-    payload.startTime = this.job.startTime || undefined;
-    payload.endTime = this.job.endTime || undefined;
+    payload.startTime = start.time || undefined;
+    payload.endTime = end.time || undefined;
   }
 
     return payload;

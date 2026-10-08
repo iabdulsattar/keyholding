@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { getTimezoneOptions } from '../utils/date.utils';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { KeyVaultService, KeyOverview } from './keyvault.service';
@@ -166,15 +167,15 @@ export class ClientService {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   private formatDateTime(value: any): string {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 
@@ -796,14 +797,14 @@ export class ClientService {
     if (!value) return '';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   private formatLastMovementTime(value: string): string {
     if (!value) return '';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    return date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
+    return date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
   }
 
     private mapContact(item: any): ContactRecord {
@@ -836,4 +837,3 @@ export class ClientService {
        };
      }
 }
-

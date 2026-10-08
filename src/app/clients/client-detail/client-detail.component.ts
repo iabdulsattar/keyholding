@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { getTimezoneOptions, scheduleFromUtc } from '../../core/utils/date.utils';
+import { TIMEZONE, TIMEZONE_ENABLED } from '../../core/config';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -53,6 +55,7 @@ import { ProductSwitcherComponent } from '../../shared/components/ui/product-swi
   `
 })
 export class ClientDetailComponent implements OnInit {
+  readonly dateTimezone = TIMEZONE_ENABLED && TIMEZONE ? TIMEZONE : undefined;
   isClientActive = true;
   activeTab = 'overview';
   clientId = '';
@@ -884,8 +887,8 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
-    const timePart = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: 'numeric', minute: '2-digit' });
+    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 
@@ -893,7 +896,7 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '--';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   private formatTargetType(value?: string): string {
@@ -1288,13 +1291,16 @@ viewEmergencyContact(contactId: string): void {
   formatJobDate(scheduledDate?: string, startTime?: string): string {
     if (!scheduledDate) return '';
     try {
-      const date = new Date(scheduledDate);
-      const day = date.getUTCDate();
-      const month = date.toLocaleString('en-GB', { timeZone: 'UTC', month: 'short' });
-      const year = date.getUTCFullYear();
+      const datePart = String(scheduledDate).slice(0, 10);
+      const timeMatch = startTime?.match(/T(\d{2}):(\d{2})/) || startTime?.match(/^(\d{2}):(\d{2})/);
+      const time = timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '';
+      const schedule = scheduleFromUtc(datePart, time);
+      const [year, monthNumber, day] = schedule.date.split('-').map(Number);
+      const date = new Date(Date.UTC(year, monthNumber - 1, day));
+      const month = date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' });
       let timeStr = '';
-      if (startTime) {
-        const [hours, minutes] = startTime.split(':');
+      if (schedule.time) {
+        const [hours, minutes] = schedule.time.split(':');
         const h = parseInt(hours, 10);
         const ampm = h >= 12 ? 'PM' : 'AM';
         const h12 = h % 12 || 12;

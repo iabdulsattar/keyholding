@@ -9,7 +9,7 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { ProductService } from '../../core/services';
 import { ProductItem } from '../../shared/components/ui/product-switcher/product-switcher.component';
-import { formatDateUTC } from '../../core/utils/date.utils';
+import { formatDateUTC, getTimezoneOptions, isTimezoneEnabled } from '../../core/utils/date.utils';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
 import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
@@ -187,7 +187,8 @@ export class DashboardShellComponent implements OnInit {
   private loadGreeting(): void {
     this.authService.me().subscribe({
       next: (profile: ProfileResponse) => {
-        const hour = new Date().getUTCHours();
+        const now = new Date();
+        const hour = isTimezoneEnabled() ? now.getUTCHours() : now.getHours();
         this.greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
         this.userName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || profile.email || 'User';
       },
@@ -431,12 +432,12 @@ export class DashboardShellComponent implements OnInit {
     if (!iso) return '';
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '';
-    return d.toLocaleString('en-GB', { timeZone: 'UTC',
+    return d.toLocaleString('en-GB', getTimezoneOptions({
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    });
+    }));
   }
 
   private initials(name: string): string {
