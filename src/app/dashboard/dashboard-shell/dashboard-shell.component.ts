@@ -41,7 +41,7 @@ export class DashboardShellComponent implements OnInit {
   selectedDate = new Date();
   loading = true;
   dashboardError = false;
-  orgUsers: any[] = [];
+  jobsTrendPeriodLabel = 'Last 7 days';
 
   strategicMetrics = {
     totalClients: 0,
@@ -49,11 +49,6 @@ export class DashboardShellComponent implements OnInit {
     totalKeys: 0,
     keysInStorage: 0,
     keysIssued: 0,
-    totalClientsChange: '0%',
-    totalSitesChange: '0%',
-    totalKeysChange: '0%',
-    keysInStorageChange: '0%',
-    keysIssuedChange: '0%',
   };
   trial: any = null;
 
@@ -63,11 +58,6 @@ export class DashboardShellComponent implements OnInit {
     damagedKeys: 0,
     jobsToday: 0,
     failedJobs: 0,
-    overdueKeysChange: '0%',
-    lostKeysChange: '0%',
-    damagedKeysChange: '0%',
-    jobsTodayChange: '0%',
-    failedJobsChange: '0%',
   };
 
   jobsOverview = {
@@ -83,8 +73,9 @@ export class DashboardShellComponent implements OnInit {
   };
 
   jobsChart = {
-    series: [44, 55, 13, 33],
-    labels: ['Completed', 'In Progress', 'Failed', 'Cancelled'],
+    series: [] as number[],
+    labels: [] as string[],
+    colors: ['#10b981', '#2563eb', '#f59e0b', '#ef4444', '#94a3b8', '#a855f7'],
     titleText: '',
   };
 
@@ -92,7 +83,7 @@ export class DashboardShellComponent implements OnInit {
     series: [
       {
         name: 'Jobs',
-        data: [20, 70, 75, 95, 50, 70, 25],
+        data: [],
       },
     ],
     chart: {
@@ -114,7 +105,7 @@ export class DashboardShellComponent implements OnInit {
       enabled: false,
     },
     xaxis: {
-      categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      categories: [],
       labels: {
         style: {
           colors: '#64748B',
@@ -293,59 +284,49 @@ export class DashboardShellComponent implements OnInit {
   private applyDashboard(data: any): void {
     const payload = data?.data ?? data ?? {};
 
-    const totalClients = payload.totalClients ?? 0;
-    const totalSites = payload.totalSites ?? 0;
-    const totalKeys = payload.totalKeys ?? 0;
-    const keysInStorage = payload.keysInStorage ?? 0;
-    const keysIssued = payload.keysIssued ?? 0;
-    const keysInUse = payload.keysInUse ?? 0;
+    const totalClients = this.toCount(payload.totalClients);
+    const totalSites = this.toCount(payload.totalSites);
+    const totalKeys = this.toCount(payload.totalKeys);
+    const keysInStorage = this.toCount(payload.keysInStorage);
+    const keysIssued = this.toCount(payload.keysIssued);
+    const keysInUse = this.toCount(payload.keysInUse);
     this.strategicMetrics = {
       totalClients,
       totalSites,
       totalKeys,
       keysInStorage,
       keysIssued,
-      totalClientsChange: '0%',
-      totalSitesChange: '0%',
-      totalKeysChange: '0%',
-      keysInStorageChange: '0%',
-      keysIssuedChange: '0%',
     };
 
-    const overdueKeys = payload.overdueKeys ?? 0;
-    const lostKeys = payload.lostKeys ?? 0;
-    const damagedKeys = payload.damagedKeys ?? 0;
-    const jobsToday = payload.jobsToday ?? 0;
-    const failedJobs = payload.exceptions?.failedJobs ?? payload.failedJobs ?? 0;
+    const overdueKeys = this.toCount(payload.overdueKeys);
+    const lostKeys = this.toCount(payload.lostKeys);
+    const damagedKeys = this.toCount(payload.damagedKeys);
+    const jobsToday = this.toCount(payload.jobsToday);
+    const failedJobs = this.toCount(payload.exceptions?.failedJobs ?? payload.failedJobs);
     this.alertMetrics = {
       overdueKeys,
       lostKeys,
       damagedKeys,
       jobsToday,
       failedJobs,
-      overdueKeysChange: '0%',
-      lostKeysChange: '0%',
-      damagedKeysChange: '0%',
-      jobsTodayChange: '0%',
-      failedJobsChange: '0%',
     };
 
     this.keysInUse = keysInUse;
-    this.officersOnDuty = payload.officersOnDuty ?? 0;
+    this.officersOnDuty = this.toCount(payload.officersOnDuty);
 
     const jobsOverviewPayload = payload.jobsOverview ?? {};
-    const completed = jobsOverviewPayload.completed ?? 0;
-    const inProgress = jobsOverviewPayload.inProgress ?? 0;
-    const cancelled = jobsOverviewPayload.cancelled ?? 0;
-    const overdue = jobsOverviewPayload.overdue ?? 0;
-    const scheduled = jobsOverviewPayload.scheduled ?? 0;
+    const completed = this.toCount(jobsOverviewPayload.completed);
+    const inProgress = this.toCount(jobsOverviewPayload.inProgress);
+    const cancelled = this.toCount(jobsOverviewPayload.cancelled);
+    const overdue = this.toCount(jobsOverviewPayload.overdue);
+    const scheduled = this.toCount(jobsOverviewPayload.scheduled);
     const failed = this.alertMetrics.failedJobs;
     this.jobsOverview = {
       completed,
       inProgress,
       failed,
       cancelled,
-      total: jobsToday,
+      total: completed + inProgress + failed + cancelled + overdue + scheduled,
       completedCount: completed,
       inProgressCount: inProgress,
       failedCount: failed,
@@ -353,12 +334,29 @@ export class DashboardShellComponent implements OnInit {
     };
 
     this.jobsChart = {
-      series: [completed, inProgress, failed, cancelled],
-      labels: ['Completed', 'In Progress', 'Failed', 'Cancelled'],
+      series: [scheduled, inProgress, completed, overdue, cancelled, failed],
+      labels: ['Scheduled', 'In Progress', 'Completed', 'Overdue', 'Cancelled', 'Failed'],
+      colors: this.jobsChart.colors,
       titleText: 'Jobs Overview',
     };
 
-    const pendingApprovals = payload.exceptions?.pendingApprovals ?? 0;
+    const jobsTrend = Array.isArray(payload.jobsTrend) ? payload.jobsTrend : [];
+    this.jobsTrendPeriodLabel = jobsTrend.length > 0
+      ? `Last ${jobsTrend.length} days`
+      : 'No trend data';
+    this.jobsTrendChart = {
+      ...this.jobsTrendChart,
+      series: [{
+        name: 'Jobs',
+        data: jobsTrend.map((item: any) => this.toCount(item?.count)),
+      }],
+      xaxis: {
+        ...this.jobsTrendChart.xaxis,
+        categories: jobsTrend.map((item: any) => item?.day || item?.date || ''),
+      },
+    };
+
+    const pendingApprovals = this.toCount(payload.exceptions?.pendingApprovals);
     this.criticalAlerts = [
       {
         title: 'Overdue Keys',
@@ -397,27 +395,24 @@ export class DashboardShellComponent implements OnInit {
       },
     ];
 
-    const apiOfficers: any[] = payload.officers ?? [];
-    const allOfficers: any[] = [...this.orgUsers, ...apiOfficers];
-
-    this.officers = (allOfficers.length > 0 ? allOfficers : [
-      { id: 'o1', firstName: 'James', lastName: 'Carter', email: '' },
-      { id: 'o2', firstName: 'Sarah', lastName: 'Johnson', email: '' },
-      { id: 'o3', firstName: 'Michael', lastName: 'Brown', email: '' },
-      { id: 'o4', firstName: 'David', lastName: 'Wilson', email: '' },
-      { id: 'o5', firstName: 'Emma', lastName: 'Davis', email: '' },
-    ]).map((u: any) => {
-      const fullName = `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown';
+    const apiOfficers: any[] = Array.isArray(payload.officers) ? payload.officers : [];
+    this.officers = apiOfficers.map((u: any) => {
+      const fullName = u.fullName || u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email || 'Unknown';
       const parts = fullName.split(' ').filter(Boolean);
       const initials = parts.length >= 2 ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() : fullName.slice(0, 2).toUpperCase();
       return {
-        id: u.id,
+        id: u.id || fullName,
         name: fullName,
-        role: u.role || 'Keyholder',
-        region: u.region || 'North Region',
+        role: u.role || u.jobTitle || '',
+        region: u.region || '',
         initials,
       };
     });
+  }
+
+  private toCount(value: unknown): number {
+    const count = Number(value ?? 0);
+    return Number.isFinite(count) ? Math.max(0, count) : 0;
   }
 
   private titleCase(value: string): string {
