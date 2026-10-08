@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getTimezoneOptions, scheduleFromUtc } from '../../core/utils/date.utils';
+import { formatScheduleRange, getTimezoneOptions, scheduleFromUtc } from '../../core/utils/date.utils';
 import { TIMEZONE, TIMEZONE_ENABLED } from '../../core/config';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -1257,7 +1257,7 @@ viewEmergencyContact(contactId: string): void {
           site: job.siteName ?? job.site?.name ?? '',
           type: job.jobTypeName ?? job.jobType?.name ?? '',
           officer: job.officerName ?? job.officer?.fullName ?? '',
-          date: this.formatJobDate(job.scheduledDate, job.startTime),
+          date: formatScheduleRange(job.scheduledDate, job.startTime, job.endTime),
           status: job.status ?? 'SCHEDULED',
           priority: job.priority ?? 'MEDIUM',
           raw: job
@@ -1286,30 +1286,6 @@ viewEmergencyContact(contactId: string): void {
         this.jobStats = null;
       }
     });
-  }
-
-  formatJobDate(scheduledDate?: string, startTime?: string): string {
-    if (!scheduledDate) return '';
-    try {
-      const datePart = String(scheduledDate).slice(0, 10);
-      const timeMatch = startTime?.match(/T(\d{2}):(\d{2})/) || startTime?.match(/^(\d{2}):(\d{2})/);
-      const time = timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '';
-      const schedule = scheduleFromUtc(datePart, time);
-      const [year, monthNumber, day] = schedule.date.split('-').map(Number);
-      const date = new Date(Date.UTC(year, monthNumber - 1, day));
-      const month = date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' });
-      let timeStr = '';
-      if (schedule.time) {
-        const [hours, minutes] = schedule.time.split(':');
-        const h = parseInt(hours, 10);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const h12 = h % 12 || 12;
-        timeStr = `, ${h12}:${minutes} ${ampm}`;
-      }
-      return `${day} ${month} ${year}${timeStr}`;
-    } catch {
-      return scheduledDate || '';
-    }
   }
 
   onJobsSearch(): void {

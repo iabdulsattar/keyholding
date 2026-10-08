@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getTimezoneOptions, isTimezoneEnabled, scheduleFromUtc } from '../../core/utils/date.utils';
+import { formatScheduleParts, getTimezoneOptions, isTimezoneEnabled } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -35,7 +35,8 @@ interface JobDetail {
   address: string;
   reference: string;
   description: string;
-  scheduledDate: string;
+  startDate: string;
+  endDate: string;
   startTime: string;
   endTime: string;
   durationMinutes: number;
@@ -149,9 +150,8 @@ export class ViewJobComponent implements OnInit {
     // fell back to zeros even though each key row already carries a
     // used/returned flag, so the tiles disagreed with the table above them.
     const derivedSummary = this.buildKeyUsageSummary(mappedKeys, requiredKeys.summary);
-    const scheduleDate = String(data.scheduledDate || '').slice(0, 10);
-    const scheduleStart = scheduleFromUtc(scheduleDate, this.toApiTimeOnly(data.startTime));
-    const scheduleEnd = scheduleFromUtc(scheduleDate, this.toApiTimeOnly(data.endTime));
+    const scheduleStart = formatScheduleParts(data.scheduledDate, data.startTime);
+    const scheduleEnd = formatScheduleParts(data.scheduledDate, data.endTime);
 
     return {
       id: data.id || '',
@@ -165,9 +165,10 @@ export class ViewJobComponent implements OnInit {
       address: data.siteAddress || '—',
       reference: data.reference || '—',
       description: data.description || '—',
-      scheduledDate: this.formatDate(scheduleStart.date),
-      startTime: this.formatTime(scheduleStart.time),
-      endTime: this.formatTime(scheduleEnd.time),
+      startDate: scheduleStart.date,
+      startTime: scheduleStart.time || '—',
+      endDate: scheduleEnd.date,
+      endTime: scheduleEnd.time || '—',
       durationMinutes: data.durationMinutes ?? tiles.durationMinutes ?? 0,
       repeat: data.repeat || 'One Time',
       officer: data.officerName || '—',
@@ -221,35 +222,6 @@ export class ViewJobComponent implements OnInit {
       .filter((url: string) => !!url);
   }
 
-  private formatDate(dateStr: string | undefined): string {
-    if (!dateStr) return '—';
-    try {
-      const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
-      if (!match) return dateStr;
-      const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
-      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-    } catch {
-      return dateStr || '—';
-    }
-  }
-
-  private toApiTimeOnly(value?: string | null): string {
-    if (!value) return '';
-    const match = String(value).match(/T(\d{2}):(\d{2})/) || String(value).match(/^(\d{2}):(\d{2})/);
-    return match ? `${match[1]}:${match[2]}` : '';
-  }
-
-  private formatTime(timeStr: string | undefined): string {
-    if (!timeStr) return '—';
-    const match = timeStr.match(/(\d+):(\d+)/);
-    if (!match) return timeStr;
-    let hours = parseInt(match[1], 10);
-    const minutes = match[2];
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const h12 = hours % 12 || 12;
-    return `${h12}:${minutes} ${ampm}`;
-  }
-
   private formatDateTime(dateStr: string | undefined): string {
     if (!dateStr) return '—';
     try {
@@ -261,6 +233,17 @@ export class ViewJobComponent implements OnInit {
     } catch {
       return dateStr || '—';
     }
+  }
+
+  private formatTime(timeStr: string | undefined): string {
+    if (!timeStr) return '—';
+    const match = timeStr.match(/(\d+):(\d+)/);
+    if (!match) return timeStr;
+    const hours = parseInt(match[1], 10);
+    const minutes = match[2];
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const h12 = hours % 12 || 12;
+    return `${h12}:${minutes} ${ampm}`;
   }
 
   formatDuration(minutes: number | undefined | null): string {

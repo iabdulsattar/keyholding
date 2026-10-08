@@ -5,6 +5,11 @@ export interface ScheduleDateTime {
   time: string;
 }
 
+export interface ScheduleDisplayParts {
+  date: string;
+  time: string;
+}
+
 export function getTimezoneOptions(extra: Intl.DateTimeFormatOptions = {}): Intl.DateTimeFormatOptions {
   return {
     ...extra,
@@ -41,6 +46,51 @@ export function scheduleUtcToLocal(date: string, time: string): ScheduleDateTime
 export function scheduleFromUtc(date: string, time: string): ScheduleDateTime {
   if (!date || !time || isTimezoneEnabled()) return { date, time };
   return scheduleUtcToLocal(date, time);
+}
+
+export function formatScheduleParts(
+  scheduledDate: string | null | undefined,
+  timeValue: string | null | undefined
+): ScheduleDisplayParts {
+  const value = String(timeValue || '');
+  const dateTimeMatch = value.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+  const timeMatch = value.match(/T(\d{2}):(\d{2})/) || value.match(/^(\d{2}):(\d{2})/);
+  const date = (dateTimeMatch?.[1] || String(scheduledDate || '').slice(0, 10));
+  const time = timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '';
+  const schedule = scheduleFromUtc(date, time);
+  const [year, month, day] = schedule.date.split('-').map(Number);
+
+  if (!year || !month || !day) {
+    return { date: date || '—', time: '' };
+  }
+
+  const dateLabel = new Date(Date.UTC(year, month - 1, day))
+    .toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  let timeLabel = '';
+
+  if (schedule.time) {
+    const [hours, minutes] = schedule.time.split(':');
+    const hour = Number(hours);
+    if (Number.isFinite(hour) && minutes) {
+      timeLabel = `${hour % 12 || 12}:${minutes} ${hour >= 12 ? 'PM' : 'AM'}`;
+    }
+  }
+
+  return { date: dateLabel, time: timeLabel };
+}
+
+export function formatScheduleRange(
+  scheduledDate: string | null | undefined,
+  startTime: string | null | undefined,
+  endTime: string | null | undefined
+): string {
+  const start = formatScheduleParts(scheduledDate, startTime);
+  const end = formatScheduleParts(scheduledDate, endTime);
+  const startLabel = [start.date, start.time].filter(Boolean).join(', ');
+  const endLabel = [end.date, end.time].filter(Boolean).join(', ');
+
+  if (!startTime || !endTime) return startLabel;
+  return `${startLabel} - ${endLabel}`;
 }
 
 export function formatDateUTC(iso: string | null | undefined): string {
