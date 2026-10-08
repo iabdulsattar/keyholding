@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
+import { setOrganizationTimezone } from '../utils/date.utils';
 import {
   SignupRequest,
   SignupResponse,
@@ -101,7 +102,10 @@ export class AuthService {
     }
 
     return this.api.get<ApiWrapper<ProfileResponse>>('/api/v1/auth/me', headers as any).pipe(
-      map((res) => res.data)
+      map((res) => {
+        this.cacheOrganizationTimezones(res.data.organizations ?? []);
+        return res.data;
+      })
     );
   }
 
@@ -127,8 +131,28 @@ export class AuthService {
   getSession(token?: string): Observable<SessionResponse> {
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
     return this.api.get<ApiWrapper<SessionResponse>>('/api/v1/auth/me/session', headers as any).pipe(
-      map((res) => res.data)
+      map((res) => {
+        const session = res.data;
+        this.cacheOrganizationTimezones(session.organizations ?? []);
+        return session;
+      })
     );
+  }
+
+  private cacheOrganizationTimezones(
+    organizations: ReadonlyArray<{
+      id: string;
+      timezone?: string;
+      timeZone?: string;
+      time_zone?: string;
+    }>
+  ): void {
+    for (const organization of organizations) {
+      setOrganizationTimezone(
+        organization.id,
+        organization.timezone ?? organization.timeZone ?? organization.time_zone
+      );
+    }
   }
 
   getAccessToken(): string | null {
@@ -448,4 +472,3 @@ export class AuthService {
     return this.api.post('/api/v1/auth/me/2fa/disable/verify', { code }, headers);
   }
 }
-

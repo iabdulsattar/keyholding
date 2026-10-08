@@ -123,6 +123,6 @@ export class NotificationDropdownComponent implements OnInit {
     if (diffMin < 60) return `${diffMin} min ago`;
     if (diffHr < 24) return `${diffHr} hr ago`;
     if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
-    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    return date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 }

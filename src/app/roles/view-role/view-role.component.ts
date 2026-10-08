@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { getTimezoneOptions } from '../../core/utils/date.utils';
-import { TIMEZONE, TIMEZONE_ENABLED } from '../../core/config';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -90,7 +89,6 @@ import { ActivityItem } from '../../shared/components/ui/activity-timeline/activ
   `]
 })
 export class ViewRoleComponent implements OnInit {
-  readonly dateTimezone = TIMEZONE_ENABLED && TIMEZONE ? TIMEZONE : undefined;
   role: Role | null = null;
   loading = true;
   errorMessage = '';
@@ -446,12 +444,12 @@ export class ViewRoleComponent implements OnInit {
     return '';
   }
 
-  private formatDateTime(value: string): string {
+  formatDateTime(value: string): string {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
-    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
+    const datePart = date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString(undefined, getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 

@@ -53,7 +53,7 @@ export class InvoiceDetailTwoComponent implements OnInit {
   private formatDate(dateStr: string | undefined): string {
     if (!dateStr) return '—';
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    return date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   loadInvoiceDetail(): void {

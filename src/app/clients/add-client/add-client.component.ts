@@ -266,7 +266,7 @@ export class AddClientComponent implements OnInit {
     const base: Partial<Client> = this.editMode && this.original ? { ...this.original } : {
       sites: 0,
       users: 0,
-      created: new Date().toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' })),
+      created: new Date().toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' })),
     };
 
     return {

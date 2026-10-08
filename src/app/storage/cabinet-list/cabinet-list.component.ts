@@ -300,7 +300,7 @@ export class CabinetListComponent implements OnInit, AfterViewInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
+    return date.toLocaleString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
   }
 
   viewCabinet(cabinet: CabinetRow): void {

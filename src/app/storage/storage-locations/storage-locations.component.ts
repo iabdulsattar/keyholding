@@ -301,6 +301,6 @@ export class StorageLocationsComponent implements OnInit, AfterViewInit {
     if (!value) return '�';
     const date = new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    return date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 }

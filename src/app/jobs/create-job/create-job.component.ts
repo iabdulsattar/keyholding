@@ -105,6 +105,7 @@ export class CreateJobComponent implements OnInit {
   keys: Key[] = [];
   /** Full availability response; search, status filter and paging run over it. */
   availableKeys: Key[] = [];
+  private retainedSelectedKeys: Key[] = [];
   keysLoading = true;
   currentPage = 0;
   pageSize = 6;
@@ -204,7 +205,11 @@ export class CreateJobComponent implements OnInit {
   }
 
   get selectedKeys(): Key[] {
-    return this.keys.filter(k => k.selected);
+    const selectedById = new Map<string, Key>();
+    for (const key of [...this.retainedSelectedKeys, ...this.availableKeys, ...this.keys]) {
+      if (key.selected) selectedById.set(key.id, key);
+    }
+    return Array.from(selectedById.values());
   }
 
   get checklistLeft(): ChecklistItem[] {
@@ -221,7 +226,7 @@ export class CreateJobComponent implements OnInit {
   }
 
   get startIndex(): number {
-    return this.currentPage * this.pageSize + 1;
+    return this.totalElements > 0 ? this.currentPage * this.pageSize + 1 : 0;
   }
 
   get endIndex(): number {
@@ -866,7 +871,10 @@ export class CreateJobComponent implements OnInit {
         const data = res?.data ?? res ?? {};
         const items = data.content ?? data.items ?? data.data ?? data ?? [];
         // Keys already chosen must survive a refresh of the availability list.
-        const selectedIds = new Set(this.keys.filter((k: Key) => k.selected).map((k: Key) => k.id));
+        const selectedKeys = this.selectedKeys;
+        const selectedIds = new Set(selectedKeys.map((k: Key) => k.id));
+        const itemIds = new Set(items.map((k: any) => k.id ?? k.keyId ?? '').filter(Boolean));
+        this.retainedSelectedKeys = selectedKeys.filter((key: Key) => !itemIds.has(key.id));
         this.availableKeys = items.map((k: any) => {
           const id = k.id ?? k.keyId ?? '';
           // assignedToOtherJob is the API's signal that the key is booked elsewhere:
@@ -897,7 +905,7 @@ export class CreateJobComponent implements OnInit {
         this.availableKeys = [];
         this.keys = [];
         this.totalElements = 0;
-        this.totalPages = 1;
+        this.totalPages = 0;
         this.keysLoading = false;
       }
     });
@@ -913,16 +921,14 @@ export class CreateJobComponent implements OnInit {
     });
 
     this.totalElements = filtered.length;
-    this.totalPages = Math.max(1, Math.ceil(filtered.length / this.pageSize));
-    this.currentPage = Math.min(page, this.totalPages - 1);
+    this.totalPages = Math.ceil(filtered.length / this.pageSize);
+    this.currentPage = this.totalPages > 0
+      ? Math.min(Math.max(0, page), this.totalPages - 1)
+      : 0;
 
     const start = this.currentPage * this.pageSize;
     const pageKeys = filtered.slice(start, start + this.pageSize);
-    const pageIds = new Set(pageKeys.map((k: Key) => k.id));
-    // Keys chosen on another page (or preloaded when editing) stay listed so
-    // the selection is not lost while paging or filtering.
-    const stillSelected = this.availableKeys.filter((k: Key) => k.selected && !pageIds.has(k.id));
-    this.keys = [...pageKeys, ...stillSelected];
+    this.keys = pageKeys;
   }
 
   goToPage(page: number): void {
@@ -962,18 +968,20 @@ export class CreateJobComponent implements OnInit {
   }
 
   get pageNumbers(): (number | '...')[] {
+    if (this.totalPages <= 0) return [];
     if (this.totalPages <= 7) {
       return Array.from({ length: this.totalPages }, (_, i) => i + 1);
     }
     const pages: (number | '...')[] = [1];
-    if (this.currentPage > 3) pages.push('...');
-    const start = Math.max(2, this.currentPage - 1);
-    const end = Math.min(this.totalPages - 1, this.currentPage + 1);
+    const currentPageNumber = this.currentPage + 1;
+    const start = Math.max(2, currentPageNumber - 1);
+    const end = Math.min(this.totalPages - 1, currentPageNumber + 1);
+    if (start > 2) pages.push('...');
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-    if (this.currentPage < this.totalPages - 3) pages.push('...');
-    if (this.totalPages > 1) pages.push(this.totalPages);
+    if (end < this.totalPages - 1) pages.push('...');
+    pages.push(this.totalPages);
     return pages;
   }
 
@@ -1010,11 +1018,15 @@ export class CreateJobComponent implements OnInit {
   }
 
   clearAllKeys(): void {
+    this.retainedSelectedKeys.forEach(k => k.selected = false);
+    this.availableKeys.forEach(k => k.selected = false);
     this.keys.forEach(k => k.selected = false);
   }
 
   removeKey(key: Key): void {
     key.selected = false;
+    const availableKey = this.availableKeys.find(availableKey => availableKey.id === key.id);
+    if (availableKey) availableKey.selected = false;
   }
 
   openAddChecklistModal(): void {
@@ -1208,7 +1220,7 @@ export class CreateJobComponent implements OnInit {
   } else {
     const start = scheduleToUtc(this.job.date, this.job.startTime);
     const end = scheduleToUtc(this.job.date, this.job.endTime);
-    payload.scheduledDate = this.job.date || undefined;
+    payload.scheduledDate = start.date || undefined;
     payload.startTime = start.time || undefined;
     payload.endTime = end.time || undefined;
   }

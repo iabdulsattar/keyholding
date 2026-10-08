@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { formatScheduleRange, getTimezoneOptions, scheduleFromUtc } from '../../core/utils/date.utils';
-import { TIMEZONE, TIMEZONE_ENABLED } from '../../core/config';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -55,7 +54,6 @@ import { ProductSwitcherComponent } from '../../shared/components/ui/product-swi
   `
 })
 export class ClientDetailComponent implements OnInit {
-  readonly dateTimezone = TIMEZONE_ENABLED && TIMEZONE ? TIMEZONE : undefined;
   isClientActive = true;
   activeTab = 'overview';
   clientId = '';
@@ -883,12 +881,12 @@ viewEmergencyContact(contactId: string): void {
     return colors[hash];
   }
 
-  private formatDateTime(value: any): string {
+  formatDateTime(value: any): string {
     if (!value) return '';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
-    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
+    const datePart = date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString(undefined, getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 
@@ -896,7 +894,7 @@ viewEmergencyContact(contactId: string): void {
     if (!value) return '--';
     const date = value instanceof Date ? value : new Date(value);
     if (isNaN(date.getTime())) return String(value);
-    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    return date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   private formatTargetType(value?: string): string {

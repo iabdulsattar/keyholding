@@ -4,6 +4,9 @@ export interface Organization {
   slug: string;
   country: string;
   role?: string;
+  timezone?: string;
+  timeZone?: string;
+  time_zone?: string;
 }
 
 export interface User {
@@ -297,6 +300,9 @@ export interface SessionOrganization {
   name?: string;
   slug?: string;
   role?: string;
+  timezone?: string;
+  timeZone?: string;
+  time_zone?: string;
   subscription?: SessionSubscription;
   user?: SessionUser;
 }
@@ -311,4 +317,3 @@ export interface SessionResponse {
   // Some backends include additional fields; keep it permissive
   [key: string]: any;
 }
-

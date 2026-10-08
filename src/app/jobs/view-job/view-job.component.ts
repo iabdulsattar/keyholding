@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { formatScheduleParts, getTimezoneOptions, isTimezoneEnabled } from '../../core/utils/date.utils';
+import { formatDateTimeLocal, formatScheduleParts } from '../../core/utils/date.utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -223,27 +223,7 @@ export class ViewJobComponent implements OnInit {
   }
 
   private formatDateTime(dateStr: string | undefined): string {
-    if (!dateStr) return '—';
-    try {
-      const date = new Date(dateStr);
-      const hours = isTimezoneEnabled() ? date.getUTCHours() : date.getHours();
-      const minutes = isTimezoneEnabled() ? date.getUTCMinutes() : date.getMinutes();
-      const localTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-      return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' })) + ', ' + this.formatTime(localTime);
-    } catch {
-      return dateStr || '—';
-    }
-  }
-
-  private formatTime(timeStr: string | undefined): string {
-    if (!timeStr) return '—';
-    const match = timeStr.match(/(\d+):(\d+)/);
-    if (!match) return timeStr;
-    const hours = parseInt(match[1], 10);
-    const minutes = match[2];
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const h12 = hours % 12 || 12;
-    return `${h12}:${minutes} ${ampm}`;
+    return formatDateTimeLocal(dateStr);
   }
 
   formatDuration(minutes: number | undefined | null): string {

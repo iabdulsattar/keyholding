@@ -284,8 +284,8 @@ export class ViewContactComponent implements OnInit {
     if (!value) return '—';
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
-    const datePart = date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
-    const timePart = date.toLocaleTimeString('en-GB', getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
+    const datePart = date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    const timePart = date.toLocaleTimeString(undefined, getTimezoneOptions({ hour: 'numeric', minute: '2-digit' }));
     return `${datePart}, ${timePart}`;
   }
 

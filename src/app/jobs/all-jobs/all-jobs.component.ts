@@ -25,6 +25,7 @@ export class AllJobsComponent implements OnInit {
   loading = false;
   Math = Math;
   jobsLoading = false;
+  private jobsLoadId = 0;
 
   filters = {
     q: '',
@@ -95,6 +96,7 @@ export class AllJobsComponent implements OnInit {
   loadJobs(page = 0): void {
     const orgId = this.getOrgId();
     if (!orgId) return;
+    const loadId = ++this.jobsLoadId;
     this.loading = true;
     this.keyVault.listJobs(orgId, {
       q: this.filters.q || undefined,
@@ -106,15 +108,51 @@ export class AllJobsComponent implements OnInit {
       size: this.pagination.size
     }).subscribe({
       next: (res: any) => {
+        if (loadId !== this.jobsLoadId) return;
         const data = res?.data ?? res ?? {};
-        const items = data.content ?? data.items ?? data.data ?? data ?? [];
-        this.jobs = items.map((job: any) => this.mapJob(job));
-        this.pagination.totalElements = data.totalElements ?? data.total ?? items.length;
-        this.pagination.totalPages = data.totalPages ?? Math.max(1, Math.ceil(items.length / this.pagination.size));
+        const meta = res?.meta ?? data?.meta ?? {};
+        const rawItems = Array.isArray(data)
+          ? data
+          : data?.content ?? data?.items ?? (Array.isArray(data?.data) ? data.data : []);
+        const items = Array.isArray(rawItems) ? rawItems : [];
+        const reportedTotalElements = Number(
+          meta.totalElements ??
+          meta.totalItems ??
+          data?.totalElements ??
+          data?.totalItems ??
+          data?.total ??
+          res?.totalElements ??
+          res?.totalItems ??
+          res?.total ??
+          items.length
+        );
+        const totalElements = Number.isFinite(reportedTotalElements)
+          ? Math.max(0, reportedTotalElements)
+          : items.length;
+        const reportedTotalPages = Number(
+          meta.totalPages ??
+          data?.totalPages ??
+          res?.totalPages ??
+          (totalElements > 0 ? Math.ceil(totalElements / this.pagination.size) : 0)
+        );
+        const totalPages = Number.isFinite(reportedTotalPages)
+          ? Math.max(0, reportedTotalPages)
+          : (totalElements > 0 ? Math.ceil(totalElements / this.pagination.size) : 0);
+
+        this.pagination.totalElements = totalElements;
+        this.pagination.totalPages = totalPages;
+
+        if (totalPages > 0 && page >= totalPages) {
+          this.loadJobs(totalPages - 1);
+          return;
+        }
+
         this.pagination.page = page;
+        this.jobs = items.map((job: any) => this.mapJob(job));
         this.loading = false;
       },
       error: () => {
+        if (loadId !== this.jobsLoadId) return;
         this.loading = false;
       }
     });
@@ -259,19 +297,20 @@ export class AllJobsComponent implements OnInit {
 
   get pageNumbers(): (number | '...')[] {
     const total = this.pagination.totalPages;
-    const current = this.pagination.page;
+    const current = this.pagination.page + 1;
+    if (total <= 0) return [];
     if (total <= 7) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
     const pages: (number | '...')[] = [1];
-    if (current > 3) pages.push('...');
     const start = Math.max(2, current - 1);
     const end = Math.min(total - 1, current + 1);
+    if (start > 2) pages.push('...');
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-    if (current < total - 3) pages.push('...');
-    if (total > 1) pages.push(total);
+    if (end < total - 1) pages.push('...');
+    pages.push(total);
     return pages;
   }
 

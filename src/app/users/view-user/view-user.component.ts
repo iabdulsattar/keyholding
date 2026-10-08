@@ -173,7 +173,7 @@ export class ViewUserComponent implements OnInit {
 
   get createdAt(): string {
     if (!this.user?.createdAt) return '—';
-    return new Date(this.user.createdAt).toLocaleString('en-GB', getTimezoneOptions({
+    return new Date(this.user.createdAt).toLocaleString(undefined, getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric',
@@ -188,7 +188,7 @@ export class ViewUserComponent implements OnInit {
 
   get updatedAt(): string {
     if (!this.user?.updatedAt) return '—';
-    return new Date(this.user.updatedAt).toLocaleString('en-GB', getTimezoneOptions({
+    return new Date(this.user.updatedAt).toLocaleString(undefined, getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric',
@@ -222,7 +222,7 @@ export class ViewUserComponent implements OnInit {
 
   get lastLogin(): string {
     if (!this.user?.lastLoginAt) return '—';
-    return new Date(this.user.lastLoginAt).toLocaleString('en-GB', getTimezoneOptions({
+    return new Date(this.user.lastLoginAt).toLocaleString(undefined, getTimezoneOptions({
       day: 'numeric',
       month: 'short',
       year: 'numeric',

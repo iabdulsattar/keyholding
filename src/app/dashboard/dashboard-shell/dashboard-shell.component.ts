@@ -9,7 +9,7 @@ import { KeyVaultService } from '../../core/services/keyvault.service';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { ProductService } from '../../core/services';
 import { ProductItem } from '../../shared/components/ui/product-switcher/product-switcher.component';
-import { formatDateUTC, getTimezoneOptions, isTimezoneEnabled } from '../../core/utils/date.utils';
+import { formatDateLocal, getTimezoneOptions } from '../../core/utils/date.utils';
 import { AppChart } from '../../shared/components/charts/donut/chart.component';
 import { LineChartDashboardComponent, ChartOptions as LineChartOptions } from '../../shared/components/charts/line/line-chart-dashboard/chart.component';
 import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
@@ -188,7 +188,7 @@ export class DashboardShellComponent implements OnInit {
     this.authService.me().subscribe({
       next: (profile: ProfileResponse) => {
         const now = new Date();
-        const hour = isTimezoneEnabled() ? now.getUTCHours() : now.getHours();
+        const hour = now.getHours();
         this.greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
         this.userName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || profile.email || 'User';
       },
@@ -214,7 +214,7 @@ export class DashboardShellComponent implements OnInit {
   }
 
   private formatDate(iso: string): string {
-    return formatDateUTC(iso);
+    return formatDateLocal(iso);
   }
 
   private daysUntil(iso: string): number {
@@ -432,7 +432,7 @@ export class DashboardShellComponent implements OnInit {
     if (!iso) return '';
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '';
-    return d.toLocaleString('en-GB', getTimezoneOptions({
+    return d.toLocaleString(undefined, getTimezoneOptions({
       month: 'short',
       day: 'numeric',
       hour: '2-digit',

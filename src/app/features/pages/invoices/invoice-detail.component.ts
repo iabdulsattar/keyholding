@@ -227,7 +227,7 @@ export class InvoiceDetailComponent implements OnInit {
     if (!dateStr) return '—';
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return '—';
-    return date.toLocaleDateString('en-GB', getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
+    return date.toLocaleDateString(undefined, getTimezoneOptions({ day: 'numeric', month: 'short', year: 'numeric' }));
   }
 
   /** `PAID` / `PENDING` / `OVERDUE` / `VOID` become display labels. */

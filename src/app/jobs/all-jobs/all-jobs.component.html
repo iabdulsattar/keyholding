@@ -230,7 +230,7 @@
         Showing {{ pagination.totalElements > 0 ? (pagination.page * pagination.size) + 1 : 0 }} to {{ Math.min((pagination.page + 1) * pagination.size, pagination.totalElements) }} of {{ pagination.totalElements }} jobs
       </p>
       <div class="flex items-center gap-1.5 order-1 sm:order-2 overflow-x-auto scrollbar-thin">
-        <button (click)="prevPage()" [disabled]="pagination.page === 0" class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
+        <button (click)="prevPage()" [disabled]="loading || pagination.page === 0" class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.75 10.5L5.25 7L8.75 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -239,10 +239,10 @@
           @if (p === '...') {
             <span class="px-1 text-slate-400">...</span>
           } @else {
-            <button (click)="goToPage(p - 1)" [class.bg-blue-600]="pagination.page === p - 1" [class.hover:bg-blue-700]="pagination.page === p - 1" [class.text-white]="pagination.page === p - 1" [class.border-slate-200]="pagination.page !== p - 1" [class.text-slate-600]="pagination.page !== p - 1" class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border text-xs font-semibold ">{{ p }}</button>
+            <button (click)="goToPage(p - 1)" [disabled]="loading || pagination.page === p - 1" [class.bg-blue-600]="pagination.page === p - 1" [class.hover:bg-blue-700]="pagination.page === p - 1" [class.text-white]="pagination.page === p - 1" [class.border-slate-200]="pagination.page !== p - 1" [class.text-slate-600]="pagination.page !== p - 1" class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border text-xs font-semibold disabled:cursor-not-allowed">{{ p }}</button>
           }
         }
-        <button (click)="nextPage()" [disabled]="pagination.page >= pagination.totalPages - 1" class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-400 text-xs font-semibold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
+        <button (click)="nextPage()" [disabled]="loading || pagination.page >= pagination.totalPages - 1" class="h-8 w-8 shrink-0 flex items-center justify-center rounded-sm border border-slate-200 text-slate-400 text-xs font-semibold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M5.25 10.5L8.75 7L5.25 3.5" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
     </svg>
