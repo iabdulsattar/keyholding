@@ -179,19 +179,61 @@ export class ClientService {
     return `${datePart}, ${timePart}`;
   }
 
+  private mapPaginatedResult<T>(
+    response: any,
+    page: number,
+    size: number,
+    mapItem: (item: any) => T
+  ): PaginatedResult<T> {
+    const payload = response?.data ?? response ?? {};
+    const arrays = [
+      payload?.content,
+      payload?.items,
+      payload?.data,
+      payload?.data?.content,
+      payload?.data?.items,
+      payload?.data?.data,
+      payload?.data?.data?.content,
+      payload?.data?.data?.items,
+      response?.content,
+      response?.items,
+      response?.data?.content,
+      response?.data?.items,
+      response?.data?.data,
+      Array.isArray(payload) ? payload : undefined,
+    ];
+    const rawItems = arrays.find(Array.isArray) ?? [];
+    const items = rawItems.map(mapItem);
+    const metadata = [response?.meta, payload?.meta, response?.pagination, payload?.pagination];
+    const totalValue = [
+      ...metadata.map(meta => meta?.totalElements ?? meta?.totalItems ?? meta?.total),
+      response?.totalElements,
+      response?.totalItems,
+      response?.total,
+      payload?.totalElements,
+      payload?.totalItems,
+      payload?.total,
+    ].find(value => value !== undefined && value !== null);
+    const pagesValue = [
+      ...metadata.map(meta => meta?.totalPages),
+      response?.totalPages,
+      payload?.totalPages,
+    ].find(value => value !== undefined && value !== null);
+    const totalItems = Number.isFinite(Number(totalValue)) ? Math.max(0, Number(totalValue)) : items.length;
+    const totalPages = Number.isFinite(Number(pagesValue))
+      ? Math.max(0, Number(pagesValue))
+      : Math.ceil(totalItems / size);
+
+    return { items, totalItems, page, size, totalPages };
+  }
+
   listClients(params?: { q?: string; status?: string; region?: string; page?: number; size?: number }): Observable<PaginatedResult<Client>> {
     const orgId = this.getOrgId();
     if (!orgId) return of({ items: [], totalItems: 0, page: 0, size: 10, totalPages: 0 });
     const page = params?.page ?? 0;
     const size = params?.size ?? 10;
     return this.keyVault.listClients(orgId, { q: params?.q, status: params?.status, region: params?.region, page, size }).pipe(
-      map((res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapClient(item));
-        const totalItems = data.totalItems ?? data.total ?? items.length;
-        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-        return { items, totalItems, page, size, totalPages };
-      })
+      map((res: any) => this.mapPaginatedResult(res, page, size, item => this.mapClient(item)))
     );
   }
 
@@ -364,13 +406,7 @@ export class ClientService {
     const page = params?.page ?? 0;
     const size = params?.size ?? 10;
     return this.keyVault.listAllSites(orgId, { q: params?.q, status: params?.status, siteType: params?.siteType, clientId: params?.clientId, page, size }).pipe(
-      map((res: any) => {
-        const data = res?.data ?? res ?? {};
-        const items = (data.items ?? data.data ?? data ?? []).map((item: any) => this.mapSite(item));
-        const totalItems = data.totalItems ?? data.total ?? items.length;
-        const totalPages = data.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-        return { items, totalItems, page, size, totalPages };
-      })
+      map((res: any) => this.mapPaginatedResult(res, page, size, item => this.mapSite(item)))
     );
   }
 
@@ -404,14 +440,7 @@ export class ClientService {
     const page = params?.page ?? 0;
     const size = params?.size ?? 10;
     return this.keyVault.listContacts(orgId, clientId, { q: params?.q, status: params?.status, department: params?.department, page, size }).pipe(
-      map((res: any) => {
-        const data = res?.data ?? res ?? {};
-        const meta = res?.meta ?? data?.meta ?? {};
-        const items = (Array.isArray(data) ? data : (data.items ?? data.data ?? data ?? [])).map((item: any) => this.mapContact(item));
-        const totalItems = data.totalItems ?? data.total ?? meta.totalElements ?? items.length;
-        const totalPages = data.totalPages ?? meta.totalPages ?? Math.max(1, Math.ceil(totalItems / size));
-        return { items, totalItems, page, size, totalPages };
-      })
+      map((res: any) => this.mapPaginatedResult(res, page, size, item => this.mapContact(item)))
     );
   }
 

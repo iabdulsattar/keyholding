@@ -159,6 +159,7 @@ export class CreateJobComponent implements OnInit {
   selectedCompletionContactIds: string[] = [];
   selectedNotCompletedContactIds: string[] = [];
   contactsLoading = false;
+  private contactsRequestId = 0;
 
   selectedFiles: File[] = [];
   attachmentPreviews: { file: File; url: string; status: 'pending' | 'uploading' | 'success' | 'error'; message?: string }[] = [];
@@ -343,9 +344,13 @@ export class CreateJobComponent implements OnInit {
     this.selectedSite = data.siteId || data.site?.id || '';
     this.job.officer = data.officerUserId || data.officer?.id || '';
 
+    const escalation = data.escalation || {};
+    this.selectedCompletionContactIds = this.toContactIds(escalation.notifyOnCompletion);
+    this.selectedNotCompletedContactIds = this.toContactIds(escalation.notifyOnNotCompleted);
+
     if (this.selectedClient) {
       this.loadSites(this.selectedClient);
-      this.loadEmergencyContacts(this.selectedClient);
+      this.loadClientContacts(this.selectedClient);
     }
     if (this.selectedJobType) {
       this.loadChecklist(this.selectedJobType);
@@ -360,10 +365,6 @@ export class CreateJobComponent implements OnInit {
     this.job.visitorCompany = data.visitorCompany ?? '';
     this.job.visitorContactNumber = data.visitorContactNumber ?? '';
     this.job.visitorPurposeOfVisit = data.visitorPurposeOfVisit ?? '';
-
-    const escalation = data.escalation || {};
-    this.selectedCompletionContactIds = this.toContactIds(escalation.notifyOnCompletion);
-    this.selectedNotCompletedContactIds = this.toContactIds(escalation.notifyOnNotCompleted);
 
     this.applyJobChecklist(data.checklist?.items);
     this.applyJobKeys(data.requiredKeys?.keys || data.keys || []);
@@ -450,28 +451,37 @@ export class CreateJobComponent implements OnInit {
     });
   }
 
-  private loadEmergencyContacts(clientId: string): void {
+  private loadClientContacts(clientId: string): void {
+    const requestId = ++this.contactsRequestId;
     if (!clientId) {
       this.completionContactOptions = [];
       this.notCompletedContactOptions = [];
+      this.selectedCompletionContactIds = [];
+      this.selectedNotCompletedContactIds = [];
+      this.contactsLoading = false;
       return;
     }
     this.contactsLoading = true;
-    this.clientService.listEmergencyContacts(clientId, { page: 0, size: 200 }).subscribe({
+    this.clientService.listContacts(clientId, { page: 0, size: 200, status: 'ACTIVE' }).subscribe({
       next: (result: any) => {
-        const items = result?.items ?? result?.data ?? result ?? [];
-        const options: MultiOption[] = items.map((item: any) => ({
-          value: item.id ?? '',
-          text: `${item.firstName || ''} ${item.lastName || ''}`.trim() || item.fullName || item.name || 'Emergency Contact'
-        }));
+        if (requestId !== this.contactsRequestId) return;
+        const items = Array.isArray(result?.items) ? result.items : [];
+        const options: MultiOption[] = items
+          .filter((item: any) => item.id && String(item.status).toLowerCase() !== 'inactive')
+          .map((item: any) => ({
+            value: item.id,
+            text: item.fullName || `${item.firstName || ''} ${item.lastName || ''}`.trim() || item.email || 'Contact'
+          }));
         this.completionContactOptions = [...options];
         this.notCompletedContactOptions = [...options];
         this.contactsLoading = false;
       },
       error: () => {
+        if (requestId !== this.contactsRequestId) return;
         this.completionContactOptions = [];
         this.notCompletedContactOptions = [];
         this.contactsLoading = false;
+        this.toast.error('Failed to load client contacts for job notifications.');
       }
     });
   }
@@ -497,8 +507,10 @@ export class CreateJobComponent implements OnInit {
   onClientChange(clientId: string): void {
     this.selectedClient = clientId;
     this.selectedSite = '';
+    this.selectedCompletionContactIds = [];
+    this.selectedNotCompletedContactIds = [];
     this.loadSites(clientId);
-    this.loadEmergencyContacts(clientId);
+    this.loadClientContacts(clientId);
   }
 
   onSiteChange(siteId: string): void {

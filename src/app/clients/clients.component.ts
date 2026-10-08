@@ -35,6 +35,7 @@ export class ClientsComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
   totalPages = 0;
+  private clientsRequestId = 0;
 
   showDeleteClientModal = false;
   clientToDelete: Client | null = null;
@@ -56,6 +57,7 @@ export class ClientsComponent implements OnInit {
 
   private loadClients(): void {
     this.loading = true;
+    const requestId = ++this.clientsRequestId;
     const status = this.activeFilter === 'all' ? undefined : this.activeFilter;
     this.clientService.listClients({
       q: this.searchQuery || undefined,
@@ -64,11 +66,25 @@ export class ClientsComponent implements OnInit {
       page: this.page,
       size: this.pageSize,
     }).subscribe((result: PaginatedResult<Client>) => {
+      if (requestId !== this.clientsRequestId) return;
+      this.totalPages = result.totalPages;
+      if (this.totalPages > 0 && this.page >= this.totalPages) {
+        this.page = this.totalPages - 1;
+        this.loadClients();
+        return;
+      }
+      if (this.totalPages === 0) this.page = 0;
       this.clients = result.items;
       this.totalItems = result.totalItems;
-      this.totalPages = result.totalPages;
-      this.page = result.page;
       this.loading = false;
+    }, () => {
+      if (requestId !== this.clientsRequestId) return;
+      this.clients = [];
+      this.totalItems = 0;
+      this.totalPages = 0;
+      this.page = 0;
+      this.loading = false;
+      this.toast.error('Failed to load clients. Please try again.');
     });
   }
 

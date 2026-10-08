@@ -167,7 +167,7 @@ export class AllJobsComponent implements OnInit {
     });
   }
 
-  private sortState = { by: 'code', dir: 'desc' as 'asc' | 'desc' };
+  private sortState = { by: 'createdAt', dir: 'desc' as 'asc' | 'desc' };
 
   get sortBy(): string { return this.sortState.by; }
   get sortDir(): 'asc' | 'desc' { return this.sortState.dir; }
@@ -178,6 +178,14 @@ export class AllJobsComponent implements OnInit {
     return jobs.sort((a, b) => {
       const av = a[this.sortState.by];
       const bv = b[this.sortState.by];
+      if (this.sortState.by === 'createdAt') {
+        const aTime = av == null ? Number.NaN : Date.parse(av);
+        const bTime = bv == null ? Number.NaN : Date.parse(bv);
+        if (Number.isFinite(aTime) && Number.isFinite(bTime)) return bTime - aTime;
+        if (Number.isFinite(aTime)) return -1;
+        if (Number.isFinite(bTime)) return 1;
+        return 0;
+      }
       if (av == null && bv == null) return 0;
       if (av == null) return dir;
       if (bv == null) return -dir;
@@ -206,6 +214,7 @@ export class AllJobsComponent implements OnInit {
       type: job.jobTypeName ?? job.jobType?.name ?? '',
       officer: job.officerName ?? job.officer?.fullName ?? '',
       date: formatScheduleRange(job.scheduledDate, job.startTime, job.endTime),
+      createdAt: job.createdAt ?? job.created_at ?? null,
       status: job.status ?? 'SCHEDULED',
       priority: job.priority ?? 'MEDIUM',
       raw: job

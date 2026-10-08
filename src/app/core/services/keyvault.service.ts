@@ -1578,6 +1578,7 @@ export class KeyVaultService {
       if (params?.status) q.set('status', params.status);
       q.set('page', String(params?.page ?? 0));
       q.set('size', String(params?.size ?? 20));
+      q.set('sort', 'createdAt,desc');
       const query = q.toString();
       return this.api.get<any>(`/api/v1/keyvault/organizations/${orgId}/jobs${query ? `?${query}` : ''}`, headers);
     }

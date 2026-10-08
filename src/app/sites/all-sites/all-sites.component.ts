@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client, SiteRecord } from '../../core/services/client.service';
+import { ToastService } from '../../core/services/toast.service';
 import { RichSelectComponent, RichSelectOption } from '../../shared/components/form/rich-select/rich-select.component';
 import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
 
@@ -37,6 +38,7 @@ export class AllSitesComponent implements OnInit {
   pageSizeOptions = [10, 25, 50, 100];
   totalItems = 0;
   totalPages = 0;
+  private sitesRequestId = 0;
 
   clientOptions: Client[] = [];
   siteTypeOptions = ['All Site Types', 'Office', 'Warehouse', 'Retail', 'Distribution Centre', 'Construction Site', 'Storage', 'Remote Office', 'Data Centre', 'Other'];
@@ -58,7 +60,7 @@ export class AllSitesComponent implements OnInit {
     { value: 'inactive', label: 'Inactive' },
   ];
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -74,6 +76,7 @@ export class AllSitesComponent implements OnInit {
 
   private loadAllSites(): void {
     this.loading = true;
+    const requestId = ++this.sitesRequestId;
     const params: any = { 
       page: this.currentPage - 1, 
       size: this.pageSize 
@@ -83,11 +86,29 @@ export class AllSitesComponent implements OnInit {
     if (this.siteTypeFilter) params.siteType = this.siteTypeFilter;
     if (this.clientFilter) params.clientId = this.clientFilter;
 
-    this.clientService.listAllSites(params).subscribe((result: any) => {
-      this.allSites = result.items;
-      this.totalItems = result.totalElements || result.total || result.items.length;
-      this.totalPages = result.totalPages || Math.ceil(this.totalItems / this.pageSize);
-      this.loading = false;
+    this.clientService.listAllSites(params).subscribe({
+      next: result => {
+        if (requestId !== this.sitesRequestId) return;
+        this.totalItems = result.totalItems;
+        this.totalPages = result.totalPages;
+        if (this.totalPages > 0 && this.currentPage > this.totalPages) {
+          this.currentPage = this.totalPages;
+          this.loadAllSites();
+          return;
+        }
+        if (this.totalPages === 0) this.currentPage = 1;
+        this.allSites = result.items;
+        this.loading = false;
+      },
+      error: () => {
+        if (requestId !== this.sitesRequestId) return;
+        this.allSites = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
+        this.currentPage = 1;
+        this.loading = false;
+        this.toast.error('Failed to load sites. Please try again.');
+      }
     });
   }
 
@@ -167,6 +188,7 @@ export class AllSitesComponent implements OnInit {
     const pages: (number | '...')[] = [];
     const total = this.totalPages;
     const current = this.currentPage;
+    if (total <= 0) return pages;
     if (total <= 7) {
       for (let i = 1; i <= total; i++) pages.push(i);
     } else {
