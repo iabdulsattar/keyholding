@@ -123,11 +123,11 @@ export class AppChart implements AfterViewInit, OnDestroy {
 
   private syncChartOptions(): void {
     const hasInput = this.series.length > 0 && this.labels.length > 0;
-    this.currentSeries = hasInput ? [...this.series] : [44, 55, 13, 33];
+    this.currentSeries = hasInput ? [...this.series] : [];
     this.chartOptions = {
       ...this.chartOptions,
       series: this.currentSeries,
-      labels: hasInput ? this.labels : ['Stocks', 'Bonds', 'Real Estate', 'Cash'],
+      labels: hasInput ? this.labels : [],
       colors: this.colors.length > 0 ? this.colors : ['#10b981', '#2563eb', '#f59e0b', '#e9edf5'],
       legend: {
         show: this.showLegend,
