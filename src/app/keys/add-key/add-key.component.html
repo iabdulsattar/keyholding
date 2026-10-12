@@ -71,7 +71,7 @@
                 <div class="space-y-1.5">
                   <label class="text-xs font-semibold" [class.text-slate-600]="!(touched.has('assignClientId') && !assignClientId)" [class.text-rose-600]="touched.has('assignClientId') && !assignClientId">Client <span class="text-red-500">*</span></label>
                    <div [class.border-rose-500]="touched.has('assignClientId') && !assignClientId" class="rounded-lg transition mt-1">
-                     <app-rich-select [options]="clientOptions" [value]="assignClientId" (valueChange)="onClientChange($event)" placeholder="Select client" class="w-full"></app-rich-select>
+                     <app-rich-select [options]="clientOptions" [value]="assignClientId" (valueChange)="onClientChange($event)" placeholder="Select client" [showSearch]="true" class="w-full"></app-rich-select>
                    </div>
                    @if (touched.has('assignClientId') && !assignClientId) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
                 </div>
@@ -86,7 +86,7 @@
                <div class="space-y-1.5">
                  <label class="text-xs font-semibold" [class.text-slate-600]="!(touched.has('assignSite') && !assignSite)" [class.text-rose-600]="touched.has('assignSite') && !assignSite">Site <span class="text-red-500">*</span></label>
                   <div [class.border-rose-500]="touched.has('assignSite') && !assignSite" class="rounded-lg transition mt-1">
-                    <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
+                    <app-rich-select [options]="siteOptions" [(value)]="assignSite" placeholder="Select site" [showSearch]="true" class="w-full" (valueChange)="markTouched('assignSite')"></app-rich-select>
                   </div>
                   @if (touched.has('assignSite') && !assignSite) { <p class="text-xs text-rose-600 mt-1">Site is required</p> }
                </div>

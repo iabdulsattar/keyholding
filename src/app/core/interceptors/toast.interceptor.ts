@@ -6,8 +6,8 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, throwError, timer } from 'rxjs';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { ToastService } from '../services/toast.service';
 
 @Injectable()
@@ -32,6 +32,8 @@ export class ToastInterceptor implements HttpInterceptor {
   ];
 
   private readonly MUTATION_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+  private readonly RETRYABLE_WRITE_METHODS = new Set(['POST', 'PUT', 'PATCH']);
+  private readonly WRITE_RETRY_DELAY_MS = 1000;
 
   constructor(private toastService: ToastService) {}
 
@@ -44,7 +46,22 @@ export class ToastInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return next.handle(req).pipe(
+    const response$ = next.handle(req);
+    const retryableResponse$ = this.RETRYABLE_WRITE_METHODS.has(req.method)
+      ? response$.pipe(
+          retry({
+            count: 1,
+            delay: (err: unknown) => {
+              if (this.isRetryableWriteError(err)) {
+                return timer(this.WRITE_RETRY_DELAY_MS);
+              }
+              return throwError(() => err);
+            },
+          })
+        )
+      : response$;
+
+    return retryableResponse$.pipe(
       tap((event) => {
         if (event && typeof event === 'object' && 'body' in (event as any)) {
           this.handleSuccess(req, (event as any).body);
@@ -59,8 +76,17 @@ export class ToastInterceptor implements HttpInterceptor {
     );
   }
 
+  private isRetryableWriteError(error: unknown): boolean {
+    return error instanceof HttpErrorResponse
+      && (error.status === 0 || error.status === 408);
+  }
+
   private handleSuccess(req: HttpRequest<unknown>, body: any): void {
     if (!this.MUTATION_METHODS.has(req.method)) {
+      return;
+    }
+
+    if (this.hasFormManagedSuccessMessage(req.url)) {
       return;
     }
 
@@ -68,6 +94,11 @@ export class ToastInterceptor implements HttpInterceptor {
     if (message) {
       this.toastService.success(message);
     }
+  }
+
+  private hasFormManagedSuccessMessage(url: string): boolean {
+    const path = url.split(/[?#]/, 1)[0];
+    return /\/api\/v1\/keyvault\/organizations\/[^/]+\/(?:clients(?:\/[^/]+\/sites)?|sites|keys|jobs)(?:\/[^/]+)?(?:\/attachments(?:\/[^/]+)?)?$/.test(path);
   }
 
   private extractSuccessMessage(body: any): string | null {

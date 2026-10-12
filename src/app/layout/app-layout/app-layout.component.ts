@@ -21,6 +21,7 @@ import { PermissionService } from '../../core/services/permission.service';
 })
 
 export class AppLayoutComponent {
+  private readonly trialBannerDismissedKey = 'trialBannerDismissed';
   readonly isExpanded$: Observable<boolean>;
   readonly isHovered$: Observable<boolean>;
   readonly isMobileOpen$: Observable<boolean>;
@@ -61,11 +62,17 @@ export class AppLayoutComponent {
 
   get isTrialBannerVisible(): boolean {
     // The banner links to the plan page, which is administrator-only.
-    return this.permissions.isOrgAdmin() && this.subStatus.status() === 'trial';
+    return this.permissions.isOrgAdmin()
+      && this.subStatus.status() === 'trial'
+      && sessionStorage.getItem(this.trialBannerDismissedKey) !== 'true';
   }
 
   get trialDaysRemaining(): number {
     return this.subStatus.daysRemaining();
+  }
+
+  dismissTrialBanner(): void {
+    sessionStorage.setItem(this.trialBannerDismissedKey, 'true');
   }
 
   toggleSidebar(): void {
@@ -76,4 +83,3 @@ export class AppLayoutComponent {
     }
   }
 }
-

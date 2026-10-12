@@ -70,11 +70,11 @@
             class="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white h-11 border border-slate-200 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
         </div>
         <div class="col-span-1 lg:col-span-2">
-          <app-rich-select [options]="clientFilterOptions" [(value)]="clientFilter" (valueChange)="onClientChange()" placeholder="All Clients"></app-rich-select>
+          <app-rich-select [options]="clientFilterOptions" [(value)]="clientFilter" (valueChange)="onClientChange()" placeholder="All Clients" [showSearch]="true"></app-rich-select>
                  
         </div>
         <div class="col-span-1 lg:col-span-2">
-          <app-rich-select [options]="siteFilterOptions" [(value)]="siteFilter" (valueChange)="onSiteChange()" placeholder="All Sites"></app-rich-select>
+          <app-rich-select [options]="siteFilterOptions" [(value)]="siteFilter" (valueChange)="onSiteChange()" placeholder="All Sites" [showSearch]="true"></app-rich-select>
                      
         </div>
         <div class="col-span-1 lg:col-span-2">

@@ -104,11 +104,14 @@ export class SubscriptionTrialStartComponent implements OnInit {
   private async resolveFromRefreshToken(refreshToken: string, serviceCode: string): Promise<void> {
     try {
       const res: any = await firstValueFrom(this.authService.refreshForService({ refreshToken }, serviceCode));
+      const response = res?.data ?? res;
+      const responseData = response?.data ?? {};
+      const tokenResponse = response?.tokens ?? responseData?.tokens ?? {};
 
-      const accessToken = res?.access_token ?? res?.tokens?.access_token;
-      const newRefreshToken = res?.refresh_token ?? res?.tokens?.refresh_token;
-      const refreshExpiresIn = res?.refresh_expires_in ?? res?.tokens?.refresh_expires_in;
-      const accessExpiresIn = res?.expires_in ?? res?.tokens?.expires_in;
+      const accessToken = response?.access_token ?? tokenResponse?.access_token;
+      const newRefreshToken = response?.refresh_token ?? tokenResponse?.refresh_token;
+      const refreshExpiresIn = response?.refresh_expires_in ?? tokenResponse?.refresh_expires_in;
+      const accessExpiresIn = response?.expires_in ?? tokenResponse?.expires_in;
 
       if (!accessToken) {
         this.errorMessage = 'The sign-in link could not be verified. Please sign in again.';
@@ -127,13 +130,17 @@ export class SubscriptionTrialStartComponent implements OnInit {
       this.authService.storeSession(accessToken, newRefreshToken ?? null, expiresAt, this.authService.isRemembered(), serviceCode);
 
       // ---- Service access (grants) exactly as the sign-in flow stores them ----
-      const serviceAccess = res?.serviceAccess ?? res?.tokens?.serviceAccess;
+      const serviceAccess = response?.serviceAccess ?? tokenResponse?.serviceAccess;
       if (serviceAccess) {
         this.permissionService.setServiceAccess(serviceAccess as any);
       }
 
       // ---- Subscribed services cache used by the subscription guard ----
-      const subscribedServices = res?.subscribedServices ?? res?.tokens?.subscribedServices ?? res?.data?.subscribedServices ?? [];
+      const subscribedServices =
+        response?.subscribedServices ??
+        tokenResponse?.subscribedServices ??
+        responseData?.subscribedServices ??
+        [];
       this.subStatus.setFromSubscribedServices(subscribedServices, serviceCode);
       this.productService.setCurrentProductByServiceCode(serviceCode);
 
@@ -141,10 +148,21 @@ export class SubscriptionTrialStartComponent implements OnInit {
       // Awaited (the sign-in flow fires these in the background) because the
       // member path needs a resolved org id, email and role before it can call
       // the enable API and hand over to the dashboard.
-      const orgs = res?.organizations ?? res?.tokens?.organizations ?? [];
+      const orgs =
+        response?.organizations ??
+        tokenResponse?.organizations ??
+        responseData?.organizations ??
+        [];
       const profile: any = await firstValueFrom(this.authService.me(accessToken)).catch(() => null);
       const profileOrgs = profile?.organizations ?? [];
-      const org = orgs[0] ?? profileOrgs[0] ?? null;
+      const responseOrg =
+        orgs[0] ??
+        response?.organization ??
+        tokenResponse?.organization ??
+        responseData?.organization ??
+        null;
+      const profileOrg = profileOrgs[0] ?? profile?.organization ?? null;
+      const org = responseOrg ?? profileOrg;
 
       if (org?.id) {
         this.storeOrg(org.id, org.name);
@@ -160,14 +178,29 @@ export class SubscriptionTrialStartComponent implements OnInit {
       this.userEmail = user?.email || this.userEmail;
       this.userName =
         `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || user?.email || this.userName;
-      this.userRole = this.extractRole(profile) || org?.role || '';
-      this.permissionService.setOrgRole(org?.role ?? this.extractRole(profile));
+      let role =
+        org?.role ??
+        profileOrg?.role ??
+        response?.membership?.role ??
+        responseData?.membership?.role ??
+        response?.role ??
+        responseData?.role ??
+        response?.user?.role ??
+        responseData?.user?.role ??
+        user?.role ??
+        '';
+
+      if (!role) {
+        const session: any = await firstValueFrom(this.authService.getSession(accessToken)).catch(() => null);
+        const sessionOrg = session?.organizations?.[0] ?? null;
+        role = sessionOrg?.role ?? session?.role ?? '';
+      }
+
+      this.userRole = role;
+      this.permissionService.setOrgRole(role);
 
       this.orgId = this.getOrgId();
       this.orgName = this.authService.getOrgName() || org?.name || this.orgName;
-
-      const hasSubscription = this.hasServiceSubscription(subscribedServices, serviceCode);
-      const hasServiceAccess = this.permissionService.canAccessService(serviceCode);
 
       // Members are entitled by their organisation, never by a trial of their
       // own: the only call they make from this link is the service enable API
@@ -179,10 +212,8 @@ export class SubscriptionTrialStartComponent implements OnInit {
         return;
       }
 
-      // Only a fully entitled org skips the trial flow. Everything else -
-      // unsubscribed, or subscribed without the service grant - goes through
-      // the start-subscription + enable-service chain on this page.
-      if (hasSubscription && hasServiceAccess) {
+      // Only an active subscription/trial for this service skips onboarding.
+      if (this.subStatus.isActive()) {
         this.router.navigate(['/']);
         return;
       }
@@ -192,12 +223,6 @@ export class SubscriptionTrialStartComponent implements OnInit {
 
     this.checkingSubscription = false;
     this.loadPage();
-  }
-
-  /** Presence of the serviceCode in `subscribedServices` means already subscribed. */
-  private hasServiceSubscription(subscribedServices: any[], serviceCode: string): boolean {
-    const list = Array.isArray(subscribedServices) ? subscribedServices : [];
-    return list.some((s: any) => s?.serviceCode === serviceCode);
   }
 
   private loadPage(): void {

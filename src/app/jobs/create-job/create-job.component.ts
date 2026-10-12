@@ -226,6 +226,10 @@ export class CreateJobComponent implements OnInit {
     return `${label} Checklist`;
   }
 
+  get checklistRequired(): boolean {
+    return this.selectedJobTypeLabel.trim().toLowerCase().includes('lock');
+  }
+
   get startIndex(): number {
     return this.totalElements > 0 ? this.currentPage * this.pageSize + 1 : 0;
   }
@@ -1109,6 +1113,7 @@ export class CreateJobComponent implements OnInit {
           title: created.title ?? title,
           text: created.title ?? title
         });
+        delete this.errors['checklist'];
       }
       this.newChecklistItem = '';
       this.closeAddChecklistModal();
@@ -1116,6 +1121,7 @@ export class CreateJobComponent implements OnInit {
   }
 
   removeChecklistItem(id: string): void {
+    if (this.checklistRequired && this.checklistItems.length <= 1) return;
     this.checklistItems = this.checklistItems.filter(item => item.id !== id);
   }
 
@@ -1127,6 +1133,9 @@ export class CreateJobComponent implements OnInit {
     if (!this.selectedClient) this.errors['client'] = 'Client is required';
     if (!this.selectedSite) this.errors['site'] = 'Site is required';
     if (!this.job.title.trim()) this.errors['title'] = 'Job title is required';
+    if (this.checklistRequired && this.checklistItems.length === 0) {
+      this.errors['checklist'] = 'At least one checklist item is required for lock and unlock jobs';
+    }
     // Only the fields of the selected schedule tab are validated: an open job
     // is available immediately so its due date stays optional, while a
     // scheduled job needs the full date and time window.

@@ -78,7 +78,7 @@
         <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search sites..."
           class="w-full pl-10 pr-4 py-2.5 h-11 bg-white rounded-lg border border-slate-200 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500" />
       </div>
-      <div class="col-span-1 lg:col-span-2"><app-rich-select [options]="clientFilterOptions" [(value)]="clientFilter" (valueChange)="onClientChange()" placeholder="Client Type"></app-rich-select></div>
+      <div class="col-span-1 lg:col-span-2"><app-rich-select [options]="clientFilterOptions" [(value)]="clientFilter" (valueChange)="onClientChange()" placeholder="Client Type" [showSearch]="true"></app-rich-select></div>
       <div class="col-span-1 lg:col-span-2"><app-rich-select [options]="statusFilterOptions" [(value)]="statusFilter" (valueChange)="onSearch()" placeholder="Status"></app-rich-select></div>
 
       <div class="col-span-1 lg:col-span-4 flex justify-end">

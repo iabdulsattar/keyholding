@@ -47,7 +47,7 @@
                <div class="space-y-1.5">
                  <label class="text-xs font-semibold" [class.text-slate-700]="!(touched.has('clientId') && !clientId)" [class.text-rose-600]="touched.has('clientId') && !clientId">Client <span class="text-red-500">*</span></label>
                  <div [class.border-rose-500]="touched.has('clientId') && !clientId" class="rounded-lg transition">
-                   <app-rich-select [options]="clientOptions" [(value)]="clientId" placeholder="Select client" (valueChange)="markTouched('clientId')"></app-rich-select>
+                   <app-rich-select [options]="clientOptions" [(value)]="clientId" placeholder="Select client" [showSearch]="true" (valueChange)="markTouched('clientId')"></app-rich-select>
                  </div>
                  @if (touched.has('clientId') && !clientId) { <p class="text-xs text-rose-600 mt-1">Client is required</p> }
                </div>

@@ -96,6 +96,7 @@
           [value]="filters.clientId"
           (valueChange)="filters.clientId = $event; loadJobs()"
           placeholder="All Clients"
+          [showSearch]="true"
           panelWidth="full"
           class="w-full">
         </app-rich-select>
@@ -104,6 +105,7 @@
           [value]="filters.siteId"
           (valueChange)="filters.siteId = $event; loadJobs()"
           placeholder="All Sites"
+          [showSearch]="true"
           panelWidth="full"
           class="w-full">
         </app-rich-select>
