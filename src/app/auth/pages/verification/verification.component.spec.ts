@@ -20,4 +20,12 @@ describe('VerificationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('moves focus to the previous OTP input when Backspace is pressed in an empty input', () => {
+    const inputs = fixture.nativeElement.querySelectorAll<HTMLInputElement>('.otp-input');
+    inputs[1].focus();
+    inputs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
+
+    expect(document.activeElement).toBe(inputs[0]);
+  });
 });

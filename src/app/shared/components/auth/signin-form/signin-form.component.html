@@ -49,15 +49,15 @@
            </p>
          </div>
 
-         <form (ngSubmit)="verifyEmailOtp()" class="space-y-6">
-           <div class="flex gap-2 sm:gap-3 justify-center">
-             <app-input-field type="text" placeholder="" name="d1" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" required />
-             <app-input-field type="text" placeholder="" name="d2" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" required />
-             <app-input-field type="text" placeholder="" name="d3" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" required />
-             <app-input-field type="text" placeholder="" name="d4" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" required />
-             <app-input-field type="text" placeholder="" name="d5" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" required />
-             <app-input-field type="text" placeholder="" name="d6" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" required />
-           </div>
+          <form (ngSubmit)="verifyEmailOtp()" class="space-y-6">
+            <div class="flex gap-2 sm:gap-3 justify-center">
+              <app-input-field type="text" placeholder="" name="d1" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 1)" required />
+              <app-input-field type="text" placeholder="" name="d2" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 2)" required />
+              <app-input-field type="text" placeholder="" name="d3" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 3)" required />
+              <app-input-field type="text" placeholder="" name="d4" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 4)" required />
+              <app-input-field type="text" placeholder="" name="d5" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 5)" required />
+              <app-input-field type="text" placeholder="" name="d6" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 6)" required />
+            </div>
 
            <div class="mt-2 mb-2 sm:mb-3">
              <p class="text-xs sm:text-sm font-normal text-center text-gray-700 dark:text-gray-400">
@@ -97,15 +97,15 @@
           </p>
         </div>
 
-        <form (ngSubmit)="onVerifyOtp()" class="space-y-6">
-          <div class="flex gap-2 sm:gap-3 justify-center">
-            <app-input-field type="text" placeholder="" name="d1" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" required />
-            <app-input-field type="text" placeholder="" name="d2" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" required />
-            <app-input-field type="text" placeholder="" name="d3" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" required />
-            <app-input-field type="text" placeholder="" name="d4" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" required />
-            <app-input-field type="text" placeholder="" name="d5" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" required />
-            <app-input-field type="text" placeholder="" name="d6" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" required />
-          </div>
+         <form (ngSubmit)="onVerifyOtp()" class="space-y-6">
+           <div class="flex gap-2 sm:gap-3 justify-center">
+             <app-input-field type="text" placeholder="" name="d1" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d1" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 1)" required />
+             <app-input-field type="text" placeholder="" name="d2" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d2" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 2)" required />
+             <app-input-field type="text" placeholder="" name="d3" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d3" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 3)" required />
+             <app-input-field type="text" placeholder="" name="d4" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d4" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 4)" required />
+             <app-input-field type="text" placeholder="" name="d5" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d5" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 5)" required />
+             <app-input-field type="text" placeholder="" name="d6" class="form-input w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-lg font-medium" [maxlength]="1" [error]="digitError" [(value)]="d6" (paste)="onOtpPaste($event)" (valueChange)="onOtpValueChange($event, 6)" required />
+           </div>
 
           <div class="mt-2 mb-2 sm:mb-3">
             <p class="text-xs sm:text-sm font-normal text-center text-gray-700 dark:text-gray-400">

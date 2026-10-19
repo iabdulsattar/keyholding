@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
@@ -16,6 +16,8 @@ import { ToastService } from '../../../core/services/toast.service';
   styles: ''
 })
 export class VerificationComponent implements OnInit {
+
+  @ViewChildren('otpInput') private otpInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
   isCheckedOne = false;
 
@@ -80,6 +82,22 @@ export class VerificationComponent implements OnInit {
     this.d4 = digits[3];
     this.d5 = digits[4];
     this.d6 = digits[5];
+  }
+
+  onDigitInput(index: number): void {
+    const input = this.otpInputs.get(index)?.nativeElement;
+    if (input?.value && index < this.otpInputs.length - 1) {
+      this.otpInputs.get(index + 1)?.nativeElement.focus();
+    }
+  }
+
+  onDigitKeydown(index: number, event: KeyboardEvent): void {
+    if (event.key !== 'Backspace' || index === 0) return;
+
+    const input = this.otpInputs.get(index)?.nativeElement;
+    if (input && !input.value) {
+      this.otpInputs.get(index - 1)?.nativeElement.focus();
+    }
   }
 
   isEmailValid(email: string): boolean {

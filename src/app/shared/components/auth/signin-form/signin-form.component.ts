@@ -57,9 +57,90 @@ export class SigninFormComponent {
   d6 = '';
   digitError = false;
 
-  get otpCode(): string {
-    return [this.d1, this.d2, this.d3, this.d4, this.d5, this.d6].map(d => (d ?? '').toString()).join('');
-  }
+   get otpCode(): string {
+     return [this.d1, this.d2, this.d3, this.d4, this.d5, this.d6].map(d => (d ?? '').toString()).join('');
+   }
+
+    onOtpValueChange(value: any, index: number) {
+      const str = ('' + value).replace(/\D/g, '');
+      if (str.length === 0) {
+        // Clear the current digit if input is emptied (e.g., by backspace)
+        switch (index) {
+          case 1:
+            this.d1 = '';
+            break;
+          case 2:
+            this.d2 = '';
+            break;
+          case 3:
+            this.d3 = '';
+            break;
+          case 4:
+            this.d4 = '';
+            break;
+          case 5:
+            this.d5 = '';
+            break;
+          case 6:
+            this.d6 = '';
+            break;
+        }
+        return;
+      }
+      // Take only the first digit
+      const digit = str[0];
+      // Set current digit
+      switch (index) {
+        case 1:
+          this.d1 = digit;
+          break;
+        case 2:
+          this.d2 = digit;
+          break;
+        case 3:
+          this.d3 = digit;
+          break;
+        case 4:
+          this.d4 = digit;
+          break;
+        case 5:
+          this.d5 = digit;
+          break;
+        case 6:
+          this.d6 = digit;
+          break;
+      }
+      // If not at the last digit, focus next input after a tick
+      if (index < 6) {
+        const nextIndex = index + 1;
+        let nextInput: HTMLInputElement | null = null;
+        switch (nextIndex) {
+          case 1:
+            nextInput = document.querySelector('input[name="d1"]') as HTMLInputElement;
+            break;
+          case 2:
+            nextInput = document.querySelector('input[name="d2"]') as HTMLInputElement;
+            break;
+          case 3:
+            nextInput = document.querySelector('input[name="d3"]') as HTMLInputElement;
+            break;
+          case 4:
+            nextInput = document.querySelector('input[name="d4"]') as HTMLInputElement;
+            break;
+          case 5:
+            nextInput = document.querySelector('input[name="d5"]') as HTMLInputElement;
+            break;
+          case 6:
+            nextInput = document.querySelector('input[name="d6"]') as HTMLInputElement;
+            break;
+        }
+        if (nextInput) {
+          setTimeout(() => {
+            nextInput.focus();
+          }, 0);
+        }
+      }
+    }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
