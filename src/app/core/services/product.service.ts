@@ -8,6 +8,7 @@ import { SubscriptionService } from './subscription.service';
 import { KeyVaultService } from './keyvault.service';
 import { Product, ProductSubscriptionRequest, EnableServiceRequest, ProductSwitchResponse } from '../models/product.models';
 import { ServiceInfo } from '../models/subscription.models';
+import { environment } from '../../../environments/environment';
 
 /**
  * This deployment *is* KeyVault Pro, so it is the default "current" product
@@ -19,15 +20,15 @@ const OWN_SERVICE_CODE = 'key-vault';
 const LOCAL_PRODUCTS: Product[] = [
   {
     id: 'keyvault',
-    name: 'KeyVault ',
+    name: 'KeyOps ',
     description: 'Enterprise Key Management',
     serviceCode: 'key-vault',
-    baseUrl: 'https://sbskeyvault.workalert.uk',
+    baseUrl: environment.productUrls['keyvault'],
     planId: 'f28006cf-1174-4042-859a-8a3d2e78d60f',
     icon: '<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
     iconBg: 'bg-violet-700',
     status: 'current',
-    actionLabel: 'Explore KeyVault ',
+    actionLabel: 'Explore KeyOps ',
     descriptionText: 'Securely register, issue, track and audit every key across your organisation.',
   },
   {
@@ -35,12 +36,24 @@ const LOCAL_PRODUCTS: Product[] = [
     name: 'eDOB',
     description: 'Digital Occurrence Management',
     serviceCode: 'edob',
-    baseUrl: 'https://sbsedob.workalert.uk',
+    baseUrl: environment.productUrls['edob'],
     icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.500 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
     iconBg: 'bg-blue-600',
     status: 'available',
     actionLabel: 'Switch to eDOB',
     descriptionText: 'Record and manage digital occurrence certificates for every work location.',
+  },
+  {
+    id: 'vms',
+    name: 'Visitor Management System',
+    description: 'Visitor Management',
+    serviceCode: 'vms',
+    baseUrl: environment.productUrls['vms'],
+    icon: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+    iconBg: 'bg-teal-600',
+    status: 'available',
+    actionLabel: 'Switch to Visitor Management System',
+    descriptionText: 'Manage visitor access and sign-in across your organisation.',
   },
 ];
 

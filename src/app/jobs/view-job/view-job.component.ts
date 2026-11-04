@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { KeyVaultService } from '../../core/services/keyvault.service';
 import { formatJobStatus, humanizeEnum } from '../../shared/utils/job.utils';
-import { API_BASE } from '../../core/config';
+import { environment } from '../../../environments/environment';
 
 const KEY_STATUS_LABELS: Record<string, string> = {
   ON_THE_HOOK: 'In Storage',
@@ -217,7 +217,7 @@ export class ViewJobComponent implements OnInit {
       .map((img: any) => {
         const url = typeof img === 'string' ? img : (img?.url || img?.src || img?.path || '');
         if (!url) return '';
-        return url.startsWith('/') ? `${API_BASE}${url}` : url;
+        return url.startsWith('/') ? `${environment.apiBase}${url}` : url;
       })
       .filter((url: string) => !!url);
   }

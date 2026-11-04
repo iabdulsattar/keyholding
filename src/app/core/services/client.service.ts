@@ -56,7 +56,7 @@ export interface Client {
   name: string;
   email: string;
   region: string;
-  status: 'Active' | 'Inactive' | 'Pending';
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'Active' | 'Inactive' | 'Pending';
   sites: number;
   users: number;
   created: string;

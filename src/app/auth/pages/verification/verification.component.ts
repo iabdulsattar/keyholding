@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
@@ -16,8 +16,6 @@ import { ToastService } from '../../../core/services/toast.service';
   styles: ''
 })
 export class VerificationComponent implements OnInit {
-
-  @ViewChildren('otpInput') private otpInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
   isCheckedOne = false;
 
@@ -82,21 +80,89 @@ export class VerificationComponent implements OnInit {
     this.d4 = digits[3];
     this.d5 = digits[4];
     this.d6 = digits[5];
+    this.focusInput(5);
   }
 
-  onDigitInput(index: number): void {
-    const input = this.otpInputs.get(index)?.nativeElement;
-    if (input?.value && index < this.otpInputs.length - 1) {
-      this.otpInputs.get(index + 1)?.nativeElement.focus();
+  onInput(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const digit = input.value.replace(/\D/g, '').slice(-1);
+
+    if (input.value !== digit) {
+      input.value = digit;
+      this.setDigit(index, digit);
+    }
+
+    if (digit && index < 5) {
+      this.focusInput(index + 1, true);
     }
   }
 
-  onDigitKeydown(index: number, event: KeyboardEvent): void {
-    if (event.key !== 'Backspace' || index === 0) return;
+  onKeyDown(event: KeyboardEvent, index: number): void {
+    const input = event.target as HTMLInputElement;
 
-    const input = this.otpInputs.get(index)?.nativeElement;
-    if (input && !input.value) {
-      this.otpInputs.get(index - 1)?.nativeElement.focus();
+    if (event.key === 'Backspace') {
+      if (index > 0) {
+        event.preventDefault();
+        input.value = '';
+        this.setDigit(index, '');
+        this.focusInput(index - 1, true);
+      }
+
+      return;
+    }
+
+    if (event.key === 'Delete') {
+      event.preventDefault();
+      input.value = '';
+      this.setDigit(index, '');
+      return;
+    }
+
+    if (event.key === 'ArrowLeft' && index > 0) {
+      event.preventDefault();
+      this.focusInput(index - 1);
+      return;
+    }
+
+    if (event.key === 'ArrowRight' && index < 5) {
+      event.preventDefault();
+      this.focusInput(index + 1);
+      return;
+    }
+
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+
+    if (
+      event.key === 'Tab' ||
+      event.key === 'Home' ||
+      event.key === 'End' ||
+      event.key.length !== 1
+    ) {
+      return;
+    }
+
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  private setDigit(index: number, digit: string): void {
+    switch (index) {
+      case 0: this.d1 = digit; break;
+      case 1: this.d2 = digit; break;
+      case 2: this.d3 = digit; break;
+      case 3: this.d4 = digit; break;
+      case 4: this.d5 = digit; break;
+      case 5: this.d6 = digit; break;
+    }
+  }
+
+  private focusInput(index: number, select = false): void {
+    const input = document.getElementById(`otp-${index}`) as HTMLInputElement | null;
+    input?.focus();
+
+    if (select) {
+      input?.select();
     }
   }
 

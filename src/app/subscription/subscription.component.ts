@@ -161,7 +161,7 @@ export class SubscriptionComponent implements OnInit {
       autoConversion: isTrial ? (sub.autoRenew ? 'Yes' : 'No') : (subObj?.cancelAtPeriodEnd ? 'No' : 'Yes'),
     };
 
-    if (!isTrial && sub.planId) {
+    if (sub.planId) {
       this.subscriptionService.getPlan(sub.planId).subscribe({
         next: (res: any) => {
           this.planDetails = res?.data ?? null;

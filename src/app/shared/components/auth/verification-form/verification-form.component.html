@@ -102,96 +102,25 @@
         </div>
         }
 
-        <div class="flex">
-          <div class="w-1/6 mr-2">
-            <app-input-field
+        <div class="flex gap-2">
+          @for (i of [0, 1, 2, 3, 4, 5]; track i) {
+          <div class="flex-1 min-w-0">
+            <input
+              [id]="'otp-' + i"
               type="text"
-              placeholder=""
-              name="d1"
-              class="form-input"
-              [maxlength]="1"
-              [error]="digitError"
-              [(value)]="d1"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="1"
+              autocomplete="one-time-code"
+              (input)="onInput(i, $event)"
+              (keydown)="onKeyDown($event, i)"
               (paste)="onPaste($event)"
-              className="text-center h-14 font-medium text-[16px]"
+              class="text-center h-14 w-full rounded-lg border border-gray-300 text-[16px] font-medium focus:border-brand-300 focus:ring-brand-500/20 focus:outline-none dark:border-gray-700 dark:text-white/90"
+              [attr.autofocus]="i === 0 ? true : null"
               required
             />
           </div>
-
-          <div class="w-1/6 mr-2">
-            <app-input-field
-              type="text"
-              placeholder=""
-              name="d2"
-              class="form-input"
-              [maxlength]="1"
-              [error]="digitError"
-              [(value)]="d2"
-              (paste)="onPaste($event)"
-              className="text-center h-14 font-medium text-[16px]"              
-              required
-            />
-          </div>
-
-          <div class="w-1/6 mr-2">
-            <app-input-field
-              type="text"
-              placeholder=""
-              name="d3"
-              class="form-input"
-              [maxlength]="1"
-              [error]="digitError"
-              [(value)]="d3"
-              (paste)="onPaste($event)"
-              className="text-center h-14 font-medium text-[16px]"              
-              required
-            />
-          </div>
-
-          <div class="w-1/6 mr-2">
-            <app-input-field
-              type="text"
-              placeholder=""
-              name="d4"
-              class="form-input"
-              [maxlength]="1"
-              [error]="digitError"
-              [(value)]="d4"
-              (paste)="onPaste($event)"
-              className="text-center h-14 font-medium text-[16px]"              
-              required
-            />
-          </div>
-
-          <div class="w-1/6 mr-2">
-            <app-input-field
-              type="text"
-              placeholder=""
-              name="d5"
-              class="form-input"
-              [maxlength]="1"
-              [error]="digitError"
-              [(value)]="d5"
-              (paste)="onPaste($event)"
-              className="text-center h-14 font-medium text-[16px]"              
-              required
-            />
-          </div>
-
-          <div class="w-1/6">
-            <app-input-field
-              type="text"
-              placeholder=""
-              name="d6"
-              class="form-input"
-              [maxlength]="1"
-              [error]="digitError"
-              [(value)]="d6"
-              (paste)="onPaste($event)"
-              className="text-center h-14 font-medium text-[16px]"              
-              required
-            />
-          </div>
+          }
         </div>
 
         <div class="mt-5 mb-2">
@@ -215,7 +144,7 @@
           size="sm"
           variant="outline"
           [disabled]="isLoading"
-          (btnClick)="onVerify()"
+          type="submit"
         >
           Verify Code
         </app-button>

@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { PermissionService, ServiceAccessGrant } from '../../../../core/services/permission.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { InputFieldComponent } from '../../form/input/input-field.component';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { KeyVaultService } from '../../../../core/services/keyvault.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
 import { SubscriptionStatusService } from '../../../../core/services/subscription-status.service';
 import { ToastService } from '../../../../core/services/toast.service';
+
 
 @Component({
   selector: 'app-signin-form',
@@ -57,90 +58,9 @@ export class SigninFormComponent {
   d6 = '';
   digitError = false;
 
-   get otpCode(): string {
-     return [this.d1, this.d2, this.d3, this.d4, this.d5, this.d6].map(d => (d ?? '').toString()).join('');
-   }
-
-    onOtpValueChange(value: any, index: number) {
-      const str = ('' + value).replace(/\D/g, '');
-      if (str.length === 0) {
-        // Clear the current digit if input is emptied (e.g., by backspace)
-        switch (index) {
-          case 1:
-            this.d1 = '';
-            break;
-          case 2:
-            this.d2 = '';
-            break;
-          case 3:
-            this.d3 = '';
-            break;
-          case 4:
-            this.d4 = '';
-            break;
-          case 5:
-            this.d5 = '';
-            break;
-          case 6:
-            this.d6 = '';
-            break;
-        }
-        return;
-      }
-      // Take only the first digit
-      const digit = str[0];
-      // Set current digit
-      switch (index) {
-        case 1:
-          this.d1 = digit;
-          break;
-        case 2:
-          this.d2 = digit;
-          break;
-        case 3:
-          this.d3 = digit;
-          break;
-        case 4:
-          this.d4 = digit;
-          break;
-        case 5:
-          this.d5 = digit;
-          break;
-        case 6:
-          this.d6 = digit;
-          break;
-      }
-      // If not at the last digit, focus next input after a tick
-      if (index < 6) {
-        const nextIndex = index + 1;
-        let nextInput: HTMLInputElement | null = null;
-        switch (nextIndex) {
-          case 1:
-            nextInput = document.querySelector('input[name="d1"]') as HTMLInputElement;
-            break;
-          case 2:
-            nextInput = document.querySelector('input[name="d2"]') as HTMLInputElement;
-            break;
-          case 3:
-            nextInput = document.querySelector('input[name="d3"]') as HTMLInputElement;
-            break;
-          case 4:
-            nextInput = document.querySelector('input[name="d4"]') as HTMLInputElement;
-            break;
-          case 5:
-            nextInput = document.querySelector('input[name="d5"]') as HTMLInputElement;
-            break;
-          case 6:
-            nextInput = document.querySelector('input[name="d6"]') as HTMLInputElement;
-            break;
-        }
-        if (nextInput) {
-          setTimeout(() => {
-            nextInput.focus();
-          }, 0);
-        }
-      }
-    }
+  get otpCode(): string {
+    return [this.d1, this.d2, this.d3, this.d4, this.d5, this.d6].map(d => (d ?? '').toString()).join('');
+  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -451,13 +371,20 @@ export class SigninFormComponent {
 
     // Trials and subscriptions are administrator-only: a member never triggers
     // a subscription start, they simply land on the app.
-    const startFreshTrial = (orgId: string, done: () => void) => {
+    const startFreshTrial = async (orgId: string, done: () => void) => {
       if (!this.permissionService.isOrgAdmin()) {
         done();
         return;
       }
+      let planId = '5ab78dd5-96ea-4dcc-9c89-66f9bed45368';
+      try {
+        const res: any = await firstValueFrom(this.subscriptionService.listPlans('key-vault'));
+        const plans = Array.isArray(res) ? res : (res?.data ?? res?.plans ?? res?.items ?? []);
+        const trialPlan = plans.find((p: any) => p.trialEligible && p.active) || plans.find((p: any) => p.trialEligible) || plans.find((p: any) => p.active) || plans[0];
+        if (trialPlan?.id) planId = trialPlan.id;
+      } catch {}
       this.subscriptionService.startSubscription(orgId, {
-        planId: '5ab78dd5-96ea-4dcc-9c89-66f9bed45368',
+        planId,
         billingPeriod: 'MONTHLY',
         useTrial: true,
         config: {},
@@ -539,4 +466,3 @@ export class SigninFormComponent {
   }
 
 }
-

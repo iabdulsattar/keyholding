@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { InputFieldComponent } from '../../form/input/input-field.component';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { CheckboxComponent } from '../../form/input/checkbox.component';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -15,7 +14,6 @@ import { ToastService } from '../../../../core/services/toast.service';
   imports: [
     RouterModule,
     FormsModule,
-    InputFieldComponent,
     ButtonComponent,
     CheckboxComponent,
   ],
@@ -28,19 +26,6 @@ export class VerificationFormComponent implements OnInit {
 
   // Email to verify
   email = '';
-
-  // 6 separate digits (bound from the template)
-  d1 = '';
-  d2 = '';
-  d3 = '';
-  d4 = '';
-  d5 = '';
-  d6 = '';
-
-  get code(): string {
-    const digits = [this.d1, this.d2, this.d3, this.d4, this.d5, this.d6].map(d => (d ?? '').toString());
-    return digits.join('');
-  }
 
   isLoading = false;
   errorMessage = '';
@@ -62,18 +47,107 @@ export class VerificationFormComponent implements OnInit {
     }
   }
 
-  onPaste(event: ClipboardEvent) {
-    event.preventDefault();
-    const pasted = (event.clipboardData?.getData('text') ?? '').replace(/\s+/g, '');
-    const digits = pasted.replace(/\D/g, '').slice(0, 6);
-    if (digits.length !== 6) return;
+  get code(): string {
+    const digits: string[] = [];
 
-    this.d1 = digits[0];
-    this.d2 = digits[1];
-    this.d3 = digits[2];
-    this.d4 = digits[3];
-    this.d5 = digits[4];
-    this.d6 = digits[5];
+    for (let i = 0; i < 6; i++) {
+      const input = document.getElementById(`otp-${i}`) as HTMLInputElement;
+      digits.push(input?.value ?? '');
+    }
+
+    return digits.join('');
+  }
+
+  onInput(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (!input) return;
+
+    // Allow only numeric digits
+    const digit = input.value.replace(/\D/g, '').slice(-1);
+
+    input.value = digit;
+
+    // Move to next input automatically
+    if (digit && index < 5) {
+      this.focusInput(index + 1, true);
+    }
+  }
+
+  private focusInput(index: number, select = false): void {
+    const input = document.getElementById(`otp-${index}`) as HTMLInputElement | null;
+    input?.focus();
+
+    if (select) {
+      input?.select();
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent, index: number): void {
+    const input = event.target as HTMLInputElement;
+
+    // Backspace handling
+    if (event.key === 'Backspace') {
+      if (index > 0) {
+        event.preventDefault();
+        input.value = '';
+        this.focusInput(index - 1, true);
+      }
+
+      return;
+    }
+
+    // Delete handling
+    if (event.key === 'Delete') {
+      event.preventDefault();
+      input.value = '';
+      return;
+    }
+
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+
+    // Allow navigation keys
+    if (
+      event.key === 'Tab' ||
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'Home' ||
+      event.key === 'End' ||
+      event.key === 'Backspace' ||
+      event.key === 'Delete'
+    ) {
+      return;
+    }
+
+    // Prevent non-numeric characters
+    if (!/^\d$/.test(event.key) && event.key.length === 1) {
+      event.preventDefault();
+    }
+  }
+
+  onPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+
+    const pasted = event.clipboardData
+      ?.getData('text')
+      .replace(/\D/g, '')
+      .slice(0, 6);
+
+    if (!pasted) return;
+
+    pasted.split('').forEach((digit, index) => {
+      const input = document.getElementById(`otp-${index}`) as HTMLInputElement;
+
+      if (input) {
+        input.value = digit;
+      }
+    });
+
+    // Focus the next empty input or the last input
+    const nextIndex = Math.min(pasted.length, 5);
+    this.focusInput(nextIndex);
   }
 
   isEmailValid(email: string): boolean {
@@ -87,7 +161,7 @@ export class VerificationFormComponent implements OnInit {
     this.successMessage = '';
     this.digitError = false;
 
-    const otp = (this.code ?? '').replace(/\s+/g, '').trim();
+    const otp = this.code;
     const email = this.email?.trim() ?? '';
 
     if (!email) {
@@ -126,8 +200,6 @@ export class VerificationFormComponent implements OnInit {
           this.isSigningInAfterVerification = false;
           this.isLoading = false;
           setTimeout(() => {
-            // No org role is known on this fallback path and the plan page is
-            // administrator-only, so send the user back to sign in.
             this.router.navigate(['/signin']);
           }, 600);
           return;
@@ -179,8 +251,6 @@ export class VerificationFormComponent implements OnInit {
             this.isSigningInAfterVerification = false;
             this.isLoading = false;
             setTimeout(() => {
-              // Auto-login failed, so no org role is known here and the plan
-              // page is administrator-only anyway.
               this.router.navigate(['/signin']);
             }, 600);
           }
@@ -217,4 +287,3 @@ export class VerificationFormComponent implements OnInit {
     });
   }
 }
-

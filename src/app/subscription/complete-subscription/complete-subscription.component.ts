@@ -10,6 +10,7 @@ import { PermissionService } from '../../core/services/permission.service';
 import { Subscription } from 'rxjs';
 import { ChangePlanRequest } from '../../core/models/subscription.models';
 import { ProductSwitcherComponent } from '../../shared/components/ui/product-switcher/product-switcher.component';
+import { environment } from '../../../environments/environment';
 
 declare global {
   interface Window {
@@ -96,7 +97,7 @@ export class CompleteSubscriptionComponent implements OnInit, OnDestroy {
 
   initStripe(): void {
     try {
-      this.stripe = window.Stripe('pk_test_51RdXPoIcFjCeeaggwPWJMyzNbjLZS24qSHpJRkgxEJAHCoNAKmsbE4dPYaCJRyKrQtEzWrJhgRt3RBQHzeCAWOAM00Ib97iV3O');
+      this.stripe = window.Stripe(environment.stripePublishableKey);
       
       const elements = this.stripe.elements({
         fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }]

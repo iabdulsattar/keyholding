@@ -23,13 +23,13 @@ export class ClientsComponent implements OnInit {
   clients: Client[] = [];
   loading = false;
   searchQuery = '';
-  activeFilter: 'all' | 'Active' | 'Inactive' | 'Pending' = 'all';
+  activeFilter: 'all' | 'ACTIVE' | 'INACTIVE' | 'PENDING' = 'all';
   filterStatus = 'all';
   statusOptions = [
     { label: 'Status', value: 'all' },
-    { label: 'Active', value: 'Active' },
-    { label: 'Inactive', value: 'Inactive' },
-    { label: 'Pending', value: 'Pending' },
+    { label: 'Active', value: 'ACTIVE' },
+    { label: 'Inactive', value: 'INACTIVE' },
+    { label: 'Pending', value: 'PENDING' },
   ];
   page = 0;
   pageSize = 10;
@@ -74,7 +74,7 @@ export class ClientsComponent implements OnInit {
         return;
       }
       if (this.totalPages === 0) this.page = 0;
-      this.clients = result.items;
+      this.clients = result.items.map(c => ({ ...c, status: (c.status || '').toUpperCase() as Client['status'] }));
       this.totalItems = result.totalItems;
       this.loading = false;
     }, () => {
@@ -94,12 +94,12 @@ export class ClientsComponent implements OnInit {
   }
 
   onFilterChange(): void {
-    this.activeFilter = this.filterStatus as 'all' | 'Active' | 'Inactive' | 'Pending';
+    this.activeFilter = this.filterStatus as 'all' | 'ACTIVE' | 'INACTIVE' | 'PENDING';
     this.page = 0;
     this.loadClients();
   }
 
-  setFilter(filter: 'all' | 'Active' | 'Inactive' | 'Pending'): void {
+  setFilter(filter: 'all' | 'ACTIVE' | 'INACTIVE' | 'PENDING'): void {
     this.activeFilter = filter;
     this.filterStatus = filter;
     this.page = 0;
@@ -107,9 +107,9 @@ export class ClientsComponent implements OnInit {
   }
 
   get totalClients(): number { return this.totalItems; }
-  get activeClients(): number { return this.clients.filter(c => c.status === 'Active').length; }
-  get inactiveClients(): number { return this.clients.filter(c => c.status === 'Inactive').length; }
-  get pendingClients(): number { return this.clients.filter(c => c.status === 'Pending').length; }
+  get activeClients(): number { return this.clients.filter(c => c.status === 'ACTIVE').length; }
+  get inactiveClients(): number { return this.clients.filter(c => c.status === 'INACTIVE').length; }
+  get pendingClients(): number { return this.clients.filter(c => c.status === 'PENDING').length; }
 
   get showingStart(): number {
     return this.totalItems === 0 ? 0 : this.page * this.pageSize + 1;
@@ -120,12 +120,13 @@ export class ClientsComponent implements OnInit {
   }
 
   statusBadge(status: string): string {
-    switch (status) {
-      case 'Active':
+    const s = (status || '').toUpperCase();
+    switch (s) {
+      case 'ACTIVE':
         return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-green-600 bg-green-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span><span>Active</span></span>`;
-      case 'Inactive':
+      case 'INACTIVE':
         return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-orange-600 bg-orange-100  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Inactive</span></span>`;
-      case 'Pending':
+      case 'PENDING':
         return `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-blue-600 bg-indigo-50  text-xs font-semibold font-['Inter'] "><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>Pending</span></span>`;
       default:
         return status;

@@ -19,7 +19,7 @@
 
   <h1 class="text-slate-900 text-2xl font-bold font-['Inter']">{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
   <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-2">Manage users, roles, permissions and access within
-    KeyVault.</p>
+    KeyOps.</p>
 
   @if (!isEditMode) {
   <div class="mt-5">
@@ -41,7 +41,7 @@
         <span>
           <span class="block font-bold text-slate-900 text-base font-['Inter']">Create New User</span>
           <span class="block text-xs text-slate-500 font-normal font-['Inter'] mt-0.5">Add a completely new user to
-            KeyVault.</span>
+            KeyOps.</span>
         </span>
       </button>
 
@@ -496,8 +496,8 @@
         <h3 class="font-bold text-slate-900 text-lg">Activate Existing User</h3>
         <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-2">Select a user who already exists in our
           system but does not have access to
-          KeyVault.</p>
-        <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-1">You will be able to assign a KeyVault Pro
+          KeyOps.</p>
+        <p class="text-slate-500 text-sm font-normal font-['Inter'] mt-1">You will be able to assign a KeyOps Pro
           role in the next step.</p>
 
         <!-- Search + refresh -->
@@ -544,7 +544,7 @@
               </clipPath>
             </defs>
           </svg>
-          <span class="text-xs text-slate-900 font-medium">Showing users who do not have access to KeyVault.</span>
+          <span class="text-xs text-slate-900 font-medium">Showing users who do not have access to KeyOps.</span>
         </div>
 
         <!-- Table -->
@@ -656,7 +656,7 @@
             <h4 class="font-bold text-slate-900 text-sm">About Activating Users
             </h4>
             <p class="text-xs text-slate-900 font-normal mt-1">You are viewing users who exist in our system but
-              do not have access to KeyVault Pro yet. Select a user and assign a KeyVault Pro role to activate
+              do not have access to KeyOps Pro yet. Select a user and assign a KeyOps Pro role to activate
               them.
             </p>
           </div>
@@ -678,7 +678,7 @@
               <p class="text-xs font-bold text-slate-900">Select a user
               </p>
               <p class="text-xs text-slate-500 font-normal mt-0.5">Choose a user from the list to activate for
-                KeyVault Pro.
+                KeyOps Pro.
               </p>
             </div>
           </div>
@@ -694,7 +694,7 @@
             <div>
               <p class="text-xs font-bold text-slate-900">Assign a role
               </p>
-              <p class="text-xs text-slate-500 font-normal mt-0.5">Assign an appropriate KeyVault Pro role to the
+              <p class="text-xs text-slate-500 font-normal mt-0.5">Assign an appropriate KeyOps Pro role to the
                 selected user.
 
               </p>
@@ -712,7 +712,7 @@
             <div>
               <p class="text-xs font-bold text-slate-900">User activated</p>
               <p class="text-xs text-slate-500 font-normal mt-0.5">The user will be activated and can access
-                KeyVault Pro based on the assigned role.</p>
+                KeyOps Pro based on the assigned role.</p>
             </div>
           </div>
         </div>
@@ -806,7 +806,7 @@
           <div>
             <p class="font-semibold text-slate-900 text-[10px]">Account activation email will be sent.</p>
             <p class="text-[9px] text-black font-normal mt-0.5">{{ selectedUserForRole?.name }} will receive an email with
-              login details and instructions to access KeyVault.</p>
+              login details and instructions to access KeyOps.</p>
           </div>
         </div>
 

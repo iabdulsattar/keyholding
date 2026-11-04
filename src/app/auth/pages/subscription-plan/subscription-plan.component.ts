@@ -94,7 +94,7 @@ export class SubscriptionPlanComponent implements OnInit {
 
   getPlanName(plan: Plan): string {
     const raw = plan.name ?? plan.code;
-    return raw.replace(/^KeyVault Pro\s+/i, '').trim();
+    return raw.replace(/^KeyOps Pro\s+/i, '').trim();
   }
 
   getSubtotal(plan: Plan): number {

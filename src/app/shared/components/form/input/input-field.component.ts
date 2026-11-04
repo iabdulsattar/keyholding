@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-input-field',
@@ -7,6 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: `
     <div class="relative">
       <input
+        #inputEl
         [type]="type"
         [id]="id"
         [name]="name"
@@ -18,7 +19,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
         [disabled]="disabled"
         [ngClass]="inputClasses"
         (input)="onInput($event)"
-        [attr.maxlength]="maxlength"   
+        (keydown)="keydown.emit($event)"
+        [attr.maxlength]="maxlength"
       />
 
       @if (hint) {
@@ -36,6 +38,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class InputFieldComponent {
 
+  @ViewChild('inputEl') inputEl!: ElementRef<HTMLInputElement>;
+
   @Input() type: string = 'text';
   @Input() id?: string = '';
   @Input() name?: string = '';
@@ -52,6 +56,7 @@ export class InputFieldComponent {
   @Input() maxlength: number | null = null;
 
   @Output() valueChange = new EventEmitter<string | number>();
+  @Output() keydown = new EventEmitter<KeyboardEvent>();
 
   get inputClasses(): string {
     let inputClasses = `h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 ${this.className}`;
@@ -71,5 +76,9 @@ export class InputFieldComponent {
   onInput(event: Event) {
     const input = event.target as HTMLInputElement;
     this.valueChange.emit(this.type === 'number' ? +input.value : input.value);
+  }
+
+  focus(): void {
+    this.inputEl.nativeElement.focus();
   }
 }
